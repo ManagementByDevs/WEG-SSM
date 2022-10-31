@@ -1,4 +1,4 @@
 package net.weg.wegssm.model.entities;
 
-public class AnalistaDeTI {
+public class Anexo {
 }
