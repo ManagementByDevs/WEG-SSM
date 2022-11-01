@@ -13,7 +13,7 @@ import Icon from '@mui/material/Icon';
 import Home from './pages/Home/home';
 import Login from './pages/Login/login';
 
-export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
+const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -82,7 +82,7 @@ function App() {
   );
 }
 
-export default function ProvedorDeTema() {
+export default function ToggleColorMode() {
   const [mode, setMode] = React.useState('light');
   const colorMode = React.useMemo(
     () => ({
