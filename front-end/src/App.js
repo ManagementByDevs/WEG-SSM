@@ -5,76 +5,103 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
+
+import Button from '@mui/material/Button';
+import Icon from '@mui/material/Icon';
+
 import Home from './pages/Home/home';
 import Login from './pages/Login/login';
 
-import Icon from '@mui/material/Icon';
-import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
-import { amber, deepOrange, grey } from '@mui/material/colors';
-
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#00579D'
-//     },
-//   },
-// });
+export const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
-    primary: {
-      ...amber,
-      ...(mode === 'dark' && {
-        main: amber[300],
-      }),
-    },
-    ...(mode === 'dark' && {
-      background: {
-        default: deepOrange[900],
-        paper: deepOrange[900],
-      },
-    }),
-    text: {
-      ...(mode === 'light'
-        ? {
-            primary: grey[900],
-            secondary: grey[800],
-          }
-        : {
-            primary: '#fff',
-            secondary: grey[500],
-          }),
-    },
+    ...(mode == 'dark')
+      ? {
+        primary: {
+          main: '#000000',
+        },
+        secondary: {
+          main: '#00579D',
+        },
+        divider: '#00579D',
+        text: {
+          primary: '#000000',
+          secondary: '#535353',
+        }
+      }
+      : {
+        primary: {
+          main: '#00579D',
+        },
+        secondary: {
+          main: '#00579D',
+        },
+        divider: '#00579D',
+        text: {
+          primary: '#000000',
+          secondary: '#000000',
+        }
+
+        // ? {
+        //   primary: '#00579D',
+        //   main: '#00579D',
+        //   divider: 'rgba(0, 0, 0, 0.3)',
+        //   text: {
+        //     primary: '#000000',
+        //     secondary: '#535353',
+        //   }
+        // }
+        // : {
+        //   primary: '#00579D',
+        //   main: '#00579D',
+        //   divider: '#E5E5E5',
+        //   text: {
+        //     primary: '#000000',
+        //     secondary: '#000000',
+        //   }
+      }
   },
 });
 
 function App() {
   const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
+
+  console.log('theme: ', theme);
 
   return (
     <Router>
       <Routes>
-          <Route path="/login" element={<Login></Login>} />
-          <Route path="/" element={<Home></Home>} />
+        <Route path="/login" element={<Login></Login>} />
+        <Route path="/" element={<Home></Home>} />
       </Routes>
     </Router>
-    // <div>
-    //   Hello world!
-    //   <Icon>home_outline</Icon>;
-    //   <h1 className="text-3xl font-bold underline">
-    //     Hello world!
-    //   </h1>
-    // </div>
   );
 }
 
-const darkModeTheme = createTheme(getDesignTokens('dark'));
+export default function ProvedorDeTema() {
+  const [mode, setMode] = React.useState('light');
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) =>
+          prevMode === 'light' ? 'dark' : 'light',
+        );
+      },
+    }),
+    [],
+  );
 
-export default function DarkThemeWithCustomPalette() {
+  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
   return (
-    <ThemeProvider theme={darkModeTheme}>
-      <App />
-    </ThemeProvider>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
