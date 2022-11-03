@@ -1,17 +1,20 @@
 import React from 'react'
-import Button from '@mui/material/Button';
+import { Button, Paper, Typography, Input } from '@mui/material';
+import classes from './home.module.css';
 
-import ProvedorDeTema from '../../App';
-
-function home() {
-  // const colorMode = React.useContext(ColorModeContext);
+export const home = (props) => {
   return (
-    <div>
-      {/* <Button variant="contained" onClick={colorMode.toggleColorMode}>Contained</Button> */}
-      {/* <Button variant="contained" >Contained</Button> */}
+    <Paper sx={{ backgroundColor: 'component.main' }}>
+      <Button variant="contained" onClick={props.togglePalette}>Contained</Button>
+      <Button color='secondary' variant="contained" onClick={props.togglePalette}>Contained</Button>
       home
-    </div>
+      <Paper sx={{ backgroundColor: 'input.main' }}>
+        <Input sx={{ backgroundColor: 'input.main' }} />
+        TEset
+      </Paper>
+      <Typography variant="h2" color='text.primary'>Teste com texto</Typography>
+    </Paper>
   )
 }
 
-export default home
+export default home;

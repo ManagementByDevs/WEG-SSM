@@ -6,14 +6,15 @@ import {
   Route
 } from "react-router-dom";
 import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
-
-import Button from '@mui/material/Button';
-import Icon from '@mui/material/Icon';
+import { CssBaseline } from '@mui/material';
 
 import Home from './pages/Home/home';
 import Login from './pages/Login/login';
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
+export const ColorModeContext = React.createContext({ 
+  toggleColorMode: () => { },
+  mode: 'light' 
+});
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -21,15 +22,25 @@ const getDesignTokens = (mode) => ({
     ...(mode == 'dark')
       ? {
         primary: {
-          main: '#000000',
-        },
-        secondary: {
           main: '#00579D',
         },
-        divider: '#00579D',
+        secondary: {
+          main: 'rgba(255, 255, 255, 0.12)',
+        },
+        divider: 'rgba(255, 255, 255, 0.12)',
         text: {
-          primary: '#000000',
-          secondary: '#535353',
+          primary: '#FFFFFF',
+          secondary: 'rgba(255, 255, 255, 0.7)',
+        },
+        background: {
+          default: '#22252C',
+          paper: '#22252C'
+        },
+        component: {
+          main: 'rgba(255, 255, 255, 0.12)'
+        },
+        input: {
+          main: 'rgba(255, 255, 255, 0.5)' 
         }
       }
       : {
@@ -37,46 +48,45 @@ const getDesignTokens = (mode) => ({
           main: '#00579D',
         },
         secondary: {
-          main: '#00579D',
+          main: '#FFFFFF',
         },
-        divider: '#00579D',
+        divider: 'rgba(0, 0, 0, 0.3)',
         text: {
           primary: '#000000',
-          secondary: '#000000',
+          secondary: '#535353',
+        },
+        background: {
+          default: '#FFFFFF',
+          paper: '#FFFFFF'
+        },
+        component: {
+          main: '#FFFFFF'
+        },
+        input: {
+          main: '#F8F8F8' 
         }
-
-        // ? {
-        //   primary: '#00579D',
-        //   main: '#00579D',
-        //   divider: 'rgba(0, 0, 0, 0.3)',
-        //   text: {
-        //     primary: '#000000',
-        //     secondary: '#535353',
-        //   }
-        // }
-        // : {
-        //   primary: '#00579D',
-        //   main: '#00579D',
-        //   divider: '#E5E5E5',
-        //   text: {
-        //     primary: '#000000',
-        //     secondary: '#000000',
-        //   }
       }
   },
+  typography: {
+    fontFamily: "Inter, sans-serif",
+    button: {
+      textTransform: 'none',
+    }
+  }
 });
+
 
 function App() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-
+  
   console.log('theme: ', theme);
-
+  
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login></Login>} />
-        <Route path="/" element={<Home></Home>} />
+        <Route path="/" element={<Home togglePalette={colorMode.toggleColorMode}></Home>} />
       </Routes>
     </Router>
   );
@@ -88,18 +98,20 @@ export default function ToggleColorMode() {
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) =>
-          prevMode === 'light' ? 'dark' : 'light',
+        prevMode === 'light' ? 'dark' : 'light',
         );
       },
+      mode
     }),
-    [],
-  );
-
-  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-
-  return (
-    <ColorModeContext.Provider value={colorMode}>
+    [mode],
+    );
+    
+    const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+    
+    return (
+      <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <App />
       </ThemeProvider>
     </ColorModeContext.Provider>
