@@ -19,9 +19,6 @@ public class Demanda {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String usuarioEmail;
-
     @Column(nullable = false, length = 50)
     private String titulo;
 
@@ -51,4 +48,15 @@ public class Demanda {
 
     @Column(nullable = false)
     private Status status;
+
+    // foreign keys
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "forum_id")
+    private Forum forum;
+
 }
