@@ -32,8 +32,9 @@ const UserModal = () => {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
+                sx={{padding: '12rem'}}
             >
-                <Typography variant='subtitle1'>Nome Sobrenome</Typography>
+                <Typography variant='subtitle1' sx={{fontWeight: 600}}>Nome Sobrenome</Typography>
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleClose}>Logout</MenuItem>
