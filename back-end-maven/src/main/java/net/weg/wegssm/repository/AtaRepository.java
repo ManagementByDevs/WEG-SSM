@@ -10,10 +10,20 @@ import java.util.Optional;
 @Repository
 public interface AtaRepository extends JpaRepository<Ata, Long> {
 
+    /**
+     * Método para listar a ata pelo número sequencial
+     * @param numeroSequencial
+     * @return
+     */
     Optional<Ata> findByNumeroSequencial(String numeroSequencial);
 
-//    Optional<Ata> findByData(Date data);
+    //Optional<Ata> findByData(Date data);
 
+    /**
+     * Método que verifica se existe uma ata com o número sequencial passado por parâmetro
+     * @param numeroSequencial
+     * @return
+     */
     Boolean existsByNumeroSequencial(String numeroSequencial);
 
 }

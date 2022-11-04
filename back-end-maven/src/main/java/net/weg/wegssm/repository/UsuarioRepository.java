@@ -6,5 +6,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
+    /**
+     * Método que verifica se existe um usuário com o email passado por parâmetro
+     * @param email
+     * @return
+     */
     Boolean existsByEmail(String email);
+
 }

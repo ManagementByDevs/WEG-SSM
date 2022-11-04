@@ -23,11 +23,20 @@ public class AtaController {
 
     private AtaService ataService;
 
+    /**
+     * Método GET para listar todas as atas
+     * @return
+     */
     @GetMapping
     public ResponseEntity<List<Ata>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(ataService.findAll());
     }
 
+    /**
+     * Método GET para listar uma ata específica através do id
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
         if (!ataService.existsById(id)) {
@@ -36,6 +45,11 @@ public class AtaController {
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findById(id).get());
     }
 
+    /**
+     * Método GET para listar uma ata através de seu número sequencial
+     * @param numeroSequencial
+     * @return
+     */
     @GetMapping("numeroSequencial/{numeroSequencial}")
     public ResponseEntity<Object> findByNumeroSequencial(@PathVariable(value = "numeroSequencial") String numeroSequencial) {
         Optional<Ata> ataOptional = ataService.findByNumeroSequencial(numeroSequencial);
@@ -45,6 +59,11 @@ public class AtaController {
         return ResponseEntity.status(HttpStatus.OK).body(ataOptional.get());
     }
 
+    /**
+     * Método POST para cadastrar uma ata no banco de dados
+     * @param ataDto ( Objeto a ser cadastrado = req.body )
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid AtaDto ataDto) {
 
@@ -57,6 +76,11 @@ public class AtaController {
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));
     }
 
+    /**
+     * Método DELETE para deletar uma ata, colocando sua visibilidade como false
+     * @param id
+     * @return
+     */
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {

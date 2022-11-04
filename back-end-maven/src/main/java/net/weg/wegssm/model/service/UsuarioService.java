@@ -24,19 +24,19 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
-    public <S extends Usuario> S save(S entity){
+    public <S extends Usuario> S save(S entity) {
         return usuarioRepository.save(entity);
     }
 
-    public Boolean existsByEmail(String email){
+    public Boolean existsByEmail(String email) {
         return usuarioRepository.existsByEmail(email);
     }
 
-    public Boolean existsById(Long id){
+    public Boolean existsById(Long id) {
         return usuarioRepository.existsById(id);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         usuarioRepository.deleteById(id);
     }
 }
