@@ -11,9 +11,9 @@ import { CssBaseline } from '@mui/material';
 import Home from './pages/Home/home';
 import Login from './pages/Login/login';
 
-export const ColorModeContext = React.createContext({ 
+export const ColorModeContext = React.createContext({
   toggleColorMode: () => { },
-  mode: 'light' 
+  mode: 'light'
 });
 
 const getDesignTokens = (mode) => ({
@@ -40,7 +40,7 @@ const getDesignTokens = (mode) => ({
           main: 'rgba(255, 255, 255, 0.12)'
         },
         input: {
-          main: 'rgba(255, 255, 255, 0.5)' 
+          main: 'rgba(255, 255, 255, 0.5)'
         }
       }
       : {
@@ -63,7 +63,7 @@ const getDesignTokens = (mode) => ({
           main: '#FFFFFF'
         },
         input: {
-          main: '#F8F8F8' 
+          main: '#F8F8F8'
         }
       }
   },
@@ -79,9 +79,9 @@ const getDesignTokens = (mode) => ({
 function App() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-  
+
   console.log('theme: ', theme);
-  
+
   return (
     <Router>
       <Routes>
@@ -98,18 +98,18 @@ export default function ToggleColorMode() {
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) =>
-        prevMode === 'light' ? 'dark' : 'light',
+          prevMode === 'light' ? 'dark' : 'light',
         );
       },
       mode
     }),
     [mode],
-    );
-    
-    const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-    
-    return (
-      <ColorModeContext.Provider value={colorMode}>
+  );
+
+  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />

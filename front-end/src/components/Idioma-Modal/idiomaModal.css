@@ -1,0 +1,13 @@
+.idioma-container {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 0.2rem;
+}
+
+.bandeira-icone {
+    height: 1.2rem;
+    width: 1.8rem;
+}
+
+.item-idioma-modal {
+    gap: 0.5rem;
+}
