@@ -45,15 +45,6 @@ public class AtaController {
         return ResponseEntity.status(HttpStatus.OK).body(ataOptional.get());
     }
 
-//    @GetMapping("data/{data}")
-//    public ResponseEntity<Object> findByData(@PathVariable(value = "data") Date data) {
-//        Optional<Ata> ataOptional = ataService.findByData(data);
-//        if (ataOptional.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma ata com esta data.");
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(ataOptional.get());
-//    }
-
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid AtaDto ataDto) {
 
@@ -78,5 +69,16 @@ public class AtaController {
         ataService.save(ata);
         return ResponseEntity.status(HttpStatus.OK).body(ata);
     }
+
+    // Arrumar a parte de buscar por data da ata
+
+    //    @GetMapping("data/{data}")
+    //    public ResponseEntity<Object> findByData(@PathVariable(value = "data") Date data) {
+    //        Optional<Ata> ataOptional = ataService.findByData(data);
+    //        if (ataOptional.isEmpty()) {
+    //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma ata com esta data.");
+    //        }
+    //        return ResponseEntity.status(HttpStatus.OK).body(ataOptional.get());
+    //    }
 
 }

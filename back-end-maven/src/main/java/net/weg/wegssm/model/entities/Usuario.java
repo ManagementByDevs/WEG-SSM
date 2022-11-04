@@ -28,4 +28,7 @@ public class Usuario {
     @Column(nullable = false, length = 100, unique = true)
     private String email;
 
+    @Column
+    private Boolean visibilidade;
+
 }
