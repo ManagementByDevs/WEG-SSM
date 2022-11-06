@@ -7,7 +7,6 @@ import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
 import EstadosUnidos from "../../assets/estados-unidos.png";
 
-
 const IdiomaModal = () => {
   const [idioma, setIdioma] = useState(Brasil);
   const [anchorEl, setAnchorEl] = useState(null);
