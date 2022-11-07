@@ -24,11 +24,11 @@ public class EscopoService {
     }
 
     public Optional<Escopo> findByTitle(String titulo) {
-        return escopoRepository.findByTitle(titulo);
+        return escopoRepository.findByTitulo(titulo);
     }
 
     public Optional<Escopo> findByPercentagem(Long porcentagem) {
-        return escopoRepository.findByPercentagem(porcentagem);
+        return escopoRepository.findByPorcentagem(porcentagem);
     }
 
     public Boolean existsById(Long id) {
@@ -36,11 +36,11 @@ public class EscopoService {
     }
 
     public Boolean existsByTitle(String titulo) {
-        return escopoRepository.existsByTitle(titulo);
+        return escopoRepository.existsByTitulo(titulo);
     }
 
     public Boolean existsByPercentagem(Long porcentagem) {
-        return escopoRepository.existsByPercentagem(porcentagem);
+        return escopoRepository.existsByPorcentagem(porcentagem);
     }
 
     public <S extends Escopo> S save(S entity) {

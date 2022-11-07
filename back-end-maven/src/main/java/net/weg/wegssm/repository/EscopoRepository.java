@@ -8,11 +8,31 @@ import java.util.Optional;
 
 public interface EscopoRepository extends JpaRepository<Escopo, Long> {
 
-        Boolean existsByTitle(String titulo);
+        /**
+         * Método para retornar se existe um escopo com o título passado por parâmetro
+         * @param titulo
+         * @return
+         */
+        Boolean existsByTitulo(String titulo);
 
-        Boolean existsByPercentagem(Long porcentagem);
+        /**
+         * Método para retornar se existe um escopo com a porcentagem passada por parâmetro
+         * @param porcentagem
+         * @return
+         */
+        Boolean existsByPorcentagem(Long porcentagem);
 
-        Optional<Escopo> findByTitle(String titulo);
+        /**
+         * Método para retornar um escopo com o título passado por parâmetro
+         * @param titulo
+         * @return
+         */
+        Optional<Escopo> findByTitulo(String titulo);
 
-        Optional<Escopo> findByPercentagem(Long porcentagem);
+        /**
+         * Método para retornar um escopo com a porcentagem passada por parâmetro
+         * @param porcentagem
+         * @return
+         */
+        Optional<Escopo> findByPorcentagem(Long porcentagem);
 }

@@ -34,6 +34,9 @@ public class Escopo {
         @Column(nullable = false, length = 30)
         private String frequencia;
 
+        @Column(nullable = false)
+        private Long porcentagem;
+
         @Column
         private Boolean visibilidade;
 
