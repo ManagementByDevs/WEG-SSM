@@ -20,7 +20,7 @@ const IdiomaModal = () => {
   };
 
   return (
-    <div className='idioma-container'>
+    <div className=' border border-solid rounded-sm border-[#ffffff75]'>
       <Tooltip title="Idiomas">
         <IconButton
           onClick={handleClick}
@@ -45,12 +45,12 @@ const IdiomaModal = () => {
           <img className='bandeira-icone' src={EstadosUnidos} />
           English
         </MenuItem>
-        <Divider />
+        <Divider sx={{marginTop: 0, marginBottom: 0}} variant='middle' />
         <MenuItem className='gap-2' onClick={() => handleClose(Brasil)}>
           <img className='bandeira-icone' src={Brasil} />
           Português (Brasil)
         </MenuItem>
-        <Divider />
+        <Divider sx={{marginTop: '0px', marginBottom: '0px'}} variant='middle' />
         <MenuItem className='gap-2' onClick={() => handleClose(China)}>
           <img className='bandeira-icone' src={China} />
           中国人

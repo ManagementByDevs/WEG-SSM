@@ -52,11 +52,9 @@ const UserModal = () => {
                     <NotificationsOutlinedIcon />
                     Notificações
                 </MenuItem>
-                {/* <Divider  variant="middle" /> */}
                 <MenuItem className='gap-2' onClick={handleClose}>
                     <BorderColorOutlinedIcon />
                     Escopos</MenuItem>
-                {/* <Divider  variant="middle" /> */}
                 <MenuItem className='gap-2' onClick={handleClose}>
                     {chatIcon == ChatBubbleOutlineOutlinedIcon ? <ChatBubbleOutlineOutlinedIcon /> : <MarkChatUnreadOutlinedIcon />}
                     Chats
