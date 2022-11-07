@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography } from '@mui/material/';
+import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography, Divider, Button } from '@mui/material/';
+// import NotificationsIcon from '@mui/icons-material';
+
+import FontConfig from '../../service/FontConfig';
 
 const UserModal = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -32,12 +35,18 @@ const UserModal = () => {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
-                sx={{padding: '12rem'}}
+                sx={{ padding: '12rem' }}
             >
-                <Typography variant='subtitle1' sx={{fontWeight: 600}}>Nome Sobrenome</Typography>
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <Typography className='px-4 pt-1.5' color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 600 }}>Nome Sobrenome</Typography>
+                <Typography className='px-4 pb-1.5' color={'text.secondary'} fontSize={FontConfig.medium}>Departamento</Typography>
+                <MenuItem onClick={handleClose}>
+                    Notificações
+                    </MenuItem>
+                {/* <Divider  variant="middle" /> */}
+                <MenuItem onClick={handleClose}>Escopos</MenuItem>
+                {/* <Divider  variant="middle" /> */}
+                <MenuItem onClick={handleClose}>Chats</MenuItem>
+                <Typography className='px-4 pt-1.5 ' color={'primary.main'} variant="body2" fontSize={FontConfig.medium} align="right" sx={{ fontWeight: 600 }}><span className='hover:cursor-pointer'>Sair</span> </Typography>
             </Menu>
         </>
     )

@@ -1,12 +1,7 @@
 #header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .parte-esquerda {
-    display: flex;
-    gap: 0.8rem;
 }
 
 .tamanhoImagem {
@@ -27,8 +22,6 @@
 }
 
 .bandeira {
-    height: 1.5rem;
-    width: 2rem;
 }
 
 .user {
