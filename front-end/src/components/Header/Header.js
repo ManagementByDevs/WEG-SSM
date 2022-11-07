@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Paper } from '@mui/material/';
-import { useLocation } from 'react-router-dom';
+import { Paper, Tooltip } from '@mui/material/';
+import { Link, useLocation } from 'react-router-dom';
 
 import IdiomaModal from '../Idioma-Modal/IdiomaModal';
 import UserModal from '../User-Modal/UserModal';
@@ -18,13 +18,24 @@ const Header = (props) => {
     return (
         // Div Principal com width preenchendo a tela
         <Paper sx={{ backgroundColor: 'primary.main', padding: '1rem' }} className='flex justify-between items-center h-1/10' square>
-            {/* Parte esquerda do header */}
-            <div className='flex gap-3.5'>
-                {/* Grid da WEG */}
-                <img className='h-12' src={Grid} />
-                {/* Logo da WEG SSM */}
-                <img className='h-12' src={LogoBranca} />
-            </div>
+
+            {/* Link para página inicial */}
+            <Link to={'/'}>
+
+                {/* Title */}
+                <Tooltip title="Página Inicial">
+
+                    {/* Parte esquerda do header */}
+                    <div className='flex gap-3.5'>
+
+                        {/* Grid da WEG */}
+                        <img className='h-12' src={Grid} />
+                        
+                        {/* Logo da WEG SSM */}
+                        <img className='h-12' src={LogoBranca} />
+                    </div>
+                </Tooltip>
+            </Link>
 
             {/* Parte direita do header */}
             <div className='flex items-center gap-4'>
