@@ -16,14 +16,10 @@
 }
 
 .parte-direita {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
 }
 
 .bandeira {
 }
 
 .user {
-    height: 2.5rem;
 }
