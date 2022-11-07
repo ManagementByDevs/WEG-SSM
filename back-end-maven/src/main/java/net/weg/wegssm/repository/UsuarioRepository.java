@@ -22,6 +22,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
      * @param departamento
      * @return
      */
-//    List<Usuario> findByDepartamento(Departamento departamento);
+    List<Usuario> findByDepartamento(Departamento departamento);
 
 }

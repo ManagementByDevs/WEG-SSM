@@ -1,9 +1,6 @@
 package net.weg.wegssm.repository;
 
-import net.weg.wegssm.model.entities.Demanda;
-import net.weg.wegssm.model.entities.Forum;
-import net.weg.wegssm.model.entities.Status;
-import net.weg.wegssm.model.entities.Usuario;
+import net.weg.wegssm.model.entities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -32,7 +29,12 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
      */
     List<Demanda> findByUsuario(Usuario usuario);
 
-//    List<Demanda> findByDepartamento(String departamento); -- Não possui este atibuto no BD
+    /**
+     * Método para listar as demandas a partir de um departamento ( id )
+     * @param departamento
+     * @return
+     */
+    List<Demanda> findByDepartamento(Departamento departamento);
 
     /**
      * Método para listar todas as demandas a partir de um título
