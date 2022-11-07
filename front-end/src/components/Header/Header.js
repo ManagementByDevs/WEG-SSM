@@ -17,7 +17,7 @@ const Header = (props) => {
 
     return (
         // Div Principal com width preenchendo a tela
-        <Paper sx={{ backgroundColor: 'primary.main', padding: '1rem' }} className='flex justify-between items-center h-1/10' square>
+        <Paper sx={{ backgroundColor: 'primary.main', padding: '1rem', width: '100%' }} className={`flex justify-between items-center ${rota == '/login' ? "h-1/10" : "h-20"} `} square>
 
             {/* Link para página inicial */}
             <Link to={'/'}>
