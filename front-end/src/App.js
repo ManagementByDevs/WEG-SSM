@@ -27,7 +27,7 @@ const getDesignTokens = (mode) => ({
         secondary: {
           main: 'rgba(255, 255, 255, 0.12)',
         },
-        divider: 'rgba(255, 255, 255, 0.12)',
+        divider: { main: 'rgba(255, 255, 255, 0.12)' },
         text: {
           primary: '#FFFFFF',
           secondary: 'rgba(255, 255, 255, 0.7)',
@@ -50,7 +50,7 @@ const getDesignTokens = (mode) => ({
         secondary: {
           main: '#FFFFFF',
         },
-        divider: 'rgba(0, 0, 0, 0.3)',
+        divider: { main: 'rgba(0, 0, 0, 0.3)' },
         text: {
           primary: '#000000',
           secondary: '#535353',

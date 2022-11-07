@@ -25,7 +25,7 @@ public class AtaService {
         return ataRepository.findByNumeroSequencial(numeroSequencial);
     }
 
-//    public Optional<Ata> findByData(Date data) {
+//    public List<Ata> findByData(Date data) {
 //        return ataRepository.findByData(data);
 //    }
 

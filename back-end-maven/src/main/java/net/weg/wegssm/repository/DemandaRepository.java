@@ -3,23 +3,43 @@ package net.weg.wegssm.repository;
 import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Forum;
 import net.weg.wegssm.model.entities.Status;
+import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 
-//    List<Demanda> findByStatus(Status status);
-//
-//    List<Demanda> findByForum(Forum forum);
-//
-//    List<Demanda> findByDepartamento(String departamento);
-//
-//    List<Demanda> findBySolicitante(String solicitante);
-//
-//    List<Demanda> findByGerenteResponsavel(String gerenteResponsavel);
+    /**
+     * Método para listar as demandas pelo status
+     * @param status
+     * @return
+     */
+    List<Demanda> findByStatus(Status status);
 
-//    Optional<Demanda> findByTitulo(String titulo); //  verificar se é necessário preecnher o titulo completo ou ele já faz a busca por parte do titulo;
+    /**
+     * Método para listar as demandas a partir de um forum ( id )
+     * @param forum
+     * @return
+     */
+    List<Demanda> findByForum(Forum forum);
+
+    /**
+     * Método para listar as demandas a partir de um usuário ( id )
+     * @param usuario
+     * @return
+     */
+    List<Demanda> findByUsuario(Usuario usuario);
+
+//    List<Demanda> findByDepartamento(String departamento); -- Não possui este atibuto no BD
+
+    /**
+     * Método para listar todas as demandas a partir de um título
+     * @param titulo
+     * @return
+     */
+    List<Demanda> findByTitulo(String titulo);
 
 }
 
