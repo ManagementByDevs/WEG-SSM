@@ -21,6 +21,9 @@ public class Pauta {
     private Long id;
 
     @Column(nullable = false)
+    private Long numeroSequencial;
+
+    @Column(nullable = false)
     private Date inicioDataReuniao;
 
     @Column(nullable = false)
@@ -28,4 +31,7 @@ public class Pauta {
 
     @Column(nullable = false)
     private String comissao;
+
+    @Column
+    private Boolean visibilidade;
 }
