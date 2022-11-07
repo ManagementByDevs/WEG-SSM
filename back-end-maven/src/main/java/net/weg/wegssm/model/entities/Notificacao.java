@@ -32,6 +32,10 @@ public class Notificacao {
     @Column(nullable = false)
     private Long tipoIcone;
 
-    @Column(nullable = false)
-    private String usuarioEmail;
+    // Foreign key
+
+//    @ManyToOne
+//    @JoinColumn(name = "id_usuario")
+//    @Column(nullable = false)
+//    private Usuario usuario;
 }

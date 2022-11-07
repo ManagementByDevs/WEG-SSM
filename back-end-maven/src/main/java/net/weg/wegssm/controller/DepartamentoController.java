@@ -86,7 +86,25 @@ public class DepartamentoController {
     }
 
     /**
-     * Método DELETe para deletar um departamento, colocando sua visibilidade como false.
+     * Método DELETE para editar um departamento, colocando sua visibilidade como false.
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
+        if (!departamentoService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum departamento com este id.");
+        }
+
+        Departamento departamento = departamentoService.findById(id).get();
+        departamento.setVisibilidade(false);
+        departamentoService.save(departamento);
+        return ResponseEntity.status(HttpStatus.OK).body(departamento);
+    }
+
+    /**
+     * Método DELETE para deletar um departamento
      * @param id
      * @return
      */
@@ -97,10 +115,8 @@ public class DepartamentoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum departamento com este id.");
         }
 
-        Departamento departamento = departamentoService.findById(id).get();
-        departamento.setVisibilidade(false);
-        departamentoService.save(departamento);
-        return ResponseEntity.status(HttpStatus.OK).body(departamento);
+        departamentoService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Departamento excluído com sucesso.");
     }
 
 }

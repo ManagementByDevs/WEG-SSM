@@ -78,8 +78,8 @@ public class UsuarioController {
      * @return
      */
     @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
         if (!usuarioService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
@@ -88,6 +88,17 @@ public class UsuarioController {
         usuario.setVisibilidade(false);
         usuarioService.save(usuario);
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!usuarioService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
+        }
+
+        usuarioService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado com sucesso.");
     }
 
     /**

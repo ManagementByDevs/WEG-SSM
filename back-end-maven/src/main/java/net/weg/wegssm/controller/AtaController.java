@@ -83,14 +83,14 @@ public class AtaController {
     }
 
     /**
-     * Método DELETE para deletar uma ata, colocando sua visibilidade como false
+     * Método DELETE para colocar sua visibilidade como false
      *
      * @param id
      * @return
      */
     @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
         if (!ataService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma ata com este id.");
         }
@@ -101,10 +101,35 @@ public class AtaController {
         return ResponseEntity.status(HttpStatus.OK).body(ata);
     }
 
-    // Arrumar a parte de buscar por data da ata
+    /**
+     * Método DELETE para deletar uma ata
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!ataService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma ata com este id.");
+        }
 
-//    @GetMapping("data/{data}")
-//    public ResponseEntity<List<Ata>> findByData(@PathVariable(value = "data") Date data) {
+        ataService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Ata deletada com sucesso.");
+    }
+
+    /**
+     * Métodos GET para buscar atas por data de início e fim da ata
+     *
+     * @param data
+     * @return
+     */
+//    @GetMapping("dataInicioReuniao/{dataInicioReuniao}")
+//    public ResponseEntity<List<Ata>> findByDataInicioReuniao(@PathVariable(value = "dataInicioReuniao") Date data) {
+//        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
+//    }
+//
+//    @GetMapping("dataFimReuniao/{dataFimReuniao}")
+//    public ResponseEntity<List<Ata>> findByDataFimReuniao(@PathVariable(value = "dataFimReuniao") Date data) {
 //        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
 //    }
 
