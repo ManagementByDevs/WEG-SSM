@@ -25,22 +25,23 @@ const getDesignTokens = (mode) => ({
           main: '#00579D',
         },
         secondary: {
-          main: 'rgba(255, 255, 255, 0.12)',
+          main: '#3D3F45',
         },
-        divider: { main: 'rgba(255, 255, 255, 0.12)' },
+        divider: { main: '#3D3F45' },
         text: {
           primary: '#FFFFFF',
-          secondary: 'rgba(255, 255, 255, 0.7)',
+          secondary: '#BDBEC0',
+          white: '#FFFFFF'
         },
         background: {
           default: '#22252C',
           paper: '#22252C'
         },
         component: {
-          main: 'rgba(255, 255, 255, 0.12)'
+          main: '#3D3F45'
         },
         input: {
-          main: 'rgba(255, 255, 255, 0.5)'
+          main: '#909295'
         }
       }
       : {
@@ -54,6 +55,7 @@ const getDesignTokens = (mode) => ({
         text: {
           primary: '#000000',
           secondary: '#535353',
+          white: '#FFFFFF'
         },
         background: {
           default: '#FFFFFF',
