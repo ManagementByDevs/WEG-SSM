@@ -3,6 +3,7 @@ package net.weg.wegssm.model.service;
 import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Forum;
 import net.weg.wegssm.model.entities.Status;
+import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.DemandaRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,29 +23,25 @@ public class DemandaService {
         return demandaRepository.findAll();
     }
 
-    public Optional<Demanda> findById(Long id){
+    public Optional<Demanda> findById(Long id) {
         return demandaRepository.findById(id);
     }
 
-//    public List<Demanda> findByStatus(Status status){
-//        return demandaRepository.findByStatus(status);
-//    }
-//
-//    public List<Demanda> findBySolicitante(String solicitante){
-//        return demandaRepository.findBySolicitante(solicitante);
-//    }
-//
-//    public List<Demanda> findByGerenteResponsavel(String gerenteResponsavel){
-//        return demandaRepository.findByGerenteResponsavel(gerenteResponsavel);
-//    }
-//
-//    public List<Demanda> findByDepartamento(String departamento){
-//        return demandaRepository.findByDepartamento(departamento);
-//    }
-//
-//    public List<Demanda> findByForum(Forum forum){
-//        return demandaRepository.findByForum(forum);
-//    }
+    public List<Demanda> findByStatus(Status status) {
+        return demandaRepository.findByStatus(status);
+    }
+
+    public List<Demanda> findByUsuario(Usuario usuario) {
+        return demandaRepository.findByUsuario(usuario);
+    }
+
+    public List<Demanda> findByTitulo(String titulo) {
+        return demandaRepository.findByTitulo(titulo);
+    }
+
+    public List<Demanda> findByForum(Forum forum) {
+        return demandaRepository.findByForum(forum);
+    }
 
     public boolean existsById(Long id) {
         return demandaRepository.existsById(id);
@@ -54,5 +51,8 @@ public class DemandaService {
         return demandaRepository.save(entity);
     }
 
-    // Salvar, editar, excluir e buscar por titulo
+//    public List<Demanda> findByDepartamento(String departamento) {
+//        return demandaRepository.findByDepartamento(departamento);
+//    }
+
 }

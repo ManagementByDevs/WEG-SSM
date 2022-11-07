@@ -10,5 +10,6 @@ public class EscopoDTO {
     private String titulo;
     private String problema;
     private String proposta;
-    private Long frequencia;
+    private String frequencia;
+    private Long porcentagem;
 }

@@ -35,7 +35,7 @@ public class EscopoController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id){
         if(!escopoService.existsById(id)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
@@ -48,7 +48,7 @@ public class EscopoController {
      * @param titulo
      * @return
      */
-    @GetMapping("/{titulo}")
+    @GetMapping("/titulo/{titulo}")
     public ResponseEntity<Object> findByTitle(@PathVariable(value = "titulo") String titulo){
         if(!escopoService.existsByTitle(titulo)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este título.");
@@ -61,7 +61,7 @@ public class EscopoController {
      * @param porcentagem
      * @return
      */
-    @GetMapping("/{porcentagem}")
+    @GetMapping("/porcentagem/{porcentagem}")
     public ResponseEntity<Object> findByPercentagem(@PathVariable(value = "porcentagem") Long porcentagem){
         if(!escopoService.existsByPercentagem(porcentagem)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com esta porcentagem.");
@@ -77,6 +77,7 @@ public class EscopoController {
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid EscopoDTO escopoDto){
         Escopo escopo = new Escopo();
+        escopo.setVisibilidade(true);
         BeanUtils.copyProperties(escopoDto, escopo);
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
     }
