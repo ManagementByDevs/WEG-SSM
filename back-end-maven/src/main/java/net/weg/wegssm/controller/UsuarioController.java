@@ -56,6 +56,7 @@ public class UsuarioController {
         }
 
         Usuario usuario = new Usuario();
+        usuario.setVisibilidade(true);
         BeanUtils.copyProperties(usuarioDTO, usuario);
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
