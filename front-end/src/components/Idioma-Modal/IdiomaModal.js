@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Menu, MenuItem, Tooltip, IconButton, Divider } from '@mui/material/';
+import { Menu, MenuItem, Tooltip, IconButton } from '@mui/material/';
 
 import "./idiomaModal.css"
 
@@ -45,12 +45,16 @@ const IdiomaModal = () => {
           <img className='bandeira-icone' src={EstadosUnidos} />
           English
         </MenuItem>
-        <Divider sx={{marginTop: 0, marginBottom: 0}} variant='middle' />
+        <div className='w-full flex justify-center'>
+          <hr className='w-10/12' />
+        </div>
         <MenuItem className='gap-2' onClick={() => handleClose(Brasil)}>
           <img className='bandeira-icone' src={Brasil} />
           Português (Brasil)
         </MenuItem>
-        <Divider sx={{marginTop: '0px', marginBottom: '0px'}} variant='middle' />
+        <div className='w-full flex justify-center'>
+          <hr className='w-10/12' />
+        </div>
         <MenuItem className='gap-2' onClick={() => handleClose(China)}>
           <img className='bandeira-icone' src={China} />
           中国人

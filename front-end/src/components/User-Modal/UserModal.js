@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography, Divider, Button } from '@mui/material/';
+import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography } from '@mui/material/';
 
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
@@ -52,9 +52,15 @@ const UserModal = () => {
                     <NotificationsOutlinedIcon />
                     Notificações
                 </MenuItem>
+                <div className='w-full flex justify-center'>
+                    <hr className='w-10/12' />
+                </div>
                 <MenuItem className='gap-2' onClick={handleClose}>
                     <BorderColorOutlinedIcon />
                     Escopos</MenuItem>
+                <div className='w-full flex justify-center'>
+                    <hr className='w-10/12' />
+                </div>
                 <MenuItem className='gap-2' onClick={handleClose}>
                     {chatIcon == ChatBubbleOutlineOutlinedIcon ? <ChatBubbleOutlineOutlinedIcon /> : <MarkChatUnreadOutlinedIcon />}
                     Chats
