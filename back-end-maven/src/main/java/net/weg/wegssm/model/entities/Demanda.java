@@ -63,4 +63,8 @@ public class Demanda {
     @JoinColumn(name = "forum_id")
     private Forum forum;
 
+    @ManyToOne
+    @JoinColumn(name = "departamento_id")
+    private Departamento departamento;
+
 }

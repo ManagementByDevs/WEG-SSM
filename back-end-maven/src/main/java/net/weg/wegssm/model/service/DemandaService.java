@@ -1,9 +1,6 @@
 package net.weg.wegssm.model.service;
 
-import net.weg.wegssm.model.entities.Demanda;
-import net.weg.wegssm.model.entities.Forum;
-import net.weg.wegssm.model.entities.Status;
-import net.weg.wegssm.model.entities.Usuario;
+import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.repository.DemandaRepository;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +48,8 @@ public class DemandaService {
         return demandaRepository.save(entity);
     }
 
-//    public List<Demanda> findByDepartamento(String departamento) {
-//        return demandaRepository.findByDepartamento(departamento);
-//    }
+    public List<Demanda> findByDepartamento(Departamento departamento) {
+        return demandaRepository.findByDepartamento(departamento);
+    }
 
 }

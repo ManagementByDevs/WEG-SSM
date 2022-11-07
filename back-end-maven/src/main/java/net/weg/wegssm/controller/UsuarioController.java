@@ -2,6 +2,7 @@ package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.UsuarioDTO;
+import net.weg.wegssm.model.entities.Departamento;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
@@ -42,6 +43,16 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(usuarioService.findById(id).get());
+    }
+
+    /**
+     * Método GET para listar todos os usuários de um departamento específico
+     * @param departamento
+     * @return
+     */
+    @GetMapping("/departamento/{departamento}")
+    public ResponseEntity<List<Usuario>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento){
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByDepartamento(departamento));
     }
 
     /**

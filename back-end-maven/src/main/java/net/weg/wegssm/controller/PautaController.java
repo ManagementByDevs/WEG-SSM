@@ -53,10 +53,10 @@ public class PautaController {
      */
     @GetMapping("/datainicio/{dataInicio}")
     public ResponseEntity<Object> findByDataInicio(@PathVariable(value = "dataInicio") Date dataInicio){
-        if(!pautaService.existsByDataInicio(dataInicio)){
+        if(!pautaService.existsByInicioDataReuniao(dataInicio)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pauta com esta data de início.");
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findByDataInicio(dataInicio).get());
+        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findByInicioDataReuniao(dataInicio).get());
     }
 
     /**
@@ -66,10 +66,10 @@ public class PautaController {
      */
     @GetMapping("/datafim/{dataFim}")
     public ResponseEntity<Object> findByDataFim(@PathVariable(value = "dataFim") Date dataFim){
-        if(!pautaService.existsByDataFim(dataFim)){
+        if(!pautaService.existsByFimDataReuniao(dataFim)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pauta com esta data de fim.");
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findByDataFim(dataFim).get());
+        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findByFimDataReuniao(dataFim).get());
     }
 
     /**
@@ -99,13 +99,28 @@ public class PautaController {
     }
 
     /**
-     * Método DELETE para deletar uma pauta, colocando sua visibilidade como false
+     * Método DELETE para deletar uma pauta do banco de dados
      * @param id
      * @return
      */
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!pautaService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma pauta com este id.");
+        }
+        pautaService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Pauta deletada com sucesso.");
+    }
+
+    /**
+     * Método DELETE para deletar uma pauta, colocando sua visibilidade como false
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
         if (!pautaService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma pauta com este id.");
         }

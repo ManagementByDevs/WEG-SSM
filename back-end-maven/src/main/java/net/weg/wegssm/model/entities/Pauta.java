@@ -20,7 +20,7 @@ public class Pauta {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Long numeroSequencial;
 
     @Column(nullable = false)
