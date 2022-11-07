@@ -64,7 +64,25 @@ public class ForumController {
     }
 
     /**
-     * Método DELETE para deletar um fórum, colocando sua visibilidade como false
+     * Método DELETE para editar um fórum, colocando sua visibilidade como false
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
+        if (!forumService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum fórum com este id.");
+        }
+
+        Forum forum = forumService.findById(id).get();
+        forum.setVisibilidade(false);
+        forumService.save(forum);
+        return ResponseEntity.status(HttpStatus.OK).body(forum);
+    }
+
+    /**
+     * Método DELETE para deletar um forum
      * @param id
      * @return
      */
@@ -75,10 +93,8 @@ public class ForumController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum fórum com este id.");
         }
 
-        Forum forum = forumService.findById(id).get();
-        forum.setVisibilidade(false);
-        forumService.save(forum);
-        return ResponseEntity.status(HttpStatus.OK).body(forum);
+        forumService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Fórum deletado com sucesso.");
     }
 
     /**

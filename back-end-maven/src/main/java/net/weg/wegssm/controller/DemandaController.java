@@ -134,14 +134,14 @@ public class DemandaController {
     }
 
     /**
-     * Método DELETE para deletar uma demanda, editando sua visibilidade para false
+     * Método DELETE para editar uma demanda, editando sua visibilidade para false
      *
      * @param id
      * @return
      */
     @Transactional
-    @DeleteMapping("{id}")
-    public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
         if (!demandaService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
         }
@@ -150,5 +150,21 @@ public class DemandaController {
         demanda.setVisibilidade(false);
         demandaService.save(demanda);
         return ResponseEntity.status(HttpStatus.OK).body(demanda);
+    }
+
+    /**
+     * Método DELETE para deletar uma demanda
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!demandaService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
+        }
+
+        demandaService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Demanda deletada com sucesso.");
     }
 }

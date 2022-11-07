@@ -48,6 +48,10 @@ public class DemandaService {
         return demandaRepository.save(entity);
     }
 
+    public void deleteById(Long id) {
+        demandaRepository.deleteById(id);
+    }
+
     public List<Demanda> findByDepartamento(Departamento departamento) {
         return demandaRepository.findByDepartamento(departamento);
     }
