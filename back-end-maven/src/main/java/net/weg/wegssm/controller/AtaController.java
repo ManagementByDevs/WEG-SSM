@@ -3,6 +3,7 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.AtaDto;
 import net.weg.wegssm.model.entities.Ata;
+import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.service.AtaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class AtaController {
 
     /**
      * Método GET para listar todas as atas
+     *
      * @return
      */
     @GetMapping
@@ -34,6 +36,7 @@ public class AtaController {
 
     /**
      * Método GET para listar uma ata específica através do id
+     *
      * @param id
      * @return
      */
@@ -47,6 +50,7 @@ public class AtaController {
 
     /**
      * Método GET para listar uma ata através de seu número sequencial
+     *
      * @param numeroSequencial
      * @return
      */
@@ -61,6 +65,7 @@ public class AtaController {
 
     /**
      * Método POST para cadastrar uma ata no banco de dados
+     *
      * @param ataDto ( Objeto a ser cadastrado = req.body )
      * @return
      */
@@ -79,6 +84,7 @@ public class AtaController {
 
     /**
      * Método DELETE para deletar uma ata, colocando sua visibilidade como false
+     *
      * @param id
      * @return
      */
@@ -97,13 +103,9 @@ public class AtaController {
 
     // Arrumar a parte de buscar por data da ata
 
-    //    @GetMapping("data/{data}")
-    //    public ResponseEntity<Object> findByData(@PathVariable(value = "data") Date data) {
-    //        Optional<Ata> ataOptional = ataService.findByData(data);
-    //        if (ataOptional.isEmpty()) {
-    //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma ata com esta data.");
-    //        }
-    //        return ResponseEntity.status(HttpStatus.OK).body(ataOptional.get());
-    //    }
+//    @GetMapping("data/{data}")
+//    public ResponseEntity<List<Ata>> findByData(@PathVariable(value = "data") Date data) {
+//        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
+//    }
 
 }
