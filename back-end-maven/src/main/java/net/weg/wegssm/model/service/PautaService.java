@@ -25,12 +25,12 @@ public class PautaService {
         return pautaRepository.findById(id);
     }
 
-    public Optional<Pauta> findByDataInicio(Date dataInicio) {
-        return pautaRepository.findByDataInicio(dataInicio);
+    public Optional<Pauta> findByInicioDataReuniao(Date dataInicio) {
+        return pautaRepository.findByInicioDataReuniao(dataInicio);
     }
 
-    public Optional<Pauta> findByDataFim(Date dataFim) {
-        return pautaRepository.findByDataFim(dataFim);
+    public Optional<Pauta> findByFimDataReuniao(Date dataFim) {
+        return pautaRepository.findByFimDataReuniao(dataFim);
     }
 
     public Optional<Pauta> findByNumeroSequencial(Long numeroSequencial) {
@@ -45,12 +45,12 @@ public class PautaService {
         return pautaRepository.existsByNumeroSequencial(numeroSequencial);
     }
 
-    public Boolean existsByDataFim(Date dataFim) {
-        return pautaRepository.existsByDataFim(dataFim);
+    public Boolean existsByFimDataReuniao(Date dataFim) {
+        return pautaRepository.existsByFimDataReuniao(dataFim);
     }
 
-    public Boolean existsByDataInicio(Date dataInicio) {
-        return pautaRepository.existsByDataInicio(dataInicio);
+    public Boolean existsByInicioDataReuniao(Date dataInicio) {
+        return pautaRepository.existsByInicioDataReuniao(dataInicio);
     }
 
     public <S extends Pauta> S save(S entity) {

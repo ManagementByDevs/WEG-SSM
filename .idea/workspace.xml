@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/PautaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/PautaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/PautaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/dto/PautaDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/dto/PautaDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Pauta.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Pauta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/factory/EscopoFactory.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/PautaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/PautaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/PautaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/PautaRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
