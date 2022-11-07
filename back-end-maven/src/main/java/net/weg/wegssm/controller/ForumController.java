@@ -58,6 +58,7 @@ public class ForumController {
         }
 
         Forum forum = new Forum();
+        forum.setVisibilidade(true);
         BeanUtils.copyProperties(forumDTO, forum);
         return ResponseEntity.status(HttpStatus.OK).body(forumService.save(forum));
     }

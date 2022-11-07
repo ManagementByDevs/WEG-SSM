@@ -5,7 +5,7 @@ import classes from './home.module.css';
 import Header from '../../components/Header/Header';
 import FontConfig from '../../service/FontConfig';
 
-export const home = (props) => {
+const home = (props) => {
   return (
     <Paper sx={{ backgroundColor: 'component.main' }}>
       <Header/>
