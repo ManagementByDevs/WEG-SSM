@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter @Setter
-public class AtaDto {
+public class AtaDTO {
 
     private Date inicioDataReuniao;
     private Date fimDataReuniao;

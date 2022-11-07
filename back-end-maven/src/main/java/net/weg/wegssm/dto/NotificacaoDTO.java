@@ -1,4 +1,4 @@
 package net.weg.wegssm.dto;
 
-public class ReuniaoDto {
+public class NotificacaoDTO {
 }

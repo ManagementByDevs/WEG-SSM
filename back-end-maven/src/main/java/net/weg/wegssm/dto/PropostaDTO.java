@@ -1,4 +1,4 @@
 package net.weg.wegssm.dto;
 
-public class CustoDto {
+public class PropostaDTO {
 }
