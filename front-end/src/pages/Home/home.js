@@ -1,11 +1,10 @@
 import React from 'react'
 import { Button, Paper, Typography, Input } from '@mui/material';
-import classes from './home.module.css';
 
 import Header from '../../components/Header/Header';
 import FontConfig from '../../service/FontConfig';
 
-const home = (props) => {
+const Home = (props) => {
   return (
     <Paper sx={{ backgroundColor: 'component.main' }}>
       <Header/>
@@ -21,4 +20,4 @@ const home = (props) => {
   )
 }
 
-export default home;
+export default Home;

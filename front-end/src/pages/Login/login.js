@@ -7,8 +7,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import FontConfig from '../../service/FontConfig';
 
-import "./login.css";
-
 const Login = (props) => {
 
     // Variável usada para a visibilidade da senha (true - Senha Invisível / false - Senha Visível)

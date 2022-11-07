@@ -8,8 +8,8 @@ import {
 import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 
-import Home from './pages/Home/home';
-import Login from './pages/Login/login';
+import Home from './pages/Home/Home';
+import Login from './pages/Login/Login';
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => { },
