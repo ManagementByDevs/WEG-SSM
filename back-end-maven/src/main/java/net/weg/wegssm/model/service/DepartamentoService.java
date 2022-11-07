@@ -24,9 +24,7 @@ public class DepartamentoService {
         return departamentoRepository.findById(id);
     }
 
-    public <S extends Departamento> S save(S entity) {
-        return departamentoRepository.save(entity);
-    }
+    public <S extends Departamento> S save(S entity) { return departamentoRepository.save(entity); }
 
     public boolean existsById(Long id) {
         return departamentoRepository.existsById(id);

@@ -1,8 +1,7 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.AtaDto;
-import net.weg.wegssm.dto.DemandaDto;
+import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.DemandaService;
 import org.springframework.beans.BeanUtils;
@@ -80,9 +79,24 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByUsuario(usuario));
     }
 
+    /**
+     * Método GET para buscar uma demanda através de um título
+     * @param titulo
+     * @return
+     */
     @GetMapping("titulo/{titulo}")
     public ResponseEntity<List<Demanda>> findByTitulo(@PathVariable(value = "titulo") String titulo) {
         return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByTitulo(titulo));
+    }
+
+    /**
+     * Método GET para buscar todas as demandas de um determinado departamento
+     * @param departamento
+     * @return
+     */
+    @GetMapping("departamento/{departamento}")
+    public ResponseEntity<List<Demanda>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento){
+        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByDepartamento(departamento));
     }
 
     /**
@@ -92,7 +106,7 @@ public class DemandaController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid DemandaDto demandaDto) {
+    public ResponseEntity<Object> save(@RequestBody @Valid DemandaDTO demandaDto) {
         Demanda demanda = new Demanda();
         demanda.setVisibilidade(true);
         BeanUtils.copyProperties(demandaDto, demanda);
@@ -107,7 +121,7 @@ public class DemandaController {
      * @return
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid DemandaDto demandaDto) {
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid DemandaDTO demandaDto) {
         if (!demandaService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
         }
@@ -137,9 +151,4 @@ public class DemandaController {
         demandaService.save(demanda);
         return ResponseEntity.status(HttpStatus.OK).body(demanda);
     }
-
-//    @GetMapping("departamento/{departamento}")
-//    public ResponseEntity<List<Demanda>> findByDepartamento(@PathVariable(value = "departamento") String departamento) {
-//        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByDepartamento(departamento));
-//    }
 }
