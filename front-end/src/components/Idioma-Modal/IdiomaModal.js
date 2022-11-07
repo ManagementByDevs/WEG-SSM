@@ -29,7 +29,7 @@ const IdiomaModal = () => {
           aria-expanded={open ? 'true' : undefined}
 
         >
-          <img className='bandeira' src={idioma} />
+          <img className='h-6 w-8' src={idioma} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -41,17 +41,17 @@ const IdiomaModal = () => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem className='item-idioma-modal' onClick={() => handleClose(EstadosUnidos)}>
+        <MenuItem className='gap-2' onClick={() => handleClose(EstadosUnidos)}>
           <img className='bandeira-icone' src={EstadosUnidos} />
           English
         </MenuItem>
         <Divider />
-        <MenuItem className='item-idioma-modal' onClick={() => handleClose(Brasil)}>
+        <MenuItem className='gap-2' onClick={() => handleClose(Brasil)}>
           <img className='bandeira-icone' src={Brasil} />
           Português (Brasil)
         </MenuItem>
         <Divider />
-        <MenuItem className='item-idioma-modal' onClick={() => handleClose(China)}>
+        <MenuItem className='gap-2' onClick={() => handleClose(China)}>
           <img className='bandeira-icone' src={China} />
           中国人
         </MenuItem>

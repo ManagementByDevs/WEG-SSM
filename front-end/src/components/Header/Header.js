@@ -12,12 +12,12 @@ const Header = (props) => {
     const [userModal, setUserModal] = useState(true);
 
     return (
-        <Paper sx={{ backgroundColor: 'primary.main', padding: '1rem' }} id="header-container" square>
-            <div className='parte-esquerda'>
-                <img className='grid tamanhoImagem' src={Grid} />
-                <img className='logo tamanhoImagem' src={LogoBranca} />
+        <Paper sx={{ backgroundColor: 'primary.main', padding: '1rem' }} className='flex justify-between items-center h-20' square>
+            <div className='flex gap-3.5'>
+                <img className='h-12' src={Grid} />
+                <img className='h-12' src={LogoBranca} />
             </div>
-            <div className='parte-direita'>
+            <div className='flex items-center gap-4'>
                 <IdiomaModal />
                 {userModal && <UserModal />}
             </div>

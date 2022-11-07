@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
-import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography } from '@mui/material/';
+import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography, Divider, Button } from '@mui/material/';
+
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import MarkChatUnreadOutlinedIcon from '@mui/icons-material/MarkChatUnreadOutlined';
+
+import FontConfig from '../../service/FontConfig';
+import { Link } from 'react-router-dom';
 
 const UserModal = () => {
+    const [chatIcon, setChatIcon] = useState(ChatBubbleOutlineOutlinedIcon);
+    const [user, setUser] = useState('Nome Sobrenome');
+    const [departamento, setDepartamento] = useState("Departamento");
     const [anchorEl, setAnchorEl] = useState(null);
+
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -32,12 +44,28 @@ const UserModal = () => {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
-                sx={{padding: '12rem'}}
+                sx={{ padding: '12rem' }}
             >
-                <Typography variant='subtitle1' sx={{fontWeight: 600}}>Nome Sobrenome</Typography>
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <Typography className='px-4 pt-1.5' color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 600 }}>{user}</Typography>
+                <Typography className='px-4 pb-1.5' color={'text.secondary'} fontSize={FontConfig.medium}>{departamento}</Typography>
+                <MenuItem className='gap-2' onClick={handleClose}>
+                    <NotificationsOutlinedIcon />
+                    Notificações
+                </MenuItem>
+                {/* <Divider  variant="middle" /> */}
+                <MenuItem className='gap-2' onClick={handleClose}>
+                    <BorderColorOutlinedIcon />
+                    Escopos</MenuItem>
+                {/* <Divider  variant="middle" /> */}
+                <MenuItem className='gap-2' onClick={handleClose}>
+                    {chatIcon == ChatBubbleOutlineOutlinedIcon ? <ChatBubbleOutlineOutlinedIcon /> : <MarkChatUnreadOutlinedIcon />}
+                    Chats
+                </MenuItem>
+                <Typography className='px-4 pt-1.5 ' color={'primary.main'} variant="body2" fontSize={FontConfig.medium} align="right" sx={{ fontWeight: 600 }}>
+                    <Link to={"/login"} >
+                        Sair
+                    </Link>
+                </Typography>
             </Menu>
         </>
     )
