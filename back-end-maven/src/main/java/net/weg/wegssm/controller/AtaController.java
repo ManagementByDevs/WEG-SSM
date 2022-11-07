@@ -72,6 +72,7 @@ public class AtaController {
         }
 
         Ata ata = new Ata();
+        ata.setVisibilidade(true);
         BeanUtils.copyProperties(ataDto, ata);
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));
     }
