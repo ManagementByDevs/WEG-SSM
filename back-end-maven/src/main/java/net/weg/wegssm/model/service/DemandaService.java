@@ -2,6 +2,8 @@ package net.weg.wegssm.model.service;
 
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.repository.DemandaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,6 +56,10 @@ public class DemandaService {
 
     public List<Demanda> findByDepartamento(Departamento departamento) {
         return demandaRepository.findByDepartamento(departamento);
+    }
+
+    public Page<Demanda> findAll(Pageable pageable) {
+        return demandaRepository.findAll(pageable);
     }
 
 }

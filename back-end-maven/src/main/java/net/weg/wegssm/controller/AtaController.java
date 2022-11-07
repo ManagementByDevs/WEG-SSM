@@ -1,9 +1,8 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.AtaDto;
+import net.weg.wegssm.dto.AtaDTO;
 import net.weg.wegssm.model.entities.Ata;
-import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.service.AtaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +68,7 @@ public class AtaController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid AtaDto ataDto) {
+    public ResponseEntity<Object> save(@RequestBody @Valid AtaDTO ataDto) {
 
         if (ataService.existsByNumeroSequencial(ataDto.getNumeroSequencial())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("O número sequencial já está em uso.");

@@ -34,8 +34,7 @@ public class Notificacao {
 
     // Foreign key
 
-//    @ManyToOne
-//    @JoinColumn(name = "id_usuario")
-//    @Column(nullable = false)
-//    private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 }

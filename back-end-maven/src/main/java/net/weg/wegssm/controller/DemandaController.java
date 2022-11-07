@@ -5,6 +5,10 @@ import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.DemandaService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -97,6 +101,30 @@ public class DemandaController {
     @GetMapping("departamento/{departamento}")
     public ResponseEntity<List<Demanda>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento){
         return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByDepartamento(departamento));
+    }
+
+    /**
+     * Método GET para ordenar as demandas de Z-A (Decrescente)
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/ordenarTituloZA")
+    public ResponseEntity<Page<Demanda>> findAllTituloDecrescente(@PageableDefault(
+            page = 0, size = 20, sort = "titulo", direction = Sort.Direction.DESC
+    ) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findAll(pageable));
+    }
+
+    /**
+     * Método GET para ordenar as demandas de A-Z (Crescente)
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/ordenarTituloAZ")
+    public ResponseEntity<Page<Demanda>> findAllTituloCrescente(@PageableDefault(
+            page = 0, size = 20, sort = "titulo", direction = Sort.Direction.ASC
+    ) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findAll(pageable));
     }
 
     /**
