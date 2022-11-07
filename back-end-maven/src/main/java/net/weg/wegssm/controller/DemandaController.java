@@ -3,10 +3,7 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.AtaDto;
 import net.weg.wegssm.dto.DemandaDto;
-import net.weg.wegssm.model.entities.Ata;
-import net.weg.wegssm.model.entities.Demanda;
-import net.weg.wegssm.model.entities.Forum;
-import net.weg.wegssm.model.entities.Status;
+import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.DemandaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -25,11 +22,22 @@ public class DemandaController {
 
     private DemandaService demandaService;
 
+    /**
+     * Método GET para buscar todas as demandas
+     *
+     * @return
+     */
     @GetMapping
     public ResponseEntity<List<Demanda>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.findAll());
     }
 
+    /**
+     * Méotod GET para buscar uma demanda específica através do id
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
         if (!demandaService.existsById(id)) {
@@ -39,31 +47,50 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findById(id).get());
     }
 
-//    @GetMapping("/status/{status}")
-//    public ResponseEntity<List<Demanda>> findByStatus(@PathVariable(value = "status") Status status) {
-//        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByStatus(status));
-//    }
-//
-//    @GetMapping("/forum/{forum}")
-//    public ResponseEntity<List<Demanda>> findByForum(@PathVariable(value = "forum") Forum forum) {
-//        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByForum(forum));
-//    }
-//
-//    @GetMapping("solicitante/{solicitante}")
-//    public ResponseEntity<List<Demanda>> findBySolicitante (@PathVariable(value = "solicitante") String solicitante) {
-//        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findBySolicitante(solicitante));
-//    }
-//
-//    @GetMapping("gerenteResponsavel/{gerenteResponsavel}")
-//    public ResponseEntity<List<Demanda>> findByGerenteResponsavel (@PathVariable(value = "gerenteResponsavel") String gerenteResponsavel) {
-//        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByGerenteResponsavel(gerenteResponsavel));
-//    }
-//
-//    @GetMapping("departamento/{departamento}")
-//    public ResponseEntity<List<Demanda>> findByDepartamento (@PathVariable(value = "departamento") String departamento) {
-//        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByDepartamento(departamento));
-//    }
+    /**
+     * Método GET para buscar as demandas com um determinado status
+     *
+     * @param status
+     * @return
+     */
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Demanda>> findByStatus(@PathVariable(value = "status") Status status) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByStatus(status));
+    }
 
+    /**
+     * Método GET para buscar as demandas de um determinado forum
+     *
+     * @param forum
+     * @return
+     */
+    @GetMapping("/forum/{forum}")
+    public ResponseEntity<List<Demanda>> findByForum(@PathVariable(value = "forum") Forum forum) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByForum(forum));
+    }
+
+    /**
+     * Método GET para buscar as demandas de um determinado usuário
+     *
+     * @param usuario
+     * @return
+     */
+    @GetMapping("usuario/{usuario}")
+    public ResponseEntity<List<Demanda>> findByUsuario(@PathVariable(value = "usuario") Usuario usuario) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByUsuario(usuario));
+    }
+
+    @GetMapping("titulo/{titulo}")
+    public ResponseEntity<List<Demanda>> findByTitulo(@PathVariable(value = "titulo") String titulo) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByTitulo(titulo));
+    }
+
+    /**
+     * Método POST para criar uma demanda
+     *
+     * @param demandaDto
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid DemandaDto demandaDto) {
         Demanda demanda = new Demanda();
@@ -72,6 +99,13 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
+    /**
+     * Método PUT para editar uma demanda já existente
+     *
+     * @param id
+     * @param demandaDto
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid DemandaDto demandaDto) {
         if (!demandaService.existsById(id)) {
@@ -85,6 +119,12 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
+    /**
+     * Método DELETE para deletar uma demanda, editando sua visibilidade para false
+     *
+     * @param id
+     * @return
+     */
     @Transactional
     @DeleteMapping("{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
@@ -97,4 +137,9 @@ public class DemandaController {
         demandaService.save(demanda);
         return ResponseEntity.status(HttpStatus.OK).body(demanda);
     }
+
+//    @GetMapping("departamento/{departamento}")
+//    public ResponseEntity<List<Demanda>> findByDepartamento(@PathVariable(value = "departamento") String departamento) {
+//        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByDepartamento(departamento));
+//    }
 }
