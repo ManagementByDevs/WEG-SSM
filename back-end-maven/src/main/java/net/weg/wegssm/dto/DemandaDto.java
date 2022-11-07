@@ -6,6 +6,7 @@ import net.weg.wegssm.model.entities.Forum;
 import net.weg.wegssm.model.entities.Status;
 import net.weg.wegssm.model.entities.Usuario;
 
+
 @Getter @Setter
 public class DemandaDto {
 
@@ -18,8 +19,8 @@ public class DemandaDto {
     private String busBeneficiadas;
     private String secaoTI;
     private String motivoRecusa;
-    private Usuario usuarioID;
     private Status status;
-    private Forum forumID;
+    private Usuario usuario;
+    private Forum forum;
 
 }

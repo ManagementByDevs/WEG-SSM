@@ -3,6 +3,7 @@ package net.weg.wegssm.model.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "demanda")
@@ -49,10 +50,13 @@ public class Demanda {
     @Column(nullable = false)
     private Status status;
 
+    @Column
+    private Boolean visibilidade;
+
     // foreign keys
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @ManyToOne

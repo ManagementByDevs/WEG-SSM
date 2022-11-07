@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/WEG-SSM.iml" filepath="$PROJECT_DIR$/.idea/WEG-SSM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/back-end-maven/weg-ssm.iml" filepath="$PROJECT_DIR$/back-end-maven/weg-ssm.iml" />
     </modules>
   </component>
 </project>
