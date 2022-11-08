@@ -8,6 +8,7 @@ import MarkChatUnreadOutlinedIcon from '@mui/icons-material/MarkChatUnreadOutlin
 
 import FontConfig from '../../service/FontConfig';
 import { Link } from 'react-router-dom';
+import { Box } from '@mui/system';
 
 const UserModal = () => {
     // UseState para poder visualizar e alterar o chat icon
@@ -59,41 +60,44 @@ const UserModal = () => {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
-                sx={{ padding: '12rem' }}
             >
-                {/* Itens do menu */}
-                <Typography className='px-4 pt-1.5' color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 600 }}>{user}</Typography>
-                <Typography className='px-4 pb-1.5' color={'text.secondary'} fontSize={FontConfig.medium}>{departamento}</Typography>
-                <MenuItem className='gap-2' onClick={handleClose}>
-                    <NotificationsOutlinedIcon />
-                    Notificações
-                </MenuItem>
+                <Box className="w-52">
+                    {/* Itens do menu */}
+                    <Typography className='px-4 pt-1.5' color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 600 }}>{user}</Typography>
+                    <Typography className='px-4 pb-1.5' color={'text.secondary'} fontSize={FontConfig.medium}>{departamento}</Typography>
+                    <MenuItem className='gap-2' onClick={handleClose}>
+                        <NotificationsOutlinedIcon />
+                        Notificações
+                    </MenuItem>
 
-                {/* Divisão de um item clicável e outro no modal */}
-                <div className='w-full flex justify-center'>
-                    <hr className='w-10/12' />
-                </div>
+                    {/* Divisão de um item clicável e outro no modal */}
+                    <div className='w-full flex justify-center'>
+                        <hr className='w-10/12 my-1.5' />
+                    </div>
 
-                <MenuItem className='gap-2' onClick={handleClose}>
-                    <BorderColorOutlinedIcon />
-                    Escopos</MenuItem>
+                    <MenuItem className='gap-2' onClick={handleClose}>
+                        <BorderColorOutlinedIcon />
+                        <Typography color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 500 }}>Escopos</Typography>
 
-                {/* Divisão de um item clicável e outro no modal */}
-                <div className='w-full flex justify-center'>
-                    <hr className='w-10/12' />
-                </div>
+                    </MenuItem>
 
-                <MenuItem className='gap-2' onClick={handleClose}>
-                    {chatIcon == ChatBubbleOutlineOutlinedIcon ? <ChatBubbleOutlineOutlinedIcon /> : <MarkChatUnreadOutlinedIcon />}
-                    Chats
-                </MenuItem>
+                    {/* Divisão de um item clicável e outro no modal */}
+                    <div className='w-full flex justify-center'>
+                        <hr className='w-10/12 my-1.5' />
+                    </div>
 
-                {/* Link para deslogar do sistema */}
-                <Typography className='px-4 pt-1.5 ' color={'primary.main'} variant="body2" fontSize={FontConfig.medium} align="right" sx={{ fontWeight: 600 }}>
-                    <Link to={"/login"} >
-                        Sair
-                    </Link>
-                </Typography>
+                    <MenuItem className='gap-2' onClick={handleClose}>
+                        {chatIcon == ChatBubbleOutlineOutlinedIcon ? <ChatBubbleOutlineOutlinedIcon /> : <MarkChatUnreadOutlinedIcon />}
+                        Chats
+                    </MenuItem>
+
+                    {/* Link para deslogar do sistema */}
+                    <Typography className='px-4 pt-1.5 ' color={'primary.main'} variant="body2" fontSize={FontConfig.medium} align="right" sx={{ fontWeight: 600 }}>
+                        <Link to={"/login"} >
+                            Sair
+                        </Link>
+                    </Typography>
+                </Box>
             </Menu>
         </>
     )
