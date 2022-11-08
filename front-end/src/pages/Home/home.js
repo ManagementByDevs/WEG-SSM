@@ -22,8 +22,8 @@ const Home = (props) => {
     // Container pai
     <Box sx={{ backgroundColor: 'background.default', height: '100vh', width: '100vw' }}>
       <Header />
-      <Button variant="contained" onClick={props.togglePalette}>Contained</Button>
-      <Button color='secondary' variant="contained" onClick={props.togglePalette} sx={{fontSize: FontConfig.medium}}>Contained</Button>
+      {/* <Button variant="contained" onClick={props.togglePalette}>Contained</Button>
+      <Button color='secondary' variant="contained" onClick={props.togglePalette} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
         <Input sx={{ backgroundColor: 'input.main' }} />
@@ -41,8 +41,8 @@ const Home = (props) => {
           <TabContext value={value}>
             <Box className='mb-4' sx={{ borderBottom: 1, borderColor: 'divider.main' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab sx={{ color: 'text.secondary', fontSize: FontConfig.default }} label="Meu Departamento" value="1" />
-                <Tab sx={{ color: 'text.secondary', fontSize: FontConfig.default }} label="Minhas Demandas" value="2" />
+                <Tab sx={{ color: 'text.secondary', fontSize: FontConfig.medium }} label="Meu Departamento" value="1" />
+                <Tab sx={{ color: 'text.secondary', fontSize: FontConfig.medium }} label="Minhas Demandas" value="2" />
               </TabList>
             </Box>
 
