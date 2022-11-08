@@ -30,7 +30,7 @@ public class Notificacao {
     private Date data;
 
     @Column(nullable = false)
-    private Long tipoIcone;
+    private TipoNotificacao tipoNotificacao;
 
     // Foreign key
 

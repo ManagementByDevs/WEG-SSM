@@ -18,6 +18,10 @@ public class DemandaService {
         this.demandaRepository = demandaRepository;
     }
 
+    public <S extends Demanda> S save(S entity) {
+        return demandaRepository.save(entity);
+    }
+
     public List<Demanda> findAll() {
         return demandaRepository.findAll();
     }
@@ -42,24 +46,20 @@ public class DemandaService {
         return demandaRepository.findByForum(forum);
     }
 
-    public boolean existsById(Long id) {
-        return demandaRepository.existsById(id);
-    }
-
-    public <S extends Demanda> S save(S entity) {
-        return demandaRepository.save(entity);
-    }
-
-    public void deleteById(Long id) {
-        demandaRepository.deleteById(id);
-    }
-
     public List<Demanda> findByDepartamento(Departamento departamento) {
         return demandaRepository.findByDepartamento(departamento);
     }
 
     public Page<Demanda> findAll(Pageable pageable) {
         return demandaRepository.findAll(pageable);
+    }
+
+    public boolean existsById(Long id) {
+        return demandaRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
+        demandaRepository.deleteById(id);
     }
 
 }
