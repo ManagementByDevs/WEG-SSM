@@ -8,5 +8,4 @@ import net.weg.wegssm.model.entities.Usuario;
 public class ChatDTO {
     private Usuario solicitante;
     private Usuario usuario;
-//    private Boolean usuarioBloqueado;
 }

@@ -45,15 +45,11 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
-    public boolean existsByNome(String nome) {
-        return usuarioRepository.existsByNome(nome);
-    }
-
     public List<Usuario> findByNomeContains(String nome) {
         return usuarioRepository.findByNomeContains(nome);
     }
 
-    public Boolean existsByNomeLike(String titulo) {
-        return usuarioRepository.existsByNomeLike(titulo);
+    public Boolean existsByNomeContains(String titulo) {
+        return usuarioRepository.existsByNomeContains(titulo);
     }
 }
