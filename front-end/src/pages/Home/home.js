@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button, Paper, Typography, Input, Tab, Box, TextField } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -8,8 +8,14 @@ import AddIcon from '@mui/icons-material/Add';
 
 import Header from '../../components/Header/Header';
 import FontConfig from '../../service/FontConfig';
+import ColorModeContext from '../../service/TemaContext';
 
-const Home = (props) => {
+const Home = () => {
+  // Desestruturação de objeto em duas variáveis:
+  // - Mode: modo do tema atual ("light" ou "dark")
+  // - toggleColorMode: função para alternar o tema
+  const {mode, toggleColorMode} = useContext(ColorModeContext);
+
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = React.useState('1');
 
@@ -22,8 +28,8 @@ const Home = (props) => {
     // Container pai
     <Box sx={{ backgroundColor: 'background.default', height: '100vh', width: '100vw' }}>
       <Header />
-      {/* <Button variant="contained" onClick={props.togglePalette}>Contained</Button>
-      <Button color='secondary' variant="contained" onClick={props.togglePalette} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
+      <Button variant="contained" onClick={toggleColorMode}>Contained</Button>
+      {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
         <Input sx={{ backgroundColor: 'input.main' }} />
