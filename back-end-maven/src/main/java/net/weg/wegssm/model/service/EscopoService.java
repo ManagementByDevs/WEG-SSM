@@ -1,10 +1,12 @@
 package net.weg.wegssm.model.service;
 
 import net.weg.wegssm.model.entities.Escopo;
+import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.EscopoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -49,5 +51,13 @@ public class EscopoService {
 
     public void deleteById(Long id) {
         escopoRepository.deleteById(id);
+    }
+
+    public boolean existsByUsuario(Usuario usuario) {
+        return escopoRepository.existsByUsuario(usuario);
+    }
+
+    public List<Object> findByUsuario(Usuario usuario) {
+        return escopoRepository.findByUsuario(usuario);
     }
 }

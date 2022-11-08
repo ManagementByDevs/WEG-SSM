@@ -3,7 +3,9 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.EscopoDTO;
 import net.weg.wegssm.model.entities.Escopo;
+import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.EscopoService;
+import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.Optional;
 @RequestMapping("/weg_ssm/escopo")
 public class EscopoController {
     private EscopoService escopoService;
+    private UsuarioService usuarioService;
 
     /**
      * Método GET para listar todos os escopos
@@ -70,12 +73,32 @@ public class EscopoController {
     }
 
     /**
+     * Método GET para listar um escopo específico através do id do usuário
+     * @param idUsuario
+     * @return
+     */
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<Object> findByUsuario(@PathVariable(value = "idUsuario") Long idUsuario){
+        if(!usuarioService.existsById(idUsuario)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
+        }
+        Usuario usuario = usuarioService.findById(idUsuario).get();
+        if(!escopoService.existsByUsuario(usuario)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este usuário.");
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findByUsuario(usuario));
+    }
+
+    /**
      * Método POST para criar um escopo no banco de dados
      * @param escopoDto ( Objeto a ser cadastrado = req.body )
      * @return
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid EscopoDTO escopoDto){
+        if(!usuarioService.existsById(escopoDto.getUsuario().getId())){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
+        }
         Escopo escopo = new Escopo();
         escopo.setVisibilidade(true);
         BeanUtils.copyProperties(escopoDto, escopo);
@@ -88,8 +111,8 @@ public class EscopoController {
      * @return
      */
     @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
         if (!escopoService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
         }
@@ -98,6 +121,21 @@ public class EscopoController {
         escopo.setVisibilidade(false);
         escopoService.save(escopo);
         return ResponseEntity.status(HttpStatus.OK).body(escopo);
+    }
+
+    /**
+     * Método DELETE para deletar um escopo do banco de dados
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!escopoService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
+        }
+        escopoService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("escopo deletado com sucesso.");
     }
 
     /**
@@ -118,5 +156,7 @@ public class EscopoController {
         BeanUtils.copyProperties(escopoDTO, escopo, "id");
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
     }
+
+
 
 }

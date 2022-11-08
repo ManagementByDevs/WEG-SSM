@@ -2,8 +2,10 @@ package net.weg.wegssm.repository;
 
 import net.weg.wegssm.model.entities.Ata;
 import net.weg.wegssm.model.entities.Escopo;
+import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface EscopoRepository extends JpaRepository<Escopo, Long> {
@@ -35,4 +37,18 @@ public interface EscopoRepository extends JpaRepository<Escopo, Long> {
          * @return
          */
         Optional<Escopo> findByPorcentagem(Long porcentagem);
+
+        /**
+         * Método para retornar se existe um escopo com o usuário passado por parâmetro
+         * @param usuario
+         * @return
+         */
+        boolean existsByUsuario(Usuario usuario);
+
+        /**
+         * Método para retornar um escopo com o usuário passado por parâmetro
+         * @param usuario
+         * @return
+         */
+        List<Object> findByUsuario(Usuario usuario);
 }

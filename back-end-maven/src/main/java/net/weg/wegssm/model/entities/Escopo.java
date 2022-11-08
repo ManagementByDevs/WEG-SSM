@@ -19,9 +19,6 @@ public class Escopo {
         @Column(nullable = false, unique = true)
         private Long id;
 
-        @Column(nullable = false, length = 100)
-        private String usuarioEmail;
-
         @Column(nullable = false, length = 50)
         private String titulo;
 
@@ -40,4 +37,7 @@ public class Escopo {
         @Column
         private Boolean visibilidade;
 
+        @ManyToOne
+        @JoinColumn(name = "usuario_id")
+        private Usuario usuario;
 }
