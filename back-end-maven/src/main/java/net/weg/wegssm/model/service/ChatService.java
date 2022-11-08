@@ -44,4 +44,8 @@ public class ChatService {
     public void deleteById(Long id) {
         chatRepository.deleteById(id);
     }
+
+    public List<Chat> findBySolicitante(Usuario user) {
+        return chatRepository.findBySolicitante(user);
+    }
 }

@@ -50,13 +50,13 @@ public class ChatController {
     }
 
     /**
-     * Método GET para listar um chat específico através do titulo (usuario da conversa)
+     * Método GET para listar um chat específico através do titulo (usuario da conversa) para admins
      * @param titulo
      * @return
      */
-    @GetMapping("/titulo/{titulo}")
-    public ResponseEntity<Object> findByTitle(@PathVariable(value = "titulo") String titulo){
-        if(!usuarioService.existsByNomeLike(titulo)){
+    @GetMapping("/tituloadmin/{titulo}")
+    public ResponseEntity<Object> findByTitleAdmin(@PathVariable(value = "titulo") String titulo){
+        if(!usuarioService.existsByNomeContains(titulo)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este nome.");
         }
 
@@ -64,6 +64,28 @@ public class ChatController {
         List<Chat> chats = new ArrayList<>();
         for (Usuario user : usuarios) {
             List<Chat> chatAux = chatService.findByUsuario(user);
+            for (Chat chat : chatAux) {
+                chats.add(chat);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).body(chats);
+    }
+
+    /**
+     * Método GET para listar um chat específico através do titulo (usuario da conversa) para solicitantes
+     * @param titulo
+     * @return
+     */
+    @GetMapping("/titulo/{titulo}")
+    public ResponseEntity<Object> findByTitle(@PathVariable(value = "titulo") String titulo){
+        if(!usuarioService.existsByNomeContains(titulo)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este nome.");
+        }
+
+        List<Usuario> usuarios = usuarioService.findByNomeContains(titulo);
+        List<Chat> chats = new ArrayList<>();
+        for (Usuario user : usuarios) {
+            List<Chat> chatAux = chatService.findBySolicitante(user);
             for (Chat chat : chatAux) {
                 chats.add(chat);
             }
