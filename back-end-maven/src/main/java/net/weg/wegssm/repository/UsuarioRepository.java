@@ -24,4 +24,19 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
      */
     List<Usuario> findByDepartamento(Departamento departamento);
 
+    /**
+     * Método para verificar se existe um usuário com o nome passado por parâmetro
+     * @param nome
+     * @return
+     */
+    boolean existsByNome(String nome);
+
+    /**
+     * Método para listar todos os usuários que começam com o nome passado por parâmetro
+     * @param nome
+     * @return
+     */
+    List<Usuario> findByNomeContains(String nome);
+
+    Boolean existsByNomeLike(String titulo);
 }
