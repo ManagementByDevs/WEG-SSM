@@ -20,26 +20,29 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/wegg_ssm/historico")
 public class HistoricoController {
+
     private HistoricoService historicoService;
     private UsuarioService usuarioService;
 
     /**
      * Método GET para listar todos os históricos
+     *
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<Historico>> findAll(){
+    public ResponseEntity<List<Historico>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(historicoService.findAll());
     }
 
     /**
      * Método GET para listar um historico específico através de um id
+     *
      * @param id
      * @return
      */
     @GetMapping("/id/{id}")
-    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id){
-        if(!historicoService.existsById(id)){
+    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
+        if (!historicoService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum historico com este id.");
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(historicoService.findById(id).get());
@@ -47,16 +50,17 @@ public class HistoricoController {
 
     /**
      * Método GET para listar um historico específico de um autor
+     *
      * @param idAutor
      * @return
      */
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<Object> findByIdUser(@PathVariable(value = "idUsuario") Long idAutor){
-        if(!usuarioService.existsById(idAutor)){
+    public ResponseEntity<Object> findByIdUser(@PathVariable(value = "idUsuario") Long idAutor) {
+        if (!usuarioService.existsById(idAutor)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
         Usuario autor = usuarioService.findById(idAutor).get();
-        if(!historicoService.existsByAutor(autor)){
+        if (!historicoService.existsByAutor(autor)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum historico com este usuário.");
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(historicoService.findByAutor(autor).get());
@@ -64,12 +68,13 @@ public class HistoricoController {
 
     /**
      * Método POST para criar um historico no banco de dados
+     *
      * @param historicoDto ( Objeto a ser cadastrado = req.body )
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid HistoricoDTO historicoDto){
-        if (!usuarioService.existsById(historicoDto.getAutor().getId())){
+    public ResponseEntity<Object> save(@RequestBody @Valid HistoricoDTO historicoDto) {
+        if (!usuarioService.existsById(historicoDto.getAutor().getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
         Historico historico = new Historico();
@@ -80,6 +85,7 @@ public class HistoricoController {
 
     /**
      * Método DELETE para deletar um historico, colocando sua visibilidade como false
+     *
      * @param id
      * @return
      */
@@ -98,6 +104,7 @@ public class HistoricoController {
 
     /**
      * Método DELETE para deletar um histórico do banco de dados
+     *
      * @param id
      * @return
      */
@@ -110,4 +117,5 @@ public class HistoricoController {
         historicoService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("histórico deletado com sucesso.");
     }
+
 }

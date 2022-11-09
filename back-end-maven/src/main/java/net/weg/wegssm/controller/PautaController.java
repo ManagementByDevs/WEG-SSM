@@ -96,75 +96,6 @@ public class PautaController {
     }
 
     /**
-     * Método POST para criar uma pauta no banco de dados
-     *
-     * @param pautaDto ( Objeto a ser cadastrado = req.body )
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid PautaDTO pautaDto) {
-        Pauta pauta = new Pauta();
-        pauta.setVisibilidade(true);
-        BeanUtils.copyProperties(pautaDto, pauta);
-        return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
-    }
-
-    /**
-     * Método DELETE para deletar uma pauta do banco de dados
-     *
-     * @param id
-     * @return
-     */
-    @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
-        if (!pautaService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma pauta com este id.");
-        }
-        pautaService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Pauta deletada com sucesso.");
-    }
-
-    /**
-     * Método DELETE para deletar uma pauta, colocando sua visibilidade como false
-     *
-     * @param id
-     * @return
-     */
-    @Transactional
-    @DeleteMapping("/visibilidade/{id}")
-    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
-        if (!pautaService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma pauta com este id.");
-        }
-
-        Pauta pauta = pautaService.findById(id).get();
-        pauta.setVisibilidade(false);
-        pautaService.save(pauta);
-        return ResponseEntity.status(HttpStatus.OK).body(pauta);
-    }
-
-    /**
-     * Método PUT para atualizar uma pauta no banco de dados, através de um id
-     *
-     * @param id
-     * @param pautaDto ( Novos dados da pauta = req.body )
-     * @return
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid PautaDTO pautaDto) {
-        Optional<Pauta> pautaOptinal = pautaService.findById(id);
-
-        if (pautaOptinal.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar uma pauta com este id.");
-        }
-
-        Pauta pauta = pautaOptinal.get();
-        BeanUtils.copyProperties(pautaDto, pauta, "id");
-        return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
-    }
-
-    /**
      * Método GET para ordenar as pautas a partir da DATA DE INÍCIO, da mais recente para a mais antiga
      *
      * @param pageable
@@ -215,4 +146,74 @@ public class PautaController {
     ) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
     }
+
+    /**
+     * Método POST para criar uma pauta no banco de dados
+     *
+     * @param pautaDto ( Objeto a ser cadastrado = req.body )
+     * @return
+     */
+    @PostMapping
+    public ResponseEntity<Object> save(@RequestBody @Valid PautaDTO pautaDto) {
+        Pauta pauta = new Pauta();
+        pauta.setVisibilidade(true);
+        BeanUtils.copyProperties(pautaDto, pauta);
+        return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
+    }
+
+    /**
+     * Método PUT para atualizar uma pauta no banco de dados, através de um id
+     *
+     * @param id
+     * @param pautaDto ( Novos dados da pauta = req.body )
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid PautaDTO pautaDto) {
+        Optional<Pauta> pautaOptinal = pautaService.findById(id);
+
+        if (pautaOptinal.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar uma pauta com este id.");
+        }
+
+        Pauta pauta = pautaOptinal.get();
+        BeanUtils.copyProperties(pautaDto, pauta, "id");
+        return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
+    }
+
+    /**
+     * Método DELETE para deletar uma pauta do banco de dados
+     *
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!pautaService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma pauta com este id.");
+        }
+        pautaService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Pauta deletada com sucesso.");
+    }
+
+    /**
+     * Método DELETE para deletar uma pauta, colocando sua visibilidade como false
+     *
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
+        if (!pautaService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma pauta com este id.");
+        }
+
+        Pauta pauta = pautaService.findById(id).get();
+        pauta.setVisibilidade(false);
+        pautaService.save(pauta);
+        return ResponseEntity.status(HttpStatus.OK).body(pauta);
+    }
+
 }

@@ -62,6 +62,22 @@ public class AtaController {
     }
 
     /**
+     * Métodos GET para buscar atas por data de início e fim da ata
+     *
+     * @param data
+     * @return
+     */
+//    @GetMapping("dataInicioReuniao/{dataInicioReuniao}")
+//    public ResponseEntity<List<Ata>> findByDataInicioReuniao(@PathVariable(value = "dataInicioReuniao") Date data) {
+//        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
+//    }
+//
+//    @GetMapping("dataFimReuniao/{dataFimReuniao}")
+//    public ResponseEntity<List<Ata>> findByDataFimReuniao(@PathVariable(value = "dataFimReuniao") Date data) {
+//        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
+//    }
+
+    /**
      * Método POST para cadastrar uma ata no banco de dados
      *
      * @param ataDto ( Objeto a ser cadastrado = req.body )
@@ -101,6 +117,7 @@ public class AtaController {
 
     /**
      * Método DELETE para deletar uma ata
+     *
      * @param id
      * @return
      */
@@ -114,21 +131,5 @@ public class AtaController {
         ataService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Ata deletada com sucesso.");
     }
-
-    /**
-     * Métodos GET para buscar atas por data de início e fim da ata
-     *
-     * @param data
-     * @return
-     */
-//    @GetMapping("dataInicioReuniao/{dataInicioReuniao}")
-//    public ResponseEntity<List<Ata>> findByDataInicioReuniao(@PathVariable(value = "dataInicioReuniao") Date data) {
-//        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
-//    }
-//
-//    @GetMapping("dataFimReuniao/{dataFimReuniao}")
-//    public ResponseEntity<List<Ata>> findByDataFimReuniao(@PathVariable(value = "dataFimReuniao") Date data) {
-//        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
-//    }
 
 }

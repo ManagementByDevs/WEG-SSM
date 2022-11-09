@@ -85,6 +85,7 @@ public class DemandaController {
 
     /**
      * Método GET para buscar uma demanda através de um título
+     *
      * @param titulo
      * @return
      */
@@ -95,16 +96,18 @@ public class DemandaController {
 
     /**
      * Método GET para buscar todas as demandas de um determinado departamento
+     *
      * @param departamento
      * @return
      */
     @GetMapping("departamento/{departamento}")
-    public ResponseEntity<List<Demanda>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento){
+    public ResponseEntity<List<Demanda>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento) {
         return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByDepartamento(departamento));
     }
 
     /**
      * Método GET para ordenar as demandas de Z-A (Decrescente)
+     *
      * @param pageable
      * @return
      */
@@ -117,6 +120,7 @@ public class DemandaController {
 
     /**
      * Método GET para ordenar as demandas de A-Z (Crescente)
+     *
      * @param pageable
      * @return
      */
@@ -182,6 +186,7 @@ public class DemandaController {
 
     /**
      * Método DELETE para deletar uma demanda
+     *
      * @param id
      * @return
      */
@@ -195,4 +200,5 @@ public class DemandaController {
         demandaService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Demanda deletada com sucesso.");
     }
+
 }

@@ -23,6 +23,7 @@ public class BeneficioController {
 
     /**
      * Método GET para buscar todos os benefícios
+     *
      * @return
      */
     @GetMapping
@@ -32,6 +33,7 @@ public class BeneficioController {
 
     /**
      * Método GET para buscar um benefício específico através do id
+     *
      * @param id
      * @return
      */
@@ -65,8 +67,5 @@ public class BeneficioController {
         beneficioService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Benefício deletado com sucesso.");
     }
-
-
-
 
 }

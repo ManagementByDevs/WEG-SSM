@@ -25,21 +25,23 @@ public class UsuarioController {
 
     /**
      * Método GET para listar todos os usuários
+     *
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAll(){
+    public ResponseEntity<List<Usuario>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findAll());
     }
 
     /**
      * Método GET para listar um usuário específico através de um id
+     *
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id){
-        if(!usuarioService.existsById(id)){
+    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
+        if (!usuarioService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(usuarioService.findById(id).get());
@@ -47,22 +49,24 @@ public class UsuarioController {
 
     /**
      * Método GET para listar todos os usuários de um departamento específico
+     *
      * @param departamento
      * @return
      */
     @GetMapping("/departamento/{departamento}")
-    public ResponseEntity<List<Usuario>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento){
+    public ResponseEntity<List<Usuario>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento) {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByDepartamento(departamento));
     }
 
     /**
      * Método POST para criar um usuário no banco de dados
+     *
      * @param usuarioDTO ( Objeto a ser cadastrado = req.body )
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid UsuarioDTO usuarioDTO){
-        if(usuarioService.existsByEmail(usuarioDTO.getEmail())){
+    public ResponseEntity<Object> save(@RequestBody @Valid UsuarioDTO usuarioDTO) {
+        if (usuarioService.existsByEmail(usuarioDTO.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("O email já está em uso.");
         }
 
@@ -73,7 +77,32 @@ public class UsuarioController {
     }
 
     /**
+     * Método PUT para atualizar um usuário no banco de dados, através de um id
+     *
+     * @param id
+     * @param usuarioDTO ( Novos dados do usuário = req.body )
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid UsuarioDTO usuarioDTO) {
+        Optional<Usuario> usuarioOptional = usuarioService.findById(id);
+
+        if (usuarioOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar um usuário com este id.");
+        }
+
+        if (usuarioService.existsByEmail(usuarioDTO.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("O email já está em uso.");
+        }
+
+        Usuario usuario = usuarioOptional.get();
+        BeanUtils.copyProperties(usuarioDTO, usuario, "id");
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
+    }
+
+    /**
      * Método DELETE para deletar um usuário, colocando sua visibilidade como false
+     *
      * @param id
      * @return
      */
@@ -99,29 +128,6 @@ public class UsuarioController {
 
         usuarioService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado com sucesso.");
-    }
-
-    /**
-     * Método PUT para atualizar um usuário no banco de dados, através de um id
-     * @param id
-     * @param usuarioDTO ( Novos dados do usuário = req.body )
-     * @return
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid UsuarioDTO usuarioDTO) {
-        Optional<Usuario> usuarioOptional = usuarioService.findById(id);
-
-        if (usuarioOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar um usuário com este id.");
-        }
-
-        if(usuarioService.existsByEmail(usuarioDTO.getEmail())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("O email já está em uso.");
-        }
-
-        Usuario usuario = usuarioOptional.get();
-        BeanUtils.copyProperties(usuarioDTO, usuario, "id");
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
 
 }

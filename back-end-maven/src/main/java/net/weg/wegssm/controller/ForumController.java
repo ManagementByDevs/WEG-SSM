@@ -26,6 +26,7 @@ public class ForumController {
 
     /**
      * Método GET para buscar todos os fóruns
+     *
      * @return
      */
     @GetMapping
@@ -35,6 +36,7 @@ public class ForumController {
 
     /**
      * Método GET para buscar um fórum através de um id
+     *
      * @param id
      * @return
      */
@@ -48,6 +50,7 @@ public class ForumController {
 
     /**
      * Método POST para criar um fórum no banco de dados
+     *
      * @param forumDTO ( Objeto a ser cadastrado = req.body )
      * @return
      */
@@ -64,41 +67,8 @@ public class ForumController {
     }
 
     /**
-     * Método DELETE para editar um fórum, colocando sua visibilidade como false
-     * @param id
-     * @return
-     */
-    @Transactional
-    @DeleteMapping("/visibilidade/{id}")
-    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
-        if (!forumService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum fórum com este id.");
-        }
-
-        Forum forum = forumService.findById(id).get();
-        forum.setVisibilidade(false);
-        forumService.save(forum);
-        return ResponseEntity.status(HttpStatus.OK).body(forum);
-    }
-
-    /**
-     * Método DELETE para deletar um forum
-     * @param id
-     * @return
-     */
-    @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
-        if (!forumService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum fórum com este id.");
-        }
-
-        forumService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Fórum deletado com sucesso.");
-    }
-
-    /**
      * Método PUT para atualizar um fórum, através de um id
+     *
      * @param id
      * @param forumDTO ( Novos dados do fórum = req.body )
      * @return
@@ -118,6 +88,42 @@ public class ForumController {
         Forum forum = forumOptional.get();
         BeanUtils.copyProperties(forumDTO, forum, "id");
         return ResponseEntity.status(HttpStatus.OK).body(forumService.save(forum));
+    }
+
+    /**
+     * Método DELETE para editar um fórum, colocando sua visibilidade como false
+     *
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/visibilidade/{id}")
+    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
+        if (!forumService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum fórum com este id.");
+        }
+
+        Forum forum = forumService.findById(id).get();
+        forum.setVisibilidade(false);
+        forumService.save(forum);
+        return ResponseEntity.status(HttpStatus.OK).body(forum);
+    }
+
+    /**
+     * Método DELETE para deletar um forum
+     *
+     * @param id
+     * @return
+     */
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!forumService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum fórum com este id.");
+        }
+
+        forumService.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Fórum deletado com sucesso.");
     }
 
 }

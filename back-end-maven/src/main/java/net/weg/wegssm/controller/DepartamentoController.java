@@ -24,6 +24,7 @@ public class DepartamentoController {
 
     /**
      * Método para listar todos os departamentos
+     *
      * @return
      */
     @GetMapping
@@ -33,6 +34,7 @@ public class DepartamentoController {
 
     /**
      * Método para buscar um departamento através de um id
+     *
      * @param id
      * @return
      */
@@ -47,6 +49,7 @@ public class DepartamentoController {
 
     /**
      * Método POST para criar um departamento
+     *
      * @param departamentoDTO
      * @return
      */
@@ -64,6 +67,7 @@ public class DepartamentoController {
 
     /**
      * Método PUT para atualizar um departamento através de um id
+     *
      * @param id
      * @param departamentoDTO
      * @return
@@ -87,6 +91,7 @@ public class DepartamentoController {
 
     /**
      * Método DELETE para editar um departamento, colocando sua visibilidade como false.
+     *
      * @param id
      * @return
      */
@@ -105,6 +110,7 @@ public class DepartamentoController {
 
     /**
      * Método DELETE para deletar um departamento
+     *
      * @param id
      * @return
      */

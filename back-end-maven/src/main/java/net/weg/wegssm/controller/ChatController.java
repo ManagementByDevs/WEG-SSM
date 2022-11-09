@@ -24,26 +24,29 @@ import java.util.Optional;
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/chat")
 public class ChatController {
+
     private UsuarioService usuarioService;
     private ChatService chatService;
 
     /**
      * Método GET para listar todos os chats
+     *
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<Chat>> findAll(){
+    public ResponseEntity<List<Chat>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findAll());
     }
 
     /**
      * Método GET para listar um chat específico através de um id
+     *
      * @param id
      * @return
      */
     @GetMapping("/id/{id}")
-    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id){
-        if(!chatService.existsById(id)){
+    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
+        if (!chatService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este id.");
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(chatService.findById(id).get());
@@ -51,12 +54,13 @@ public class ChatController {
 
     /**
      * Método GET para listar um chat específico através do titulo (usuario da conversa) para admins
+     *
      * @param titulo
      * @return
      */
     @GetMapping("/tituloadmin/{titulo}")
-    public ResponseEntity<Object> findByTitleAdmin(@PathVariable(value = "titulo") String titulo){
-        if(!usuarioService.existsByNomeContains(titulo)){
+    public ResponseEntity<Object> findByTitleAdmin(@PathVariable(value = "titulo") String titulo) {
+        if (!usuarioService.existsByNomeContains(titulo)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este nome.");
         }
 
@@ -73,12 +77,13 @@ public class ChatController {
 
     /**
      * Método GET para listar um chat específico através do titulo (usuario da conversa) para solicitantes
+     *
      * @param titulo
      * @return
      */
     @GetMapping("/titulo/{titulo}")
-    public ResponseEntity<Object> findByTitle(@PathVariable(value = "titulo") String titulo){
-        if(!usuarioService.existsByNomeContains(titulo)){
+    public ResponseEntity<Object> findByTitle(@PathVariable(value = "titulo") String titulo) {
+        if (!usuarioService.existsByNomeContains(titulo)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este nome.");
         }
 
@@ -95,16 +100,17 @@ public class ChatController {
 
     /**
      * Método GET para listar um chat específico através do usuário
+     *
      * @param idUsuario
      * @return
      */
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<Object> findByUsuario(@PathVariable(value = "idUsuario") Long idUsuario){
-        if(!usuarioService.existsById(idUsuario)){
+    public ResponseEntity<Object> findByUsuario(@PathVariable(value = "idUsuario") Long idUsuario) {
+        if (!usuarioService.existsById(idUsuario)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
         Usuario usuario = usuarioService.findById(idUsuario).get();
-        if(!chatService.existsByUsuario(usuario)){
+        if (!chatService.existsByUsuario(usuario)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este usuário.");
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(chatService.findByUsuario(usuario));
@@ -112,15 +118,16 @@ public class ChatController {
 
     /**
      * Método POST para criar um chat no banco de dados
+     *
      * @param chatDto ( Objeto a ser cadastrado = req.body )
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid ChatDTO chatDto){
-        if (!usuarioService.existsById(chatDto.getSolicitante().getId())){
+    public ResponseEntity<Object> save(@RequestBody @Valid ChatDTO chatDto) {
+        if (!usuarioService.existsById(chatDto.getSolicitante().getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum solicitante com este id.");
         }
-        if (!usuarioService.existsById(chatDto.getUsuario().getId())){
+        if (!usuarioService.existsById(chatDto.getUsuario().getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
         Chat chat = new Chat();
@@ -132,6 +139,7 @@ public class ChatController {
 
     /**
      * Método DELETE para deletar um chat, colocando sua visibilidade como false
+     *
      * @param id
      * @return
      */
@@ -150,6 +158,7 @@ public class ChatController {
 
     /**
      * Método DELETE para deletar um histórico do banco de dados
+     *
      * @param id
      * @return
      */
@@ -162,4 +171,5 @@ public class ChatController {
         chatService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("chat deletado com sucesso.");
     }
+
 }
