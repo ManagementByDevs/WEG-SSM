@@ -19,6 +19,14 @@ public class Chat {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    @Column(nullable = false)
+    private Boolean usuarioBloqueado;
+
+    @Column
+    private Boolean visibilidade;
+
+    // Foreign keys
+
     @ManyToOne
     @JoinColumn(name = "id_solicitante")
     private Usuario solicitante;
@@ -27,9 +35,4 @@ public class Chat {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @Column(nullable = false)
-    private Boolean usuarioBloqueado;
-
-    @Column
-    private Boolean visibilidade;
 }

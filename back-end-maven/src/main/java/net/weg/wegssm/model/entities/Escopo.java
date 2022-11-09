@@ -14,30 +14,33 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class Escopo {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        @Column(nullable = false, unique = true)
-        private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, unique = true)
+    private Long id;
 
-        @Column(nullable = false, length = 50)
-        private String titulo;
+    @Column(nullable = false, length = 50)
+    private String titulo;
 
-        @Column(nullable = false, length = 200)
-        private String problema;
+    @Column(nullable = false, length = 200)
+    private String problema;
 
-        @Column(nullable = false, length = 200)
-        private String proposta;
+    @Column(nullable = false, length = 200)
+    private String proposta;
 
-        @Column(nullable = false, length = 30)
-        private String frequencia;
+    @Column(nullable = false, length = 30)
+    private String frequencia;
 
-        @Column(nullable = false)
-        private Long porcentagem;
+    @Column(nullable = false)
+    private Long porcentagem;
 
-        @Column
-        private Boolean visibilidade;
+    @Column
+    private Boolean visibilidade;
 
-        @ManyToOne
-        @JoinColumn(name = "usuario_id")
-        private Usuario usuario;
+    // Foreign key
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
 }

@@ -34,4 +34,5 @@ public class Pauta {
 
     @Column
     private Boolean visibilidade;
+
 }

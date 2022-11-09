@@ -37,4 +37,5 @@ public class Notificacao {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+
 }

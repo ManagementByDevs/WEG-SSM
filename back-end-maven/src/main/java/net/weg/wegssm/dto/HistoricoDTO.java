@@ -10,6 +10,7 @@ import java.util.Date;
 
 @Getter @Setter
 public class HistoricoDTO {
+
     private Long numeroVersao;
     private Date data;
     private Usuario autor;

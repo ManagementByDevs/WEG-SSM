@@ -13,6 +13,7 @@ import javax.persistence.*;
 @ToString
 @EqualsAndHashCode
 public class Mensagem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, unique = true)
@@ -34,7 +35,10 @@ public class Mensagem {
     @Column
     private String arquivo;
 
+    // Foreign key
+
     @ManyToOne
     @JoinColumn(name = "id_chat")
     private Chat chat;
+
 }

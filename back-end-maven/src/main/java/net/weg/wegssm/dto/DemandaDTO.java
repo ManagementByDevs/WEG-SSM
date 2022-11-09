@@ -7,7 +7,6 @@ import net.weg.wegssm.model.entities.Forum;
 import net.weg.wegssm.model.entities.Status;
 import net.weg.wegssm.model.entities.Usuario;
 
-
 @Getter @Setter
 public class DemandaDTO {
 

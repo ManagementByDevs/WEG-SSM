@@ -13,4 +13,5 @@ public class PautaDTO {
     private Date inicioDataReuniao;
     private Date fimDataReuniao;
     private String comissao;
+
 }
