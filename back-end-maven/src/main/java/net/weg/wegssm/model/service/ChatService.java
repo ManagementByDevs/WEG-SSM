@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class ChatService {
+
     private ChatRepository chatRepository;
 
     public ChatService(ChatRepository chatRepository) {
@@ -29,8 +30,8 @@ public class ChatService {
         return chatRepository.findByUsuario(usuario);
     }
 
-    public <S extends Chat> S save(S entity) {
-        return chatRepository.save(entity);
+    public List<Chat> findBySolicitante(Usuario user) {
+        return chatRepository.findBySolicitante(user);
     }
 
     public Boolean existsById(Long id) {
@@ -41,11 +42,12 @@ public class ChatService {
         return chatRepository.existsByUsuario(usuario);
     }
 
+    public <S extends Chat> S save(S entity) {
+        return chatRepository.save(entity);
+    }
+
     public void deleteById(Long id) {
         chatRepository.deleteById(id);
     }
 
-    public List<Chat> findBySolicitante(Usuario user) {
-        return chatRepository.findBySolicitante(user);
-    }
 }

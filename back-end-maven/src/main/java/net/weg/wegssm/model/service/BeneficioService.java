@@ -25,9 +25,7 @@ public class BeneficioService {
         return beneficioRepository.findById(id);
     }
 
-    public boolean existsByTipoBeneficio(TipoBeneficio tipoBeneficio){
-        return beneficioRepository.existsByTipoBeneficio(tipoBeneficio);
-    }
+    public boolean existsByTipoBeneficio(TipoBeneficio tipoBeneficio){ return beneficioRepository.existsByTipoBeneficio(tipoBeneficio); }
 
     public boolean existsById(Long id){
         return beneficioRepository.existsById(id);

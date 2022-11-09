@@ -13,6 +13,7 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
 
     /**
      * Método para listar todas as notificações com determinado tipo de notificação
+     *
      * @param tipoNotificacao
      * @return
      */

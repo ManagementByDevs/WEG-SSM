@@ -21,9 +21,7 @@ public class AtaService {
         return ataRepository.findAll();
     }
 
-    public Optional<Ata> findByNumeroSequencial(String numeroSequencial) {
-        return ataRepository.findByNumeroSequencial(numeroSequencial);
-    }
+    public Optional<Ata> findByNumeroSequencial(String numeroSequencial) { return ataRepository.findByNumeroSequencial(numeroSequencial); }
 
 //    public List<Ata> findByData(Date data) {
 //        return ataRepository.findByData(data);
@@ -33,20 +31,18 @@ public class AtaService {
         return ataRepository.findById(id);
     }
 
-    public <S extends Ata> S save(S entity) {
-        return ataRepository.save(entity);
-    }
-
     public boolean existsById(Long id) {
         return ataRepository.existsById(id);
     }
 
-    public void deleteById(Long id) {
-        ataRepository.deleteById(id);
+    public Boolean existsByNumeroSequencial(String numeroSequencial) { return ataRepository.existsByNumeroSequencial(numeroSequencial); }
+
+    public <S extends Ata> S save(S entity) {
+        return ataRepository.save(entity);
     }
 
-    public Boolean existsByNumeroSequencial(String numeroSequencial) {
-        return ataRepository.existsByNumeroSequencial(numeroSequencial);
+    public void deleteById(Long id) {
+        ataRepository.deleteById(id);
     }
 
 }

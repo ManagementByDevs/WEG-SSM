@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
+
     private UsuarioRepository usuarioRepository;
 
     public UsuarioService(UsuarioRepository usuarioRepository) {
@@ -21,16 +22,14 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public List<Usuario> findByDepartamento(Departamento departamento){
-        return usuarioRepository.findByDepartamento(departamento);
-    }
+    public List<Usuario> findByDepartamento(Departamento departamento){ return usuarioRepository.findByDepartamento(departamento); }
 
     public Optional<Usuario> findById(Long id) {
         return usuarioRepository.findById(id);
     }
 
-    public <S extends Usuario> S save(S entity) {
-        return usuarioRepository.save(entity);
+    public List<Usuario> findByNomeContains(String nome) {
+        return usuarioRepository.findByNomeContains(nome);
     }
 
     public Boolean existsByEmail(String email) {
@@ -41,15 +40,16 @@ public class UsuarioService {
         return usuarioRepository.existsById(id);
     }
 
+    public Boolean existsByNomeContains(String titulo) {
+        return usuarioRepository.existsByNomeContains(titulo);
+    }
+
+    public <S extends Usuario> S save(S entity) {
+        return usuarioRepository.save(entity);
+    }
+
     public void deleteById(Long id) {
         usuarioRepository.deleteById(id);
     }
 
-    public List<Usuario> findByNomeContains(String nome) {
-        return usuarioRepository.findByNomeContains(nome);
-    }
-
-    public Boolean existsByNomeContains(String titulo) {
-        return usuarioRepository.existsByNomeContains(titulo);
-    }
 }

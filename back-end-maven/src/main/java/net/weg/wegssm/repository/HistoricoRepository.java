@@ -10,8 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface HistoricoRepository extends JpaRepository<Historico, Long> {
+
     /**
      * Método para listar o histórico pelo id do usuário
+     *
      * @param autor
      * @return
      */
@@ -19,8 +21,10 @@ public interface HistoricoRepository extends JpaRepository<Historico, Long> {
 
     /**
      * Método que verifica se existe um histórico com o id do usuário passado por parâmetro
+     *
      * @param autor
      * @return
      */
     Boolean existsByAutor(Usuario autor);
+
 }

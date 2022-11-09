@@ -8,8 +8,10 @@ import java.util.Date;
 import java.util.Optional;
 
 public interface PautaRepository extends JpaRepository<Pauta, Long> {
+
     /**
      * Método para retornar se existe uma pauta com o numero sequencial passado por parâmetro
+     *
      * @param numeroSequencial
      * @return
      */
@@ -17,6 +19,7 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
 
     /**
      * Método para retornar se existe uma pauta com a data de fim passada por parâmetro
+     *
      * @param fimDataReuniao
      * @return
      */
@@ -24,6 +27,7 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
 
     /**
      * Método para retornar se existe uma pauta com a data de inicio passada por parâmetro
+     *
      * @param inicioDataReuniao
      * @return
      */
@@ -31,6 +35,7 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
 
     /**
      * Método para retornar uma pauta com o numero sequencial passado por parâmetro
+     *
      * @param numeroSequencial
      * @return
      */
@@ -38,6 +43,7 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
 
     /**
      * Método para retornar uma pauta com a data de fim passada por parâmetro
+     *
      * @param fimDataReuniao
      * @return
      */
@@ -45,6 +51,7 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
 
     /**
      * Método para retornar uma pauta com a data de inicio passada por parâmetro
+     *
      * @param inicioDataReuniao
      * @return
      */

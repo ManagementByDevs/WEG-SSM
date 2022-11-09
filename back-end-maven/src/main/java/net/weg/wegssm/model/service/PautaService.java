@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Service
 public class PautaService {
+
     private PautaRepository pautaRepository;
 
     public PautaService(PautaRepository pautaRepository) {
@@ -24,41 +25,33 @@ public class PautaService {
         return pautaRepository.findAll();
     }
 
+    public Page<Pauta> findAll(Pageable pageable) {
+        return pautaRepository.findAll(pageable);
+    }
+
     public Optional<Pauta> findById(Long id) {
         return pautaRepository.findById(id);
     }
 
-    public Optional<Pauta> findByInicioDataReuniao(Date dataInicio) {
-        return pautaRepository.findByInicioDataReuniao(dataInicio);
-    }
+    public Optional<Pauta> findByInicioDataReuniao(Date dataInicio) { return pautaRepository.findByInicioDataReuniao(dataInicio); }
 
     public Optional<Pauta> findByFimDataReuniao(Date dataFim) {
         return pautaRepository.findByFimDataReuniao(dataFim);
     }
 
-    public Optional<Pauta> findByNumeroSequencial(Long numeroSequencial) {
-        return pautaRepository.findByNumeroSequencial(numeroSequencial);
-    }
+    public Optional<Pauta> findByNumeroSequencial(Long numeroSequencial) { return pautaRepository.findByNumeroSequencial(numeroSequencial); }
 
     public Boolean existsById(Long id) {
         return pautaRepository.existsById(id);
     }
 
-    public Boolean existsByNumeroSequencial(Long numeroSequencial) {
-        return pautaRepository.existsByNumeroSequencial(numeroSequencial);
-    }
+    public Boolean existsByNumeroSequencial(Long numeroSequencial) { return pautaRepository.existsByNumeroSequencial(numeroSequencial); }
 
     public Boolean existsByFimDataReuniao(Date dataFim) {
         return pautaRepository.existsByFimDataReuniao(dataFim);
     }
 
-    public Boolean existsByInicioDataReuniao(Date dataInicio) {
-        return pautaRepository.existsByInicioDataReuniao(dataInicio);
-    }
-
-    public Page<Pauta> findAll(Pageable pageable) {
-        return pautaRepository.findAll(pageable);
-    }
+    public Boolean existsByInicioDataReuniao(Date dataInicio) { return pautaRepository.existsByInicioDataReuniao(dataInicio); }
 
     public <S extends Pauta> S save(S entity) {
         return pautaRepository.save(entity);
@@ -67,4 +60,5 @@ public class PautaService {
     public void deleteById(Long id) {
         pautaRepository.deleteById(id);
     }
+
 }

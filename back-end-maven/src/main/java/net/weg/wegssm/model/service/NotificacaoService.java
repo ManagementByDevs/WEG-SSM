@@ -14,13 +14,7 @@ public class NotificacaoService {
 
     private NotificacaoRepository notificacaoRepository;
 
-    public NotificacaoService(NotificacaoRepository notificacaoRepository) {
-        this.notificacaoRepository = notificacaoRepository;
-    }
-
-    public <S extends Notificacao> S save(S entity) {
-        return notificacaoRepository.save(entity);
-    }
+    public NotificacaoService(NotificacaoRepository notificacaoRepository) { this.notificacaoRepository = notificacaoRepository; }
 
     public List<Notificacao> findAll(){
         return notificacaoRepository.findAll();
@@ -30,20 +24,20 @@ public class NotificacaoService {
         return notificacaoRepository.findById(id);
     }
 
-    public List<Notificacao> findByTipoNotificacao(TipoNotificacao tipoNotificacao){
-        return notificacaoRepository.findByTipoNotificacao(tipoNotificacao);
-    }
+    public List<Notificacao> findByTipoNotificacao(TipoNotificacao tipoNotificacao){ return notificacaoRepository.findByTipoNotificacao(tipoNotificacao); }
 
 //    public List<Notificacao> findByData(Date data){
 //        return notificacaoRepository.findByData(data);
 //    }
 
-    public void deleteById(Long id) {
-        notificacaoRepository.deleteById(id);
+    public boolean existsById(Long id) { return notificacaoRepository.existsById(id); }
+
+    public <S extends Notificacao> S save(S entity) {
+        return notificacaoRepository.save(entity);
     }
 
-    public boolean existsById(Long id) {
-        return notificacaoRepository.existsById(id);
+    public void deleteById(Long id) {
+        notificacaoRepository.deleteById(id);
     }
 
 }

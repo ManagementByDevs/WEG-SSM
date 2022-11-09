@@ -24,16 +24,16 @@ public class ForumService {
         return forumRepository.findById(id);
     }
 
-    public <S extends Forum> S save(S entity) {
-        return forumRepository.save(entity);
-    }
-
     public Boolean existsByNome(String nome) {
         return forumRepository.existsByNome(nome);
     }
 
     public Boolean existsById(Long id) {
         return forumRepository.existsById(id);
+    }
+
+    public <S extends Forum> S save(S entity) {
+        return forumRepository.save(entity);
     }
 
     public void deleteById(Long id) {

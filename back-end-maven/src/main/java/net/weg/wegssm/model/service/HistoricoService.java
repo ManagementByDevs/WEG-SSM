@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 public class HistoricoService {
+
     private HistoricoRepository historicoRepository;
 
     public HistoricoService(HistoricoRepository historicoRepository) {
@@ -45,4 +46,5 @@ public class HistoricoService {
     public void deleteById(Long id) {
         historicoRepository.deleteById(id);
     }
+
 }

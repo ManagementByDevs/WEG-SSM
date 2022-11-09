@@ -12,9 +12,7 @@ public class DepartamentoService {
 
     private DepartamentoRepository departamentoRepository;
 
-    public DepartamentoService(DepartamentoRepository departamentoRepository) {
-        this.departamentoRepository = departamentoRepository;
-    }
+    public DepartamentoService(DepartamentoRepository departamentoRepository) { this.departamentoRepository = departamentoRepository; }
 
     public List<Departamento> findAll() {
         return departamentoRepository.findAll();
@@ -24,8 +22,6 @@ public class DepartamentoService {
         return departamentoRepository.findById(id);
     }
 
-    public <S extends Departamento> S save(S entity) { return departamentoRepository.save(entity); }
-
     public boolean existsById(Long id) {
         return departamentoRepository.existsById(id);
     }
@@ -33,6 +29,8 @@ public class DepartamentoService {
     public boolean existsByNome(String nome) {
         return departamentoRepository.existsByNome(nome);
     }
+
+    public <S extends Departamento> S save(S entity) { return departamentoRepository.save(entity); }
 
     public void deleteById(Long id) {
         departamentoRepository.deleteById(id);

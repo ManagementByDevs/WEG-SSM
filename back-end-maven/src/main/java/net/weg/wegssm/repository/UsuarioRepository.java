@@ -12,6 +12,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     /**
      * Método que verifica se existe um usuário com o email passado por parâmetro
+     *
      * @param email
      * @return
      */
@@ -19,6 +20,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     /**
      * Método para listar todos os usuários pertencentes a um departamento
+     *
      * @param departamento
      * @return
      */
@@ -26,6 +28,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     /**
      * Método para listar todos os usuários que começam com o nome passado por parâmetro
+     *
      * @param nome
      * @return
      */

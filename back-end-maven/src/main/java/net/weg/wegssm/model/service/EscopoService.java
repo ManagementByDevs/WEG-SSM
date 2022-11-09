@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class EscopoService {
+
     private EscopoRepository escopoRepository;
 
     public EscopoService(EscopoRepository escopoRepository) {
@@ -29,8 +30,10 @@ public class EscopoService {
         return escopoRepository.findByTitulo(titulo);
     }
 
-    public Optional<Escopo> findByPercentagem(Long porcentagem) {
-        return escopoRepository.findByPorcentagem(porcentagem);
+    public Optional<Escopo> findByPercentagem(Long porcentagem) { return escopoRepository.findByPorcentagem(porcentagem); }
+
+    public List<Object> findByUsuario(Usuario usuario) {
+        return escopoRepository.findByUsuario(usuario);
     }
 
     public Boolean existsById(Long id) {
@@ -45,6 +48,10 @@ public class EscopoService {
         return escopoRepository.existsByPorcentagem(porcentagem);
     }
 
+    public boolean existsByUsuario(Usuario usuario) {
+        return escopoRepository.existsByUsuario(usuario);
+    }
+
     public <S extends Escopo> S save(S entity) {
         return escopoRepository.save(entity);
     }
@@ -53,11 +60,4 @@ public class EscopoService {
         escopoRepository.deleteById(id);
     }
 
-    public boolean existsByUsuario(Usuario usuario) {
-        return escopoRepository.existsByUsuario(usuario);
-    }
-
-    public List<Object> findByUsuario(Usuario usuario) {
-        return escopoRepository.findByUsuario(usuario);
-    }
 }
