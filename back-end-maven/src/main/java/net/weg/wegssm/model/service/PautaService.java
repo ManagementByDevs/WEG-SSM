@@ -1,8 +1,11 @@
 package net.weg.wegssm.model.service;
 
+import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.repository.PautaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -51,6 +54,10 @@ public class PautaService {
 
     public Boolean existsByInicioDataReuniao(Date dataInicio) {
         return pautaRepository.existsByInicioDataReuniao(dataInicio);
+    }
+
+    public Page<Pauta> findAll(Pageable pageable) {
+        return pautaRepository.findAll(pageable);
     }
 
     public <S extends Pauta> S save(S entity) {
