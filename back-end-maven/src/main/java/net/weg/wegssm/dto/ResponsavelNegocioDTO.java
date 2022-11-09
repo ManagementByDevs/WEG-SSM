@@ -10,6 +10,6 @@ public class ResponsavelNegocioDTO {
     private Long id;
     private String nome;
     private String area;
-    private Proposta proposta;
+//    private Proposta proposta;
 
 }

@@ -27,8 +27,8 @@ public class ResponsavelNegocio {
 
     //Foreign key
 
-    @ManyToOne
-    @JoinColumn(name = "proposta_id")
-    private Proposta proposta;
+//    @ManyToOne
+//    @JoinColumn(name = "proposta_id")
+//    private Proposta proposta;
 
 }
