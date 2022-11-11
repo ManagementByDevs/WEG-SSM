@@ -25,10 +25,4 @@ public class ResponsavelNegocio {
     @Column(nullable = false, length = 100)
     private String area;
 
-    //Foreign key
-
-//    @ManyToOne
-//    @JoinColumn(name = "proposta_id")
-//    private Proposta proposta;
-
 }

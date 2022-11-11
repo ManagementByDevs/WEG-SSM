@@ -37,10 +37,4 @@ public class Custo {
     @Column
     private String css;
 
-    // Foreign key
-
-//    @ManyToOne
-//    @JoinColumn(name = "proposta_id")
-//    private Proposta proposta;
-
 }
