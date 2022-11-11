@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "demanda")
@@ -66,5 +67,9 @@ public class Demanda {
     @ManyToOne
     @JoinColumn(name = "departamento_id")
     private Departamento departamento;
+
+    @OneToMany
+    @JoinColumn(name = "anexo_id")
+    private List<Anexo> anexo;
 
 }

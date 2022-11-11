@@ -30,5 +30,6 @@ public class PropostaDTO {
     private Demanda demanda;
     private Pauta pauta;
     private Ata ata;
+    private List<Anexo> anexo;
 
 }

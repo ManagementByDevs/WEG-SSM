@@ -3,6 +3,7 @@ package net.weg.wegssm.model.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "escopo")
@@ -42,5 +43,9 @@ public class Escopo {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @OneToMany
+    @JoinColumn(name = "id_anexo")
+    private List<Anexo> anexo;
 
 }

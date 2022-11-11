@@ -88,4 +88,8 @@ public class Proposta {
     @JoinColumn(name = "ata_id")
     private Ata ata;
 
+    @OneToMany
+    @JoinColumn(name = "anexo_id")
+    private List<Anexo> anexo;
+
 }
