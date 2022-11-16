@@ -6,11 +6,13 @@ import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.EscopoService;
 import net.weg.wegssm.model.service.UsuarioService;
+import net.weg.wegssm.util.EscopoUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -96,20 +98,25 @@ public class EscopoController {
     }
 
     /**
-     * Método POST para criar um escopo no banco de dados
+     * Método POST para criar um escopo, podendo adicionar anexos caso necessário
      *
-     * @param escopoDto ( Objeto a ser cadastrado = req.body )
+     * @param files
+     * @param escopoJSON
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid EscopoDTO escopoDto) {
-        if (!usuarioService.existsById(escopoDto.getUsuario().getId())) {
+    public ResponseEntity<Object> save(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("escopo") String escopoJSON) {
+        EscopoUtil escopoUtil = new EscopoUtil();
+        Escopo escopo = escopoUtil.convertJsonToModel(escopoJSON);
+
+        if (!usuarioService.existsById(escopo.getUsuario().getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
         }
-        Escopo escopo = new Escopo();
+
+        escopo.setAnexos(files);
         escopo.setVisibilidade(true);
-        BeanUtils.copyProperties(escopoDto, escopo);
-        return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(escopoService.save(escopo));
     }
 
     /**

@@ -9,8 +9,11 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
 import Header from '../../components/Header/Header';
+import Demanda from '../../components/Demanda/Demanda';
+
 import FontConfig from '../../service/FontConfig';
 import ColorModeContext from '../../service/TemaContext';
+import { grid } from '@mui/system';
 
 const Home = () => {
   // Desestruturação de objeto em duas variáveis:
@@ -97,10 +100,20 @@ const Home = () => {
 
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
-                Meu Departamento
+                <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Kenzo"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Felipe"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Matheus"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago"}} />
+                </Box>
               </TabPanel>
               <TabPanel sx={{ padding: 0 }} value="2">
-                Minhas Demandas
+                <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
+                  <Demanda demanda={{ status: "Aguardando edição", dono: "Thiago"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago"}} />
+                  <Demanda demanda={{ status: "Aprovada", dono: "Thiago"}} />
+                  <Demanda demanda={{ status: "Reprovada", dono: "Thiago"}} />
+                </Box>
               </TabPanel>
             </Box>
           </TabContext>

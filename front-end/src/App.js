@@ -9,6 +9,7 @@ import {
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import CriarDemanda from './pages/CriarDemanda/CriarDemanda';
+import Demanda from './components/Demanda/Demanda';
 
 import ToggleColorMode from './service/TemaProvedor';
 

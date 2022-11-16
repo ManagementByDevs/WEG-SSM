@@ -32,7 +32,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
      * @param nome
      * @return
      */
-    List<Usuario> findByNomeContains(String nome);
+    List<Usuario> findByNomeStartsWith(String nome);
 
     Boolean existsByNomeContains(String titulo);
 }

@@ -3,8 +3,11 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.PropostaDTO;
 import net.weg.wegssm.model.entities.Demanda;
+import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.service.PropostaService;
+import net.weg.wegssm.util.EscopoUtil;
+import net.weg.wegssm.util.PropostaUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -68,6 +72,7 @@ public class PropostaController {
 
     /**
      * Método GET para buscar propostas por um título
+     *
      * @param titulo
      * @return
      */
@@ -78,6 +83,7 @@ public class PropostaController {
 
     /**
      * Método GET para ordenar as propostas por número ppm de forma crescente
+     *
      * @param pageable
      * @return
      */
@@ -90,6 +96,7 @@ public class PropostaController {
 
     /**
      * Método GET para ordenar as propostas por número ppm de forma decrescente
+     *
      * @param pageable
      * @return
      */
@@ -102,6 +109,7 @@ public class PropostaController {
 
     /**
      * Método GET para ordenar as propostas pelo título de forma crescente ( A-Z )
+     *
      * @param pageable
      * @return
      */
@@ -114,6 +122,7 @@ public class PropostaController {
 
     /**
      * Método GET para ordenar as propostas pelo título de forma decrescente ( Z-A )
+     *
      * @param pageable
      * @return
      */
@@ -127,15 +136,18 @@ public class PropostaController {
     /**
      * Método POST para criar uma proposta no banco de dados
      *
-     * @param propostaDTO
+     * @param propostaJSON
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid PropostaDTO propostaDTO) {
-        Proposta proposta = new Proposta();
+    public ResponseEntity<Object> save(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("proposta") String propostaJSON) {
+        PropostaUtil propostaUtil = new PropostaUtil();
+        Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
+
+        proposta.setAnexos(files);
         proposta.setVisibilidade(true);
-        BeanUtils.copyProperties(propostaDTO, proposta);
-        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
     }
 
     /**
