@@ -7,6 +7,7 @@ import net.weg.wegssm.model.entities.Mensagem;
 import javax.validation.Valid;
 
 public class MensagemUtil {
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public Mensagem convertJsonToModel(String mensagemJson) {
@@ -25,4 +26,5 @@ public class MensagemUtil {
     private Mensagem convertDTOToModel(@Valid MensagemDTO mensagemDTO){
         return this.objectMapper.convertValue(mensagemDTO, Mensagem.class);
     }
+
 }

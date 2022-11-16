@@ -64,7 +64,7 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este nome.");
         }
 
-        List<Usuario> usuarios = usuarioService.findByNomeContains(titulo);
+        List<Usuario> usuarios = usuarioService.findByNomeStartsWith(titulo);
         List<Chat> chats = new ArrayList<>();
         for (Usuario user : usuarios) {
             List<Chat> chatAux = chatService.findByUsuario(user);
@@ -87,7 +87,7 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este nome.");
         }
 
-        List<Usuario> usuarios = usuarioService.findByNomeContains(titulo);
+        List<Usuario> usuarios = usuarioService.findByNomeStartsWith(titulo);
         List<Chat> chats = new ArrayList<>();
         for (Usuario user : usuarios) {
             List<Chat> chatAux = chatService.findBySolicitante(user);

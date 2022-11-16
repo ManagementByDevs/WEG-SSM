@@ -1,8 +1,10 @@
 package net.weg.wegssm.model.entities;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,9 +25,6 @@ public class Proposta {
 
     @Column(nullable = false, length = 200)
     private String escopo;
-
-    @Column(nullable = false, length = 100)
-    private String titulo;
 
     @Column(nullable = false)
     private Date inicioExecucao;
@@ -88,8 +87,25 @@ public class Proposta {
     @JoinColumn(name = "ata_id")
     private Ata ata;
 
-    @OneToMany
-    @JoinColumn(name = "anexo_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_proposta")
     private List<Anexo> anexo;
+
+    /**
+     * Função para adicionar anexos em uma proposta
+     *
+     * @param files
+     */
+    public void setAnexos(List<MultipartFile> files) {
+        List<Anexo> listaAnexos = new ArrayList<>();
+        try {
+            for (MultipartFile file : files) {
+                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+            }
+            this.anexo = listaAnexos;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
 }

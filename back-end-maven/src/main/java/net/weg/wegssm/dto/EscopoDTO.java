@@ -10,12 +10,12 @@ import java.util.List;
 @Getter @Setter
 public class EscopoDTO {
 
-    private Usuario usuario;
     private String titulo;
     private String problema;
     private String proposta;
     private String frequencia;
     private Long porcentagem;
+    private Usuario usuario;
     private List<Anexo> anexo;
 
 }

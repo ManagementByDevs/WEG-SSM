@@ -57,8 +57,16 @@ public class Demanda {
     // foreign keys
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    @JoinColumn(name = "solicitante_id")
+    private Usuario solicitante;
+
+    @ManyToOne
+    @JoinColumn(name = "gerente_id")
+    private Usuario gerente;
+
+    @ManyToOne
+    @JoinColumn(name = "analista_id")
+    private Usuario analista;
 
     @ManyToOne
     @JoinColumn(name = "forum_id")
