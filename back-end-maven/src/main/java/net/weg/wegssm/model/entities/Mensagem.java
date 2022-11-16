@@ -38,10 +38,15 @@ public class Mensagem {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_anexo")
     private List<Anexo> anexo;
 
+    /**
+     * Função para adicionar anexos a mensagem
+     *
+     * @param files
+     */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();
         try {

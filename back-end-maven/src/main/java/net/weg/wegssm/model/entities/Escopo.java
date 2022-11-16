@@ -1,8 +1,10 @@
 package net.weg.wegssm.model.entities;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,8 +46,25 @@ public class Escopo {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_anexo")
     private List<Anexo> anexo;
+
+    /**
+     * Função para adicionar anexos em um escopo
+     *
+     * @param files
+     */
+    public void setAnexos(List<MultipartFile> files) {
+        List<Anexo> listaAnexos = new ArrayList<>();
+        try {
+            for (MultipartFile file : files) {
+                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+            }
+            this.anexo = listaAnexos;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
 }
