@@ -8,21 +8,18 @@ import {
 
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
-import { useTheme } from '@emotion/react';
+import CriarDemanda from './pages/CriarDemanda/CriarDemanda';
 
 import ToggleColorMode from './service/TemaProvedor';
-import ColorModeContext from './service/TemaContext';
 
 const App = () => {
-  // const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
-
   return (
     <ToggleColorMode>
       <Router>
         <Routes>
           <Route path="/login" element={<Login></Login>} />
-          <Route path="/" element={<Home togglePalette={colorMode.toggleColorMode}></Home>} />
+          <Route path="/" element={<Home></Home>} />
+          <Route path="/criar-demanda" element={<CriarDemanda />} />
         </Routes>
       </Router>
     </ToggleColorMode>

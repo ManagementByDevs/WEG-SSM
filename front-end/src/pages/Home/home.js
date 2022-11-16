@@ -1,4 +1,6 @@
 import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom';
+
 import { Button, Paper, Typography, Input, Tab, Box, TextField } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -14,7 +16,7 @@ const Home = () => {
   // Desestruturação de objeto em duas variáveis:
   // - Mode: modo do tema atual ("light" ou "dark")
   // - toggleColorMode: função para alternar o tema
-  const {mode, toggleColorMode} = useContext(ColorModeContext);
+  const { mode, toggleColorMode } = useContext(ColorModeContext);
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = React.useState('1');
@@ -23,6 +25,8 @@ const Home = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  
+  const navigate = useNavigate();
 
   return (
     // Container pai
@@ -80,7 +84,12 @@ const Home = () => {
               </Box>
 
               {/* Botão de criar demanda */}
-              <Button className='gap-2' sx={{ backgroundColor: 'primary.main', color: 'text.white', fontSize: FontConfig.default }} variant="contained" disableElevation>Criar demanda <AddIcon /></Button>
+              <Button className='gap-2' sx={{ backgroundColor: 'primary.main', color: 'text.white', fontSize: FontConfig.default }}
+                variant="contained" disableElevation
+                onClick={() => { navigate("/criar-demanda") }}>
+                Criar demanda
+                <AddIcon />
+              </Button>
             </Box>
 
             {/* Container para o conteúdo das abas */}
