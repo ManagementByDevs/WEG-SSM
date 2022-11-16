@@ -8,7 +8,7 @@ import {
 
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
-import { useTheme } from '@emotion/react';
+import Demanda from './components/Demanda/Demanda';
 
 import ToggleColorMode from './service/TemaProvedor';
 import ColorModeContext from './service/TemaContext';
@@ -23,6 +23,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login></Login>} />
           <Route path="/" element={<Home togglePalette={colorMode.toggleColorMode}></Home>} />
+          <Route path="/teste" element={<Demanda></Demanda>} />
         </Routes>
       </Router>
     </ToggleColorMode>
