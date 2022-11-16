@@ -24,9 +24,6 @@ public class Proposta {
     @Column(nullable = false, length = 200)
     private String escopo;
 
-    @Column(nullable = false, length = 100)
-    private String titulo;
-
     @Column(nullable = false)
     private Date inicioExecucao;
 

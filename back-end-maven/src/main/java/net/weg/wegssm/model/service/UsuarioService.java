@@ -28,8 +28,8 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
-    public List<Usuario> findByNomeContains(String nome) {
-        return usuarioRepository.findByNomeContains(nome);
+    public List<Usuario> findByNomeStartsWith(String nome) {
+        return usuarioRepository.findByNomeStartsWith(nome);
     }
 
     public Boolean existsByEmail(String email) {
