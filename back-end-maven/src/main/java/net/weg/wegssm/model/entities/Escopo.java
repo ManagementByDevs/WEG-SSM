@@ -47,7 +47,7 @@ public class Escopo {
     private Usuario usuario;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_anexo")
+    @JoinColumn(name = "id_escopo")
     private List<Anexo> anexo;
 
     /**

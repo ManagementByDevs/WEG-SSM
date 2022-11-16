@@ -39,7 +39,7 @@ public class Mensagem {
     private Usuario usuario;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_anexo")
+    @JoinColumn(name = "id_mensagem")
     private List<Anexo> anexo;
 
     /**
