@@ -101,18 +101,18 @@ const Home = () => {
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
                 <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Kenzo"}} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Felipe"}} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Matheus"}} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Kenzo", tela: "meuDepartamento"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Felipe", tela: "meuDepartamento"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Matheus", tela: "meuDepartamento"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "meuDepartamento"}} />
                 </Box>
               </TabPanel>
               <TabPanel sx={{ padding: 0 }} value="2">
                 <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
-                  <Demanda demanda={{ status: "Aguardando edição", dono: "Thiago"}} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago"}} />
-                  <Demanda demanda={{ status: "Aprovada", dono: "Thiago"}} />
-                  <Demanda demanda={{ status: "Reprovada", dono: "Thiago"}} />
+                  <Demanda demanda={{ status: "Aguardando edição", dono: "Thiago", tela: "minhasDemandas"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "minhasDemandas"}} />
+                  <Demanda demanda={{ status: "Aprovada", dono: "Thiago", tela: "minhasDemandas"}} />
+                  <Demanda demanda={{ status: "Reprovada", dono: "Thiago", tela: "minhasDemandas"}} />
                 </Box>
               </TabPanel>
             </Box>
