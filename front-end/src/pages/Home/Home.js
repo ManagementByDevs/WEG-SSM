@@ -31,6 +31,7 @@ const Home = () => {
   
   const navigate = useNavigate();
 
+  
   return (
     // Container pai
     <Box sx={{ backgroundColor: 'background.default', height: '100vh', width: '100vw' }}>
