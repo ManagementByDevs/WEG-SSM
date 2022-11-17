@@ -26,7 +26,7 @@ const Demanda = (props) => {
     }
 
     function getTamanhoHeight() {
-        if (autor !== userLogado && tela !== "minhasDemandas") {
+        if (tela !== "minhasDemandas") {
             return '10rem';
         } else {
             return '12rem';
@@ -38,7 +38,7 @@ const Demanda = (props) => {
             <Box className={`flex justify-between`} sx={{ marginBottom: '1%' }} square>
                 <Typography fontSize={FontConfig.veryBig} sx={{ fontWeight: '600', cursor: 'default' }} color="text.primary">Título da proposta</Typography>
                 {
-                    autor === "Thiago" ?
+                    autor === "Thiago" && tela === "minhasDemandas"?
                     <Box className={`items-center text-justify flex`} square>
                         <Typography fontSize={FontConfig.default} sx={{ fontWeight: '600', cursor: 'default' }}>{status}</Typography>
                         <Box sx={{ backgroundColor: corStatus, width: '12px', height: '12px', borderRadius: '10px', marginLeft: '10px' }} className={`items-center h-30 text-justify`} square />
