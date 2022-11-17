@@ -8,8 +8,8 @@ import java.util.Date;
 @Getter @Setter
 public class AtaDTO {
 
-    private Date inicioDataReuniao;
-    private Date fimDataReuniao;
+    private java.sql.Date inicioDataReuniao;
+    private java.sql.Date fimDataReuniao;
     private String numeroSequencial;
 
 }

@@ -19,10 +19,10 @@ public class Ata {
     private Long id;
 
     @Column(nullable = false)
-    private Date inicioDataReuniao;
+    private java.sql.Date inicioDataReuniao;
 
     @Column(nullable = false)
-    private Date fimDataReuniao;
+    private java.sql.Date fimDataReuniao;
 
     @Column(nullable = false, length = 14)
     private String numeroSequencial;

@@ -982,10 +982,10 @@ public class DemandaController {
      * @param usuario
      * @return
      */
-    @GetMapping("usuario/{usuario}")
-    public ResponseEntity<List<Demanda>> findByUsuario(@PathVariable(value = "usuario") Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByUsuario(usuario));
-    }
+//    @GetMapping("usuario/{usuario}")
+//    public ResponseEntity<List<Demanda>> findByUsuario(@PathVariable(value = "usuario") Usuario usuario) {
+//        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByUsuario(usuario));
+//    }
 
     /**
      * Método GET para buscar todas as demandas de um determinado departamento

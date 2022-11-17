@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,10 +75,21 @@ public class AtaController {
 //        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
 //    }
 //
-//    @GetMapping("dataFimReuniao/{dataFimReuniao}")
-//    public ResponseEntity<List<Ata>> findByDataFimReuniao(@PathVariable(value = "dataFimReuniao") Date data) {
-//        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
-//    }
+
+    /**
+     * Método GET para uma ata por data de fim da reunião
+     * @param data
+     * @return
+     * @throws ParseException
+     */
+    @GetMapping("dataFimReuniao/{dataFimReuniao}")
+    public ResponseEntity<List<Ata>> findByDataFimReuniao(@PathVariable(value = "dataFimReuniao") String data) throws ParseException {
+
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        Date dataFormatada = formato.parse(data);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByDataFimReuniao(dataFormatada));
+    }
 
     /**
      * Método POST para cadastrar uma ata no banco de dados
