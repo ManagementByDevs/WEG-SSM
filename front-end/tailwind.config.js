@@ -14,7 +14,13 @@ module.exports = {
     },
     extend: {
       spacing: {
-        '1/10': '9%'
+        '1/10': '9%',
+      },
+      height: {
+        'header-weg': '9vh'
+      },
+      minHeight: {
+        'header-weg': '5rem'
       }
     },
   },
