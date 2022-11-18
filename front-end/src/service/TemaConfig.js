@@ -12,6 +12,9 @@ const getDesignTokens = (mode) => ({
                 tertiary: {
                     main: '#FFFFFF',
                 },
+                link: {
+                    main: '#FFFFFF',
+                },
                 divider: { main: '#3D3F45' },
                 text: {
                     primary: '#FFFFFF',
@@ -38,6 +41,9 @@ const getDesignTokens = (mode) => ({
                 },
                 tertiary: {
                     main: '#000000',
+                },
+                link: {
+                    main: '#00579D',
                 },
                 divider: { main: 'rgba(0, 0, 0, 0.3)' },
                 text: {
