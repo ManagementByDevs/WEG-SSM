@@ -3,6 +3,7 @@ import React from 'react'
 import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
 
 import FormularioDadosDemanda from '../FormularioDadosDemanda/FormularioDadosDemanda';
+import FormularioBeneficiosDemanda from '../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda';
 
 const BarraProgressao = (props) => {
     const [activeStep, setActiveStep] = React.useState(0);
@@ -72,6 +73,7 @@ const BarraProgressao = (props) => {
                 })}
             </Stepper>
             {activeStep == 0 && <FormularioDadosDemanda />}
+            {activeStep == 1 && <FormularioBeneficiosDemanda/>}
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <Button variant='outlined'
                     color="tertiary"
