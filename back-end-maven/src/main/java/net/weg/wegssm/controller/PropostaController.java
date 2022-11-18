@@ -76,10 +76,10 @@ public class PropostaController {
      * @param titulo
      * @return
      */
-    @GetMapping("/titulo/{titulo}")
-    public ResponseEntity<List<Proposta>> findByTitulo(@PathVariable(value = "titulo") String titulo) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(propostaService.findByTitulo(titulo));
-    }
+//    @GetMapping("/titulo/{titulo}")
+//    public ResponseEntity<List<Proposta>> findByTitulo(@PathVariable(value = "titulo") String titulo) {
+//        return ResponseEntity.status(HttpStatus.FOUND).body(propostaService.findByTitulo(titulo));
+//    }
 
     /**
      * Método GET para ordenar as propostas por número ppm de forma crescente

@@ -33,7 +33,7 @@ public class PropostaService {
 
     public Optional<Proposta> findByPpm(Long ppm){ return propostaRepository.findByCodigoPPM(ppm); }
 
-    public List<Proposta> findByTitulo(String titulo){ return propostaRepository.findByTitulo(titulo); }
+//    public List<Proposta> findByTitulo(String titulo){ return propostaRepository.findByTitulo(titulo); }
 
     public Boolean existsById(Long id){ return propostaRepository.existsById(id); }
 

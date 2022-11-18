@@ -22,7 +22,7 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
      * @param titulo
      * @return
      */
-    List<Proposta> findByTitulo(String titulo);
+//    List<Proposta> findByTitulo(String titulo);
 
     /**
      * Método para verificar se existe uma proposta com o código PPM
