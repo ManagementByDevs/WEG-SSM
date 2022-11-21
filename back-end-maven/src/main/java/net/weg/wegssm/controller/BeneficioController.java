@@ -46,6 +46,11 @@ public class BeneficioController {
         return ResponseEntity.status(HttpStatus.FOUND).body(beneficioService.findById(id).get());
     }
 
+    /**
+     * Método POST para salvar um benefício
+     * @param beneficioDTO
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid BeneficioDTO beneficioDTO) {
         if (beneficioService.existsByTipoBeneficio(beneficioDTO.getTipoBeneficio())) {
@@ -58,6 +63,11 @@ public class BeneficioController {
         return ResponseEntity.status(HttpStatus.OK).body(beneficioService.save(beneficio));
     }
 
+    /**
+     * Método DELETE para remover um benefício
+     * @param id
+     * @return
+     */
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {

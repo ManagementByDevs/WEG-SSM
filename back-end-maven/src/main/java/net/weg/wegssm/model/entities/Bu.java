@@ -21,4 +21,5 @@ public class Bu {
 
     @Column(nullable = false, length = 50)
     private String nome;
+
 }

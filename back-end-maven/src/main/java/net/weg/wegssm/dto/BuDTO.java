@@ -7,4 +7,5 @@ import lombok.Setter;
 public class BuDTO {
 
     private String nome;
+
 }
