@@ -1,7 +1,10 @@
 package net.weg.wegssm.model.service;
 
 import net.weg.wegssm.model.entities.Ata;
+import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.repository.AtaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,15 +24,11 @@ public class AtaService {
         return ataRepository.findAll();
     }
 
+    public Page<Ata> findAll(Pageable pageable) {
+        return ataRepository.findAll(pageable);
+    }
+
     public Optional<Ata> findByNumeroSequencial(String numeroSequencial) { return ataRepository.findByNumeroSequencial(numeroSequencial); }
-
-    public List<Ata> findByData(Date data) {
-        return ataRepository.findByInicioDataReuniao(data);
-    }
-
-    public List<Ata> findByDataFimReuniao(java.sql.Date data){
-        return ataRepository.findByFimDataReuniao(data);
-    }
 
     public Optional<Ata> findById(Long id) {
         return ataRepository.findById(id);

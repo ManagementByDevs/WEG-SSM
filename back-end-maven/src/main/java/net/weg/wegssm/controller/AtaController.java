@@ -3,8 +3,13 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.AtaDTO;
 import net.weg.wegssm.model.entities.Ata;
+import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.service.AtaService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,32 +70,51 @@ public class AtaController {
     }
 
     /**
-     * Métodos GET para buscar atas por data de início e fim da ata
-     *
-     * @param data
+     * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais antiga para a mais recente
+     * @param pageable
      * @return
      */
-//    @GetMapping("dataInicioReuniao/{dataInicioReuniao}")
-//    public ResponseEntity<List<Ata>> findByDataInicioReuniao(@PathVariable(value = "dataInicioReuniao") Date data) {
-//        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByData(data));
-//    }
-//
+    @GetMapping("/ordenarInicioDataReuniaoAntiga")
+    public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoAntiga(@PageableDefault(
+            page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.ASC
+    ) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
+    }
 
     /**
-     * Método GET para uma ata por data de fim da reunião
-     * @param data
+     * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais recente para a mais antiga
+     * @param pageable
      * @return
-     * @throws ParseException
      */
-    @GetMapping("/dataFimReuniao/{dataFimReuniao}")
-    public ResponseEntity<List<Ata>> findByDataFimReuniao(@PathVariable(value = "dataFimReuniao") String data) throws ParseException {
+    @GetMapping("/ordenarInicioDataReuniaoRecente")
+    public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoRecente(@PageableDefault(
+            page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.DESC
+    ) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
+    }
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date dataFimReuniao = new Date(format.parse(data).getTime());
+    /**
+     * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais antiga para a mais recente
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/ordenarFimDataReuniaoAntiga")
+    public ResponseEntity<Page<Ata>> findAllFimDataReuniaoAntiga(@PageableDefault(
+            page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.ASC
+    ) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
+    }
 
-        System.out.println("Data formatada: " + dataFimReuniao);
-
-        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByDataFimReuniao(dataFimReuniao));
+    /**
+     * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais recente para a mais antiga
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/ordenarFimDataReuniaoRecente")
+    public ResponseEntity<Page<Ata>> findAllFimDataReuniaoRecente(@PageableDefault(
+            page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.DESC
+    ) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
 
     /**
@@ -100,7 +124,7 @@ public class AtaController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid AtaDTO ataDto) {
+    public ResponseEntity<Object> save(@RequestBody @Valid AtaDTO ataDto) throws ParseException {
 
         if (ataService.existsByNumeroSequencial(ataDto.getNumeroSequencial())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("O número sequencial já está em uso.");

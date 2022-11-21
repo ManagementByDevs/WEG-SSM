@@ -54,34 +54,6 @@ public class PautaController {
     }
 
     /**
-     * Método GET para listar uma pauta específica através da data de início da reunião
-     *
-     * @param dataInicio
-     * @return
-     */
-    @GetMapping("/datainicio/{dataInicio}")
-    public ResponseEntity<Object> findByDataInicio(@PathVariable(value = "dataInicio") Date dataInicio) {
-        if (!pautaService.existsByInicioDataReuniao(dataInicio)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pauta com esta data de início.");
-        }
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findByInicioDataReuniao(dataInicio).get());
-    }
-
-    /**
-     * Método GET para listar uma pauta específica através da data de fim da reunião
-     *
-     * @param dataFim
-     * @return
-     */
-    @GetMapping("/datafim/{dataFim}")
-    public ResponseEntity<Object> findByDataFim(@PathVariable(value = "dataFim") Date dataFim) {
-        if (!pautaService.existsByFimDataReuniao(dataFim)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pauta com esta data de fim.");
-        }
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findByFimDataReuniao(dataFim).get());
-    }
-
-    /**
      * Método GET para listar uma pauta específica através do número sequencial
      *
      * @param numeroSequencial
