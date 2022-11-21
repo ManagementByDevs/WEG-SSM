@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.DemandaService;
-import net.weg.wegssm.model.service.UsuarioService;
 import net.weg.wegssm.util.DemandaUtil;
-import net.weg.wegssm.util.EscopoUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +26,6 @@ import java.util.List;
 public class DemandaController {
 
     private DemandaService demandaService;
-    private UsuarioService usuarioService;
 
     /**
      * Método GET para buscar todas as demandas
@@ -38,9 +35,21 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.findAll());
     }
 
+    /**
+     * Função principal para buscar demandas, retornando uma página com as demandas seguindo o filtro utilizado
+     * @param pageable - Objeto que contém as informações da páginação
+     * @param titulo - Título da demanda (usado na barra de pesquisa)
+     * @param solicitante - Solicitante da demanda (usado no modal de filtro)
+     * @param gerente - Gerente da demanda (usado no modal de filtro)
+     * @param forum - Fórum da demanda (usado no modal de filtro)
+     * @param departamento - Departamento da demanda (usado no modal de filtro)
+     * @param tamanho - Tamanho da demanda (usado no modal de filtro)
+     * @param status - Status da demanda (usado sempre quando é feita a busca)
+     * @return - Retorna uma página com as demandas encontradas
+     */
     @GetMapping("/page")
     public ResponseEntity<Page<Demanda>> findPage(
-            @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+            @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(required = false) String titulo,
             @RequestParam(required = false) Usuario solicitante,
             @RequestParam(required = false) Usuario gerente,
