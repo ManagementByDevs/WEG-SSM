@@ -49,6 +49,7 @@ public class ChatController {
         if (!chatService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este id.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(chatService.findById(id).get());
     }
 
@@ -66,12 +67,14 @@ public class ChatController {
 
         List<Usuario> usuarios = usuarioService.findByNomeStartsWith(titulo);
         List<Chat> chats = new ArrayList<>();
+
         for (Usuario user : usuarios) {
             List<Chat> chatAux = chatService.findByUsuario(user);
             for (Chat chat : chatAux) {
                 chats.add(chat);
             }
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(chats);
     }
 
@@ -89,12 +92,14 @@ public class ChatController {
 
         List<Usuario> usuarios = usuarioService.findByNomeStartsWith(titulo);
         List<Chat> chats = new ArrayList<>();
+
         for (Usuario user : usuarios) {
             List<Chat> chatAux = chatService.findBySolicitante(user);
             for (Chat chat : chatAux) {
                 chats.add(chat);
             }
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(chats);
     }
 
@@ -109,10 +114,12 @@ public class ChatController {
         if (!usuarioService.existsById(idUsuario)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
+
         Usuario usuario = usuarioService.findById(idUsuario).get();
         if (!chatService.existsByUsuario(usuario)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este usuário.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(chatService.findByUsuario(usuario));
     }
 
@@ -130,10 +137,12 @@ public class ChatController {
         if (!usuarioService.existsById(chatDto.getUsuario().getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
+
         Chat chat = new Chat();
         chat.setUsuarioBloqueado(false);
         chat.setVisibilidade(true);
         BeanUtils.copyProperties(chatDto, chat);
+
         return ResponseEntity.status(HttpStatus.OK).body(chatService.save(chat));
     }
 
@@ -153,6 +162,7 @@ public class ChatController {
         Chat chat = chatService.findById(id).get();
         chat.setVisibilidade(false);
         chatService.save(chat);
+
         return ResponseEntity.status(HttpStatus.OK).body(chat);
     }
 
@@ -169,6 +179,7 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum histórico com este id.");
         }
         chatService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("chat deletado com sucesso.");
     }
 

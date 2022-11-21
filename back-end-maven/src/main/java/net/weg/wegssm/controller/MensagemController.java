@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.Mensagem;
 import net.weg.wegssm.model.service.MensagemService;
 import net.weg.wegssm.util.MensagemUtil;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -23,6 +21,7 @@ public class MensagemController {
 
     /**
      * Método GET para buscar todas as mensagens
+     *
      * @return
      */
     @GetMapping
@@ -32,6 +31,7 @@ public class MensagemController {
 
     /**
      * Método GET para buscar uma mensagem através de um id específico
+     *
      * @param id
      * @return
      */
@@ -46,6 +46,7 @@ public class MensagemController {
 
     /**
      * Método POST para criar uma mensagem, enviando também uma lista de arquivos caso necessário
+     *
      * @param mensagemJSON
      * @param anexos
      * @return
@@ -56,11 +57,13 @@ public class MensagemController {
         Mensagem mensagem = mensagemUtil.convertJsonToModel(mensagemJSON);
 
         mensagem.setAnexos(anexos);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(mensagemService.save(mensagem));
     }
 
     /**
      * Método DELETE para deletar uma mensagem
+     *
      * @param id
      * @return
      */
@@ -71,6 +74,7 @@ public class MensagemController {
         }
 
         mensagemService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Mensagem deletada com sucesso.");
     }
 

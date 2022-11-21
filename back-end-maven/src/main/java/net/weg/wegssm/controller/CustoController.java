@@ -37,27 +37,18 @@ public class CustoController {
 
     /**
      * Método GET para buscar todos os custos através de um id
+     *
      * @param id
      * @return
      */
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
-//        if (!custoService.existsById(id)) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum custo com este id.");
-//        }
-//
-//        return ResponseEntity.status(HttpStatus.FOUND).body(custoService.findById(id).get());
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
+        if (!custoService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum custo com este id.");
+        }
 
-    /**
-     * Método GET para buscar todos os custos a partir de uma proposta
-     * @param proposta
-     * @return
-     */
-//    @GetMapping("/proposta/{proposta}")
-//    public ResponseEntity<List<Custo>> findByProposta(@PathVariable(value = "proposta") Proposta proposta) {
-//        return ResponseEntity.status(HttpStatus.FOUND).body(custoService.findByProposta(proposta));
-//    }
+        return ResponseEntity.status(HttpStatus.FOUND).body(custoService.findById(id).get());
+    }
 
     /**
      * Método POST para criar um novo custo
@@ -69,23 +60,26 @@ public class CustoController {
     public ResponseEntity<Object> save(@RequestBody @Valid CustoDTO custoDTO) {
         Custo custo = new Custo();
         BeanUtils.copyProperties(custoDTO, custo);
+
         return ResponseEntity.status(HttpStatus.OK).body(custoService.save(custo));
     }
 
     /**
      * Método DELETE para excluir um custo através de um id
+     *
      * @param id
      * @return
      */
-//    @Transactional
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
-//        if (!custoService.existsById(id)) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum custo com este id.");
-//        }
-//
-//        custoService.deleteById(id);
-//        return ResponseEntity.status(HttpStatus.OK).body("Custo deletado com sucesso.");
-//    }
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!custoService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum custo com este id.");
+        }
+
+        custoService.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Custo deletado com sucesso.");
+    }
 
 }
