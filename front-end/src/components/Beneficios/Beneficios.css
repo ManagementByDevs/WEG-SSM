@@ -1,0 +1,15 @@
+.css-jcfq8n-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input, .css-6v38sy-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 12px!important;
+}
+
+.css-hhbxku-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input, .css-5zr8qa-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input {
+    padding: 12px 12px 0px!important;
+}
+
+.css-1t0wquu-MuiFormControl-root {
+    margin-bottom: 0px!important;
+}
+
+.css-4266tj-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root, .css-1r8iqe0-MuiInputBase-root-MuiFilledInput-root-MuiSelect-root {
+    background-color: transparent!important;
+}
