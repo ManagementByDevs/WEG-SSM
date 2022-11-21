@@ -6,9 +6,14 @@ import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.dto.NotificacaoDTO;
 import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Notificacao;
+import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.TipoNotificacao;
 import net.weg.wegssm.model.service.NotificacaoService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -62,14 +67,30 @@ public class NotificacaoController {
     }
 
     /**
-     * Método GET para buscar notificações a partir de uma determinada data
-     * @param data
+     * Método GET para ordenar as notificacoes a partir da DATA, da mais recente para a mais antiga
+     *
+     * @param pageable
      * @return
      */
-//    @GetMapping("data/{data}")
-//    public ResponseEntity<List<Notificacao>> findByData(@PathVariable(value = "data") Date data) {
-//        return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByData(data));
-//    }
+    @GetMapping("/ordenarDataRecente")
+    public ResponseEntity<Page<Notificacao>> findAllDataRecente(@PageableDefault(
+            page = 0, size = 20, sort = "data", direction = Sort.Direction.DESC
+    ) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(notificacaoService.findAll(pageable));
+    }
+
+    /**
+     * Método GET para ordenar as notificações a partir da DATA, da mais antiga para a mais recente
+     *
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/ordenarDataAntiga")
+    public ResponseEntity<Page<Notificacao>> findAllDataAntiga(@PageableDefault(
+            page = 0, size = 20, sort = "data", direction = Sort.Direction.ASC
+    ) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(notificacaoService.findAll(pageable));
+    }
 
     /**
      * Método POST para criar uma notificação

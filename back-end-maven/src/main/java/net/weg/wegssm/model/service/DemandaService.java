@@ -57,7 +57,7 @@ public class DemandaService {
     public void deleteById(Long id) {
         demandaRepository.deleteById(id);
     }
-
+    
     public Page<Demanda> findByStatusAndTituloAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
         return demandaRepository.findByStatusAndTituloAndGerenteAndForumAndDepartamentoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable);
     }
@@ -309,4 +309,5 @@ public class DemandaService {
     public Page<Demanda> findByStatusAndSolicitante(Status status, Usuario solicitante, Pageable pageable) {
         return demandaRepository.findByStatusAndSolicitante(status, solicitante, pageable);
     }
+
 }

@@ -20,22 +20,6 @@ public interface AtaRepository extends JpaRepository<Ata, Long> {
     Optional<Ata> findByNumeroSequencial(String numeroSequencial);
 
     /**
-     * Método para listar a ata pela data
-     *
-     * @param data
-     * @return
-     */
-    List<Ata> findByInicioDataReuniao(Date data);
-
-    /**
-     * Método para listar a ata pela data de fim da sua reunião
-     *
-     * @param data
-     * @return
-     */
-    List<Ata> findByFimDataReuniao(Date data);
-
-    /**
      * Método que verifica se existe uma ata com o número sequencial passado por parâmetro
      *
      * @param numeroSequencial

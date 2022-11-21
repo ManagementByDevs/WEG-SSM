@@ -5,6 +5,8 @@ import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.DemandaService;
 import net.weg.wegssm.model.service.UsuarioService;
+import net.weg.wegssm.util.DemandaUtil;
+import net.weg.wegssm.util.EscopoUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -490,10 +493,13 @@ public class DemandaController {
      * Método POST para criar uma demanda
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid DemandaDTO demandaDto) {
-        Demanda demanda = new Demanda();
+    public ResponseEntity<Object> save(@RequestParam("anexos")List<MultipartFile> files, @RequestParam("demanda") String demandaJSON) {
+        DemandaUtil demandaUtil = new DemandaUtil();
+        Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
+
+        demanda.setAnexos(files);
         demanda.setVisibilidade(true);
-        BeanUtils.copyProperties(demandaDto, demanda);
+
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
