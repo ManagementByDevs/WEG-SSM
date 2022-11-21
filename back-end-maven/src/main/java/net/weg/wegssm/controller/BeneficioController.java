@@ -54,6 +54,7 @@ public class BeneficioController {
 
         Beneficio beneficio = new Beneficio();
         BeanUtils.copyProperties(beneficioDTO, beneficio);
+
         return ResponseEntity.status(HttpStatus.OK).body(beneficioService.save(beneficio));
     }
 
@@ -65,6 +66,7 @@ public class BeneficioController {
         }
 
         beneficioService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Benefício deletado com sucesso.");
     }
 

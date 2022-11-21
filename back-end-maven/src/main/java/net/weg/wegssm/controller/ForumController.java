@@ -45,6 +45,7 @@ public class ForumController {
         if (!forumService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum fórum com este id.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(forumService.findById(id).get());
     }
 
@@ -63,6 +64,7 @@ public class ForumController {
         Forum forum = new Forum();
         forum.setVisibilidade(true);
         BeanUtils.copyProperties(forumDTO, forum);
+
         return ResponseEntity.status(HttpStatus.OK).body(forumService.save(forum));
     }
 
@@ -87,6 +89,7 @@ public class ForumController {
 
         Forum forum = forumOptional.get();
         BeanUtils.copyProperties(forumDTO, forum, "id");
+
         return ResponseEntity.status(HttpStatus.OK).body(forumService.save(forum));
     }
 
@@ -106,6 +109,7 @@ public class ForumController {
         Forum forum = forumService.findById(id).get();
         forum.setVisibilidade(false);
         forumService.save(forum);
+
         return ResponseEntity.status(HttpStatus.OK).body(forum);
     }
 
@@ -123,6 +127,7 @@ public class ForumController {
         }
 
         forumService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Fórum deletado com sucesso.");
     }
 

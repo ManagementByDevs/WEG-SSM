@@ -76,6 +76,7 @@ public class NotificacaoController {
     public ResponseEntity<Page<Notificacao>> findAllDataRecente(@PageableDefault(
             page = 0, size = 20, sort = "data", direction = Sort.Direction.DESC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(notificacaoService.findAll(pageable));
     }
 
@@ -89,6 +90,7 @@ public class NotificacaoController {
     public ResponseEntity<Page<Notificacao>> findAllDataAntiga(@PageableDefault(
             page = 0, size = 20, sort = "data", direction = Sort.Direction.ASC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(notificacaoService.findAll(pageable));
     }
 
@@ -102,6 +104,7 @@ public class NotificacaoController {
     public ResponseEntity<Object> save(@RequestBody NotificacaoDTO notificacaoDTO) {
         Notificacao notificcao = new Notificacao();
         BeanUtils.copyProperties(notificacaoDTO, notificcao);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(notificacaoService.save(notificcao));
     }
 
@@ -118,6 +121,7 @@ public class NotificacaoController {
         }
 
         notificacaoService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Notificação excluída com sucesso.");
     }
 

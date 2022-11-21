@@ -44,6 +44,7 @@ public class UsuarioController {
         if (!usuarioService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(usuarioService.findById(id).get());
     }
 
@@ -73,6 +74,7 @@ public class UsuarioController {
         Usuario usuario = new Usuario();
         usuario.setVisibilidade(true);
         BeanUtils.copyProperties(usuarioDTO, usuario);
+
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
 
@@ -97,6 +99,7 @@ public class UsuarioController {
 
         Usuario usuario = usuarioOptional.get();
         BeanUtils.copyProperties(usuarioDTO, usuario, "id");
+
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
 
@@ -116,6 +119,7 @@ public class UsuarioController {
         Usuario usuario = usuarioService.findById(id).get();
         usuario.setVisibilidade(false);
         usuarioService.save(usuario);
+
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
@@ -127,6 +131,7 @@ public class UsuarioController {
         }
 
         usuarioService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado com sucesso.");
     }
 

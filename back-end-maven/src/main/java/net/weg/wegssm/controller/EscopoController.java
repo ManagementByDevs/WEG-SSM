@@ -48,6 +48,7 @@ public class EscopoController {
         if (!escopoService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findById(id).get());
     }
 
@@ -62,6 +63,7 @@ public class EscopoController {
         if (!escopoService.existsByTitle(titulo)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este título.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findByTitle(titulo).get());
     }
 
@@ -76,6 +78,7 @@ public class EscopoController {
         if (!escopoService.existsByPercentagem(porcentagem)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com esta porcentagem.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findByPercentagem(porcentagem).get());
     }
 
@@ -94,6 +97,7 @@ public class EscopoController {
         if (!escopoService.existsByUsuario(usuario)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este usuário.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findByUsuario(usuario));
     }
 
@@ -136,6 +140,8 @@ public class EscopoController {
 
         Escopo escopo = escopoOptional.get();
         BeanUtils.copyProperties(escopoDTO, escopo, "id");
+
+
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
     }
 
@@ -155,6 +161,7 @@ public class EscopoController {
         Escopo escopo = escopoService.findById(id).get();
         escopo.setVisibilidade(false);
         escopoService.save(escopo);
+
         return ResponseEntity.status(HttpStatus.OK).body(escopo);
     }
 
@@ -171,6 +178,7 @@ public class EscopoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
         }
         escopoService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("escopo deletado com sucesso.");
     }
 

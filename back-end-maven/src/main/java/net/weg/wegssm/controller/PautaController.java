@@ -50,6 +50,7 @@ public class PautaController {
         if (!pautaService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pauta com este id.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findById(id).get());
     }
 
@@ -64,6 +65,7 @@ public class PautaController {
         if (!pautaService.existsByNumeroSequencial(numeroSequencial)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pauta com este numero sequencial.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findByNumeroSequencial(numeroSequencial).get());
     }
 
@@ -77,6 +79,7 @@ public class PautaController {
     public ResponseEntity<Page<Pauta>> findAllDataInicioRecente(@PageableDefault(
             page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.DESC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
     }
 
@@ -90,6 +93,7 @@ public class PautaController {
     public ResponseEntity<Page<Pauta>> findAllDataInicioAntiga(@PageableDefault(
             page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.ASC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
     }
 
@@ -103,6 +107,7 @@ public class PautaController {
     public ResponseEntity<Page<Pauta>> findAllDataFimRecente(@PageableDefault(
             page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.DESC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
     }
 
@@ -116,6 +121,7 @@ public class PautaController {
     public ResponseEntity<Page<Pauta>> findAllDataFimAntiga(@PageableDefault(
             page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.ASC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findAll(pageable));
     }
 
@@ -130,6 +136,7 @@ public class PautaController {
         Pauta pauta = new Pauta();
         pauta.setVisibilidade(true);
         BeanUtils.copyProperties(pautaDto, pauta);
+
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
     }
 
@@ -150,6 +157,7 @@ public class PautaController {
 
         Pauta pauta = pautaOptinal.get();
         BeanUtils.copyProperties(pautaDto, pauta, "id");
+
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
     }
 
@@ -166,6 +174,7 @@ public class PautaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma pauta com este id.");
         }
         pautaService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Pauta deletada com sucesso.");
     }
 
@@ -185,6 +194,7 @@ public class PautaController {
         Pauta pauta = pautaService.findById(id).get();
         pauta.setVisibilidade(false);
         pautaService.save(pauta);
+
         return ResponseEntity.status(HttpStatus.OK).body(pauta);
     }
 
