@@ -1,19 +1,18 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Paper, Typography, Input, Tab, Box, TextField } from '@mui/material';
+import { Button, Tab, Box } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
-import Header from '../../components/Header/Header';
+import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
 import Demanda from '../../components/Demanda/Demanda';
 
 import FontConfig from '../../service/FontConfig';
 import ColorModeContext from '../../service/TemaContext';
-import { grid } from '@mui/system';
 
 const Home = () => {
   // Desestruturação de objeto em duas variáveis:
@@ -28,14 +27,12 @@ const Home = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
+
   const navigate = useNavigate();
 
-  
   return (
     // Container pai
-    <Box sx={{ backgroundColor: 'background.default', height: '100vh', width: '100vw' }}>
-      <Header />
+    <FundoComHeader>
       <Button variant="contained" onClick={toggleColorMode}>Contained</Button>
       {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
@@ -102,25 +99,25 @@ const Home = () => {
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
                 <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Kenzo", tela: "meuDepartamento"}} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Felipe", tela: "meuDepartamento"}} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Matheus", tela: "meuDepartamento"}} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "meuDepartamento"}} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Kenzo", tela: "meuDepartamento" }} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Felipe", tela: "meuDepartamento" }} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Matheus", tela: "meuDepartamento" }} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "meuDepartamento" }} />
                 </Box>
               </TabPanel>
               <TabPanel sx={{ padding: 0 }} value="2">
                 <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
-                  <Demanda demanda={{ status: "Aguardando edição", dono: "Thiago", tela: "minhasDemandas"}} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "minhasDemandas"}} />
-                  <Demanda demanda={{ status: "Aprovada", dono: "Thiago", tela: "minhasDemandas"}} />
-                  <Demanda demanda={{ status: "Reprovada", dono: "Thiago", tela: "minhasDemandas"}} />
+                  <Demanda demanda={{ status: "Aguardando edição", dono: "Thiago", tela: "minhasDemandas" }} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "minhasDemandas" }} />
+                  <Demanda demanda={{ status: "Aprovada", dono: "Thiago", tela: "minhasDemandas" }} />
+                  <Demanda demanda={{ status: "Reprovada", dono: "Thiago", tela: "minhasDemandas" }} />
                 </Box>
               </TabPanel>
             </Box>
           </TabContext>
         </Box>
       </Box>
-    </Box>
+    </FundoComHeader>
   )
 }
 

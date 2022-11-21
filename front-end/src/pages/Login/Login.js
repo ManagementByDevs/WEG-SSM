@@ -1,8 +1,8 @@
 import { Button, Paper, TextField, InputAdornment, FormControlLabel, Checkbox, Typography, IconButton } from '@mui/material'
 import { React, useState } from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import Header from '../../components/Header/Header';
+import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
 
 import LogoWeg from "../../assets/logo-weg.png";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -23,10 +23,7 @@ const Login = (props) => {
 
     return (
         // Div Principal com width preenchendo a tela
-        <Paper square sx={{ height: '100vh', width: '100vw' }}>
-            {/* Componente Header */}
-            <Header />
-
+        <FundoComHeader>
             {/* Div principal abaixo do Header */}
             <Paper sx={{ height: '91%' }} className='flex justify-center items-center'>
                 {/* Div Principal com as opções do login */}
@@ -77,7 +74,7 @@ const Login = (props) => {
                     </div>
                 </Paper>
             </Paper>
-        </Paper>
+        </FundoComHeader>
     )
 }
 
