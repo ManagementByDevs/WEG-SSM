@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import net.weg.wegssm.model.entities.*;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
 
@@ -32,4 +36,16 @@ public class PropostaDTO {
     private Ata ata;
     private List<Anexo> anexo;
 
+    private String problema;
+    private String proposta;
+    private String frequencia;
+    private String tamanho;
+    private String secaoTI;
+    private Bu buSolicitante;
+    private List<Bu> busBeneficiadas;
+    private Usuario solicitante;
+    private Usuario gerente;
+    private Usuario analista;
+    private Forum forum;
+    private Departamento departamento;
 }

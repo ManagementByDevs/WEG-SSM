@@ -39,12 +39,6 @@ public class Demanda {
     private String tamanho;
 
     @Column(length = 45)
-    private String buSolicitante;
-
-    @Column(length = 45)
-    private String busBeneficiadas;
-
-    @Column(length = 45)
     private String secaoTI;
 
     @Column(length = 200)
@@ -53,10 +47,18 @@ public class Demanda {
     @Column(nullable = false)
     private Status status;
 
-    @Column
-    private Boolean visibilidade;
-
     // foreign keys
+
+    @ManyToOne
+    @JoinColumn(name = "bu_solicitante")
+    private Bu buSolicitante;
+
+    @ManyToMany
+    @JoinTable(
+            name = "demanda_bu",
+            joinColumns = @JoinColumn(name = "demanda_id"),
+            inverseJoinColumns = @JoinColumn(name = "bu_id"))
+    private List<Bu> busBeneficiadas;
 
     @ManyToOne
     @JoinColumn(name = "solicitante_id")
