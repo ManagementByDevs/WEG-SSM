@@ -82,58 +82,6 @@ public class PropostaController {
 //    }
 
     /**
-     * Método GET para ordenar as propostas por número ppm de forma crescente
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarPPMCrescente")
-    public ResponseEntity<Page<Proposta>> findAllPPMCrescente(@PageableDefault(
-            page = 0, size = 20, sort = "codigoPPM", direction = Sort.Direction.ASC
-    ) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(propostaService.findAll(pageable));
-    }
-
-    /**
-     * Método GET para ordenar as propostas por número ppm de forma decrescente
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarPPMDecrescente")
-    public ResponseEntity<Page<Proposta>> findAllPPMDecrescente(@PageableDefault(
-            page = 0, size = 20, sort = "codigoPPM", direction = Sort.Direction.DESC
-    ) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(propostaService.findAll(pageable));
-    }
-
-    /**
-     * Método GET para ordenar as propostas pelo título de forma crescente ( A-Z )
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarTituloAZ")
-    public ResponseEntity<Page<Proposta>> findAllTituloCrescente(@PageableDefault(
-            page = 0, size = 20, sort = "titulo", direction = Sort.Direction.ASC
-    ) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(propostaService.findAll(pageable));
-    }
-
-    /**
-     * Método GET para ordenar as propostas pelo título de forma decrescente ( Z-A )
-     *
-     * @param pageable
-     * @return
-     */
-    @GetMapping("/ordenarTituloZA")
-    public ResponseEntity<Page<Proposta>> findAllTituloDecrescente(@PageableDefault(
-            page = 0, size = 20, sort = "titulo", direction = Sort.Direction.DESC
-    ) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(propostaService.findAll(pageable));
-    }
-
-    /**
      * Método POST para criar uma proposta no banco de dados
      *
      * @param propostaJSON
@@ -166,6 +114,7 @@ public class PropostaController {
         Proposta proposta = propostaService.findById(id).get();
         proposta.setVisibilidade(false);
         propostaService.save(proposta);
+
         return ResponseEntity.status(HttpStatus.OK).body(proposta);
     }
 
@@ -183,6 +132,7 @@ public class PropostaController {
         }
 
         propostaService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Proposta deletada com sucesso.");
     }
 

@@ -45,6 +45,7 @@ public class HistoricoController {
         if (!historicoService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum historico com este id.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(historicoService.findById(id).get());
     }
 
@@ -63,6 +64,7 @@ public class HistoricoController {
         if (!historicoService.existsByAutor(autor)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum historico com este usuário.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(historicoService.findByAutor(autor).get());
     }
 
@@ -80,6 +82,7 @@ public class HistoricoController {
         Historico historico = new Historico();
         historico.setVisibilidade(true);
         BeanUtils.copyProperties(historicoDto, historico);
+
         return ResponseEntity.status(HttpStatus.OK).body(historicoService.save(historico));
     }
 
@@ -99,6 +102,7 @@ public class HistoricoController {
         Historico historico = historicoService.findById(id).get();
         historico.setVisibilidade(false);
         historicoService.save(historico);
+
         return ResponseEntity.status(HttpStatus.OK).body(historico);
     }
 
@@ -115,6 +119,7 @@ public class HistoricoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum histórico com este id.");
         }
         historicoService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("histórico deletado com sucesso.");
     }
 

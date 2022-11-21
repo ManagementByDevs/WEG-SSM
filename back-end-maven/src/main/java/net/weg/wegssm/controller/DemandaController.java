@@ -479,27 +479,10 @@ public class DemandaController {
     }
 
     /**
-     * Método GET para ordenar as demandas de Z-A (Decrescente)
-     */
-    @GetMapping("/ordenarTituloZA")
-    public ResponseEntity<Page<Demanda>> findAllTituloDecrescente(@PageableDefault(
-            page = 0, size = 20, sort = "titulo", direction = Sort.Direction.DESC
-    ) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findAll(pageable));
-    }
-
-    /**
-     * Método GET para ordenar as demandas de A-Z (Crescente)
-     */
-    @GetMapping("/ordenarTituloAZ")
-    public ResponseEntity<Page<Demanda>> findAllTituloCrescente(@PageableDefault(
-            page = 0, size = 20, sort = "titulo", direction = Sort.Direction.ASC
-    ) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findAll(pageable));
-    }
-
-    /**
-     * Método POST para criar uma demanda
+     * Método POST para criar uma demanda adicionado um ou vários anexos
+     * @param files
+     * @param demandaJSON
+     * @return
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestParam("anexos")List<MultipartFile> files, @RequestParam("demanda") String demandaJSON) {

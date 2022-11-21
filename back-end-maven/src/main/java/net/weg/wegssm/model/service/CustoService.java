@@ -17,11 +17,11 @@ public class CustoService {
         this.custoRepository = custoRepository;
     }
 
-    public List<Custo> findAll(){
+    public List<Custo> findAll() {
         return custoRepository.findAll();
     }
 
-    public Optional<Custo> findById(Long id){
+    public Optional<Custo> findById(Long id) {
         return custoRepository.findById(id);
     }
 
@@ -33,7 +33,11 @@ public class CustoService {
         return custoRepository.save(entity);
     }
 
-    public void deleteById(Long id){
+    public Boolean existsById(Long id) {
+        return custoRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
         custoRepository.deleteById(id);
     }
 

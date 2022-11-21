@@ -51,6 +51,7 @@ public class AtaController {
         if (!ataService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma ata com este código.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findById(id).get());
     }
 
@@ -66,11 +67,13 @@ public class AtaController {
         if (ataOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma ata com este número sequencial.");
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(ataOptional.get());
     }
 
     /**
      * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais antiga para a mais recente
+     *
      * @param pageable
      * @return
      */
@@ -78,11 +81,13 @@ public class AtaController {
     public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoAntiga(@PageableDefault(
             page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.ASC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
 
     /**
      * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais recente para a mais antiga
+     *
      * @param pageable
      * @return
      */
@@ -90,11 +95,13 @@ public class AtaController {
     public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoRecente(@PageableDefault(
             page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.DESC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
 
     /**
      * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais antiga para a mais recente
+     *
      * @param pageable
      * @return
      */
@@ -102,11 +109,13 @@ public class AtaController {
     public ResponseEntity<Page<Ata>> findAllFimDataReuniaoAntiga(@PageableDefault(
             page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.ASC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
 
     /**
      * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais recente para a mais antiga
+     *
      * @param pageable
      * @return
      */
@@ -114,6 +123,7 @@ public class AtaController {
     public ResponseEntity<Page<Ata>> findAllFimDataReuniaoRecente(@PageableDefault(
             page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.DESC
     ) Pageable pageable) {
+
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
 
@@ -133,6 +143,7 @@ public class AtaController {
         Ata ata = new Ata();
         ata.setVisibilidade(true);
         BeanUtils.copyProperties(ataDto, ata);
+
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));
     }
 
@@ -152,6 +163,7 @@ public class AtaController {
         Ata ata = ataService.findById(id).get();
         ata.setVisibilidade(false);
         ataService.save(ata);
+
         return ResponseEntity.status(HttpStatus.OK).body(ata);
     }
 
@@ -169,6 +181,7 @@ public class AtaController {
         }
 
         ataService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Ata deletada com sucesso.");
     }
 

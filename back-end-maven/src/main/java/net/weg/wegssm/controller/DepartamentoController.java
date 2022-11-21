@@ -62,6 +62,7 @@ public class DepartamentoController {
         Departamento departamento = new Departamento();
         departamento.setVisibilidade(true);
         BeanUtils.copyProperties(departamentoDTO, departamento);
+
         return ResponseEntity.status(HttpStatus.OK).body(departamentoService.save(departamento));
     }
 
@@ -86,6 +87,7 @@ public class DepartamentoController {
 
         Departamento departamento = departamentoOptional.get();
         BeanUtils.copyProperties(departamentoDTO, departamento, "id");
+
         return ResponseEntity.status(HttpStatus.OK).body(departamentoService.save(departamento));
     }
 
@@ -105,6 +107,7 @@ public class DepartamentoController {
         Departamento departamento = departamentoService.findById(id).get();
         departamento.setVisibilidade(false);
         departamentoService.save(departamento);
+
         return ResponseEntity.status(HttpStatus.OK).body(departamento);
     }
 
@@ -122,6 +125,7 @@ public class DepartamentoController {
         }
 
         departamentoService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Departamento excluído com sucesso.");
     }
 
