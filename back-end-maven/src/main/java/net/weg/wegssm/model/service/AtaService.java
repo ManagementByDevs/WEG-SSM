@@ -27,7 +27,7 @@ public class AtaService {
         return ataRepository.findByInicioDataReuniao(data);
     }
 
-    public List<Ata> findByDataFimReuniao(Date data){
+    public List<Ata> findByDataFimReuniao(java.sql.Date data){
         return ataRepository.findByFimDataReuniao(data);
     }
 

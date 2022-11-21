@@ -139,4 +139,5 @@ public class DemandaService {
 //    public List<Demanda> findByStatusAndTituloAndGerenteAndDepartamentoAndNumeroAndSolicitante(Status status, String titulo, Usuario gerente, Departamento departamento, Long numero, Usuario solicitante, Pageable pageable) {
 //        return demandaRepository.findByStatusAndTituloAndGerenteAndDepartamentoAndNumeroAndSolicitante(status, titulo, gerente, departamento, numero, solicitante, pageable);
 //    }
+
 }

@@ -1,9 +1,11 @@
 package net.weg.wegssm.model.entities;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -76,8 +78,27 @@ public class Demanda {
     @JoinColumn(name = "departamento_id")
     private Departamento departamento;
 
-    @OneToMany
-    @JoinColumn(name = "anexo_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_demanda")
     private List<Anexo> anexo;
+
+    // Cadastro de anexos
+
+    /**
+     * Função para adicionar anexos em uma demanda
+     *
+     * @param files
+     */
+    public void setAnexos(List<MultipartFile> files) {
+        List<Anexo> listaAnexos = new ArrayList<>();
+        try {
+            for (MultipartFile file : files) {
+                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+            }
+            this.anexo = listaAnexos;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
 }

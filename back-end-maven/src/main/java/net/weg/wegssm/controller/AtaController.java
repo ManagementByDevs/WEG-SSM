@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,13 +82,15 @@ public class AtaController {
      * @return
      * @throws ParseException
      */
-    @GetMapping("dataFimReuniao/{dataFimReuniao}")
+    @GetMapping("/dataFimReuniao/{dataFimReuniao}")
     public ResponseEntity<List<Ata>> findByDataFimReuniao(@PathVariable(value = "dataFimReuniao") String data) throws ParseException {
 
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-        Date dataFormatada = formato.parse(data);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date dataFimReuniao = new Date(format.parse(data).getTime());
 
-        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByDataFimReuniao(dataFormatada));
+        System.out.println("Data formatada: " + dataFimReuniao);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ataService.findByDataFimReuniao(dataFimReuniao));
     }
 
     /**

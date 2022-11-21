@@ -33,7 +33,7 @@ public interface AtaRepository extends JpaRepository<Ata, Long> {
      * @param data
      * @return
      */
-    List<Ata> findByFimDataReuniao(Date data);
+    List<Ata> findByFimDataReuniao(java.sql.Date data);
 
     /**
      * Método que verifica se existe uma ata com o número sequencial passado por parâmetro

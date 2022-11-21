@@ -19,7 +19,7 @@ public class DemandaDTO {
     private String secaoTI;
     private String motivoRecusa;
     private Status status;
-    private Usuario usuario;
+    private Usuario solicitante;
     private Forum forum;
     private Departamento departamento;
     private List<Anexo> anexo;
