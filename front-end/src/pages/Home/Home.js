@@ -13,6 +13,7 @@ import Demanda from '../../components/Demanda/Demanda';
 
 import FontConfig from '../../service/FontConfig';
 import ColorModeContext from '../../service/TemaContext';
+import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
 
 const Home = () => {
   // Desestruturação de objeto em duas variáveis:
@@ -34,6 +35,7 @@ const Home = () => {
     // Container pai
     <FundoComHeader>
       <Button variant="contained" onClick={toggleColorMode}>Contained</Button>
+      <ModalConfirmacao></ModalConfirmacao>
       {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
