@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./Beneficios.css";
 
 import { Box, Select, FormControl, InputLabel, MenuItem } from '@mui/material'
@@ -6,19 +6,39 @@ import FontConfig from "../../service/FontConfig";
 import InputComLabel from '../InputComLabel/InputComLabel';
 
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { margin, positions } from "@mui/system";
 
-const Beneficios = () => {
-    const [beneficio, setBeneficio] = React.useState('');
-    const [moeda, setMoeda] = React.useState('');
+const Beneficios = (props) => {
+    const [dadosBeneficio, setDadosBeneficio] = useState({id:props.dados.id, tipo:'', valor:'', moeda:'', memoriaCalculo:''});
 
     const handleChange = (event) => {
-        setBeneficio(event.target.value);
+        setDadosBeneficio({...dadosBeneficio, tipo:event.target.value});
+    };
+
+    const handleChangeValor = (event) => {
+        setDadosBeneficio({...dadosBeneficio, valor:event.target.value});
     };
 
     const handleChangeMoeda = (event) => {
-        setMoeda(event.target.value);
+        setDadosBeneficio({...dadosBeneficio, moeda:event.target.value});
     };
+
+    const handleChangeMemoriaCalculo = (event) => {
+        setDadosBeneficio({...dadosBeneficio, memoriaCalculo:event.target.value});
+    };
+
+    useEffect(() => {
+        props.save(dadosBeneficio);
+    }, [dadosBeneficio]);
+
+    function salvarValorMensal(texto) {
+        console.log("texto benefício: ", texto);
+        setDadosBeneficio({...dadosBeneficio, valor:texto});
+    }
+
+    function salvarMemoriaCalculo(texto) {
+        console.log("texto benefício: ", texto);
+        setDadosBeneficio({...dadosBeneficio, memoriaCalculo:texto});
+    }
 
     return (
         <Box className='flex rounded h-40 border-2 drop-shadow-md' sx={{ backgroundColor: 'background.default', padding: '1%', position:'relative', minWidth: '725px'}}>
@@ -29,7 +49,7 @@ const Beneficios = () => {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={beneficio}
+                            value={dadosBeneficio.tipo}
                             onChange={handleChange}
                             label="Beneficio"
                         >
@@ -40,19 +60,19 @@ const Beneficios = () => {
                     </FormControl>
                 </Box>
                 {
-                    beneficio === "Real" || beneficio === "Potencial" ?
+                    dadosBeneficio.tipo === "Real" || dadosBeneficio.tipo === "Potencial" ?
                         <Box className="flex items-end" sx={{minWidth: '275px'}}>
                             <Box className="flex items-end" sx={{ width: '92%', margin: '3% 1% 1% 1%' }}>
                                 <Box className="flex items-end" sx={{ width: '100%' }}>
                                     <Box sx={{ width: '40%'}}>
-                                        <InputComLabel component='input' label="Valor Mensal:" placeholder='Ex: 1000,00' fontConfig={FontConfig.default} />
+                                        <InputComLabel saveInputValue={salvarValorMensal} component='input' label="Valor Mensal:" placeholder='Ex: 1000,00' fontConfig={FontConfig.default} value={dadosBeneficio.valor}  onChange={handleChangeValor}/>
                                     </Box>
                                     <FormControl variant="filled" sx={{ margin: '0 0 0 10px', minWidth: '95px' }}>
                                         <InputLabel id="demo-simple-select-label" sx={{ margin: '-10px 0 0 0' }}>Moeda</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-filled-label"
                                             id="demo-simple-select-filled"
-                                            value={moeda}
+                                            value={dadosBeneficio.moeda}
                                             onChange={handleChangeMoeda}
                                         >
                                             <MenuItem value={"Real"}>BR</MenuItem>
@@ -67,9 +87,9 @@ const Beneficios = () => {
                 }
             </Box>
             {
-                beneficio === "Real" || beneficio === "Potencial" || beneficio === "Qualitativo"?
+                dadosBeneficio.tipo === "Real" || dadosBeneficio.tipo === "Potencial" || dadosBeneficio.tipo === "Qualitativo"?
                     <Box className="flex items-end" sx={{ width: '65%'}}>
-                        <InputComLabel component='textarea' label="Memória de cálculo:" placeholder='Digite a memória de cálculo...' fontConfig={FontConfig.default} rows="4" sx={{width:'100%'}}/>
+                        <InputComLabel saveInputValue={salvarMemoriaCalculo} component='textarea' label="Memória de cálculo:" placeholder='Digite a memória de cálculo...' fontConfig={FontConfig.default} rows="4" sx={{width:'100%'}} value={dadosBeneficio.memoriaCalculo}  onChange={handleChangeMemoriaCalculo}/>
                     </Box>
                     : null
             }

@@ -1,13 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Box, Button } from '@mui/material'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import Beneficios from '../Beneficios/Beneficios';
 
 const FormularioBeneficiosDemanda = () => {
+  const [beneficios, setBeneficios] = useState([]);
 
   function adicionarBeneficio() {
-    alert('Adicionar beneficio')
+    setBeneficios([...beneficios, {id:beneficios.length+1, tipo:'', valor:'', moeda:'', memoriaCalculo:''}]);
+  }
+
+  function salvarDados(dados) {
+    for(let beneficio of beneficios) {
+      if(beneficio.id === dados.id) {
+        beneficio.tipo = dados.tipo;
+        beneficio.valor = dados.valor;
+        beneficio.moeda = dados.moeda;
+        beneficio.memoriaCalculo = dados.memoriaCalculo;
+      }
+    }
+    console.log(dados);
+    console.log("cleitoom", beneficios);
   }
 
   return (
@@ -18,7 +32,11 @@ const FormularioBeneficiosDemanda = () => {
           <AddOutlinedIcon />
         </Button>
         <Box className='flex flex-col justify-evenly' sx={{marginTop:'3%'}}>
-          <Beneficios />
+          {
+            beneficios.map((beneficio, index) => {
+              return <Beneficios key={index} save={salvarDados} dados={beneficio}/>;
+            })
+          }
         </Box>
       </Box>
     </Box>
