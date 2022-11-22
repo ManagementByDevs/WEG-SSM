@@ -31,13 +31,15 @@ const Beneficios = (props) => {
     }, [dadosBeneficio]);
 
     function salvarValorMensal(texto) {
-        console.log("texto benefício: ", texto);
         setDadosBeneficio({...dadosBeneficio, valor:texto});
     }
 
     function salvarMemoriaCalculo(texto) {
-        console.log("texto benefício: ", texto);
         setDadosBeneficio({...dadosBeneficio, memoriaCalculo:texto});
+    }
+
+    function removerComponente() {
+        props.removerBeneficio(props.dados.id);
     }
 
     return (
@@ -94,7 +96,7 @@ const Beneficios = (props) => {
                     : null
             }
             <Box className="flex flex-col justify-end items-end" sx={{position: 'absolute', bottom: '5px', right: '5px'}}>
-                <DeleteOutlineOutlinedIcon className="delay-120 hover:scale-110 duration-300" sx={{ color: 'primary.main', cursor: 'pointer', fontSize: '30px' }} />
+                <DeleteOutlineOutlinedIcon className="delay-120 hover:scale-110 duration-300" sx={{ color: 'icon.main', cursor: 'pointer', fontSize: '30px' }} onClick={removerComponente}/>
             </Box>
         </Box>
     )

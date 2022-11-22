@@ -92,7 +92,7 @@ const UserModal = () => {
                     </MenuItem>
 
                     {/* Link para deslogar do sistema */}
-                    <Typography className='px-4 pt-1.5 ' color={'primary.main'} variant="body2" fontSize={FontConfig.medium} align="right" sx={{ fontWeight: 600 }}>
+                    <Typography className='px-4 pt-1.5 ' color={'icon.main'} variant="body2" fontSize={FontConfig.medium} align="right" sx={{ fontWeight: 600 }}>
                         <Link to={"/login"} >
                             Sair
                         </Link>
