@@ -65,7 +65,56 @@ public class Proposta {
     @Column
     private Boolean visibilidade;
 
-    // Foreign keys
+    @Column(nullable = false, length = 50)
+    private String titulo;
+
+    @Column(nullable = false, length = 200)
+    private String problema;
+
+    @Column(nullable = false, length = 200)
+    private String proposta;
+
+    @Column(nullable = false, length = 30)
+    private String frequencia;
+
+    @Column(nullable = false, length = 20)
+    private String tamanho;
+
+    @Column(nullable = false, length = 45)
+    private String secaoTI;
+
+    // foreign keys
+
+    @ManyToOne
+    @JoinColumn(name = "bu_solicitante")
+    private Bu buSolicitante;
+
+    @ManyToMany
+    @JoinTable(
+            name = "demanda_bu",
+            joinColumns = @JoinColumn(name = "demanda_id"),
+            inverseJoinColumns = @JoinColumn(name = "bu_id"))
+    private List<Bu> busBeneficiadas;
+
+    @ManyToOne
+    @JoinColumn(name = "solicitante_id")
+    private Usuario solicitante;
+
+    @ManyToOne
+    @JoinColumn(name = "gerente_id")
+    private Usuario gerente;
+
+    @ManyToOne
+    @JoinColumn(name = "analista_id")
+    private Usuario analista;
+
+    @ManyToOne
+    @JoinColumn(name = "forum_id")
+    private Forum forum;
+
+    @ManyToOne
+    @JoinColumn(name = "departamento_id")
+    private Departamento departamento;
 
     @OneToMany
     @JoinColumn(name = "custo_id")
@@ -93,8 +142,6 @@ public class Proposta {
 
     /**
      * Função para adicionar anexos em uma proposta
-     *
-     * @param files
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();

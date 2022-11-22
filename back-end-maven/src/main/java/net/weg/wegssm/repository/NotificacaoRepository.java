@@ -19,11 +19,4 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
      */
     List<Notificacao> findByTipoNotificacao(TipoNotificacao tipoNotificacao);
 
-    /**
-     * Método para listar todas as notificações a partir de uma data
-     * @param data
-     * @return
-     */
-//    List<Notificacao> findByData(Date data);
-
 }

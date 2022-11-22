@@ -18,22 +18,6 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
     Boolean existsByNumeroSequencial(Long numeroSequencial);
 
     /**
-     * Método para retornar se existe uma pauta com a data de fim passada por parâmetro
-     *
-     * @param fimDataReuniao
-     * @return
-     */
-    Boolean existsByFimDataReuniao(Date fimDataReuniao);
-
-    /**
-     * Método para retornar se existe uma pauta com a data de inicio passada por parâmetro
-     *
-     * @param inicioDataReuniao
-     * @return
-     */
-    Boolean existsByInicioDataReuniao(Date inicioDataReuniao);
-
-    /**
      * Método para retornar uma pauta com o numero sequencial passado por parâmetro
      *
      * @param numeroSequencial
@@ -41,20 +25,5 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
      */
     Optional<Pauta> findByNumeroSequencial(Long numeroSequencial);
 
-    /**
-     * Método para retornar uma pauta com a data de fim passada por parâmetro
-     *
-     * @param fimDataReuniao
-     * @return
-     */
-    Optional<Pauta> findByFimDataReuniao(Date fimDataReuniao);
-
-    /**
-     * Método para retornar uma pauta com a data de inicio passada por parâmetro
-     *
-     * @param inicioDataReuniao
-     * @return
-     */
-    Optional<Pauta> findByInicioDataReuniao(Date inicioDataReuniao);
 
 }

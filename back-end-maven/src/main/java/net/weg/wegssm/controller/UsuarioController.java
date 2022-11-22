@@ -8,6 +8,7 @@ import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,7 @@ public class UsuarioController {
         if (!usuarioService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
+
         return ResponseEntity.status(HttpStatus.FOUND).body(usuarioService.findById(id).get());
     }
 
@@ -73,6 +75,10 @@ public class UsuarioController {
         Usuario usuario = new Usuario();
         usuario.setVisibilidade(true);
         BeanUtils.copyProperties(usuarioDTO, usuario);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
+
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
 
@@ -97,6 +103,7 @@ public class UsuarioController {
 
         Usuario usuario = usuarioOptional.get();
         BeanUtils.copyProperties(usuarioDTO, usuario, "id");
+
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
 
@@ -116,6 +123,7 @@ public class UsuarioController {
         Usuario usuario = usuarioService.findById(id).get();
         usuario.setVisibilidade(false);
         usuarioService.save(usuario);
+
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
@@ -127,6 +135,7 @@ public class UsuarioController {
         }
 
         usuarioService.deleteById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado com sucesso.");
     }
 
