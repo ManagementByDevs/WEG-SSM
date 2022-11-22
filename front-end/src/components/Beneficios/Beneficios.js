@@ -39,7 +39,7 @@ const Beneficios = (props) => {
     }
 
     function removerComponente() {
-        props.removerBeneficio(props.dados.id);
+        props.removerBeneficio(props.index);
     }
 
     return (

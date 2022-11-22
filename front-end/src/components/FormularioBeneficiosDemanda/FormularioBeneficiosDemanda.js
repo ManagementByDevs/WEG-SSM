@@ -23,14 +23,10 @@ const FormularioBeneficiosDemanda = () => {
     }
   }
 
-  function removerBeneficio(id) {
-    let beneficiosAtualizados = [];
-    for(let beneficio of beneficios) {
-      if(beneficio.id === id) {
-        beneficios.slice(beneficio, 1);
-      }
-    }
-    setBeneficios(beneficios);
+  function removerBeneficio(index) {
+    const beneficiosAux = [...beneficios];
+    beneficiosAux.splice(index, 1);
+    setBeneficios(beneficiosAux);
   }
 
   return (
@@ -40,7 +36,7 @@ const FormularioBeneficiosDemanda = () => {
           Adicionar
           <AddOutlinedIcon />
         </Button>
-        <Box className='flex flex-col justify-evenly overflow-auto' sx={{marginTop:'3%', gap:'5%', paddingRight: '20px'}}>
+        <Box className='flex flex-col overflow-auto' sx={{marginTop:'3%', gap:'5%', paddingRight: '20px'}}>
           {
             beneficios.map((beneficio, index) => {
               return <Beneficios key={index} save={salvarDados} removerBeneficio={removerBeneficio} dados={beneficio}/>;
