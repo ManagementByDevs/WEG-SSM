@@ -30,6 +30,9 @@ const getDesignTokens = (mode) => ({
                 },
                 input: {
                     main: '#22252C'
+                },
+                icon: {
+                    main: '#FFFFFF'
                 }
             }
             : {
@@ -56,10 +59,13 @@ const getDesignTokens = (mode) => ({
                     paper: '#FFFFFF'
                 },
                 component: {
-                    main: '#FFFFFF'
+                    main: '#EFEFEF'
                 },
                 input: {
                     main: '#F8F8F8'
+                },
+                icon: {
+                    main: '#00579D'
                 }
             }
     },
