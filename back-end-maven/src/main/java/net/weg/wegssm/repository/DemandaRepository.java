@@ -46,57 +46,57 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
      */
     List<Demanda> findByDepartamento(Departamento departamento);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndForumAndDepartamento(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndDepartamento(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndForumAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndForum(Status status, String titulo, Usuario gerente, Forum forum, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForum(Status status, String titulo, Usuario gerente, Forum forum, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndDepartamentoAndSolicitante(Status status, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndDepartamentoAndSolicitante(Status status, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndDepartamento(Status status, String titulo, Departamento departamento, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndDepartamento(Status status, String titulo, Departamento departamento, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndTamanhoAndSolicitante(Status status, String titulo, String tamanho, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndTamanhoAndSolicitante(Status status, String titulo, String tamanho, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndTamanho(Status status, String titulo, String tamanho, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndTamanho(Status status, String titulo, String tamanho, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndSolicitante(Status status, String titulo, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndSolicitante(Status status, String titulo, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTitulo(Status status, String titulo, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContaining(Status status, String titulo, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndDepartamento(Status status, String titulo, Usuario gerente, Departamento departamento, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndDepartamento(Status status, String titulo, Usuario gerente, Departamento departamento, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndTamanho(Status status, String titulo, Usuario gerente, String tamanho, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndTamanho(Status status, String titulo, Usuario gerente, String tamanho, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerenteAndSolicitante(Status status, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerenteAndSolicitante(Status status, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndGerente(Status status, String titulo, Usuario gerente, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndGerente(Status status, String titulo, Usuario gerente, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndForumAndDepartamentoAndTamanho(Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanho(Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndForumAndDepartamento(Status status, String titulo, Forum forum, Departamento departamento, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndForumAndDepartamento(Status status, String titulo, Forum forum, Departamento departamento, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndForumAndTamanhoAndSolicitante(Status status, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndForumAndTamanhoAndSolicitante(Status status, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndForumAndTamanho(Status status, String titulo, Forum forum, String tamanho, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndForumAndTamanho(Status status, String titulo, Forum forum, String tamanho, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndForumAndSolicitante(Status status, String titulo, Forum forum, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndForumAndSolicitante(Status status, String titulo, Forum forum, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndForum(Status status, String titulo, Forum forum, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndForum(Status status, String titulo, Forum forum, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
 
-    Page<Demanda> findByStatusAndTituloAndDepartamentoAndTamanho(Status status, String titulo, Departamento departamento, String tamanho, Pageable pageable);
+    Page<Demanda> findByStatusAndTituloContainingAndDepartamentoAndTamanho(Status status, String titulo, Departamento departamento, String tamanho, Pageable pageable);
 
     Page<Demanda> findByStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
 

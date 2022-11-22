@@ -14,8 +14,6 @@ public class DemandaDTO {
     private String proposta;
     private String frequencia;
     private String tamanho;
-    private String buSolicitante;
-    private String busBeneficiadas;
     private String secaoTI;
     private String motivoRecusa;
     private Status status;
