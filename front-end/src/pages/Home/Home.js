@@ -29,13 +29,14 @@ const Home = () => {
     setValue(newValue);
   };
 
+
   const navigate = useNavigate();
 
   return (
     // Container pai
     <FundoComHeader>
       <Button variant="contained" onClick={toggleColorMode}>Contained</Button>
-      <ModalConfirmacao></ModalConfirmacao>
+      <ModalConfirmacao textoModal={"descartarRascunho"} textoBotao={"sim"}/>
       {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
