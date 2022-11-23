@@ -10,6 +10,9 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const ModalConfirmacao = (props) => {
 
+    // Como chamar:
+    // <ModalConfirmacao textoModal={"descartarRascunho"} textoBotao={"sim"}/>
+
     // Variáveis de estilo para o componente
     const style = {
         position: 'absolute',
@@ -64,13 +67,12 @@ const ModalConfirmacao = (props) => {
 
     // useState para abrir e fechar o modal
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
         <div>
-            <Button onClick={handleOpen}>Modal teste</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
