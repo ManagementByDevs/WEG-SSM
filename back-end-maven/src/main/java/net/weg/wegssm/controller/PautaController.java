@@ -38,6 +38,13 @@ public class PautaController {
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.findAll());
     }
 
+    /**
+     * Método principal de busca das pautas, com filtro de título das propostas presentes e paginação / ordenação
+     *
+     * @param pageable - String de paginação e ordenação
+     * @param titulo   - String com o título de uma proposta, para pesquisar as pautas que contém tal proposta
+     * @return - Página de pautas
+     */
     @GetMapping("/page")
     public ResponseEntity<Page<Pauta>> findPage(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                 @RequestParam(required = false) String titulo) {

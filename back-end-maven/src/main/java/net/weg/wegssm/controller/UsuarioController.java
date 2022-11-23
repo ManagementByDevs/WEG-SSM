@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
@@ -26,8 +25,6 @@ public class UsuarioController {
 
     /**
      * Método GET para listar todos os usuários
-     *
-     * @return
      */
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
@@ -36,9 +33,6 @@ public class UsuarioController {
 
     /**
      * Método GET para listar um usuário específico através de um id
-     *
-     * @param id
-     * @return
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -51,9 +45,6 @@ public class UsuarioController {
 
     /**
      * Método GET para listar todos os usuários de um departamento específico
-     *
-     * @param departamento
-     * @return
      */
     @GetMapping("/departamento/{departamento}")
     public ResponseEntity<List<Usuario>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento) {
@@ -64,7 +55,6 @@ public class UsuarioController {
      * Método POST para criar um usuário no banco de dados
      *
      * @param usuarioDTO ( Objeto a ser cadastrado = req.body )
-     * @return
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid UsuarioDTO usuarioDTO) {
@@ -85,9 +75,7 @@ public class UsuarioController {
     /**
      * Método PUT para atualizar um usuário no banco de dados, através de um id
      *
-     * @param id
      * @param usuarioDTO ( Novos dados do usuário = req.body )
-     * @return
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid UsuarioDTO usuarioDTO) {
@@ -109,9 +97,6 @@ public class UsuarioController {
 
     /**
      * Método DELETE para deletar um usuário, colocando sua visibilidade como false
-     *
-     * @param id
-     * @return
      */
     @Transactional
     @DeleteMapping("/visibilidade/{id}")

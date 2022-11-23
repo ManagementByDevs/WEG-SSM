@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -39,6 +38,13 @@ public class AtaController {
         return ResponseEntity.status(HttpStatus.OK).body(ataService.findAll());
     }
 
+    /**
+     * Método principal de busca das atas, com filtro de título das propostas presentes e paginação / ordenação
+     *
+     * @param pageable - String de paginação e ordenação
+     * @param titulo   - String com o título de uma proposta, para pesquisar as atas que contém tal proposta
+     * @return - Página de atas
+     */
     @GetMapping("/page")
     public ResponseEntity<Page<Ata>> findPage(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                               @RequestParam(required = false) String titulo) {
@@ -86,9 +92,8 @@ public class AtaController {
      * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais antiga para a mais recente
      */
     @GetMapping("/ordenarInicioDataReuniaoAntiga")
-    public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoAntiga(@PageableDefault(
-            page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.ASC
-    ) Pageable pageable) {
+    public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoAntiga(
+            @PageableDefault(size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.ASC) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
@@ -97,9 +102,8 @@ public class AtaController {
      * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais recente para a mais antiga
      */
     @GetMapping("/ordenarInicioDataReuniaoRecente")
-    public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoRecente(@PageableDefault(
-            page = 0, size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.DESC
-    ) Pageable pageable) {
+    public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoRecente(
+            @PageableDefault(size = 20, sort = "inicioDataReuniao", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
@@ -108,9 +112,8 @@ public class AtaController {
      * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais antiga para a mais recente
      */
     @GetMapping("/ordenarFimDataReuniaoAntiga")
-    public ResponseEntity<Page<Ata>> findAllFimDataReuniaoAntiga(@PageableDefault(
-            page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.ASC
-    ) Pageable pageable) {
+    public ResponseEntity<Page<Ata>> findAllFimDataReuniaoAntiga(
+            @PageableDefault(size = 20, sort = "fimDataReuniao", direction = Sort.Direction.ASC) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
@@ -119,9 +122,8 @@ public class AtaController {
      * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais recente para a mais antiga
      */
     @GetMapping("/ordenarFimDataReuniaoRecente")
-    public ResponseEntity<Page<Ata>> findAllFimDataReuniaoRecente(@PageableDefault(
-            page = 0, size = 20, sort = "fimDataReuniao", direction = Sort.Direction.DESC
-    ) Pageable pageable) {
+    public ResponseEntity<Page<Ata>> findAllFimDataReuniaoRecente(
+            @PageableDefault(size = 20, sort = "fimDataReuniao", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findAll(pageable));
     }
