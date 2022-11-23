@@ -1,13 +1,11 @@
 package net.weg.wegssm.model.service;
 
 import net.weg.wegssm.model.entities.Ata;
-import net.weg.wegssm.model.entities.Pauta;
+import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.repository.AtaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,4 +46,7 @@ public class AtaService {
         ataRepository.deleteById(id);
     }
 
+    public Ata findByPropostasContaining(Proposta proposta) {
+        return ataRepository.findByPropostasContaining(proposta);
+    }
 }

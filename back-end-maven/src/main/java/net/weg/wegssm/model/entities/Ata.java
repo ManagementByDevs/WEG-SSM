@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ata")
@@ -29,5 +30,9 @@ public class Ata {
 
     @Column
     private Boolean visibilidade;
+
+    @OneToMany
+    @JoinColumn(name = "ata_id")
+    private List<Proposta> propostas;
 
 }

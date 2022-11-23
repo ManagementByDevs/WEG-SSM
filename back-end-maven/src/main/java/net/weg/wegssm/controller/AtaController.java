@@ -3,8 +3,9 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.AtaDTO;
 import net.weg.wegssm.model.entities.Ata;
-import net.weg.wegssm.model.entities.Pauta;
+import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.service.AtaService;
+import net.weg.wegssm.model.service.PropostaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,22 +29,36 @@ import java.util.Optional;
 public class AtaController {
 
     private AtaService ataService;
+    private PropostaService propostaService;
 
     /**
      * Método GET para listar todas as atas
-     *
-     * @return
      */
     @GetMapping
     public ResponseEntity<List<Ata>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(ataService.findAll());
     }
 
+    @GetMapping("/page")
+    public ResponseEntity<Page<Ata>> findPage(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                              @RequestParam(required = false) String titulo) {
+        if (titulo != null && !titulo.isEmpty()) {
+            List<Proposta> propostas = propostaService.findByTitulo(titulo);
+            List<Ata> atas = new ArrayList<>();
+            for (Proposta proposta : propostas) {
+                Ata ata = ataService.findByPropostasContaining(proposta);
+                if (!atas.contains(ata)) {
+                    atas.add(ata);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.OK).body((Page<Ata>) atas);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(ataService.findAll(pageable));
+        }
+    }
+
     /**
      * Método GET para listar uma ata específica através do id
-     *
-     * @param id
-     * @return
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -57,9 +71,6 @@ public class AtaController {
 
     /**
      * Método GET para listar uma ata através de seu número sequencial
-     *
-     * @param numeroSequencial
-     * @return
      */
     @GetMapping("numeroSequencial/{numeroSequencial}")
     public ResponseEntity<Object> findByNumeroSequencial(@PathVariable(value = "numeroSequencial") String numeroSequencial) {
@@ -73,9 +84,6 @@ public class AtaController {
 
     /**
      * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais antiga para a mais recente
-     *
-     * @param pageable
-     * @return
      */
     @GetMapping("/ordenarInicioDataReuniaoAntiga")
     public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoAntiga(@PageableDefault(
@@ -87,9 +95,6 @@ public class AtaController {
 
     /**
      * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais recente para a mais antiga
-     *
-     * @param pageable
-     * @return
      */
     @GetMapping("/ordenarInicioDataReuniaoRecente")
     public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoRecente(@PageableDefault(
@@ -101,9 +106,6 @@ public class AtaController {
 
     /**
      * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais antiga para a mais recente
-     *
-     * @param pageable
-     * @return
      */
     @GetMapping("/ordenarFimDataReuniaoAntiga")
     public ResponseEntity<Page<Ata>> findAllFimDataReuniaoAntiga(@PageableDefault(
@@ -115,9 +117,6 @@ public class AtaController {
 
     /**
      * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais recente para a mais antiga
-     *
-     * @param pageable
-     * @return
      */
     @GetMapping("/ordenarFimDataReuniaoRecente")
     public ResponseEntity<Page<Ata>> findAllFimDataReuniaoRecente(@PageableDefault(
@@ -131,7 +130,6 @@ public class AtaController {
      * Método POST para cadastrar uma ata no banco de dados
      *
      * @param ataDto ( Objeto a ser cadastrado = req.body )
-     * @return
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid AtaDTO ataDto) throws ParseException {
@@ -149,9 +147,6 @@ public class AtaController {
 
     /**
      * Método DELETE para colocar sua visibilidade como false
-     *
-     * @param id
-     * @return
      */
     @Transactional
     @DeleteMapping("/visibilidade/{id}")
@@ -169,9 +164,6 @@ public class AtaController {
 
     /**
      * Método DELETE para deletar uma ata
-     *
-     * @param id
-     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")
@@ -179,9 +171,7 @@ public class AtaController {
         if (!ataService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma ata com este id.");
         }
-
         ataService.deleteById(id);
-
         return ResponseEntity.status(HttpStatus.OK).body("Ata deletada com sucesso.");
     }
 

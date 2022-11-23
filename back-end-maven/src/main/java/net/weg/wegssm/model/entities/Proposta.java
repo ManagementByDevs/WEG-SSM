@@ -128,14 +128,6 @@ public class Proposta {
     @JoinColumn(name = "demanda_id")
     private Demanda demanda;
 
-    @ManyToOne
-    @JoinColumn(name = "pauta_id")
-    private Pauta pauta;
-
-    @ManyToOne
-    @JoinColumn(name = "ata_id")
-    private Ata ata;
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_proposta")
     private List<Anexo> anexo;

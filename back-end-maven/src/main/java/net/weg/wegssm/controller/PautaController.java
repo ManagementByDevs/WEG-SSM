@@ -1,12 +1,11 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.EscopoDTO;
 import net.weg.wegssm.dto.PautaDTO;
-import net.weg.wegssm.model.entities.Demanda;
-import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Pauta;
+import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.service.PautaService;
+import net.weg.wegssm.model.service.PropostaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -28,22 +28,36 @@ import java.util.Optional;
 @RequestMapping("/weg_ssm/pauta")
 public class PautaController {
     private PautaService pautaService;
+    private PropostaService propostaService;
 
     /**
      * Método GET para listar todas as pautas
-     *
-     * @return
      */
     @GetMapping
     public ResponseEntity<List<Pauta>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.findAll());
     }
 
+    @GetMapping("/page")
+    public ResponseEntity<Page<Pauta>> findPage(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                @RequestParam(required = false) String titulo) {
+        if (titulo != null && !titulo.isEmpty()) {
+            List<Proposta> propostas = propostaService.findByTitulo(titulo);
+            List<Pauta> pautas = new ArrayList<>();
+            for (Proposta proposta : propostas) {
+                Pauta pauta = pautaService.findByPropostasContaining(proposta);
+                if (!pautas.contains(pauta)) {
+                    pautas.add(pauta);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.OK).body((Page<Pauta>) pautas);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(pautaService.findAll(pageable));
+        }
+    }
+
     /**
      * Método GET para listar uma pauta específica através de um id
-     *
-     * @param id
-     * @return
      */
     @GetMapping("/id/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -56,9 +70,6 @@ public class PautaController {
 
     /**
      * Método GET para listar uma pauta específica através do número sequencial
-     *
-     * @param numeroSequencial
-     * @return
      */
     @GetMapping("/numerosequencial/{numeroSequencial}")
     public ResponseEntity<Object> findByNumeroSequencial(@PathVariable(value = "numeroSequencial") Long numeroSequencial) {
@@ -71,9 +82,6 @@ public class PautaController {
 
     /**
      * Método GET para ordenar as pautas a partir da DATA DE INÍCIO, da mais recente para a mais antiga
-     *
-     * @param pageable
-     * @return
      */
     @GetMapping("/ordenarDataInicioRecente")
     public ResponseEntity<Page<Pauta>> findAllDataInicioRecente(@PageableDefault(
@@ -85,9 +93,6 @@ public class PautaController {
 
     /**
      * Método GET para ordenar as pautas a partir da DATA DE INÍCIO, da mais antiga para a mais recente
-     *
-     * @param pageable
-     * @return
      */
     @GetMapping("/ordenarDataInicioAntiga")
     public ResponseEntity<Page<Pauta>> findAllDataInicioAntiga(@PageableDefault(
@@ -99,9 +104,6 @@ public class PautaController {
 
     /**
      * Método GET para ordenar as pautas a partir da DATA DE FIM, da mais recente para a mais antiga
-     *
-     * @param pageable
-     * @return
      */
     @GetMapping("/ordenarDataFimRecente")
     public ResponseEntity<Page<Pauta>> findAllDataFimRecente(@PageableDefault(
@@ -113,9 +115,6 @@ public class PautaController {
 
     /**
      * Método GET para ordenar as pautas a partir da DATA DE FIM, da mais antiga para a mais recente
-     *
-     * @param pageable
-     * @return
      */
     @GetMapping("/ordenarDataFimAntiga")
     public ResponseEntity<Page<Pauta>> findAllDataFimAntiga(@PageableDefault(
@@ -129,7 +128,6 @@ public class PautaController {
      * Método POST para criar uma pauta no banco de dados
      *
      * @param pautaDto ( Objeto a ser cadastrado = req.body )
-     * @return
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid PautaDTO pautaDto) {
@@ -143,9 +141,7 @@ public class PautaController {
     /**
      * Método PUT para atualizar uma pauta no banco de dados, através de um id
      *
-     * @param id
      * @param pautaDto ( Novos dados da pauta = req.body )
-     * @return
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid PautaDTO pautaDto) {
@@ -163,9 +159,6 @@ public class PautaController {
 
     /**
      * Método DELETE para deletar uma pauta do banco de dados
-     *
-     * @param id
-     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")
@@ -180,9 +173,6 @@ public class PautaController {
 
     /**
      * Método DELETE para deletar uma pauta, colocando sua visibilidade como false
-     *
-     * @param id
-     * @return
      */
     @Transactional
     @DeleteMapping("/visibilidade/{id}")
