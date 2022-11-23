@@ -6,26 +6,37 @@ import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import FontConfig from '../../service/FontConfig'
 
-import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const ModalConfirmacao = (props) => {
 
+    // Variáveis de estilo para o componente
     const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 550,
-        height: 350,
+        width: 450,
+        height: 300,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
+        borderRadius: '5px',
+        borderTop: '10px solid #00579D',
         boxShadow: 24,
         p: 4,
         display: 'flex',
-        justify: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
     };
+
+    const estilo = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '6%',
+    }
+
+    // Funções para retornar um tipo de mensagem para o modal e o botão
 
     const mensagemModal = (tipoMensagem) => {
         switch (tipoMensagem) {
@@ -51,6 +62,8 @@ const ModalConfirmacao = (props) => {
         }
     };
 
+    // useState para abrir e fechar o modal
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -59,8 +72,6 @@ const ModalConfirmacao = (props) => {
         <div>
             <Button onClick={handleOpen}>Modal teste</Button>
             <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
                 open={open}
                 onClose={handleClose}
                 closeAfterTransition
@@ -71,13 +82,13 @@ const ModalConfirmacao = (props) => {
             >
                 <Fade in={open}>
                     <Box sx={style}>
-                       <HelpOutlineOutlinedIcon sx = {{fontSize: '100px'}}/>
-                        <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                            {mensagemModal("sairCriacao")}
+                        <ErrorOutlineIcon sx={{ fontSize: '100px', color: 'primary.main' }} />
+                        <Typography fontSize={FontConfig.veryBig} sx={{ mt: 2 }}>
+                            {mensagemModal(props.textoModal)}
                         </Typography>
-                        <Box>
-                            <Button>Cancelar</Button>
-                            <Button variant="contained" disableElevation color="secondary">{mensagemBotao(props.titulo)}</Button>
+                        <Box sx={estilo}>
+                            <Button onClick={handleClose} variant="container" disableElevation color="tertiary" sx={{ border: 'solid 1px', borderColor: 'tertiary.main', margin: '10px', width: '7.5rem', fontSize: FontConfig.big }}>Cancelar</Button>
+                            <Button variant="contained" disableElevation color="primary" sx={{ margin: '10px', width: '7.5rem', fontSize: FontConfig.big }}>{mensagemBotao(props.textoBotao)}</Button>
                         </Box>
                     </Box>
                 </Fade>
