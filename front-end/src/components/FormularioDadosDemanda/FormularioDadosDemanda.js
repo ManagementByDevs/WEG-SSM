@@ -4,6 +4,7 @@ import { Box } from '@mui/material'
 
 import FontConfig from '../../service/FontConfig'
 import InputComLabel from '../InputComLabel/InputComLabel'
+import ModalConfirmacao from '../ModalConfirmacao/ModalConfirmacao'
 
 const FormularioDadosDemanda = () => {
   const [dados, setDados] = useState({ titulo: "", problema: "", proposta: "" });
@@ -30,6 +31,7 @@ const FormularioDadosDemanda = () => {
         <InputComLabel saveInputValue={salvarTitulo} component='input' label="Titulo:" placeholder='Digite o título...' fontConfig={FontConfig.default} />
         <InputComLabel saveInputValue={salvarProblema} component='textarea' label="Problema:" placeholder='Digite o problema...' fontConfig={FontConfig.default} rows="5" />
         <InputComLabel saveInputValue={salvarProposta} component='textarea' label="Proposta:" placeholder='Digite a proposta...' fontConfig={FontConfig.default} rows="8" />
+        <ModalConfirmacao titulo="sair"/>
         <Box sx={{ width: '40%' }}>
           <InputComLabel saveInputValue={salvarFrequencia} component='input' label="Frequência de uso:" placeholder='Digite a frequência...' fontConfig={FontConfig.default} />
         </Box>

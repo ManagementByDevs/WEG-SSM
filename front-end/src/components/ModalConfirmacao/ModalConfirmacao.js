@@ -1,43 +1,57 @@
 import React, { useState } from "react";
 
-import { Box } from '@mui/system';
-import { Typography } from '@mui/material/';
-import { Modal } from '@mui/material';
+import { Modal, Typography, Box, Button } from '@mui/material';
 
-import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
+import FontConfig from '../../service/FontConfig'
 
-const ModalConfirmacao = () => {
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+
+const ModalConfirmacao = (props) => {
 
     const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        width: 550,
+        height: 350,
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
+        display: 'flex',
+        justify: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
     };
 
     const mensagemModal = (tipoMensagem) => {
         switch (tipoMensagem) {
-            case 1:
+            case "descartarRascunho":
                 return "Deseja descartar o rascunho?";
-            case 2:
+            case "sairCriacao":
                 return "Deseja sair da criação da demanda?";
-            case 3:
+            case "enviarDemanda":
                 return "Deseja enviar a demanda?";
-            case 4:
+            case "sairSemSalvar":
                 return "Deseja sair sem salvar?";
-            case 5:
+            case "descartarProposta":
                 return "Deseja descartar a proposta?";
         }
     };
 
-    const [open, setOpen] = React.useState(false);
+    const mensagemBotao = (mensagemBotao) => {
+        switch (mensagemBotao) {
+            case "sim":
+                return "Sim"
+            case "enviar":
+                return "Enviar"
+        }
+    };
+
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -57,12 +71,14 @@ const ModalConfirmacao = () => {
             >
                 <Fade in={open}>
                     <Box sx={style}>
-                        <Typography id="transition-modal-title" variant="h6" component="h2">
-                            Modal Confirmação
-                        </Typography>
+                       <HelpOutlineOutlinedIcon sx = {{fontSize: '100px'}}/>
                         <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                            {mensagemModal(1)}
+                            {mensagemModal("sairCriacao")}
                         </Typography>
+                        <Box>
+                            <Button>Cancelar</Button>
+                            <Button variant="contained" disableElevation color="secondary">{mensagemBotao(props.titulo)}</Button>
+                        </Box>
                     </Box>
                 </Fade>
             </Modal>
