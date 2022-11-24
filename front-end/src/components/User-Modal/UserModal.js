@@ -89,7 +89,7 @@ const UserModal = () => {
                         <hr className='w-10/12 my-1.5' />
                     </div>
 
-                    <MenuItem className='gap-2' onClick={handleClose}>
+                    <MenuItem className='gap-2' onClick={() => {handleClose(); navigate("/chat") }}>
                         {chatIcon == ChatBubbleOutlineOutlinedIcon ? <ChatBubbleOutlineOutlinedIcon /> : <MarkChatUnreadOutlinedIcon />}
                         Chats
                     </MenuItem>

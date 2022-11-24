@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React from 'react';
 import { Box, Typography, Button, Divider } from '@mui/material';
 
 import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
