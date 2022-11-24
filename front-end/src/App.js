@@ -9,7 +9,7 @@ import {
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import CriarDemanda from './pages/CriarDemanda/CriarDemanda';
-import Demanda from './components/Demanda/Demanda';
+import Notificacao from './pages/Notificacao/Notificacao';
 
 import ToggleColorMode from './service/TemaProvedor';
 
@@ -21,6 +21,7 @@ const App = () => {
           <Route path="/login" element={<Login></Login>} />
           <Route path="/" element={<Home></Home>} />
           <Route path="/criar-demanda" element={<CriarDemanda />} />
+          <Route path="/notificacao" element={<Notificacao />} />
         </Routes>
       </Router>
     </ToggleColorMode>

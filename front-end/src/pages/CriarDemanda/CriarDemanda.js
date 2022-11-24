@@ -3,7 +3,6 @@ import React from 'react'
 import { Box } from '@mui/material';
 
 import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
-import Header from '../../components/Header/Header';
 import Caminho from '../../components/Caminho/Caminho';
 import BarraProgressao from '../../components/BarraProgressao/BarraProgressao';
 

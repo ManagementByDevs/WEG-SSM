@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography } from '@mui/material/';
+import { useNavigate } from 'react-router-dom';
 
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
@@ -11,6 +12,8 @@ import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
 
 const UserModal = () => {
+    const navigate = useNavigate();
+
     // UseState para poder visualizar e alterar o chat icon
     const [chatIcon, setChatIcon] = useState(ChatBubbleOutlineOutlinedIcon);
 
@@ -65,7 +68,7 @@ const UserModal = () => {
                     {/* Itens do menu */}
                     <Typography className='px-4 pt-1.5' color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 600 }}>{user}</Typography>
                     <Typography className='px-4 pb-1.5' color={'text.secondary'} fontSize={FontConfig.medium}>{departamento}</Typography>
-                    <MenuItem className='gap-2' onClick={handleClose}>
+                    <MenuItem className='gap-2' onClick={() => {handleClose(); navigate("/notificacao") }}>
                         <NotificationsOutlinedIcon />
                         Notificações
                     </MenuItem>

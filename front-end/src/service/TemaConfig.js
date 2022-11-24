@@ -33,6 +33,10 @@ const getDesignTokens = (mode) => ({
                 },
                 icon: {
                     main: '#FFFFFF'
+                },
+                visualizado: {
+                    true: '#22252C',
+                    false: '#2E2E2E'
                 }
             }
             : {
@@ -66,6 +70,10 @@ const getDesignTokens = (mode) => ({
                 },
                 icon: {
                     main: '#00579D'
+                },
+                visualizado: {
+                    true: '#FFFFFF',
+                    false: '#E5E5E5'
                 }
             }
     },
