@@ -14,6 +14,7 @@ import Demanda from '../../components/Demanda/Demanda';
 import FontConfig from '../../service/FontConfig';
 import ColorModeContext from '../../service/TemaContext';
 import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
+import ModalOrdenacao from '../../components/ModalOrdenacao/ModalOrdenacao';
 
 const Home = () => {
   // Desestruturação de objeto em duas variáveis:
@@ -29,13 +30,17 @@ const Home = () => {
     setValue(newValue);
   };
 
+  const abrirModalOrdenacao = (event) => {
+    <ModalOrdenacao abrir={event} />
+  };
+
   const navigate = useNavigate();
 
   return (
     // Container pai
     <FundoComHeader>
       <Button variant="contained" onClick={toggleColorMode}>Contained</Button>
-      <ModalConfirmacao></ModalConfirmacao>
+      <ModalOrdenacao />
       {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
@@ -78,7 +83,7 @@ const Home = () => {
                     <SearchOutlinedIcon sx={{ color: 'text.secondary' }} />
 
                     {/* Ícone de ordenação */}
-                    <SwapVertIcon className='cursor-pointer' sx={{ color: 'text.secondary' }} />
+                    <SwapVertIcon onClick={abrirModalOrdenacao(true)} className='cursor-pointer' sx={{ color: 'text.secondary' }} />
                   </Box>
                 </Box>
 

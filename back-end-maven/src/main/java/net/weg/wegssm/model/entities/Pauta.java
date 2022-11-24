@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "pauta")
@@ -34,5 +35,9 @@ public class Pauta {
 
     @Column
     private Boolean visibilidade;
+
+    @OneToMany
+    @JoinColumn(name = "pauta_id")
+    private List<Proposta> propostas;
 
 }
