@@ -43,8 +43,10 @@ const Home = () => {
     setState({ ...state, open: false });
   };
 
-  const abrirModalOrdenacao = (event) => {
-    <ModalOrdenacao abrir={event} />;
+  const [abrir, setOpen] = useState(false);
+
+  const abrirModalOrdenacao = () => {
+    setOpen(true);
   };
 
   const navigate = useNavigate();
@@ -52,10 +54,7 @@ const Home = () => {
   return (
     // Container pai
     <FundoComHeader>
-      <Button variant="contained" onClick={toggleColorMode}>
-        Contained
-      </Button>
-      <ModalOrdenacao />
+      <Button variant="contained" onClick={toggleColorMode}>Contained</Button>
       {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
@@ -122,11 +121,8 @@ const Home = () => {
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
 
                     {/* Ícone de ordenação */}
-                    <SwapVertIcon
-                      onClick={abrirModalOrdenacao(true)}
-                      className="cursor-pointer"
-                      sx={{ color: "text.secondary" }}
-                    />
+                    <SwapVertIcon onClick={abrirModalOrdenacao} className='cursor-pointer' sx={{ color: 'text.secondary' }} />
+                    {abrir && <ModalOrdenacao open={abrir} setOpen={setOpen} />}
                   </Box>
                 </Box>
 
@@ -143,7 +139,7 @@ const Home = () => {
                 >
                   Filtrar <FilterAltOutlinedIcon />
                 </Button>
-                
+
                 <Feedback open={open} handleClose={handleClose} status="sucesso"/>
               </Box>
 
