@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Tab, Box } from '@mui/material';
@@ -13,7 +13,6 @@ import Demanda from '../../components/Demanda/Demanda';
 
 import FontConfig from '../../service/FontConfig';
 import ColorModeContext from '../../service/TemaContext';
-import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
 import ModalOrdenacao from '../../components/ModalOrdenacao/ModalOrdenacao';
 
 const Home = () => {
@@ -29,10 +28,12 @@ const Home = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [open, setOpen] = useState(false);
 
-  const abrirModalOrdenacao = (event) => {
-    <ModalOrdenacao abrir={event} />
+  const abrirModalOrdenacao = () => {
+    setOpen(true);
   };
+
 
   const navigate = useNavigate();
 
@@ -40,7 +41,6 @@ const Home = () => {
     // Container pai
     <FundoComHeader>
       <Button variant="contained" onClick={toggleColorMode}>Contained</Button>
-      <ModalOrdenacao />
       {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
@@ -83,7 +83,8 @@ const Home = () => {
                     <SearchOutlinedIcon sx={{ color: 'text.secondary' }} />
 
                     {/* Ícone de ordenação */}
-                    <SwapVertIcon onClick={abrirModalOrdenacao(true)} className='cursor-pointer' sx={{ color: 'text.secondary' }} />
+                    <SwapVertIcon onClick={abrirModalOrdenacao} className='cursor-pointer' sx={{ color: 'text.secondary' }} />
+                    {open && <ModalOrdenacao open={open} setOpen={setOpen} />}
                   </Box>
                 </Box>
 

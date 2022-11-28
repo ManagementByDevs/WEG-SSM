@@ -31,7 +31,7 @@ const FormularioDadosDemanda = () => {
         <InputComLabel saveInputValue={salvarTitulo} component='input' label="Titulo:" placeholder='Digite o título...' fontConfig={FontConfig.default} />
         <InputComLabel saveInputValue={salvarProblema} component='textarea' label="Problema:" placeholder='Digite o problema...' fontConfig={FontConfig.default} rows="5" />
         <InputComLabel saveInputValue={salvarProposta} component='textarea' label="Proposta:" placeholder='Digite a proposta...' fontConfig={FontConfig.default} rows="8" />
-        <ModalConfirmacao titulo="sair"/>
+        {/* <ModalConfirmacao titulo="sair"/> */}
         <Box sx={{ width: '40%' }}>
           <InputComLabel saveInputValue={salvarFrequencia} component='input' label="Frequência de uso:" placeholder='Digite a frequência...' fontConfig={FontConfig.default} />
         </Box>
