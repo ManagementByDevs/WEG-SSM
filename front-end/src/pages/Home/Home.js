@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Tab, Box, Snackbar, Alert } from '@mui/material';
+import { Button, Tab, Box } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
@@ -28,27 +28,7 @@ const Home = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const fecharModal = (event, newValue) => {
-    console.log("fechou");
-  }
-
-  const [state, setState] = React.useState({
-    open: false,
-    vertical: 'top',
-    horizontal: 'center',
-  });
-  const { vertical, horizontal, open } = state;
-
-  const handleClick = (newState) => () => {
-    setState({ open: true, ...newState });
-  };
-
-  const handleClose = () => {
-    setState({ ...state, open: false });
-  };
-
-  const [abrir, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const abrirModalOrdenacao = () => {
     setOpen(true);
@@ -103,21 +83,12 @@ const Home = () => {
 
                     {/* Ícone de ordenação */}
                     <SwapVertIcon onClick={abrirModalOrdenacao} className='cursor-pointer' sx={{ color: 'text.secondary' }} />
-                    {abrir && <ModalOrdenacao open={abrir} setOpen={setOpen} />}
+                    {open && <ModalOrdenacao open={open} setOpen={setOpen} />}
                   </Box>
                 </Box>
 
                 {/* Botão de filtrar */}
-                <Button sx={{ backgroundColor: 'primary.main', color: 'text.white', fontSize: FontConfig.default }}
-                  onClick={handleClick({
-                    vertical: 'top',
-                    horizontal: 'right',
-                  })} variant="contained" disableElevation>Filtrar <FilterAltOutlinedIcon /></Button>
-                <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={6000} onClose={handleClose} key={vertical + horizontal}>
-                  <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                    Parabéns conseguiu filtrar!
-                  </Alert>
-                </Snackbar>
+                <Button sx={{ backgroundColor: 'primary.main', color: 'text.white', fontSize: FontConfig.default }} variant="contained" disableElevation>Filtrar <FilterAltOutlinedIcon /></Button>
               </Box>
 
               {/* Botão de criar demanda */}
