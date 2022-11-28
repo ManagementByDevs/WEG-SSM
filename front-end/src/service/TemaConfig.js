@@ -73,7 +73,7 @@ const getDesignTokens = (mode) => ({
                 },
                 visualizado: {
                     true: '#FFFFFF',
-                    false: '#E5E5E5'
+                    false: '#E4E4E4'
                 }
             }
     },
