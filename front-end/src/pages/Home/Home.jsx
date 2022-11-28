@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Tab, Box } from '@mui/material';
+import { Button, Tab, Box, Snackbar, Alert } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
@@ -13,7 +13,6 @@ import Demanda from '../../components/Demanda/Demanda';
 
 import FontConfig from '../../service/FontConfig';
 import ColorModeContext from '../../service/TemaContext';
-import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
 import ModalOrdenacao from '../../components/ModalOrdenacao/ModalOrdenacao';
 
 const Home = () => {
@@ -28,6 +27,25 @@ const Home = () => {
   // Função para alterar a aba selecionada
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const fecharModal = (event, newValue) => {
+    console.log("fechou");
+  }
+
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
+
+  const handleClick = (newState) => () => {
+    setState({ open: true, ...newState });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
   };
 
   const abrirModalOrdenacao = (event) => {
@@ -88,7 +106,16 @@ const Home = () => {
                 </Box>
 
                 {/* Botão de filtrar */}
-                <Button sx={{ backgroundColor: 'primary.main', color: 'text.white', fontSize: FontConfig.default }} variant="contained" disableElevation>Filtrar <FilterAltOutlinedIcon /></Button>
+                <Button sx={{ backgroundColor: 'primary.main', color: 'text.white', fontSize: FontConfig.default }}
+                  onClick={handleClick({
+                    vertical: 'top',
+                    horizontal: 'right',
+                  })} variant="contained" disableElevation>Filtrar <FilterAltOutlinedIcon /></Button>
+                <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={6000} onClose={handleClose} key={vertical + horizontal}>
+                  <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Parabéns conseguiu filtrar!
+                  </Alert>
+                </Snackbar>
               </Box>
 
               {/* Botão de criar demanda */}
