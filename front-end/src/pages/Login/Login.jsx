@@ -35,15 +35,20 @@ const Login = (props) => {
         }
     }
 
+    // Função para fazer login através do botão "Entrar", procurando o usuário no back-end e indo para a página principal caso encontre
     const login = () => {
-        UsuarioService.login(dados.email, dados.senha).then((e) => {
-            if (e != null && e != "") {
-                // Salvar token recebido no localstorage
-                navigate('/');
-            } else {
-                // Abrir modal de feedback de usuário ou senha inválidos
-            }
-        });
+        if (dados.email && dados.senha) {
+            UsuarioService.login(dados.email, dados.senha).then((e) => {
+                if (e != null && e != "") {
+                    // Salvar token recebido no localstorage
+                    navigate('/');
+                } else {
+                    // Abrir modal de feedback de usuário ou senha inválidos
+                }
+            });
+        } else {
+            // Abrir modal de feedback de dados não preenchidos
+        }
     }
 
     return (
