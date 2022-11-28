@@ -52,4 +52,11 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
+    public Usuario findByEmailAndSenha(String email, String senha) {
+        return usuarioRepository.findByEmailAndSenha(email, senha);
+    }
+
+    public Boolean existsByEmailAndSenha(String email, String senha) {
+        return usuarioRepository.existsByEmailAndSenha(email, senha);
+    }
 }

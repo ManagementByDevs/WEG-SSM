@@ -8,9 +8,10 @@ import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/usuario")
 public class UsuarioController {
 
@@ -29,6 +31,14 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findAll());
+    }
+
+    /**
+     * Método GET para procurar um usuário por email e senha, necessário para o login
+     */
+    @GetMapping("/login/{email}/{senha}")
+    public ResponseEntity<Usuario> findByEmailAndSenha(@PathVariable String email, @PathVariable String senha) {
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByEmailAndSenha(email, senha));
     }
 
     /**
@@ -65,9 +75,9 @@ public class UsuarioController {
         Usuario usuario = new Usuario();
         usuario.setVisibilidade(true);
         BeanUtils.copyProperties(usuarioDTO, usuario);
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        usuario.setSenha(encoder.encode(usuario.getSenha()));
+//
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        usuario.setSenha(encoder.encode(usuario.getSenha()));
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
