@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Box } from '@mui/material';
 
-import Header from '../../components/Header/Header';
+import Header from '../Header/Header';
 
 
 const FundoComHeader = (props) => {
@@ -14,4 +14,4 @@ const FundoComHeader = (props) => {
     )
 }
 
-export default FundoComHeader
+export default FundoComHeader;

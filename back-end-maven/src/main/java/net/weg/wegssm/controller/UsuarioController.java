@@ -50,7 +50,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(usuarioService.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findById(id).get());
     }
 
     /**
