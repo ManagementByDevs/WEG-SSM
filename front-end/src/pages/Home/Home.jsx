@@ -18,6 +18,7 @@ import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 
 import UsuarioService from "../../service/usuarioService"
 import DemandaService from "../../service/demandaService";
+import ModalFiltro from '../../components/ModalFiltro/ModalFiltro';
 
 const Home = () => {
 
@@ -82,10 +83,15 @@ const Home = () => {
     setState({ ...state, open: false });
   };
 
-  const [abrir, setOpen] = useState(false);
+  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
+  const [abrirFiltro, setOpenFiltro] = useState(false);
 
   const abrirModalOrdenacao = () => {
-    setOpen(true);
+    setOpenOrdenacao(true);
+  };
+
+  const abrirModalFiltro = () => {
+    setOpenFiltro(true);
   };
 
   const navigate = useNavigate();
@@ -167,7 +173,7 @@ const Home = () => {
                       className="cursor-pointer"
                       sx={{ color: "text.secondary" }}
                     />
-                    {abrir && <ModalOrdenacao open={abrir} setOpen={setOpen} />}
+                    {abrirOrdenacao && <ModalOrdenacao open={abrirOrdenacao} setOpen={setOpenOrdenacao} />}
                   </Box>
                 </Box>
 
@@ -178,12 +184,14 @@ const Home = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={handleClick()}
+                  // onClick={handleClick()}
+                  onClick={abrirModalFiltro}
                   variant="contained"
                   disableElevation
                 >
                   Filtrar <FilterAltOutlinedIcon />
                 </Button>
+                {abrirFiltro && <ModalFiltro open={abrirFiltro} setOpen={setOpenFiltro} />}
 
                 <Feedback open={open} handleClose={handleClose} status="sucesso" />
               </Box>
@@ -212,9 +220,6 @@ const Home = () => {
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
                 <Box sx={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))" }}>
-
-
-
                   <Demanda onClick={() => { navigate("/detalhes-demanda") }} demanda={{ status: "Aguardando revisão", dono: "Kenzo", tela: "meuDepartamento" }} />
                   <Demanda demanda={{ status: "Aguardando revisão", dono: "Felipe", tela: "meuDepartamento" }} />
                   <Demanda demanda={{ status: "Aguardando revisão", dono: "Matheus", tela: "meuDepartamento" }} />
