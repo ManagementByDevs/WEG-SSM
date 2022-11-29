@@ -11,6 +11,7 @@ import Login from './pages/Login/Login';
 import CriarDemanda from './pages/CriarDemanda/CriarDemanda';
 import Notificacao from './pages/Notificacao/Notificacao';
 import Chat from './pages/Chat/Chat';
+import DetalhesDemanda from './pages/DetalhesDemanda/DetalhesDemanda';
 
 import ToggleColorMode from './service/TemaProvedor';
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/criar-demanda" element={<CriarDemanda />} />
           <Route path="/notificacao" element={<Notificacao />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/detalhes-demanda" element={<DetalhesDemanda />} />
         </Routes>
       </Router>
     </ToggleColorMode>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Tab, Box, Snackbar, Alert } from "@mui/material";
@@ -31,7 +31,7 @@ const Home = () => {
   };
 
   const [state, setState] = React.useState({
-    open: false
+    open: false,
   });
   const { open } = state;
 
@@ -54,7 +54,9 @@ const Home = () => {
   return (
     // Container pai
     <FundoComHeader>
-      <Button variant="contained" onClick={toggleColorMode}>Contained</Button>
+      <Button variant="contained" onClick={toggleColorMode}>
+        Contained
+      </Button>
       {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
@@ -121,7 +123,11 @@ const Home = () => {
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
 
                     {/* Ícone de ordenação */}
-                    <SwapVertIcon onClick={abrirModalOrdenacao} className='cursor-pointer' sx={{ color: 'text.secondary' }} />
+                    <SwapVertIcon
+                      onClick={abrirModalOrdenacao}
+                      className="cursor-pointer"
+                      sx={{ color: "text.secondary" }}
+                    />
                     {abrir && <ModalOrdenacao open={abrir} setOpen={setOpen} />}
                   </Box>
                 </Box>
@@ -140,7 +146,11 @@ const Home = () => {
                   Filtrar <FilterAltOutlinedIcon />
                 </Button>
 
-                <Feedback open={open} handleClose={handleClose} status="sucesso"/>
+                <Feedback
+                  open={open}
+                  handleClose={handleClose}
+                  status="sucesso"
+                />
               </Box>
 
               {/* Botão de criar demanda */}
@@ -173,7 +183,7 @@ const Home = () => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
                   }}
                 >
-                  <Demanda
+                  <Demanda onClick={() => {navigate("/detalhes-demanda")}}
                     demanda={{
                       status: "Aguardando revisão",
                       dono: "Kenzo",
