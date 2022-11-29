@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
 import { Box, Button, Typography, IconButton } from '@mui/material'
 
@@ -24,19 +24,14 @@ const FormularioAnexosDemanda = () => {
         inputFile.current.click();
     }
     const onFilesSelect = () => {
-        console.log("file list: ", fileList)
-        console.log("input file: ", inputFile.current.files)
         for (let file of inputFile.current.files) {
             setFileList([...fileList, file]);
         }
-        console.log("file list 1", fileList)
-        setFileList(fileList.push.apply(fileList, inputFile.current.files));
-        setMapAbleFileList(Array.from(fileList));
-        console.log(fileList[0].name);
-        for (let file of fileList) {
-            console.log("1", file.name);
-        }
     }
+
+    useEffect(() => {
+        setMapAbleFileList(Array.from(fileList));
+    }, [fileList]);
 
     const drag = (event) => {
         event.preventDefault();
@@ -49,16 +44,18 @@ const FormularioAnexosDemanda = () => {
     }
 
     const onDropFile = (event) => {
-        console.log("entreou on drop file")
         event.preventDefault();
         event.stopPropagation();
         let files = event.dataTransfer.files;
-        console.log("files: ", files)
         let fileArrayAux = Array.from(files);
-        console.log("fileArrayAux: ", fileArrayAux)
-        setFileList(fileList.push.apply(fileList, fileArrayAux));
-        console.log("filelist: ", fileList)
-        setMapAbleFileList(Array.from(fileList));
+        for (let file of fileArrayAux) {
+            setFileList([...fileList, file]);
+        }
+    }
+
+    const deleteFile = (desiredIndex) => {
+        setMapAbleFileList(mapAbleFileList.filter((_, index) => index !== desiredIndex));
+        setFileList(fileList.filter((_, index) => index !== desiredIndex));
     }
 
     return (
@@ -66,7 +63,7 @@ const FormularioAnexosDemanda = () => {
             <Box ref={dragArea} onDragOver={drag} onDragLeave={onDragLeaveHandle} onDrop={onDropFile} className='flex justify-center items-center flex-col rounded border-2' sx={{ width: '85%', height: '85%' }}>
                 <input onChange={onFilesSelect} ref={inputFile} type='file' multiple hidden />
                 {
-                    fileList.length === 0 ?
+                    fileList?.length === 0 ?
                         <>
                             <Typography fontSize={FontConfig.veryBig} color='text.secondary' sx={{ fontWeight: '600', cursor: 'default', marginBottom: '1rem' }}>{dragText}</Typography>
                             <Typography fontSize={FontConfig.veryBig} color='text.secondary' sx={{ fontWeight: '600', cursor: 'default', marginBottom: '1rem' }}>OU</Typography>
@@ -101,7 +98,7 @@ const FormularioAnexosDemanda = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {mapAbleFileList.map((file, index) => {
+                                        {mapAbleFileList?.map((file, index) => {
                                             console.log(file)
                                             return (
                                                 <TableRow key={index} className="border-b">
@@ -112,7 +109,7 @@ const FormularioAnexosDemanda = () => {
                                                         <Typography fontSize={FontConfig.medium} color='text.secondary' sx={{ fontWeight: '500', cursor: 'default' }}>{file.type}</Typography>
                                                     </td>
                                                     <td className='text-center'>
-                                                        <IconButton>
+                                                        <IconButton onClick={() => deleteFile(index)}>
                                                             <DeleteOutlineOutlinedIcon color='primary' />
                                                         </IconButton>
                                                     </td>
