@@ -11,11 +11,11 @@ const ModalOrdenacao = (props) => {
 
     const style = {
         position: 'absolute',
-        top: '42%',
-        left: '34.5%',
+        top: '43%',
+        left: '34%',
         transform: 'translate(-50%, -50%)',
-        width: 320,
-        height: 250,
+        width: 310,
+        height: 280,
         bgcolor: 'background.paper',
         borderRadius: '5px',
         borderTop: '10px solid #00579D',
@@ -51,12 +51,58 @@ const ModalOrdenacao = (props) => {
 
     // useState para limitar um checkbox
 
-    const [check, setCheck] = useState(false);
+    const [check, setCheck] = useState([false, false]);
+    const [check2, setCheck2] = useState([false, false]);
+    const [check3, setCheck3] = useState([false, false]);
 
-    function mudarCheck() {
-        setCheck(!check);
+    function mudarCheck1() {
+        if (check[0]) {
+            setCheck([false, false]);
+        } else {
+            setCheck([true, false]);
+        }
     }
 
+    function mudarCheck2() {
+        if (check[1]) {
+            setCheck([false, false]);
+        } else {
+            setCheck([false, true]);
+        }
+    }
+
+    function mudarCheck3() {
+        if (check2[0]) {
+            setCheck2([false, false]);
+        } else {
+            setCheck2([true, false]);
+        }
+    }
+
+    function mudarCheck4() {
+        if (check2[1]) {
+            setCheck2([false, false]);
+        } else {
+            setCheck2([false, true]);
+        }
+    }
+
+    function mudarCheck5() {
+        if (check3[0]) {
+            setCheck3([false, false]);
+        } else {
+            setCheck3([true, false]);
+        }
+    }
+
+    function mudarCheck6() {
+        if (check3[1]) {
+            setCheck3([false, false]);
+        } else {
+            setCheck3([false, true]);
+        }
+    }
+    
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -74,7 +120,7 @@ const ModalOrdenacao = (props) => {
         >
             <Fade in={props.open}>
                 <Box sx={style}>
-                    <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '90%', top: '3%' }} />
+                    <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '90%', top: '3%', cursor: 'pointer' }} />
                     <Grid container spacing={0}>
                         <Grid item xs={9.2}>
                             <FormGroup sx={cssSelect}>
@@ -82,8 +128,8 @@ const ModalOrdenacao = (props) => {
                                     Título:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel id="checkA" onClick={mudarCheck} control={<Checkbox  />} label="A-Z" />
-                                    <FormControlLabel id="checkZ" disabled={check} control={<Checkbox  />} label="Z-A" />
+                                    <FormControlLabel id="checkA"  checked={check[1]} onChange={mudarCheck2} name control={<Checkbox />} label="A-Z" />
+                                    <FormControlLabel id="checkZ"  checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Z-A" />
                                 </div>
                             </FormGroup>
                         </Grid>
@@ -96,8 +142,8 @@ const ModalOrdenacao = (props) => {
                                     Score:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel control={<Checkbox  />} label="Maior Score" />
-                                    <FormControlLabel control={<Checkbox  />} label="Menor Score" />
+                                    <FormControlLabel  checked={check2[1]} onChange={mudarCheck4} control={<Checkbox />} label="Maior Score" />
+                                    <FormControlLabel  checked={check2[0]} onChange={mudarCheck3} control={<Checkbox />} label="Menor Score" />
                                 </div>
                             </FormGroup>
                         </Grid>
@@ -110,12 +156,14 @@ const ModalOrdenacao = (props) => {
                                     Data:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel control={<Checkbox  />} label="Mais Nova" />
-                                    <FormControlLabel control={<Checkbox  />} label="Mais Velha" />
+                                    <FormControlLabel checked={check3[1]} onChange={mudarCheck6} control={<Checkbox />} label="Mais Nova" />
+                                    <FormControlLabel checked={check3[0]} onChange={mudarCheck5} control={<Checkbox />} label="Mais Velha" />
                                 </div>
                             </FormGroup>
                         </Grid>
                     </Grid>
+
+                    <Button onClick={handleClose} variant="contained" disableElevation color="primary" sx={{ marginTop: '2%', width: '5rem', fontSize: FontConfig.normal }}>Aplicar</Button>
                 </Box>
             </Fade>
         </Modal>
