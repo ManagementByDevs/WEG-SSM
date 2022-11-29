@@ -3,15 +3,16 @@ import React, { useState } from "react";
 import { Modal, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from '@mui/material';
 
 import FontConfig from '../../service/FontConfig'
+import CloseIcon from '@mui/icons-material/Close';
 
 const ModalFiltro = (props) => {
 
     const style = {
         position: 'absolute',
         top: '43%',
-        left: '34%',
+        left: '38%',
         transform: 'translate(-50%, -50%)',
-        width: 310,
+        width: 297,
         height: 280,
         bgcolor: 'background.paper',
         borderRadius: '5px',
@@ -21,7 +22,7 @@ const ModalFiltro = (props) => {
         justifyContent: 'space-evenly',
         alignItems: 'center',
         flexDirection: 'column',
-        p: 1.5,
+        p: 2,
     };
 
     const cssSelect = {
@@ -30,7 +31,6 @@ const ModalFiltro = (props) => {
         display: 'flex',
         justifyContent: 'space-evenly',
         alignItems: 'flex-start',
-        flexDirection: 'column',
     }
 
     const styleDiv = {
@@ -38,6 +38,8 @@ const ModalFiltro = (props) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-center',
+        flexDirection: 'column',
+        margin: '0px'
     }
 
     let open = false;
@@ -47,21 +49,21 @@ const ModalFiltro = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [check, setCheck] = useState([false, false]);
+    const [check, setCheck] = useState([false, false, false, false]);
 
     function mudarCheck1() {
         if (check[0]) {
-            setCheck([false, false]);
+            setCheck([false, false, false, false]);
         } else {
-            setCheck([true, false]);
+            setCheck([true, false, false, false]);
         }
     }
 
     function mudarCheck2() {
         if (check[1]) {
-            setCheck([false, false]);
+            setCheck([false, false, false, false]);
         } else {
-            setCheck([false, true]);
+            setCheck([false, true, false, false]);
         }
     }
 
@@ -78,6 +80,7 @@ const ModalFiltro = (props) => {
         >
             <Fade in={props.open}>
                 <Box sx={style}>
+                    <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '90%', top: '3%', cursor: 'pointer' }} />
                     <Grid container spacing={0}>
                         <Grid item xs={9.2}>
                             <FormGroup sx={cssSelect}>
@@ -85,8 +88,10 @@ const ModalFiltro = (props) => {
                                     Status:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel id="checkA" checked={check[1]} onChange={mudarCheck2} name control={<Checkbox />} label="A-Z" />
-                                    <FormControlLabel id="checkZ" checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Z-A" />
+                                    <FormControlLabel checked={check[1]} onChange={mudarCheck2} control={<Checkbox />} label="Aprovada" />
+                                    <FormControlLabel checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Reprovada" />
+                                    <FormControlLabel checked={check[1]} onChange={mudarCheck2} control={<Checkbox />} label="Aguardando Edição" />
+                                    <FormControlLabel checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aguardando Revisão" />
                                 </div>
                             </FormGroup>
                         </Grid>
