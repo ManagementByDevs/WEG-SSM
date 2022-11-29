@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Divider } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -16,35 +16,18 @@ const DetalhesDemanda = () => {
         <Box className="flex justify-center items-center mt-3">
           <Box
             className="flex flex-col gap-5 border rounded p-10"
-            sx={{ width: "55rem", height: "50rem" }}
+            sx={{ width: "55rem", height: "70rem" }}
           >
-            <Box className="flex justify-center" sx={{ marginBottom: "20px" }}>
+            <Box className="flex justify-center">
               <Typography
                 fontSize={FontConfig.title}
                 sx={{ fontWeight: "600", cursor: "default" }}
                 color="primary.main"
               >
-                Detalhes da Demanda
+                Aqui tem o título da demanda
               </Typography>
             </Box>
-            <Box>
-              <Typography
-                fontSize={FontConfig.veryBig}
-                fontWeight="600"
-                color="text.primary"
-              >
-                Título da demanda:
-              </Typography>
-              <Typography
-                fontSize={FontConfig.default}
-                className="text-justify"
-                color="text.secondary"
-                sx={{ marginLeft: "30px" }}
-              >
-                Lorem Ipsum is simply dummy text of the prinpe and scrambled it
-                to make a type specimen book.
-              </Typography>
-            </Box>
+            <Divider />
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -54,7 +37,7 @@ const DetalhesDemanda = () => {
                 Problema:
               </Typography>
               <Typography
-                fontSize={FontConfig.default}
+                fontSize={FontConfig.medium}
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
@@ -75,7 +58,7 @@ const DetalhesDemanda = () => {
                 Proposta:
               </Typography>
               <Typography
-                fontSize={FontConfig.default}
+                fontSize={FontConfig.medium}
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
@@ -108,7 +91,7 @@ const DetalhesDemanda = () => {
                 Frequência de uso:
               </Typography>
               <Typography
-                fontSize={FontConfig.default}
+                fontSize={FontConfig.medium}
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
@@ -127,7 +110,7 @@ const DetalhesDemanda = () => {
               <Box>AQUI JÁS ANEXOS</Box>
             </Box>
           </Box>
-          <Box className="flex absolute" sx={{bottom: '10px', right: '10px'}}>
+          <Box className="flex fixed justify-around" sx={{width: '20rem',bottom: '20px', right: '20px'}}>
           <Button
               sx={{
                 backgroundColor: "primary.main",
@@ -135,7 +118,6 @@ const DetalhesDemanda = () => {
                 fontSize: FontConfig.default,
               }}
               variant="contained"
-              disableElevation
             >
               Recusar
             </Button>
