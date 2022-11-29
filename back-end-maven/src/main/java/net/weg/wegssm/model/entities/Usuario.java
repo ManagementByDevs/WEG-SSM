@@ -36,6 +36,10 @@ public class Usuario {
     @Column
     private Boolean visibilidade;
 
+    @Enumerated
+    @Column(nullable = false)
+    private TipoUsuario tipoUsuario;
+
     // Foreign key
 
     @ManyToOne

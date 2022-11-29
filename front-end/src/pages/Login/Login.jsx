@@ -41,6 +41,7 @@ const Login = (props) => {
             UsuarioService.login(dados.email, dados.senha).then((e) => {
                 if (e != null && e != "") {
                     // Salvar token recebido no localstorage
+                    localStorage.setItem('usuarioId', e.id);
                     navigate('/');
                 } else {
                     // Abrir modal de feedback de usuário ou senha inválidos

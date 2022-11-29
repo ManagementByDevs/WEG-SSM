@@ -22,6 +22,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/demanda")
 public class DemandaController {
 
@@ -56,7 +57,7 @@ public class DemandaController {
             @RequestParam(required = false) Forum forum,
             @RequestParam(required = false) Departamento departamento,
             @RequestParam(required = false) String tamanho,
-            @RequestParam Status status
+            @RequestParam(required = false) Status status
     ) {
         if (titulo != null && !titulo.isEmpty()) {
             if (gerente != null) {

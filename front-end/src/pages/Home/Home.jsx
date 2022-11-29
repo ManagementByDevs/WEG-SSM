@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Tab, Box } from '@mui/material';
@@ -16,18 +16,50 @@ import ColorModeContext from '../../service/TemaContext';
 import ModalConfirmacao from '../../components/ModalConfirmacao/ModalConfirmacao';
 import ModalOrdenacao from '../../components/ModalOrdenacao/ModalOrdenacao';
 
+import UsuarioService from "../../service/usuarioService"
+import DemandaService from "../../service/demandaService";
+
 const Home = () => {
+
   // Desestruturação de objeto em duas variáveis:
   // - Mode: modo do tema atual ("light" ou "dark")
   // - toggleColorMode: função para alternar o tema
   const { mode, toggleColorMode } = useContext(ColorModeContext);
 
+  const [listaDemandas, setListaDemandas] = useState([]);
+
+  const [usuario, setUsuario] = useState({ id: 0, email: "", nome: "", senha: "", tipo_usuario: 0, visibilidade: 1, departamento: null });
+  const [params, setParams] = useState({ titulo: "", solicitante: null, gerente: null, forum: null, departamento: null, tamanho: "", status: "" });
+  const [page, setPage] = useState("sort=id,asc&size=20&page=0");
+
   // UseState para poder visualizar e alterar a aba selecionada
-  const [value, setValue] = React.useState('1');
+  const [value, setValue] = useState('1');
+
+  useEffect(() => {
+    setUsuario(buscarUsuario());
+    setListaDemandas(buscarDemandas());
+  }, []);
+
+  const buscarUsuario = () => {
+    UsuarioService.getUsuarioById(parseInt(localStorage.getItem("usuarioId"))).then((e) => {
+      return e;
+    });
+  }
+
+  const buscarDemandas = () => {
+    DemandaService.getPage(params, page).then((e) => {
+      return e;
+    })
+  }
 
   // Função para alterar a aba selecionada
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if(newValue == 2) {
+      params.solicitante = usuario;
+    }
+
+    buscarDemandas();
   };
 
   const abrirModalOrdenacao = (event) => {
@@ -112,7 +144,7 @@ const Home = () => {
                   <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "meuDepartamento" }} />
                 </Box>
               </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="2">
+              <TabPanel sx={{ padding: 0 }} value="2" onClick={buscarDemandas}>
                 <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
                   <Demanda demanda={{ status: "Aguardando edição", dono: "Thiago", tela: "minhasDemandas" }} />
                   <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "minhasDemandas" }} />
