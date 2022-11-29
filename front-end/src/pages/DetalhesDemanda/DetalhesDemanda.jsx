@@ -22,7 +22,7 @@ const DetalhesDemanda = () => {
         </Box>
         <Box className="flex justify-center relative items-center mt-3">
           <Box
-            className="flex flex-col gap-5 border rounded p-10"
+            className="flex flex-col gap-5 border rounded p-10 drop-shadow-lg"
             sx={{ width: "55rem", height: "70rem" }}
           >
             <Box className="flex justify-center">
@@ -127,7 +127,7 @@ const DetalhesDemanda = () => {
               >
                 Anexos:
               </Typography>
-              <Box>AQUI JÁS ANEXOS</Box>
+              <Box>AQUI JAZ ANEXOS</Box>
             </Box>
           </Box>
           <Box
