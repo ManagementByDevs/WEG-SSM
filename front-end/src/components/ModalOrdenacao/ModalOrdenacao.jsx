@@ -11,11 +11,11 @@ const ModalOrdenacao = (props) => {
 
     const style = {
         position: 'absolute',
-        top: '46%',
-        left: '35%',
+        top: '42%',
+        left: '34.5%',
         transform: 'translate(-50%, -50%)',
-        width: 335,
-        height: 330 ,
+        width: 320,
+        height: 250,
         bgcolor: 'background.paper',
         borderRadius: '5px',
         borderTop: '10px solid #00579D',
@@ -41,7 +41,6 @@ const ModalOrdenacao = (props) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-center',
-        marginBottom: '4%'
     }
 
     // useState para abrir e fechar o modal
@@ -49,12 +48,21 @@ const ModalOrdenacao = (props) => {
     let open = false;
     open = props.open;
     const setOpen = props.setOpen;
+
+    // useState para limitar um checkbox
+
+    const [check, setCheck] = useState(false);
+
+    function mudarCheck() {
+        setCheck(!check);
+    }
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
 
-        <Modal 
+        <Modal
             open={props.open}
             onClose={handleClose}
             closeAfterTransition
@@ -66,16 +74,16 @@ const ModalOrdenacao = (props) => {
         >
             <Fade in={props.open}>
                 <Box sx={style}>
-                    <CloseIcon onClick={handleClose} sx={{marginLeft: '95%'}}/>
+                    <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '90%', top: '3%' }} />
                     <Grid container spacing={0}>
                         <Grid item xs={9.2}>
                             <FormGroup sx={cssSelect}>
-                                <Typography fontSize={FontConfig.big} sx={{ mt: 2 }}>
+                                <Typography sx={{ color: 'secundary.main', fontSize: FontConfig.big, fontWeight: '600' }}>
                                     Título:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel control={<Checkbox defaultChecked />} label="A-Z" />
-                                    <FormControlLabel control={<Checkbox defaultChecked />} label="Z-A" />
+                                    <FormControlLabel id="checkA" onClick={mudarCheck} control={<Checkbox  />} label="A-Z" />
+                                    <FormControlLabel id="checkZ" disabled={check} control={<Checkbox  />} label="Z-A" />
                                 </div>
                             </FormGroup>
                         </Grid>
@@ -84,12 +92,12 @@ const ModalOrdenacao = (props) => {
                     <Grid container spacing={0}>
                         <Grid item xs={20}>
                             <FormGroup sx={cssSelect}>
-                                <Typography fontSize={FontConfig.big} sx={{ mt: 2 }}>
+                                <Typography sx={{ color: 'secundary.main', fontSize: FontConfig.big, fontWeight: '600' }}>
                                     Score:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel control={<Checkbox defaultChecked />} label="Maior Score" />
-                                    <FormControlLabel control={<Checkbox defaultChecked />} label="Menor Score" />
+                                    <FormControlLabel control={<Checkbox  />} label="Maior Score" />
+                                    <FormControlLabel control={<Checkbox  />} label="Menor Score" />
                                 </div>
                             </FormGroup>
                         </Grid>
@@ -98,12 +106,12 @@ const ModalOrdenacao = (props) => {
                     <Grid container spacing={0}>
                         <Grid item xs={11.4}>
                             <FormGroup sx={cssSelect}>
-                                <Typography fontSize={FontConfig.big} sx={{ mt: 2 }}>
+                                <Typography sx={{ color: 'secundary.main', fontSize: FontConfig.big, fontWeight: '600' }}>
                                     Data:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel control={<Checkbox defaultChecked />} label="Mais Nova" />
-                                    <FormControlLabel control={<Checkbox defaultChecked />} label="Mais Velha" />
+                                    <FormControlLabel control={<Checkbox  />} label="Mais Nova" />
+                                    <FormControlLabel control={<Checkbox  />} label="Mais Velha" />
                                 </div>
                             </FormGroup>
                         </Grid>
