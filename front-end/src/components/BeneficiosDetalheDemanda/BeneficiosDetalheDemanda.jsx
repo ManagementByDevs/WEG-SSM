@@ -8,6 +8,7 @@ import {
   TableRow,
   TableBody,
   Paper,
+  Typography,
 } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
@@ -39,27 +40,84 @@ const BeneficiosDetalheDemanda = () => {
   }
 
   const rows = [
-    createData("Real", "500,00", "BR", "Alguma coisa provavelmente grande (ou não) vem aqui, como não sei, vou escrever algo grande")
+    createData(
+      "Real",
+      "500,00",
+      "BR",
+      "Escrevendo alguma coisa que realmente seja grande para testar a responsividade do bagulho"
+    ),
   ];
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 750 }} aria-label="customized table">
-        <TableHead sx={{backgroundColor: '#00579D'}}>
+        <TableHead sx={{ backgroundColor: "primary.main" }}>
           <TableRow>
-            <th>Tipo</th>
-            <th>Valor Mensal</th>
-            <th>Moeda</th>
-            <th>Memória de cálculo</th>
+            <th align="center" className="p-4 w-0">
+              <Typography
+                fontSize={FontConfig.big}
+                fontWeight="800"
+                color="text.white"
+                sx={{width: '40%'}}
+              >
+                Tipo
+              </Typography>
+            </th>
+            <th align="center" className="p-4 w-0">
+              <Typography
+                fontSize={FontConfig.big}
+                fontWeight="800"
+                color="text.white"
+                sx={{width: '40%'}}
+              >
+                Valor Mensal
+              </Typography>
+            </th>
+            <th align="center" className="p-4 w-0">
+              <Typography
+                fontSize={FontConfig.big}
+                fontWeight="800"
+                color="text.white"
+                sx={{width: '40%'}}
+              >
+                Moeda
+              </Typography>
+            </th>
+            <th align="center" className="p-4 w-0">
+              <Typography
+                fontSize={FontConfig.big}
+                fontWeight="800"
+                color="text.white"
+                sx={{width: '40%'}}
+              >
+                Memória de Cálculo
+              </Typography>
+            </th>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
             <StyledTableRow key={row.tipo} className="flex">
-              <td className="justify-center">{row.tipo}</td>
-              <td className="justify-center">{row.valorMensal}</td>
-              <td className="justify-center">{row.moeda}</td>
-              <td className="flex justify-center">{row.memoriaCalculo}</td>
+              <td align="center">
+                <Typography fontSize={FontConfig.medium} color="text.primary">
+                  {row.tipo}
+                </Typography>
+              </td>
+              <td align="center">
+                <Typography fontSize={FontConfig.medium} color="text.primary">
+                  {row.valorMensal}
+                </Typography>
+              </td>
+              <td align="center">
+                <Typography fontSize={FontConfig.medium} color="text.primary">
+                  {row.moeda}
+                </Typography>
+              </td>
+              <td align="center" className="p-3 pl-5 pr-5 flex justify-center">
+                <Typography className="text-justify" fontSize={FontConfig.medium} color="text.primary" sx={{width: '100%'}}>
+                  {row.memoriaCalculo}
+                </Typography>
+              </td>
             </StyledTableRow>
           ))}
         </TableBody>
