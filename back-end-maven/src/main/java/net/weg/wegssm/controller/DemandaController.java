@@ -5,6 +5,9 @@ import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.DemandaService;
 import net.weg.wegssm.util.DemandaUtil;
+import net.weg.wegssm.util.DepartamentoUtil;
+import net.weg.wegssm.util.ForumUtil;
+import net.weg.wegssm.util.UsuarioUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,10 +43,10 @@ public class DemandaController {
      * Função principal para buscar demandas, retornando uma página com as demandas seguindo o filtro utilizado
      * @param pageable - Objeto que contém as informações da páginação
      * @param titulo - Título da demanda (usado na barra de pesquisa)
-     * @param solicitante - Solicitante da demanda (usado no modal de filtro)
-     * @param gerente - Gerente da demanda (usado no modal de filtro)
-     * @param forum - Fórum da demanda (usado no modal de filtro)
-     * @param departamento - Departamento da demanda (usado no modal de filtro)
+     * @param solicitanteJson - Solicitante da demanda (usado no modal de filtro)
+     * @param gerenteJson - Gerente da demanda (usado no modal de filtro)
+     * @param forumJson - Fórum da demanda (usado no modal de filtro)
+     * @param departamentoJson - Departamento da demanda (usado no modal de filtro)
      * @param tamanho - Tamanho da demanda (usado no modal de filtro)
      * @param status - Status da demanda (usado sempre quando é feita a busca)
      * @return - Retorna uma página com as demandas encontradas
@@ -51,14 +54,22 @@ public class DemandaController {
     @GetMapping("/page")
     public ResponseEntity<Page<Demanda>> findPage(
             @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-            @RequestParam(required = false) String titulo,
-            @RequestParam(required = false) Usuario solicitante,
-            @RequestParam(required = false) Usuario gerente,
-            @RequestParam(required = false) Forum forum,
-            @RequestParam(required = false) Departamento departamento,
-            @RequestParam(required = false) String tamanho,
-            @RequestParam(required = false) Status status
+            @RequestParam(value = "titulo", required = false) String titulo,
+            @RequestParam(value = "solicitante", required = false) String solicitanteJson,
+            @RequestParam(value = "gerente", required = false) String gerenteJson,
+            @RequestParam(value = "forum", required = false) String forumJson,
+            @RequestParam(value = "departamento", required = false) String departamentoJson,
+            @RequestParam(value = "tamanho", required = false) String tamanho,
+            @RequestParam(value = "status", required = false) Status status
     ) {
+        System.out.println("JSON - " + solicitanteJson);
+        Usuario solicitante = new UsuarioUtil().convertJsonToModel(solicitanteJson);
+        Usuario gerente = new UsuarioUtil().convertJsonToModel(gerenteJson);
+        Forum forum = new ForumUtil().convertJsonToModel(forumJson);
+        Departamento departamento = new DepartamentoUtil().convertJsonToModel(departamentoJson);
+
+
+        System.out.println(solicitante);
         if (titulo != null && !titulo.isEmpty()) {
             if (gerente != null) {
                 if (forum != null) {
