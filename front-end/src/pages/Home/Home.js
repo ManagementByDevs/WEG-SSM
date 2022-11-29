@@ -34,7 +34,6 @@ const Home = () => {
     setOpen(true);
   };
 
-
   const navigate = useNavigate();
 
   return (
