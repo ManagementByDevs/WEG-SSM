@@ -53,7 +53,7 @@ const DetalhesDemanda = () => {
   };
 
   const [tituloDemanda, setTituloDemanda] = useState(
-    "Sistema de Gestão de Demandas aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "Sistema de Gestão de Demandas"
   );
   const [problema, setProblema] = useState(
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
@@ -86,6 +86,7 @@ const DetalhesDemanda = () => {
       salvarFrequencia(textoAux);
     }
   };
+
   return (
     <FundoComHeader>
       <Box className="p-2">
@@ -131,7 +132,7 @@ const DetalhesDemanda = () => {
                 <Box className="flex justify-center">
                   <Typography
                     fontSize={FontConfig.title}
-                    sx={{ fontWeight: "600", cursor: "default" }}
+                    sx={{ fontWeight: "600", cursor: "default", inlineSize: "800px", overflowWrap: "break-word" }}
                     color="primary.main"
                   >
                     {tituloDemanda}

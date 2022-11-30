@@ -102,6 +102,8 @@ const ModalOrdenacao = (props) => {
         }
     }
 
+    // useState para abrir e fechar o modal
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -120,6 +122,7 @@ const ModalOrdenacao = (props) => {
             <Fade in={props.open}>
                 <Box sx={style}>
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '90%', top: '3%', cursor: 'pointer' }} />
+                    {/* Dupla de check do modal ordenação */}
                     <Grid container spacing={0}>
                         <Grid item xs={9.2}>
                             <FormGroup sx={cssSelect}>
@@ -134,6 +137,7 @@ const ModalOrdenacao = (props) => {
                         </Grid>
                     </Grid>
 
+                    {/* Dupla de check do modal ordenação */}
                     <Grid container spacing={0}>
                         <Grid item xs={20}>
                             <FormGroup sx={cssSelect}>
@@ -148,6 +152,7 @@ const ModalOrdenacao = (props) => {
                         </Grid>
                     </Grid>
 
+                    {/* Dupla de check do modal ordenação */}
                     <Grid container spacing={0}>
                         <Grid item xs={11.4}>
                             <FormGroup sx={cssSelect}>

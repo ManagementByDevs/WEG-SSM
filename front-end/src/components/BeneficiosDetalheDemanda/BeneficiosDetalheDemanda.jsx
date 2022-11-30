@@ -10,6 +10,7 @@ import {
   Paper,
   Typography,
   Box,
+  TextareaAutosize,
 } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -36,7 +37,7 @@ const BeneficiosDetalheDemanda = (props) => {
       "Real",
       "500,00",
       "BR",
-      "Escrevendo alguma coisa que realmente seja grande para testar a responsividade do bagulho"
+      "Escrevendo alguma coisa que realmente seja grande para testar a responsividade do bagulho aqui"
     ),
   ];
 
@@ -53,42 +54,38 @@ const BeneficiosDetalheDemanda = (props) => {
             <Table sx={{ minWidth: 750 }} aria-label="customized table">
               <TableHead sx={{ backgroundColor: "primary.main" }}>
                 <TableRow>
-                  <th align="center" className="p-4 w-0">
+                  <th align="center" className="p-4 w-0" style={{width: '10%'}}>
                     <Typography
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                      sx={{ width: "40%" }}
                     >
                       Tipo
                     </Typography>
                   </th>
-                  <th align="center" className="p-4 w-0">
+                  <th align="center" className="p-4 w-0" style={{width: '15%'}}>
                     <Typography
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                      sx={{ width: "40%" }}
                     >
                       Valor Mensal
                     </Typography>
                   </th>
-                  <th align="center" className="p-4 w-0">
+                  <th align="center" className="p-4 w-0" style={{width: '10%'}}>
                     <Typography
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                      sx={{ width: "40%" }}
                     >
                       Moeda
                     </Typography>
                   </th>
-                  <th align="center" className="p-4 w-0">
+                  <th align="center" className="p-4 w-0" style={{width: '30%'}}>
                     <Typography
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                      sx={{ width: "40%" }}
                     >
                       Memória de Cálculo
                     </Typography>
@@ -99,41 +96,65 @@ const BeneficiosDetalheDemanda = (props) => {
                 {rows.map((row) => (
                   <StyledTableRow key={row.tipo} className="flex">
                     <td align="center">
-                      <Typography
+                      <Box
+                        value={row.tipo}
                         fontSize={FontConfig.medium}
                         color="text.primary"
-                      >
-                        {row.tipo}
-                      </Typography>
+                        className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                        sx={{
+                          width: "80%;",
+                          height: "30px",
+                          backgroundColor: "background.default",
+                        }}
+                        component="input"
+                        placeholder="Digite o tipo do benefício..."
+                      />
                     </td>
                     <td align="center">
-                      <Typography
+                      <Box
+                        value={row.valorMensal}
                         fontSize={FontConfig.medium}
                         color="text.primary"
-                      >
-                        {row.valorMensal}
-                      </Typography>
+                        className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                        sx={{
+                          width: "80%;",
+                          height: "30px",
+                          backgroundColor: "background.default",
+                        }}
+                        component="input"
+                        placeholder="Digite o valor mensal..."
+                      />
                     </td>
                     <td align="center">
-                      <Typography
+                      <Box
+                        value={row.moeda}
                         fontSize={FontConfig.medium}
                         color="text.primary"
-                      >
-                        {row.moeda}
-                      </Typography>
+                        className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                        sx={{
+                          width: "80%;",
+                          height: "30px",
+                          backgroundColor: "background.default",
+                        }}
+                        component="input"
+                        placeholder="Digite o tipo da moeda..."
+                      />
                     </td>
                     <td
                       align="center"
                       className="p-3 pl-5 pr-5 flex justify-center"
                     >
-                      <Typography
-                        className="text-justify"
+                      <TextareaAutosize
+                        style={{
+                          width: "100%",
+                          resize: "none",
+                          backgroundColor: "background.default",
+                        }}
+                        value={row.memoriaCalculo}
                         fontSize={FontConfig.medium}
-                        color="text.primary"
-                        sx={{ width: "100%" }}
-                      >
-                        {row.memoriaCalculo}
-                      </Typography>
+                        className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+                        placeholder="Digite a memória de cálculo..."
+                      />
                     </td>
                   </StyledTableRow>
                 ))}
@@ -146,42 +167,38 @@ const BeneficiosDetalheDemanda = (props) => {
           <Table sx={{ minWidth: 750 }} aria-label="customized table">
             <TableHead sx={{ backgroundColor: "primary.main" }}>
               <TableRow>
-                <th align="center" className="p-4 w-0">
+                <th align="center" className="p-4 w-0" style={{width: '10%'}}>
                   <Typography
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
-                    sx={{ width: "40%" }}
                   >
                     Tipo
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0">
+                <th align="center" className="p-4 w-0" style={{width: '15%'}}>
                   <Typography
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
-                    sx={{ width: "40%" }}
                   >
                     Valor Mensal
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0">
+                <th align="center" className="p-4 w-0" style={{width: '10%'}}>
                   <Typography
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
-                    sx={{ width: "40%" }}
                   >
                     Moeda
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0">
+                <th align="center" className="p-4 w-0" style={{width: '30%'}}>
                   <Typography
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
-                    sx={{ width: "40%" }}
                   >
                     Memória de Cálculo
                   </Typography>
