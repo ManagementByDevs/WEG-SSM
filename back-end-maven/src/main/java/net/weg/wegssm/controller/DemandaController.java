@@ -52,8 +52,7 @@ public class DemandaController {
      * @return - Retorna uma página com as demandas encontradas
      */
     @GetMapping("/page")
-    public ResponseEntity<Page<Demanda>> findPage(
-            @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<Page<Demanda>> findPage(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(value = "titulo", required = false) String titulo,
             @RequestParam(value = "solicitante", required = false) String solicitanteJson,
             @RequestParam(value = "gerente", required = false) String gerenteJson,
@@ -76,45 +75,93 @@ public class DemandaController {
                     if (departamento != null) {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(titulo, gerente, forum, departamento, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(status, titulo, gerente, forum, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(status, titulo, gerente, forum, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(titulo, gerente, forum, departamento, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(titulo, gerente, forum, departamento, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamento(status, titulo, gerente, forum, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamento(status, titulo, gerente, forum, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndForumAndDepartamento(titulo, gerente, forum, departamento, pageable)
+                                    );
+                                }
                             }
                         }
                     } else {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(status, titulo, gerente, forum, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(status, titulo, gerente, forum, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(titulo, gerente, forum, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndTamanho(status, titulo, gerente, forum, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndTamanho(status, titulo, gerente, forum, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndForumAndTamanho(titulo, gerente, forum, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndSolicitante(status, titulo, gerente, forum, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndForumAndSolicitante(status, titulo, gerente, forum, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndForumAndSolicitante(titulo, gerente, forum, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndForum(status, titulo, gerente, forum, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndForum(status, titulo, gerente, forum, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndForum(titulo, gerente, forum, pageable)
+                                    );
+                                }
                             }
                         }
                     }
@@ -122,45 +169,93 @@ public class DemandaController {
                     if (departamento != null) {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(status, titulo, gerente, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(status, titulo, gerente, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(titulo, gerente, departamento, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanho(status, titulo, gerente, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanho(status, titulo, gerente, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndDepartamentoAndTamanho(titulo, gerente, departamento, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(status, titulo, gerente, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(status, titulo, gerente, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndDepartamentoAndSolicitante(titulo, gerente, departamento, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndDepartamento(status, titulo, gerente, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndDepartamento(status, titulo, gerente, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndDepartamento(titulo, gerente, departamento, pageable)
+                                    );
+                                }
                             }
                         }
                     } else {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitante(status, titulo, gerente, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitante(status, titulo, gerente, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndTamanhoAndSolicitante(titulo, gerente, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndTamanho(status, titulo, gerente, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndTamanho(status, titulo, gerente, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndTamanho(titulo, gerente, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerenteAndSolicitante(status, titulo, gerente, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerenteAndSolicitante(status, titulo, gerente, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerenteAndSolicitante(titulo, gerente, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndGerente(status, titulo, gerente, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndGerente(status, titulo, gerente, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndGerente(titulo, gerente, pageable)
+                                    );
+                                }
                             }
                         }
                     }
@@ -170,45 +265,93 @@ public class DemandaController {
                     if (departamento != null) {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(status, titulo, forum, departamento, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(status, titulo, forum, departamento, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(titulo, forum, departamento, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanho(status, titulo, forum, departamento, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanho(status, titulo, forum, departamento, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndForumAndDepartamentoAndTamanho(titulo, forum, departamento, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndForumAndDepartamentoAndSolicitante(status, titulo, forum, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndForumAndDepartamentoAndSolicitante(status, titulo, forum, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndForumAndDepartamentoAndSolicitante(titulo, forum, departamento, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndForumAndDepartamento(status, titulo, forum, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndForumAndDepartamento(status, titulo, forum, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndForumAndDepartamento(titulo, forum, departamento, pageable)
+                                    );
+                                }
                             }
                         }
                     } else {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndForumAndTamanhoAndSolicitante(status, titulo, forum, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndForumAndTamanhoAndSolicitante(status, titulo, forum, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndForumAndTamanhoAndSolicitante(titulo, forum, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndForumAndTamanho(status, titulo, forum, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndForumAndTamanho(status, titulo, forum, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndForumAndTamanho(titulo, forum, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndForumAndSolicitante(status, titulo, forum, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndForumAndSolicitante(status, titulo, forum, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndForumAndSolicitante(titulo, forum, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndForum(status, titulo, forum, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndForum(status, titulo, forum, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndForum(titulo, forum, pageable)
+                                    );
+                                }
                             }
                         }
                     }
@@ -216,45 +359,93 @@ public class DemandaController {
                     if (departamento != null) {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(status, titulo, departamento, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(status, titulo, departamento, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndDepartamentoAndTamanhoAndSolicitante(titulo, departamento, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndDepartamentoAndTamanho(status, titulo, departamento, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndDepartamentoAndTamanho(status, titulo, departamento, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndDepartamentoAndTamanho(titulo, departamento, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndDepartamentoAndSolicitante(status, titulo, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndDepartamentoAndSolicitante(status, titulo, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndDepartamentoAndSolicitante(titulo, departamento, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndDepartamento(status, titulo, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndDepartamento(status, titulo, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndDepartamento(titulo, departamento, pageable)
+                                    );
+                                }
                             }
                         }
                     } else {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndTamanhoAndSolicitante(status, titulo, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndTamanhoAndSolicitante(status, titulo, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndTamanhoAndSolicitante(titulo, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndTamanho(status, titulo, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndTamanho(status, titulo, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndTamanho(titulo, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContainingAndSolicitante(status, titulo, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContainingAndSolicitante(status, titulo, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContainingAndSolicitante(titulo, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTituloContaining(status, titulo, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTituloContaining(status, titulo, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTituloContaining(titulo, pageable)
+                                    );
+                                }
                             }
 
                         }
@@ -267,45 +458,93 @@ public class DemandaController {
                     if (departamento != null) {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(status, gerente, forum, departamento, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(status, gerente, forum, departamento, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(gerente, forum, departamento, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndForumAndDepartamentoAndTamanho(status, gerente, forum, departamento, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndForumAndDepartamentoAndTamanho(status, gerente, forum, departamento, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndForumAndDepartamentoAndTamanho(gerente, forum, departamento, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndForumAndDepartamentoAndSolicitante(status, gerente, forum, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndForumAndDepartamentoAndSolicitante(status, gerente, forum, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndForumAndDepartamentoAndSolicitante(gerente, forum, departamento, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndForumAndDepartamento(status, gerente, forum, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndForumAndDepartamento(status, gerente, forum, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndForumAndDepartamento(gerente, forum, departamento, pageable)
+                                    );
+                                }
                             }
                         }
                     } else {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndForumAndTamanhoAndSolicitante(status, gerente, forum, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndForumAndTamanhoAndSolicitante(status, gerente, forum, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndForumAndTamanhoAndSolicitante(gerente, forum, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndForumAndTamanho(status, gerente, forum, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndForumAndTamanho(status, gerente, forum, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndForumAndTamanho(gerente, forum, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndForumAndSolicitante(status, gerente, forum, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndForumAndSolicitante(status, gerente, forum, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndForumAndSolicitante(gerente, forum, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndForum(status, gerente, forum, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndForum(status, gerente, forum, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndForum(gerente, forum, pageable)
+                                    );
+                                }
                             }
                         }
                     }
@@ -313,45 +552,93 @@ public class DemandaController {
                     if (departamento != null) {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndDepartamentoAndTamanhoAndSolicitante(status, gerente, departamento, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndDepartamentoAndTamanhoAndSolicitante(status, gerente, departamento, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndDepartamentoAndTamanhoAndSolicitante(gerente, departamento, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndDepartamentoAndTamanho(status, gerente, departamento, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndDepartamentoAndTamanho(status, gerente, departamento, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndDepartamentoAndTamanho(gerente, departamento, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndDepartamentoAndSolicitante(status, gerente, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndDepartamentoAndSolicitante(status, gerente, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndDepartamentoAndSolicitante(gerente, departamento, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndDepartamento(status, gerente, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndDepartamento(status, gerente, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndDepartamento(gerente, departamento, pageable)
+                                    );
+                                }
                             }
                         }
                     } else {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndTamanhoAndSolicitante(status, gerente, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndTamanhoAndSolicitante(status, gerente, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndTamanhoAndSolicitante(gerente, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndTamanho(status, gerente, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndTamanho(status, gerente, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndTamanho(gerente, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerenteAndSolicitante(status, gerente, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerenteAndSolicitante(status, gerente, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerenteAndSolicitante(gerente, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndGerente(status, gerente, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndGerente(status, gerente, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByGerente(gerente, pageable)
+                                    );
+                                }
                             }
                         }
                     }
@@ -361,45 +648,93 @@ public class DemandaController {
                     if (departamento != null) {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndForumAndDepartamentoAndTamanhoAndSolicitante(status, forum, departamento, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndForumAndDepartamentoAndTamanhoAndSolicitante(status, forum, departamento, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByForumAndDepartamentoAndTamanhoAndSolicitante(forum, departamento, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndForumAndDepartamentoAndTamanho(status, forum, departamento, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndForumAndDepartamentoAndTamanho(status, forum, departamento, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByForumAndDepartamentoAndTamanho(forum, departamento, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndForumAndDepartamentoAndSolicitante(status, forum, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndForumAndDepartamentoAndSolicitante(status, forum, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByForumAndDepartamentoAndSolicitante(forum, departamento, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndForumAndDepartamento(status, forum, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndForumAndDepartamento(status, forum, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByForumAndDepartamento(forum, departamento, pageable)
+                                    );
+                                }
                             }
                         }
                     } else {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndForumAndTamanhoAndSolicitante(status, forum, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndForumAndTamanhoAndSolicitante(status, forum, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByForumAndTamanhoAndSolicitante(forum, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndForumAndTamanho(status, forum, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndForumAndTamanho(status, forum, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByForumAndTamanho(forum, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndForumAndSolicitante(status, forum, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndForumAndSolicitante(status, forum, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByForumAndSolicitante(forum, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndForum(status, forum, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndForum(status, forum, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByForum(forum, pageable)
+                                    );
+                                }
                             }
                         }
                     }
@@ -407,45 +742,93 @@ public class DemandaController {
                     if (departamento != null) {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndDepartamentoAndTamanhoAndSolicitante(status, departamento, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndDepartamentoAndTamanhoAndSolicitante(status, departamento, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByDepartamentoAndTamanhoAndSolicitante(departamento, tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndDepartamentoAndTamanho(status, departamento, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndDepartamentoAndTamanho(status, departamento, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByDepartamentoAndTamanho(departamento, tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndDepartamentoAndSolicitante(status, departamento, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndDepartamentoAndSolicitante(status, departamento, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByDepartamentoAndSolicitante(departamento, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndDepartamento(status, departamento, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndDepartamento(status, departamento, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByDepartamento(departamento, pageable)
+                                    );
+                                }
                             }
                         }
                     } else {
                         if (tamanho != null && !tamanho.isEmpty()) {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTamanhoAndSolicitante(status, tamanho, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTamanhoAndSolicitante(status, tamanho, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTamanhoAndSolicitante(tamanho, solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndTamanho(status, tamanho, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndTamanho(status, tamanho, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByTamanho(tamanho, pageable)
+                                    );
+                                }
                             }
                         } else {
                             if (solicitante != null) {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatusAndSolicitante(status, solicitante, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatusAndSolicitante(status, solicitante, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findBySolicitante(solicitante, pageable)
+                                    );
+                                }
                             } else {
-                                return ResponseEntity.status(HttpStatus.OK).body(
-                                        demandaService.findByStatus(status, pageable)
-                                );
+                                if(status != null) {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findByStatus(status, pageable)
+                                    );
+                                } else {
+                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                            demandaService.findAll(pageable)
+                                    );
+                                }
                             }
                         }
                     }

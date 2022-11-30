@@ -42,8 +42,16 @@ public class DemandaService {
         return demandaRepository.findByForum(forum);
     }
 
+    public Page<Demanda> findByForum(Forum forum, Pageable pageable) {
+        return demandaRepository.findByForum(forum, pageable);
+    }
+
     public List<Demanda> findByDepartamento(Departamento departamento) {
         return demandaRepository.findByDepartamento(departamento);
+    }
+
+    public Page<Demanda> findByDepartamento(Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByDepartamento(departamento, pageable);
     }
 
     public boolean existsById(Long id) {
@@ -310,4 +318,247 @@ public class DemandaService {
         return demandaRepository.findByStatusAndSolicitante(status, solicitante, pageable);
     }
 
+    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(titulo, gerente, forum, departamento, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(titulo, gerente, forum, departamento, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndDepartamento(String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndForumAndDepartamento(titulo, gerente, forum, departamento, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(titulo, gerente, forum, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndTamanho(String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndForumAndTamanho(titulo, gerente, forum, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndSolicitante(String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndForumAndSolicitante(titulo, gerente, forum, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndForum(String titulo, Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndForum(titulo, gerente, forum, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(titulo, gerente, departamento, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndDepartamentoAndTamanho(String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndDepartamentoAndTamanho(titulo, gerente, departamento, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndDepartamentoAndSolicitante(String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndDepartamentoAndSolicitante(titulo, gerente, departamento, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndDepartamento(String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndDepartamento(titulo, gerente, departamento, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndTamanhoAndSolicitante(String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndTamanhoAndSolicitante(titulo, gerente, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndTamanho(String titulo, Usuario gerente, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndTamanho(titulo, gerente, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerenteAndSolicitante(String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerenteAndSolicitante(titulo, gerente, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndGerente(String titulo, Usuario gerente, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndGerente(titulo, gerente, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(titulo, forum, departamento, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndForumAndDepartamentoAndTamanho(String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndForumAndDepartamentoAndTamanho(titulo, forum, departamento, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndForumAndDepartamentoAndSolicitante(String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndForumAndDepartamentoAndSolicitante(titulo, forum, departamento, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndForumAndDepartamento(String titulo, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndForumAndDepartamento(titulo, forum, departamento, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndForumAndTamanhoAndSolicitante(String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndForumAndTamanhoAndSolicitante(titulo, forum, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndForumAndTamanho(String titulo, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndForumAndTamanho(titulo, forum, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndForumAndSolicitante(String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndForumAndSolicitante(titulo, forum, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndForum(String titulo, Forum forum, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndForum(titulo, forum, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndDepartamentoAndTamanhoAndSolicitante(String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndDepartamentoAndTamanhoAndSolicitante(titulo, departamento, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndDepartamentoAndTamanho(String titulo, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndDepartamentoAndTamanho(titulo, departamento, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndDepartamentoAndSolicitante(String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndDepartamentoAndSolicitante(titulo, departamento, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndDepartamento(String titulo, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndDepartamento(titulo, departamento, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndTamanhoAndSolicitante(String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndTamanhoAndSolicitante(titulo, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndTamanho(String titulo, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndTamanho(titulo, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByTituloContainingAndSolicitante(String titulo, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingAndSolicitante(titulo, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTituloContaining(String titulo, Pageable pageable) {
+        return demandaRepository.findByTituloContaining(titulo, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(gerente, forum, departamento, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndForumAndDepartamentoAndTamanho(Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByGerenteAndForumAndDepartamentoAndTamanho(gerente, forum, departamento, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndForumAndDepartamentoAndSolicitante(Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByGerenteAndForumAndDepartamentoAndSolicitante(gerente, forum, departamento, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndForumAndDepartamento(Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByGerenteAndForumAndDepartamento(gerente, forum, departamento, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndForumAndTamanhoAndSolicitante(Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByGerenteAndForumAndTamanhoAndSolicitante(gerente, forum, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndForumAndTamanho(Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByGerenteAndForumAndTamanho(gerente, forum, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndForumAndSolicitante(Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByGerenteAndForumAndSolicitante(gerente, forum, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndForum(Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findByGerenteAndForum(gerente, forum, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndDepartamentoAndTamanhoAndSolicitante(Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByGerenteAndDepartamentoAndTamanhoAndSolicitante(gerente, departamento, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndDepartamentoAndTamanho(Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByGerenteAndDepartamentoAndTamanho(gerente, departamento, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndDepartamentoAndSolicitante(Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByGerenteAndDepartamentoAndSolicitante(gerente, departamento, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndDepartamento(Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByGerenteAndDepartamento(gerente, departamento, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndTamanhoAndSolicitante(Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByGerenteAndTamanhoAndSolicitante(gerente, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndTamanho(Usuario gerente, String tamanho, Pageable pageable) {
+        return demandaRepository.findByGerenteAndTamanho(gerente, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByGerenteAndSolicitante(Usuario gerente, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByGerenteAndSolicitante(gerente, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByGerente(Usuario gerente, Pageable pageable) {
+        return demandaRepository.findByGerente(gerente, pageable);
+    }
+
+    public Page<Demanda> findByForumAndDepartamentoAndTamanhoAndSolicitante(Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByForumAndDepartamentoAndTamanhoAndSolicitante(forum, departamento, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByForumAndDepartamentoAndTamanho(Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByForumAndDepartamentoAndTamanho(forum, departamento, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByForumAndDepartamentoAndSolicitante(Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByForumAndDepartamentoAndSolicitante(forum, departamento, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByForumAndDepartamento(Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByForumAndDepartamento(forum, departamento, pageable);
+    }
+
+    public Page<Demanda> findByForumAndTamanhoAndSolicitante(Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByForumAndTamanhoAndSolicitante(forum, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByForumAndTamanho(Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByForumAndTamanho(forum, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByForumAndSolicitante(Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByForumAndSolicitante(forum, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByDepartamentoAndTamanhoAndSolicitante(Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByDepartamentoAndTamanhoAndSolicitante(departamento, tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByDepartamentoAndTamanho(Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByDepartamentoAndTamanho(departamento, tamanho, pageable);
+    }
+
+    public Page<Demanda> findByDepartamentoAndSolicitante(Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByDepartamentoAndSolicitante(departamento, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTamanhoAndSolicitante(String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTamanhoAndSolicitante(tamanho, solicitante, pageable);
+    }
+
+    public Page<Demanda> findByTamanho(String tamanho, Pageable pageable) {
+        return demandaRepository.findByTamanho(tamanho, pageable);
+    }
+
+    public Page<Demanda> findBySolicitante(Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findBySolicitante(solicitante, pageable);
+    }
 }

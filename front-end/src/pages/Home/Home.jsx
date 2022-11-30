@@ -35,7 +35,9 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    setParams({ ...params, solicitante: usuario })
+    if (params.solicitante == null) {
+      setParams({ ...params, solicitante: usuario })
+    }
   }, [usuario])
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const Home = () => {
 
   const buscarDemandas = () => {
     DemandaService.getPage(params, page).then((e) => {
-      setListaDemandas(e.content);
+      setListaDemandas(e);
     })
   }
 
