@@ -29,15 +29,14 @@ const Home = () => {
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState('1');
+  const [valorPesquisa, setValorPesquisa] = useState("");
 
   useEffect(() => {
     buscarUsuario();
   }, []);
 
   useEffect(() => {
-    if (params.solicitante == null) {
-      setParams({ ...params, solicitante: usuario })
-    }
+    setParams({ ...params, solicitante: usuario })
   }, [usuario])
 
   useEffect(() => {
@@ -51,19 +50,21 @@ const Home = () => {
   }
 
   const buscarDemandas = () => {
-    DemandaService.getPage(params, page).then((e) => {
-      setListaDemandas(e);
-    })
+    if (params.departamento != null || params.solicitante != null) {
+      DemandaService.getPage(params, page).then((e) => {
+        setListaDemandas(e.content);
+      })
+    }
   }
 
   // Função para alterar a aba selecionada
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    if (newValue == 2) {
-      params.solicitante = usuario;
+    if (newValue == 1) {
+      setParams({ ...params, departamento: null, solicitante: usuario });
+    } else {
+      setParams({ ...params, solicitante: null, departamento: usuario?.departamento });
     }
-
-    buscarDemandas();
   };
 
   const [state, setState] = React.useState({
@@ -90,6 +91,29 @@ const Home = () => {
     setOpenFiltro(true);
   };
 
+  const verDemanda = (demanda) => {
+    localStorage.setItem("demandaAtual", JSON.stringify(demanda));
+    navigate('/detalhes-demanda');
+  }
+
+  const salvarPesquisa = (e) => {
+    setValorPesquisa(e.target.value);
+  }
+
+  const pesquisaTitulo = () => {
+    if (params.solicitante != null) {
+      setParams({ ...params, titulo: valorPesquisa, solicitante: usuario });
+    } else {
+      setParams({ ...params, titulo: valorPesquisa, departamento: usuario.departamento });
+    }
+  }
+
+  const eventoTeclado = (e) => {
+    if (e.key == "Enter") {
+      pesquisaTitulo();
+    }
+  }
+
   const navigate = useNavigate();
 
   return (
@@ -114,12 +138,12 @@ const Home = () => {
               >
                 <Tab
                   sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Meu Departamento"
+                  label="Minhas Demandas"
                   value="1"
                 />
                 <Tab
                   sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Minhas Demandas"
+                  label="Meu Departamento"
                   value="2"
                 />
               </TabList>
@@ -145,12 +169,15 @@ const Home = () => {
                       fontSize: FontConfig.medium,
                     }}
                     placeholder="Pesquisar por título..."
+                    onKeyDown={(e) => { eventoTeclado(e) }}
+                    onBlur={() => { pesquisaTitulo() }}
+                    onChange={(e) => { salvarPesquisa(e) }}
                   />
 
                   {/* Container para os ícones */}
                   <Box className="flex gap-2">
                     {/* Ícone de pesquisa */}
-                    <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
+                    <SearchOutlinedIcon onClick={pesquisaTitulo} className='hover:cursor-pointer' sx={{ color: "text.secondary" }} />
 
                     {/* Ícone de ordenação */}
                     <SwapVertIcon
@@ -204,19 +231,17 @@ const Home = () => {
             <Box className="mt-6">
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
-                <Box sx={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))" }}>
-                  <Demanda onClick={() => { navigate("/detalhes-demanda") }} demanda={{ status: "Aguardando revisão", dono: "Kenzo", tela: "meuDepartamento" }} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Felipe", tela: "meuDepartamento" }} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Matheus", tela: "meuDepartamento" }} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "meuDepartamento", }} />
+                <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
+                  {listaDemandas?.map((e, index) => (
+                    <Demanda key={index} demanda={e} onClick={() => { verDemanda(e) }} />
+                  ))}
                 </Box>
               </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="2" onClick={buscarDemandas}>
-                <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
-                  <Demanda demanda={{ status: "Aguardando edição", dono: "Thiago", tela: "minhasDemandas" }} />
-                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "minhasDemandas" }} />
-                  <Demanda demanda={{ status: "Aprovada", dono: "Thiago", tela: "minhasDemandas" }} />
-                  <Demanda demanda={{ status: "Reprovada", dono: "Thiago", tela: "minhasDemandas" }} />
+              <TabPanel sx={{ padding: 0 }} value="2">
+                <Box sx={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))" }}>
+                  {listaDemandas?.map((e, index) => (
+                    <Demanda key={index} demanda={e} onClick={() => { verDemanda(e) }} />
+                  ))}
                 </Box>
               </TabPanel>
             </Box>
