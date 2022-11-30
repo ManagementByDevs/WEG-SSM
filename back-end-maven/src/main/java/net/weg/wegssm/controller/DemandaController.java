@@ -61,14 +61,11 @@ public class DemandaController {
             @RequestParam(value = "tamanho", required = false) String tamanho,
             @RequestParam(value = "status", required = false) Status status
     ) {
-        System.out.println("JSON - " + solicitanteJson);
         Usuario solicitante = new UsuarioUtil().convertJsonToModel(solicitanteJson);
         Usuario gerente = new UsuarioUtil().convertJsonToModel(gerenteJson);
         Forum forum = new ForumUtil().convertJsonToModel(forumJson);
         Departamento departamento = new DepartamentoUtil().convertJsonToModel(departamentoJson);
-
-
-        System.out.println(solicitante);
+        
         if (titulo != null && !titulo.isEmpty()) {
             if (gerente != null) {
                 if (forum != null) {
