@@ -11,6 +11,7 @@ const FormularioBeneficiosDemanda = () => {
   // Lista de benefícios adicionadas
   const [beneficios, setBeneficios] = useState([]);
   // Lista de benefícios que serão adicionadas na demanda (benefícios que não foram excluídos)
+  // Usar esta lista ao realizar cadastro de demanda
   const [savedBeneficios, setSavedBeneficios] = useState([]);
 
   // Adiciona um benefício na lista de benefícios
@@ -26,12 +27,6 @@ const FormularioBeneficiosDemanda = () => {
       }
       return beneficio;
     }));
-  }
-
-  // Função auxiliar para ver as listas de benefícios
-  function verDados() {
-    console.log(beneficios);
-    console.log("savedBeneficios", savedBeneficios)
   }
 
   // Função que irá setar a visibildade de um benefício para false, sendo o benefício excluído da lista savedBeneficios
@@ -65,7 +60,6 @@ const FormularioBeneficiosDemanda = () => {
             })
           }
         </Box>
-        <Button onClick={verDados} >tsete</Button>
       </Box>
     </Box>
   )
