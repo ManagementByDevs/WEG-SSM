@@ -4,12 +4,10 @@ import { Modal, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, 
 
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
-import { TurnedIn } from "@mui/icons-material";
-import { Input } from "postcss";
 
 const ModalFiltro = (props) => {
 
-    // variáveis utilizadas para o css
+    // variáveis de estilo para o css do modal
 
     const styleModal = {
         position: 'absolute',
@@ -90,6 +88,8 @@ const ModalFiltro = (props) => {
 
     const [check, setCheck] = useState([false, false, false, false]);
 
+    // funções para permitir o check de apenas um checkbox
+
     function mudarCheck1() {
         if (check[0]) {
             setCheck([false, false, false, false]);
@@ -131,9 +131,13 @@ const ModalFiltro = (props) => {
             BackdropProps={{
                 timeout: 500,
             }}
-            
+
         >
             <Fade in={props.open}>
+
+                {/* 'ngIf' para o modal de filtro das demandas e filtro das notificações */}
+                {/* se o props filtroDemanda == true, chama o modal de filtro das demandas, caso contrário chama o modal de filtro das notificações */}
+
                 {
                     props.filtroDemanda ?
                         <Box sx={styleModal}>
