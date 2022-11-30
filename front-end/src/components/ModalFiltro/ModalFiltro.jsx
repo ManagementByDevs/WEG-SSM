@@ -2,15 +2,17 @@ import React, { useState } from "react";
 
 import { Modal, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from '@mui/material';
 
-import FontConfig from '../../service/FontConfig'
+import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 
 const ModalFiltro = (props) => {
 
-    const style = {
+    // variáveis utilizadas para o css
+
+    const styleModal = {
         position: 'absolute',
-        top: '43%',
-        left: '38%',
+        top: '39.5%',
+        left: '37%',
         transform: 'translate(-50%, -50%)',
         width: 297,
         height: 280,
@@ -25,7 +27,7 @@ const ModalFiltro = (props) => {
         p: 2,
     };
 
-    const cssSelect = {
+    const styleSelect = {
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -42,13 +44,19 @@ const ModalFiltro = (props) => {
         margin: '0px'
     }
 
+    // props para abrir o modal a partir da página de home
+
     let open = false;
     open = props.open;
     const setOpen = props.setOpen;
 
+    // abrir e fechar modal
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    // useState para permitir apenas um checkbox selecionado
+    
     const [check, setCheck] = useState([false, false, false, false]);
 
     function mudarCheck1() {
@@ -67,6 +75,22 @@ const ModalFiltro = (props) => {
         }
     }
 
+    function mudarCheck3() {
+        if (check[2]) {
+            setCheck([false, false, false, false]);
+        } else {
+            setCheck([false, false, true, false]);
+        }
+    }
+
+    function mudarCheck4() {
+        if (check[3]) {
+            setCheck([false, false, false, false]);
+        } else {
+            setCheck([false, false, false, true]);
+        }
+    }
+
     return (
         <Modal
             open={props.open}
@@ -79,19 +103,19 @@ const ModalFiltro = (props) => {
             disableEnforceFocus
         >
             <Fade in={props.open}>
-                <Box sx={style}>
+                <Box sx={styleModal}>
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '90%', top: '3%', cursor: 'pointer' }} />
                     <Grid container spacing={0}>
                         <Grid item xs={9.2}>
-                            <FormGroup sx={cssSelect}>
+                            <FormGroup sx={styleSelect}>
                                 <Typography sx={{ color: 'secundary.main', fontSize: FontConfig.big, fontWeight: '600' }}>
                                     Status:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel checked={check[1]} onChange={mudarCheck2} control={<Checkbox />} label="Aprovada" />
-                                    <FormControlLabel checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Reprovada" />
-                                    <FormControlLabel checked={check[1]} onChange={mudarCheck2} control={<Checkbox />} label="Aguardando Edição" />
-                                    <FormControlLabel checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aguardando Revisão" />
+                                    <FormControlLabel checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aprovada" />
+                                    <FormControlLabel checked={check[1]} onChange={mudarCheck2} control={<Checkbox />} label="Reprovada" />
+                                    <FormControlLabel checked={check[2]} onChange={mudarCheck3} control={<Checkbox />} label="Aguardando Edição" />
+                                    <FormControlLabel checked={check[3]} onChange={mudarCheck4} control={<Checkbox />} label="Aguardando Revisão" />
                                 </div>
                             </FormGroup>
                         </Grid>

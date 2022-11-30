@@ -23,7 +23,7 @@ const DetalhesDemanda = () => {
         <Box className="flex justify-center relative items-center mt-3">
           <Box
             className="flex flex-col gap-5 border rounded p-10 drop-shadow-lg"
-            sx={{ width: "55rem", height: "70rem" }}
+            sx={{ width: "55rem" }}
           >
             <Box className="flex justify-center">
               <Typography

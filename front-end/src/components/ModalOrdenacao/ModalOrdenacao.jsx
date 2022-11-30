@@ -10,8 +10,8 @@ const ModalOrdenacao = (props) => {
 
     const style = {
         position: 'absolute',
-        top: '43%',
-        left: '34%',
+        top: '39.5%',
+        left: '34.5%',
         transform: 'translate(-50%, -50%)',
         width: 310,
         height: 280,
@@ -50,58 +50,58 @@ const ModalOrdenacao = (props) => {
 
     // useState para limitar um checkbox
 
-    const [check, setCheck] = useState([false, false]);
-    const [check2, setCheck2] = useState([false, false]);
-    const [check3, setCheck3] = useState([false, false]);
+    const [checkTitulo, setCheckTitulo] = useState([false, false]);
+    const [checkScore, setCheckScore] = useState([false, false]);
+    const [checkDate, setCheckDate] = useState([false, false]);
 
     function mudarCheck1() {
-        if (check[0]) {
-            setCheck([false, false]);
+        if (checkTitulo[0]) {
+            setCheckTitulo([false, false]);
         } else {
-            setCheck([true, false]);
+            setCheckTitulo([true, false]);
         }
     }
 
     function mudarCheck2() {
-        if (check[1]) {
-            setCheck([false, false]);
+        if (checkTitulo[1]) {
+            setCheckTitulo([false, false]);
         } else {
-            setCheck([false, true]);
+            setCheckTitulo([false, true]);
         }
     }
 
     function mudarCheck3() {
-        if (check2[0]) {
-            setCheck2([false, false]);
+        if (checkScore[0]) {
+            setCheckScore([false, false]);
         } else {
-            setCheck2([true, false]);
+            setCheckScore([true, false]);
         }
     }
 
     function mudarCheck4() {
-        if (check2[1]) {
-            setCheck2([false, false]);
+        if (checkScore[1]) {
+            setCheckScore([false, false]);
         } else {
-            setCheck2([false, true]);
+            setCheckScore([false, true]);
         }
     }
 
     function mudarCheck5() {
-        if (check3[0]) {
-            setCheck3([false, false]);
+        if (checkDate[0]) {
+            setCheckDate([false, false]);
         } else {
-            setCheck3([true, false]);
+            setCheckDate([true, false]);
         }
     }
 
     function mudarCheck6() {
-        if (check3[1]) {
-            setCheck3([false, false]);
+        if (checkDate[1]) {
+            setCheckDate([false, false]);
         } else {
-            setCheck3([false, true]);
+            setCheckDate([false, true]);
         }
     }
-    
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -127,8 +127,8 @@ const ModalOrdenacao = (props) => {
                                     Título:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel id="checkA"  checked={check[1]} onChange={mudarCheck2} name control={<Checkbox />} label="A-Z" />
-                                    <FormControlLabel id="checkZ"  checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Z-A" />
+                                    <FormControlLabel checked={checkTitulo[1]} onChange={mudarCheck2} control={<Checkbox />} label="A-Z" />
+                                    <FormControlLabel checked={checkTitulo[0]} onChange={mudarCheck1} control={<Checkbox />} label="Z-A" />
                                 </div>
                             </FormGroup>
                         </Grid>
@@ -141,8 +141,8 @@ const ModalOrdenacao = (props) => {
                                     Score:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel  checked={check2[1]} onChange={mudarCheck4} control={<Checkbox />} label="Maior Score" />
-                                    <FormControlLabel  checked={check2[0]} onChange={mudarCheck3} control={<Checkbox />} label="Menor Score" />
+                                    <FormControlLabel checked={checkScore[1]} onChange={mudarCheck4} control={<Checkbox />} label="Maior Score" />
+                                    <FormControlLabel checked={checkScore[0]} onChange={mudarCheck3} control={<Checkbox />} label="Menor Score" />
                                 </div>
                             </FormGroup>
                         </Grid>
@@ -155,8 +155,8 @@ const ModalOrdenacao = (props) => {
                                     Data:
                                 </Typography>
                                 <div style={styleDiv}>
-                                    <FormControlLabel checked={check3[1]} onChange={mudarCheck6} control={<Checkbox />} label="Mais Nova" />
-                                    <FormControlLabel checked={check3[0]} onChange={mudarCheck5} control={<Checkbox />} label="Mais Velha" />
+                                    <FormControlLabel checked={checkDate[1]} onChange={mudarCheck6} control={<Checkbox />} label="Mais Nova" />
+                                    <FormControlLabel checked={checkDate[0]} onChange={mudarCheck5} control={<Checkbox />} label="Mais Velha" />
                                 </div>
                             </FormGroup>
                         </Grid>

@@ -13,7 +13,6 @@ import Demanda from "../../components/Demanda/Demanda";
 import Feedback from "../../components/Feedback/Feedback";
 
 import FontConfig from "../../service/FontConfig";
-import ColorModeContext from "../../service/TemaContext";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 
 import UsuarioService from "../../service/usuarioService"
@@ -21,11 +20,6 @@ import DemandaService from "../../service/demandaService";
 import ModalFiltro from '../../components/ModalFiltro/ModalFiltro';
 
 const Home = () => {
-
-  // Desestruturação de objeto em duas variáveis:
-  // - Mode: modo do tema atual ("light" ou "dark")
-  // - toggleColorMode: função para alternar o tema
-  const { mode, toggleColorMode } = useContext(ColorModeContext);
 
   const [listaDemandas, setListaDemandas] = useState([]);
 
@@ -101,17 +95,6 @@ const Home = () => {
   return (
     // Container pai
     <FundoComHeader>
-      <Button variant="contained" onClick={toggleColorMode}>
-        Contained
-      </Button>
-      {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
-      {/* home
-      <Paper sx={{ backgroundColor: 'input.main' }}>
-        <Input sx={{ backgroundColor: 'input.main' }} />
-        TEset
-      </Paper>
-      <Typography fontSize={FontConfig.title} variant="h2" color='text.primary'>Teste com texto</Typography> */}
-
       {/* Div container */}
       <Box
         className="flex justify-center mt-12"

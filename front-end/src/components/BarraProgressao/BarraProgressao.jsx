@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
 
@@ -11,6 +12,7 @@ const BarraProgressao = (props) => {
     const [skipped, setSkipped] = React.useState(new Set());
     const steps = props.steps;
 
+    const navigate = useNavigate();
 
     const isStepOptional = (step) => {
         return false;
@@ -21,6 +23,9 @@ const BarraProgressao = (props) => {
     };
 
     const handleNext = () => {
+        if (activeStep === steps.length - 1) {
+            criarDemanda();
+        }
         let newSkipped = skipped;
         if (isStepSkipped(activeStep)) {
             newSkipped = new Set(newSkipped.values());
@@ -51,6 +56,10 @@ const BarraProgressao = (props) => {
     const handleReset = () => {
         setActiveStep(0);
     };
+
+    const criarDemanda = () => {
+        navigate("/");
+    }
 
     return (
         <>
