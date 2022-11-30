@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 
-import { Box, Typography, Button, Divider, TextareaAutosize } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  TextareaAutosize,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -13,7 +20,6 @@ import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/
 import FontConfig from "../../service/FontConfig";
 
 const DetalhesDemanda = () => {
-
   const [editar, setEditar] = useState(false);
 
   function editarDemanda() {
@@ -47,7 +53,7 @@ const DetalhesDemanda = () => {
   };
 
   const [tituloDemanda, setTituloDemanda] = useState(
-    "Sistema de Gestão de Demandas"
+    "Sistema de Gestão de Demandas aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   );
   const [problema, setProblema] = useState(
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
@@ -55,7 +61,9 @@ const DetalhesDemanda = () => {
   const [proposta, setProposta] = useState(
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
   );
-  const [frequencia, setFrequencia] = useState("Lorem Ipsum is simply dummy text of the printing and");
+  const [frequencia, setFrequencia] = useState(
+    "Lorem Ipsum is simply dummy text of the printing and"
+  );
 
   let textoAux = "";
 
@@ -94,7 +102,7 @@ const DetalhesDemanda = () => {
             />
           </Box>
         </Box>
-        <Box className="flex justify-center relative items-center mt-3">
+        <Box className="flex flex-col justify-center relative items-center mt-3">
           <Box
             className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
             sx={{ width: "55rem" }}
@@ -179,13 +187,15 @@ const DetalhesDemanda = () => {
                   </Typography>
                 </Box>
                 <Box>
-                  <Typography
-                    fontSize={FontConfig.veryBig}
-                    fontWeight="600"
-                    color="text.primary"
-                  >
-                    Beneficios:
-                  </Typography>
+                  <Box>
+                    <Typography
+                      fontSize={FontConfig.veryBig}
+                      fontWeight="600"
+                      color="text.primary"
+                    >
+                      Beneficios:
+                    </Typography>
+                  </Box>
                   <Box className="ml-7 mt-2">
                     <BeneficiosDetalheDemanda />
                   </Box>
@@ -249,7 +259,12 @@ const DetalhesDemanda = () => {
                     Problema:
                   </Typography>
                   <TextareaAutosize
-                    style={{ width: 775, marginLeft: "26px", resize: "none",backgroundColor: "background.default"}}
+                    style={{
+                      width: 775,
+                      marginLeft: "26px",
+                      resize: "none",
+                      backgroundColor: "background.default",
+                    }}
                     value={problema}
                     fontSize={FontConfig.medium}
                     onChange={(e) => {
@@ -268,7 +283,12 @@ const DetalhesDemanda = () => {
                     Proposta:
                   </Typography>
                   <TextareaAutosize
-                    style={{ width: 775, marginLeft: "26px", resize: "none",backgroundColor: "background.default"}}
+                    style={{
+                      width: 775,
+                      marginLeft: "26px",
+                      resize: "none",
+                      backgroundColor: "background.default",
+                    }}
                     value={proposta}
                     fontSize={FontConfig.medium}
                     onChange={(e) => {
@@ -279,15 +299,21 @@ const DetalhesDemanda = () => {
                   />
                 </Box>
                 <Box>
-                  <Typography
-                    fontSize={FontConfig.veryBig}
-                    fontWeight="600"
-                    color="text.primary"
-                  >
-                    Beneficios:
-                  </Typography>
-                  <Box className="ml-7 mt-2">
-                    <BeneficiosDetalheDemanda />
+                  <Box className="flex items-center">
+                    <Typography
+                      fontSize={FontConfig.veryBig}
+                      fontWeight="600"
+                      color="text.primary"
+                    >
+                      Beneficios:
+                    </Typography>
+                    <AddCircleOutlineOutlinedIcon
+                      className="delay-120 hover:scale-110 duration-300 ml-1"
+                      sx={{ color: "icon.main", cursor: "pointer" }}
+                    />
+                  </Box>
+                  <Box className="mt-2 gap-5">
+                    <BeneficiosDetalheDemanda editavel={true} />
                   </Box>
                 </Box>
                 <Box>
@@ -315,18 +341,25 @@ const DetalhesDemanda = () => {
                   />
                 </Box>
                 <Box>
-                  <Typography
-                    fontSize={FontConfig.veryBig}
-                    fontWeight="600"
-                    color="text.primary"
-                  >
-                    Anexos:
-                  </Typography>
+                  <Box className="flex items-center">
+                    <Typography
+                      fontSize={FontConfig.veryBig}
+                      fontWeight="600"
+                      color="text.primary"
+                    >
+                      Anexos:
+                    </Typography>
+                    <AddCircleOutlineOutlinedIcon
+                      className="delay-120 hover:scale-110 duration-300 ml-1"
+                      sx={{ color: "icon.main", cursor: "pointer" }}
+                    />
+                  </Box>
                   <Box>AQUI JAZ ANEXOS</Box>
                 </Box>
               </>
             )}
           </Box>
+          <Box className="w-full p-10"></Box>
           <Box
             className="flex fixed justify-around"
             sx={{ width: "20rem", bottom: "20px", right: "20px" }}
