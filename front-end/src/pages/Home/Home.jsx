@@ -13,18 +13,12 @@ import Demanda from "../../components/Demanda/Demanda";
 import Feedback from "../../components/Feedback/Feedback";
 
 import FontConfig from "../../service/FontConfig";
-import ColorModeContext from "../../service/TemaContext";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 
 import UsuarioService from "../../service/usuarioService"
 import DemandaService from "../../service/demandaService";
 
 const Home = () => {
-
-  // Desestruturação de objeto em duas variáveis:
-  // - Mode: modo do tema atual ("light" ou "dark")
-  // - toggleColorMode: função para alternar o tema
-  const { mode, toggleColorMode } = useContext(ColorModeContext);
 
   const [listaDemandas, setListaDemandas] = useState([]);
 
