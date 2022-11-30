@@ -116,7 +116,6 @@ const HomeGerencia = () => {
                                         color: "text.white",
                                         fontSize: FontConfig.default,
                                     }}
-                                    // onClick={handleClick()}
                                     onClick={() => { }}
                                     variant="contained"
                                     disableElevation

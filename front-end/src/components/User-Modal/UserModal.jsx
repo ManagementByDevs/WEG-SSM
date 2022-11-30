@@ -148,7 +148,7 @@ const UserModal = () => {
                         <hr className='w-10/12 my-1.5' />
                     </div>
 
-                    <MenuItem className='gap-2' onClick={handleClose}>
+                    <MenuItem className='gap-2' onClick={() => { handleClose(); navigate("/escopos") }}>
                         <BorderColorOutlinedIcon />
                         <Typography color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 500 }}>Escopos</Typography>
                     </MenuItem>
