@@ -17,32 +17,40 @@ import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 
 import UsuarioService from "../../service/usuarioService"
 import DemandaService from "../../service/demandaService";
+import ModalFiltro from '../../components/ModalFiltro/ModalFiltro';
 
 const Home = () => {
 
   const [listaDemandas, setListaDemandas] = useState([]);
 
   const [usuario, setUsuario] = useState({ id: 0, email: "", nome: "", senha: "", tipo_usuario: 0, visibilidade: 1, departamento: null });
-  const [params, setParams] = useState({ titulo: "", solicitante: null, gerente: null, forum: null, departamento: null, tamanho: "", status: "" });
+  const [params, setParams] = useState({ titulo: null, solicitante: null, gerente: null, forum: null, departamento: null, tamanho: null, status: null });
   const [page, setPage] = useState("sort=id,asc&size=20&page=0");
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState('1');
 
   useEffect(() => {
-    setUsuario(buscarUsuario());
-    setListaDemandas(buscarDemandas());
+    buscarUsuario();
   }, []);
+
+  useEffect(() => {
+    setParams({...params, solicitante: usuario})
+  }, [usuario])
+
+  useEffect(() => {
+    buscarDemandas();
+  }, [params])
 
   const buscarUsuario = () => {
     UsuarioService.getUsuarioById(parseInt(localStorage.getItem("usuarioId"))).then((e) => {
-      return e;
+      setUsuario(e)
     });
   }
 
   const buscarDemandas = () => {
     DemandaService.getPage(params, page).then((e) => {
-      return e;
+      setListaDemandas(e.content);
     })
   }
 
@@ -69,10 +77,15 @@ const Home = () => {
     setState({ ...state, open: false });
   };
 
-  const [abrir, setOpen] = useState(false);
+  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
+  const [abrirFiltro, setOpenFiltro] = useState(false);
 
   const abrirModalOrdenacao = () => {
-    setOpen(true);
+    setOpenOrdenacao(true);
+  };
+
+  const abrirModalFiltro = () => {
+    setOpenFiltro(true);
   };
 
   const navigate = useNavigate();
@@ -154,7 +167,7 @@ const Home = () => {
                       className="cursor-pointer"
                       sx={{ color: "text.secondary" }}
                     />
-                    {abrir && <ModalOrdenacao open={abrir} setOpen={setOpen} />}
+                    {abrirOrdenacao && <ModalOrdenacao open={abrirOrdenacao} setOpen={setOpenOrdenacao} />}
                   </Box>
                 </Box>
 
@@ -165,12 +178,14 @@ const Home = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={handleClick()}
+                  // onClick={handleClick()}
+                  onClick={abrirModalFiltro}
                   variant="contained"
                   disableElevation
                 >
                   Filtrar <FilterAltOutlinedIcon />
                 </Button>
+                {abrirFiltro && <ModalFiltro open={abrirFiltro} setOpen={setOpenFiltro} />}
 
                 <Feedback open={open} handleClose={handleClose} status="sucesso" />
               </Box>
@@ -198,41 +213,11 @@ const Home = () => {
             <Box className="mt-6">
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
-                <Box
-                  sx={{
-                    display: "grid",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
-                  }}
-                >
-                  <Demanda onClick={() => {navigate("/detalhes-demanda")}}
-                    demanda={{
-                      status: "Aguardando revisão",
-                      dono: "Kenzo",
-                      tela: "meuDepartamento",
-                    }}
-                  />
-                  <Demanda
-                    demanda={{
-                      status: "Aguardando revisão",
-                      dono: "Felipe",
-                      tela: "meuDepartamento",
-                    }}
-                  />
-                  <Demanda
-                    demanda={{
-                      status: "Aguardando revisão",
-                      dono: "Matheus",
-                      tela: "meuDepartamento",
-                    }}
-                  />
-                  <Demanda
-                    demanda={{
-                      status: "Aguardando revisão",
-                      dono: "Thiago",
-                      tela: "meuDepartamento",
-                    }}
-                  />
+                <Box sx={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))" }}>
+                  <Demanda onClick={() => { navigate("/detalhes-demanda") }} demanda={{ status: "Aguardando revisão", dono: "Kenzo", tela: "meuDepartamento" }} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Felipe", tela: "meuDepartamento" }} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Matheus", tela: "meuDepartamento" }} />
+                  <Demanda demanda={{ status: "Aguardando revisão", dono: "Thiago", tela: "meuDepartamento", }} />
                 </Box>
               </TabPanel>
               <TabPanel sx={{ padding: 0 }} value="2" onClick={buscarDemandas}>

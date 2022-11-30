@@ -2,6 +2,8 @@ import React from "react";
 
 import { Box, Typography, Button, Divider } from "@mui/material";
 
+import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
+
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
@@ -12,11 +14,16 @@ const DetalhesDemanda = () => {
   return (
     <FundoComHeader>
       <Box className="p-2">
-        <Caminho />
-        <Box className="flex justify-center items-center mt-3">
+        <Box className="flex w-full relative">
+          <Caminho/>
+          <Box className=" absolute" sx={{top: '10px' ,right: '20px', cursor: 'pointer'}}>
+            <SaveAltOutlinedIcon fontSize="large" className="delay-120 hover:scale-110 duration-300" sx={{color:'icon.main'}}/>
+          </Box>
+        </Box>
+        <Box className="flex justify-center relative items-center mt-3">
           <Box
-            className="flex flex-col gap-5 border rounded p-10"
-            sx={{ width: "55rem", height: "70rem" }}
+            className="flex flex-col gap-5 border rounded p-10 drop-shadow-lg"
+            sx={{ width: "55rem" }}
           >
             <Box className="flex justify-center">
               <Typography
@@ -46,7 +53,11 @@ const DetalhesDemanda = () => {
                 industry. Lorem Ipsum has been the industry's standard dummy
                 text ever since the 1500s, when an unknown printer took a galley
                 of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries
+                survived not only five centuries is simply dummy text of the
+                printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an
+                unknown printer took a galley of type and scrambled it to make a
+                type specimen book. It has survived not only five centuries
               </Typography>
             </Box>
             <Box>
@@ -67,7 +78,16 @@ const DetalhesDemanda = () => {
                 industry. Lorem Ipsum has been the industry's standard dummy
                 text ever since the 1500s, when an unknown printer took a galley
                 of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries
+                survived not only five centuries is simply dummy text of the
+                printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an
+                unknown printer took a galley of type and scrambled it to make a
+                type specimen book. It has survived not only five centuries is
+                simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever
+                since the 1500s, when an unknown printer took a galley of type
+                and scrambled it to make a type specimen book. It has survived
+                not only five centuries
               </Typography>
             </Box>
             <Box>
@@ -107,11 +127,14 @@ const DetalhesDemanda = () => {
               >
                 Anexos:
               </Typography>
-              <Box>AQUI JÁS ANEXOS</Box>
+              <Box>AQUI JAZ ANEXOS</Box>
             </Box>
           </Box>
-          <Box className="flex fixed justify-around" sx={{width: '20rem',bottom: '20px', right: '20px'}}>
-          <Button
+          <Box
+            className="flex fixed justify-around"
+            sx={{ width: "20rem", bottom: "20px", right: "20px" }}
+          >
+            <Button
               sx={{
                 backgroundColor: "primary.main",
                 color: "text.white",
@@ -128,7 +151,6 @@ const DetalhesDemanda = () => {
                 fontSize: FontConfig.default,
               }}
               variant="contained"
-              disableElevation
             >
               Devolver
             </Button>
@@ -139,7 +161,6 @@ const DetalhesDemanda = () => {
                 fontSize: FontConfig.default,
               }}
               variant="contained"
-              disableElevation
             >
               Aceitar
             </Button>
