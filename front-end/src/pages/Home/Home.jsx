@@ -35,7 +35,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    setParams({...params, solicitante: usuario})
+    setParams({ ...params, solicitante: usuario })
   }, [usuario])
 
   useEffect(() => {
@@ -93,14 +93,6 @@ const Home = () => {
   return (
     // Container pai
     <FundoComHeader>
-      {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
-      {/* home
-      <Paper sx={{ backgroundColor: 'input.main' }}>
-        <Input sx={{ backgroundColor: 'input.main' }} />
-        TEset
-      </Paper>
-      <Typography fontSize={FontConfig.title} variant="h2" color='text.primary'>Teste com texto</Typography> */}
-
       {/* Div container */}
       <Box
         className="flex justify-center mt-12"
