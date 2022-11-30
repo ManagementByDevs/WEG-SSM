@@ -10,8 +10,8 @@ const ModalOrdenacao = (props) => {
 
     const style = {
         position: 'absolute',
-        top: '43%',
-        left: '34%',
+        top: '39.5%',
+        left: '34.5%',
         transform: 'translate(-50%, -50%)',
         width: 310,
         height: 280,
