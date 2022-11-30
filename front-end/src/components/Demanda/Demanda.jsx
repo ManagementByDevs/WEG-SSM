@@ -1,6 +1,8 @@
 import { Box, Typography, Button } from '@mui/material'
-import React from 'react'
+import React, {useState} from 'react'
 import FontConfig from '../../service/FontConfig'
+
+import ModalMotivoRecusa from '../ModalMotivoRecusa/ModalMotivoRecusa'
 
 const Demanda = (props) => {
     let autor = props.demanda.dono;
@@ -33,6 +35,14 @@ const Demanda = (props) => {
         }
     }
 
+    // useState para abrir o modal de motivo recusa
+
+    const [abrirModal, setOpenModal] = useState(false);
+
+    const abrirModalMotivoRecusa = () =>{
+        setOpenModal(true);
+    }
+
     return (
         <Box onClick={props.onClick} sx={{ backgroundColor: 'background.default', padding: '1rem', minWidth: '550px', maxWidth: '100%', minHeight: tamanhoHeight, maxHeight: '12rem', border: '0.2px solid black', borderTop: '7px solid #00579D', borderRadius: '5px', cursor: 'pointer' }} className={`items-center h-30 text-justify drop-shadow-lg`}>
             <Box className={`flex justify-between`} sx={{ marginBottom: '1%' }}>
@@ -54,9 +64,11 @@ const Demanda = (props) => {
                     status === 'Aguardando revisão' && autor !== userLogado ?
                         <Typography fontSize={FontConfig.default} sx={{ fontWeight: '600', cursor: 'default' }} color="text.primary">{autor}</Typography>
                         : status === 'Reprovada' && autor === userLogado?
-                            <Button variant="contained">Motivo</Button>
+                            <Button onClick={abrirModalMotivoRecusa} variant="contained">Motivo</Button>
                         :null
                 }
+                {/* Abrindo o modal de motivo recusa */}
+                {abrirModal && <ModalMotivoRecusa open={abrirModal} setOpen={setOpenModal} />}
             </Box>
         </Box>
     )

@@ -14,7 +14,7 @@ const ModalConfirmacao = (props) => {
     // <ModalConfirmacao textoModal={"descartarRascunho"} textoBotao={"sim"}/>
 
     // Variáveis de estilo para o componente
-    const style = {
+    const styleModal = {
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -32,7 +32,7 @@ const ModalConfirmacao = (props) => {
         flexDirection: 'column',
     };
 
-    const estilo = {
+    const styleBotoes = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -72,30 +72,28 @@ const ModalConfirmacao = (props) => {
     const handleClose = () => setOpen(false);
 
     return (
-        <div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={open}>
-                    <Box sx={style}>
-                        <ErrorOutlineIcon sx={{ fontSize: '100px', color: 'primary.main' }} />
-                        <Typography fontSize={FontConfig.veryBig} sx={{ mt: 2 }}>
-                            {mensagemModal(props.textoModal)}
-                        </Typography>
-                        <Box sx={estilo}>
-                            <Button onClick={handleClose} variant="container" disableElevation color="tertiary" sx={{ border: 'solid 1px', borderColor: 'tertiary.main', margin: '10px', width: '7.5rem', fontSize: FontConfig.big }}>Cancelar</Button>
-                            <Button variant="contained" disableElevation color="primary" sx={{ margin: '10px', width: '7.5rem', fontSize: FontConfig.big }}>{mensagemBotao(props.textoBotao)}</Button>
-                        </Box>
+        <Modal
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+                timeout: 500,
+            }}
+        >
+            <Fade in={open}>
+                <Box sx={styleModal}>
+                    <ErrorOutlineIcon sx={{ fontSize: '100px', color: 'primary.main' }} />
+                    <Typography fontSize={FontConfig.veryBig} sx={{ mt: 2 }}>
+                        {mensagemModal(props.textoModal)}
+                    </Typography>
+                    <Box sx={styleBotoes}>
+                        <Button onClick={handleClose} variant="container" disableElevation color="tertiary" sx={{ border: 'solid 1px', borderColor: 'tertiary.main', margin: '10px', width: '7.5rem', fontSize: FontConfig.big }}>Cancelar</Button>
+                        <Button variant="contained" disableElevation color="primary" sx={{ margin: '10px', width: '7.5rem', fontSize: FontConfig.big }}>{mensagemBotao(props.textoBotao)}</Button>
                     </Box>
-                </Fade>
-            </Modal>
-        </div>
+                </Box>
+            </Fade>
+        </Modal>
     );
 };
 
