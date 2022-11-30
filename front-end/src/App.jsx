@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,6 +12,8 @@ import CriarDemanda from './pages/CriarDemanda/CriarDemanda';
 import Notificacao from './pages/Notificacao/Notificacao';
 import Chat from './pages/Chat/Chat';
 import DetalhesDemanda from './pages/DetalhesDemanda/DetalhesDemanda';
+import HomeGerencia from './pages/HomeGerencia/HomeGerencia';
+import Escopos from './pages/Escopos/Escopos';
 
 import ToggleColorMode from './service/TemaProvedor';
 
@@ -22,10 +24,12 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login></Login>} />
           <Route path="/" element={<Home></Home>} />
+          <Route path="/home-gerencia" element={<HomeGerencia></HomeGerencia>} />
           <Route path="/criar-demanda" element={<CriarDemanda />} />
           <Route path="/notificacao" element={<Notificacao />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/detalhes-demanda" element={<DetalhesDemanda />} />
+          <Route path="escopos" element={<Escopos />} />
         </Routes>
       </Router>
     </ToggleColorMode>

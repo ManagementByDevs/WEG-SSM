@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import { Box } from '@mui/material'
 
-import FontConfig from '../../service/FontConfig'
 import InputComLabel from '../InputComLabel/InputComLabel'
-import ModalConfirmacao from '../ModalConfirmacao/ModalConfirmacao'
+
+import FontConfig from '../../service/FontConfig'
 
 const FormularioDadosDemanda = () => {
   const [dados, setDados] = useState({ titulo: "", problema: "", proposta: "" });
