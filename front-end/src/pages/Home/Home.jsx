@@ -93,9 +93,6 @@ const Home = () => {
   return (
     // Container pai
     <FundoComHeader>
-      <Button variant="contained" onClick={toggleColorMode}>
-        Contained
-      </Button>
       {/* <Button color='secondary' variant="contained" onClick={toggleColorMode} sx={{fontSize: FontConfig.medium}}>Contained</Button> */}
       {/* home
       <Paper sx={{ backgroundColor: 'input.main' }}>
