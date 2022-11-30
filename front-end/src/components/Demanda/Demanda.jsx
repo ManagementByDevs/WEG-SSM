@@ -68,7 +68,7 @@ const Demanda = (props) => {
                         :null
                 }
                 {/* Abrindo o modal de motivo recusa */}
-                {abrirModal && <ModalMotivoRecusa open={abrirModal} setOpen={setOpenModal} />}
+                {abrirModal && <ModalMotivoRecusa open={abrirModal} setOpen={setOpenModal} motivoRecusa={"Aqui vai o texto de motivo da recusa"} />}
             </Box>
         </Box>
     )

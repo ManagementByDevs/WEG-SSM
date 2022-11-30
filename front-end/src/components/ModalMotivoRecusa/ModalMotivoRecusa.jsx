@@ -33,8 +33,10 @@ const ModalMotivoRecusa = (props) => {
         marginTop: '5%',
         display: 'flex',
         textAlign: 'justify',
+        border: '1px solid',
+        borderColor: 'divider.main',
+        borderRadius: '5px',
         p: 2,
-        bgcolor: 'rgba(217, 217, 217, 0.55)',
         width: '100%',
         height: '100%',
     }
@@ -68,7 +70,7 @@ const ModalMotivoRecusa = (props) => {
                     </Typography>
                     <Box sx={styleMensagem}>
                         <Typography fontSize={FontConfig.normal}>
-                            A demanda foi recusada porque não houve uma preocupação com tal fato de tal porque sim e também não houve uma coisa. Sim porque não poderia haver uma retomada do poder do povo.
+                            {props.motivoRecusa}
                         </Typography>
                     </Box>
                 </Box>
