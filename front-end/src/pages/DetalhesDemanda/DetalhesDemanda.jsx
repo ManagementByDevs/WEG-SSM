@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import {
   Box,
@@ -16,17 +16,35 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import FontConfig from "../../service/FontConfig";
 
+import ColorModeContext from "../../service/TemaContext";
+
 const DetalhesDemanda = () => {
+  const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
+  const { mode } = useContext(ColorModeContext);
+
+  useEffect(() => {
+    if (mode === "dark") {
+      setCorFundoTextArea("#212121");
+    } else {
+      setCorFundoTextArea("#FFFF");
+    }
+  }, [mode]);
+
   const [editar, setEditar] = useState(false);
+
+  const [confirmacaoCancelarEdicao, setConfirmacaoCancelarEdicao] = useState(false);
 
   function editarDemanda() {
     if (editar) {
-      console.log("Certeza que deseja cancelar as alterações?");
+      console.log("dentro");
+      setConfirmacaoCancelarEdicao(true);
+    } else {
+      setEditar(true);
     }
-    setEditar(!editar);
   }
 
   const [dados, setDados] = useState({
@@ -90,6 +108,11 @@ const DetalhesDemanda = () => {
   return (
     <FundoComHeader>
       <Box className="p-2">
+        {
+          confirmacaoCancelarEdicao ? (
+            <ModalConfirmacao textoModal="cancelarEdicao" textoBotao="sim"/>
+          ) : null
+        }
         <Box className="flex w-full relative">
           <Caminho />
           <Box
@@ -132,7 +155,12 @@ const DetalhesDemanda = () => {
                 <Box className="flex justify-center">
                   <Typography
                     fontSize={FontConfig.title}
-                    sx={{ fontWeight: "600", cursor: "default", inlineSize: "800px", overflowWrap: "break-word" }}
+                    sx={{
+                      fontWeight: "600",
+                      cursor: "default",
+                      inlineSize: "800px",
+                      overflowWrap: "break-word",
+                    }}
                     color="primary.main"
                   >
                     {tituloDemanda}
@@ -170,21 +198,7 @@ const DetalhesDemanda = () => {
                     color="text.secondary"
                     sx={{ marginLeft: "30px" }}
                   >
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book. It has survived not only five centuries
-                    is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy
-                    text ever since the 1500s, when an unknown printer took a
-                    galley of type and scrambled it to make a type specimen
-                    book. It has survived not only five centuries is simply
-                    dummy text of the printing and typesetting industry. Lorem
-                    Ipsum has been the industry's standard dummy text ever since
-                    the 1500s, when an unknown printer took a galley of type and
-                    scrambled it to make a type specimen book. It has survived
-                    not only five centuries
+                    {proposta}
                   </Typography>
                 </Box>
                 <Box>
@@ -215,7 +229,7 @@ const DetalhesDemanda = () => {
                     color="text.secondary"
                     sx={{ marginLeft: "30px" }}
                   >
-                    Lorem Ipsum is simply dummy text of the printing and
+                    {frequencia}
                   </Typography>
                 </Box>
                 <Box>
@@ -264,7 +278,7 @@ const DetalhesDemanda = () => {
                       width: 775,
                       marginLeft: "26px",
                       resize: "none",
-                      backgroundColor: "background.default",
+                      backgroundColor: corFundoTextArea,
                     }}
                     value={problema}
                     fontSize={FontConfig.medium}
@@ -288,7 +302,7 @@ const DetalhesDemanda = () => {
                       width: 775,
                       marginLeft: "26px",
                       resize: "none",
-                      backgroundColor: "background.default",
+                      backgroundColor: corFundoTextArea,
                     }}
                     value={proposta}
                     fontSize={FontConfig.medium}
@@ -310,7 +324,7 @@ const DetalhesDemanda = () => {
                     </Typography>
                     <AddCircleOutlineOutlinedIcon
                       className="delay-120 hover:scale-110 duration-300 ml-1"
-                      sx={{ color: "icon.main", cursor: "pointer" }}
+                      sx={{ color: "primary.main", cursor: "pointer" }}
                     />
                   </Box>
                   <Box className="mt-2 gap-5">
@@ -334,7 +348,7 @@ const DetalhesDemanda = () => {
                     className="outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                     sx={{
                       width: "90%;",
-                      backgroundColor: "background.default",
+                      backgroundColor: corFundoTextArea,
                       marginLeft: "30px",
                     }}
                     component="input"
@@ -352,7 +366,7 @@ const DetalhesDemanda = () => {
                     </Typography>
                     <AddCircleOutlineOutlinedIcon
                       className="delay-120 hover:scale-110 duration-300 ml-1"
-                      sx={{ color: "icon.main", cursor: "pointer" }}
+                      sx={{ color: "primary.main", cursor: "pointer" }}
                     />
                   </Box>
                   <Box>AQUI JAZ ANEXOS</Box>

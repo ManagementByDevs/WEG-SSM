@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { styled } from "@mui/material/styles";
 import {
@@ -17,7 +17,21 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 import FontConfig from "../../service/FontConfig";
 
+import ColorModeContext from "../../service/TemaContext";
+
+
 const BeneficiosDetalheDemanda = (props) => {
+  const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
+  const { mode } = useContext(ColorModeContext);
+
+  useEffect(() => {
+    if (mode === "dark") {
+      setCorFundoTextArea("#212121");
+    } else {
+      setCorFundoTextArea("#FFFF");
+    }
+  }, [mode]);
+
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -148,7 +162,7 @@ const BeneficiosDetalheDemanda = (props) => {
                         style={{
                           width: "100%",
                           resize: "none",
-                          backgroundColor: "background.default",
+                          backgroundColor: corFundoTextArea,
                         }}
                         value={row.memoriaCalculo}
                         fontSize={FontConfig.medium}
