@@ -127,10 +127,11 @@ const ModalFiltro = (props) => {
             open={props.open}
             onClose={handleClose}
             closeAfterTransition
-            BackdropComponent={false}
+            hideBackdrop={true}
             BackdropProps={{
                 timeout: 500,
             }}
+
 
         >
             <Fade in={props.open}>
