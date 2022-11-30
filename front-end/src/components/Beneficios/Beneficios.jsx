@@ -8,7 +8,7 @@ import InputComLabel from '../InputComLabel/InputComLabel';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const Beneficios = (props) => {
-    const [dadosBeneficio, setDadosBeneficio] = useState({ id: props.dados.id, tipo: '', valor: '', moeda: '', memoriaCalculo: '' });
+    const [dadosBeneficio, setDadosBeneficio] = useState({ id: props.dados.id, tipo: '', valor: '', moeda: '', memoriaCalculo: '', visible: true });
 
     const handleChange = (event) => {
         setDadosBeneficio({ ...dadosBeneficio, tipo: event.target.value });

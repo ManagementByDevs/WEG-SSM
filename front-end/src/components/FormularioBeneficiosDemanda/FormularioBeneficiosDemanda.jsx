@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './FormularioBeneficiosDemanda.css';
 
 import { Box, Button } from '@mui/material'
+
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+
 import Beneficios from '../Beneficios/Beneficios';
-import { useEffect } from 'react';
 
 const FormularioBeneficiosDemanda = () => {
+  // Lista de benefícios adicionadas
   const [beneficios, setBeneficios] = useState([]);
-  // const [visible, setVisible] = useState(true);
+  // Lista de benefícios que serão adicionadas na demanda (benefícios que não foram excluídos)
+  const [savedBeneficios, setSavedBeneficios] = useState([]);
 
+  // Adiciona um benefício na lista de benefícios
   function adicionarBeneficio() {
-    setBeneficios([...beneficios, { id: beneficios.length + 1, tipo: '', valor: '', moeda: '', memoriaCalculo: '' }]);
+    setBeneficios([...beneficios, { id: beneficios.length + 1, tipo: '', valor: '', moeda: '', memoriaCalculo: '', visible: true }]);
   }
 
+  // Função genérica para salvar os dados de um benefício
   function salvarDados(dados) {
     setBeneficios(beneficios.map(beneficio => {
       if (beneficio.id === dados.id) {
@@ -21,28 +26,28 @@ const FormularioBeneficiosDemanda = () => {
       }
       return beneficio;
     }));
-    // for (let beneficio of beneficios) {
-    //   if (beneficio.id === dados.id) {
-    //     beneficio.tipo = dados.tipo;
-    //     beneficio.valor = dados.valor;
-    //     beneficio.moeda = dados.moeda;
-    //     beneficio.memoriaCalculo = dados.memoriaCalculo;
-    //   }
-    // }
   }
 
-  // useEffect(() => {
-  //   setVisible(true);
-  // }, [visible]);
-
+  // Função auxiliar para ver as listas de benefícios
   function verDados() {
     console.log(beneficios);
+    console.log("savedBeneficios", savedBeneficios)
   }
 
+  // Função que irá setar a visibildade de um benefício para false, sendo o benefício excluído da lista savedBeneficios
   function removerBeneficio(desiredIndex) {
-    setBeneficios(beneficios.filter((_, index) => index !== desiredIndex));
-    // setVisible(false);
+    setBeneficios(beneficios.map((beneficio, index) => {
+      if (index === desiredIndex) {
+        beneficio.visible = false;
+      }
+      return beneficio;
+    }));
   }
+
+  // UseEffect que irá atualizar a lista de benefícios a serem salvos (que não foram excluídos)
+  useEffect(() => {
+    setSavedBeneficios(beneficios.filter(beneficio => beneficio.visible === true));
+  }, [beneficios]);
 
   return (
     <Box className="flex justify-center items-center" sx={{ height: '45rem' }}>
@@ -54,7 +59,9 @@ const FormularioBeneficiosDemanda = () => {
         <Box className='flex flex-col overflow-auto' sx={{ marginTop: '3%', gap: '5%', paddingRight: '20px' }}>
           {
             beneficios?.map((beneficio, index) => {
-              return <Beneficios key={index} save={salvarDados} index={index} removerBeneficio={removerBeneficio} dados={beneficio} />;
+              if (beneficio.visible) {
+                return <Beneficios key={index} save={salvarDados} index={index} removerBeneficio={removerBeneficio} dados={beneficio} />;
+              }
             })
           }
         </Box>
