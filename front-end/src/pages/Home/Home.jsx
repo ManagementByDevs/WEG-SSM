@@ -41,20 +41,28 @@ const Home = () => {
   // Valor do input de pesquisa
   const [valorPesquisa, setValorPesquisa] = useState("");
 
+  // UseEffect para buscar o usuário assim que entrar na página
   useEffect(() => {
     buscarUsuario();
   }, []);
 
+  // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
   useEffect(() => {
     setParams({ ...params, solicitante: usuario })
   }, [usuario])
 
+  // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
   useEffect(() => {
     buscarDemandas();
   }, [params])
 
+  // UseEffect para redefinir os parâmteros quando a ordenação for modificada
   useEffect(() => {
-    setParams({ ...params, solicitante: usuario });
+    if (params.solicitante != null) {
+      setParams({ ...params, solicitante: usuario });
+    } else {
+      setParams({ ...params, departamento: usuario.departamento });
+    }
   }, [ordenacao])
 
   // Função para buscar o usuário logado no sistema
@@ -73,6 +81,7 @@ const Home = () => {
     }
   }
 
+  // Função para atualizar o filtro de status quando modificado no modal de filtros
   const atualizarFiltro = (status) => {
     if (params.solicitante != null) {
       setParams({ ...params, solicitante: usuario, status: status });
@@ -215,6 +224,8 @@ const Home = () => {
                       className="cursor-pointer"
                       sx={{ color: "text.secondary" }}
                     />
+
+                    {/* Modal de ordenação */}
                     {abrirOrdenacao && <ModalOrdenacao ordenacao={ordenacao} setOrdenacao={setOrdenacao} open={abrirOrdenacao} setOpen={setOpenOrdenacao} />}
                   </Box>
                 </Box>
@@ -226,13 +237,14 @@ const Home = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  // onClick={handleClick()}
                   onClick={abrirModalFiltro}
                   variant="contained"
                   disableElevation
                 >
                   Filtrar <FilterAltOutlinedIcon />
                 </Button>
+
+                {/* Modal de filtro */}
                 {abrirFiltro && <ModalFiltro filtros={filtroAtual} setParams={atualizarFiltro} open={abrirFiltro} setOpen={setOpenFiltro} filtroDemanda={true} />}
               </Box>
 

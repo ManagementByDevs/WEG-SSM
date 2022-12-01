@@ -916,6 +916,7 @@ public class DemandaController {
             listaBeneficios.add(beneficioService.save(beneficio));
         }
 
+        demanda.setData(new Date());
         demanda.setDepartamento(departamento);
         demanda.setBeneficios(listaBeneficios);
         demanda.setSolicitante(usuario);

@@ -26,6 +26,8 @@ const DetalhesDemanda = () => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
 
+  const [demanda, setDemanda] = useState(null);
+
   useEffect(() => {
     if (mode === "dark") {
       setCorFundoTextArea("#212121");
@@ -33,6 +35,12 @@ const DetalhesDemanda = () => {
       setCorFundoTextArea("#FFFF");
     }
   }, [mode]);
+
+  useEffect(() => {
+    if(!demanda) {
+      setDemanda(JSON.parse(localStorage.getItem("demandaAtual")));
+    }
+  }, [])
 
   const [editar, setEditar] = useState(false);
 
