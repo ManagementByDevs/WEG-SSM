@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 
-import { Modal, Typography, Box, Fade } from '@mui/material';
+import { Modal, Typography, Box, Fade, TextareaAutosize, Button } from '@mui/material';
 
 import Backdrop from '@mui/material/Backdrop';
 
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 
-const ModalMotivoRecusa = (props) => {
+const ModalInformarMotivo = (props) => {
 
-    // Variável de estilo para o modal
+    // variáveis de estilo para o modal
 
     const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 480,
-        height: 350,
+        width: 500,
+        height: 380,
         bgcolor: 'background.paper',
         borderRadius: '5px',
         borderTop: '10px solid #00579D',
@@ -26,19 +26,17 @@ const ModalMotivoRecusa = (props) => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        flexDirection: 'column',
+        flexDirection: 'column'
     };
 
     const styleMensagem = {
-        marginTop: '5%',
         display: 'flex',
-        textAlign: 'justify',
         border: '1px solid',
         borderColor: 'divider.main',
         borderRadius: '5px',
-        p: 2,
+        marginTop: '3%',
         width: '100%',
-        height: '100%',
+        height: '100%'
     }
 
     // props para abrir o modal através de outra tela
@@ -65,18 +63,21 @@ const ModalMotivoRecusa = (props) => {
             <Fade in={open}>
                 <Box sx={style}>
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} />
-                    <Typography fontSize={FontConfig.veryBig}>
-                        Motivo da Recusa
+                    <Typography fontWeight={650} color={'primary.main'} fontSize={FontConfig.smallTitle}>
+                        Informar Motivo
                     </Typography>
                     <Box sx={styleMensagem}>
-                        <Typography fontSize={FontConfig.normal}>
-                            {props.motivoRecusa}
-                        </Typography>
+                        {/* text area para informar o motivo */}
+                        <TextareaAutosize
+                            placeholder="Informe o motivo..."
+                            style={{ width: '100%', height: '100%', overflow: 'auto', resize: 'none', textAlign: 'justify', padding: '3%', background: 'transparent' }}
+                        />
                     </Box>
+                    <Button onClick={handleClose} variant="contained" disableElevation color="primary" sx={{ marginTop: '2%', width: '8rem', height: '3rem', fontSize: FontConfig.normal }}>Confirmar</Button>
                 </Box>
             </Fade>
         </Modal>
     );
 }
 
-export default ModalMotivoRecusa;
+export default ModalInformarMotivo;

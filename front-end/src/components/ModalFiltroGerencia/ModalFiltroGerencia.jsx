@@ -190,8 +190,8 @@ const ModalFiltroGerencia = (props) => {
                                 </Select>
                             </FormControl>
                             <Box sx={styleInputFiltro}>
-                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #e5e7eb', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
-                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #e5e7eb', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>
+                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #ced4da', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
+                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #ced4da', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>
                             </Box>
                         </Box>
                     </Box>
