@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -894,6 +895,7 @@ public class DemandaController {
             listaBeneficios.add(beneficioService.save(beneficio));
         }
 
+        demanda.setData(new Date());
         demanda.setBeneficios(listaBeneficios);
         demanda.setSolicitante(usuario);
         demanda.setAnexos(files);

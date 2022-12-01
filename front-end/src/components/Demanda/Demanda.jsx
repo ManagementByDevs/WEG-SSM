@@ -69,7 +69,7 @@ const Demanda = (props) => {
       <Box className={`flex justify-between`} sx={{ marginBottom: '1%' }}>
         <Typography fontSize={FontConfig.veryBig} sx={{ fontWeight: '600', cursor: 'default' }} color="text.primary">{props.demanda.titulo}</Typography>
         {
-          parseInt(localStorage.getItem("userId")) == props.demanda?.solicitante?.id &&
+          parseInt(localStorage.getItem("usuarioId")) == props.demanda?.solicitante?.id &&
           <Box className={`items-center text-justify flex`}>
             <Typography fontSize={FontConfig.default} sx={{ fontWeight: '600', cursor: 'default' }}>{formatarNomeStatus()}</Typography>
             <Box sx={{ backgroundColor: corStatus, width: '12px', height: '12px', borderRadius: '10px', marginLeft: '10px' }} className={`items-center h-30 text-justify`} />
@@ -81,7 +81,7 @@ const Demanda = (props) => {
       <Typography gutterBottom fontSize={FontConfig.default} color="text.secondary">{props.demanda.proposta}</Typography>
       <Box className={`flex justify-end`} sx={{ marginTop: '.5%' }}>
         {
-          parseInt(localStorage.getItem("userId")) != props.demanda?.solicitante?.id ?
+          parseInt(localStorage.getItem("usuarioId")) != props.demanda?.solicitante?.id ?
             <Typography fontSize={FontConfig.default} sx={{ fontWeight: '600', cursor: 'default' }} color="text.primary">{props.demanda.solicitante?.nome}</Typography>
             : props.demanda.status === 'CANCELLED' && props.demanda.solicitante.id === parseInt(localStorage.getItem("userId")) ?
               <Button onClick={abrirModalMotivoRecusa} variant="contained">Motivo</Button>

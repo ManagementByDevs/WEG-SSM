@@ -14,7 +14,7 @@ const InputComLabel = (props) => {
 
   const save = (e) => {
     setTexto(e.target.value);
-    props.saveInputValue(texto);
+    props.saveInputValue(e.target.value);
   };
 
   return (

@@ -114,9 +114,8 @@ const BarraProgressao = (props) => {
       console.log("demanda - " + paginaDados.titulo + " - " + demandaFinal.titulo);
 
       DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
-        console.log(e);
+        navigate("/");
       })
-      // navigate("/");
     }
   }, [open]);
 

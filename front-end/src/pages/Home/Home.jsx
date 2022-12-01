@@ -26,13 +26,14 @@ const Home = () => {
 
   // Usuário que está logado no sistema
   const [usuario, setUsuario] = useState({ id: 0, email: "", nome: "", senha: "", tipo_usuario: 0, visibilidade: 1, departamento: null });
-  
+
   // Parâmetros para pesquisa das demandas (filtros)
   const [params, setParams] = useState({ titulo: null, solicitante: null, gerente: null, forum: null, departamento: null, tamanho: null, status: null });
-  
+
   // String para ordenação das demandas
   const [page, setPage] = useState("size=20&page=0");
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
+  const [filtroAtual, setFiltroAtual] = useState(null);
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState('1');
@@ -50,7 +51,11 @@ const Home = () => {
 
   useEffect(() => {
     buscarDemandas();
-  }, [params, ordenacao])
+  }, [params])
+
+  useEffect(() => {
+    setParams({ ...params, solicitante: usuario });
+  }, [ordenacao])
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -65,6 +70,16 @@ const Home = () => {
       DemandaService.getPage(params, (ordenacao + page)).then((e) => {
         setListaDemandas(e.content);
       })
+    }
+  }
+
+  const atualizarFiltro = (status) => {
+    if (params.solicitante != null) {
+      setParams({ ...params, solicitante: usuario, status: status });
+      setFiltroAtual(status)
+    } else {
+      setParams({ ...params, departamento: usuario.departamento, status: status });
+      setFiltroAtual(status)
     }
   }
 
@@ -218,7 +233,7 @@ const Home = () => {
                 >
                   Filtrar <FilterAltOutlinedIcon />
                 </Button>
-                {abrirFiltro && <ModalFiltro open={abrirFiltro} setOpen={setOpenFiltro} filtroDemanda={true} />}
+                {abrirFiltro && <ModalFiltro filtros={filtroAtual} setParams={atualizarFiltro} open={abrirFiltro} setOpen={setOpenFiltro} filtroDemanda={true} />}
               </Box>
 
               {/* Botão de criar demanda */}
