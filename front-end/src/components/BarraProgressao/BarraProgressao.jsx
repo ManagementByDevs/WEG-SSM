@@ -12,7 +12,7 @@ const BarraProgressao = (props) => {
     const [skipped, setSkipped] = useState(new Set());
     const steps = props.steps;
 
-    const [paginaDados, setPaginaDados] = useState({titulo: "aaaaaa", problema: "", proposta: "", frequencia: ""});
+    const [paginaDados, setPaginaDados] = useState({titulo: "", problema: "", proposta: "", frequencia: ""});
     const [paginaBeneficios, setPaginaBeneficios] = useState([]);
     const [paginaArquivos, setPaginaArquivos] = useState([]);
 
@@ -86,7 +86,7 @@ const BarraProgressao = (props) => {
                     );
                 })}
             </Stepper>
-            {activeStep == 0 && <FormularioDadosDemanda dados={paginaDados} />}
+            {activeStep == 0 && <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />}
             {activeStep == 1 && <FormularioBeneficiosDemanda />}
             {activeStep == 2 && <FormularioAnexosDemanda />}
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>

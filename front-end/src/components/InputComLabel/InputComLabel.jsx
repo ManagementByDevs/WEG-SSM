@@ -7,7 +7,6 @@ const InputComLabel = (props) => {
   const [texto, setTexto] = useState("");
 
   useEffect(() => {
-    console.log(props.texto);
     if(props.texto) {
       setTexto(props.texto);
     }
