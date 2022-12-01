@@ -31,10 +31,4 @@ public class Beneficio {
     @Column(length = 200)
     private String memoriaCalculo;
 
-    // Foreing key
-
-    @ManyToOne
-    @JoinColumn(name = "demanda_id")
-    private Demanda demanda;
-
 }

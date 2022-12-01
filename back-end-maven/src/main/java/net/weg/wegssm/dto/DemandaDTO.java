@@ -20,6 +20,6 @@ public class DemandaDTO {
     private Usuario solicitante;
     private Forum forum;
     private Departamento departamento;
-    private List<Anexo> anexo;
+    private List<Beneficio> beneficios;
 
 }
