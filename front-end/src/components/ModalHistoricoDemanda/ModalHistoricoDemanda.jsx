@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
-import { Modal, Typography, Box } from '@mui/material';
+import { Modal, Typography, Box, Divider } from '@mui/material';
 
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import FontConfig from '../../service/FontConfig';
 
 import CloseIcon from '@mui/icons-material/Close';
+
+import ContainerHistorico from "../ContainerHistorico/ContainerHistorico";
 
 const ModalHistoricoDemanda = (props) => {
 
@@ -17,22 +19,36 @@ const ModalHistoricoDemanda = (props) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 450,
-        height: 300,
+        width: 550,
+        height: 480,
         bgcolor: 'background.paper',
         borderRadius: '5px',
         borderTop: '10px solid #00579D',
         boxShadow: 24,
         p: 4,
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         flexDirection: 'column',
     };
 
+    const styleContainerHistorico = {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        overflow: 'auto',
+        width: '100%',
+        height: '80%'
+    }
+
+    // variáveis para abrir o modal a partir de outra tela
+
+    let open = false;
+    open = props.open;
+    const setOpen = props.setOpen;
+
     // useState para abrir e fechar o modal
 
-    const [open, setOpen] = useState(true);
     const handleClose = () => setOpen(false);
 
     return (
@@ -48,9 +64,17 @@ const ModalHistoricoDemanda = (props) => {
             <Fade in={open}>
                 <Box sx={styleModal}>
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '90%', top: '3%', cursor: 'pointer' }} />
-                    <Typography fontSize={FontConfig.veryBig} sx={{ mt: 2 }}>
+                    <Typography fontWeight={650} color={'primary.main'} fontSize={FontConfig.smallTitle}>
                         Histórico
                     </Typography>
+                    <Divider sx={{ width: '60%', borderColor: 'tertiary.main' }} />
+                    <Box sx={styleContainerHistorico}>
+                        <ContainerHistorico autorHistorico={"Autor 1"} dataHistorico={"30/11/2022"} tituloHistorico={"Demanda Cancelada"} versaoHistorico={"V1"} />
+                        <ContainerHistorico autorHistorico={"Autor 1"} dataHistorico={"30/11/2022"} tituloHistorico={"Demanda Cancelada"} versaoHistorico={"V1"} />
+                        <ContainerHistorico autorHistorico={"Autor 1"} dataHistorico={"30/11/2022"} tituloHistorico={"Demanda Cancelada"} versaoHistorico={"V1"} />
+                        <ContainerHistorico autorHistorico={"Autor 1"} dataHistorico={"30/11/2022"} tituloHistorico={"Demanda Cancelada"} versaoHistorico={"V1"} />
+                        <ContainerHistorico autorHistorico={"Autor 1"} dataHistorico={"30/11/2022"} tituloHistorico={"Demanda Cancelada"} versaoHistorico={"V1"} />
+                    </Box>
                 </Box>
             </Fade>
         </Modal>

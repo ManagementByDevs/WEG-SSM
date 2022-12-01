@@ -14,6 +14,8 @@ import FundoComHeader from '../../components/FundoComHeader/FundoComHeader'
 
 import FontConfig from '../../service/FontConfig';
 
+import ModalHistoricoDemanda from '../../components/ModalHistoricoDemanda/ModalHistoricoDemanda';
+
 const HomeGerencia = () => {
     // UseState para poder visualizar e alterar a aba selecionada
     const [value, setValue] = useState('1');
@@ -22,6 +24,12 @@ const HomeGerencia = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const [modalHistorico, setOpenModal] = useState(false)
+
+    const abrirModalHistoricoDemanda = () =>{
+        setOpenModal(true);
+    }
 
     const navigate = useNavigate();
 
@@ -165,6 +173,8 @@ const HomeGerencia = () => {
                                 <Box sx={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))" }}>
                                     Demandas
                                 </Box>
+                                <Button onClick={abrirModalHistoricoDemanda}>Modal historico</Button>
+                                 { modalHistorico && <ModalHistoricoDemanda open={modalHistorico} setOpen={setOpenModal} />}
                             </TabPanel>
                             <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
                                 <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>
