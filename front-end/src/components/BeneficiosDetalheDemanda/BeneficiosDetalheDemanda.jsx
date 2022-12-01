@@ -29,6 +29,7 @@ const BeneficiosDetalheDemanda = (props) => {
     valorMensal: props.beneficio.valorMensal,
     moeda: props.beneficio.moeda,
     memoriaCalculo: props.beneficio.memoriaCalculo,
+    visible: true,
   });
 
   const [teste, setTeste] = useState(props.beneficio.tipo);
@@ -67,36 +68,15 @@ const BeneficiosDetalheDemanda = (props) => {
 
   return (
     <Box className="flex items-center">
-      {/* <Box
-        component="input"
-        value={beneficio.tipo}
-        onChange={(e) => setBeneficio({ ...beneficio, tipo: e.target.value })}
-      ></Box> */}
-      {/* <Box
-        component="input"
-        value={beneficio.moeda}
-        onChange={(e) => setBeneficio({ ...beneficio, moeda: e.target.value })}
-      ></Box>
-      <Box
-        component="input"
-        value={beneficio.valorMensal}
-        onChange={(e) =>
-          setBeneficio({ ...beneficio, valorMensal: e.target.value })
-        }
-      ></Box>
-      <Box
-        component="input"
-        value={beneficio.memoriaCalculo}
-        onChange={(e) =>
-          setBeneficio({ ...beneficio, memoriaCalculo: e.target.value })
-        }
-      ></Box> */}
       {props.editavel ? (
         <>
           <DeleteOutlineOutlinedIcon
             fontSize="large"
             className="delay-120 hover:scale-110 duration-300 mr-2"
             sx={{ color: "icon.main", cursor: "pointer" }}
+            onClick={() => {
+              props.delete(props.index);
+            }}
           />
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 750 }} aria-label="customized table">
@@ -158,14 +138,6 @@ const BeneficiosDetalheDemanda = (props) => {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  {/* <StyledTableRow className="flex"> */}
-                  {/* <Box
-                  component="input"
-                  value={beneficio.tipo}
-                  onChange={(e) =>
-                    setBeneficio({ ...beneficio, tipo: e.target.value })
-                  }
-                ></Box> */}
                   <td align="center">
                     <Box
                       component="input"
@@ -184,17 +156,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       placeholder="Digite o tipo do benefício..."
                     />
                   </td>
-                  {/* <td align="center">
-                    <Box
-                      component="input"
-                      value={beneficio.valorMensal}
-                      onChange={(e) => {
-                        setBeneficio({
-                          ...beneficio,
-                          valorMensal: e.target.value,
-                        });
-                      }}
-                    />
+                  <td align="center">
                     <Box
                       value={beneficio.valorMensal}
                       fontSize={FontConfig.medium}
@@ -243,6 +205,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       style={{
                         width: "100%",
                         resize: "none",
+                        textAlign: "center",
                         backgroundColor: corFundoTextArea,
                       }}
                       value={beneficio.memoriaCalculo}
@@ -257,8 +220,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                       placeholder="Digite a memória de cálculo..."
                     />
-                  </td> */}
-                  {/* </StyledTableRow> */}
+                  </td>
                 </TableRow>
               </TableBody>
             </Table>
@@ -329,7 +291,7 @@ const BeneficiosDetalheDemanda = (props) => {
                   className="p-3 pl-5 pr-5 flex justify-center"
                 >
                   <Typography
-                    className="text-justify"
+                    className="text-center"
                     fontSize={FontConfig.medium}
                     color="text.primary"
                     sx={{ width: "100%" }}

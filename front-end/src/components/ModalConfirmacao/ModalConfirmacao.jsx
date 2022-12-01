@@ -10,7 +10,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const ModalConfirmacao = (props) => {
   // Como chamar:
-  // <ModalConfirmacao textoModal={"descartarRascunho"} textoBotao={"sim"}/>
+  // <ModalConfirmacao textoModal={"descartarRascunho"} onConfirmClick={'funcao executada ao confirmar'} onCancelClick={'funcao executada ao cancelar'} textoBotao={"sim"}/>
 
   // Variáveis de estilo para o componente
   const styleModal = {
@@ -59,10 +59,10 @@ const ModalConfirmacao = (props) => {
 
   const mensagemBotao = (mensagemBotao) => {
     switch (mensagemBotao) {
-        case "sim":
-            return "Sim";
-        case "enviar":
-            return "Enviar";
+      case "sim":
+        return "Sim";
+      case "enviar":
+        return "Enviar";
     }
   };
 
@@ -70,8 +70,9 @@ const ModalConfirmacao = (props) => {
 
   // const [open, setOpen] = useState(props.open);
   const handleOpen = () => props.setOpen(true);
-  const handleClose = () => props.setOpen(false);
-
+  const handleClose = () => {
+    props.setOpen(false);
+  };
   return (
     <Modal
       open={props.open}
@@ -90,7 +91,10 @@ const ModalConfirmacao = (props) => {
           </Typography>
           <Box sx={styleBotoes}>
             <Button
-              onClick={handleClose}
+              onClick={() => {
+                handleClose();
+                props.onCancelClick(true);
+              }}
               variant="container"
               disableElevation
               color="tertiary"
@@ -105,6 +109,10 @@ const ModalConfirmacao = (props) => {
               Cancelar
             </Button>
             <Button
+              onClick={() => {
+                handleClose();
+                props.onConfirmClick(false);
+              }}
               variant="contained"
               disableElevation
               color="primary"

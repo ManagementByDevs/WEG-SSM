@@ -2,11 +2,17 @@ import React from "react";
 import { Snackbar, Alert } from "@mui/material";
 
 const Feedback = (props) => {
+  // Como chamar:
+  // <Feedback open={true} handleClose={funcao para deixar o open false} status={"o status que quer: sucesso, erro, aviso, info"} mensagem={"mensagem que quer que apareça"}/>
+
+  // Variáveis de estilo para o componente (para definir a posição)
   const vertical = "top";
   const horizontal = "right";
 
+  // Váriável que contém uma mensagem para o feedback
   const mensagem = getMensagem();
 
+  // Função para retornar uma mensagem para o feedback
   function getMensagem() {
     return props.mensagem;
   }
