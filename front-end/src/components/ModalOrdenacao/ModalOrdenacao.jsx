@@ -12,11 +12,11 @@ const ModalOrdenacao = (props) => {
 
     const style = {
         position: 'absolute',
-        top: '39.5%',
+        top: '38.5%',
         left: '34.5%',
         transform: 'translate(-50%, -50%)',
         width: 310,
-        height: 280,
+        height: 265,
         bgcolor: 'background.paper',
         borderRadius: '5px',
         borderTop: '10px solid #00579D',
@@ -131,10 +131,7 @@ const ModalOrdenacao = (props) => {
             open={props.open}
             onClose={handleClose}
             onBackdropClick={handleClose}
-            hideBackdrop={true}
-            BackdropProps={{
-                timeout: 500,
-            }}
+            BackdropProps={{invisible:true}}
         >
             <Fade in={props.open}>
                 <Box sx={style}>
@@ -183,8 +180,6 @@ const ModalOrdenacao = (props) => {
                             </FormGroup>
                         </Grid>
                     </Grid>
-
-                    <Button onClick={handleClose} variant="contained" disableElevation color="primary" sx={{ marginTop: '2%', width: '5rem', fontSize: FontConfig.normal }}>Aplicar</Button>
                 </Box>
             </Fade>
         </Modal>
