@@ -48,6 +48,8 @@ const BarraProgressao = (props) => {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
   };
 
     const handleBack = () => {
