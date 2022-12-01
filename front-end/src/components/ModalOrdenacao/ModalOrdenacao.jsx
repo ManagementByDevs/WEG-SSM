@@ -6,6 +6,7 @@ import Fade from '@mui/material/Fade';
 import FontConfig from '../../service/FontConfig'
 import CloseIcon from '@mui/icons-material/Close';
 import zIndex from "@mui/material/styles/zIndex";
+import { useEffect } from "react";
 
 const ModalOrdenacao = (props) => {
 
@@ -54,6 +55,22 @@ const ModalOrdenacao = (props) => {
     const [checkTitulo, setCheckTitulo] = useState([false, false]);
     const [checkScore, setCheckScore] = useState([false, false]);
     const [checkDate, setCheckDate] = useState([false, false]);
+
+    useEffect(() => {
+        let textoNovo = "";
+        if(checkTitulo[1]) {
+            textoNovo += "sort=titulo,asc";
+        }
+        if(checkTitulo[0]) {
+            textoNovo += "sort=titulo,desc";
+        }
+
+        if(textoNovo == "") {
+            textoNovo = "sort=id,asc";
+        }
+        textoNovo += "&";
+        props.setOrdenacao(textoNovo);
+    }, [checkTitulo, checkScore, checkDate]);
 
     function mudarCheck1() {
         if (checkTitulo[0]) {

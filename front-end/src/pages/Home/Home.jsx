@@ -31,7 +31,8 @@ const Home = () => {
   const [params, setParams] = useState({ titulo: null, solicitante: null, gerente: null, forum: null, departamento: null, tamanho: null, status: null });
   
   // String para ordenação das demandas
-  const [page, setPage] = useState("sort=id,asc&size=20&page=0");
+  const [page, setPage] = useState("size=20&page=0");
+  const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState('1');
@@ -49,7 +50,7 @@ const Home = () => {
 
   useEffect(() => {
     buscarDemandas();
-  }, [params])
+  }, [params, ordenacao])
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -61,7 +62,7 @@ const Home = () => {
   // Função para buscar as demandas com os parâmetros e ordenação
   const buscarDemandas = () => {
     if (params.departamento != null || params.solicitante != null) {
-      DemandaService.getPage(params, page).then((e) => {
+      DemandaService.getPage(params, (ordenacao + page)).then((e) => {
         setListaDemandas(e.content);
       })
     }
@@ -199,7 +200,7 @@ const Home = () => {
                       className="cursor-pointer"
                       sx={{ color: "text.secondary" }}
                     />
-                    {abrirOrdenacao && <ModalOrdenacao open={abrirOrdenacao} setOpen={setOpenOrdenacao} />}
+                    {abrirOrdenacao && <ModalOrdenacao ordenacao={ordenacao} setOrdenacao={setOrdenacao} open={abrirOrdenacao} setOpen={setOpenOrdenacao} />}
                   </Box>
                 </Box>
 
