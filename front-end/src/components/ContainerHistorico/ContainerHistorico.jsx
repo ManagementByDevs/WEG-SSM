@@ -6,6 +6,8 @@ import FontConfig from '../../service/FontConfig';
 
 const ContainerHistorico = (props) => {
 
+    // variável de estilo para o container do histórico
+
     const styleComponenteHistorico = {
         display: 'flex',
         justifyContent: 'space-between',
@@ -20,6 +22,8 @@ const ContainerHistorico = (props) => {
         margin: '1%'
     }
 
+    // componente para cada histórico em uma demanda
+    
     return (
         <Box sx={styleComponenteHistorico}>
             <Typography fontWeight={650} fontSize={FontConfig.veryBig}>
