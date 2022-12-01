@@ -2,11 +2,9 @@ import React from "react";
 
 import { Box, Paper, Typography } from "@mui/material";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-
 import FontConfig from "../../service/FontConfig";
 
-const Escopo = (props) => {
+const DemandaGerencia = (props) => {
   return (
     <Paper
       className="flex flex-col gap-1 border-t-4 pt-2 pb-3 px-6"
@@ -30,10 +28,15 @@ const Escopo = (props) => {
           >
             <Box
               className="w-full rounded"
-              sx={{ backgroundColor: "primary.main", width: props.escopo.porcentagem }}
+              sx={{
+                backgroundColor: "primary.main",
+                width: props.escopo.porcentagem,
+              }}
             />
           </Box>
-          <Typography fontSize={FontConfig.medium}>{props.escopo.porcentagem}</Typography>
+          <Typography fontSize={FontConfig.medium}>
+            {props.escopo.porcentagem}
+          </Typography>
         </Box>
       </Box>
 
@@ -47,14 +50,9 @@ const Escopo = (props) => {
             {props.escopo.proposta}
           </Typography>
         </Box>
-        <DeleteIcon
-          className="absolute bottom-0"
-          sx={{ right: "-10px" }}
-          color="primary"
-        />
       </Box>
     </Paper>
   );
 };
 
-export default Escopo;
+export default DemandaGerencia;
