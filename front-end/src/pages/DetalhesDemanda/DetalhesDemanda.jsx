@@ -41,74 +41,54 @@ const DetalhesDemanda = () => {
   function editarDemanda() {
     if (editar) {
       setOpenModal(true);
+    } else {
+      setEditar(true);
     }
-    setEditar(!editar);
+  };
+
+  function resetarTextoInput() {
+    setEditar(false);
+    setTituloDemanda(dados.titulo);
+    setProblema(dados.problema);
+    setProposta(dados.proposta);
+    setFrequencia(dados.frequencia);
   }
 
   const [dados, setDados] = useState({
-    titulo: "",
-    problema: "",
-    proposta: "",
-    frequencia: "",
+    titulo: "Sistema de Gestão de Demandas",
+    problema: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+    proposta: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+    frequencia: "Lorem Ipsum is simply dummy text of the printing and",
   });
 
   const [dadosBeneficio, setDadosBeneficio] = useState([
     {
-      tipo: "tipo 1",
-      valorMensal: "valor 2",
-      moeda: "moeda 3",
-      memoriaCalculo: "memoria calculo 4",
+      tipo: "Real",
+      valorMensal: "300,00",
+      moeda: "BR",
+      memoriaCalculo: "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
+      visible: true,
     },
   ]);
 
-  const salvarTitulo = (texto) => {
-    setDados({ ...dados, titulo: texto });
+  const save = () => {
+    setDados({titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia});
   };
 
-  const salvarProblema = (texto) => {
-    setDados({ ...dados, problema: texto });
-  };
+  const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
+  const [problema, setProblema] = useState(dados.problema);
+  const [proposta, setProposta] = useState(dados.proposta);
+  const [frequencia, setFrequencia] = useState(dados.frequencia);
 
-  const salvarProposta = (texto) => {
-    setDados({ ...dados, proposta: texto });
-  };
-
-  const salvarFrequencia = (texto) => {
-    setDados({ ...dados, frequencia: texto });
-  };
-
-  const [tituloDemanda, setTituloDemanda] = useState(
-    "Sistema de Gestão de Demandas"
-  );
-  const [problema, setProblema] = useState(
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-  );
-  const [proposta, setProposta] = useState(
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-  );
-  const [frequencia, setFrequencia] = useState(
-    "Lorem Ipsum is simply dummy text of the printing and"
-  );
-
-  let textoAux = "";
-
-  const save = (e, input) => {
+  const alterarTexto = (e, input) => {
     if (input === "titulo") {
       setTituloDemanda(e.target.value);
-      textoAux += e.target.value;
-      salvarTitulo(textoAux);
     } else if (input === "problema") {
       setProblema(e.target.value);
-      textoAux += e.target.value;
-      salvarProblema(textoAux);
     } else if (input === "proposta") {
       setProposta(e.target.value);
-      textoAux += e.target.value;
-      salvarProposta(textoAux);
     } else if (input === "frequencia") {
       setFrequencia(e.target.value);
-      textoAux += e.target.value;
-      salvarFrequencia(textoAux);
     }
   };
 
@@ -119,16 +99,28 @@ const DetalhesDemanda = () => {
     });
   };
 
-  useEffect(() => {
-    console.log("dadossss", dadosBeneficio);
-  }, [dadosBeneficio]);
+  useEffect(() => {}, [dadosBeneficio]);
+
+  function deleteBeneficio(indexBeneficio) {
+    setDadosBeneficio(dadosBeneficio.map((proprioBeneficio, index) => {
+      if (index === indexBeneficio) {
+        proprioBeneficio.visible = false;
+      }
+      return proprioBeneficio;
+    }));
+  }
 
   return (
     <FundoComHeader>
       <Box className="p-2">
-        {/* {confirmacaoCancelarEdicao && ( */}
-          <ModalConfirmacao open={openModal} setOpen={setOpenModal} textoModal="cancelarEdicao" textoBotao="sim" />
-        {/* )} */}
+        <ModalConfirmacao
+          open={openModal}
+          setOpen={setOpenModal}
+          onConfirmClick={resetarTextoInput}
+          onCancelClick={setEditar}
+          textoModal="cancelarEdicao"
+          textoBotao="sim"
+        />
         <Box className="flex w-full relative">
           <Caminho />
           <Box
@@ -179,7 +171,7 @@ const DetalhesDemanda = () => {
                     }}
                     color="primary.main"
                   >
-                    {tituloDemanda}
+                    {dados.titulo}
                   </Typography>
                 </Box>
                 <Divider />
@@ -197,7 +189,7 @@ const DetalhesDemanda = () => {
                     color="text.secondary"
                     sx={{ marginLeft: "30px" }}
                   >
-                    {problema}
+                    {dados.problema}
                   </Typography>
                 </Box>
                 <Box>
@@ -214,7 +206,7 @@ const DetalhesDemanda = () => {
                     color="text.secondary"
                     sx={{ marginLeft: "30px" }}
                   >
-                    {proposta}
+                    {dados.proposta}
                   </Typography>
                 </Box>
                 <Box>
@@ -227,8 +219,19 @@ const DetalhesDemanda = () => {
                       Beneficios:
                     </Typography>
                   </Box>
-                  <Box className="ml-7 mt-2">
-                    {/* <BeneficiosDetalheDemanda /> */}
+                  <Box className="mt-2 flex flex-col gap-5">
+                    {dadosBeneficio?.map((beneficio, index) => {
+                      if (beneficio.visible) {
+                        return (
+                          <BeneficiosDetalheDemanda
+                            editavel={false}
+                            index={index}
+                            beneficio={beneficio}
+                            save={salvarBeneficios}
+                          />
+                        );
+                      }
+                    })}
                   </Box>
                 </Box>
                 <Box>
@@ -245,7 +248,7 @@ const DetalhesDemanda = () => {
                     color="text.secondary"
                     sx={{ marginLeft: "30px" }}
                   >
-                    {frequencia}
+                    {dados.frequencia}
                   </Typography>
                 </Box>
                 <Box>
@@ -265,13 +268,13 @@ const DetalhesDemanda = () => {
                   <Box
                     value={tituloDemanda}
                     onChange={(e) => {
-                      save(e, "titulo");
+                      alterarTexto(e, "titulo");
                     }}
                     fontSize={FontConfig.title}
                     color="primary.main"
-                    className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                    className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                     sx={{
-                      width: "90%;",
+                      width: "100%;",
                       height: "54px",
                       backgroundColor: "background.default",
                       fontWeight: "600",
@@ -299,7 +302,7 @@ const DetalhesDemanda = () => {
                     value={problema}
                     fontSize={FontConfig.medium}
                     onChange={(e) => {
-                      save(e, "problema");
+                      alterarTexto(e, "problema");
                     }}
                     className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
                     placeholder="Digite o problema..."
@@ -323,7 +326,7 @@ const DetalhesDemanda = () => {
                     value={proposta}
                     fontSize={FontConfig.medium}
                     onChange={(e) => {
-                      save(e, "proposta");
+                      alterarTexto(e, "proposta");
                     }}
                     className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
                     placeholder="Digite a proposta..."
@@ -340,19 +343,34 @@ const DetalhesDemanda = () => {
                     </Typography>
                     <AddCircleOutlineOutlinedIcon
                       className="delay-120 hover:scale-110 duration-300 ml-1"
+                      onClick={() => {
+                        setDadosBeneficio([
+                          ...dadosBeneficio,
+                          {
+                            tipo: "",
+                            valor: "",
+                            moeda: "",
+                            memoriaCalculo: "",
+                            visible: true,
+                          },
+                        ]);
+                      }}
                       sx={{ color: "primary.main", cursor: "pointer" }}
                     />
                   </Box>
-                  <Box className="mt-2 gap-5">
-                    {dadosBeneficio.map((beneficio, index) => {
-                      return (
-                        <BeneficiosDetalheDemanda
+                  <Box className="mt-2 flex flex-col gap-5">
+                  {dadosBeneficio?.map((beneficio, index) => {
+                      if (beneficio.visible) {
+                        return (
+                          <BeneficiosDetalheDemanda
                           editavel={true}
                           index={index}
+                          delete={deleteBeneficio}
                           beneficio={beneficio}
                           save={salvarBeneficios}
                         />
-                      );
+                        );
+                      }
                     })}
                   </Box>
                 </Box>
@@ -367,7 +385,7 @@ const DetalhesDemanda = () => {
                   <Box
                     value={frequencia}
                     onChange={(e) => {
-                      save(e, "frequencia");
+                      alterarTexto(e, "frequencia");
                     }}
                     fontSize={FontConfig.medium}
                     className="outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
@@ -401,39 +419,57 @@ const DetalhesDemanda = () => {
           </Box>
           <Box className="w-full p-10"></Box>
           <Box
-            className="flex fixed justify-around"
+            className="flex fixed justify-end"
             sx={{ width: "20rem", bottom: "20px", right: "20px" }}
           >
-            <Button
-              sx={{
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-              }}
-              variant="contained"
-            >
-              Recusar
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-              }}
-              variant="contained"
-            >
-              Devolver
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-              }}
-              variant="contained"
-            >
-              Aceitar
-            </Button>
+            {
+              editar ? (
+                <Button
+                  sx={{
+                    backgroundColor: "primary.main",
+                    color: "text.white",
+                    fontSize: FontConfig.default,
+                  }}
+                  variant="contained"
+                  onClick={() => {save(); setEditar(false)}}
+                >
+                  Salvar
+                </Button>
+              ) : (
+                <Box className="flex justify-around w-full">
+                  <Button
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                    }}
+                    variant="contained"
+                  >
+                  Recusar
+                  </Button>
+                  <Button
+                     sx={{
+                        backgroundColor: "primary.main",
+                         color: "text.white",
+                        fontSize: FontConfig.default,
+                      }}
+                      variant="contained"
+                  >
+                  Devolver
+                  </Button>
+                  <Button
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                    }}
+                    variant="contained"
+                  >
+                  Aceitar
+                  </Button>
+                </Box>
+              )
+            }
           </Box>
         </Box>
       </Box>

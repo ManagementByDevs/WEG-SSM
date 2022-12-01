@@ -32,7 +32,11 @@ class DemandaService {
             form.append("anexos", arquivo);
         }
 
-        return (await axios.post(`/demanda/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        if(arquivos.length > 0) {
+            return (await axios.post(`/demanda/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        } else {
+            return (await axios.post(`/demanda/sem-arquivos/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        }
     }
 }
 

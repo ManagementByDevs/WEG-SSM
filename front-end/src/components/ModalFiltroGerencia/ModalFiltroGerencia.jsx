@@ -7,6 +7,8 @@ import Fade from "@mui/material/Fade";
 import FontConfig from "../../service/FontConfig";
 import CloseIcon from '@mui/icons-material/Close';
 
+import { styled } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
 
 const ModalFiltroGerencia = (props) => {
 
@@ -188,8 +190,8 @@ const ModalFiltroGerencia = (props) => {
                                 </Select>
                             </FormControl>
                             <Box sx={styleInputFiltro}>
-                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px', color: 'primary.secondary', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
-                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px', color: 'primary.secondary', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>
+                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #e5e7eb', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
+                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #e5e7eb', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>
                             </Box>
                         </Box>
                     </Box>
@@ -201,9 +203,3 @@ const ModalFiltroGerencia = (props) => {
 }
 
 export default ModalFiltroGerencia;
-
-
-
-
-
-
