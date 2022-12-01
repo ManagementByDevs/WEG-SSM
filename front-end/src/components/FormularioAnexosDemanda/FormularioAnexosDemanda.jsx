@@ -76,7 +76,7 @@ const FormularioAnexosDemanda = () => {
                                     <AddCircleIcon color='primary' fontSize='large' />
                                 </IconButton>
                             </Box>
-                            <TableContainer >
+                            <TableContainer className='h-full w-full' >
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead className='border-b'>
                                         <TableRow>
