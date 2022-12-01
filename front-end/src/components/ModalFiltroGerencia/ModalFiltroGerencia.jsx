@@ -7,6 +7,8 @@ import Fade from "@mui/material/Fade";
 import FontConfig from "../../service/FontConfig";
 import CloseIcon from '@mui/icons-material/Close';
 
+import { styled } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
 
 const ModalFiltroGerencia = (props) => {
 
@@ -102,6 +104,23 @@ const ModalFiltroGerencia = (props) => {
         setDepartamento(event.target.value);
     };
 
+
+    // variável para editar os inputs de número e ppm
+    
+    const BootstrapInput = styled(InputBase)(({ theme }) => ({
+        'label + &': {
+          marginTop: theme.spacing(2),
+        },
+        '& .MuiInputBase-input': {
+          borderRadius: 4,
+          position: 'relative',
+          backgroundColor: theme.palette.background.paper,
+          border: '1px solid #ced4da',
+          fontSize: 16,
+          padding: '10px 26px 10px 12px',
+        },
+      }));
+
     return (
         <Modal
             open={props.open}
@@ -188,8 +207,16 @@ const ModalFiltroGerencia = (props) => {
                                 </Select>
                             </FormControl>
                             <Box sx={styleInputFiltro}>
-                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px', color: 'primary.secondary', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
-                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px', color: 'primary.secondary', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>
+                                <FormControl sx={{ width: '7rem' }} variant="standard">
+                                    <InputLabel htmlFor="demo-customized-textbox">Número</InputLabel>
+                                    <BootstrapInput id="demo-customized-textbox" />
+                                </FormControl>
+                                <FormControl sx={{ width: '7rem' }} variant="standard">
+                                    <InputLabel htmlFor="demo-customized-textbox">PPM</InputLabel>
+                                    <BootstrapInput id="demo-customized-textbox" placeholder="PPM" />
+                                </FormControl>
+                                {/* <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px', color: 'primary.secondary', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
+                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px', color: 'primary.secondary', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input> */}
                             </Box>
                         </Box>
                     </Box>
@@ -201,9 +228,3 @@ const ModalFiltroGerencia = (props) => {
 }
 
 export default ModalFiltroGerencia;
-
-
-
-
-
-
