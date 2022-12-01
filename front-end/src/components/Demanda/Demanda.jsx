@@ -5,9 +5,12 @@ import FontConfig from '../../service/FontConfig'
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 
 const Demanda = (props) => {
+
+  // Cor do status da demansa
   let corStatus = getStatusColor();
   let tamanhoHeight = getTamanhoHeight();
 
+  // Função para receber a cor do status da demanda
   function getStatusColor() {
 
     if (props.demanda.status == "CANCELLED") {
@@ -27,6 +30,7 @@ const Demanda = (props) => {
     }
   }
 
+  // Função para formatar o nome do status da demanda
   const formatarNomeStatus = () => {
     if (props.demanda.status == "CANCELLED") {
       return 'Reprovada';
@@ -54,7 +58,6 @@ const Demanda = (props) => {
   }
 
   // useState para abrir o modal de motivo recusa
-
   const [abrirModal, setOpenModal] = useState(false);
 
   const abrirModalMotivoRecusa = () => {

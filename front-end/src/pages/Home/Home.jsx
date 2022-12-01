@@ -21,14 +21,22 @@ import ModalFiltro from '../../components/ModalFiltro/ModalFiltro';
 
 const Home = () => {
 
+  // Lista de demandas presente
   const [listaDemandas, setListaDemandas] = useState([]);
 
+  // Usuário que está logado no sistema
   const [usuario, setUsuario] = useState({ id: 0, email: "", nome: "", senha: "", tipo_usuario: 0, visibilidade: 1, departamento: null });
+  
+  // Parâmetros para pesquisa das demandas (filtros)
   const [params, setParams] = useState({ titulo: null, solicitante: null, gerente: null, forum: null, departamento: null, tamanho: null, status: null });
+  
+  // String para ordenação das demandas
   const [page, setPage] = useState("sort=id,asc&size=20&page=0");
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState('1');
+
+  // Valor do input de pesquisa
   const [valorPesquisa, setValorPesquisa] = useState("");
 
   useEffect(() => {
@@ -43,12 +51,14 @@ const Home = () => {
     buscarDemandas();
   }, [params])
 
+  // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
     UsuarioService.getUsuarioById(parseInt(localStorage.getItem("usuarioId"))).then((e) => {
       setUsuario(e)
     });
   }
 
+  // Função para buscar as demandas com os parâmetros e ordenação
   const buscarDemandas = () => {
     if (params.departamento != null || params.solicitante != null) {
       DemandaService.getPage(params, page).then((e) => {
@@ -91,15 +101,18 @@ const Home = () => {
     setOpenFiltro(true);
   };
 
+  // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
   const verDemanda = (demanda) => {
     localStorage.setItem("demandaAtual", JSON.stringify(demanda));
     navigate('/detalhes-demanda');
   }
 
+  // Função para salvar o input de pesquisa quando houver alteração
   const salvarPesquisa = (e) => {
     setValorPesquisa(e.target.value);
   }
 
+  // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
   const pesquisaTitulo = () => {
     if (params.solicitante != null) {
       setParams({ ...params, titulo: valorPesquisa, solicitante: usuario });
@@ -108,6 +121,7 @@ const Home = () => {
     }
   }
 
+  // Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter"
   const eventoTeclado = (e) => {
     if (e.key == "Enter") {
       pesquisaTitulo();

@@ -124,7 +124,7 @@ const BarraProgressao = (props) => {
           })}
         </Stepper>
         {activeStep == 0 && <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados}/>}
-        {activeStep == 1 && <FormularioBeneficiosDemanda />}
+        {activeStep == 1 && <FormularioBeneficiosDemanda setDados={setPaginaBeneficios} />}
         {activeStep == 2 && <FormularioAnexosDemanda />}
         <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
           <Button
