@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import {
   Box,
@@ -17,11 +17,15 @@ import Feedback from "../Feedback/Feedback";
 import { useEffect } from "react";
 
 const BarraProgressao = (props) => {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-  const steps = props.steps;
+    const [activeStep, setActiveStep] = useState(0);
+    const [skipped, setSkipped] = useState(new Set());
+    const steps = props.steps;
 
-  const navigate = useNavigate();
+    const [paginaDados, setPaginaDados] = useState({titulo: "", problema: "", proposta: "", frequencia: ""});
+    const [paginaBeneficios, setPaginaBeneficios] = useState([]);
+    const [paginaArquivos, setPaginaArquivos] = useState([]);
+
+    const navigate = useNavigate();
 
   const isStepOptional = (step) => {
     return false;
@@ -41,9 +45,52 @@ const BarraProgressao = (props) => {
       newSkipped.delete(activeStep);
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
+// <<<<<<< HEAD
+//     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+//     setSkipped(newSkipped);
+//   };
+// =======
+//     return (
+//         <>
+//             <Stepper activeStep={activeStep}>
+//                 {steps.map((label, index) => {
+//                     const stepProps = {};
+//                     const labelProps = {};
+//                     if (isStepOptional(index)) {
+//                         labelProps.optional = (
+//                             <Typography variant="caption">Optional</Typography>
+//                         );
+//                     }
+//                     if (isStepSkipped(index)) {
+//                         stepProps.completed = false;
+//                     }
+//                     return (
+//                         <Step key={label} {...stepProps}>
+//                             <StepLabel {...labelProps}>{label}</StepLabel>
+//                         </Step>
+//                     );
+//                 })}
+//             </Stepper>
+//             {activeStep == 0 && <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />}
+//             {activeStep == 1 && <FormularioBeneficiosDemanda />}
+//             {activeStep == 2 && <FormularioAnexosDemanda />}
+//             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+//                 <Button variant='outlined'
+//                     color="tertiary"
+//                     disabled={activeStep === 0}
+//                     onClick={handleBack}
+//                     sx={{ mr: 1 }}
+//                     disableElevation
+//                 >
+//                     Voltar
+//                 </Button>
+//                 <Box sx={{ flex: '1 1 auto' }} />
+//                 {isStepOptional(activeStep) && (
+//                     <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+//                         Pular
+//                     </Button>
+//                 )}
+// >>>>>>> 4cd0b462315dba3c9eb2c31ae019a0bba91a1949
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);

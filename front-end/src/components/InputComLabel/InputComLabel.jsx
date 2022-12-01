@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 
 import { Box, Typography } from "@mui/material";
+import { useEffect } from "react";
 
 const InputComLabel = (props) => {
   const [texto, setTexto] = useState("");
-  let textoAux = "";
+
+  useEffect(() => {
+    if(props.texto) {
+      setTexto(props.texto);
+    }
+  }, [])
 
   const save = (e) => {
     setTexto(e.target.value);
-    textoAux += e.target.value;
-    props.saveInputValue(textoAux);
+    props.saveInputValue(texto);
   };
 
   return (

@@ -5,6 +5,7 @@ import { Modal, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, 
 import Fade from '@mui/material/Fade';
 import FontConfig from '../../service/FontConfig'
 import CloseIcon from '@mui/icons-material/Close';
+import zIndex from "@mui/material/styles/zIndex";
 
 const ModalOrdenacao = (props) => {
 
@@ -112,12 +113,11 @@ const ModalOrdenacao = (props) => {
         <Modal
             open={props.open}
             onClose={handleClose}
-            closeAfterTransition
-            BackdropComponent={false}
+            onBackdropClick={handleClose}
+            hideBackdrop={true}
             BackdropProps={{
                 timeout: 500,
             }}
-            disableEnforceFocus
         >
             <Fade in={props.open}>
                 <Box sx={style}>
