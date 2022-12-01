@@ -5,6 +5,7 @@ import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.BeneficioService;
 import net.weg.wegssm.model.service.DemandaService;
+import net.weg.wegssm.model.service.DepartamentoService;
 import net.weg.wegssm.model.service.UsuarioService;
 import net.weg.wegssm.util.DemandaUtil;
 import net.weg.wegssm.util.DepartamentoUtil;
@@ -896,6 +897,26 @@ public class DemandaController {
         demanda.setBeneficios(listaBeneficios);
         demanda.setSolicitante(usuario);
         demanda.setAnexos(files);
+
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
+
+    @PostMapping("/sem-arquivos/{usuarioId}")
+    public ResponseEntity<Object> saveSemArquivos(@RequestParam("demanda") String demandaJSON, @PathVariable(value = "usuarioId") Long usuarioId) {
+
+        DemandaUtil demandaUtil = new DemandaUtil();
+        Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
+        Usuario usuario = usuarioService.findById(usuarioId).get();
+        Departamento departamento = usuario.getDepartamento();
+
+        ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
+        for (Beneficio beneficio : demanda.getBeneficios()) {
+            listaBeneficios.add(beneficioService.save(beneficio));
+        }
+
+        demanda.setDepartamento(departamento);
+        demanda.setBeneficios(listaBeneficios);
+        demanda.setSolicitante(usuario);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
