@@ -11,6 +11,7 @@ import {
   Typography,
   Box,
   TextareaAutosize,
+  Button,
 } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -19,10 +20,18 @@ import FontConfig from "../../service/FontConfig";
 
 import ColorModeContext from "../../service/TemaContext";
 
-
 const BeneficiosDetalheDemanda = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
+
+  const [beneficio, setBeneficio] = useState({
+    tipo: props.beneficio.tipo,
+    valorMensal: props.beneficio.valorMensal,
+    moeda: props.beneficio.moeda,
+    memoriaCalculo: props.beneficio.memoriaCalculo,
+  });
+
+  const [teste, setTeste] = useState(props.beneficio.tipo);
 
   useEffect(() => {
     if (mode === "dark") {
@@ -42,21 +51,46 @@ const BeneficiosDetalheDemanda = (props) => {
     },
   }));
 
-  function createData(tipo, valorMensal, moeda, memoriaCalculo) {
-    return { tipo, valorMensal, moeda, memoriaCalculo };
-  }
+  const save = () => {
+    props.save(beneficio, props.index);
+  };
 
-  const rows = [
-    createData(
-      "Real",
-      "500,00",
-      "BR",
-      "Escrevendo alguma coisa que realmente seja grande para testar a responsividade do bagulho aqui"
-    ),
-  ];
+  const handleTipoChange = (e) => {
+    console.log("aaa");
+    setTeste(e.target.value);
+    // setBeneficio({ ...beneficio, tipo: e.target.value });
+  };
+
+  useEffect(() => {
+    save();
+  }, [beneficio]);
 
   return (
     <Box className="flex items-center">
+      {/* <Box
+        component="input"
+        value={beneficio.tipo}
+        onChange={(e) => setBeneficio({ ...beneficio, tipo: e.target.value })}
+      ></Box> */}
+      {/* <Box
+        component="input"
+        value={beneficio.moeda}
+        onChange={(e) => setBeneficio({ ...beneficio, moeda: e.target.value })}
+      ></Box>
+      <Box
+        component="input"
+        value={beneficio.valorMensal}
+        onChange={(e) =>
+          setBeneficio({ ...beneficio, valorMensal: e.target.value })
+        }
+      ></Box>
+      <Box
+        component="input"
+        value={beneficio.memoriaCalculo}
+        onChange={(e) =>
+          setBeneficio({ ...beneficio, memoriaCalculo: e.target.value })
+        }
+      ></Box> */}
       {props.editavel ? (
         <>
           <DeleteOutlineOutlinedIcon
@@ -68,7 +102,11 @@ const BeneficiosDetalheDemanda = (props) => {
             <Table sx={{ minWidth: 750 }} aria-label="customized table">
               <TableHead sx={{ backgroundColor: "primary.main" }}>
                 <TableRow>
-                  <th align="center" className="p-4 w-0" style={{width: '10%'}}>
+                  <th
+                    align="center"
+                    className="p-4 w-0"
+                    style={{ width: "10%" }}
+                  >
                     <Typography
                       fontSize={FontConfig.big}
                       fontWeight="800"
@@ -77,7 +115,11 @@ const BeneficiosDetalheDemanda = (props) => {
                       Tipo
                     </Typography>
                   </th>
-                  <th align="center" className="p-4 w-0" style={{width: '15%'}}>
+                  <th
+                    align="center"
+                    className="p-4 w-0"
+                    style={{ width: "15%" }}
+                  >
                     <Typography
                       fontSize={FontConfig.big}
                       fontWeight="800"
@@ -86,7 +128,11 @@ const BeneficiosDetalheDemanda = (props) => {
                       Valor Mensal
                     </Typography>
                   </th>
-                  <th align="center" className="p-4 w-0" style={{width: '10%'}}>
+                  <th
+                    align="center"
+                    className="p-4 w-0"
+                    style={{ width: "10%" }}
+                  >
                     <Typography
                       fontSize={FontConfig.big}
                       fontWeight="800"
@@ -95,7 +141,11 @@ const BeneficiosDetalheDemanda = (props) => {
                       Moeda
                     </Typography>
                   </th>
-                  <th align="center" className="p-4 w-0" style={{width: '30%'}}>
+                  <th
+                    align="center"
+                    className="p-4 w-0"
+                    style={{ width: "30%" }}
+                  >
                     <Typography
                       fontSize={FontConfig.big}
                       fontWeight="800"
@@ -107,71 +157,109 @@ const BeneficiosDetalheDemanda = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <StyledTableRow key={row.tipo} className="flex">
-                    <td align="center">
-                      <Box
-                        value={row.tipo}
-                        fontSize={FontConfig.medium}
-                        color="text.primary"
-                        className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
-                        sx={{
-                          width: "80%;",
-                          height: "30px",
-                          backgroundColor: "background.default",
-                        }}
-                        component="input"
-                        placeholder="Digite o tipo do benefício..."
-                      />
-                    </td>
-                    <td align="center">
-                      <Box
-                        value={row.valorMensal}
-                        fontSize={FontConfig.medium}
-                        color="text.primary"
-                        className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
-                        sx={{
-                          width: "80%;",
-                          height: "30px",
-                          backgroundColor: "background.default",
-                        }}
-                        component="input"
-                        placeholder="Digite o valor mensal..."
-                      />
-                    </td>
-                    <td align="center">
-                      <Box
-                        value={row.moeda}
-                        fontSize={FontConfig.medium}
-                        color="text.primary"
-                        className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
-                        sx={{
-                          width: "80%;",
-                          height: "30px",
-                          backgroundColor: "background.default",
-                        }}
-                        component="input"
-                        placeholder="Digite o tipo da moeda..."
-                      />
-                    </td>
-                    <td
-                      align="center"
-                      className="p-3 pl-5 pr-5 flex justify-center"
-                    >
-                      <TextareaAutosize
-                        style={{
-                          width: "100%",
-                          resize: "none",
-                          backgroundColor: corFundoTextArea,
-                        }}
-                        value={row.memoriaCalculo}
-                        fontSize={FontConfig.medium}
-                        className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                        placeholder="Digite a memória de cálculo..."
-                      />
-                    </td>
-                  </StyledTableRow>
-                ))}
+                <TableRow>
+                  {/* <StyledTableRow className="flex"> */}
+                  {/* <Box
+                  component="input"
+                  value={beneficio.tipo}
+                  onChange={(e) =>
+                    setBeneficio({ ...beneficio, tipo: e.target.value })
+                  }
+                ></Box> */}
+                  <td align="center">
+                    <Box
+                      component="input"
+                      value={beneficio.tipo}
+                      fontSize={FontConfig.medium}
+                      onChange={(e) =>
+                        setBeneficio({ ...beneficio, tipo: e.target.value })
+                      }
+                      color="text.primary"
+                      className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                      sx={{
+                        width: "80%;",
+                        height: "30px",
+                        backgroundColor: "background.default",
+                      }}
+                      placeholder="Digite o tipo do benefício..."
+                    />
+                  </td>
+                  {/* <td align="center">
+                    <Box
+                      component="input"
+                      value={beneficio.valorMensal}
+                      onChange={(e) => {
+                        setBeneficio({
+                          ...beneficio,
+                          valorMensal: e.target.value,
+                        });
+                      }}
+                    />
+                    <Box
+                      value={beneficio.valorMensal}
+                      fontSize={FontConfig.medium}
+                      onChange={(e) => {
+                        setBeneficio({
+                          ...beneficio,
+                          valorMensal: e.target.value,
+                        });
+                        save();
+                      }}
+                      color="text.primary"
+                      className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                      sx={{
+                        width: "80%;",
+                        height: "30px",
+                        backgroundColor: "background.default",
+                      }}
+                      component="input"
+                      placeholder="Digite o valor mensal..."
+                    />
+                  </td>
+                  <td align="center">
+                    <Box
+                      value={beneficio.moeda}
+                      fontSize={FontConfig.medium}
+                      onChange={(e) => {
+                        setBeneficio({ ...beneficio, moeda: e.target.value });
+                        save();
+                      }}
+                      color="text.primary"
+                      className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                      sx={{
+                        width: "80%;",
+                        height: "30px",
+                        backgroundColor: "background.default",
+                      }}
+                      component="input"
+                      placeholder="Digite o tipo da moeda..."
+                    />
+                  </td>
+                  <td
+                    align="center"
+                    className="p-3 pl-5 pr-5 flex justify-center"
+                  >
+                    <TextareaAutosize
+                      style={{
+                        width: "100%",
+                        resize: "none",
+                        backgroundColor: corFundoTextArea,
+                      }}
+                      value={beneficio.memoriaCalculo}
+                      fontSize={FontConfig.medium}
+                      onChange={(e) => {
+                        setBeneficio({
+                          ...beneficio,
+                          memoriaCalculo: e.target.value,
+                        });
+                        save();
+                      }}
+                      className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+                      placeholder="Digite a memória de cálculo..."
+                    />
+                  </td> */}
+                  {/* </StyledTableRow> */}
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
@@ -181,7 +269,7 @@ const BeneficiosDetalheDemanda = (props) => {
           <Table sx={{ minWidth: 750 }} aria-label="customized table">
             <TableHead sx={{ backgroundColor: "primary.main" }}>
               <TableRow>
-                <th align="center" className="p-4 w-0" style={{width: '10%'}}>
+                <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
                   <Typography
                     fontSize={FontConfig.big}
                     fontWeight="800"
@@ -190,7 +278,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     Tipo
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0" style={{width: '15%'}}>
+                <th align="center" className="p-4 w-0" style={{ width: "15%" }}>
                   <Typography
                     fontSize={FontConfig.big}
                     fontWeight="800"
@@ -199,7 +287,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     Valor Mensal
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0" style={{width: '10%'}}>
+                <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
                   <Typography
                     fontSize={FontConfig.big}
                     fontWeight="800"
@@ -208,7 +296,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     Moeda
                   </Typography>
                 </th>
-                <th align="center" className="p-4 w-0" style={{width: '30%'}}>
+                <th align="center" className="p-4 w-0" style={{ width: "30%" }}>
                   <Typography
                     fontSize={FontConfig.big}
                     fontWeight="800"
@@ -220,47 +308,36 @@ const BeneficiosDetalheDemanda = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <StyledTableRow key={row.tipo} className="flex">
-                  <td align="center">
-                    <Typography
-                      fontSize={FontConfig.medium}
-                      color="text.primary"
-                    >
-                      {row.tipo}
-                    </Typography>
-                  </td>
-                  <td align="center">
-                    <Typography
-                      fontSize={FontConfig.medium}
-                      color="text.primary"
-                    >
-                      {row.valorMensal}
-                    </Typography>
-                  </td>
-                  <td align="center">
-                    <Typography
-                      fontSize={FontConfig.medium}
-                      color="text.primary"
-                    >
-                      {row.moeda}
-                    </Typography>
-                  </td>
-                  <td
-                    align="center"
-                    className="p-3 pl-5 pr-5 flex justify-center"
+              <StyledTableRow className="flex">
+                <td align="center">
+                  <Typography fontSize={FontConfig.medium} color="text.primary">
+                    {beneficio.tipo}
+                  </Typography>
+                </td>
+                <td align="center">
+                  <Typography fontSize={FontConfig.medium} color="text.primary">
+                    {beneficio.valorMensal}
+                  </Typography>
+                </td>
+                <td align="center">
+                  <Typography fontSize={FontConfig.medium} color="text.primary">
+                    {beneficio.moeda}
+                  </Typography>
+                </td>
+                <td
+                  align="center"
+                  className="p-3 pl-5 pr-5 flex justify-center"
+                >
+                  <Typography
+                    className="text-justify"
+                    fontSize={FontConfig.medium}
+                    color="text.primary"
+                    sx={{ width: "100%" }}
                   >
-                    <Typography
-                      className="text-justify"
-                      fontSize={FontConfig.medium}
-                      color="text.primary"
-                      sx={{ width: "100%" }}
-                    >
-                      {row.memoriaCalculo}
-                    </Typography>
-                  </td>
-                </StyledTableRow>
-              ))}
+                    {beneficio.memoriaCalculo}
+                  </Typography>
+                </td>
+              </StyledTableRow>
             </TableBody>
           </Table>
         </TableContainer>

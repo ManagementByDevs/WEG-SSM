@@ -204,8 +204,6 @@ const Home = () => {
                   Filtrar <FilterAltOutlinedIcon />
                 </Button>
                 {abrirFiltro && <ModalFiltro open={abrirFiltro} setOpen={setOpenFiltro} filtroDemanda={true} />}
-
-                <Feedback open={open} handleClose={handleClose} status="sucesso" />
               </Box>
 
               {/* Botão de criar demanda */}

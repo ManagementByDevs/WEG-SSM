@@ -36,15 +36,13 @@ const DetalhesDemanda = () => {
 
   const [editar, setEditar] = useState(false);
 
-  const [confirmacaoCancelarEdicao, setConfirmacaoCancelarEdicao] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   function editarDemanda() {
     if (editar) {
-      console.log("dentro");
-      setConfirmacaoCancelarEdicao(true);
-    } else {
-      setEditar(true);
+      setOpenModal(true);
     }
+    setEditar(!editar);
   }
 
   const [dados, setDados] = useState({
@@ -53,6 +51,15 @@ const DetalhesDemanda = () => {
     proposta: "",
     frequencia: "",
   });
+
+  const [dadosBeneficio, setDadosBeneficio] = useState([
+    {
+      tipo: "tipo 1",
+      valorMensal: "valor 2",
+      moeda: "moeda 3",
+      memoriaCalculo: "memoria calculo 4",
+    },
+  ]);
 
   const salvarTitulo = (texto) => {
     setDados({ ...dados, titulo: texto });
@@ -105,14 +112,23 @@ const DetalhesDemanda = () => {
     }
   };
 
+  const salvarBeneficios = (beneficio, index) => {
+    setDadosBeneficio((dadosBeneficios) => {
+      dadosBeneficios[index] = beneficio;
+      return [...dadosBeneficios];
+    });
+  };
+
+  useEffect(() => {
+    console.log("dadossss", dadosBeneficio);
+  }, [dadosBeneficio]);
+
   return (
     <FundoComHeader>
       <Box className="p-2">
-        {
-          confirmacaoCancelarEdicao ? (
-            <ModalConfirmacao textoModal="cancelarEdicao" textoBotao="sim"/>
-          ) : null
-        }
+        {/* {confirmacaoCancelarEdicao && ( */}
+          <ModalConfirmacao open={openModal} setOpen={setOpenModal} textoModal="cancelarEdicao" textoBotao="sim" />
+        {/* )} */}
         <Box className="flex w-full relative">
           <Caminho />
           <Box
@@ -212,7 +228,7 @@ const DetalhesDemanda = () => {
                     </Typography>
                   </Box>
                   <Box className="ml-7 mt-2">
-                    <BeneficiosDetalheDemanda />
+                    {/* <BeneficiosDetalheDemanda /> */}
                   </Box>
                 </Box>
                 <Box>
@@ -328,7 +344,16 @@ const DetalhesDemanda = () => {
                     />
                   </Box>
                   <Box className="mt-2 gap-5">
-                    <BeneficiosDetalheDemanda editavel={true} />
+                    {dadosBeneficio.map((beneficio, index) => {
+                      return (
+                        <BeneficiosDetalheDemanda
+                          editavel={true}
+                          index={index}
+                          beneficio={beneficio}
+                          save={salvarBeneficios}
+                        />
+                      );
+                    })}
                   </Box>
                 </Box>
                 <Box>

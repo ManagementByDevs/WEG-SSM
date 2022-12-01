@@ -2,12 +2,14 @@ import React from "react";
 import { Snackbar, Alert } from "@mui/material";
 
 const Feedback = (props) => {
-  const [state, setState] = React.useState({
-    open: false,
-    vertical: "top",
-    horizontal: "right",
-  });
-  const { vertical, horizontal } = state;
+  const vertical = "top";
+  const horizontal = "right";
+
+  const mensagem = getMensagem();
+
+  function getMensagem() {
+    return props.mensagem;
+  }
 
   return (
     <Snackbar
@@ -22,7 +24,7 @@ const Feedback = (props) => {
           severity="success"
           sx={{ width: "100%" }}
         >
-          Parabéns conseguiu filtrar!
+          {mensagem}
         </Alert>
       ) : props.status === "erro" ? (
         <Alert
@@ -30,7 +32,7 @@ const Feedback = (props) => {
           severity="error"
           sx={{ width: "100%" }}
         >
-          Ops, algo deu errado!
+          {mensagem}
         </Alert>
       ) : props.status === "aviso" ? (
         <Alert
@@ -38,7 +40,7 @@ const Feedback = (props) => {
           severity="warning"
           sx={{ width: "100%" }}
         >
-          Ops, algo deu errado!
+          {mensagem}
         </Alert>
       ) : props.status === "info" ? (
         <Alert
@@ -46,7 +48,7 @@ const Feedback = (props) => {
           severity="info"
           sx={{ width: "100%" }}
         >
-          Talvez algo deu errado!
+          {mensagem}
         </Alert>
       ) : null}
     </Snackbar>

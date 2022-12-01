@@ -68,13 +68,13 @@ const ModalConfirmacao = (props) => {
 
   // useState para abrir e fechar o modal
 
-  const [open, setOpen] = useState(true);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const [open, setOpen] = useState(props.open);
+  const handleOpen = () => props.setOpen(true);
+  const handleClose = () => props.setOpen(false);
 
   return (
     <Modal
-      open={open}
+      open={props.open}
       onClose={handleClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
@@ -82,7 +82,7 @@ const ModalConfirmacao = (props) => {
         timeout: 500,
       }}
     >
-      <Fade in={open}>
+      <Fade in={props.open}>
         <Box sx={styleModal}>
           <ErrorOutlineIcon sx={{ fontSize: "100px", color: "primary.main" }} />
           <Typography fontSize={FontConfig.veryBig} sx={{ mt: 2 }}>
