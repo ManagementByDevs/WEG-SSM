@@ -5,9 +5,14 @@ import { Box } from '@mui/material'
 import InputComLabel from '../InputComLabel/InputComLabel'
 
 import FontConfig from '../../service/FontConfig'
+import { useEffect } from 'react'
 
-const FormularioDadosDemanda = () => {
-  const [dados, setDados] = useState({ titulo: "", problema: "", proposta: "" });
+const FormularioDadosDemanda = (props) => {
+  const [dados, setDados] = useState({ titulo: "", problema: "", proposta: "", frequencia: "" });
+
+  useEffect(() => {
+    setDados({ titulo: props.dados.titulo, problema: props.dados.problema, proposta: props.dados.proposta, frequencia: props.dados.frequencia });
+  }, [])
 
   const salvarTitulo = (texto) => {
     setDados({ ...dados, titulo: texto });
@@ -28,7 +33,7 @@ const FormularioDadosDemanda = () => {
   return (
     <Box className="flex justify-center items-center" sx={{ height: '45rem' }}>
       <Box className='w-3/4 flex flex-col justify-evenly' sx={{ height: '85%' }}>
-        <InputComLabel saveInputValue={salvarTitulo} component='input' label="Titulo:" placeholder='Digite o título...' fontConfig={FontConfig.default} />
+        <InputComLabel texto={dados.titulo} saveInputValue={salvarTitulo} component='input' label="Titulo:" placeholder='Digite o título...' fontConfig={FontConfig.default} />
         <InputComLabel saveInputValue={salvarProblema} component='textarea' label="Problema:" placeholder='Digite o problema...' fontConfig={FontConfig.default} rows="5" />
         <InputComLabel saveInputValue={salvarProposta} component='textarea' label="Proposta:" placeholder='Digite a proposta...' fontConfig={FontConfig.default} rows="8" />
         {/* <ModalConfirmacao titulo="sair"/> */}
