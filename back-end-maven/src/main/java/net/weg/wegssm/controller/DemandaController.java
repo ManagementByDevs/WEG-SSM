@@ -3,7 +3,10 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.*;
+import net.weg.wegssm.model.service.BeneficioService;
 import net.weg.wegssm.model.service.DemandaService;
+import net.weg.wegssm.model.service.DepartamentoService;
+import net.weg.wegssm.model.service.UsuarioService;
 import net.weg.wegssm.util.DemandaUtil;
 import net.weg.wegssm.util.DepartamentoUtil;
 import net.weg.wegssm.util.ForumUtil;
@@ -21,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -30,6 +34,8 @@ import java.util.List;
 public class DemandaController {
 
     private DemandaService demandaService;
+    private UsuarioService usuarioService;
+    private BeneficioService beneficioService;
 
     /**
      * Método GET para buscar todas as demandas
@@ -876,12 +882,41 @@ public class DemandaController {
      * @param demandaJSON
      * @return
      */
-    @PostMapping
-    public ResponseEntity<Object> save(@RequestParam("anexos")List<MultipartFile> files, @RequestParam("demanda") String demandaJSON) {
+    @PostMapping("/{usuarioId}")
+    public ResponseEntity<Object> save(@RequestParam("anexos")List<MultipartFile> files, @RequestParam("demanda") String demandaJSON, @PathVariable(value = "usuarioId") Long usuarioId) {
+
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
+        Usuario usuario = usuarioService.findById(usuarioId).get();
 
+        ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
+        for (Beneficio beneficio : demanda.getBeneficios()) {
+            listaBeneficios.add(beneficioService.save(beneficio));
+        }
+
+        demanda.setBeneficios(listaBeneficios);
+        demanda.setSolicitante(usuario);
         demanda.setAnexos(files);
+
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
+
+    @PostMapping("/sem-arquivos/{usuarioId}")
+    public ResponseEntity<Object> saveSemArquivos(@RequestParam("demanda") String demandaJSON, @PathVariable(value = "usuarioId") Long usuarioId) {
+
+        DemandaUtil demandaUtil = new DemandaUtil();
+        Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
+        Usuario usuario = usuarioService.findById(usuarioId).get();
+        Departamento departamento = usuario.getDepartamento();
+
+        ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
+        for (Beneficio beneficio : demanda.getBeneficios()) {
+            listaBeneficios.add(beneficioService.save(beneficio));
+        }
+
+        demanda.setDepartamento(departamento);
+        demanda.setBeneficios(listaBeneficios);
+        demanda.setSolicitante(usuario);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }

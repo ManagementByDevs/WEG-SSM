@@ -14,6 +14,7 @@ import FundoComHeader from '../../components/FundoComHeader/FundoComHeader'
 
 import FontConfig from '../../service/FontConfig';
 
+import ModalFiltroGerencia from '../../components/ModalFiltroGerencia/ModalFiltroGerencia';
 import ModalHistoricoDemanda from '../../components/ModalHistoricoDemanda/ModalHistoricoDemanda';
 
 const HomeGerencia = () => {
@@ -25,9 +26,9 @@ const HomeGerencia = () => {
         setValue(newValue);
     };
 
-    const [modalHistorico, setOpenModal] = useState(false)
+    const [modalFiltro, setOpenModal] = useState(false)
 
-    const abrirModalHistoricoDemanda = () =>{
+    const abrirModalFiltro = () =>{
         setOpenModal(true);
     }
 
@@ -124,12 +125,13 @@ const HomeGerencia = () => {
                                         color: "text.white",
                                         fontSize: FontConfig.default,
                                     }}
-                                    onClick={() => { }}
+                                    onClick={abrirModalFiltro}
                                     variant="contained"
                                     disableElevation
                                 >
                                     Filtrar <FilterAltOutlinedIcon />
                                 </Button>
+                                { modalFiltro && <ModalFiltroGerencia open={modalFiltro} setOpen={setOpenModal} />}
 
                                 {/* Botão de exportar */}
                                 <Button
@@ -173,8 +175,6 @@ const HomeGerencia = () => {
                                 <Box sx={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))" }}>
                                     Demandas
                                 </Box>
-                                <Button onClick={abrirModalHistoricoDemanda}>Modal historico</Button>
-                                 { modalHistorico && <ModalHistoricoDemanda open={modalHistorico} setOpen={setOpenModal} />}
                             </TabPanel>
                             <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
                                 <Box sx={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(650px, 1fr))' }}>

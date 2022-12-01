@@ -11,11 +11,11 @@ const ModalFiltro = (props) => {
 
     const styleModal = {
         position: 'absolute',
-        top: '39.5%',
+        top: '37.5%',
         left: '37%',
         transform: 'translate(-50%, -50%)',
         width: 297,
-        height: 280,
+        height: 240,
         bgcolor: 'background.paper',
         borderRadius: '5px',
         borderTop: '10px solid #00579D',
@@ -29,11 +29,11 @@ const ModalFiltro = (props) => {
 
     const styleModalFiltro = {
         position: 'absolute',
-        top: '42.5%',
+        top: '41%',
         left: '82%',
         transform: 'translate(-50%, -50%)',
         width: 310,
-        height: 340,
+        height: 300,
         bgcolor: 'background.paper',
         borderRadius: '5px',
         borderTop: '10px solid #00579D',
@@ -126,13 +126,7 @@ const ModalFiltro = (props) => {
         <Modal
             open={props.open}
             onClose={handleClose}
-            closeAfterTransition
-            hideBackdrop={true}
-            BackdropProps={{
-                timeout: 500,
-            }}
-
-
+            BackdropProps={{invisible:true}}
         >
             <Fade in={props.open}>
 
@@ -158,8 +152,6 @@ const ModalFiltro = (props) => {
                                     </FormGroup>
                                 </Grid>
                             </Grid>
-
-                            <Button onClick={handleClose} variant="contained" disableElevation color="primary" sx={{ marginTop: '2%', width: '5rem', fontSize: FontConfig.normal }}>Aplicar</Button>
                         </Box>
                         :
                         <Box sx={styleModalFiltro}>
@@ -183,8 +175,6 @@ const ModalFiltro = (props) => {
                                     </FormGroup>
                                 </Grid>
                             </Grid>
-
-                            <Button onClick={handleClose} variant="contained" disableElevation color="primary" sx={{ marginTop: '2%', width: '5rem', fontSize: FontConfig.normal }}>Aplicar</Button>
                         </Box>
                 }
             </Fade>

@@ -7,16 +7,17 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 import Beneficios from '../Beneficios/Beneficios';
 
-const FormularioBeneficiosDemanda = () => {
+const FormularioBeneficiosDemanda = (props) => {
   // Lista de benefícios adicionadas
   const [beneficios, setBeneficios] = useState([]);
-  // Lista de benefícios que serão adicionadas na demanda (benefícios que não foram excluídos)
-  // Usar esta lista ao realizar cadastro de demanda
-  const [savedBeneficios, setSavedBeneficios] = useState([]);
+
+  useEffect(() => {
+    setBeneficios(props.dados);
+  }, [])
 
   // Adiciona um benefício na lista de benefícios
   function adicionarBeneficio() {
-    setBeneficios([...beneficios, { id: beneficios.length + 1, tipo: '', valor: '', moeda: '', memoriaCalculo: '', visible: true }]);
+    setBeneficios([...beneficios, { id: beneficios.length + 1, tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '', visible: true }]);
   }
 
   // Função genérica para salvar os dados de um benefício
@@ -41,7 +42,7 @@ const FormularioBeneficiosDemanda = () => {
 
   // UseEffect que irá atualizar a lista de benefícios a serem salvos (que não foram excluídos)
   useEffect(() => {
-    setSavedBeneficios(beneficios.filter(beneficio => beneficio.visible === true));
+    props.setDados(beneficios?.filter(beneficio => beneficio.visible === true));
   }, [beneficios]);
 
   return (

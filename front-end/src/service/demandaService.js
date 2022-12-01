@@ -23,6 +23,21 @@ class DemandaService {
         }
         return (await axios.get(demanda + `/page?${page}`, { params: params, headers: { "Content-Type": "multipart/form-data" } })).data;
     }
+
+    async post(demanda, arquivos, usuarioId) {
+        let form = new FormData();
+
+        form.append("demanda", JSON.stringify(demanda));
+        for (let arquivo of arquivos) {
+            form.append("anexos", arquivo);
+        }
+
+        if(arquivos.length > 0) {
+            return (await axios.post(`/demanda/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        } else {
+            return (await axios.post(`/demanda/sem-arquivos/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        }
+    }
 }
 
 export default new DemandaService();

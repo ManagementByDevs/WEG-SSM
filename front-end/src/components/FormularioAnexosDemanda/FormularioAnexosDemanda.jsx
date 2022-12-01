@@ -13,25 +13,25 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import FontConfig from '../../service/FontConfig'
 
-const FormularioAnexosDemanda = () => {
+const FormularioAnexosDemanda = (props) => {
     const dragArea = useRef(null);
     const inputFile = useRef(null);
-    const [fileList, setFileList] = useState([]);
     const [mapAbleFileList, setMapAbleFileList] = useState([]);
     const [dragText, setDragText] = useState('Arraste & Solte para Adicionar um Arquivo');
 
     const fileClick = () => {
         inputFile.current.click();
     }
+
     const onFilesSelect = () => {
         for (let file of inputFile.current.files) {
-            setFileList([...fileList, file]);
+            props.setDados([...props.dados, file]);
         }
     }
 
     useEffect(() => {
-        setMapAbleFileList(Array.from(fileList));
-    }, [fileList]);
+        setMapAbleFileList(Array.from(props.dados));
+    }, [props.dados]);
 
     const drag = (event) => {
         event.preventDefault();
@@ -49,13 +49,13 @@ const FormularioAnexosDemanda = () => {
         let files = event.dataTransfer.files;
         let fileArrayAux = Array.from(files);
         for (let file of fileArrayAux) {
-            setFileList([...fileList, file]);
+            props.setDados([...props.dados, file]);
         }
     }
 
     const deleteFile = (desiredIndex) => {
         setMapAbleFileList(mapAbleFileList.filter((_, index) => index !== desiredIndex));
-        setFileList(fileList.filter((_, index) => index !== desiredIndex));
+        props.setDados(props.dados.filter((_, index) => index !== desiredIndex));
     }
 
     return (
@@ -63,7 +63,7 @@ const FormularioAnexosDemanda = () => {
             <Box ref={dragArea} onDragOver={drag} onDragLeave={onDragLeaveHandle} onDrop={onDropFile} className='flex justify-center items-center flex-col rounded border-2' sx={{ width: '85%', height: '85%' }}>
                 <input onChange={onFilesSelect} ref={inputFile} type='file' multiple hidden />
                 {
-                    fileList?.length === 0 ?
+                    props.dados?.length === 0 ?
                         <>
                             <Typography fontSize={FontConfig.veryBig} color='text.secondary' sx={{ fontWeight: '600', cursor: 'default', marginBottom: '1rem' }}>{dragText}</Typography>
                             <Typography fontSize={FontConfig.veryBig} color='text.secondary' sx={{ fontWeight: '600', cursor: 'default', marginBottom: '1rem' }}>OU</Typography>
@@ -76,7 +76,7 @@ const FormularioAnexosDemanda = () => {
                                     <AddCircleIcon color='primary' fontSize='large' />
                                 </IconButton>
                             </Box>
-                            <TableContainer >
+                            <TableContainer className='h-full w-full' >
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead className='border-b'>
                                         <TableRow>
@@ -99,7 +99,6 @@ const FormularioAnexosDemanda = () => {
                                     </TableHead>
                                     <TableBody>
                                         {mapAbleFileList?.map((file, index) => {
-                                            console.log(file)
                                             return (
                                                 <TableRow key={index} className="border-b">
                                                     <td className='text-center'>

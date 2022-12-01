@@ -49,6 +49,10 @@ public class Demanda {
 
     // foreign keys
 
+    @OneToMany
+    @JoinColumn(name = "demanda_id")
+    private List<Beneficio> beneficios = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "bu_solicitante")
     private Bu buSolicitante;
