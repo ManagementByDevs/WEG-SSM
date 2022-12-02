@@ -28,29 +28,29 @@ const HomeGerencia = () => {
       status: "Backlog",
       solicitante: "Kenzo Sato",
       departamento: "TI",
+      gerenteResponsavel: "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
+    },
+    {
+      titulo: "Demanda 2",
+      status: "Backlog",
+      solicitante: "Kenzo Sato",
+      departamento: "TI",
       gerenteResponsavel: "João da Silva",
     },
-    // {
-    //   titulo: "Demanda 2",
-    //   status: "Backlog",
-    //   solicitante: "Kenzo Sato",
-    //   departamento: "TI",
-    //   gerenteResponsavel: "João da Silva",
-    // },
-    // {
-    //   titulo: "Demanda 3",
-    //   status: "Backlog",
-    //   solicitante: "Kenzo Sato",
-    //   departamento: "TI",
-    //   gerenteResponsavel: "João da Silva",
-    // },
-    // {
-    //   titulo: "Demanda 4",
-    //   status: "Backlog",
-    //   solicitante: "Kenzo Sato",
-    //   departamento: "TI",
-    //   gerenteResponsavel: "João da Silva",
-    // },
+    {
+      titulo: "Demanda 3",
+      status: "Backlog",
+      solicitante: "Kenzo Sato",
+      departamento: "TI",
+      gerenteResponsavel: "João da Silva",
+    },
+    {
+      titulo: "Demanda 4",
+      status: "Backlog",
+      solicitante: "Kenzo Sato",
+      departamento: "TI",
+      gerenteResponsavel: "João da Silva",
+    },
   ]);
 
   // Função para alterar a aba selecionada
@@ -217,7 +217,7 @@ const HomeGerencia = () => {
                   }}
                 >
                   {demandas?.map((demanda, index) => {
-                    <DemandaGerencia key={index} dados={demanda} />;
+                    return <DemandaGerencia key={index} dados={demanda} />;
                   })}
                 </Box>
               </TabPanel>
