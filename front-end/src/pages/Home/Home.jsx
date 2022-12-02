@@ -128,8 +128,7 @@ const Home = () => {
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
   const verDemanda = (demanda) => {
-    localStorage.setItem("demandaAtual", JSON.stringify(demanda));
-    navigate('/detalhes-demanda');
+    navigate('/detalhes-demanda', { state: demanda });
   }
 
   // Função para salvar o input de pesquisa quando houver alteração

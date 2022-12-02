@@ -896,6 +896,7 @@ public class DemandaController {
         }
 
         demanda.setData(new Date());
+        demanda.setDepartamento(usuario.getDepartamento());
         demanda.setBeneficios(listaBeneficios);
         demanda.setSolicitante(usuario);
         demanda.setAnexos(files);
