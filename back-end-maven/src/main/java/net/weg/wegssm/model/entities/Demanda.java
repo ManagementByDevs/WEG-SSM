@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -46,6 +47,9 @@ public class Demanda {
 
     @Column(nullable = false)
     private Status status;
+
+    @Column(nullable = false)
+    private Date data;
 
     // foreign keys
 

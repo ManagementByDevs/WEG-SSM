@@ -5,22 +5,25 @@ import { Box } from '@mui/material'
 import InputComLabel from '../InputComLabel/InputComLabel'
 
 import FontConfig from '../../service/FontConfig'
-import { useEffect } from 'react'
 
 const FormularioDadosDemanda = (props) => {
 
+  // Função para salvar o título da demanda
   const salvarTitulo = (texto) => {
     props.setDados({ ...props.dados, titulo: texto });
   }
 
+  // Função para salvar o problema da demanda
   const salvarProblema = (texto) => {
     props.setDados({ ...props.dados, problema: texto });
   }
 
+  // Função para salvar a proposta da demanda
   const salvarProposta = (texto) => {
     props.setDados({ ...props.dados, proposta: texto });
   }
 
+  // Função para salvar a frequência da demanda
   const salvarFrequencia = (texto) => {
     props.setDados({ ...props.dados, frequencia: texto });
   }

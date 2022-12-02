@@ -67,21 +67,27 @@ const Demanda = (props) => {
   return (
     <Box onClick={props.onClick} sx={{ backgroundColor: 'background.default', padding: '1rem', minWidth: '550px', maxWidth: '100%', minHeight: tamanhoHeight, maxHeight: '12rem', border: '0.2px solid black', borderTop: '7px solid #00579D', borderRadius: '5px', cursor: 'pointer' }} className={`items-center h-30 text-justify drop-shadow-lg`}>
       <Box className={`flex justify-between`} sx={{ marginBottom: '1%' }}>
+
+        {/* Título da demanda */}
         <Typography fontSize={FontConfig.veryBig} sx={{ fontWeight: '600', cursor: 'default' }} color="text.primary">{props.demanda.titulo}</Typography>
+
+        {/* Lógica para mostrar o status da demanda somente caso o usuário seja o dono dela */}
         {
-          parseInt(localStorage.getItem("userId")) == props.demanda?.solicitante?.id &&
+          parseInt(localStorage.getItem("usuarioId")) == props.demanda?.solicitante?.id &&
           <Box className={`items-center text-justify flex`}>
             <Typography fontSize={FontConfig.default} sx={{ fontWeight: '600', cursor: 'default' }}>{formatarNomeStatus()}</Typography>
             <Box sx={{ backgroundColor: corStatus, width: '12px', height: '12px', borderRadius: '10px', marginLeft: '10px' }} className={`items-center h-30 text-justify`} />
           </Box>
         }
-
       </Box>
 
+      {/* Proposta da demanda */}
       <Typography gutterBottom fontSize={FontConfig.default} color="text.secondary">{props.demanda.proposta}</Typography>
       <Box className={`flex justify-end`} sx={{ marginTop: '.5%' }}>
+
+        {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
         {
-          parseInt(localStorage.getItem("userId")) != props.demanda?.solicitante?.id ?
+          parseInt(localStorage.getItem("usuarioId")) != props.demanda?.solicitante?.id ?
             <Typography fontSize={FontConfig.default} sx={{ fontWeight: '600', cursor: 'default' }} color="text.primary">{props.demanda.solicitante?.nome}</Typography>
             : props.demanda.status === 'CANCELLED' && props.demanda.solicitante.id === parseInt(localStorage.getItem("userId")) ?
               <Button onClick={abrirModalMotivoRecusa} variant="contained">Motivo</Button>

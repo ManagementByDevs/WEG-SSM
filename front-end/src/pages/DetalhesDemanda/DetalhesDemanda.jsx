@@ -21,10 +21,14 @@ import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao
 import FontConfig from "../../service/FontConfig";
 
 import ColorModeContext from "../../service/TemaContext";
+import { useLocation } from "react-router-dom";
 
 const DetalhesDemanda = () => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
+
+  const [demanda, setDemanda] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     if (mode === "dark") {
@@ -33,6 +37,10 @@ const DetalhesDemanda = () => {
       setCorFundoTextArea("#FFFF");
     }
   }, [mode]);
+
+  useEffect(() => {
+    setDemanda(location.state);
+  }, [])
 
   const [editar, setEditar] = useState(false);
 
