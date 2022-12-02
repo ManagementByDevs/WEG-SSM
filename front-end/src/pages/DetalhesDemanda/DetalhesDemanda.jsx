@@ -40,7 +40,7 @@ const DetalhesDemanda = () => {
 
   useEffect(() => {
     setDemanda(location.state);
-  }, [])
+  }, []);
 
   const [editar, setEditar] = useState(false);
 
@@ -119,8 +119,8 @@ const DetalhesDemanda = () => {
   };
 
   function deleteBeneficio(indexBeneficio) {
-    setDadosBeneficio(
-      dadosBeneficio.map((proprioBeneficio, index) => {
+    setBeneficios(
+      beneficios.map((proprioBeneficio, index) => {
         if (index === indexBeneficio) {
           proprioBeneficio.visible = false;
         }
@@ -368,8 +368,8 @@ const DetalhesDemanda = () => {
                     <AddCircleOutlineOutlinedIcon
                       className="delay-120 hover:scale-110 duration-300 ml-1"
                       onClick={() => {
-                        setDadosBeneficio([
-                          ...dadosBeneficio,
+                        setBeneficios([
+                          ...beneficios,
                           {
                             tipo: "",
                             valor: "",
