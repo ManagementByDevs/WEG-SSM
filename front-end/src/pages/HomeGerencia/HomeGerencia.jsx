@@ -17,6 +17,7 @@ import FontConfig from "../../service/FontConfig";
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
 import ModalHistoricoDemanda from "../../components/ModalHistoricoDemanda/ModalHistoricoDemanda";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
+import ModalInformarMotivo from "../../components/ModalInformarMotivo/ModalInformarMotivo";
 
 const HomeGerencia = () => {
   // UseState para poder visualizar e alterar a aba selecionada
@@ -59,10 +60,15 @@ const HomeGerencia = () => {
   };
 
   const [modalFiltro, setOpenModal] = useState(false);
+  const [modalMotivo, setOpenModalMotivo] = useState(false);
 
   const abrirModalFiltro = () => {
     setOpenModal(true);
   };
+
+  const abrirModalInformarMotivo = () =>{
+    setOpenModalMotivo(true);
+  }
 
   const navigate = useNavigate();
 

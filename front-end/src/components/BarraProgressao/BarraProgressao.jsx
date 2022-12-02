@@ -22,13 +22,18 @@ const BarraProgressao = (props) => {
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
 
+  // Dados da página inicial da criação de demanda
   const [paginaDados, setPaginaDados] = useState({
     titulo: "",
     problema: "",
     proposta: "",
     frequencia: "",
   });
+
+  // Lista de benefícios definidos na segunda página da criação de demanda
   const [paginaBeneficios, setPaginaBeneficios] = useState([]);
+
+  // Lista de anexos definidos na terceira página da criação de demanda
   const [paginaArquivos, setPaginaArquivos] = useState([]);
 
   const navigate = useNavigate();
@@ -90,6 +95,7 @@ const BarraProgressao = (props) => {
     setState({ open: true, ...newState });
   };
 
+  // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
     let listaNova = [];
     for (let beneficio of paginaBeneficios) {
@@ -100,23 +106,26 @@ const BarraProgressao = (props) => {
     return listaNova;
   }
 
+  // UseEffect para criar a demanda usando os dados recebidos das páginas
   useEffect(() => {
     if (open) {
-      formatarBeneficios();
-      const demandaFinal = {
-        titulo: paginaDados.titulo,
-        problema: paginaDados.problema,
-        proposta: paginaDados.proposta,
-        frequencia: paginaDados.frequencia,
-        beneficios: formatarBeneficios(),
-        status: "BACKLOG"
-      }
-      console.log("demanda - " + paginaDados.titulo + " - " + demandaFinal.titulo);
+      
+      if (paginaDados.titulo != "" && paginaDados.problema && paginaDados.proposta && paginaDados.frequencia) {
+        const demandaFinal = {
+          titulo: paginaDados.titulo,
+          problema: paginaDados.problema,
+          proposta: paginaDados.proposta,
+          frequencia: paginaDados.frequencia,
+          beneficios: formatarBeneficios(),
+          status: "BACKLOG"
+        }
 
-      DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
-        console.log(e);
-      })
-      // navigate("/");
+        DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
+          navigate("/");
+        })
+      } else {
+        // Fazer feedback de campos obrigatórios faltantes
+      }
     }
   }, [open]);
 

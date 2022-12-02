@@ -59,16 +59,22 @@ const ModalOrdenacao = (props) => {
     useEffect(() => {
         let textoNovo = "";
         if(checkTitulo[1]) {
-            textoNovo += "sort=titulo,asc";
+            textoNovo += "sort=titulo,asc&";
         }
         if(checkTitulo[0]) {
-            textoNovo += "sort=titulo,desc";
+            textoNovo += "sort=titulo,desc&";
+        }
+
+        if(checkDate[0]) {
+            textoNovo += "sort=data,asc&";
+        }
+        if(checkDate[1]) {
+            textoNovo += "sort=data,desc&";
         }
 
         if(textoNovo == "") {
-            textoNovo = "sort=id,asc";
+            textoNovo = "sort=id,asc&";
         }
-        textoNovo += "&";
         props.setOrdenacao(textoNovo);
     }, [checkTitulo, checkScore, checkDate]);
 

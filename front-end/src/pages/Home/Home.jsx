@@ -26,13 +26,14 @@ const Home = () => {
 
   // Usuário que está logado no sistema
   const [usuario, setUsuario] = useState({ id: 0, email: "", nome: "", senha: "", tipo_usuario: 0, visibilidade: 1, departamento: null });
-  
+
   // Parâmetros para pesquisa das demandas (filtros)
   const [params, setParams] = useState({ titulo: null, solicitante: null, gerente: null, forum: null, departamento: null, tamanho: null, status: null });
-  
+
   // String para ordenação das demandas
   const [page, setPage] = useState("size=20&page=0");
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
+  const [filtroAtual, setFiltroAtual] = useState(null);
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState('1');
@@ -40,17 +41,29 @@ const Home = () => {
   // Valor do input de pesquisa
   const [valorPesquisa, setValorPesquisa] = useState("");
 
+  // UseEffect para buscar o usuário assim que entrar na página
   useEffect(() => {
     buscarUsuario();
   }, []);
 
+  // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
   useEffect(() => {
     setParams({ ...params, solicitante: usuario })
   }, [usuario])
 
+  // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
   useEffect(() => {
     buscarDemandas();
-  }, [params, ordenacao])
+  }, [params])
+
+  // UseEffect para redefinir os parâmteros quando a ordenação for modificada
+  useEffect(() => {
+    if (params.solicitante != null) {
+      setParams({ ...params, solicitante: usuario });
+    } else {
+      setParams({ ...params, departamento: usuario.departamento });
+    }
+  }, [ordenacao])
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -65,6 +78,17 @@ const Home = () => {
       DemandaService.getPage(params, (ordenacao + page)).then((e) => {
         setListaDemandas(e.content);
       })
+    }
+  }
+
+  // Função para atualizar o filtro de status quando modificado no modal de filtros
+  const atualizarFiltro = (status) => {
+    if (params.solicitante != null) {
+      setParams({ ...params, solicitante: usuario, status: status });
+      setFiltroAtual(status)
+    } else {
+      setParams({ ...params, departamento: usuario.departamento, status: status });
+      setFiltroAtual(status)
     }
   }
 
@@ -104,8 +128,7 @@ const Home = () => {
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
   const verDemanda = (demanda) => {
-    localStorage.setItem("demandaAtual", JSON.stringify(demanda));
-    navigate('/detalhes-demanda');
+    navigate('/detalhes-demanda', { state: demanda });
   }
 
   // Função para salvar o input de pesquisa quando houver alteração
@@ -200,6 +223,8 @@ const Home = () => {
                       className="cursor-pointer"
                       sx={{ color: "text.secondary" }}
                     />
+
+                    {/* Modal de ordenação */}
                     {abrirOrdenacao && <ModalOrdenacao ordenacao={ordenacao} setOrdenacao={setOrdenacao} open={abrirOrdenacao} setOpen={setOpenOrdenacao} />}
                   </Box>
                 </Box>
@@ -211,14 +236,15 @@ const Home = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  // onClick={handleClick()}
                   onClick={abrirModalFiltro}
                   variant="contained"
                   disableElevation
                 >
                   Filtrar <FilterAltOutlinedIcon />
                 </Button>
-                {abrirFiltro && <ModalFiltro open={abrirFiltro} setOpen={setOpenFiltro} filtroDemanda={true} />}
+
+                {/* Modal de filtro */}
+                {abrirFiltro && <ModalFiltro filtros={filtroAtual} setParams={atualizarFiltro} open={abrirFiltro} setOpen={setOpenFiltro} filtroDemanda={true} />}
               </Box>
 
               {/* Botão de criar demanda */}

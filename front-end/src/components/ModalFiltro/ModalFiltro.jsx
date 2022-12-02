@@ -4,6 +4,7 @@ import { Modal, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, 
 
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
+import { useEffect } from "react";
 
 const ModalFiltro = (props) => {
 
@@ -79,6 +80,20 @@ const ModalFiltro = (props) => {
     open = props.open;
     const setOpen = props.setOpen;
 
+    useEffect(() => {
+        if (props.filtros) {
+            if (props.filtros == "ASSESSMENT") {
+                setCheck([true, false, false, false]);
+            }
+            if (props.filtros == "CANCELLED") {
+                setCheck([false, true, false, false]);
+            }
+            if (props.filtros == "BACKLOG") {
+                setCheck([false, false, true, false]);
+            }
+        }
+    }, [])
+
     // abrir e fechar modal
 
     const handleOpen = () => setOpen(true);
@@ -96,6 +111,7 @@ const ModalFiltro = (props) => {
         } else {
             setCheck([true, false, false, false]);
         }
+        atualizarParams(1, !check[0]);
     }
 
     function mudarCheck2() {
@@ -104,6 +120,7 @@ const ModalFiltro = (props) => {
         } else {
             setCheck([false, true, false, false]);
         }
+        atualizarParams(2, !check[1]);
     }
 
     function mudarCheck3() {
@@ -112,6 +129,7 @@ const ModalFiltro = (props) => {
         } else {
             setCheck([false, false, true, false]);
         }
+        atualizarParams(3, !check[2]);
     }
 
     function mudarCheck4() {
@@ -120,13 +138,34 @@ const ModalFiltro = (props) => {
         } else {
             setCheck([false, false, false, true]);
         }
+        atualizarParams(4, !check[3]);
+    }
+
+    const atualizarParams = (numero, adicionar) => {
+
+        if (!adicionar) {
+            props.setParams(null);
+        }
+
+        if (numero == 1 && adicionar) {
+            props.setParams("ASSESSMENT");
+        }
+        if (numero == 2 && adicionar) {
+            props.setParams("CANCELLED");
+        }
+        if (numero == 3 && adicionar) {
+            props.setParams("BACKLOG");
+        }
+        if (numero == 4 && adicionar) {
+            props.setParams("BACKLOG");
+        }
     }
 
     return (
         <Modal
             open={props.open}
             onClose={handleClose}
-            BackdropProps={{invisible:true}}
+            BackdropProps={{ invisible: true }}
         >
             <Fade in={props.open}>
 

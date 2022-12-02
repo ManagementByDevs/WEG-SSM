@@ -11,6 +11,7 @@ const FormularioBeneficiosDemanda = (props) => {
   // Lista de benefícios adicionadas
   const [beneficios, setBeneficios] = useState([]);
 
+  // UseEffect para pegar os benefícios já adicionados na demanda na troca de página
   useEffect(() => {
     setBeneficios(props.dados);
   }, [])
