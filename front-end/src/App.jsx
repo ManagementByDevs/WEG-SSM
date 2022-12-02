@@ -14,6 +14,7 @@ import Chat from './pages/Chat/Chat';
 import DetalhesDemanda from './pages/DetalhesDemanda/DetalhesDemanda';
 import HomeGerencia from './pages/HomeGerencia/HomeGerencia';
 import Escopos from './pages/Escopos/Escopos';
+import DetalhesAta from './pages/DetalhesAta/DetalhesAta';
 
 import ToggleColorMode from './service/TemaProvedor';
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/chat" element={<Chat />} />
           <Route path="/detalhes-demanda" element={<DetalhesDemanda />} />
           <Route path="escopos" element={<Escopos />} />
+          <Route path="detalhes-ata" element={<DetalhesAta />} />
         </Routes>
       </Router>
     </ToggleColorMode>

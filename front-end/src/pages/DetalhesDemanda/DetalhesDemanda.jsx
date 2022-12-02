@@ -37,7 +37,7 @@ const DetalhesDemanda = () => {
   }, [mode]);
 
   useEffect(() => {
-    if(!demanda) {
+    if (!demanda) {
       setDemanda(JSON.parse(localStorage.getItem("demandaAtual")));
     }
   }, [])
@@ -80,7 +80,7 @@ const DetalhesDemanda = () => {
   ]);
 
   const save = () => {
-    setDados({titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia});
+    setDados({ titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia });
   };
 
   const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
@@ -107,7 +107,7 @@ const DetalhesDemanda = () => {
     });
   };
 
-  useEffect(() => {}, [dadosBeneficio]);
+  useEffect(() => { }, [dadosBeneficio]);
 
   function deleteBeneficio(indexBeneficio) {
     setDadosBeneficio(dadosBeneficio.map((proprioBeneficio, index) => {
@@ -367,16 +367,16 @@ const DetalhesDemanda = () => {
                     />
                   </Box>
                   <Box className="mt-2 flex flex-col gap-5">
-                  {dadosBeneficio?.map((beneficio, index) => {
+                    {dadosBeneficio?.map((beneficio, index) => {
                       if (beneficio.visible) {
                         return (
                           <BeneficiosDetalheDemanda
-                          editavel={true}
-                          index={index}
-                          delete={deleteBeneficio}
-                          beneficio={beneficio}
-                          save={salvarBeneficios}
-                        />
+                            editavel={true}
+                            index={index}
+                            delete={deleteBeneficio}
+                            beneficio={beneficio}
+                            save={salvarBeneficios}
+                          />
                         );
                       }
                     })}
@@ -439,7 +439,7 @@ const DetalhesDemanda = () => {
                     fontSize: FontConfig.default,
                   }}
                   variant="contained"
-                  onClick={() => {save(); setEditar(false)}}
+                  onClick={() => { save(); setEditar(false) }}
                 >
                   Salvar
                 </Button>
@@ -453,17 +453,7 @@ const DetalhesDemanda = () => {
                     }}
                     variant="contained"
                   >
-                  Recusar
-                  </Button>
-                  <Button
-                     sx={{
-                        backgroundColor: "primary.main",
-                         color: "text.white",
-                        fontSize: FontConfig.default,
-                      }}
-                      variant="contained"
-                  >
-                  Devolver
+                    Recusar
                   </Button>
                   <Button
                     sx={{
@@ -473,7 +463,17 @@ const DetalhesDemanda = () => {
                     }}
                     variant="contained"
                   >
-                  Aceitar
+                    Devolver
+                  </Button>
+                  <Button
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                    }}
+                    variant="contained"
+                  >
+                    Aceitar
                   </Button>
                 </Box>
               )
