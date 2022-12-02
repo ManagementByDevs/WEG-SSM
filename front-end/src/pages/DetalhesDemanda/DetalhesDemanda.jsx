@@ -44,7 +44,7 @@ const DetalhesDemanda = () => {
     } else {
       setEditar(true);
     }
-  };
+  }
 
   function resetarTextoInput() {
     setEditar(false);
@@ -52,33 +52,45 @@ const DetalhesDemanda = () => {
     setProblema(dados.problema);
     setProposta(dados.proposta);
     setFrequencia(dados.frequencia);
+    setBeneficios(dados.beneficios);
   }
-
-  const [dados, setDados] = useState({
-    titulo: "Sistema de Gestão de Demandas",
-    problema: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-    proposta: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-    frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-  });
 
   const [dadosBeneficio, setDadosBeneficio] = useState([
     {
       tipo: "Real",
       valorMensal: "300,00",
       moeda: "BR",
-      memoriaCalculo: "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
+      memoriaCalculo:
+        "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
       visible: true,
     },
   ]);
 
+  const [dados, setDados] = useState({
+    titulo: "Sistema de Gestão de Demandas",
+    problema:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+    proposta:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+    frequencia: "Lorem Ipsum is simply dummy text of the printing and",
+    beneficios: dadosBeneficio,
+  });
+
   const save = () => {
-    setDados({titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia});
+    setDados({
+      titulo: tituloDemanda,
+      problema: problema,
+      proposta: proposta,
+      frequencia: frequencia,
+      beneficios: beneficios,
+    });
   };
 
   const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
   const [problema, setProblema] = useState(dados.problema);
   const [proposta, setProposta] = useState(dados.proposta);
   const [frequencia, setFrequencia] = useState(dados.frequencia);
+  const [beneficios, setBeneficios] = useState(dados.beneficios);
 
   const alterarTexto = (e, input) => {
     if (input === "titulo") {
@@ -92,23 +104,26 @@ const DetalhesDemanda = () => {
     }
   };
 
-  const salvarBeneficios = (beneficio, index) => {
-    setDadosBeneficio((dadosBeneficios) => {
-      dadosBeneficios[index] = beneficio;
-      return [...dadosBeneficios];
-    });
+  const alterarTextoBeneficio = (beneficio, index) => {
+    let aux = [...beneficios];
+    aux[index] = beneficio;
+    setBeneficios(aux);
   };
 
-  useEffect(() => {}, [dadosBeneficio]);
-
   function deleteBeneficio(indexBeneficio) {
-    setDadosBeneficio(dadosBeneficio.map((proprioBeneficio, index) => {
-      if (index === indexBeneficio) {
-        proprioBeneficio.visible = false;
-      }
-      return proprioBeneficio;
-    }));
+    setDadosBeneficio(
+      dadosBeneficio.map((proprioBeneficio, index) => {
+        if (index === indexBeneficio) {
+          proprioBeneficio.visible = false;
+        }
+        return proprioBeneficio;
+      })
+    );
   }
+
+  useEffect(() => {
+    console.log("beneficios: ", beneficios);
+  }, [beneficios]);
 
   return (
     <FundoComHeader>
@@ -220,14 +235,15 @@ const DetalhesDemanda = () => {
                     </Typography>
                   </Box>
                   <Box className="mt-2 flex flex-col gap-5">
-                    {dadosBeneficio?.map((beneficio, index) => {
+                    {dados.beneficios?.map((beneficio, index) => {
                       if (beneficio.visible) {
                         return (
                           <BeneficiosDetalheDemanda
                             editavel={false}
+                            key={index}
                             index={index}
                             beneficio={beneficio}
-                            save={salvarBeneficios}
+                            // save={salvarBeneficios}
                           />
                         );
                       }
@@ -359,16 +375,18 @@ const DetalhesDemanda = () => {
                     />
                   </Box>
                   <Box className="mt-2 flex flex-col gap-5">
-                  {dadosBeneficio?.map((beneficio, index) => {
+                    {beneficios?.map((beneficio, index) => {
                       if (beneficio.visible) {
                         return (
                           <BeneficiosDetalheDemanda
-                          editavel={true}
-                          index={index}
-                          delete={deleteBeneficio}
-                          beneficio={beneficio}
-                          save={salvarBeneficios}
-                        />
+                            editavel={true}
+                            key={index}
+                            index={index}
+                            delete={deleteBeneficio}
+                            beneficio={beneficio}
+                            setBeneficio={alterarTextoBeneficio}
+                            save={setBeneficios}
+                          />
                         );
                       }
                     })}
@@ -422,8 +440,23 @@ const DetalhesDemanda = () => {
             className="flex fixed justify-end"
             sx={{ width: "20rem", bottom: "20px", right: "20px" }}
           >
-            {
-              editar ? (
+            {editar ? (
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
+                variant="contained"
+                onClick={() => {
+                  save();
+                  setEditar(false);
+                }}
+              >
+                Salvar
+              </Button>
+            ) : (
+              <Box className="flex justify-around w-full">
                 <Button
                   sx={{
                     backgroundColor: "primary.main",
@@ -431,45 +464,31 @@ const DetalhesDemanda = () => {
                     fontSize: FontConfig.default,
                   }}
                   variant="contained"
-                  onClick={() => {save(); setEditar(false)}}
                 >
-                  Salvar
-                </Button>
-              ) : (
-                <Box className="flex justify-around w-full">
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                    }}
-                    variant="contained"
-                  >
                   Recusar
-                  </Button>
-                  <Button
-                     sx={{
-                        backgroundColor: "primary.main",
-                         color: "text.white",
-                        fontSize: FontConfig.default,
-                      }}
-                      variant="contained"
-                  >
+                </Button>
+                <Button
+                  sx={{
+                    backgroundColor: "primary.main",
+                    color: "text.white",
+                    fontSize: FontConfig.default,
+                  }}
+                  variant="contained"
+                >
                   Devolver
-                  </Button>
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                    }}
-                    variant="contained"
-                  >
+                </Button>
+                <Button
+                  sx={{
+                    backgroundColor: "primary.main",
+                    color: "text.white",
+                    fontSize: FontConfig.default,
+                  }}
+                  variant="contained"
+                >
                   Aceitar
-                  </Button>
-                </Box>
-              )
-            }
+                </Button>
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>

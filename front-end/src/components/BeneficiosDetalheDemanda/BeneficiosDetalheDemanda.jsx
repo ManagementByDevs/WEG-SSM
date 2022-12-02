@@ -24,16 +24,6 @@ const BeneficiosDetalheDemanda = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
 
-  const [beneficio, setBeneficio] = useState({
-    tipo: props.beneficio.tipo,
-    valorMensal: props.beneficio.valorMensal,
-    moeda: props.beneficio.moeda,
-    memoriaCalculo: props.beneficio.memoriaCalculo,
-    visible: true,
-  });
-
-  const [teste, setTeste] = useState(props.beneficio.tipo);
-
   useEffect(() => {
     if (mode === "dark") {
       setCorFundoTextArea("#212121");
@@ -51,20 +41,6 @@ const BeneficiosDetalheDemanda = (props) => {
       border: 0,
     },
   }));
-
-  const save = () => {
-    props.save(beneficio, props.index);
-  };
-
-  const handleTipoChange = (e) => {
-    console.log("aaa");
-    setTeste(e.target.value);
-    // setBeneficio({ ...beneficio, tipo: e.target.value });
-  };
-
-  useEffect(() => {
-    save();
-  }, [beneficio]);
 
   return (
     <Box className="flex items-center">
@@ -141,11 +117,14 @@ const BeneficiosDetalheDemanda = (props) => {
                   <td align="center">
                     <Box
                       component="input"
-                      value={beneficio.tipo}
+                      value={props.beneficio.tipo}
                       fontSize={FontConfig.medium}
-                      onChange={(e) =>
-                        setBeneficio({ ...beneficio, tipo: e.target.value })
-                      }
+                      onChange={(e) => {
+                        props.setBeneficio(
+                          { ...props.beneficio, tipo: e.target.value },
+                          props.index
+                        );
+                      }}
                       color="text.primary"
                       className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
                       sx={{
@@ -158,14 +137,13 @@ const BeneficiosDetalheDemanda = (props) => {
                   </td>
                   <td align="center">
                     <Box
-                      value={beneficio.valorMensal}
+                      value={props.beneficio.valorMensal}
                       fontSize={FontConfig.medium}
                       onChange={(e) => {
-                        setBeneficio({
-                          ...beneficio,
-                          valorMensal: e.target.value,
-                        });
-                        save();
+                        props.setBeneficio(
+                          { ...props.beneficio, valorMensal: e.target.value },
+                          props.index
+                        );
                       }}
                       color="text.primary"
                       className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
@@ -180,11 +158,13 @@ const BeneficiosDetalheDemanda = (props) => {
                   </td>
                   <td align="center">
                     <Box
-                      value={beneficio.moeda}
+                      value={props.beneficio.moeda}
                       fontSize={FontConfig.medium}
                       onChange={(e) => {
-                        setBeneficio({ ...beneficio, moeda: e.target.value });
-                        save();
+                        props.setBeneficio(
+                          { ...props.beneficio, moeda: e.target.value },
+                          props.index
+                        );
                       }}
                       color="text.primary"
                       className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
@@ -208,14 +188,16 @@ const BeneficiosDetalheDemanda = (props) => {
                         textAlign: "center",
                         backgroundColor: corFundoTextArea,
                       }}
-                      value={beneficio.memoriaCalculo}
+                      value={props.beneficio.memoriaCalculo}
                       fontSize={FontConfig.medium}
                       onChange={(e) => {
-                        setBeneficio({
-                          ...beneficio,
-                          memoriaCalculo: e.target.value,
-                        });
-                        save();
+                        props.setBeneficio(
+                          {
+                            ...props.beneficio,
+                            memoriaCalculo: e.target.value,
+                          },
+                          props.index
+                        );
                       }}
                       className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                       placeholder="Digite a memória de cálculo..."
@@ -273,17 +255,17 @@ const BeneficiosDetalheDemanda = (props) => {
               <StyledTableRow className="flex">
                 <td align="center">
                   <Typography fontSize={FontConfig.medium} color="text.primary">
-                    {beneficio.tipo}
+                    {props.beneficio.tipo}
                   </Typography>
                 </td>
                 <td align="center">
                   <Typography fontSize={FontConfig.medium} color="text.primary">
-                    {beneficio.valorMensal}
+                    {props.beneficio.valorMensal}
                   </Typography>
                 </td>
                 <td align="center">
                   <Typography fontSize={FontConfig.medium} color="text.primary">
-                    {beneficio.moeda}
+                    {props.beneficio.moeda}
                   </Typography>
                 </td>
                 <td
@@ -296,7 +278,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     color="text.primary"
                     sx={{ width: "100%" }}
                   >
-                    {beneficio.memoriaCalculo}
+                    {props.beneficio.memoriaCalculo}
                   </Typography>
                 </td>
               </StyledTableRow>
