@@ -38,6 +38,10 @@ const DetalhesDemanda = () => {
   }, [mode]);
 
   useEffect(() => {
+    location.state.beneficios.map((beneficio) => {
+      beneficio.visible = true;
+    });
+    console.log(location.state)
     setDados(location.state);
   }, []);
 

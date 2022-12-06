@@ -257,12 +257,12 @@ const BeneficiosDetalheDemanda = (props) => {
               <StyledTableRow className="flex">
                 <td align="center">
                   <Typography fontSize={FontConfig.medium} color="text.primary">
-                    {props.beneficio.tipo}
+                    {props.beneficio.tipoBeneficio}
                   </Typography>
                 </td>
                 <td align="center">
                   <Typography fontSize={FontConfig.medium} color="text.primary">
-                    {props.beneficio.valorMensal}
+                    {props.beneficio.valor_mensal}
                   </Typography>
                 </td>
                 <td align="center">
