@@ -5,6 +5,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import FontConfig from "../../service/FontConfig";
 
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import { Height } from "@mui/icons-material";
 
 const DemandaGerencia = (props) => {
@@ -25,17 +26,20 @@ const DemandaGerencia = (props) => {
       <Box className="flex w-full justify-between">
         {/* Título */}
         <Box className="flex items-end">
-          <Typography
-            fontSize={FontConfig.medium}
-            fontWeight="600"
-            sx={{color: "primary.main" }}
-          >
-            PPM
-          </Typography>
-          <Typography
-            fontSize={FontConfig.veryBig}
-            fontWeight="600"
-          >
+          {
+            // Se for uma proposta, mostra o ppm
+            props.proposta ? (
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="600"
+                sx={{ color: "primary.main" }}
+              >
+                PPM
+              </Typography>
+            ) : null
+          }
+
+          <Typography fontSize={FontConfig.veryBig} fontWeight="600">
             {props.dados.titulo}
           </Typography>
         </Box>
@@ -110,8 +114,21 @@ const DemandaGerencia = (props) => {
                 {props.dados.gerenteResponsavel}
               </Typography>
             </Box>
-            {/* Icon de histórico */}
-            <Box>
+            {/* Icon de histórico  e chat*/}
+            <Box className="flex flex-col">
+              {
+                // Se for uma proposta, mostra o icone de chat
+                props.proposta ? (
+                  <ChatOutlinedIcon
+                    className="delay-120 hover:scale-110 duration-300 ml-5"
+                    sx={{
+                      color: "icon.main",
+                      cursor: "pointer",
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : null
+              }
               <HistoryOutlinedIcon
                 className="delay-120 hover:scale-110 duration-300 ml-5"
                 sx={{ color: "icon.main", cursor: "pointer", fontSize: "30px" }}

@@ -219,7 +219,7 @@ const HomeGerencia = () => {
                   sx={{
                     display: "grid",
                     gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(720px, 1fr))",
                   }}
                 >
                   {demandas?.map((demanda, index) => {
