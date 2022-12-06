@@ -63,17 +63,6 @@ const DetalhesDemanda = () => {
     setBeneficios(dados.beneficios);
   }
 
-  // const [dadosBeneficio, setDadosBeneficio] = useState([
-  //   {
-  //     tipo: "Real",
-  //     valorMensal: "300,00",
-  //     moeda: "BR",
-  //     memoriaCalculo:
-  //       "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
-  //     visible: true,
-  //   },
-  // ]);
-
   const [dados, setDados] = useState({
     titulo: "Sistema de Gestão de Demandas",
     problema:
@@ -94,6 +83,7 @@ const DetalhesDemanda = () => {
   });
 
   const save = () => {
+    console.log("aaas")
     setDados({
       titulo: tituloDemanda,
       problema: problema,
@@ -107,7 +97,7 @@ const DetalhesDemanda = () => {
   const [problema, setProblema] = useState(dados.problema);
   const [proposta, setProposta] = useState(dados.proposta);
   const [frequencia, setFrequencia] = useState(dados.frequencia);
-  const [beneficios, setBeneficios] = useState(dados.beneficios);
+  const [beneficios, setBeneficios] = useState(null);
 
   const alterarTexto = (e, input) => {
     if (input === "titulo") {
@@ -122,25 +112,20 @@ const DetalhesDemanda = () => {
   };
 
   const alterarTextoBeneficio = (beneficio, index) => {
-    let aux = [...beneficios];
+    let aux = dados.beneficios.map((beneficio) => {
+      return { tipo: beneficio.tipo, valorMensal: beneficio.valorMensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: beneficio.visible };
+    });
     aux[index] = beneficio;
     setBeneficios(aux);
   };
 
-  function deleteBeneficio(indexBeneficio) {
+  const deleteBeneficio = (indexBeneficio) => {
     console.log(dados)
-    let aux = [...beneficios];
+    let aux = dados.beneficios.map((beneficio) => {
+      return { tipo: beneficio.tipo, valorMensal: beneficio.valorMensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: beneficio.visible };
+    });
     aux[indexBeneficio].visible = false;
     setBeneficios(aux);
-    // setBeneficios(
-      
-    //   beneficios.map((proprioBeneficio, index) => {
-    //     if (index === indexBeneficio) {
-    //       proprioBeneficio.visible = false;
-    //     }
-    //     return proprioBeneficio;
-    //   })
-    // );
   }
 
   useEffect(() => {
@@ -148,14 +133,18 @@ const DetalhesDemanda = () => {
     console.log("beneficios fixo: ", dados.beneficios);
   }, [dados]);
 
-  // useEffect(() => {
-    // console.log("beneficios fixo: ", dadosBeneficio);
-  // }, [dadosBeneficio]);
-
   const showDetails = () => {
     console.log("beneficios: ", beneficios);
     console.log("beneficios fixo: ", dados.beneficios);
+    dados.beneficios[0].teste = "a;"
   }
+
+  useEffect(() => {
+    const aux = dados.beneficios.map((beneficio) => {
+      return { tipo: beneficio.tipo, valorMensal: beneficio.valorMensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: beneficio.visible };
+    });
+    setBeneficios(aux)
+  }, [])
 
   return (
     <FundoComHeader>
