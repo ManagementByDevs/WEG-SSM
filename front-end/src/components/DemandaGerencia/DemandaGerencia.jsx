@@ -3,6 +3,7 @@ import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 
 import FontConfig from "../../service/FontConfig";
 
@@ -122,13 +123,31 @@ const DemandaGerencia = (props) => {
                 {props.dados.gerenteResponsavel}
               </Typography>
             </Box>
-            {/* Icon de histórico */}
             <Box>
-              {tipo === "proposta" && null}
-              <HistoryOutlinedIcon
-                className="delay-120 hover:scale-110 duration-300 ml-5"
-                sx={{ color: "icon.main", cursor: "pointer", fontSize: "30px" }}
-              />
+              {/* Icon de histórico  e chat*/}
+              <Box className="flex flex-col">
+                {
+                  // Se for uma proposta, mostra o icone de chat
+                  tipo === "proposta" && (
+                    <ChatOutlinedIcon
+                      className="delay-120 hover:scale-110 duration-300 ml-5"
+                      sx={{
+                        color: "icon.main",
+                        cursor: "pointer",
+                        fontSize: "30px",
+                      }}
+                    />
+                  )
+                }
+                <HistoryOutlinedIcon
+                  className="delay-120 hover:scale-110 duration-300 ml-5"
+                  sx={{
+                    color: "icon.main",
+                    cursor: "pointer",
+                    fontSize: "30px",
+                  }}
+                />
+              </Box>
             </Box>
           </Box>
         </Box>
