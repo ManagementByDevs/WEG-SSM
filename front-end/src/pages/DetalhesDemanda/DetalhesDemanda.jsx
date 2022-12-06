@@ -283,7 +283,6 @@ const DetalhesDemanda = () => {
                             key={index}
                             index={index}
                             beneficio={beneficio}
-                          // save={salvarBeneficios}
                           />
                         );
                       }

@@ -30,7 +30,6 @@ public class EscopoService {
         return escopoRepository.findByTitulo(titulo);
     }
 
-    public Optional<Escopo> findByPercentagem(Long porcentagem) { return escopoRepository.findByPorcentagem(porcentagem); }
 
     public List<Object> findByUsuario(Usuario usuario) {
         return escopoRepository.findByUsuario(usuario);
@@ -42,10 +41,6 @@ public class EscopoService {
 
     public Boolean existsByTitle(String titulo) {
         return escopoRepository.existsByTitulo(titulo);
-    }
-
-    public Boolean existsByPercentagem(Long porcentagem) {
-        return escopoRepository.existsByPorcentagem(porcentagem);
     }
 
     public boolean existsByUsuario(Usuario usuario) {
