@@ -87,10 +87,20 @@ const DetalhesDemanda = () => {
     setProposta(dados.proposta);
     setFrequencia(dados.frequencia);
     setBeneficios(dados.beneficios);
-  }, [dados])
+
+    const aux = dados.beneficios.map((beneficio) => {
+      return {
+        tipo: beneficio.tipo,
+        valorMensal: beneficio.valorMensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: beneficio.visible,
+      };
+    });
+    setBeneficios(aux);
+  }, [dados]);
 
   const save = () => {
-    console.log("aaas")
     setDados({
       titulo: tituloDemanda,
       problema: problema,
@@ -120,38 +130,40 @@ const DetalhesDemanda = () => {
 
   const alterarTextoBeneficio = (beneficio, index) => {
     let aux = dados.beneficios.map((beneficio) => {
-      return { tipo: beneficio.tipo, valorMensal: beneficio.valorMensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: beneficio.visible };
+      return {
+        tipo: beneficio.tipo,
+        valorMensal: beneficio.valorMensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: beneficio.visible,
+      };
     });
     aux[index] = beneficio;
     setBeneficios(aux);
   };
 
   const deleteBeneficio = (indexBeneficio) => {
-    console.log(dados)
+    console.log(dados);
     let aux = dados.beneficios.map((beneficio) => {
-      return { tipo: beneficio.tipo, valorMensal: beneficio.valorMensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: beneficio.visible };
+      return {
+        tipo: beneficio.tipo,
+        valorMensal: beneficio.valorMensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: beneficio.visible,
+      };
     });
     aux[indexBeneficio].visible = false;
     setBeneficios(aux);
-  }
-
-  useEffect(() => {
-    console.log("beneficios: ", beneficios);
-    console.log("beneficios fixo: ", dados.beneficios);
-  }, [dados]);
+  };
 
   const showDetails = () => {
     console.log("beneficios: ", beneficios);
     console.log("beneficios fixo: ", dados.beneficios);
-    dados.beneficios[0].teste = "a;"
-  }
+    dados.beneficios[0].teste = "a;";
+  };
 
-  useEffect(() => {
-    const aux = dados.beneficios.map((beneficio) => {
-      return { tipo: beneficio.tipo, valorMensal: beneficio.valorMensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: beneficio.visible };
-    });
-    setBeneficios(aux)
-  }, [])
+  useEffect(() => {}, []);
 
   return (
     <FundoComHeader>
@@ -264,7 +276,7 @@ const DetalhesDemanda = () => {
                     </Typography>
                   </Box>
                   <Box className="mt-2 flex flex-col gap-5">
-                    {(dados.beneficios).map((beneficio, index) => {
+                    {dados.beneficios.map((beneficio, index) => {
                       if (beneficio.visible) {
                         return (
                           <BeneficiosDetalheDemanda
@@ -272,7 +284,7 @@ const DetalhesDemanda = () => {
                             key={index}
                             index={index}
                             beneficio={beneficio}
-                          // save={salvarBeneficios}
+                            // save={salvarBeneficios}
                           />
                         );
                       }
