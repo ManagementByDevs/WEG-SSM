@@ -18,29 +18,27 @@ import java.util.List;
 public class Escopo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String titulo;
 
-    @Column(nullable = false, length = 200)
+    @Column(length = 200)
     private String problema;
 
-    @Column(nullable = false, length = 200)
+    @Column(length = 200)
     private String proposta;
 
-    @Column(nullable = false, length = 30)
+    @Column(length = 30)
     private String frequencia;
 
-    @Column(nullable = false)
-    private Long porcentagem;
-
-    @Column
-    private Boolean visibilidade;
-
     // Foreign key
+
+    @OneToMany
+    @JoinColumn(name = "escopo_id")
+    private List<Beneficio> beneficios = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -52,8 +50,6 @@ public class Escopo {
 
     /**
      * Função para adicionar anexos em um escopo
-     *
-     * @param files
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();
