@@ -18,11 +18,14 @@ import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltr
 import ModalHistoricoDemanda from "../../components/ModalHistoricoDemanda/ModalHistoricoDemanda";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalInformarMotivo from "../../components/ModalInformarMotivo/ModalInformarMotivo";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 const HomeGerencia = () => {
+
+  
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
-
+  
   const [demandas, setDemandas] = useState([
     {
       titulo: "Demanda 1",
@@ -54,7 +57,7 @@ const HomeGerencia = () => {
       gerenteResponsavel: "João da Silva",
     },
   ]);
-
+  
   const [propostas, setPropostas] = useState([
     {
       titulo: "Proposta 1",
@@ -62,7 +65,7 @@ const HomeGerencia = () => {
       solicitante: "Kenzo Sato",
       departamento: "TI",
       gerenteResponsavel:
-        "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
+      "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
       ppm: "12353",
     },
     {
@@ -90,15 +93,15 @@ const HomeGerencia = () => {
       ppm: "12353",
     },
   ]);
-
+  
   // Função para alterar a aba selecionada
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  
   const [modalFiltro, setOpenModal] = useState(false);
   const [modalMotivo, setOpenModalMotivo] = useState(false);
-
+  
   const abrirModalFiltro = () => {
     setOpenModal(true);
   };
@@ -286,7 +289,7 @@ const HomeGerencia = () => {
                   sx={{
                     display: "grid",
                     gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(720px, 1fr))",
                   }}
                 >
                   {propostas?.map((proposta, index) => {
@@ -325,6 +328,13 @@ const HomeGerencia = () => {
             </Box>
           </TabContext>
         </Box>
+      </Box>
+      <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
+        {
+          demandas.length > 18 && (
+            <Paginacao/>
+          )
+        }
       </Box>
     </FundoComHeader>
   );
