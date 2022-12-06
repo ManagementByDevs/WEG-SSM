@@ -14,7 +14,7 @@ const Pautas = (props) => {
     >
       <Box className="flex w-full justify-between">
         <Typography fontSize={FontConfig.big} fontWeight="600">
-          Propostas:
+          #Número Sequencial
         </Typography>
         <Box className="flex items-center">
           <Typography
@@ -34,7 +34,16 @@ const Pautas = (props) => {
           />
         </Box>
       </Box>
-      <Box className="flex flex-col gap"></Box>
+      <Box className="flex w-full justify-between">
+        <Box className="flex">
+          <Typography fontSize={FontConfig.big} fontWeight="600">
+            Comissão:{" "}
+          </Typography>
+          <Typography fontSize={FontConfig.big} fontWeight="600">
+            Nome da comissao{" "}
+          </Typography>
+        </Box>
+      </Box>
     </Paper>
   );
 };

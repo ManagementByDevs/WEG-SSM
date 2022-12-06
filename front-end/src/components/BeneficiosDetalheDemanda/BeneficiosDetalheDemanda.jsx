@@ -12,6 +12,9 @@ import {
   Box,
   TextareaAutosize,
   Button,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -36,7 +39,6 @@ const BeneficiosDetalheDemanda = (props) => {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
-    // hide last border
     "&:last-child td, &:last-child th": {
       border: 0,
     },
@@ -117,25 +119,26 @@ const BeneficiosDetalheDemanda = (props) => {
               <TableBody>
                 <TableRow>
                   <td align="center">
-                    <Box
-                      component="input"
-                      value={props.beneficio.tipo}
-                      fontSize={FontConfig.medium}
-                      onChange={(e) => {
-                        props.setBeneficio(
-                          { ...props.beneficio, tipo: e.target.value },
-                          props.index
-                        );
-                      }}
-                      color="text.primary"
-                      className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
-                      sx={{
-                        width: "80%;",
-                        height: "30px",
-                        backgroundColor: "background.default",
-                      }}
-                      placeholder="Digite o tipo do benefício..."
-                    />
+                    <FormControl
+                      variant="standard"
+                      sx={{ marginRight: "10px", minWidth: 90 }}
+                    >
+                      <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={props.beneficio.tipo}
+                        onChange={(e) => {
+                          props.setBeneficio(
+                            { ...props.beneficio, tipo: e.target.value },
+                            props.index
+                          );
+                        }}
+                      >
+                        <MenuItem value={"Real"}>Real</MenuItem>
+                        <MenuItem value={"Potencial"}>Potencial</MenuItem>
+                        <MenuItem value={"Qualitativo"}>Qualitativo</MenuItem>
+                      </Select>
+                    </FormControl>
                   </td>
                   <td align="center">
                     <Box
