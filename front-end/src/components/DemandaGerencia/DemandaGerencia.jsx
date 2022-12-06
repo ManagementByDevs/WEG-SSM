@@ -24,18 +24,21 @@ const DemandaGerencia = (props) => {
       {/* Container titulo e status */}
       <Box className="flex w-full justify-between">
         {/* Título */}
-        <Box className="flex items-end">
+        <Box className="flex ">
           <Typography
-            fontSize={FontConfig.medium}
-            fontWeight="600"
-            sx={{color: "primary.main" }}
-          >
-            PPM
-          </Typography>
-          <Typography
+            variant="h1"
             fontSize={FontConfig.veryBig}
             fontWeight="600"
+            className="flex items-end"
           >
+            <Typography
+              fontSize={FontConfig.medium}
+              fontWeight="600"
+              sx={{ color: "primary.main" }}
+              className="flex items-end"
+            >
+              PPM
+            </Typography>
             {props.dados.titulo}
           </Typography>
         </Box>
