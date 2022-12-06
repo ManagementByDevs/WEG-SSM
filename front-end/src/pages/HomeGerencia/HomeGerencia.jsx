@@ -19,13 +19,12 @@ import ModalHistoricoDemanda from "../../components/ModalHistoricoDemanda/ModalH
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalInformarMotivo from "../../components/ModalInformarMotivo/ModalInformarMotivo";
 import Paginacao from "../../components/Paginacao/Paginacao";
+import Pauta from "../../components/Pauta/Pauta";
 
 const HomeGerencia = () => {
-
-  
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
-  
+
   const [demandas, setDemandas] = useState([
     {
       titulo: "Demanda 1",
@@ -57,7 +56,7 @@ const HomeGerencia = () => {
       gerenteResponsavel: "João da Silva",
     },
   ]);
-  
+
   const [propostas, setPropostas] = useState([
     {
       titulo: "Proposta 1",
@@ -65,7 +64,7 @@ const HomeGerencia = () => {
       solicitante: "Kenzo Sato",
       departamento: "TI",
       gerenteResponsavel:
-      "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
+        "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
       ppm: "12353",
     },
     {
@@ -93,15 +92,30 @@ const HomeGerencia = () => {
       ppm: "12353",
     },
   ]);
-  
+
+  const [pautas, setPautas] = useState([
+    {
+      titulo: "Pauta 1"
+    },
+    {
+      titulo: "Pauta 2"
+    },
+    {
+      titulo: "Pauta 3"
+    },
+    {
+      titulo: "Pauta 4"
+    }
+  ]);
+
   // Função para alterar a aba selecionada
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
+
   const [modalFiltro, setOpenModal] = useState(false);
   const [modalMotivo, setOpenModalMotivo] = useState(false);
-  
+
   const abrirModalFiltro = () => {
     setOpenModal(true);
   };
@@ -311,7 +325,11 @@ const HomeGerencia = () => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
                   }}
                 >
-                  Pautas
+                  {pautas?.map((pauta, index) => {
+                    return (
+                      <Pauta key={index} dados={pauta} tipo="pauta" />
+                    );
+                  })}
                 </Box>
               </TabPanel>
               <TabPanel sx={{ padding: 0 }} value="5" onClick={() => {}}>
@@ -330,11 +348,11 @@ const HomeGerencia = () => {
         </Box>
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
-        {
-          demandas.length > 18 && (
-            <Paginacao/>
-          )
-        }
+        {demandas.length > 18 && value == "1" ? (
+          <Paginacao tipo={value} />
+        ) : propostas.length > 18 && value == "3" ? (
+          <Paginacao tipo={value} />
+        ) : null}
       </Box>
     </FundoComHeader>
   );
