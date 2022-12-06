@@ -8,9 +8,8 @@ import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 const DetalhesAta = (props) => {
 
     return (
-        <FundoComHeader>
-            <PropostaDeAta />
-        </FundoComHeader>
+        <FundoComHeader></FundoComHeader>
+        
     );
 }
 
