@@ -68,21 +68,6 @@ public class EscopoController {
     }
 
     /**
-     * Método GET para listar um escopo específico através da porcentagem feita
-     *
-     * @param porcentagem
-     * @return
-     */
-    @GetMapping("/porcentagem/{porcentagem}")
-    public ResponseEntity<Object> findByPercentagem(@PathVariable(value = "porcentagem") Long porcentagem) {
-        if (!escopoService.existsByPercentagem(porcentagem)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com esta porcentagem.");
-        }
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findByPercentagem(porcentagem).get());
-    }
-
-    /**
      * Método GET para listar um escopo específico através do id do usuário
      *
      * @param idUsuario
@@ -118,7 +103,6 @@ public class EscopoController {
         }
 
         escopo.setAnexos(files);
-        escopo.setVisibilidade(true);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(escopoService.save(escopo));
     }
@@ -159,7 +143,6 @@ public class EscopoController {
         }
 
         Escopo escopo = escopoService.findById(id).get();
-        escopo.setVisibilidade(false);
         escopoService.save(escopo);
 
         return ResponseEntity.status(HttpStatus.OK).body(escopo);

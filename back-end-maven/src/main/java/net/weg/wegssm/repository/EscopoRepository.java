@@ -21,28 +21,12 @@ public interface EscopoRepository extends JpaRepository<Escopo, Long> {
     Boolean existsByTitulo(String titulo);
 
     /**
-     * Método para retornar se existe um escopo com a porcentagem passada por parâmetro
-     *
-     * @param porcentagem
-     * @return
-     */
-    Boolean existsByPorcentagem(Long porcentagem);
-
-    /**
      * Método para retornar um escopo com o título passado por parâmetro
      *
      * @param titulo
      * @return
      */
     Optional<Escopo> findByTitulo(String titulo);
-
-    /**
-     * Método para retornar um escopo com a porcentagem passada por parâmetro
-     *
-     * @param porcentagem
-     * @return
-     */
-    Optional<Escopo> findByPorcentagem(Long porcentagem);
 
     /**
      * Método para retornar se existe um escopo com o usuário passado por parâmetro
