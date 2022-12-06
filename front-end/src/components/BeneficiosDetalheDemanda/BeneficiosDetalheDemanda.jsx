@@ -126,10 +126,10 @@ const BeneficiosDetalheDemanda = (props) => {
                       <Select
                         labelId="demo-simple-select-standard-label"
                         id="demo-simple-select-standard"
-                        value={props.beneficio.tipo}
+                        value={props.beneficio.tipoBeneficio}
                         onChange={(e) => {
                           props.setBeneficio(
-                            { ...props.beneficio, tipo: e.target.value },
+                            { ...props.beneficio, tipoBeneficio: e.target.value },
                             props.index
                           );
                         }}
@@ -142,11 +142,11 @@ const BeneficiosDetalheDemanda = (props) => {
                   </td>
                   <td align="center">
                     <Box
-                      value={props.beneficio.valorMensal}
+                      value={props.beneficio.valor_mensal}
                       fontSize={FontConfig.medium}
                       onChange={(e) => {
                         props.setBeneficio(
-                          { ...props.beneficio, valorMensal: e.target.value },
+                          { ...props.beneficio, valor_mensal: e.target.value },
                           props.index
                         );
                       }}
@@ -260,12 +260,12 @@ const BeneficiosDetalheDemanda = (props) => {
               <StyledTableRow className="flex">
                 <td align="center">
                   <Typography fontSize={FontConfig.medium} color="text.primary">
-                    {props.beneficio.tipo}
+                    {props.beneficio.tipoBeneficio}
                   </Typography>
                 </td>
                 <td align="center">
                   <Typography fontSize={FontConfig.medium} color="text.primary">
-                    {props.beneficio.valorMensal}
+                    {props.beneficio.valor_mensal}
                   </Typography>
                 </td>
                 <td align="center">

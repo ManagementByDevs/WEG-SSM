@@ -38,6 +38,10 @@ const DetalhesDemanda = () => {
   }, [mode]);
 
   useEffect(() => {
+    location.state.beneficios.map((beneficio) => {
+      beneficio.visible = true;
+    });
+    console.log(location.state)
     setDados(location.state);
   }, []);
 
@@ -90,8 +94,8 @@ const DetalhesDemanda = () => {
 
     const aux = dados.beneficios.map((beneficio) => {
       return {
-        tipo: beneficio.tipo,
-        valorMensal: beneficio.valorMensal,
+        tipoBeneficio: beneficio.tipoBeneficio,
+        valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
         visible: beneficio.visible,
@@ -131,8 +135,8 @@ const DetalhesDemanda = () => {
   const alterarTextoBeneficio = (beneficio, index) => {
     let aux = dados.beneficios.map((beneficio) => {
       return {
-        tipo: beneficio.tipo,
-        valorMensal: beneficio.valorMensal,
+        tipoBeneficio: beneficio.tipoBeneficio,
+        valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
         visible: beneficio.visible,
@@ -146,8 +150,8 @@ const DetalhesDemanda = () => {
     console.log(dados);
     let aux = dados.beneficios.map((beneficio) => {
       return {
-        tipo: beneficio.tipo,
-        valorMensal: beneficio.valorMensal,
+        tipoBeneficio: beneficio.tipoBeneficio,
+        valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
         visible: beneficio.visible,
@@ -162,8 +166,6 @@ const DetalhesDemanda = () => {
     console.log("beneficios fixo: ", dados.beneficios);
     dados.beneficios[0].teste = "a;";
   };
-
-  useEffect(() => {}, []);
 
   return (
     <FundoComHeader>
@@ -284,7 +286,6 @@ const DetalhesDemanda = () => {
                             key={index}
                             index={index}
                             beneficio={beneficio}
-                            // save={salvarBeneficios}
                           />
                         );
                       }

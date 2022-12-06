@@ -192,9 +192,7 @@ const BarraProgressao = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => {
-              handleClick()
-            }}
+            onClick={handleClick()}
             disableElevation
           >
             Criar
