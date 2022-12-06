@@ -2,12 +2,20 @@ import React from "react";
 
 import { Box, Paper, Typography } from "@mui/material";
 
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+
 import FontConfig from "../../service/FontConfig";
 
-import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
-import { Height } from "@mui/icons-material";
-
 const DemandaGerencia = (props) => {
+  // Como usar:
+  // Ao chamar o componente, passar duas props:
+  // - dados: um objeto com os dados da demanda ou proposta
+  // - tipo: "demanda" ou "proposta"
+  // Exemplo:
+  // <DemandaGerencia dados={demanda} tipo="demanda" />
+
+  const tipo = props.tipo;
+
   function getCorStatus() {
     if (props.dados.status === "Backlog") {
       return "#00579D";
@@ -24,21 +32,22 @@ const DemandaGerencia = (props) => {
       {/* Container titulo e status */}
       <Box className="flex w-full justify-between">
         {/* Título */}
-        <Box className="flex ">
+        <Box className="flex w-3/4 mt-1">
           <Typography
             variant="h1"
             fontSize={FontConfig.veryBig}
             fontWeight="600"
-            className="flex items-end"
+            className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
           >
-            <Typography
-              fontSize={FontConfig.medium}
-              fontWeight="600"
-              sx={{ color: "primary.main" }}
-              className="flex items-end"
-            >
-              PPM
-            </Typography>
+            {tipo === "proposta" && (
+              <Typography
+                fontSize={FontConfig.default}
+                fontWeight="600"
+                sx={{ color: "primary.main" }}
+              >
+                PPM {props.dados.ppm}
+              </Typography>
+            )}
             {props.dados.titulo}
           </Typography>
         </Box>
@@ -70,7 +79,7 @@ const DemandaGerencia = (props) => {
                 Solicitante:
               </Typography>
               <Typography
-                className="w-11/12 overflow-hidden text-ellipsis whitespace-pre-wrap"
+                className="w-11/12 overflow-hidden text-ellipsis whitespace-nowrap"
                 fontSize={FontConfig.default}
                 fontWeight="600"
                 sx={{ color: "text.secondary", marginLeft: "5px" }}
@@ -85,7 +94,7 @@ const DemandaGerencia = (props) => {
                 Departamento:
               </Typography>
               <Typography
-                className="w-1/2 overflow-hidden text-ellipsis whitespace-pre-wrap"
+                className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap"
                 fontSize={FontConfig.default}
                 fontWeight="600"
                 sx={{ color: "text.secondary", marginLeft: "5px" }}
@@ -115,6 +124,7 @@ const DemandaGerencia = (props) => {
             </Box>
             {/* Icon de histórico */}
             <Box>
+              {tipo === "proposta" && null}
               <HistoryOutlinedIcon
                 className="delay-120 hover:scale-110 duration-300 ml-5"
                 sx={{ color: "icon.main", cursor: "pointer", fontSize: "30px" }}
