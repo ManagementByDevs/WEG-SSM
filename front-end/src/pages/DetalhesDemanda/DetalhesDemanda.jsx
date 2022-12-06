@@ -128,6 +128,7 @@ const DetalhesDemanda = () => {
   };
 
   function deleteBeneficio(indexBeneficio) {
+    console.log(dados)
     let aux = [...beneficios];
     aux[indexBeneficio].visible = false;
     setBeneficios(aux);

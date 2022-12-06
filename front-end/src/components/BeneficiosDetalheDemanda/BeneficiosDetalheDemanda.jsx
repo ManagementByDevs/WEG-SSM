@@ -42,6 +42,10 @@ const BeneficiosDetalheDemanda = (props) => {
     },
   }));
 
+  const deleteBeneficio = () => {
+    props.delete(props.index);
+  };
+
   return (
     <Box className="flex items-center">
       {props.editavel ? (
@@ -50,9 +54,7 @@ const BeneficiosDetalheDemanda = (props) => {
             fontSize="large"
             className="delay-120 hover:scale-110 duration-300 mr-2"
             sx={{ color: "icon.main", cursor: "pointer" }}
-            onClick={() => {
-              props.delete(props.index);
-            }}
+            onClick={deleteBeneficio}
           />
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 750 }} aria-label="customized table">
