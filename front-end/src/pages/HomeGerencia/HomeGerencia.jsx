@@ -29,7 +29,8 @@ const HomeGerencia = () => {
       status: "Backlog",
       solicitante: "Kenzo Sato",
       departamento: "TI",
-      gerenteResponsavel: "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
+      gerenteResponsavel:
+        "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
     },
     {
       titulo: "Demanda 2",
@@ -54,6 +55,42 @@ const HomeGerencia = () => {
     },
   ]);
 
+  const [propostas, setPropostas] = useState([
+    {
+      titulo: "Proposta 1",
+      status: "Assessment",
+      solicitante: "Kenzo Sato",
+      departamento: "TI",
+      gerenteResponsavel:
+        "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
+      ppm: "12353",
+    },
+    {
+      titulo: "Proposta 2",
+      status: "Assessment",
+      solicitante: "Kenzo Sato",
+      departamento: "TI",
+      gerenteResponsavel: "João da Silva",
+      ppm: "12353",
+    },
+    {
+      titulo: "DemaPropostanda 3",
+      status: "Assessment",
+      solicitante: "Kenzo Sato",
+      departamento: "TI",
+      gerenteResponsavel: "João da Silva",
+      ppm: "12353",
+    },
+    {
+      titulo: "Proposta 4",
+      status: "Assessment",
+      solicitante: "Kenzo Sato",
+      departamento: "TI",
+      gerenteResponsavel: "João da Silva",
+      ppm: "12353",
+    },
+  ]);
+
   // Função para alterar a aba selecionada
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -66,9 +103,9 @@ const HomeGerencia = () => {
     setOpenModal(true);
   };
 
-  const abrirModalInformarMotivo = () =>{
+  const abrirModalInformarMotivo = () => {
     setOpenModalMotivo(true);
-  }
+  };
 
   const navigate = useNavigate();
 
@@ -223,7 +260,13 @@ const HomeGerencia = () => {
                   }}
                 >
                   {demandas?.map((demanda, index) => {
-                    return <DemandaGerencia key={index} dados={demanda} />;
+                    return (
+                      <DemandaGerencia
+                        key={index}
+                        dados={demanda}
+                        tipo="demanda"
+                      />
+                    );
                   })}
                 </Box>
               </TabPanel>
@@ -246,7 +289,15 @@ const HomeGerencia = () => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
                   }}
                 >
-                  Propostas
+                  {propostas?.map((proposta, index) => {
+                    return (
+                      <DemandaGerencia
+                        key={index}
+                        dados={proposta}
+                        tipo="proposta"
+                      />
+                    );
+                  })}
                 </Box>
               </TabPanel>
               <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>

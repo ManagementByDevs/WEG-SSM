@@ -2,13 +2,21 @@ import React from "react";
 
 import { Box, Paper, Typography } from "@mui/material";
 
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+
 import FontConfig from "../../service/FontConfig";
 
-import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
-import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
-import { Height } from "@mui/icons-material";
-
 const DemandaGerencia = (props) => {
+  // Como usar:
+  // Ao chamar o componente, passar duas props:
+  // - dados: um objeto com os dados da demanda ou proposta
+  // - tipo: "demanda" ou "proposta"
+  // Exemplo:
+  // <DemandaGerencia dados={demanda} tipo="demanda" />
+
+  const tipo = props.tipo;
+
   function getCorStatus() {
     if (props.dados.status === "Backlog") {
       return "#00579D";
@@ -25,21 +33,22 @@ const DemandaGerencia = (props) => {
       {/* Container titulo e status */}
       <Box className="flex w-full justify-between">
         {/* Título */}
-        <Box className="flex items-end">
-          {
-            // Se for uma proposta, mostra o ppm
-            props.proposta ? (
+        <Box className="flex w-3/4 mt-1">
+          <Typography
+            variant="h1"
+            fontSize={FontConfig.veryBig}
+            fontWeight="600"
+            className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            {tipo === "proposta" && (
               <Typography
-                fontSize={FontConfig.medium}
+                fontSize={FontConfig.default}
                 fontWeight="600"
                 sx={{ color: "primary.main" }}
               >
-                PPM
+                PPM {props.dados.ppm}
               </Typography>
-            ) : null
-          }
-
-          <Typography fontSize={FontConfig.veryBig} fontWeight="600">
+            )}
             {props.dados.titulo}
           </Typography>
         </Box>
@@ -71,7 +80,7 @@ const DemandaGerencia = (props) => {
                 Solicitante:
               </Typography>
               <Typography
-                className="w-11/12 overflow-hidden text-ellipsis whitespace-pre-wrap"
+                className="w-11/12 overflow-hidden text-ellipsis whitespace-nowrap"
                 fontSize={FontConfig.default}
                 fontWeight="600"
                 sx={{ color: "text.secondary", marginLeft: "5px" }}
@@ -86,7 +95,7 @@ const DemandaGerencia = (props) => {
                 Departamento:
               </Typography>
               <Typography
-                className="w-1/2 overflow-hidden text-ellipsis whitespace-pre-wrap"
+                className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap"
                 fontSize={FontConfig.default}
                 fontWeight="600"
                 sx={{ color: "text.secondary", marginLeft: "5px" }}
@@ -114,25 +123,31 @@ const DemandaGerencia = (props) => {
                 {props.dados.gerenteResponsavel}
               </Typography>
             </Box>
-            {/* Icon de histórico  e chat*/}
-            <Box className="flex flex-col">
-              {
-                // Se for uma proposta, mostra o icone de chat
-                props.proposta ? (
-                  <ChatOutlinedIcon
-                    className="delay-120 hover:scale-110 duration-300 ml-5"
-                    sx={{
-                      color: "icon.main",
-                      cursor: "pointer",
-                      fontSize: "30px",
-                    }}
-                  />
-                ) : null
-              }
-              <HistoryOutlinedIcon
-                className="delay-120 hover:scale-110 duration-300 ml-5"
-                sx={{ color: "icon.main", cursor: "pointer", fontSize: "30px" }}
-              />
+            <Box>
+              {/* Icon de histórico  e chat*/}
+              <Box className="flex flex-col">
+                {
+                  // Se for uma proposta, mostra o icone de chat
+                  tipo === "proposta" && (
+                    <ChatOutlinedIcon
+                      className="delay-120 hover:scale-110 duration-300 ml-5"
+                      sx={{
+                        color: "icon.main",
+                        cursor: "pointer",
+                        fontSize: "30px",
+                      }}
+                    />
+                  )
+                }
+                <HistoryOutlinedIcon
+                  className="delay-120 hover:scale-110 duration-300 ml-5"
+                  sx={{
+                    color: "icon.main",
+                    cursor: "pointer",
+                    fontSize: "30px",
+                  }}
+                />
+              </Box>
             </Box>
           </Box>
         </Box>
