@@ -46,6 +46,8 @@ const BeneficiosDetalheDemanda = (props) => {
     props.delete(props.index);
   };
 
+  console.log(props.beneficio)
+
   return (
     <Box className="flex items-center">
       {props.editavel ? (
@@ -119,11 +121,11 @@ const BeneficiosDetalheDemanda = (props) => {
                   <td align="center">
                     <Box
                       component="input"
-                      value={props.beneficio.tipo}
+                      value={props.beneficio.tipoBeneficio}
                       fontSize={FontConfig.medium}
                       onChange={(e) => {
                         props.setBeneficio(
-                          { ...props.beneficio, tipo: e.target.value },
+                          { ...props.beneficio, tipoBeneficio: e.target.value },
                           props.index
                         );
                       }}
@@ -139,11 +141,11 @@ const BeneficiosDetalheDemanda = (props) => {
                   </td>
                   <td align="center">
                     <Box
-                      value={props.beneficio.valorMensal}
+                      value={props.beneficio.valor_mensal}
                       fontSize={FontConfig.medium}
                       onChange={(e) => {
                         props.setBeneficio(
-                          { ...props.beneficio, valorMensal: e.target.value },
+                          { ...props.beneficio, valor_mensal: e.target.value },
                           props.index
                         );
                       }}
