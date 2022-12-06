@@ -47,7 +47,7 @@ const ModalConfirmacao = (props) => {
       case "sairCriacao":
         return "Deseja sair da criação da demanda?";
       case "enviarDemanda":
-        return "Deseja enviar a demanda?";
+        return "Deseja criar a demanda?";
       case "sairSemSalvar":
         return "Deseja sair sem salvar?";
       case "descartarProposta":
@@ -69,10 +69,14 @@ const ModalConfirmacao = (props) => {
   // useState para abrir e fechar o modal
 
   // const [open, setOpen] = useState(props.open);
-  const handleOpen = () => props.setOpen(true);
-  const handleClose = () => {
-    props.setOpen(false);
-  };
+
+  let open = false;
+  open = props.open;
+  const setOpen = props.setOpen;
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Modal
       open={props.open}

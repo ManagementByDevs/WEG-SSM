@@ -11,7 +11,7 @@ import {
 
 import FontConfig from "../../service/FontConfig";
 
-const Paginacao = () => {
+const Paginacao = (props) => {
   const [valor, setValor] = React.useState(18);
 
   const handleChange = (event) => {

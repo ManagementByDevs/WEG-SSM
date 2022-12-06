@@ -18,6 +18,7 @@ import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 const Home = () => {
   // Lista de demandas presente
@@ -366,6 +367,11 @@ const Home = () => {
             </Box>
           </TabContext>
         </Box>
+      </Box>
+      <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
+        {listaDemandas.length > 18 && value == "1" ? (
+          <Paginacao tipo={value}/>
+        ) : null}
       </Box>
     </FundoComHeader>
   );

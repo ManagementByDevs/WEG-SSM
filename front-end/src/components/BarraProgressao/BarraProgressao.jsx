@@ -14,6 +14,7 @@ import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDem
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioAnexosDemanda from "../FormularioAnexosDemanda/FormularioAnexosDemanda";
 import Feedback from "../Feedback/Feedback";
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao"
 
 import DemandaService from '../../service/demandaService';
 
@@ -95,6 +96,12 @@ const BarraProgressao = (props) => {
     setState({ open: true, ...newState });
   };
 
+  const [modalConfirmacao, setOpenConfirmacao] = useState(false);
+
+  const abrirModalConfirmacao = () => {
+    setOpenConfirmacao(true);
+  }
+
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
     let listaNova = [];
@@ -109,7 +116,7 @@ const BarraProgressao = (props) => {
   // UseEffect para criar a demanda usando os dados recebidos das páginas
   useEffect(() => {
     if (open) {
-      
+
       if (paginaDados.titulo != "" && paginaDados.problema && paginaDados.proposta && paginaDados.frequencia) {
         const demandaFinal = {
           titulo: paginaDados.titulo,
@@ -185,7 +192,9 @@ const BarraProgressao = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={handleClick()}
+            onClick={() => {
+              handleClick()
+            }}
             disableElevation
           >
             Criar
@@ -200,6 +209,7 @@ const BarraProgressao = (props) => {
             Próximo
           </Button>
         )}
+        {/* {modalConfirmacao && <ModalConfirmacao open={modalConfirmacao} setOpen={setOpenConfirmacao} textoModal={"enviarDemanda"} textoBotao={"enviar"} />} */}
       </Box>
     </>
   );
