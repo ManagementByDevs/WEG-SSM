@@ -46,8 +46,6 @@ const BeneficiosDetalheDemanda = (props) => {
     props.delete(props.index);
   };
 
-  console.log(props.beneficio)
-
   return (
     <Box className="flex items-center">
       {props.editavel ? (
