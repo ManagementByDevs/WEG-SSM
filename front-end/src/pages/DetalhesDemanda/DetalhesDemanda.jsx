@@ -62,16 +62,16 @@ const DetalhesDemanda = () => {
     setBeneficios(dados.beneficios);
   }
 
-  const [dadosBeneficio, setDadosBeneficio] = useState([
-    {
-      tipo: "Real",
-      valorMensal: "300,00",
-      moeda: "BR",
-      memoriaCalculo:
-        "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
-      visible: true,
-    },
-  ]);
+  // const [dadosBeneficio, setDadosBeneficio] = useState([
+  //   {
+  //     tipo: "Real",
+  //     valorMensal: "300,00",
+  //     moeda: "BR",
+  //     memoriaCalculo:
+  //       "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
+  //     visible: true,
+  //   },
+  // ]);
 
   const [dados, setDados] = useState({
     titulo: "Sistema de Gestão de Demandas",
@@ -80,7 +80,16 @@ const DetalhesDemanda = () => {
     proposta:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
     frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-    beneficios: dadosBeneficio,
+    beneficios: [
+      {
+        tipo: "Real",
+        valorMensal: "300,00",
+        moeda: "BR",
+        memoriaCalculo:
+          "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
+        visible: true,
+      },
+    ],
   });
 
   useEffect(() => {
@@ -126,19 +135,34 @@ const DetalhesDemanda = () => {
   };
 
   function deleteBeneficio(indexBeneficio) {
-    setBeneficios(
-      beneficios.map((proprioBeneficio, index) => {
-        if (index === indexBeneficio) {
-          proprioBeneficio.visible = false;
-        }
-        return proprioBeneficio;
-      })
-    );
+    console.log(dados)
+    let aux = [...beneficios];
+    aux[indexBeneficio].visible = false;
+    setBeneficios(aux);
+    // setBeneficios(
+      
+    //   beneficios.map((proprioBeneficio, index) => {
+    //     if (index === indexBeneficio) {
+    //       proprioBeneficio.visible = false;
+    //     }
+    //     return proprioBeneficio;
+    //   })
+    // );
   }
 
   useEffect(() => {
     console.log("beneficios: ", beneficios);
-  }, [beneficios]);
+    console.log("beneficios fixo: ", dados.beneficios);
+  }, [dados]);
+
+  // useEffect(() => {
+    // console.log("beneficios fixo: ", dadosBeneficio);
+  // }, [dadosBeneficio]);
+
+  const showDetails = () => {
+    console.log("beneficios: ", beneficios);
+    console.log("beneficios fixo: ", dados.beneficios);
+  }
 
   return (
     <FundoComHeader>
@@ -161,6 +185,7 @@ const DetalhesDemanda = () => {
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
+              onClick={showDetails}
             />
           </Box>
         </Box>
@@ -250,7 +275,7 @@ const DetalhesDemanda = () => {
                     </Typography>
                   </Box>
                   <Box className="mt-2 flex flex-col gap-5">
-                    {dados.beneficios?.map((beneficio, index) => {
+                    {(dados.beneficios).map((beneficio, index) => {
                       if (beneficio.visible) {
                         return (
                           <BeneficiosDetalheDemanda
@@ -400,7 +425,6 @@ const DetalhesDemanda = () => {
                             delete={deleteBeneficio}
                             beneficio={beneficio}
                             setBeneficio={alterarTextoBeneficio}
-                            save={setBeneficios}
                           />
                         );
                       }

@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
-import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 
 import FontConfig from "../../service/FontConfig";
 
@@ -54,18 +54,20 @@ const DemandaGerencia = (props) => {
         </Box>
 
         {/* Status do componente */}
-        <Box className="flex w-1/4 h-full gap-2 items-center justify-end">
-          <Typography fontSize={FontConfig.medium} fontWeight="600">
-            {props.dados.status}
-          </Typography>
-          <Box
-            className="rounded-full"
-            sx={{
-              width: "10px",
-              height: "10px",
-              backgroundColor: getCorStatus(),
-            }}
-          ></Box>
+        <Box className="w-1/4 h-full">
+          <Box className="flex items-center gap-2 justify-end">
+            <Typography fontSize={FontConfig.medium} fontWeight="600">
+              {props.dados.status}
+            </Typography>
+            <Box
+              className="rounded-full"
+              sx={{
+                width: "10px",
+                height: "10px",
+                backgroundColor: getCorStatus(),
+              }}
+            ></Box>
+          </Box>
         </Box>
       </Box>
 
@@ -105,7 +107,7 @@ const DemandaGerencia = (props) => {
             </Box>
           </Box>
           {/* Infos gerente responsável e icons */}
-          <Box className="flex items-center justify-end w-full">
+          <Box className="flex items-end justify-end w-full">
             <Box className="flex" sx={{ width: "19rem" }}>
               <Typography fontSize={FontConfig.default} fontWeight="600">
                 Gerente responsável:
