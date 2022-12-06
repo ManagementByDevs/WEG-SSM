@@ -27,7 +27,6 @@ const DetalhesDemanda = () => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
 
-  const [demanda, setDemanda] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const DetalhesDemanda = () => {
   }, [mode]);
 
   useEffect(() => {
-    setDemanda(location.state);
+    setDados(location.state);
   }, []);
 
   const [editar, setEditar] = useState(false);
@@ -81,6 +80,14 @@ const DetalhesDemanda = () => {
       },
     ],
   });
+
+  useEffect(() => {
+    setTituloDemanda(dados.titulo);
+    setProblema(dados.problema);
+    setProposta(dados.proposta);
+    setFrequencia(dados.frequencia);
+    setBeneficios(dados.beneficios);
+  }, [dados])
 
   const save = () => {
     console.log("aaas")
@@ -265,6 +272,7 @@ const DetalhesDemanda = () => {
                             key={index}
                             index={index}
                             beneficio={beneficio}
+                          // save={salvarBeneficios}
                           />
                         );
                       }
