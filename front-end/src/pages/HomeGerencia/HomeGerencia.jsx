@@ -173,7 +173,7 @@ const HomeGerencia = () => {
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
   const verDemanda = (demanda) => {
-    navigate("/detalhes-demanda", { state: demanda });
+    navigate("/criar-proposta", { state: demanda });
   };
 
   const navigate = useNavigate();

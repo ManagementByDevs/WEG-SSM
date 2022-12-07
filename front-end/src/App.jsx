@@ -13,6 +13,7 @@ import Escopos from "./pages/Escopos/Escopos";
 import DetalhesAta from "./pages/DetalhesAta/DetalhesAta";
 
 import ToggleColorMode from "./service/TemaProvedor";
+import CriarProposta from "./pages/CriarProposta/CriarProposta";
 
 const App = () => {
   useEffect(() => {
@@ -31,6 +32,7 @@ const App = () => {
             element={<HomeGerencia></HomeGerencia>}
           />
           <Route path="/criar-demanda" element={<CriarDemanda />} />
+          <Route path="/criar-proposta" element={<CriarProposta />} />
           <Route path="/notificacao" element={<Notificacao />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/detalhes-demanda" element={<DetalhesDemanda />} />
