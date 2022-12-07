@@ -6,6 +6,14 @@ import FontConfig from "../../service/FontConfig";
 
 const PropostaDeAta = (props) => {
 
+    // Variáveis de estilo para usar no componente
+
+    const textoConteudo = {
+        textAlign: "justify",
+        color: "text.secondary",
+        marginLeft: "30px"
+    };
+
     return (
         <Box>
             {/* início da proposta */}
@@ -15,6 +23,7 @@ const PropostaDeAta = (props) => {
                 </Typography>
             </Box>
 
+            {/* Conteúdo da proposta, titulo, problema... */}
             <Box>
                 <Typography
                     fontSize={FontConfig.veryBig}
@@ -23,12 +32,7 @@ const PropostaDeAta = (props) => {
                 >
                     Título da Proposta:
                 </Typography>
-                <Typography
-                    fontSize={FontConfig.medium}
-                    className="text-justify"
-                    color="text.secondary"
-                    sx={{ marginLeft: "30px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     Aqui vai um exemplo de título
                 </Typography>
             </Box>
@@ -41,12 +45,7 @@ const PropostaDeAta = (props) => {
                 >
                     Problema:
                 </Typography>
-                <Typography
-                    fontSize={FontConfig.medium}
-                    className="text-justify"
-                    color="text.secondary"
-                    sx={{ marginLeft: "30px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate cupiditate, ullam consequuntur recusandae consequatur natus obcaecati laborum officia cum, eum aliquam voluptatibus quas accusantium quo quis autem adipisci. Numquam, illum!
                 </Typography>
             </Box>
@@ -59,12 +58,7 @@ const PropostaDeAta = (props) => {
                 >
                     Proposta:
                 </Typography>
-                <Typography
-                    fontSize={FontConfig.medium}
-                    className="text-justify"
-                    color="text.secondary"
-                    sx={{ marginLeft: "30px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum quae illum quibusdam commodi sint numquam officiis molestiae ipsam minus, optio aliquam, quaerat nisi in nulla itaque, voluptatem vel voluptate illo.
                 </Typography>
             </Box>
@@ -77,12 +71,7 @@ const PropostaDeAta = (props) => {
                 >
                     Benefícios:
                 </Typography>
-                <Typography
-                    fontSize={FontConfig.medium}
-                    className="text-justify"
-                    color="text.secondary"
-                    sx={{ marginLeft: "30px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     Benefícios
                 </Typography>
             </Box>
@@ -95,12 +84,7 @@ const PropostaDeAta = (props) => {
                 >
                     Frequência de Uso:
                 </Typography>
-                <Typography
-                    fontSize={FontConfig.medium}
-                    className="text-justify"
-                    color="text.secondary"
-                    sx={{ marginLeft: "30px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     Frequência
                 </Typography>
             </Box>
@@ -113,12 +97,7 @@ const PropostaDeAta = (props) => {
                 >
                     Anexos:
                 </Typography>
-                <Typography
-                    fontSize={FontConfig.medium}
-                    className="text-justify"
-                    color="text.secondary"
-                    sx={{ marginLeft: "30px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     Anexos
                 </Typography>
             </Box>

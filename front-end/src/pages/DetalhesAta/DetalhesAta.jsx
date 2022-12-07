@@ -38,6 +38,7 @@ const DetalhesAta = (props) => {
 
     return (
         // Começo com o header da página
+        
         <FundoComHeader>
             <Box className="p-2">
 
@@ -132,7 +133,7 @@ const DetalhesAta = (props) => {
                                 </Typography>
                             </Box>
                         </Box>
-                        {/* <PropostaDeAta/> */}
+                        <PropostaDeAta/>
                     </Box>
 
                     {/* botões de navegação entre as proposta da ata */}
