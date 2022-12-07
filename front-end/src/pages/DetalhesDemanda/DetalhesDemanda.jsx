@@ -167,6 +167,10 @@ const DetalhesDemanda = () => {
     dados.beneficios[0].teste = "a;";
   };
 
+  const aceitarDemanda = () => {
+    console.log("aceitar demanda");
+  }
+
   return (
     <FundoComHeader>
       <Box className="p-2">
@@ -525,6 +529,7 @@ const DetalhesDemanda = () => {
                     fontSize: FontConfig.default,
                   }}
                   variant="contained"
+                  onClick={aceitarDemanda}
                 >
                   Aceitar
                 </Button>
