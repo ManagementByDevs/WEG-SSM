@@ -27,24 +27,7 @@ const PropostaDeAta = (props) => {
 
     const location = useLocation();
 
-    const [dados, setDados] = useState({
-        titulo: "Sistema de Gestão de Demandas",
-        problema:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-        proposta:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-        frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-        beneficios: [
-            {
-                tipoBeneficio: "Real",
-                valor_mensal: "300,00",
-                moeda: "BR",
-                memoriaCalculo:
-                    "memória de cálculo",
-                visible: true,
-            },
-        ],
-    });
+    const dados = props.dadosProposta;
 
     useEffect(() => {
         setTituloDemanda(dados.titulo);
@@ -97,6 +80,20 @@ const PropostaDeAta = (props) => {
             </Box>
 
             {/* Conteúdo da proposta, titulo, problema... */}
+
+            <Box sx={{ marginTop: "2%" }}>
+                <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                >
+                    Código PPM:
+                </Typography>
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
+                    {dados.ppm}
+                </Typography>
+            </Box>
+
             <Box sx={{ marginTop: "2%" }}>
                 <Typography
                     fontSize={FontConfig.veryBig}
@@ -107,6 +104,19 @@ const PropostaDeAta = (props) => {
                 </Typography>
                 <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     {dados.titulo}
+                </Typography>
+            </Box>
+
+            <Box sx={{ marginTop: "2%" }}>
+                <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                >
+                    Responsável Negócio:
+                </Typography>
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
+                    {dados.responsavelNegocio} - {dados.area}
                 </Typography>
             </Box>
 
@@ -170,6 +180,58 @@ const PropostaDeAta = (props) => {
                 </Typography>
                 <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     {dados.frequencia}
+                </Typography>
+            </Box>
+
+            <Box sx={{ marginTop: "2%" }}>
+                <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                >
+                    Custos:
+                </Typography>
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
+                    Custos aqui
+                </Typography>
+            </Box>
+
+            <Box sx={{ marginTop: "2%" }}>
+                <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                >
+                    Período de Execução:
+                </Typography>
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
+                    {dados.periodoExecucao}
+                </Typography>
+            </Box>
+
+            <Box sx={{ marginTop: "2%" }}>
+                <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                >
+                    Payback Simples:
+                </Typography>
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
+                    {dados.paybackSimples}
+                </Typography>
+            </Box>
+
+            <Box sx={{ marginTop: "2%" }}>
+                <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                >
+                    Link do Jira:
+                </Typography>
+                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
+                    {dados.linkJira}
                 </Typography>
             </Box>
 
