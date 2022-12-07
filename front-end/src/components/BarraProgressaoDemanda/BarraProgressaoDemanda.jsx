@@ -19,7 +19,7 @@ import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao"
 import DemandaService from '../../service/demandaService';
 import EscopoService from "../../service/escopoService";
 
-const BarraProgressao = (props) => {
+const BarraProgressaoDemanda = (props) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
@@ -226,9 +226,7 @@ const BarraProgressao = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => {
-              handleClick()
-            }}
+            onClick={handleClick()}
             disableElevation
           >
             Criar
@@ -249,4 +247,4 @@ const BarraProgressao = (props) => {
   );
 };
 
-export default BarraProgressao;
+export default BarraProgressaoDemanda;

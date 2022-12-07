@@ -10,10 +10,9 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import MarkChatUnreadOutlinedIcon from '@mui/icons-material/MarkChatUnreadOutlined';
 
 import FontConfig from '../../service/FontConfig';
+import ColorModeContext from "../../service/TemaContext";
 
 import UsuarioService from "../../service/usuarioService"
-
-import ColorModeContext from "../../service/TemaContext";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 58,
@@ -68,7 +67,7 @@ const UserModal = () => {
     // - toggleColorMode: função para alternar o tema
     const { mode, toggleColorMode } = useContext(ColorModeContext);
     // Variável de estado para controlar o tema
-    const [temaDark, setTemaDark] = useState(false);
+    const [temaDark, setTemaDark] = useState(mode === "dark" ? true : false);
 
     useEffect(() => {
         UsuarioService.getUsuarioById(parseInt(localStorage.getItem("usuarioId"))).then((e) => {

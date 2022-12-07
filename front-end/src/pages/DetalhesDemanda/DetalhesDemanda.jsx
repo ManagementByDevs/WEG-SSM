@@ -38,6 +38,10 @@ const DetalhesDemanda = () => {
   }, [mode]);
 
   useEffect(() => {
+    location.state.beneficios.map((beneficio) => {
+      beneficio.visible = true;
+    });
+    console.log(location.state)
     setDados(location.state);
   }, []);
 
@@ -90,8 +94,8 @@ const DetalhesDemanda = () => {
 
     const aux = dados.beneficios.map((beneficio) => {
       return {
-        tipo: beneficio.tipo,
-        valorMensal: beneficio.valorMensal,
+        tipoBeneficio: beneficio.tipoBeneficio,
+        valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
         visible: beneficio.visible,
@@ -131,8 +135,8 @@ const DetalhesDemanda = () => {
   const alterarTextoBeneficio = (beneficio, index) => {
     let aux = dados.beneficios.map((beneficio) => {
       return {
-        tipo: beneficio.tipo,
-        valorMensal: beneficio.valorMensal,
+        tipoBeneficio: beneficio.tipoBeneficio,
+        valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
         visible: beneficio.visible,
@@ -146,8 +150,8 @@ const DetalhesDemanda = () => {
     console.log(dados);
     let aux = dados.beneficios.map((beneficio) => {
       return {
-        tipo: beneficio.tipo,
-        valorMensal: beneficio.valorMensal,
+        tipoBeneficio: beneficio.tipoBeneficio,
+        valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
         visible: beneficio.visible,
@@ -164,6 +168,10 @@ const DetalhesDemanda = () => {
   };
 
   useEffect(() => { }, []);
+
+  const aceitarDemanda = () => {
+    console.log("aceitar demanda");
+  }
 
   return (
     <FundoComHeader>
@@ -523,6 +531,7 @@ const DetalhesDemanda = () => {
                     fontSize: FontConfig.default,
                   }}
                   variant="contained"
+                  onClick={aceitarDemanda}
                 >
                   Aceitar
                 </Button>

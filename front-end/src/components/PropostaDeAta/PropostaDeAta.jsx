@@ -27,41 +27,7 @@ const PropostaDeAta = (props) => {
     )
 
     return (
-        <Box sx={containerProposta}>
-            {/* box para parte d cima da tela com o caminho e o ícone de baixar pdf */}
-            <Box className="flex w-full relative">
-                <Caminho />
-                <Box
-                    className=" absolute"
-                    sx={{ top: "10px", right: "20px", cursor: "pointer" }}
-                >
-                    <SaveAltOutlinedIcon
-                        fontSize="large"
-                        className="delay-120 hover:scale-110 duration-300"
-                        sx={{ color: "icon.main" }}
-                    />
-                </Box>
-            </Box>
-
-            {/* container principal onde estão as informacoes sobre a ata */}
-            <Box className="flex flex-col justify-center relative items-center mt-3">
-                <Box className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
-                    sx={{ width: "55rem" }}>
-                    <Typography>
-                        {dadosProposta.titulo}
-                    </Typography>
-                    
-                    <Typography>
-                        {dadosProposta.solicitante}
-                    </Typography>
-
-                    <Typography>
-                        {dadosProposta.objetivo}
-                    </Typography>
-                </Box>
-            </Box>
-
-        </Box>
+       <Caminho></Caminho>
     );
 }
 
