@@ -4,11 +4,12 @@ import { Box, Button } from "@mui/material";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 
 import Caminho from "../../components/Caminho/Caminho";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Escopo from "../../components/Escopo/Escopo";
+import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
@@ -49,8 +50,40 @@ const Escopos = () => {
     return (porcentagem) + "%";
   }
 
+  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
+  const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
+  const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
+
+  const openEscopo = (id) => {
+    console.log(id)
+  }
+
+  const abrirModalOrdenacao = () => {
+    setOpenOrdenacao(true);
+  };
+
+  const onDeleteClickEscopo = () => {
+    // delete escopo
+  };
+
+  const onTrashCanClick = (index) => {
+    setOpenModalConfirmacao(true);
+    console.log(index)
+  }
+
   return (
     <FundoComHeader>
+      {/* Modal de confirmação de exclusão de escopo */}
+      <ModalConfirmacao
+        textoModal={"descartarRascunho"}
+        onConfirmClick={onDeleteClickEscopo}
+        onCancelClick={() => {
+          setOpenModalConfirmacao(false);
+        }}
+        textoBotao={"sim"}
+        open={openModalConfirmacao}
+        setOpen={setOpenModalConfirmacao}
+      />
       <Box className="p-2">
         <Caminho />
         {/* Div pegando width inteira para fazer o espaçamento das bordas */}
@@ -84,27 +117,22 @@ const Escopos = () => {
 
                   {/* Ícone de ordenação */}
                   <SwapVertIcon
-                    onClick={() => { }}
+                    onClick={abrirModalOrdenacao}
                     className="cursor-pointer"
                     sx={{ color: "text.secondary" }}
                   />
+
+                  {/* Modal de ordenação */}
+                  {abrirOrdenacao && (
+                    <ModalOrdenacao
+                      ordenacao={ordenacao}
+                      setOrdenacao={setOrdenacao}
+                      open={abrirOrdenacao}
+                      setOpen={setOpenOrdenacao}
+                    />
+                  )}
                 </Box>
               </Box>
-
-              {/* Botão de filtrar */}
-              <Button
-                className="flex gap-1"
-                sx={{
-                  backgroundColor: "primary.main",
-                  color: "text.white",
-                  fontSize: FontConfig.default,
-                }}
-                onClick={() => { }}
-                variant="contained"
-                disableElevation
-              >
-                Filtrar <FilterAltOutlinedIcon />
-              </Button>
             </Box>
             <Box
               className="mt-6 grid gap-4"
@@ -113,7 +141,7 @@ const Escopos = () => {
               }}
             >
               {escopos?.map((escopo, index) => {
-                return <Escopo key={index} escopo={escopo} />;
+                return <Escopo key={index} escopo={escopo} index={index} onclick={openEscopo} handleDelete={onTrashCanClick} />;
               })}
             </Box>
           </Box>

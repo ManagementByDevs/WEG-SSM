@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import {
   Box,
@@ -17,11 +18,11 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceitarDemanda";
 
 import FontConfig from "../../service/FontConfig";
 
 import ColorModeContext from "../../service/TemaContext";
-import { useLocation } from "react-router-dom";
 
 const DetalhesDemanda = () => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -41,7 +42,7 @@ const DetalhesDemanda = () => {
     location.state.beneficios.map((beneficio) => {
       beneficio.visible = true;
     });
-    console.log(location.state)
+    console.log(location.state);
     setDados(location.state);
   }, []);
 
@@ -167,15 +168,30 @@ const DetalhesDemanda = () => {
     dados.beneficios[0].teste = "a;";
   };
 
-  useEffect(() => { }, []);
+  // Código do modal de aceitar demanda
+  const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
+
+  const handleClickOpenModalAceitarDemanda = () => {
+    setOpenModalAceitarDemanda(true);
+  };
+
+  const handleCloseModalAceitarDemanda = () => {
+    setOpenModalAceitarDemanda(false);
+  };
 
   const aceitarDemanda = () => {
     console.log("aceitar demanda");
-  }
+    handleClickOpenModalAceitarDemanda();
+  };
 
   return (
     <FundoComHeader>
       <Box className="p-2">
+        <ModalAceitarDemanda
+          open={openModalAceitarDemanda}
+          setOpen={setOpenModalAceitarDemanda}
+          handleClose={handleCloseModalAceitarDemanda}
+        />
         <ModalConfirmacao
           open={openModal}
           setOpen={setOpenModal}
@@ -283,6 +299,7 @@ const DetalhesDemanda = () => {
                       Beneficios:
                     </Typography>
                   </Box>
+                  {/* aqui */}
                   <Box className="mt-2 flex flex-col gap-5">
                     {dados.beneficios.map((beneficio, index) => {
                       if (beneficio.visible) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import { Box, Paper, Typography } from "@mui/material";
 
@@ -7,10 +7,23 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FontConfig from "../../service/FontConfig";
 
 const Escopo = (props) => {
+  const deleteIcon = useRef(null);
+
+  const handleClick = (number) => {
+    // if (e.target.id)
+    // console.log(e.target == deleteIcon.current);
+    if (number == 1) {
+      props.onclick(props.index);
+    } else {
+      props.handleDelete(props.index)
+    }
+  };
+
   return (
     <Paper
-      className="flex flex-col gap-1 border-t-4 pt-2 pb-3 px-6"
+      className="flex flex-col gap-1 border-t-4 pt-2 pb-3 px-6 cursor-pointer"
       sx={{ borderColor: "primary.main" }}
+      
     >
       {/* Container titulo e progressao */}
       <Box className="flex w-full gap-4 items-center">
@@ -18,6 +31,7 @@ const Escopo = (props) => {
           className="w-3/4 overflow-hidden text-ellipsis whitespace-nowrap"
           fontSize={FontConfig.veryBig}
           fontWeight="600"
+          onClick={(e) => handleClick(1)}
         >
           {props.escopo.titulo}
         </Typography>
@@ -30,10 +44,15 @@ const Escopo = (props) => {
           >
             <Box
               className="w-full rounded"
-              sx={{ backgroundColor: "primary.main", width: props.escopo.porcentagem }}
+              sx={{
+                backgroundColor: "primary.main",
+                width: props.escopo.porcentagem,
+              }}
             />
           </Box>
-          <Typography fontSize={FontConfig.medium}>{props.escopo.porcentagem}</Typography>
+          <Typography fontSize={FontConfig.medium}>
+            {props.escopo.porcentagem}
+          </Typography>
         </Box>
       </Box>
 
@@ -49,8 +68,10 @@ const Escopo = (props) => {
         </Box>
         <DeleteIcon
           className="absolute bottom-0 hover:cursor-pointer"
+          ref={deleteIcon}
           sx={{ right: "-10px" }}
           color="primary"
+          onClick={(e) => handleClick(2)}
         />
       </Box>
     </Paper>
