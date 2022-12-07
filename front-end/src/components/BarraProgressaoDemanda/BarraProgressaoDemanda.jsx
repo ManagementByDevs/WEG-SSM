@@ -18,7 +18,7 @@ import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao"
 
 import DemandaService from '../../service/demandaService';
 
-const BarraProgressao = (props) => {
+const BarraProgressaoDemanda = (props) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
@@ -213,4 +213,4 @@ const BarraProgressao = (props) => {
   );
 };
 
-export default BarraProgressao;
+export default BarraProgressaoDemanda;

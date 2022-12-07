@@ -95,17 +95,64 @@ const HomeGerencia = () => {
 
   const [pautas, setPautas] = useState([
     {
-      titulo: "Pauta 1"
+      numeroSequencial: "1/2022",
+      comissao: "Comissão 1",
+      analistaResponsavel: "Kenzo Sato",
+      data: "01/01/2022"
     },
     {
-      titulo: "Pauta 2"
+      numeroSequencial: "2/2022",
+      comissao: "Comissão 2",
+      analistaResponsavel: "Kenzo S",
+      data: "02/02/2022"
     },
     {
-      titulo: "Pauta 3"
+      numeroSequencial: "3/2022",
+      comissao: "Comissão 3",
+      analistaResponsavel: "Kenzo S",
+      data: "03/03/2022"
     },
     {
-      titulo: "Pauta 4"
-    }
+      numeroSequencial: "4/2022",
+      comissao: "Comissão 4",
+      analistaResponsavel: "Kenzo Sato tem nome muito grande mesmo até passa o componente",
+      data: "04/04/2022"
+    },
+  ]);
+
+  const [atas, setAtas] = useState([
+    {
+      numeroSequencial: "1/2022",
+      comissao: "Comissão 1",
+      analistaResponsavel: "Kenzo Sato",
+      data: "01/01/2022",
+      horaInicio: "10:00",
+      horaFim: "11:00",
+    },
+    {
+      numeroSequencial: "2/2022",
+      comissao: "Comissão 2",
+      analistaResponsavel: "Kenzo S",
+      data: "02/02/2022",
+      horaInicio: "10:00",
+      horaFim: "11:00",
+    },
+    {
+      numeroSequencial: "3/2022",
+      comissao: "Comissão 3",
+      analistaResponsavel: "Kenzo S",
+      data: "03/03/2022",
+      horaInicio: "10:00",
+      horaFim: "11:00",
+    },
+    {
+      numeroSequencial: "4/2022",
+      comissao: "Comissão 4",
+      analistaResponsavel: "Kenzo S",
+      data: "04/04/2022",
+      horaInicio: "10:00",
+      horaFim: "11:00",
+    },
   ]);
 
   // Função para alterar a aba selecionada
@@ -322,13 +369,11 @@ const HomeGerencia = () => {
                   sx={{
                     display: "grid",
                     gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
                   }}
                 >
                   {pautas?.map((pauta, index) => {
-                    return (
-                      <Pauta key={index} dados={pauta} tipo="pauta" />
-                    );
+                    return <Pauta key={index} dados={pauta} tipo="pauta" />;
                   })}
                 </Box>
               </TabPanel>
@@ -337,10 +382,12 @@ const HomeGerencia = () => {
                   sx={{
                     display: "grid",
                     gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
                   }}
                 >
-                  Atas
+                  {atas?.map((ata, index) => {
+                    return <Pauta key={index} dados={ata} tipo="ata" />;
+                  })}
                 </Box>
               </TabPanel>
             </Box>

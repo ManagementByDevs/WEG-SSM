@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 
 import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
 import Caminho from '../../components/Caminho/Caminho';
-import BarraProgressao from '../../components/BarraProgressao/BarraProgressao';
+import BarraProgressaoDemanda from '../../components/BarraProgressaoDemanda/BarraProgressaoDemanda';
 
 const CriarDemanda = () => {
     return (
@@ -13,7 +13,7 @@ const CriarDemanda = () => {
                 <Caminho />
                 <Box className='w-full flex justify-center'>
                     <Box className='w-5/6'>
-                        <BarraProgressao steps={['Dados', 'Benefícios', 'Anexos']} />
+                        <BarraProgressaoDemanda steps={['Dados', 'Benefícios', 'Anexos']} />
                     </Box>
                 </Box>
             </Box>
