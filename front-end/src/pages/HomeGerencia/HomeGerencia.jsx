@@ -43,14 +43,14 @@ const HomeGerencia = () => {
     },
     {
       titulo: "Demanda 3",
-      status: "Backlog",
+      status: "Assessment",
       solicitante: "Kenzo Sato",
       departamento: "TI",
       gerenteResponsavel: "João da Silva",
     },
     {
       titulo: "Demanda 4",
-      status: "Backlog",
+      status: "Assessment",
       solicitante: "Kenzo Sato",
       departamento: "TI",
       gerenteResponsavel: "João da Silva",
@@ -171,6 +171,11 @@ const HomeGerencia = () => {
     setOpenModalMotivo(true);
   };
 
+  // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
+  const verDemanda = (demanda) => {
+    navigate("/detalhes-demanda", { state: demanda });
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -249,7 +254,7 @@ const HomeGerencia = () => {
 
                     {/* Ícone de ordenação */}
                     <SwapVertIcon
-                      onClick={() => {}}
+                      onClick={() => { }}
                       className="cursor-pointer"
                       sx={{ color: "text.secondary" }}
                     />
@@ -285,7 +290,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => {}}
+                  onClick={() => { }}
                   variant="contained"
                   disableElevation
                 >
@@ -325,27 +330,42 @@ const HomeGerencia = () => {
                 >
                   {demandas?.map((demanda, index) => {
                     return (
-                      <DemandaGerencia
-                        key={index}
-                        dados={demanda}
-                        tipo="demanda"
-                      />
-                    );
+                      demanda.status === "Backlog" ?
+                        <DemandaGerencia
+                          key={index}
+                          dados={demanda}
+                          tipo="demanda"
+                        />
+                        : null
+                    )
                   })}
                 </Box>
               </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+              <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
                 <Box
                   sx={{
                     display: "grid",
                     gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(720px, 1fr))",
                   }}
                 >
-                  Criar propostas
+                  {demandas?.map((demanda, index) => {
+                    return (
+                      demanda.status === "Assessment" ?
+                        <DemandaGerencia
+                          key={index}
+                          dados={demanda}
+                          tipo="demanda"
+                          onClick={() => {
+                            verDemanda(demanda);
+                          }}
+                        />
+                        : null
+                    )
+                  })}
                 </Box>
               </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+              <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                 <Box
                   sx={{
                     display: "grid",
@@ -364,7 +384,7 @@ const HomeGerencia = () => {
                   })}
                 </Box>
               </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
+              <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
                 <Box
                   sx={{
                     display: "grid",
@@ -377,7 +397,7 @@ const HomeGerencia = () => {
                   })}
                 </Box>
               </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="5" onClick={() => {}}>
+              <TabPanel sx={{ padding: 0 }} value="5" onClick={() => { }}>
                 <Box
                   sx={{
                     display: "grid",
