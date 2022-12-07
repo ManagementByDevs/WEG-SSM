@@ -2,6 +2,7 @@ package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.EscopoDTO;
+import net.weg.wegssm.model.entities.Anexo;
 import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.EscopoService;
@@ -16,11 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/escopo")
 public class EscopoController {
 
@@ -86,6 +89,16 @@ public class EscopoController {
         return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findByUsuario(usuario));
     }
 
+    @PostMapping("/novo/{idUsuario}")
+    public ResponseEntity<Escopo> saveNovo(@PathVariable(value = "idUsuario") Long idUsuario) {
+        Usuario usuario = usuarioService.findById(idUsuario).get();
+
+        Escopo escopo = new Escopo();
+        escopo.setUsuario(usuario);
+        escopo.setUltimaModificacao(new Date());
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
+    }
+
     /**
      * Método POST para criar um escopo, podendo adicionar anexos caso necessário
      *
@@ -105,6 +118,32 @@ public class EscopoController {
         escopo.setAnexos(files);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(escopoService.save(escopo));
+    }
+
+    @PutMapping("/dados")
+    public ResponseEntity<Escopo> atualizarDados(@RequestBody Escopo escopo) {
+        if (!escopoService.existsById(escopo.getId())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<Anexo> listaAnexos = escopoService.findById(escopo.getId()).get().getAnexo();
+        escopo.setAnexo(listaAnexos);
+        escopo.setUltimaModificacao(new Date());
+
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
+    }
+
+    @PutMapping("/anexos/{escopo}")
+    public ResponseEntity<Escopo> atualizarAnexos(@RequestParam("anexos") List<MultipartFile> files, @PathVariable(value = "escopo") Long idEscopo) {
+
+        if (!escopoService.existsById(idEscopo)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        Escopo escopo = escopoService.findById(idEscopo).get();
+        escopo.setAnexos(files);
+        escopo.setUltimaModificacao(new Date());
+
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
     }
 
     /**

@@ -17,11 +17,14 @@ import Feedback from "../Feedback/Feedback";
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao"
 
 import DemandaService from '../../service/demandaService';
+import EscopoService from "../../service/escopoService";
 
 const BarraProgressaoDemanda = (props) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
+  const [ultimoEscopo, setUltimoEscopo] = useState(null);
+  var idEscopo = null;
 
   // Dados da página inicial da criação de demanda
   const [paginaDados, setPaginaDados] = useState({
@@ -38,6 +41,37 @@ const BarraProgressaoDemanda = (props) => {
   const [paginaArquivos, setPaginaArquivos] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!idEscopo) {
+      idEscopo = 1;
+      EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then((response) => {
+        idEscopo = response.id;
+        setUltimoEscopo({ id: idEscopo });
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (ultimoEscopo) {
+      setTimeout(() => {salvarEscopo(ultimoEscopo.id)}, 10000);
+    }
+  }, [ultimoEscopo]);
+
+  const salvarEscopo = (id) => {
+    setUltimoEscopo({
+      id: id,
+      titulo: paginaDados.titulo,
+      problema: paginaDados.problema,
+      proposta: paginaDados.proposta,
+      frequencia: paginaDados.frequencia,
+      beneficios: paginaBeneficios
+    })
+
+    EscopoService.salvarDados(ultimoEscopo).then((response) => {
+      console.log(response);
+    })
+  }
 
   const isStepOptional = (step) => {
     return false;

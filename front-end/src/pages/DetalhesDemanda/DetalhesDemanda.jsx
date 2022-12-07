@@ -167,6 +167,8 @@ const DetalhesDemanda = () => {
     dados.beneficios[0].teste = "a;";
   };
 
+  useEffect(() => { }, []);
+
   const aceitarDemanda = () => {
     console.log("aceitar demanda");
   }
