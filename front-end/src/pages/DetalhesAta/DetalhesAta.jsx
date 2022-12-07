@@ -15,6 +15,7 @@ import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 
 import FontConfig from "../../service/FontConfig";
+import { useEffect } from "react";
 
 const DetalhesAta = (props) => {
 
@@ -38,7 +39,7 @@ const DetalhesAta = (props) => {
 
     const listaProposta = [
         {
-            titulo: "Sistema de Gestão de Demandas",
+            titulo: "oiiii",
             problema:
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
             proposta:
@@ -50,10 +51,16 @@ const DetalhesAta = (props) => {
                     valor_mensal: "300,00",
                     moeda: "BR",
                     memoriaCalculo:
-                        "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
+                        "memória de cálculo",
                     visible: true,
                 },
             ],
+            periodoExecucao: "07/12/2022 à 08/12/2022",
+            paybackSimples: "10 meses",
+            ppm: "1234",
+            linkJira: "https://www.jira.com",
+            responsavelNegocio: "Matheus Franzener Hohmann",
+            area: "Weg Digital"
         },
         {
             titulo: "Sistema de Gestão de Demandas",
@@ -68,24 +75,59 @@ const DetalhesAta = (props) => {
                     valor_mensal: "300,00",
                     moeda: "BR",
                     memoriaCalculo:
-                        "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
+                        "memória de cálculo",
                     visible: true,
                 },
             ],
+            periodoExecucao: "07/12/2022 à 08/12/2022",
+            paybackSimples: "10 meses",
+            ppm: "1234",
+            linkJira: "https://www.jira.com",
+            responsavelNegocio: "Matheus Franzener Hohmann",
+            area: "Weg Digital"
         }
     ];
 
     // useState para mostar uma proposta
 
     const [proposta, setProposta] = useState(false);
+    const [dadosProposta, setDadosProposta] = useState(listaProposta[0]);
+    const [indexProposta, setIndexProposta] = useState(-1)
 
     const mostarProposta = () => {
         setProposta(true);
     };
 
     const voltarSumario = () => {
+        setIndexProposta(-1);
         setProposta(false);
     };
+
+    const onClickProposta = (index) => {
+        setIndexProposta(index);
+        setDadosProposta(listaProposta[index])
+        setProposta(true)
+    }
+
+    const voltar = () => {
+        if (indexProposta == 0) {
+            setProposta(false);
+        } else {
+            console.log("entrou")
+            setDadosProposta(listaProposta[indexProposta - 1])
+            setIndexProposta(indexProposta - 1)
+        }
+    }
+
+    const proximo = () => {
+        if (indexProposta == listaProposta.length - 1) {
+
+        } else {
+            setProposta(true);
+            setDadosProposta(listaProposta[indexProposta + 1]);
+            setIndexProposta(indexProposta + 1);
+        }
+    }
 
     return (
         // Começo com o header da página
@@ -168,26 +210,22 @@ const DetalhesAta = (props) => {
                                         gap: "1rem",
                                         gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
                                     }}>
-                                    <Typography fontSize={FontConfig.big}
-                                        sx={tituloProposta}>
-                                        Colocando um título bem grande para nao cabe
-                                    </Typography>
-                                    <Typography fontSize={FontConfig.big}
-                                        sx={tituloProposta}>
-                                        Colocando um título bem grande para nao cabe
-                                    </Typography>
-                                    <Typography fontSize={FontConfig.big}
-                                        sx={tituloProposta}>
-                                        Colocando um título bem grande para nao cabe
-                                    </Typography>
-                                    <Typography fontSize={FontConfig.big}
-                                        sx={tituloProposta}>
-                                        Colocando um título bem grande para nao cabe
-                                    </Typography>
+
+                                    {listaProposta.map((proposta, index) => {
+                                        return (
+                                            <Typography
+                                                fontSize={FontConfig.big}
+                                                sx={tituloProposta}
+                                                key={index}
+                                                onClick={() => onClickProposta(index)}>
+                                                {proposta.titulo}
+                                            </Typography>
+                                        )
+                                    })}
                                 </Box>
                             </Box>
                             :
-                            <PropostaDeAta/>
+                            <PropostaDeAta dadosProposta={dadosProposta} />
                         }
                     </Box>
 
@@ -202,6 +240,7 @@ const DetalhesAta = (props) => {
                                     fontSize: FontConfig.default,
                                 }}
                                 variant="contained"
+                                onClick={() => voltar()}
                             >
                                 Voltar
                             </Button>
@@ -223,7 +262,7 @@ const DetalhesAta = (props) => {
                                     fontSize: FontConfig.default,
                                 }}
                                 variant="contained"
-                                onClick={mostarProposta}
+                                onClick={proximo}
                             >
                                 Próximo
                             </Button>
