@@ -54,7 +54,7 @@ const BarraProgressaoDemanda = (props) => {
 
   useEffect(() => {
     if (ultimoEscopo) {
-      setTimeout(() => {salvarEscopo(ultimoEscopo.id)}, 10000);
+      setTimeout(() => {salvarEscopo(ultimoEscopo.id)}, 5000);
     }
   }, [ultimoEscopo]);
 
@@ -69,7 +69,7 @@ const BarraProgressaoDemanda = (props) => {
     })
 
     EscopoService.salvarDados(ultimoEscopo).then((response) => {
-      console.log(response);
+      //Confirmação de salvamento (se sobrar tempo)
     })
   }
 
