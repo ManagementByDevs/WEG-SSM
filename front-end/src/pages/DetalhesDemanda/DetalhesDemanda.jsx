@@ -163,7 +163,7 @@ const DetalhesDemanda = () => {
     dados.beneficios[0].teste = "a;";
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   return (
     <FundoComHeader>

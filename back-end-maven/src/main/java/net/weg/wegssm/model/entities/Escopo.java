@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,9 @@ public class Escopo {
 
     @Column(length = 30)
     private String frequencia;
+
+    @Column
+    private Date ultimaModificacao;
 
     // Foreign key
 
