@@ -36,9 +36,60 @@ const DetalhesAta = (props) => {
         marginTop: '1%'
     };
 
+    const listaProposta = [
+        {
+            titulo: "Sistema de Gestão de Demandas",
+            problema:
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            proposta:
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            frequencia: "Lorem Ipsum is simply dummy text of the printing and",
+            beneficios: [
+                {
+                    tipoBeneficio: "Real",
+                    valor_mensal: "300,00",
+                    moeda: "BR",
+                    memoriaCalculo:
+                        "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
+                    visible: true,
+                },
+            ],
+        },
+        {
+            titulo: "Sistema de Gestão de Demandas",
+            problema:
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            proposta:
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+            frequencia: "Lorem Ipsum is simply dummy text of the printing and",
+            beneficios: [
+                {
+                    tipoBeneficio: "Real",
+                    valor_mensal: "300,00",
+                    moeda: "BR",
+                    memoriaCalculo:
+                        "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
+                    visible: true,
+                },
+            ],
+        }
+    ];
+
+    // useState para mostar uma proposta
+
+    const [proposta, setProposta] = useState(false);
+
+    const mostarProposta = () => {
+        setProposta(true);
+    };
+
+    const voltarSumario = () => {
+        setProposta(false);
+    };
+
     return (
         // Começo com o header da página
-        
+
         <FundoComHeader>
             <Box className="p-2">
 
@@ -93,47 +144,51 @@ const DetalhesAta = (props) => {
                             </Typography>
                             <Divider sx={{ marginTop: '1%' }} />
                         </Box>
-                        <Box>
-                            <Typography
-                                fontSize={FontConfig.title}
-                                sx={{
-                                    fontWeight: "600",
-                                    cursor: "default",
-                                    inlineSize: "800px",
-                                    overflowWrap: "break-word",
-                                    textAlign: "center"
-                                }}
-                                color="primary.main"
-                            >
-                                Sumário
-                            </Typography>
-                            <Box
-                                sx={{
-                                    display: "grid",
-                                    textAlign: "center",
-                                    marginTop: "2%",
-                                    gap: "1rem",
-                                    gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
-                                }}>
-                                <Typography fontSize={FontConfig.big}
-                                    sx={tituloProposta}>
-                                    Colocando um título bem grande para nao cabe
+                        {!proposta ?
+
+                            <Box>
+                                <Typography
+                                    fontSize={FontConfig.title}
+                                    sx={{
+                                        fontWeight: "600",
+                                        cursor: "default",
+                                        inlineSize: "800px",
+                                        overflowWrap: "break-word",
+                                        textAlign: "center"
+                                    }}
+                                    color="primary.main"
+                                >
+                                    Sumário
                                 </Typography>
-                                <Typography fontSize={FontConfig.big}
-                                    sx={tituloProposta}>
-                                    Colocando um título bem grande para nao cabe
-                                </Typography>
-                                <Typography fontSize={FontConfig.big}
-                                    sx={tituloProposta}>
-                                    Colocando um título bem grande para nao cabe
-                                </Typography>
-                                <Typography fontSize={FontConfig.big}
-                                    sx={tituloProposta}>
-                                    Colocando um título bem grande para nao cabe
-                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: "grid",
+                                        textAlign: "center",
+                                        marginTop: "2%",
+                                        gap: "1rem",
+                                        gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
+                                    }}>
+                                    <Typography fontSize={FontConfig.big}
+                                        sx={tituloProposta}>
+                                        Colocando um título bem grande para nao cabe
+                                    </Typography>
+                                    <Typography fontSize={FontConfig.big}
+                                        sx={tituloProposta}>
+                                        Colocando um título bem grande para nao cabe
+                                    </Typography>
+                                    <Typography fontSize={FontConfig.big}
+                                        sx={tituloProposta}>
+                                        Colocando um título bem grande para nao cabe
+                                    </Typography>
+                                    <Typography fontSize={FontConfig.big}
+                                        sx={tituloProposta}>
+                                        Colocando um título bem grande para nao cabe
+                                    </Typography>
+                                </Box>
                             </Box>
-                        </Box>
-                        {/* <PropostaDeAta/> */}
+                            :
+                            <PropostaDeAta/>
+                        }
                     </Box>
 
                     {/* botões de navegação entre as proposta da ata */}
@@ -157,6 +212,7 @@ const DetalhesAta = (props) => {
                                     fontSize: FontConfig.default,
                                 }}
                                 variant="contained"
+                                onClick={voltarSumario}
                             >
                                 <OtherHousesIcon></OtherHousesIcon>
                             </Button>
@@ -167,6 +223,7 @@ const DetalhesAta = (props) => {
                                     fontSize: FontConfig.default,
                                 }}
                                 variant="contained"
+                                onClick={mostarProposta}
                             >
                                 Próximo
                             </Button>

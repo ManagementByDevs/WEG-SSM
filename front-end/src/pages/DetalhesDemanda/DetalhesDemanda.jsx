@@ -299,6 +299,7 @@ const DetalhesDemanda = () => {
                       Beneficios:
                     </Typography>
                   </Box>
+                  {/* aqui */}
                   <Box className="mt-2 flex flex-col gap-5">
                     {dados.beneficios.map((beneficio, index) => {
                       if (beneficio.visible) {
