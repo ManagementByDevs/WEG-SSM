@@ -133,7 +133,7 @@ const DetalhesAta = (props) => {
                                 </Typography>
                             </Box>
                         </Box>
-                        <PropostaDeAta/>
+                        {/* <PropostaDeAta/> */}
                     </Box>
 
                     {/* botões de navegação entre as proposta da ata */}
