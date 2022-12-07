@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { Box, Typography } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
+
+import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
+
+import { useLocation } from "react-router-dom";
+
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 const PropostaDeAta = (props) => {
 
@@ -12,6 +21,70 @@ const PropostaDeAta = (props) => {
         textAlign: "justify",
         color: "text.secondary",
         marginLeft: "30px"
+    };
+
+    // Lógica dos dados da proposta
+
+    const location = useLocation();
+
+    const [dados, setDados] = useState({
+        titulo: "Sistema de Gestão de Demandas",
+        problema:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+        proposta:
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
+        frequencia: "Lorem Ipsum is simply dummy text of the printing and",
+        beneficios: [
+            {
+                tipoBeneficio: "Real",
+                valor_mensal: "300,00",
+                moeda: "BR",
+                memoriaCalculo:
+                    "memória de cálculo",
+                visible: true,
+            },
+        ],
+    });
+
+    useEffect(() => {
+        setTituloDemanda(dados.titulo);
+        setProblema(dados.problema);
+        setProposta(dados.proposta);
+        setFrequencia(dados.frequencia);
+        setBeneficios(dados.beneficios);
+
+        const aux = dados.beneficios.map((beneficio) => {
+            return {
+                tipoBeneficio: beneficio.tipoBeneficio,
+                valor_mensal: beneficio.valor_mensal,
+                moeda: beneficio.moeda,
+                memoriaCalculo: beneficio.memoriaCalculo,
+                visible: beneficio.visible,
+            };
+        });
+        setBeneficios(aux);
+    }, [dados]);
+
+    const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
+    const [problema, setProblema] = useState(dados.problema);
+    const [proposta, setProposta] = useState(dados.proposta);
+    const [frequencia, setFrequencia] = useState(dados.frequencia);
+    const [beneficios, setBeneficios] = useState(null);
+
+    // useEffect(() => {
+    //     location.state.beneficios.map((beneficio) => {
+    //         beneficio.visible = true;
+    //     });
+    //     console.log(location.state)
+    //     setDados(location.state);
+    // }, []);
+
+    // select do parecer da comissao
+
+    const [parecer, setParecer] = useState('');
+
+    const mudarParecer = (event) => {
+        setParecer(event.target.value);
     };
 
     return (
@@ -24,7 +97,7 @@ const PropostaDeAta = (props) => {
             </Box>
 
             {/* Conteúdo da proposta, titulo, problema... */}
-            <Box>
+            <Box sx={{ marginTop: "2%" }}>
                 <Typography
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
@@ -33,11 +106,11 @@ const PropostaDeAta = (props) => {
                     Título da Proposta:
                 </Typography>
                 <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
-                    Aqui vai um exemplo de título
+                    {dados.titulo}
                 </Typography>
             </Box>
 
-            <Box>
+            <Box sx={{ marginTop: "2%" }}>
                 <Typography
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
@@ -46,11 +119,11 @@ const PropostaDeAta = (props) => {
                     Problema:
                 </Typography>
                 <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate cupiditate, ullam consequuntur recusandae consequatur natus obcaecati laborum officia cum, eum aliquam voluptatibus quas accusantium quo quis autem adipisci. Numquam, illum!
+                    {dados.problema}
                 </Typography>
             </Box>
 
-            <Box>
+            <Box sx={{ marginTop: "2%" }}>
                 <Typography
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
@@ -59,11 +132,11 @@ const PropostaDeAta = (props) => {
                     Proposta:
                 </Typography>
                 <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum quae illum quibusdam commodi sint numquam officiis molestiae ipsam minus, optio aliquam, quaerat nisi in nulla itaque, voluptatem vel voluptate illo.
+                    {dados.proposta}
                 </Typography>
             </Box>
 
-            <Box>
+            <Box sx={{ marginTop: "2%" }}>
                 <Typography
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
@@ -71,12 +144,23 @@ const PropostaDeAta = (props) => {
                 >
                     Benefícios:
                 </Typography>
-                <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
-                    Benefícios
-                </Typography>
+                <Box className="mt-2 flex flex-col gap-5">
+                    {dados.beneficios.map((beneficio, index) => {
+                        if (beneficio.visible) {
+                            return (
+                                <BeneficiosDetalheDemanda
+                                    editavel={false}
+                                    key={index}
+                                    index={index}
+                                    beneficio={beneficio}
+                                />
+                            );
+                        }
+                    })}
+                </Box>
             </Box>
 
-            <Box>
+            <Box sx={{ marginTop: "2%" }}>
                 <Typography
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
@@ -85,11 +169,11 @@ const PropostaDeAta = (props) => {
                     Frequência de Uso:
                 </Typography>
                 <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
-                    Frequência
+                    {dados.frequencia}
                 </Typography>
             </Box>
 
-            <Box>
+            <Box sx={{ marginTop: "2%" }}>
                 <Typography
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
@@ -100,6 +184,31 @@ const PropostaDeAta = (props) => {
                 <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
                     Anexos
                 </Typography>
+            </Box>
+
+            <Box sx={{ marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center" }}>
+                <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                >
+                    Parecer Comissão:
+                </Typography>
+                <FormControl sx={{ width: "12rem", marginLeft: "2%" }}>
+                    <Select
+                        value={parecer}
+                        onChange={mudarParecer}
+                        displayEmpty
+                        inputProps={{ 'aria-label': 'Without label' }}
+                    >
+                        <MenuItem value="">
+                            Aprovado
+                        </MenuItem>
+                        <MenuItem value={2}>Reprovado</MenuItem>
+                        <MenuItem value={3}>Mais Informações</MenuItem>
+                        <MenuItem value={4}>Business Case</MenuItem>
+                    </Select>
+                </FormControl>
             </Box>
         </Box>
     );
