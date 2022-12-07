@@ -10,7 +10,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const ModalConfirmacao = (props) => {
   // Como chamar:
-  // <ModalConfirmacao textoModal={"descartarRascunho"} onConfirmClick={'funcao executada ao confirmar'} onCancelClick={'funcao executada ao cancelar'} textoBotao={"sim"}/>
+  // <ModalConfirmacao open={boolean} setOpen={function} textoModal={"descartarRascunho"} onConfirmClick={'funcao executada ao confirmar'} onCancelClick={'funcao executada ao cancelar'} textoBotao={"sim"}/>
 
   // Variáveis de estilo para o componente
   const styleModal = {

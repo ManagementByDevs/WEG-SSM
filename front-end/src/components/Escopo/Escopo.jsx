@@ -48,9 +48,10 @@ const Escopo = (props) => {
           </Typography>
         </Box>
         <DeleteIcon
-          className="absolute bottom-0"
+          className="absolute bottom-0 cursor-pointer"
           sx={{ right: "-10px" }}
           color="primary"
+          onClick={() => props.handleDelete(props.index)}
         />
       </Box>
     </Paper>
