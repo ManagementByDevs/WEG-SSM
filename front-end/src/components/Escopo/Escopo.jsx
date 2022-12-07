@@ -48,7 +48,7 @@ const Escopo = (props) => {
           </Typography>
         </Box>
         <DeleteIcon
-          className="absolute bottom-0"
+          className="absolute bottom-0 hover:cursor-pointer"
           sx={{ right: "-10px" }}
           color="primary"
         />

@@ -54,7 +54,7 @@ const BarraProgressaoDemanda = (props) => {
 
   useEffect(() => {
     if (ultimoEscopo) {
-      setTimeout(() => {salvarEscopo(ultimoEscopo.id)}, 5000);
+      setTimeout(() => { salvarEscopo(ultimoEscopo.id) }, 5000);
     }
   }, [ultimoEscopo]);
 
@@ -65,12 +65,35 @@ const BarraProgressaoDemanda = (props) => {
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
-      beneficios: paginaBeneficios
+      beneficios: formatarBeneficios()
     })
 
-    EscopoService.salvarDados(ultimoEscopo).then((response) => {
-      //Confirmação de salvamento (se sobrar tempo)
-    })
+    try {
+      EscopoService.salvarDados(ultimoEscopo).then((response) => {
+        //Confirmação de salvamento (se sobrar tempo)
+        console.log(response);
+      })
+    } catch (error) {
+
+    }
+  }
+
+  const salvarAnexosEscopo = () => {
+    if (paginaArquivos.length > 0) {
+      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then((response) => {
+
+      })
+    } else {
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {
+
+      })
+    }
+  }
+
+  const excluirEscopo = () => {
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {
+
+    });
   }
 
   const isStepOptional = (step) => {
@@ -140,9 +163,7 @@ const BarraProgressaoDemanda = (props) => {
   const formatarBeneficios = () => {
     let listaNova = [];
     for (let beneficio of paginaBeneficios) {
-      delete beneficio.id;
-      delete beneficio.visible;
-      listaNova.push({ ...beneficio, tipoBeneficio: beneficio.tipoBeneficio.toUpperCase() });
+      listaNova.push({ memoriaCalculo: beneficio.memoriaCalculo, moeda: beneficio.moeda, valor_mensal: beneficio.valor_mensal, tipoBeneficio: beneficio.tipoBeneficio.toUpperCase() });
     }
     return listaNova;
   }
@@ -162,6 +183,7 @@ const BarraProgressaoDemanda = (props) => {
         }
 
         DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
+          excluirEscopo();
           navigate("/");
         })
       } else {
@@ -203,7 +225,7 @@ const BarraProgressaoDemanda = (props) => {
       </Stepper>
       {activeStep == 0 && <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />}
       {activeStep == 1 && <FormularioBeneficiosDemanda dados={paginaBeneficios} setDados={setPaginaBeneficios} />}
-      {activeStep == 2 && <FormularioAnexosDemanda dados={paginaArquivos} setDados={setPaginaArquivos} />}
+      {activeStep == 2 && <FormularioAnexosDemanda salvarEscopo={salvarAnexosEscopo} dados={paginaArquivos} setDados={setPaginaArquivos} />}
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
         <Button
           variant="outlined"

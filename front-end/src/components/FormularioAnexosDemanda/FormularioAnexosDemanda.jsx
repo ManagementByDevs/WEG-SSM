@@ -12,6 +12,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import FontConfig from '../../service/FontConfig'
+import EscopoService from '../../service/escopoService';
 
 const FormularioAnexosDemanda = (props) => {
     const dragArea = useRef(null);
@@ -31,6 +32,7 @@ const FormularioAnexosDemanda = (props) => {
 
     useEffect(() => {
         setMapAbleFileList(Array.from(props.dados));
+        props.salvarEscopo();
     }, [props.dados]);
 
     const drag = (event) => {

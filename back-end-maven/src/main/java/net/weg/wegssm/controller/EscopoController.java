@@ -3,12 +3,18 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.EscopoDTO;
 import net.weg.wegssm.model.entities.Anexo;
+import net.weg.wegssm.model.entities.Beneficio;
 import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Usuario;
+import net.weg.wegssm.model.service.BeneficioService;
 import net.weg.wegssm.model.service.EscopoService;
 import net.weg.wegssm.model.service.UsuarioService;
 import net.weg.wegssm.util.EscopoUtil;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +36,7 @@ public class EscopoController {
 
     private EscopoService escopoService;
     private UsuarioService usuarioService;
+    private BeneficioService beneficioService;
 
     /**
      * Método GET para listar todos os escopos
@@ -55,26 +63,13 @@ public class EscopoController {
         return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findById(id).get());
     }
 
-    /**
-     * Método GET para listar um escopo específico através do titulo
-     *
-     * @param titulo
-     * @return
-     */
-    @GetMapping("/titulo/{titulo}")
-    public ResponseEntity<Object> findByTitle(@PathVariable(value = "titulo") String titulo) {
-        if (!escopoService.existsByTitle(titulo)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este título.");
-        }
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findByTitle(titulo).get());
-    }
+//    @GetMapping("/page")
+//    public ResponseEntity<Page<Escopo>> findPage(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+//
+//    }
 
     /**
      * Método GET para listar um escopo específico através do id do usuário
-     *
-     * @param idUsuario
-     * @return
      */
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<Object> findByUsuario(@PathVariable(value = "idUsuario") Long idUsuario) {
@@ -82,11 +77,7 @@ public class EscopoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
         }
         Usuario usuario = usuarioService.findById(idUsuario).get();
-        if (!escopoService.existsByUsuario(usuario)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este usuário.");
-        }
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findByUsuario(usuario));
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuario(usuario));
     }
 
     @PostMapping("/novo/{idUsuario}")
@@ -125,8 +116,17 @@ public class EscopoController {
         if (!escopoService.existsById(escopo.getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+        Escopo escopoAntigo = escopoService.findById(escopo.getId()).get();
+        escopo.setUsuario(escopoAntigo.getUsuario());
+
+        ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
+        for (Beneficio beneficio : escopo.getBeneficios()) {
+            listaBeneficios.add(beneficioService.save(beneficio));
+        }
+
         List<Anexo> listaAnexos = escopoService.findById(escopo.getId()).get().getAnexo();
         escopo.setAnexo(listaAnexos);
+        escopo.setBeneficios(listaBeneficios);
         escopo.setUltimaModificacao(new Date());
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
@@ -138,9 +138,20 @@ public class EscopoController {
         if (!escopoService.existsById(idEscopo)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
         Escopo escopo = escopoService.findById(idEscopo).get();
         escopo.setAnexos(files);
+        escopo.setUltimaModificacao(new Date());
+
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
+    }
+
+    @PutMapping("/remover-anexos/{escopo}")
+    public ResponseEntity<Object> removerAnexos(@PathVariable(value = "escopo") Long idEscopo) {
+        if (!escopoService.existsById(idEscopo)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        Escopo escopo = escopoService.findById(idEscopo).get();
+        escopo.setAnexo(null);
         escopo.setUltimaModificacao(new Date());
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));

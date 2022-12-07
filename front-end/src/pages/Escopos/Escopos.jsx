@@ -11,42 +11,43 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Escopo from "../../components/Escopo/Escopo";
 
 import FontConfig from "../../service/FontConfig";
+import EscopoService from "../../service/escopoService";
 
 const Escopos = () => {
-  const [escopos, setEscopos] = useState([]);
+  const [escopos, setEscopos] = useState(null);
 
   useEffect(() => {
-    buscarEscopos();
+    if (!escopos) {
+      buscarEscopos();
+    }
   }, []);
 
   const buscarEscopos = () => {
-    setEscopos([
-      {
-        titulo: "Título do escopo que irá se tornar uma demanda posteriormente",
-        proposta:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat expedita nobis praesentium enim odit officiis voluptatem. Possimus odio quo consequatur et totam! Obcaecati neque, tempora sit est rerum molestias ex. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex voluptas nostrum hic dolores? Nostrum est totam quidem quod. Eaque consequatur iusto iure illo laboriosam quibusdam corrupti, ex necessitatibus sit perferendis?",
-        porcentagem: "75%",
-      },
-      {
-        titulo: "Título do escopo que irá se tornar uma demanda posteriormente",
-        proposta:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat expedita nobis praesentium enim odit officiis voluptatem. Possimus odio quo consequatur et totam! Obcaecati neque, tempora sit est rerum molestias ex. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex voluptas nostrum hic dolores? Nostrum est totam quidem quod. Eaque consequatur iusto iure illo laboriosam quibusdam corrupti, ex necessitatibus sit perferendis?",
-        porcentagem: "50%",
-      },
-      {
-        titulo: "Título do escopo que irá se tornar uma demanda posteriormente",
-        proposta:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat expedita nobis praesentium enim odit officiis voluptatem. Possimus odio quo consequatur et totam! Obcaecati neque, tempora sit est rerum molestias ex. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex voluptas nostrum hic dolores? Nostrum est totam quidem quod. Eaque consequatur iusto iure illo laboriosam quibusdam corrupti, ex necessitatibus sit perferendis?",
-        porcentagem: "25%",
-      },
-      {
-        titulo: "Título do escopo que irá se tornar uma demanda posteriormente",
-        proposta:
-          "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat expedita nobis praesentium enim odit officiis voluptatem. Possimus odio quo consequatur et totam! Obcaecati neque, tempora sit est rerum molestias ex. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex voluptas nostrum hic dolores? Nostrum est totam quidem quod. Eaque consequatur iusto iure illo laboriosam quibusdam corrupti, ex necessitatibus sit perferendis?",
-        porcentagem: "60%",
-      },
-    ]);
+    EscopoService.buscarPorUsuario(parseInt(localStorage.getItem("usuarioId"))).then((response) => {
+      let listaEscopos = [];
+      for (let escopo of response) {
+        listaEscopos.push({ titulo: escopo.titulo, problema: escopo.problema, proposta: escopo.proposta, frequencia: escopo.frequencia, beneficios: escopo.beneficios, anexos: escopo.anexo, ultimaModificacao: escopo.ultimaModificacao, porcentagem: calculaPorcentagem(escopo) });
+      }
+      setEscopos([...listaEscopos]);
+    })
   };
+
+  const calculaPorcentagem = (escopo) => {
+    let porcentagem = 0;
+    if (escopo.titulo != "" && escopo.titulo != null) {
+      porcentagem += 25;
+    }
+    if (escopo.problema != "" && escopo.problema != null) {
+      porcentagem += 25;
+    }
+    if (escopo.proposta != "" && escopo.proposta != null) {
+      porcentagem += 25;
+    }
+    if (escopo.frequencia != "" && escopo.frequencia != null) {
+      porcentagem += 25;
+    }
+    return (porcentagem) + "%";
+  }
 
   return (
     <FundoComHeader>
@@ -83,7 +84,7 @@ const Escopos = () => {
 
                   {/* Ícone de ordenação */}
                   <SwapVertIcon
-                    onClick={() => {}}
+                    onClick={() => { }}
                     className="cursor-pointer"
                     sx={{ color: "text.secondary" }}
                   />
@@ -98,7 +99,7 @@ const Escopos = () => {
                   color: "text.white",
                   fontSize: FontConfig.default,
                 }}
-                onClick={() => {}}
+                onClick={() => { }}
                 variant="contained"
                 disableElevation
               >
