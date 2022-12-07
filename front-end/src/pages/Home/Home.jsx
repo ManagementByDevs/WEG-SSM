@@ -370,7 +370,7 @@ const Home = () => {
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
         {listaDemandas.length > 18 && value == "1" ? (
-          <Paginacao tipo={value}/>
+          <Paginacao tipo={value} />
         ) : null}
       </Box>
     </FundoComHeader>
