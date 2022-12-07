@@ -53,6 +53,10 @@ const Escopos = () => {
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
 
+  const openEscopo = (id) => {
+    console.log(id)
+  }
+
   const abrirModalOrdenacao = () => {
     setOpenOrdenacao(true);
   };
@@ -136,7 +140,7 @@ const Escopos = () => {
               }}
             >
               {escopos?.map((escopo, index) => {
-                return <Escopo key={index} escopo={escopo} index={index} handleDelete={onTrashCanClick} />;
+                return <Escopo key={index} escopo={escopo} index={index} onclick={openEscopo} handleDelete={onTrashCanClick} />;
               })}
             </Box>
           </Box>
