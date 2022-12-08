@@ -50,7 +50,7 @@ const FormularioCustosProposta = () => {
               <Box
                 fontSize={FontConfig.medium}
                 color="text.primary"
-                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                 sx={{
                   width: "20%;",
                   height: "30px",
@@ -77,7 +77,7 @@ const FormularioCustosProposta = () => {
           <Box>
             <Box className="flex mb-2">
               <Typography sx={{ fontSize: FontConfig.big }}>
-                Código CLEITOM:
+                Código PPM:
               </Typography>
               <Typography
                 sx={{
@@ -93,14 +93,14 @@ const FormularioCustosProposta = () => {
               <Box
                 fontSize={FontConfig.medium}
                 color="text.primary"
-                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                 sx={{
                   width: "100%;",
                   height: "30px",
                   backgroundColor: "background.default",
                 }}
                 component="input"
-                placeholder="Qtd"
+                placeholder="Digite o código..."
               />
             </Box>
           </Box>
