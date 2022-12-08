@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, FormControl,Select, MenuItem, Typography } from "@mui/material";
+import { Box, FormControl, Select, MenuItem, Typography } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
 
@@ -77,7 +77,7 @@ const FormularioCustosProposta = () => {
           <Box>
             <Box className="flex mb-2">
               <Typography sx={{ fontSize: FontConfig.big }}>
-                Código PPM:
+                Código CLEITOM:
               </Typography>
               <Typography
                 sx={{
@@ -89,7 +89,20 @@ const FormularioCustosProposta = () => {
                 *
               </Typography>
             </Box>
-            <Box></Box>
+            <Box className="flex">
+              <Box
+                fontSize={FontConfig.medium}
+                color="text.primary"
+                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                sx={{
+                  width: "100%;",
+                  height: "30px",
+                  backgroundColor: "background.default",
+                }}
+                component="input"
+                placeholder="Qtd"
+              />
+            </Box>
           </Box>
         </Box>
         <Box></Box>

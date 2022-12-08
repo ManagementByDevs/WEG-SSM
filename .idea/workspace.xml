@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/WegSsmApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/WegSsmApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/EscopoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/EscopoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Escopo.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Escopo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/EscopoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/EscopoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/EscopoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/EscopoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/BarraProgressao/BarraProgressao.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BarraProgressao/BarraProgressao.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/PropostaDeAta/PropostaDeAta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/PropostaDeAta/PropostaDeAta.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/User-Modal/UserModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/User-Modal/UserModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemanda/DetalhesDemanda.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemanda/DetalhesDemanda.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/service/TemaProvedor.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TemaProvedor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/FormularioGeralProposta/FormularioGeralProposta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/FormularioGeralProposta/FormularioGeralProposta.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +34,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/back-end-maven" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -62,6 +54,19 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="weg-ssm" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="weg-ssm" />
+      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
