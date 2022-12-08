@@ -7,7 +7,7 @@ import Login from "./pages/Login/Login";
 import CriarDemanda from "./pages/CriarDemanda/CriarDemanda";
 import Notificacao from "./pages/Notificacao/Notificacao";
 import Chat from "./pages/Chat/Chat";
-import DetalhesDemanda from "./pages/DetalhesDemanda/DetalhesDemanda";
+import DetalhesDemandaPagina from "./pages/DetalhesDemandaPagina/DetalhesDemandaPagina";
 import HomeGerencia from "./pages/HomeGerencia/HomeGerencia";
 import Escopos from "./pages/Escopos/Escopos";
 import DetalhesAta from "./pages/DetalhesAta/DetalhesAta";
@@ -35,7 +35,7 @@ const App = () => {
           <Route path="/criar-proposta" element={<CriarProposta />} />
           <Route path="/notificacao" element={<Notificacao />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/detalhes-demanda" element={<DetalhesDemanda />} />
+          <Route path="/detalhes-demanda" element={<DetalhesDemandaPagina />} />
           <Route path="escopos" element={<Escopos />} />
           <Route path="detalhes-ata" element={<DetalhesAta />} />
         </Routes>

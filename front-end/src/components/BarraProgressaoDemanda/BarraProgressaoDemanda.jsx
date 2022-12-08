@@ -14,9 +14,9 @@ import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDem
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioAnexosDemanda from "../FormularioAnexosDemanda/FormularioAnexosDemanda";
 import Feedback from "../Feedback/Feedback";
-import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao"
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
-import DemandaService from '../../service/demandaService';
+import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
 
 const BarraProgressaoDemanda = (props) => {
@@ -45,16 +45,20 @@ const BarraProgressaoDemanda = (props) => {
   useEffect(() => {
     if (!idEscopo) {
       idEscopo = 1;
-      EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then((response) => {
-        idEscopo = response.id;
-        setUltimoEscopo({ id: idEscopo });
-      })
+      EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
+        (response) => {
+          idEscopo = response.id;
+          setUltimoEscopo({ id: idEscopo });
+        }
+      );
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (ultimoEscopo) {
-      setTimeout(() => { salvarEscopo(ultimoEscopo.id) }, 5000);
+      setTimeout(() => {
+        salvarEscopo(ultimoEscopo.id);
+      }, 5000);
     }
   }, [ultimoEscopo]);
 
@@ -65,36 +69,30 @@ const BarraProgressaoDemanda = (props) => {
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios()
-    })
+      beneficios: formatarBeneficios(),
+    });
 
     try {
       EscopoService.salvarDados(ultimoEscopo).then((response) => {
         //Confirmação de salvamento (se sobrar tempo)
         console.log(response);
-      })
-    } catch (error) {
-
-    }
-  }
+      });
+    } catch (error) {}
+  };
 
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
-      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then((response) => {
-
-      })
+      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
+        (response) => {}
+      );
     } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {
-
-      })
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
     }
-  }
+  };
 
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {
-
-    });
-  }
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+  };
 
   const isStepOptional = (step) => {
     return false;
@@ -157,35 +155,48 @@ const BarraProgressaoDemanda = (props) => {
 
   const abrirModalConfirmacao = () => {
     setOpenConfirmacao(true);
-  }
+  };
 
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
     let listaNova = [];
     for (let beneficio of paginaBeneficios) {
-      listaNova.push({ memoriaCalculo: beneficio.memoriaCalculo, moeda: beneficio.moeda, valor_mensal: beneficio.valor_mensal, tipoBeneficio: beneficio.tipoBeneficio.toUpperCase() });
+      listaNova.push({
+        memoriaCalculo: beneficio.memoriaCalculo,
+        moeda: beneficio.moeda,
+        valor_mensal: beneficio.valor_mensal,
+        tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
+      });
     }
     return listaNova;
-  }
+  };
 
   // UseEffect para criar a demanda usando os dados recebidos das páginas
   useEffect(() => {
     if (open) {
-
-      if (paginaDados.titulo != "" && paginaDados.problema && paginaDados.proposta && paginaDados.frequencia) {
+      if (
+        paginaDados.titulo != "" &&
+        paginaDados.problema &&
+        paginaDados.proposta &&
+        paginaDados.frequencia
+      ) {
         const demandaFinal = {
           titulo: paginaDados.titulo,
           problema: paginaDados.problema,
           proposta: paginaDados.proposta,
           frequencia: paginaDados.frequencia,
           beneficios: formatarBeneficios(),
-          status: "BACKLOG"
-        }
+          status: "BACKLOG",
+        };
 
-        DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
+        DemandaService.post(
+          demandaFinal,
+          paginaArquivos,
+          parseInt(localStorage.getItem("usuarioId"))
+        ).then((e) => {
           excluirEscopo();
           navigate("/");
-        })
+        });
       } else {
         // Fazer feedback de campos obrigatórios faltantes
       }
@@ -223,9 +234,22 @@ const BarraProgressaoDemanda = (props) => {
           );
         })}
       </Stepper>
-      {activeStep == 0 && <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />}
-      {activeStep == 1 && <FormularioBeneficiosDemanda dados={paginaBeneficios} setDados={setPaginaBeneficios} />}
-      {activeStep == 2 && <FormularioAnexosDemanda salvarEscopo={salvarAnexosEscopo} dados={paginaArquivos} setDados={setPaginaArquivos} />}
+      {activeStep == 0 && (
+        <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
+      )}
+      {activeStep == 1 && (
+        <FormularioBeneficiosDemanda
+          dados={paginaBeneficios}
+          setDados={setPaginaBeneficios}
+        />
+      )}
+      {activeStep == 2 && (
+        <FormularioAnexosDemanda
+          salvarEscopo={salvarAnexosEscopo}
+          dados={paginaArquivos}
+          setDados={setPaginaArquivos}
+        />
+      )}
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
         <Button
           variant="outlined"
