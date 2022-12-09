@@ -11,7 +11,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
+import FormularioPropostaProposta from "../FormularioPropostaProposta/FormularioPropostaProposta";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCustosProposta";
 import FormularioGeralProposta from "../FormularioGeralProposta/FormularioGeralProposta";
@@ -210,8 +210,8 @@ const BarraProgressaoProposta = (props) => {
           );
         })}
       </Stepper>
-      {activeStep == 0 && <DetalhesDemanda />}
-      {/* {activeStep == 1 && <FormularioBeneficiosDemanda dados={paginaBeneficios} setDados={setPaginaBeneficios} />} */}
+      {activeStep == 0 && <FormularioPropostaProposta />}
+      {activeStep == 1 && <FormularioPropostaProposta />}
       {activeStep == 2 && <FormularioCustosProposta />}
       {activeStep == 3 && <FormularioGeralProposta />}
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
