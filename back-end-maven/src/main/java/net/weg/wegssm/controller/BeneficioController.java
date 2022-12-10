@@ -16,6 +16,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/beneficio")
 public class BeneficioController {
 
@@ -23,8 +24,6 @@ public class BeneficioController {
 
     /**
      * Método GET para buscar todos os benefícios
-     *
-     * @return
      */
     @GetMapping
     public ResponseEntity<List<Beneficio>> findAll() {
@@ -33,9 +32,6 @@ public class BeneficioController {
 
     /**
      * Método GET para buscar um benefício específico através do id
-     *
-     * @param id
-     * @return
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -48,14 +44,9 @@ public class BeneficioController {
 
     /**
      * Método POST para salvar um benefício
-     * @param beneficioDTO
-     * @return
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid BeneficioDTO beneficioDTO) {
-        if (beneficioService.existsByTipoBeneficio(beneficioDTO.getTipoBeneficio())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Esse tipo de benefício já está em uso.");
-        }
 
         Beneficio beneficio = new Beneficio();
         BeanUtils.copyProperties(beneficioDTO, beneficio);
@@ -64,20 +55,31 @@ public class BeneficioController {
     }
 
     /**
+     * Método para atualizar um benefício já existente
+     * @param beneficio - Benefício atualizado
+     * @return - Resposta do banco de dados
+     */
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody Beneficio beneficio) {
+        if(!beneficioService.existsById(beneficio.getId())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Benefício não encontrado!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(beneficioService.save(beneficio));
+    }
+
+    /**
      * Método DELETE para remover um benefício
-     * @param id
-     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
         if (!beneficioService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrao nenhum benefício com este id.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum benefício com este id.");
         }
 
+        Beneficio beneficio = beneficioService.findById(id).get();
         beneficioService.deleteById(id);
-
-        return ResponseEntity.status(HttpStatus.OK).body("Benefício deletado com sucesso.");
+        return ResponseEntity.status(HttpStatus.OK).body(beneficio);
     }
 
 }

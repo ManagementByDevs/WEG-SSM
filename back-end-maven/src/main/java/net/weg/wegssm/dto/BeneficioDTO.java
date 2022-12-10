@@ -11,7 +11,6 @@ public class BeneficioDTO {
     private Double valor_mensal;
     private String moeda;
     private String memoriaCalculo;
-    private TipoBeneficio tipoBeneficio;
     private Demanda demanda;
 
 }

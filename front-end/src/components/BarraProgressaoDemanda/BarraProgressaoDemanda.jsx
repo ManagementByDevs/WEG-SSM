@@ -69,7 +69,6 @@ const BarraProgressaoDemanda = (props) => {
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios(),
     });
 
     try {
@@ -162,6 +161,7 @@ const BarraProgressaoDemanda = (props) => {
     let listaNova = [];
     for (let beneficio of paginaBeneficios) {
       listaNova.push({
+        id: beneficio.id,
         memoriaCalculo: beneficio.memoriaCalculo,
         moeda: beneficio.moeda,
         valor_mensal: beneficio.valor_mensal,

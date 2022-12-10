@@ -6,6 +6,7 @@ import { Box, Button } from '@mui/material'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 import Beneficios from '../Beneficios/Beneficios';
+import BeneficioService from '../../service/beneficioService';
 
 const FormularioBeneficiosDemanda = (props) => {
   // Lista de benefícios adicionadas
@@ -18,7 +19,9 @@ const FormularioBeneficiosDemanda = (props) => {
 
   // Adiciona um benefício na lista de benefícios
   function adicionarBeneficio() {
-    setBeneficios([...beneficios, { id: beneficios.length + 1, tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '', visible: true }]);
+    BeneficioService.post({ tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '' }).then((response) => {
+      setBeneficios([...beneficios, { id: response.id, tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '', visible: true }]);
+    })
   }
 
   // Função genérica para salvar os dados de um benefício
@@ -36,6 +39,7 @@ const FormularioBeneficiosDemanda = (props) => {
     setBeneficios(beneficios.map((beneficio, index) => {
       if (index === desiredIndex) {
         beneficio.visible = false;
+        BeneficioService.delete(beneficio.id).then((response) => {})
       }
       return beneficio;
     }));

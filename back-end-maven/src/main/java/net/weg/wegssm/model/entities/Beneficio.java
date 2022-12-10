@@ -19,7 +19,7 @@ public class Beneficio {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private TipoBeneficio tipoBeneficio;
 
     @Column

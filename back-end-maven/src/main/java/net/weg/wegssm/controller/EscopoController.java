@@ -119,14 +119,8 @@ public class EscopoController {
         Escopo escopoAntigo = escopoService.findById(escopo.getId()).get();
         escopo.setUsuario(escopoAntigo.getUsuario());
 
-        ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
-        for (Beneficio beneficio : escopo.getBeneficios()) {
-            listaBeneficios.add(beneficioService.save(beneficio));
-        }
-
         List<Anexo> listaAnexos = escopoService.findById(escopo.getId()).get().getAnexo();
         escopo.setAnexo(listaAnexos);
-        escopo.setBeneficios(listaBeneficios);
         escopo.setUltimaModificacao(new Date());
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
