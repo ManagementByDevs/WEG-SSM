@@ -133,7 +133,6 @@ const DetalhesDemanda = (props) => {
   };
 
   const deleteBeneficio = (indexBeneficio) => {
-    console.log(props.dados);
     let aux = props.dados.beneficios.map((beneficio) => {
       return {
         tipoBeneficio: beneficio.tipoBeneficio,

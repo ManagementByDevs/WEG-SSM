@@ -6,20 +6,30 @@ import {
   MenuItem,
   Typography,
   Divider,
-  Button,
 } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
 
 import ResponsavelNegocio from "../ResponsavelNegocio/ResponsavelNegocio";
-import InputComLabel from "../InputComLabel/InputComLabel";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const FormularioCustosProposta = () => {
   const [responsavelNegocio, setResponsavelNegocio] = useState([
-    { nome: "", area: "" },
+    { nome: "", area: "", visible: true },
   ]);
+
+  const deleteResponsavel = (indexResponsavel) => {
+    let aux = responsavelNegocio.map((responsavel) => {
+      return {
+        nome: responsavel.nome,
+        area: responsavel.area,
+        visible: responsavel.visible,
+      };
+    });
+    aux[indexResponsavel].visible = false;
+    setResponsavelNegocio(aux);
+  };
 
   return (
     <Box className="flex flex-col" sx={{ height: "45rem" }}>
@@ -211,10 +221,21 @@ const FormularioCustosProposta = () => {
             <AddCircleOutlineOutlinedIcon
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "primary.main", cursor: "pointer" }}
+              onClick={() => {
+                setResponsavelNegocio([
+                  ...responsavelNegocio,
+                  {
+                    responsavelNegocio: "",
+                    cargo: "",
+                    email: "",
+                    telefone: "",
+                  },
+                ]);
+              }}
             />
           </Box>
           {responsavelNegocio?.map((item, index) => (
-            <ResponsavelNegocio dados={item} index={index} />
+            <ResponsavelNegocio dados={item} index={index} deleteResponsavel={deleteResponsavel}/>
           ))}
         </Box>
         <Divider />
