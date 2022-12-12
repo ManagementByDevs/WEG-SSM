@@ -25,7 +25,7 @@ const FormularioPropostaProposta = (props) => {
   });
 
   return (
-    <Box sx={{ height: "42.5rem" }}>
+    <Box>
       <DetalhesDemanda dados={dados} setDados={setDados} edicao={props.editar} setEdicao={props.setEditar} salvarClick={props.salvarClick} setSalvarClick={props.setSalvarClick}/>
     </Box>
   );

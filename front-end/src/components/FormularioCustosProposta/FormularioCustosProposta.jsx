@@ -20,7 +20,7 @@ const FormularioCustosProposta = () => {
         },
       ]);
   return (
-    <Box className="flex flex-col" sx={{ height: '45rem' }}>
+    <Box className="flex flex-col">
       <Box className="flex w-full justify-end mt-10">
         <Button
           sx={{

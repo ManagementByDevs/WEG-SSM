@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 const FormularioEscopoProposta = () => {
   return (
-    <Box className="mt-8" sx={{ height: "45rem" }}>
+    <Box className="mt-8">
       <TextEditor />
     </Box>
   );

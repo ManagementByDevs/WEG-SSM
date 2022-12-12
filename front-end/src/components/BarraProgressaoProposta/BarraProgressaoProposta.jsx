@@ -210,12 +210,13 @@ const BarraProgressaoProposta = (props) => {
       {activeStep == 3 && <FormularioGeralProposta />}
       <Box
         sx={{
-          width: "100rem",
+          width: "80%",
           display: "flex",
           flexDirection: "row",
           pt: 2,
           position: "fixed",
           justifyContent: "space-between",
+          bottom: 50,
         }}
       >
         <Button
