@@ -4,10 +4,10 @@ import TextEditor from "../TextEditor/TextEditor";
 
 import { Box } from "@mui/material";
 
-const FormularioEscopoProposta = () => {
+const FormularioEscopoProposta = (props) => {
   return (
     <Box className="mt-8">
-      <TextEditor />
+      <TextEditor escopo={props.escopo} setEscopo={props.setEscopo} />
     </Box>
   );
 };

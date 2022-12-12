@@ -2,24 +2,24 @@ import React, { useRef, useState, useEffect } from "react";
 
 import JoditEditor from "jodit-react";
 
-const TextEditor = () => {
+const TextEditor = (props) => {
   const editor = useRef(null);
-  const [content, setContent] = useState("...");
 
   const config = {
     readonly: false, // all options from https://xdsoft.net/jodit/doc/
-    height: "100%",
+    height: '700',
+    placeholder: 'Digite aqui o escopo da proposta...',
   };
 
   const handleUpdate = (newContent) => {
-    setContent(newContent);
+    props.setEscopo(newContent);
   };
 
   return (
     <div className="App">
       <JoditEditor
         ref={editor}
-        value={content}
+        value={props.escopo}
         config={config}
         onBlur={handleUpdate}
       />
