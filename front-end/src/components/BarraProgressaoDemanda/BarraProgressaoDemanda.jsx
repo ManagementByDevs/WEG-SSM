@@ -44,14 +44,24 @@ const BarraProgressaoDemanda = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!idEscopo && !location.state) {
-      idEscopo = 1;
-      EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
-        (response) => {
-          idEscopo = response.id;
-          setUltimoEscopo({ id: idEscopo });
-        }
-      );
+    if (!idEscopo) {
+      if (!location.state) {
+        idEscopo = 1;
+        EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
+          (response) => {
+            idEscopo = response.id;
+            setUltimoEscopo({ id: idEscopo });
+          }
+        );
+      } else {
+        idEscopo = location.state;
+        EscopoService.buscarPorId(location.state).then((response) => {
+          setPaginaDados({ titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia });
+          receberBeneficios(response.beneficios);
+          receberArquivos(response.anexo);
+          setUltimoEscopo({id: response.id, titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia, beneficios: formatarBeneficios(response.beneficios) });
+        })
+      }
     }
   }, []);
 
@@ -63,6 +73,23 @@ const BarraProgressaoDemanda = (props) => {
     }
   }, [ultimoEscopo]);
 
+  const receberBeneficios = (beneficios) => {
+    let listaNova = [];
+    for (let beneficio of beneficios) {
+      let tipoNovo = beneficio.tipoBeneficio = beneficio.tipoBeneficio.charAt(0) + (beneficio.tipoBeneficio.substring(1, beneficio.tipoBeneficio.length)).toLowerCase();
+      listaNova.push({ id: beneficio.id, tipoBeneficio: tipoNovo, valor_mensal: beneficio.valor_mensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: true })
+    }
+    setPaginaBeneficios(listaNova);
+  }
+
+  const receberArquivos = (arquivos) => {
+    let listaArquivos = [];
+    for (let arquivo of arquivos) {
+      listaArquivos.push(new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }))
+    }
+    setPaginaArquivos(listaArquivos);
+  }
+
   const salvarEscopo = (id) => {
     setUltimoEscopo({
       id: id,
@@ -70,7 +97,7 @@ const BarraProgressaoDemanda = (props) => {
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios()
+      beneficios: formatarBeneficios(paginaBeneficios)
     });
 
     try {
@@ -158,9 +185,9 @@ const BarraProgressaoDemanda = (props) => {
   };
 
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
-  const formatarBeneficios = () => {
+  const formatarBeneficios = (listaBeneficios) => {
     let listaNova = [];
-    for (let beneficio of paginaBeneficios) {
+    for (let beneficio of listaBeneficios) {
       if (beneficio.visible) {
         listaNova.push({
           id: beneficio.id,
@@ -188,7 +215,7 @@ const BarraProgressaoDemanda = (props) => {
           problema: paginaDados.problema,
           proposta: paginaDados.proposta,
           frequencia: paginaDados.frequencia,
-          beneficios: formatarBeneficios(),
+          beneficios: formatarBeneficios(paginaBeneficios),
           status: "BACKLOG",
         };
 

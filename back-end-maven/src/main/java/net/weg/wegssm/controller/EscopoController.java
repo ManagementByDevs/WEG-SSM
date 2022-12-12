@@ -60,7 +60,7 @@ public class EscopoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
         }
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(escopoService.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findById(id).get());
     }
 
 //    @GetMapping("/page")

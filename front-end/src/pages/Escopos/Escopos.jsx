@@ -78,7 +78,7 @@ const Escopos = () => {
   }
 
   const openEscopo = (escopo) => {
-    navigate("/editar-escopo", { state: escopo });
+    navigate("/editar-escopo", { state: escopo.id });
   }
 
   const abrirModalOrdenacao = () => {

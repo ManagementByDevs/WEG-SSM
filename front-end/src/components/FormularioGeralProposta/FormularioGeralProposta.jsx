@@ -32,7 +32,7 @@ const FormularioCustosProposta = () => {
   };
 
   return (
-    <Box className="flex flex-col" sx={{ height: "45rem" }}>
+    <Box className="flex flex-col">
       <Box className="mt-12">
         <Box className="flex w-full justify-around mb-5 mt-10">
           <Box>
@@ -225,18 +225,25 @@ const FormularioCustosProposta = () => {
                 setResponsavelNegocio([
                   ...responsavelNegocio,
                   {
-                    responsavelNegocio: "",
-                    cargo: "",
-                    email: "",
-                    telefone: "",
+                    nome: "",
+                    area: "",
+                    visible: true,
                   },
                 ]);
               }}
             />
           </Box>
-          {responsavelNegocio?.map((item, index) => (
-            <ResponsavelNegocio dados={item} index={index} deleteResponsavel={deleteResponsavel}/>
-          ))}
+          {responsavelNegocio?.map((item, index) => {
+            if (item.visible) {
+              return (
+                <ResponsavelNegocio
+                  dados={item}
+                  index={index}
+                  deleteResponsavel={deleteResponsavel}
+                />
+              );
+            }
+          })}
         </Box>
         <Divider />
         <Box sx={{ marginLeft: "6.1rem" }}>
