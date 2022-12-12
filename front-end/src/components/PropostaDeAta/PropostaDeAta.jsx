@@ -9,9 +9,8 @@ import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/
 import { useLocation } from "react-router-dom";
 
 import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 const PropostaDeAta = (props) => {
 
@@ -59,10 +58,10 @@ const PropostaDeAta = (props) => {
 
 
     // função para aparecer a parte da comissão, caso seja uma porposta de uma pauta
-
-    const setPropostaPauta = () => {
+    
+    useEffect(() => {
         setPropostaDePauta(props.propostaPauta)
-    }
+    })
 
     // select do parecer da comissao
 
