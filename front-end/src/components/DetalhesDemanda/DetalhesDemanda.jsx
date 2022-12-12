@@ -181,12 +181,17 @@ const DetalhesDemanda = (props) => {
     handleClickOpenModalAceitarDemanda();
   };
 
+  const confirmAceitarDemanda = (dados) => {
+    console.log(dados);
+  }
+
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
         setOpen={setOpenModalAceitarDemanda}
         handleClose={handleCloseModalAceitarDemanda}
+        confirmAceitarDemanda={confirmAceitarDemanda}
       />
       <ModalConfirmacao
         open={openModal}
