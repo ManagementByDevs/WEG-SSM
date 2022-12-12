@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 
@@ -8,6 +8,7 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
+import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceitarDemanda";
 
 import ColorModeContext from "../../service/TemaContext";
 import { useLocation } from "react-router-dom";
@@ -175,6 +176,11 @@ const DetalhesDemandaPagina = () => {
   return (
     <FundoComHeader>
       <Box className="p-2">
+        <ModalAceitarDemanda
+          open={openModalAceitarDemanda}
+          setOpen={setOpenModalAceitarDemanda}
+          handleClose={handleCloseModalAceitarDemanda}
+        />
         <ModalConfirmacao
           open={openModal}
           setOpen={setOpenModal}
@@ -203,4 +209,4 @@ const DetalhesDemandaPagina = () => {
   );
 };
 
-export default DetalhesDemanda;
+export default DetalhesDemandaPagina;

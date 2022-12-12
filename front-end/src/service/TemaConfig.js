@@ -1,3 +1,5 @@
+import { ptBR } from '@mui/material/locale';
+
 const getDesignTokens = (mode) => ({
     palette: {
         mode,
@@ -82,7 +84,8 @@ const getDesignTokens = (mode) => ({
         button: {
             textTransform: 'none',
         }
-    }
+    },
+    ptBR
 });
 
 export default getDesignTokens;

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import {
   Box,
@@ -17,7 +18,6 @@ import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/
 import FontConfig from "../../service/FontConfig";
 
 import ColorModeContext from "../../service/TemaContext";
-import { useLocation } from "react-router-dom";
 
 const DetalhesDemanda = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -71,8 +71,8 @@ const DetalhesDemanda = (props) => {
     frequencia: "Lorem Ipsum is simply dummy text of the printing and",
     beneficios: [
       {
-        tipo: "Real",
-        valorMensal: "300,00",
+        tipoBeneficio: "Real",
+        valor_mensal: "300,00",
         moeda: "BR",
         memoriaCalculo:
           "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
