@@ -20,6 +20,7 @@ import {
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CloseIcon from '@mui/icons-material/Close';
+import AddIcon from '@mui/icons-material/Add';
 
 import FontConfig from "../../service/FontConfig";
 
@@ -127,12 +128,14 @@ const ModalAceitarDemanda = (props) => {
             setSecaoTI(newValue);
           }}
           fullWidth
-          renderInput={(params) => <TextField variant="standard" {...params} label="Movie" />}
+          renderInput={(params) => <TextField variant="standard" {...params} label="Seção TI" />}
         />
 
         <Box className="flex w-full justify-between items-center">
           <Typography sx={{ color: "text.primary", fontSize: FontConfig.big }}>Anexos</Typography>
-          <Button onClick={onAddFileButtonClick} variant="outlined" disableElevation sx={{ color: "text.primary", fontSize: FontConfig.default }}>Adicionar</Button>
+          <IconButton onClick={onAddFileButtonClick}>
+            <AddIcon />
+          </IconButton>
           <input onChange={onFilesSelect} ref={inputFile} type='file' multiple hidden />
         </Box>
 
