@@ -215,67 +215,53 @@ const BarraProgressaoProposta = (props) => {
           setSalvarClick={setSalvarClick}
         />
       )}
-      {activeStep == 1 && <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />}
+      {activeStep == 1 && (
+        <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />
+      )}
       {activeStep == 2 && <FormularioCustosProposta />}
       {activeStep == 3 && <FormularioGeralProposta />}
-      <Box
-        sx={{
-          width: "80%",
-          display: "flex",
-          flexDirection: "row",
-          pt: 2,
-          position: "fixed",
-          justifyContent: "space-between",
-          bottom: 50,
-        }}
+      <Button
+        variant="outlined"
+        color="tertiary"
+        disabled={activeStep === 0}
+        onClick={handleBack}
+        sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
+        disableElevation
       >
+        Voltar
+      </Button>
+      <Box sx={{ flex: "1 1 auto" }} />
+      {activeStep === steps.length - 1 ? (
         <Button
-          variant="outlined"
-          color="tertiary"
-          disabled={activeStep === 0}
-          onClick={handleBack}
-          sx={{ mr: 1 }}
+          color="primary"
+          variant="contained"
+          onClick={handleClick}
+          sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >
-          Voltar
+          Criar
         </Button>
-        <Box sx={{ flex: "1 1 auto" }} />
-        {isStepOptional(activeStep) && (
-          <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-            Pular
-          </Button>
-        )}
-
-        {activeStep === steps.length - 1 ? (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleClick}
-            disableElevation
-          >
-            Criar
-          </Button>
-        ) : editar ? (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={salvarAlteracoes}
-            disableElevation
-          >
-            Salvar
-          </Button>
-        ) : (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleNext}
-            disableElevation
-          >
-            Próximo
-          </Button>
-        )}
-        {/* {modalConfirmacao && <ModalConfirmacao open={modalConfirmacao} setOpen={setOpenConfirmacao} textoModal={"enviarDemanda"} textoBotao={"enviar"} />} */}
-      </Box>
+      ) : editar ? (
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={salvarAlteracoes}
+          sx={{ position: "fixed", bottom: 50, right: 160 }}
+          disableElevation
+        >
+          Salvar
+        </Button>
+      ) : (
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handleNext}
+          sx={{ position: "fixed", bottom: 50, right: 160 }}
+          disableElevation
+        >
+          Próximo
+        </Button>
+      )}
     </>
   );
 };
