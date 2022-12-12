@@ -92,7 +92,9 @@ const DetalhesAta = (props) => {
 
     const [proposta, setProposta] = useState(false);
     const [dadosProposta, setDadosProposta] = useState(listaProposta[0]);
-    const [indexProposta, setIndexProposta] = useState(-1)
+    const [indexProposta, setIndexProposta] = useState(-1);
+    const [botaoProximo, setBotaoProximo] = useState(true);
+    const [indexTitulo, setIndexTitulo] = useState(0);
 
     const mostarProposta = () => {
         setProposta(true);
@@ -113,7 +115,7 @@ const DetalhesAta = (props) => {
         if (indexProposta == 0) {
             setProposta(false);
         } else {
-            console.log("entrou")
+            setBotaoProximo(true);
             setDadosProposta(listaProposta[indexProposta - 1])
             setIndexProposta(indexProposta - 1)
         }
@@ -121,7 +123,7 @@ const DetalhesAta = (props) => {
 
     const proximo = () => {
         if (indexProposta == listaProposta.length - 1) {
-
+            setBotaoProximo(false);
         } else {
             setProposta(true);
             setDadosProposta(listaProposta[indexProposta + 1]);
@@ -186,6 +188,7 @@ const DetalhesAta = (props) => {
                             </Typography>
                             <Divider sx={{ marginTop: '1%' }} />
                         </Box>
+
                         {!proposta ?
 
                             <Box>
@@ -211,21 +214,26 @@ const DetalhesAta = (props) => {
                                         gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
                                     }}>
 
+
                                     {listaProposta.map((proposta, index) => {
                                         return (
                                             <Typography
                                                 fontSize={FontConfig.big}
                                                 sx={tituloProposta}
                                                 key={index}
+                                                setIndexTitulo={index}
                                                 onClick={() => onClickProposta(index)}>
-                                                {proposta.titulo}
+                                                {index} - {proposta.titulo}
                                             </Typography>
                                         )
                                     })}
                                 </Box>
                             </Box>
                             :
-                            <PropostaDeAta dadosProposta={dadosProposta} />
+                            <Box>
+                                <Typography sx={{marginBottom: '2%', display: 'flex', justifyContent: 'center'}} fontSize={FontConfig.title} fontWeight={650}>Proposta  {indexProposta}</Typography>
+                                <PropostaDeAta dadosProposta={dadosProposta} />
+                            </Box>
                         }
                     </Box>
 
@@ -264,7 +272,15 @@ const DetalhesAta = (props) => {
                                 variant="contained"
                                 onClick={proximo}
                             >
-                                Próximo
+                                {botaoProximo ?
+                                    <Typography>
+                                        Próximo
+                                    </Typography>
+                                    :
+                                    <Typography>
+                                        Criar
+                                    </Typography>
+                                }
                             </Button>
                         </Box>
                     </Box>
@@ -275,5 +291,3 @@ const DetalhesAta = (props) => {
 }
 
 export default DetalhesAta;
-
-

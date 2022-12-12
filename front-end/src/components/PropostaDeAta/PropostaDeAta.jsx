@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, TextareaAutosize } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
 
@@ -65,19 +65,19 @@ const PropostaDeAta = (props) => {
     // select do parecer da comissao
 
     const [parecer, setParecer] = useState('');
+    const [parecerComissao, setParecerComissao] = useState(false);
 
     const mudarParecer = (event) => {
+        if (event.target.value == 2) {
+            setParecerComissao(true);
+        } else {
+            setParecerComissao(false);
+        }
         setParecer(event.target.value);
     };
 
     return (
         <Box>
-            {/* início da proposta */}
-            <Box className="flex justify-center align-center">
-                <Typography fontSize={FontConfig.title} fontWeight={600}>
-                    Proposta 01
-                </Typography>
-            </Box>
 
             {/* Conteúdo da proposta, titulo, problema... */}
 
@@ -266,12 +266,23 @@ const PropostaDeAta = (props) => {
                         <MenuItem value="">
                             Aprovado
                         </MenuItem>
-                        <MenuItem value={2}>Reprovado</MenuItem>
-                        <MenuItem value={3}>Mais Informações</MenuItem>
-                        <MenuItem value={4}>Business Case</MenuItem>
+                        <MenuItem value={1}>Reprovado</MenuItem>
+                        <MenuItem value={2}>Mais Informações</MenuItem>
+                        <MenuItem value={3}>Business Case</MenuItem>
                     </Select>
                 </FormControl>
             </Box>
+
+            {parecerComissao ?
+                <Box sx={{ marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center" }}>
+                    <TextareaAutosize
+                        placeholder="Escreva a nova informação..."
+                        style={{ width: '70%', height: '8rem', overflow: 'auto', resize: 'none', textAlign: 'justify', padding: '3%', background: 'transparent', border: 'solid 1px', borderRadius: '5px' }}
+                    />
+                </Box>
+                :
+                <></>
+            }
         </Box>
     );
 }
