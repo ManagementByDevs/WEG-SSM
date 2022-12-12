@@ -15,6 +15,7 @@ import FormularioPropostaProposta from "../FormularioPropostaProposta/Formulario
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCustosProposta";
 import FormularioGeralProposta from "../FormularioGeralProposta/FormularioGeralProposta";
+import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEscopoProposta";
 
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
@@ -204,7 +205,7 @@ const BarraProgressaoProposta = (props) => {
         })}
       </Stepper>
       {activeStep == 0 && <FormularioPropostaProposta editar={editar} setEditar={setEditar} salvarClick={salvarClick} setSalvarClick={setSalvarClick}/>}
-      {activeStep == 1 && <FormularioPropostaProposta />}
+      {activeStep == 1 && <FormularioEscopoProposta />}
       {activeStep == 2 && <FormularioCustosProposta />}
       {activeStep == 3 && <FormularioGeralProposta />}
       <Box
