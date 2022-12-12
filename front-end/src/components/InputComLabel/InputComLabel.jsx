@@ -1,19 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Box, Typography } from "@mui/material";
-import { useEffect } from "react";
 
 const InputComLabel = (props) => {
-  const [texto, setTexto] = useState("");
-
-  useEffect(() => {
-    if(props.texto) {
-      setTexto(props.texto);
-    }
-  }, [])
 
   const save = (e) => {
-    setTexto(e.target.value);
     props.saveInputValue(e.target.value);
   };
 
@@ -38,14 +29,12 @@ const InputComLabel = (props) => {
       </Box>
       {props.component === "input" ? (
         <Box
-          value={texto}
+          value={props.texto}
           onChange={(e) => {
             save(e);
           }}
           fontSize={props.fontConfig}
-          className="outline-none border-solid border border-l-4 px-1 py-1.5 drop-shadow-sm rounded
-
-"
+          className="outline-none border-solid border border-l-4 px-1 py-1.5 drop-shadow-sm rounded"
           sx={{
             borderLeftColor: "primary.main",
             width: "100%;",
@@ -57,14 +46,12 @@ const InputComLabel = (props) => {
         />
       ) : (
         <Box
-          value={texto}
+          value={props.texto}
           onChange={(e) => {
             save(e);
           }}
           fontSize={props.fontConfig}
-          className="outline-none border-solid border border-l-4 px-1 py-1.5 drop-shadow-sm rounded
-
-            "
+          className="outline-none border-solid border border-l-4 px-1 py-1.5 drop-shadow-sm rounded"
           sx={{
             borderLeftColor: "primary.main",
             width: "100%;",

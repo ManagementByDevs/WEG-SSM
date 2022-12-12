@@ -10,6 +10,10 @@ class EscopoService {
         return (await axios.get(`/escopo/titulo/${usuarioId}/${titulo}/?${ordenacao}`, { headers: { "Content-Type": "application/json" } })).data;
     }
 
+    async buscarPorId(idEscopo) {
+        return (await axios.get(`/escopo/id/${idEscopo}`, { headers: { "Content-Type": "application/json" } })).data;
+    }
+
     async postNew(usuarioId) {
         return (await axios.post(`/escopo/novo/${usuarioId}`, { headers: { "Content-Type": "application/json" } })).data;
     }

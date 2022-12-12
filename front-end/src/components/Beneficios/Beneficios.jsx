@@ -73,7 +73,7 @@ const Beneficios = (props) => {
                             <Box className="flex items-end" sx={{ width: '92%', margin: '3% 1% 1% 1%' }}>
                                 <Box className="flex items-end" sx={{ width: '100%' }}>
                                     <Box sx={{ width: '40%' }}>
-                                        <InputComLabel saveInputValue={salvarValorMensal} component='input' label="Valor Mensal:" placeholder='Ex: 1000,00' fontConfig={FontConfig.default} value={dadosBeneficio.valor_mensal} onChange={handleChangeValor} />
+                                        <InputComLabel saveInputValue={salvarValorMensal} component='input' label="Valor Mensal:" placeholder='Ex: 1000,00' fontConfig={FontConfig.default} texto={dadosBeneficio.valor_mensal} onChange={handleChangeValor} />
                                     </Box>
                                     <FormControl variant="filled" sx={{ margin: '0 0 0 10px', minWidth: '95px' }}>
                                         <InputLabel id="demo-simple-select-label" sx={{ margin: '-10px 0 0 0' }}>Moeda</InputLabel>
@@ -97,7 +97,7 @@ const Beneficios = (props) => {
             {
                 dadosBeneficio.tipoBeneficio === "Real" || dadosBeneficio.tipoBeneficio === "Potencial" || dadosBeneficio.tipoBeneficio === "Qualitativo" ?
                     <Box className="flex items-end" sx={{ width: '65%' }}>
-                        <InputComLabel saveInputValue={salvarMemoriaCalculo} component='textarea' label="Memória de cálculo:" placeholder='Digite a memória de cálculo...' fontConfig={FontConfig.default} rows="4" sx={{ width: '100%' }} value={dadosBeneficio.memoriaCalculo} onChange={handleChangeMemoriaCalculo} />
+                        <InputComLabel saveInputValue={salvarMemoriaCalculo} component='textarea' label="Memória de cálculo:" placeholder='Digite a memória de cálculo...' fontConfig={FontConfig.default} rows="4" sx={{ width: '100%' }} texto={dadosBeneficio.memoriaCalculo} onChange={handleChangeMemoriaCalculo} />
                     </Box>
                     : null
             }
