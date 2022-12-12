@@ -11,6 +11,7 @@ import DetalhesDemandaPagina from "./pages/DetalhesDemandaPagina/DetalhesDemanda
 import HomeGerencia from "./pages/HomeGerencia/HomeGerencia";
 import Escopos from "./pages/Escopos/Escopos";
 import DetalhesAta from "./pages/DetalhesAta/DetalhesAta";
+import DetalhesPauta from "./pages/DetalhesPauta/DetalhesPauta";
 
 import ToggleColorMode from "./service/TemaProvedor";
 import CriarProposta from "./pages/CriarProposta/CriarProposta";
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/detalhes-demanda" element={<DetalhesDemandaPagina />} />
           <Route path="escopos" element={<Escopos />} />
           <Route path="detalhes-ata" element={<DetalhesAta />} />
+          <Route path="detalhes-pauta" element={<DetalhesPauta />} />
         </Routes>
       </Router>
     </ToggleColorMode>
