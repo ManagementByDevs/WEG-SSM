@@ -100,13 +100,10 @@ const DetalhesAta = (props) => {
 
     // funções para visualização das propostas, voltar, próximo...
 
-    const mostarProposta = () => {
-        setProposta(true);
-    };
-
     const voltarSumario = () => {
-        setIndexProposta(-1);
+        setBotaoProximo(true);
         setProposta(false);
+        setIndexProposta(-1);
     };
 
     const onClickProposta = (index) => {

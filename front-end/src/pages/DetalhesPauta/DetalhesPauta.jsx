@@ -14,6 +14,7 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 import FontConfig from "../../service/FontConfig";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const DetalhesPauta = (props) => {
 
@@ -97,15 +98,29 @@ const DetalhesPauta = (props) => {
     }
 
     const voltar = () => {
-
+        if (indexProposta == 0) {
+            setProposta(false);
+        } else {
+            setBotaoProximo(true);
+            setDadosProposta(listaProposta[indexProposta - 1])
+            setIndexProposta(indexProposta - 1)
+        }
     };
 
     const voltarSumario = () => {
-
+        setBotaoProximo(true);
+        setIndexProposta(-1);
+        setProposta(false);
     };
 
     const proximo = () => {
-
+        if (indexProposta == listaProposta.length - 1) {
+            setBotaoProximo(false);
+        } else {
+            setProposta(true);
+            setDadosProposta(listaProposta[indexProposta + 1]);
+            setIndexProposta(indexProposta + 1);
+        }
     };
 
     return (
@@ -194,7 +209,13 @@ const DetalhesPauta = (props) => {
                                     </Box>
                                 </Box>
                                 :
-                                <PropostaDeAta></PropostaDeAta>
+                                <Box>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Typography sx={{ marginBottom: '2%', display: 'flex', justifyContent: 'center' }} fontSize={FontConfig.title} fontWeight={650}>Proposta  {indexProposta}</Typography>
+                                        <DeleteIcon sx={{ position: 'absolute', left: '90%', width: '40px', height: '40px', color: 'primary.main', cursor: 'pointer' }}></DeleteIcon>
+                                    </Box>
+                                    <PropostaDeAta dadosProposta={dadosProposta} propostaPauta={false} />
+                                </Box>
                         }
 
                     </Box>
@@ -240,7 +261,7 @@ const DetalhesPauta = (props) => {
                                 </Typography>
                                 :
                                 <Typography>
-                                    Criar
+                                    Criar Ata
                                 </Typography>
                             }
                         </Button>

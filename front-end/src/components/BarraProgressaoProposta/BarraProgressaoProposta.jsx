@@ -116,12 +116,6 @@ const BarraProgressaoProposta = (props) => {
     });
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  const [demandaCriada, setDemandaCriada] = React.useState(false);
-
   const criarDemanda = () => {
     handleClick(true);
   };
@@ -135,10 +129,11 @@ const BarraProgressaoProposta = (props) => {
     setState({ open: true, ...newState });
   };
 
-  const [modalConfirmacao, setOpenConfirmacao] = useState(false);
+  const [salvarClick, setSalvarClick] = useState(false);
 
-  const abrirModalConfirmacao = () => {
-    setOpenConfirmacao(true);
+  const salvarAlteracoes = () => {
+    setSalvarClick(true);
+    setEditar(false);
   };
 
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
@@ -186,9 +181,7 @@ const BarraProgressaoProposta = (props) => {
     }
   }, [open]);
 
-  const handleClose = () => {
-    setState({ ...state, open: false });
-  };
+  const [editar, setEditar] = useState(false);
 
   return (
     <>
@@ -211,7 +204,7 @@ const BarraProgressaoProposta = (props) => {
           );
         })}
       </Stepper>
-      {activeStep == 0 && <FormularioPropostaProposta />}
+      {activeStep == 0 && <FormularioPropostaProposta editar={editar} setEditar={setEditar} salvarClick={salvarClick} setSalvarClick={setSalvarClick}/>}
       {activeStep == 1 && <FormularioEscopoProposta />}
       {activeStep == 2 && <FormularioCustosProposta />}
       {activeStep == 3 && <FormularioGeralProposta />}
@@ -246,10 +239,19 @@ const BarraProgressaoProposta = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={handleClick()}
+            onClick={handleClick}
             disableElevation
           >
             Criar
+          </Button>
+        ) : editar ? (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={salvarAlteracoes}
+            disableElevation
+          >
+            Salvar
           </Button>
         ) : (
           <Button
