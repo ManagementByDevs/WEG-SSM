@@ -3,9 +3,11 @@ import { Box, Typography } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
 
-const ResponsavelNegocio = () => {
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+
+const ResponsavelNegocio = (props) => {
   return (
-    <Box className="flex w-full mt-5 items-center">
+    <Box className="flex w-full mt-5 items-end">
       <Box className="flex flex-col">
         <Box className="flex mb-2">
           <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
@@ -68,6 +70,16 @@ const ResponsavelNegocio = () => {
           />
         </Box>
       </Box>
+      {props.index !== 0 && (
+        <Box className="flex ml-3">
+          <DeleteOutlineOutlinedIcon
+            className="delay-120 hover:scale-110 duration-300"
+            fontSize="large"
+            sx={{ color: "icon.main", cursor: "pointer" }}
+            onClick={() => props.deleteResponsavel(props.dados)}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
