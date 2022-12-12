@@ -39,15 +39,24 @@ const DetalhesDemanda = (props) => {
 
   const [openModal, setOpenModal] = useState(false);
 
+  useEffect(() => {
+    if (props.salvarClick) {
+      save();
+    }
+  }, [props.salvarClick]);
+
   function editarDemanda() {
     if (editar) {
       setOpenModal(true);
     } else {
       setEditar(true);
+      props.setEdicao(true);
     }
   }
 
   function resetarTextoInput() {
+    props.setEdicao(false);
+    props.setSalvarClick(false);
     setEditar(false);
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
@@ -85,7 +94,11 @@ const DetalhesDemanda = (props) => {
     });
   };
 
-  console.log(props.dados);
+  useEffect(() => {
+    if (!props.edicao) {
+      setEditar(false);
+    }
+  }, [props.edicao]);
 
   const [tituloDemanda, setTituloDemanda] = useState(props.dados.titulo);
   const [problema, setProblema] = useState(props.dados.problema);
@@ -136,12 +149,12 @@ const DetalhesDemanda = (props) => {
 
   // UseState do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
-  
+
   // Função para fechar o modal de confirmação
   const handleCloseModalAceitarDemanda = () => {
     setOpenModalAceitarDemanda(false);
   };
-  
+
   // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
     setOpenModalAceitarDemanda(true);
@@ -150,7 +163,7 @@ const DetalhesDemanda = (props) => {
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
     console.log(dados);
-  }
+  };
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">

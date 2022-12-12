@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 
 import DetalhesDemanda from "../DetalhesDemanda/DetalhesDemanda";
 
-const FormularioPropostaProposta = () => {
+const FormularioPropostaProposta = (props) => {
   const [dados, setDados] = useState({
     titulo: "Sistema de Gestão de Demandas",
     problema:
@@ -26,7 +26,7 @@ const FormularioPropostaProposta = () => {
 
   return (
     <Box sx={{ height: "42.5rem" }}>
-      <DetalhesDemanda dados={dados} setDados={setDados} />
+      <DetalhesDemanda dados={dados} setDados={setDados} edicao={props.editar} setEdicao={props.setEditar} salvarClick={props.salvarClick} setSalvarClick={props.setSalvarClick}/>
     </Box>
   );
 };
