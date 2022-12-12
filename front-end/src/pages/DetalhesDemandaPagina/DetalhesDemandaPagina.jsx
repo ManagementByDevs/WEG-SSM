@@ -158,7 +158,7 @@ const DetalhesDemandaPagina = () => {
   };
 
   // Código do modal de aceitar demanda
-  const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(true);
+  const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
 
   const handleClickOpenModalAceitarDemanda = () => {
     setOpenModalAceitarDemanda(true);
