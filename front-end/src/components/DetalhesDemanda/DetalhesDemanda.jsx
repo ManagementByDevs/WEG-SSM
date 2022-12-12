@@ -14,6 +14,8 @@ import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceitarDemanda";
 
 import FontConfig from "../../service/FontConfig";
 
@@ -144,24 +146,40 @@ const DetalhesDemanda = (props) => {
     props.dados.beneficios[0].teste = "a;";
   };
 
-  // Código do modal de aceitar demanda
+  // UseState do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
-
-  const handleClickOpenModalAceitarDemanda = () => {
-    setOpenModalAceitarDemanda(true);
-  };
-
+  
+  // Função para fechar o modal de confirmação
   const handleCloseModalAceitarDemanda = () => {
     setOpenModalAceitarDemanda(false);
   };
-
+  
+  // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
-    console.log("aceitar demanda");
-    handleClickOpenModalAceitarDemanda();
+    setOpenModalAceitarDemanda(true);
   };
+
+  // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
+  const confirmAceitarDemanda = (dados) => {
+    console.log(dados);
+  }
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
+      <ModalAceitarDemanda
+        open={openModalAceitarDemanda}
+        setOpen={setOpenModalAceitarDemanda}
+        handleClose={handleCloseModalAceitarDemanda}
+        confirmAceitarDemanda={confirmAceitarDemanda}
+      />
+      <ModalConfirmacao
+        open={openModal}
+        setOpen={setOpenModal}
+        onConfirmClick={resetarTextoInput}
+        onCancelClick={setEditar}
+        textoModal="cancelarEdicao"
+        textoBotao="sim"
+      />
       <Box
         className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
         sx={{ width: "55rem" }}
@@ -450,7 +468,7 @@ const DetalhesDemanda = (props) => {
         className="flex fixed justify-end"
         sx={{ width: "20rem", bottom: "20px", right: "20px" }}
       >
-        {props.botao == "sim" && editar && (
+        {props.botao == "sim" && !editar && (
           <Box className="flex justify-around w-full">
             <Button
               sx={{
