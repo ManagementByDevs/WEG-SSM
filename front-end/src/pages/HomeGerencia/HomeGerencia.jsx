@@ -182,7 +182,7 @@ const HomeGerencia = () => {
     <FundoComHeader>
       {/* Div container */}
       <Box
-        className="flex justify-center mt-12"
+        className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
         {/* Div container para o conteúdo da home */}

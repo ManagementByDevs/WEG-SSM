@@ -26,13 +26,13 @@ const Header = (props) => {
                 <Tooltip title="Página Inicial">
 
                     {/* Parte esquerda do header */}
-                    <div className='flex gap-3.5'>
+                    <div className='flex gap-2'>
 
                         {/* Grid da WEG */}
-                        <img className='h-12' src={Grid} />
+                        <img className='h-10' src={Grid} />
                         
                         {/* Logo da WEG SSM */}
-                        <img className='h-12' src={LogoBranca} />
+                        <img className='h-10' src={LogoBranca} />
                     </div>
                 </Tooltip>
             </Link>

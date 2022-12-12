@@ -17,10 +17,10 @@ module.exports = {
         '1/10': '9%',
       },
       height: {
-        'header-weg': '9vh'
+        'header-weg': '7.2vh'
       },
       minHeight: {
-        'header-weg': '5rem'
+        'header-weg': '4rem'
       }
     },
   },
