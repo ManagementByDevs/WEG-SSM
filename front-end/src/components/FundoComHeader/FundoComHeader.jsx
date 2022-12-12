@@ -12,7 +12,7 @@ const FundoComHeader = (props) => {
         height: "100vh",
         minHeight: "100vh",
         width: "100%",
-        overflow: "hidden",
+        overflowY: "hidden",
       }}
     >
       <Header />

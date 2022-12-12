@@ -15,6 +15,7 @@ import FormularioPropostaProposta from "../FormularioPropostaProposta/Formulario
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCustosProposta";
 import FormularioGeralProposta from "../FormularioGeralProposta/FormularioGeralProposta";
+import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEscopoProposta";
 
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
@@ -33,6 +34,9 @@ const BarraProgressaoProposta = (props) => {
     proposta: "",
     frequencia: "",
   });
+
+  // UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML)
+  const [escopo, setEscopo] = useState("");
 
   // Lista de benefícios definidos na segunda página da criação de demanda
   const [paginaBeneficios, setPaginaBeneficios] = useState([]);
@@ -115,12 +119,6 @@ const BarraProgressaoProposta = (props) => {
     });
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  const [demandaCriada, setDemandaCriada] = React.useState(false);
-
   const criarDemanda = () => {
     handleClick(true);
   };
@@ -134,10 +132,11 @@ const BarraProgressaoProposta = (props) => {
     setState({ open: true, ...newState });
   };
 
-  const [modalConfirmacao, setOpenConfirmacao] = useState(false);
+  const [salvarClick, setSalvarClick] = useState(false);
 
-  const abrirModalConfirmacao = () => {
-    setOpenConfirmacao(true);
+  const salvarAlteracoes = () => {
+    setSalvarClick(true);
+    setEditar(false);
   };
 
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
@@ -185,9 +184,7 @@ const BarraProgressaoProposta = (props) => {
     }
   }, [open]);
 
-  const handleClose = () => {
-    setState({ ...state, open: false });
-  };
+  const [editar, setEditar] = useState(false);
 
   return (
     <>
@@ -210,11 +207,27 @@ const BarraProgressaoProposta = (props) => {
           );
         })}
       </Stepper>
-      {activeStep == 0 && <FormularioPropostaProposta />}
-      {activeStep == 1 && <FormularioPropostaProposta />}
+      {activeStep == 0 && (
+        <FormularioPropostaProposta
+          editar={editar}
+          setEditar={setEditar}
+          salvarClick={salvarClick}
+          setSalvarClick={setSalvarClick}
+        />
+      )}
+      {activeStep == 1 && <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />}
       {activeStep == 2 && <FormularioCustosProposta />}
       {activeStep == 3 && <FormularioGeralProposta />}
-      <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+      <Box
+        sx={{
+          width: "100rem",
+          display: "flex",
+          flexDirection: "row",
+          pt: 2,
+          position: "fixed",
+          justifyContent: "space-between",
+        }}
+      >
         <Button
           variant="outlined"
           color="tertiary"
@@ -236,10 +249,19 @@ const BarraProgressaoProposta = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={handleClick()}
+            onClick={handleClick}
             disableElevation
           >
             Criar
+          </Button>
+        ) : editar ? (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={salvarAlteracoes}
+            disableElevation
+          >
+            Salvar
           </Button>
         ) : (
           <Button

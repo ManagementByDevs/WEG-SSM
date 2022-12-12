@@ -35,27 +35,28 @@ const DetalhesDemanda = (props) => {
     }
   }, [mode]);
 
-  // useEffect(() => {
-  //   location.state.beneficios.map((beneficio) => {
-  //     beneficio.visible = true;
-  //   });
-  //   console.log(location.state);
-  //   setDados(location.state);
-  // }, []);
-
   const [editar, setEditar] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    if (props.salvarClick) {
+      save();
+    }
+  }, [props.salvarClick]);
 
   function editarDemanda() {
     if (editar) {
       setOpenModal(true);
     } else {
       setEditar(true);
+      props.setEdicao(true);
     }
   }
 
   function resetarTextoInput() {
+    props.setEdicao(false);
+    props.setSalvarClick(false);
     setEditar(false);
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
@@ -93,6 +94,12 @@ const DetalhesDemanda = (props) => {
     });
   };
 
+  useEffect(() => {
+    if (!props.edicao) {
+      setEditar(false);
+    }
+  }, [props.edicao]);
+
   const [tituloDemanda, setTituloDemanda] = useState(props.dados.titulo);
   const [problema, setProblema] = useState(props.dados.problema);
   const [proposta, setProposta] = useState(props.dados.proposta);
@@ -126,7 +133,6 @@ const DetalhesDemanda = (props) => {
   };
 
   const deleteBeneficio = (indexBeneficio) => {
-    console.log(props.dados);
     let aux = props.dados.beneficios.map((beneficio) => {
       return {
         tipoBeneficio: beneficio.tipoBeneficio,
@@ -140,20 +146,14 @@ const DetalhesDemanda = (props) => {
     setBeneficios(aux);
   };
 
-  const showDetails = () => {
-    console.log("beneficios: ", beneficios);
-    console.log("beneficios fixo: ", props.dados.beneficios);
-    props.dados.beneficios[0].teste = "a;";
-  };
-
   // UseState do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
-  
+
   // Função para fechar o modal de confirmação
   const handleCloseModalAceitarDemanda = () => {
     setOpenModalAceitarDemanda(false);
   };
-  
+
   // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
     setOpenModalAceitarDemanda(true);
@@ -162,7 +162,7 @@ const DetalhesDemanda = (props) => {
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
     console.log(dados);
-  }
+  };
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
@@ -503,7 +503,7 @@ const DetalhesDemanda = (props) => {
             </Button>
           </Box>
         )}
-        {editar && (
+        {editar && props.salvar && (
           <Button
             sx={{
               backgroundColor: "primary.main",

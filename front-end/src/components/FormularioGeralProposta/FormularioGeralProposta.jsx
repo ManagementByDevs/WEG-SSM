@@ -6,25 +6,35 @@ import {
   MenuItem,
   Typography,
   Divider,
-  Button,
 } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
 
 import ResponsavelNegocio from "../ResponsavelNegocio/ResponsavelNegocio";
-import InputComLabel from "../InputComLabel/InputComLabel";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const FormularioCustosProposta = () => {
   const [responsavelNegocio, setResponsavelNegocio] = useState([
-    { nome: "", area: "" },
+    { nome: "", area: "", visible: true },
   ]);
+
+  const deleteResponsavel = (indexResponsavel) => {
+    let aux = responsavelNegocio.map((responsavel) => {
+      return {
+        nome: responsavel.nome,
+        area: responsavel.area,
+        visible: responsavel.visible,
+      };
+    });
+    aux[indexResponsavel].visible = false;
+    setResponsavelNegocio(aux);
+  };
 
   return (
     <Box className="flex flex-col" sx={{ height: "45rem" }}>
-      <Box className="mt-10">
-        <Box className="flex w-full justify-around mb-5">
+      <Box className="mt-12">
+        <Box className="flex w-full justify-around mb-5 mt-10">
           <Box>
             <Box className="flex mb-2">
               <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
@@ -154,39 +164,39 @@ const FormularioCustosProposta = () => {
             </Box>
           </Box>
         </Box>
-        <Divider />
-        <Box className="flex flex-col mt-8 mb-8" sx={{ marginLeft: "6.1rem" }}>
-          <Box className="flex flex-col">
-            <Box className="flex mb-2">
-              <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
-                Link do jira:
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: FontConfig.big,
-                  color: "red",
-                  marginLeft: "5px",
-                }}
-              >
-                *
-              </Typography>
-            </Box>
-            <Box sx={{ width: "30rem" }}>
-              <Box
-                fontSize={FontConfig.medium}
-                color="text.primary"
-                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
-                sx={{
-                  width: "100%;",
-                  height: "30px",
-                  backgroundColor: "background.default",
-                  borderLeftColor: "primary.main",
-                }}
-                component="input"
-                placeholder="Insira o link do jira..."
-              />
-            </Box>
+        <Box className="flex flex-col mb-8" sx={{ marginLeft: "6.1rem" }}>
+          <Box className="flex mb-2">
+            <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
+              Link do jira:
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: FontConfig.big,
+                color: "red",
+                marginLeft: "5px",
+              }}
+            >
+              *
+            </Typography>
           </Box>
+          <Box sx={{ width: "30rem" }}>
+            <Box
+              fontSize={FontConfig.medium}
+              color="text.primary"
+              className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+              sx={{
+                width: "100%;",
+                height: "30px",
+                backgroundColor: "background.default",
+                borderLeftColor: "primary.main",
+              }}
+              component="input"
+              placeholder="Insira o link do jira..."
+            />
+          </Box>
+        </Box>
+        <Divider />
+        <Box className="flex flex-col mb-8" sx={{ marginLeft: "6.1rem" }}>
           <Box className="flex mt-8 items-center">
             <Typography
               sx={{
@@ -211,10 +221,21 @@ const FormularioCustosProposta = () => {
             <AddCircleOutlineOutlinedIcon
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "primary.main", cursor: "pointer" }}
-              />
+              onClick={() => {
+                setResponsavelNegocio([
+                  ...responsavelNegocio,
+                  {
+                    responsavelNegocio: "",
+                    cargo: "",
+                    email: "",
+                    telefone: "",
+                  },
+                ]);
+              }}
+            />
           </Box>
           {responsavelNegocio?.map((item, index) => (
-            <ResponsavelNegocio dados={item} index={index} />
+            <ResponsavelNegocio dados={item} index={index} deleteResponsavel={deleteResponsavel}/>
           ))}
         </Box>
         <Divider />
