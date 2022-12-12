@@ -56,7 +56,7 @@ const Login = (props) => {
         // Div Principal com width preenchendo a tela
         <FundoComHeader>
             {/* Div principal abaixo do Header */}
-            <Paper sx={{ height: '91%' }} className='flex justify-center items-center'>
+            <Paper sx={{ height: '92.8%' }} className='flex justify-center items-center'>
                 {/* Div Principal com as opções do login */}
                 <Paper sx={{ backgroundColor: 'background.default', width: "28%", height: "63%" }} className=' '>
                     <div className='w-full h-full border-t-12 border-[#00579D] rounded shadow-2xl flex flex-col items-center justify-center space-y-10'>
