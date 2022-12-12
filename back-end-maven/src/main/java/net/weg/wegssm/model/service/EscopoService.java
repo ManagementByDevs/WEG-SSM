@@ -3,6 +3,8 @@ package net.weg.wegssm.model.service;
 import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.EscopoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +37,10 @@ public class EscopoService {
         return escopoRepository.findByUsuario(usuario);
     }
 
+    public Page<Escopo> findByUsuario(Usuario usuario, Pageable pageable) {
+        return escopoRepository.findByUsuario(usuario, pageable);
+    }
+
     public Boolean existsById(Long id) {
         return escopoRepository.existsById(id);
     }
@@ -55,4 +61,7 @@ public class EscopoService {
         escopoRepository.deleteById(id);
     }
 
+    public Page<Escopo> findByUsuarioAndTitulo(Usuario usuario, String titulo, Pageable pageable) {
+        return escopoRepository.findByUsuarioAndTituloContaining(usuario, titulo, pageable);
+    }
 }

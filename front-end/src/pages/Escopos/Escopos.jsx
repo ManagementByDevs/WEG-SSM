@@ -13,9 +13,18 @@ import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao
 
 import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
+import { useNavigate } from "react-router-dom";
 
 const Escopos = () => {
+
+  const navigate = useNavigate();
   const [escopos, setEscopos] = useState(null);
+  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
+  const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
+  const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
+
+  const [escopoSelecionado, setEscopoSelecionado] = useState(null);
+  const [inputPesquisa, setInputPesquisa] = useState('');
 
   useEffect(() => {
     if (!escopos) {
@@ -23,39 +32,53 @@ const Escopos = () => {
     }
   }, []);
 
+  useEffect(() => {
+    buscarEscopos();
+  }, [ordenacao])
+
   const buscarEscopos = () => {
-    EscopoService.buscarPorUsuario(parseInt(localStorage.getItem("usuarioId"))).then((response) => {
-      let listaEscopos = [];
-      for (let escopo of response) {
-        listaEscopos.push({ titulo: escopo.titulo, problema: escopo.problema, proposta: escopo.proposta, frequencia: escopo.frequencia, beneficios: escopo.beneficios, anexos: escopo.anexo, ultimaModificacao: escopo.ultimaModificacao, porcentagem: calculaPorcentagem(escopo) });
-      }
-      setEscopos([...listaEscopos]);
-    })
+    if (inputPesquisa == "") {
+      EscopoService.buscarPorUsuario(parseInt(localStorage.getItem("usuarioId")), ordenacao).then((response) => {
+        let listaEscopos = [];
+        for (let escopo of response.content) {
+          listaEscopos.push({ id: escopo.id, titulo: escopo.titulo, problema: escopo.problema, proposta: escopo.proposta, frequencia: escopo.frequencia, beneficios: escopo.beneficios, anexos: escopo.anexo, ultimaModificacao: escopo.ultimaModificacao, porcentagem: calculaPorcentagem(escopo) });
+        }
+        setEscopos([...listaEscopos]);
+      })
+    } else {
+      EscopoService.buscarPorTitulo(parseInt(localStorage.getItem("usuarioId")), inputPesquisa, ordenacao).then((response) => {
+        let listaEscopos = [];
+        for (let escopo of response.content) {
+          listaEscopos.push({ id: escopo.id, titulo: escopo.titulo, problema: escopo.problema, proposta: escopo.proposta, frequencia: escopo.frequencia, beneficios: escopo.beneficios, anexos: escopo.anexo, ultimaModificacao: escopo.ultimaModificacao, porcentagem: calculaPorcentagem(escopo) });
+        }
+        setEscopos([...listaEscopos]);
+      })
+    }
   };
+
+  const salvarPesquisa = (e) => {
+    setInputPesquisa(e.target.value);
+  }
 
   const calculaPorcentagem = (escopo) => {
     let porcentagem = 0;
     if (escopo.titulo != "" && escopo.titulo != null) {
-      porcentagem += 25;
+      porcentagem += 20;
     }
     if (escopo.problema != "" && escopo.problema != null) {
-      porcentagem += 25;
+      porcentagem += 20;
     }
     if (escopo.proposta != "" && escopo.proposta != null) {
-      porcentagem += 25;
+      porcentagem += 20;
     }
     if (escopo.frequencia != "" && escopo.frequencia != null) {
-      porcentagem += 25;
+      porcentagem += 20;
     }
     return (porcentagem) + "%";
   }
 
-  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
-  const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
-  const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
-
-  const openEscopo = (id) => {
-    console.log(id)
+  const openEscopo = (escopo) => {
+    navigate("/editar-escopo", { state: escopo });
   }
 
   const abrirModalOrdenacao = () => {
@@ -63,13 +86,22 @@ const Escopos = () => {
   };
 
   const onDeleteClickEscopo = () => {
-    // delete escopo
+    EscopoService.excluirEscopo(escopoSelecionado.id).then((response) => {
+      buscarEscopos();
+    })
   };
 
   const onTrashCanClick = (index) => {
     setOpenModalConfirmacao(true);
-    console.log(index)
+    setEscopoSelecionado(escopos[index]);
   }
+
+  // Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter"
+  const eventoTeclado = (e) => {
+    if (e.key == "Enter") {
+      buscarEscopos();
+    }
+  };
 
   return (
     <FundoComHeader>
@@ -108,12 +140,20 @@ const Escopos = () => {
                     fontSize: FontConfig.medium,
                   }}
                   placeholder="Pesquisar por título..."
+                  value={inputPesquisa}
+                  onChange={(e) => salvarPesquisa(e)}
+                  onKeyDown={(e) => {
+                    eventoTeclado(e);
+                  }}
+                  onBlur={() => {
+                    buscarEscopos();
+                  }}
                 />
 
                 {/* Container para os ícones */}
                 <Box className="flex gap-2">
                   {/* Ícone de pesquisa */}
-                  <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
+                  <SearchOutlinedIcon onClick={buscarEscopos} className="hover:cursor-pointer" sx={{ color: "text.secondary" }} />
 
                   {/* Ícone de ordenação */}
                   <SwapVertIcon
@@ -129,6 +169,7 @@ const Escopos = () => {
                       setOrdenacao={setOrdenacao}
                       open={abrirOrdenacao}
                       setOpen={setOpenOrdenacao}
+                      tipoComponente='escopo'
                     />
                   )}
                 </Box>
@@ -141,7 +182,7 @@ const Escopos = () => {
               }}
             >
               {escopos?.map((escopo, index) => {
-                return <Escopo key={index} escopo={escopo} index={index} onclick={openEscopo} handleDelete={onTrashCanClick} />;
+                return <Escopo key={index} escopo={escopo} index={index} onclick={() => { openEscopo(escopo) }} handleDelete={onTrashCanClick} />;
               })}
             </Box>
           </Box>

@@ -30,8 +30,8 @@ const DetalhesDemandaPagina = () => {
   useEffect(() => {
     location.state.beneficios.map((beneficio) => {
       beneficio.visible = true;
+      beneficio.tipoBeneficio = beneficio.tipoBeneficio.charAt(0) + (beneficio.tipoBeneficio.substring(1, beneficio.tipoBeneficio.length)).toLowerCase();
     });
-    console.log(location.state);
     setDados(location.state);
   }, []);
 
@@ -203,7 +203,7 @@ const DetalhesDemandaPagina = () => {
             />
           </Box>
         </Box>
-        <DetalhesDemanda botao="sim" />
+        <DetalhesDemanda dados={dados} setDados={setDados} botao="sim" />
       </Box>
     </FundoComHeader>
   );

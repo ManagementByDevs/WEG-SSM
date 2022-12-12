@@ -2,8 +2,12 @@ import axios from "./api";
 
 class EscopoService {
 
-    async buscarPorUsuario(usuarioId) {
-        return (await axios.get(`/escopo/usuario/${usuarioId}`, { headers: { "Content-Type": "application/json" } })).data;
+    async buscarPorUsuario(usuarioId, ordenacao) {
+        return (await axios.get(`/escopo/usuario/${usuarioId}/?${ordenacao}`, { headers: { "Content-Type": "application/json" } })).data;
+    }
+
+    async buscarPorTitulo(usuarioId, titulo, ordenacao) {
+        return (await axios.get(`/escopo/titulo/${usuarioId}/${titulo}/?${ordenacao}`, { headers: { "Content-Type": "application/json" } })).data;
     }
 
     async postNew(usuarioId) {

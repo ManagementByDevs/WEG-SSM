@@ -72,12 +72,18 @@ public class EscopoController {
      * Método GET para listar um escopo específico através do id do usuário
      */
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<Object> findByUsuario(@PathVariable(value = "idUsuario") Long idUsuario) {
-        if (!usuarioService.existsById(idUsuario)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
-        }
+    public ResponseEntity<Page<Escopo>> findByUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                      @PathVariable(value = "idUsuario") Long idUsuario) {
         Usuario usuario = usuarioService.findById(idUsuario).get();
-        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuario(usuario));
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuario(usuario, pageable));
+    }
+
+    @GetMapping("/titulo/{idUsuario}/{titulo}")
+    public ResponseEntity<Page<Escopo>> findByUsuarioAndTitulo(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                               @PathVariable(value = "idUsuario") Long idUsuario,
+                                                               @PathVariable(value = "titulo") String titulo) {
+        Usuario usuario = usuarioService.findById(idUsuario).get();
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuarioAndTitulo(usuario, titulo, pageable));
     }
 
     @PostMapping("/novo/{idUsuario}")
@@ -122,6 +128,10 @@ public class EscopoController {
         List<Anexo> listaAnexos = escopoService.findById(escopo.getId()).get().getAnexo();
         escopo.setAnexo(listaAnexos);
         escopo.setUltimaModificacao(new Date());
+
+        for (Beneficio beneficio : escopo.getBeneficios()) {
+            beneficioService.save(beneficio);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
     }
@@ -194,9 +204,6 @@ public class EscopoController {
 
     /**
      * Método DELETE para deletar um escopo do banco de dados
-     *
-     * @param id
-     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")

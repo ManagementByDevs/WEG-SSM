@@ -1,8 +1,9 @@
 package net.weg.wegssm.repository;
 
-import net.weg.wegssm.model.entities.Ata;
 import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Usuario;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -43,4 +44,8 @@ public interface EscopoRepository extends JpaRepository<Escopo, Long> {
      * @return
      */
     List<Object> findByUsuario(Usuario usuario);
+
+    Page<Escopo> findByUsuario(Usuario usuario, Pageable pageable);
+
+    Page<Escopo> findByUsuarioAndTituloContaining(Usuario usuario, String titulo, Pageable pageable);
 }
