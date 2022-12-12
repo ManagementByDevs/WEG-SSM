@@ -35,6 +35,9 @@ const BarraProgressaoProposta = (props) => {
     frequencia: "",
   });
 
+  // UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML)
+  const [escopo, setEscopo] = useState("");
+
   // Lista de benefícios definidos na segunda página da criação de demanda
   const [paginaBeneficios, setPaginaBeneficios] = useState([]);
 
@@ -204,8 +207,15 @@ const BarraProgressaoProposta = (props) => {
           );
         })}
       </Stepper>
-      {activeStep == 0 && <FormularioPropostaProposta editar={editar} setEditar={setEditar} salvarClick={salvarClick} setSalvarClick={setSalvarClick}/>}
-      {activeStep == 1 && <FormularioEscopoProposta />}
+      {activeStep == 0 && (
+        <FormularioPropostaProposta
+          editar={editar}
+          setEditar={setEditar}
+          salvarClick={salvarClick}
+          setSalvarClick={setSalvarClick}
+        />
+      )}
+      {activeStep == 1 && <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />}
       {activeStep == 2 && <FormularioCustosProposta />}
       {activeStep == 3 && <FormularioGeralProposta />}
       <Box
