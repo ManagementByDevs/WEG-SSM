@@ -54,7 +54,7 @@ const DetalhesDemandaPagina = () => {
             />
           </Box>
         </Box>
-        <DetalhesDemanda botao="sim" />
+        <DetalhesDemanda botao="sim" salvar="sim"/>
       </Box>
     </FundoComHeader>
   );

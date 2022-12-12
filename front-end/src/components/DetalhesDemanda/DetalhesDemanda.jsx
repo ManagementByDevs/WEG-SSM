@@ -159,12 +159,6 @@ const DetalhesDemanda = (props) => {
     setBeneficios(aux);
   };
 
-  const showDetails = () => {
-    console.log("beneficios: ", beneficios);
-    console.log("beneficios fixo: ", dados.beneficios);
-    dados.beneficios[0].teste = "a;";
-  };
-
   // Código do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
 
@@ -519,7 +513,7 @@ const DetalhesDemanda = (props) => {
             </Button>
           </Box>
         )}
-        {editar && (
+        {editar && props.salvar && (
           <Button
             sx={{
               backgroundColor: "primary.main",

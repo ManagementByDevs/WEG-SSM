@@ -214,7 +214,7 @@ const BarraProgressaoProposta = (props) => {
       {activeStep == 1 && <FormularioPropostaProposta />}
       {activeStep == 2 && <FormularioCustosProposta />}
       {activeStep == 3 && <FormularioGeralProposta />}
-      <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+      <Box sx={{ width: '100rem', display: "flex", flexDirection: "row", pt: 2, position: 'fixed', justifyContent: 'space-between' }}>
         <Button
           variant="outlined"
           color="tertiary"
