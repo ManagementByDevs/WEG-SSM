@@ -165,22 +165,20 @@ const DetalhesDemanda = (props) => {
     dados.beneficios[0].teste = "a;";
   };
 
-  // Código do modal de aceitar demanda
+  // UseState do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
-
-  const handleClickOpenModalAceitarDemanda = () => {
-    setOpenModalAceitarDemanda(true);
-  };
-
+  
+  // Função para fechar o modal de confirmação
   const handleCloseModalAceitarDemanda = () => {
     setOpenModalAceitarDemanda(false);
   };
-
+  
+  // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
-    console.log("aceitar demanda");
-    handleClickOpenModalAceitarDemanda();
+    setOpenModalAceitarDemanda(true);
   };
 
+  // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
     console.log(dados);
   }
