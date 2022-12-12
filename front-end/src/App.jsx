@@ -15,6 +15,7 @@ import DetalhesPauta from "./pages/DetalhesPauta/DetalhesPauta";
 
 import ToggleColorMode from "./service/TemaProvedor";
 import CriarProposta from "./pages/CriarProposta/CriarProposta";
+import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 
 const App = () => {
   useEffect(() => {
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/notificacao" element={<Notificacao />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/detalhes-demanda" element={<DetalhesDemandaPagina />} />
+          <Route path="/editar-escopo" element={<EditarEscopo />} />
           <Route path="escopos" element={<Escopos />} />
           <Route path="detalhes-ata" element={<DetalhesAta />} />
           <Route path="detalhes-pauta" element={<DetalhesPauta />} />

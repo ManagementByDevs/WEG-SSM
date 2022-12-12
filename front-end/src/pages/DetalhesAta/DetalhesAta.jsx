@@ -37,6 +37,8 @@ const DetalhesAta = (props) => {
         marginTop: '1%'
     };
 
+    // lista de propostas provisória só para ter a visualização na tela
+
     const listaProposta = [
         {
             titulo: "oiiii",
@@ -88,13 +90,15 @@ const DetalhesAta = (props) => {
         }
     ];
 
-    // useState para mostar uma proposta
+    // useState utilizados no componente
 
     const [proposta, setProposta] = useState(false);
     const [dadosProposta, setDadosProposta] = useState(listaProposta[0]);
     const [indexProposta, setIndexProposta] = useState(-1);
     const [botaoProximo, setBotaoProximo] = useState(true);
     const [indexTitulo, setIndexTitulo] = useState(0);
+
+    // funções para visualização das propostas, voltar, próximo...
 
     const mostarProposta = () => {
         setProposta(true);
@@ -133,7 +137,6 @@ const DetalhesAta = (props) => {
 
     return (
         // Começo com o header da página
-
         <FundoComHeader>
             <Box className="p-2">
 
@@ -189,6 +192,7 @@ const DetalhesAta = (props) => {
                             <Divider sx={{ marginTop: '1%' }} />
                         </Box>
 
+                        {/* Verificação para mostrar o sumário ou mostrar o componente da proposta */}
                         {!proposta ?
 
                             <Box>
@@ -232,7 +236,7 @@ const DetalhesAta = (props) => {
                             :
                             <Box>
                                 <Typography sx={{ marginBottom: '2%', display: 'flex', justifyContent: 'center' }} fontSize={FontConfig.title} fontWeight={650}>Proposta  {indexProposta}</Typography>
-                                <PropostaDeAta dadosProposta={dadosProposta} />
+                                <PropostaDeAta dadosProposta={dadosProposta} propostaPauta={true} />
                             </Box>
                         }
                     </Box>

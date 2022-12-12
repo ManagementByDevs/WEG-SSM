@@ -17,13 +17,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import zIndex from "@mui/material/styles/zIndex";
 
 const ModalOrdenacao = (props) => {
-  const style = {
+  let style = {
     position: "absolute",
     top: "23rem",
     left: "34.5%",
     transform: "translate(-50%, -50%)",
     width: 310,
-    height: 265,
     bgcolor: "background.paper",
     borderRadius: "5px",
     borderTop: "10px solid #00579D",
@@ -73,10 +72,18 @@ const ModalOrdenacao = (props) => {
     }
 
     if (checkDate[0]) {
-      textoNovo += "sort=data,asc&";
+      if(props.tipoComponente == 'escopo') {
+        textoNovo += "sort=ultimaModificacao,asc&";
+      } else {
+        textoNovo += "sort=data,asc&";
+      }
     }
     if (checkDate[1]) {
-      textoNovo += "sort=data,desc&";
+      if(props.tipoComponente == 'escopo') {
+        textoNovo += "sort=ultimaModificacao,desc&";
+      } else {
+        textoNovo += "sort=data,desc&";
+      }
     }
 
     if (textoNovo == "") {
@@ -188,35 +195,36 @@ const ModalOrdenacao = (props) => {
           </Grid>
 
           {/* Dupla de check do modal ordenação */}
-          <Grid container spacing={0}>
-            <Grid item xs={20}>
-              <FormGroup sx={cssSelect}>
-                <Typography
-                  sx={{
-                    color: "secundary.main",
-                    fontSize: FontConfig.big,
-                    fontWeight: "600",
-                  }}
-                >
-                  Score:
-                </Typography>
-                <div style={styleDiv}>
-                  <FormControlLabel
-                    checked={checkScore[1]}
-                    onChange={mudarCheck4}
-                    control={<Checkbox />}
-                    label="Maior Score"
-                  />
-                  <FormControlLabel
-                    checked={checkScore[0]}
-                    onChange={mudarCheck3}
-                    control={<Checkbox />}
-                    label="Menor Score"
-                  />
-                </div>
-              </FormGroup>
-            </Grid>
-          </Grid>
+          {props.tipoComponente != 'escopo' &&
+            <Grid container spacing={0}>
+              <Grid item xs={20}>
+                <FormGroup sx={cssSelect}>
+                  <Typography
+                    sx={{
+                      color: "secundary.main",
+                      fontSize: FontConfig.big,
+                      fontWeight: "600",
+                    }}
+                  >
+                    Score:
+                  </Typography>
+                  <div style={styleDiv}>
+                    <FormControlLabel
+                      checked={checkScore[1]}
+                      onChange={mudarCheck4}
+                      control={<Checkbox />}
+                      label="Maior Score"
+                    />
+                    <FormControlLabel
+                      checked={checkScore[0]}
+                      onChange={mudarCheck3}
+                      control={<Checkbox />}
+                      label="Menor Score"
+                    />
+                  </div>
+                </FormGroup>
+              </Grid>
+            </Grid>}
 
           {/* Dupla de check do modal ordenação */}
           <Grid container spacing={0}>

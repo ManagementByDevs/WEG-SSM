@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import {
   Box,
@@ -13,8 +14,6 @@ import {
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioAnexosDemanda from "../FormularioAnexosDemanda/FormularioAnexosDemanda";
-import Feedback from "../Feedback/Feedback";
-import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
@@ -24,6 +23,8 @@ const BarraProgressaoDemanda = (props) => {
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
+
+  const location = useLocation();
   var idEscopo = null;
 
   // Dados da página inicial da criação de demanda
@@ -43,7 +44,7 @@ const BarraProgressaoDemanda = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!idEscopo) {
+    if (!idEscopo && !location.state) {
       idEscopo = 1;
       EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
         (response) => {
@@ -69,28 +70,28 @@ const BarraProgressaoDemanda = (props) => {
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
+      beneficios: formatarBeneficios()
     });
 
     try {
       EscopoService.salvarDados(ultimoEscopo).then((response) => {
         //Confirmação de salvamento (se sobrar tempo)
-        console.log(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
       EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
-        (response) => {}
+        (response) => { }
       );
     } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
     }
   };
 
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };
 
   const isStepOptional = (step) => {
@@ -160,13 +161,15 @@ const BarraProgressaoDemanda = (props) => {
   const formatarBeneficios = () => {
     let listaNova = [];
     for (let beneficio of paginaBeneficios) {
-      listaNova.push({
-        id: beneficio.id,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        moeda: beneficio.moeda,
-        valor_mensal: beneficio.valor_mensal,
-        tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
-      });
+      if (beneficio.visible) {
+        listaNova.push({
+          id: beneficio.id,
+          memoriaCalculo: beneficio.memoriaCalculo,
+          moeda: beneficio.moeda,
+          valor_mensal: beneficio.valor_mensal,
+          tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
+        });
+      }
     }
     return listaNova;
   };

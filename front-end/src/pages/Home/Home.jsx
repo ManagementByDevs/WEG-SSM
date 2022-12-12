@@ -271,6 +271,7 @@ const Home = () => {
                         setOrdenacao={setOrdenacao}
                         open={abrirOrdenacao}
                         setOpen={setOpenOrdenacao}
+                        tipoComponente='demanda'
                       />
                     )}
                   </Box>

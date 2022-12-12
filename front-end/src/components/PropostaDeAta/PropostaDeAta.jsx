@@ -47,26 +47,30 @@ const PropostaDeAta = (props) => {
         });
         setBeneficios(aux);
     }, [dados]);
+    
+    // useState utilizado no componente
 
     const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
     const [problema, setProblema] = useState(dados.problema);
     const [proposta, setProposta] = useState(dados.proposta);
     const [frequencia, setFrequencia] = useState(dados.frequencia);
     const [beneficios, setBeneficios] = useState(null);
+    const [propostaDePauta, setPropostaDePauta] = useState(false);
 
-    // useEffect(() => {
-    //     location.state.beneficios.map((beneficio) => {
-    //         beneficio.visible = true;
-    //     });
-    //     console.log(location.state)
-    //     setDados(location.state);
-    // }, []);
+
+    // função para aparecer a parte da comissão, caso seja uma porposta de uma pauta
+
+    const setPropostaPauta = () => {
+        setPropostaDePauta(props.propostaPauta)
+    }
 
     // select do parecer da comissao
 
     const [parecer, setParecer] = useState('');
     const [parecerComissao, setParecerComissao] = useState(false);
 
+
+    // mudar o conteúdo do select e 
     const mudarParecer = (event) => {
         if (event.target.value == 2) {
             setParecerComissao(true);
@@ -248,37 +252,46 @@ const PropostaDeAta = (props) => {
                 </Typography>
             </Box>
 
-            <Box sx={{ marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <Typography
-                    fontSize={FontConfig.veryBig}
-                    fontWeight="600"
-                    color="text.primary"
-                >
-                    Parecer Comissão:
-                </Typography>
-                <FormControl sx={{ width: "12rem", marginLeft: "2%" }}>
-                    <Select
-                        value={parecer}
-                        onChange={mudarParecer}
-                        displayEmpty
-                        inputProps={{ 'aria-label': 'Without label' }}
-                    >
-                        <MenuItem value="">
-                            Aprovado
-                        </MenuItem>
-                        <MenuItem value={1}>Reprovado</MenuItem>
-                        <MenuItem value={2}>Mais Informações</MenuItem>
-                        <MenuItem value={3}>Business Case</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box>
+            {/* Parecer da comissão caso seja uma proposta de uma pauta */}
 
-            {parecerComissao ?
-                <Box sx={{ marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    <TextareaAutosize
-                        placeholder="Escreva a nova informação..."
-                        style={{ width: '70%', height: '8rem', overflow: 'auto', resize: 'none', textAlign: 'justify', padding: '3%', background: 'transparent', border: 'solid 1px', borderRadius: '5px' }}
-                    />
+            {propostaDePauta ?
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <Box sx={{ marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center" }}>
+                        <Typography
+                            fontSize={FontConfig.veryBig}
+                            fontWeight="600"
+                            color="text.primary"
+                        >
+                            Parecer Comissão:
+                        </Typography>
+                        <FormControl sx={{ width: "12rem", marginLeft: "2%" }}>
+                            <Select
+                                value={parecer}
+                                onChange={mudarParecer}
+                                displayEmpty
+                                inputProps={{ 'aria-label': 'Without label' }}
+                            >
+                                <MenuItem value="">
+                                    Aprovado
+                                </MenuItem>
+                                <MenuItem value={1}>Reprovado</MenuItem>
+                                <MenuItem value={2}>Mais Informações</MenuItem>
+                                <MenuItem value={3}>Business Case</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+
+                    {parecerComissao ?
+                        <Box sx={{ marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center" }}>
+                            <TextareaAutosize
+                                placeholder="Escreva a nova informação..."
+                                style={{ width: '70%', height: '8rem', overflow: 'auto', resize: 'none', textAlign: 'justify', padding: '3%', background: 'transparent', border: 'solid 1px', borderRadius: '5px' }}
+                            />
+                        </Box>
+                        :
+                        <></>
+                    }
+
                 </Box>
                 :
                 <></>

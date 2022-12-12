@@ -35,14 +35,6 @@ const DetalhesDemanda = (props) => {
     }
   }, [mode]);
 
-  // useEffect(() => {
-  //   location.state.beneficios.map((beneficio) => {
-  //     beneficio.visible = true;
-  //   });
-  //   console.log(location.state);
-  //   setDados(location.state);
-  // }, []);
-
   const [editar, setEditar] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
@@ -57,40 +49,21 @@ const DetalhesDemanda = (props) => {
 
   function resetarTextoInput() {
     setEditar(false);
-    setTituloDemanda(dados.titulo);
-    setProblema(dados.problema);
-    setProposta(dados.proposta);
-    setFrequencia(dados.frequencia);
-    setBeneficios(dados.beneficios);
+    setTituloDemanda(props.dados.titulo);
+    setProblema(props.dados.problema);
+    setProposta(props.dados.proposta);
+    setFrequencia(props.dados.frequencia);
+    setBeneficios(props.dados.beneficios);
   }
 
-  const [dados, setDados] = useState({
-    titulo: "Sistema de Gestão de Demandas",
-    problema:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-    proposta:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-    frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-    beneficios: [
-      {
-        tipoBeneficio: "Real",
-        valor_mensal: "300,00",
-        moeda: "BR",
-        memoriaCalculo:
-          "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
-        visible: true,
-      },
-    ],
-  });
-
   useEffect(() => {
-    setTituloDemanda(dados.titulo);
-    setProblema(dados.problema);
-    setProposta(dados.proposta);
-    setFrequencia(dados.frequencia);
-    setBeneficios(dados.beneficios);
+    setTituloDemanda(props.dados.titulo);
+    setProblema(props.dados.problema);
+    setProposta(props.dados.proposta);
+    setFrequencia(props.dados.frequencia);
+    setBeneficios(props.dados.beneficios);
 
-    const aux = dados.beneficios.map((beneficio) => {
+    const aux = props.dados.beneficios.map((beneficio) => {
       return {
         tipoBeneficio: beneficio.tipoBeneficio,
         valor_mensal: beneficio.valor_mensal,
@@ -100,10 +73,10 @@ const DetalhesDemanda = (props) => {
       };
     });
     setBeneficios(aux);
-  }, [dados]);
+  }, [props.dados]);
 
   const save = () => {
-    setDados({
+    props.setDados({
       titulo: tituloDemanda,
       problema: problema,
       proposta: proposta,
@@ -112,10 +85,12 @@ const DetalhesDemanda = (props) => {
     });
   };
 
-  const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
-  const [problema, setProblema] = useState(dados.problema);
-  const [proposta, setProposta] = useState(dados.proposta);
-  const [frequencia, setFrequencia] = useState(dados.frequencia);
+  console.log(props.dados);
+
+  const [tituloDemanda, setTituloDemanda] = useState(props.dados.titulo);
+  const [problema, setProblema] = useState(props.dados.problema);
+  const [proposta, setProposta] = useState(props.dados.proposta);
+  const [frequencia, setFrequencia] = useState(props.dados.frequencia);
   const [beneficios, setBeneficios] = useState(null);
 
   const alterarTexto = (e, input) => {
@@ -131,7 +106,7 @@ const DetalhesDemanda = (props) => {
   };
 
   const alterarTextoBeneficio = (beneficio, index) => {
-    let aux = dados.beneficios.map((beneficio) => {
+    let aux = props.dados.beneficios.map((beneficio) => {
       return {
         tipoBeneficio: beneficio.tipoBeneficio,
         valor_mensal: beneficio.valor_mensal,
@@ -145,8 +120,8 @@ const DetalhesDemanda = (props) => {
   };
 
   const deleteBeneficio = (indexBeneficio) => {
-    console.log(dados);
-    let aux = dados.beneficios.map((beneficio) => {
+    console.log(props.dados);
+    let aux = props.dados.beneficios.map((beneficio) => {
       return {
         tipoBeneficio: beneficio.tipoBeneficio,
         valor_mensal: beneficio.valor_mensal,
@@ -159,21 +134,23 @@ const DetalhesDemanda = (props) => {
     setBeneficios(aux);
   };
 
-  // Código do modal de aceitar demanda
+  // UseState do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
-
-  const handleClickOpenModalAceitarDemanda = () => {
-    setOpenModalAceitarDemanda(true);
-  };
-
+  
+  // Função para fechar o modal de confirmação
   const handleCloseModalAceitarDemanda = () => {
     setOpenModalAceitarDemanda(false);
   };
-
+  
+  // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
-    console.log("aceitar demanda");
-    handleClickOpenModalAceitarDemanda();
+    setOpenModalAceitarDemanda(true);
   };
+
+  // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
+  const confirmAceitarDemanda = (dados) => {
+    console.log(dados);
+  }
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
@@ -181,6 +158,7 @@ const DetalhesDemanda = (props) => {
         open={openModalAceitarDemanda}
         setOpen={setOpenModalAceitarDemanda}
         handleClose={handleCloseModalAceitarDemanda}
+        confirmAceitarDemanda={confirmAceitarDemanda}
       />
       <ModalConfirmacao
         open={openModal}
@@ -226,7 +204,7 @@ const DetalhesDemanda = (props) => {
                 }}
                 color="primary.main"
               >
-                {dados.titulo}
+                {props.dados.titulo}
               </Typography>
             </Box>
             <Divider />
@@ -244,7 +222,7 @@ const DetalhesDemanda = (props) => {
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
               >
-                {dados.problema}
+                {props.dados.problema}
               </Typography>
             </Box>
             <Box>
@@ -261,7 +239,7 @@ const DetalhesDemanda = (props) => {
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
               >
-                {dados.proposta}
+                {props.dados.proposta}
               </Typography>
             </Box>
             <Box>
@@ -275,7 +253,7 @@ const DetalhesDemanda = (props) => {
                 </Typography>
               </Box>
               <Box className="mt-2 flex flex-col gap-5">
-                {dados.beneficios.map((beneficio, index) => {
+                {props.dados.beneficios.map((beneficio, index) => {
                   if (beneficio.visible) {
                     return (
                       <BeneficiosDetalheDemanda
@@ -303,7 +281,7 @@ const DetalhesDemanda = (props) => {
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
               >
-                {dados.frequencia}
+                {props.dados.frequencia}
               </Typography>
             </Box>
             <Box>

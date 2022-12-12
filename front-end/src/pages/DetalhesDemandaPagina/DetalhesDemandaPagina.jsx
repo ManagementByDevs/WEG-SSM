@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Box } from "@mui/material";
 
@@ -9,7 +9,6 @@ import Caminho from "../../components/Caminho/Caminho";
 import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
 
 const DetalhesDemandaPagina = () => {
-  
   const [dados, setDados] = useState({
     titulo: "Sistema de Gestão de Demandas",
     problema:
@@ -29,11 +28,7 @@ const DetalhesDemandaPagina = () => {
     ],
   });
 
-  const [beneficios, setBeneficios] = useState(null);
-
   const showDetails = () => {
-    console.log("beneficios: ", beneficios);
-    console.log("beneficios fixo: ", dados.beneficios);
     dados.beneficios[0].teste = "a;";
   };
 
@@ -54,7 +49,12 @@ const DetalhesDemandaPagina = () => {
             />
           </Box>
         </Box>
-        <DetalhesDemanda botao="sim" salvar="sim"/>
+        <DetalhesDemanda
+          dados={dados}
+          setDados={setDados}
+          botao="sim"
+          salvar="sim"
+        />
       </Box>
     </FundoComHeader>
   );
