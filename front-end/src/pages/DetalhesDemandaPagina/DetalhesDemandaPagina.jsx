@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import { Box } from "@mui/material";
 
@@ -28,9 +29,15 @@ const DetalhesDemandaPagina = () => {
     ],
   });
 
+  const location = useLocation();
+
   const showDetails = () => {
     dados.beneficios[0].teste = "a;";
   };
+
+  useEffect(() => {
+    setDados(location.state);
+  }, [])
 
   return (
     <FundoComHeader>

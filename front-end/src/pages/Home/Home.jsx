@@ -20,6 +20,8 @@ import DemandaService from "../../service/demandaService";
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 
+import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalAddPropostaPauta";
+
 const Home = () => {
   // Lista de demandas presente
   const [listaDemandas, setListaDemandas] = useState([]);
@@ -143,9 +145,14 @@ const Home = () => {
 
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
   const [abrirFiltro, setOpenFiltro] = useState(false);
+  const [abrirModalAddProp, setOpenModalAddProposta] = useState(false);
 
   const abrirModalOrdenacao = () => {
     setOpenOrdenacao(true);
+  };
+
+  const abrirModalAddProposta = () => {
+    setOpenModalAddProposta(true);
   };
 
   const abrirModalFiltro = () => {
@@ -291,6 +298,7 @@ const Home = () => {
                   >
                     Filtrar <FilterAltOutlinedIcon />
                   </Button>
+
                 )}
 
                 {/* Modal de filtro */}
@@ -303,6 +311,9 @@ const Home = () => {
                     filtroDemanda={true}
                   />
                 )}
+
+                <Button onClick={abrirModalAddProposta}>Add Proposta em Pauta</Button>
+                {abrirModalAddProp && <ModalAddPropostaPauta open={abrirModalAddProp} setOpen={setOpenModalAddProposta}  />}
               </Box>
 
               {/* Botão de criar demanda */}
