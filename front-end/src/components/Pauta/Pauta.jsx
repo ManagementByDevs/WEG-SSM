@@ -10,7 +10,14 @@ const Pautas = (props) => {
   return (
     <Paper
       className="flex flex-col border-t-4 pt-2 pb-3 px-6"
-      sx={{ borderColor: "primary.main", minWidth: "500px" }}
+      sx={{
+        "&:hover": {
+          backgroundColor: "hover.main",
+        },
+        borderColor: "primary.main",
+        minWidth: "500px",
+        cursor: "pointer",
+      }}
     >
       <Box className="flex w-full justify-between">
         <Typography
@@ -63,17 +70,14 @@ const Pautas = (props) => {
         </Typography>
       </Box>
       <Box className="flex items-center">
-        <Typography
-          fontSize={FontConfig.medium}
-          fontWeight="600"
-        >
+        <Typography fontSize={FontConfig.medium} fontWeight="600">
           Analista Responsável:
         </Typography>
         <Typography
           className="overflow-hidden text-ellipsis whitespace-nowrap"
           fontSize={FontConfig.default}
           fontWeight="600"
-          sx={{ color: "text.secondary", marginLeft: "5px", width: '60%' }}
+          sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
         >
           {props.dados.analistaResponsavel}
         </Typography>

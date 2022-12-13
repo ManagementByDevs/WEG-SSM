@@ -39,6 +39,9 @@ const getDesignTokens = (mode) => ({
                 visualizado: {
                     true: '#22252C',
                     false: '#2E2E2E'
+                },
+                hover: {
+                    main: '#2E2E2E'
                 }
             }
             : {
@@ -76,6 +79,9 @@ const getDesignTokens = (mode) => ({
                 visualizado: {
                     true: '#FFFFFF',
                     false: '#E4E4E4'
+                },
+                hover: {
+                    main: '#E4E4E4'
                 }
             }
     },

@@ -34,12 +34,16 @@ const Custos = (props) => {
 
   return (
     <Box className="flex w-full mt-5 items-center">
-      <DeleteOutlineOutlinedIcon
-        fontSize="large"
-        className="mr-2 delay-120 hover:scale-110 duration-300"
-        sx={{ color: "icon.main", cursor: "pointer" }}
-        onClick={() => props.deletarCustos(props.index)}
-      />
+      {props.index > 0 ? (
+        <DeleteOutlineOutlinedIcon
+          fontSize="large"
+          className="mr-2 delay-120 hover:scale-110 duration-300"
+          sx={{ color: "icon.main", cursor: "pointer" }}
+          onClick={() => props.deletarCustos(props.index)}
+        />
+      ) : (
+        <Box className="flex mr-2 p-4"></Box>
+      )}
       <Paper className="w-full">
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 750 }} aria-label="customized table">

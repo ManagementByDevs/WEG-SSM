@@ -27,8 +27,17 @@ const DemandaGerencia = (props) => {
 
   return (
     <Paper
-      className="flex flex-col border-t-4 pt-2 pb-3 px-6"
-      sx={{ borderColor: "primary.main", minWidth: "729px" }} onClick={props.onClick}
+      className="flex flex-col border-t-4 pt-2 pb-3 px-6 drop-shadow-lg"
+      sx={{
+        "&:hover": {
+          backgroundColor: "hover.main",
+          
+        },
+        borderColor: "primary.main",
+        minWidth: "729px",
+        cursor: "pointer",
+      }}
+      onClick={props.onClick}
     >
       {/* Container titulo e status */}
       <Box className="flex w-full justify-between">
