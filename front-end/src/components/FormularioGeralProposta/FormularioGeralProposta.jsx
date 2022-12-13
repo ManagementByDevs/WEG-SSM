@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   FormControl,
@@ -8,6 +8,8 @@ import {
   Divider,
 } from "@mui/material";
 
+import ColorModeContext from "../../service/TemaContext";
+
 import FontConfig from "../../service/FontConfig";
 
 import ResponsavelNegocio from "../ResponsavelNegocio/ResponsavelNegocio";
@@ -15,6 +17,7 @@ import ResponsavelNegocio from "../ResponsavelNegocio/ResponsavelNegocio";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const FormularioCustosProposta = () => {
+  const { mode } = useContext(ColorModeContext);
   const [responsavelNegocio, setResponsavelNegocio] = useState([
     { nome: "", area: "", visible: true },
   ]);
@@ -61,6 +64,7 @@ const FormularioCustosProposta = () => {
                     height: "30px",
                     backgroundColor: "background.default",
                     borderLeftColor: "primary.main",
+                    colorScheme: mode,
                   }}
                   component="input"
                   type="date"
@@ -80,6 +84,7 @@ const FormularioCustosProposta = () => {
                     height: "30px",
                     backgroundColor: "background.default",
                     borderLeftColor: "primary.main",
+                    colorScheme: mode,
                   }}
                   component="input"
                   type="date"

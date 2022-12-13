@@ -6,7 +6,7 @@ const TextEditor = (props) => {
   const editor = useRef(null);
 
   const config = {
-    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+    readonly: false, // Todas opções encontradas em https://xdsoft.net/jodit/doc/
     height: '700',
     placeholder: 'Digite aqui o escopo da proposta...',
   };
