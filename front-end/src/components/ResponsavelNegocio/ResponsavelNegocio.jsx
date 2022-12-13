@@ -76,7 +76,7 @@ const ResponsavelNegocio = (props) => {
             className="delay-120 hover:scale-110 duration-300"
             fontSize="large"
             sx={{ color: "icon.main", cursor: "pointer" }}
-            onClick={() => props.deleteResponsavel(props.dados)}
+            onClick={() => props.deleteResponsavel(props.index)}
           />
         </Box>
       )}

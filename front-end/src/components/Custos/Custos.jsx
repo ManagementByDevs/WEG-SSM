@@ -20,7 +20,7 @@ import ColorModeContext from "../../service/TemaContext";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
-const Custos = () => {
+const Custos = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
 
@@ -38,6 +38,7 @@ const Custos = () => {
         fontSize="large"
         className="mr-2 delay-120 hover:scale-110 duration-300"
         sx={{ color: "icon.main", cursor: "pointer" }}
+        onClick={() => props.deletarCustos(props.index)}
       />
       <Paper className="w-full">
         <TableContainer component={Paper}>
