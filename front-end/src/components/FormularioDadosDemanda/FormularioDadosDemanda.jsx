@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import { Box } from '@mui/material'
 
@@ -7,6 +7,9 @@ import InputComLabel from '../InputComLabel/InputComLabel'
 import FontConfig from '../../service/FontConfig'
 
 const FormularioDadosDemanda = (props) => {
+
+  // Todas as funções de salvamento modificam diretamente as variáveis do componente "BarraProgressãoDemanda" (paginaDados)
+  // através do "props"
 
   // Função para salvar o título da demanda
   const salvarTitulo = (texto) => {
@@ -43,4 +46,4 @@ const FormularioDadosDemanda = (props) => {
   )
 }
 
-export default FormularioDadosDemanda
+export default FormularioDadosDemanda;

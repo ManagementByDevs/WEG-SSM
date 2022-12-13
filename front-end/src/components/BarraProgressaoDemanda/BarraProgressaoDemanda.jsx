@@ -43,6 +43,7 @@ const BarraProgressaoDemanda = (props) => {
 
   const navigate = useNavigate();
 
+  // Função para criar um escopo ou receber um escopo do banco ao entrar na página
   useEffect(() => {
     if (!idEscopo) {
       if (!location.state) {
@@ -59,12 +60,13 @@ const BarraProgressaoDemanda = (props) => {
           setPaginaDados({ titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia });
           receberBeneficios(response.beneficios);
           receberArquivos(response.anexo);
-          setUltimoEscopo({id: response.id, titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia, beneficios: formatarBeneficios(response.beneficios) });
+          setUltimoEscopo({ id: response.id, titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia, beneficios: formatarBeneficios(response.beneficios) });
         })
       }
     }
   }, []);
 
+  // Função para salvar o escopo a cada 5 segundos
   useEffect(() => {
     if (ultimoEscopo) {
       setTimeout(() => {
@@ -73,15 +75,17 @@ const BarraProgressaoDemanda = (props) => {
     }
   }, [ultimoEscopo]);
 
+  // Função para formatar os benefícios recebidos no banco para a lista da página de edição
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-      let tipoNovo = beneficio.tipoBeneficio = beneficio.tipoBeneficio.charAt(0) + (beneficio.tipoBeneficio.substring(1, beneficio.tipoBeneficio.length)).toLowerCase();
+      let tipoNovo = beneficio.tipoBeneficio.charAt(0) + (beneficio.tipoBeneficio.substring(1, beneficio.tipoBeneficio.length)).toLowerCase();
       listaNova.push({ id: beneficio.id, tipoBeneficio: tipoNovo, valor_mensal: beneficio.valor_mensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: true })
     }
     setPaginaBeneficios(listaNova);
   }
 
+  // Função para formatar os arquivos recebidos no banco para a lista da página de edição
   const receberArquivos = (arquivos) => {
     let listaArquivos = [];
     for (let arquivo of arquivos) {
@@ -90,6 +94,7 @@ const BarraProgressaoDemanda = (props) => {
     setPaginaArquivos(listaArquivos);
   }
 
+  // Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página
   const salvarEscopo = (id) => {
     setUltimoEscopo({
       id: id,
@@ -107,6 +112,7 @@ const BarraProgressaoDemanda = (props) => {
     } catch (error) { }
   };
 
+  // Função para atualizar os anexos de um escopo quando um anexo for adicionado / removido
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
       EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
@@ -117,6 +123,7 @@ const BarraProgressaoDemanda = (props) => {
     }
   };
 
+  // Função para excluir o escopo determinado quando a demanda a partir dele for criada
   const excluirEscopo = () => {
     EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };

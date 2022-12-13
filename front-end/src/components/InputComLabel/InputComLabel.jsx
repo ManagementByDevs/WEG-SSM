@@ -4,6 +4,7 @@ import { Box, Typography } from "@mui/material";
 
 const InputComLabel = (props) => {
 
+  // Função para salvar o valor do props recebido para o input (mudando também o valor do próprio input)
   const save = (e) => {
     props.saveInputValue(e.target.value);
   };
