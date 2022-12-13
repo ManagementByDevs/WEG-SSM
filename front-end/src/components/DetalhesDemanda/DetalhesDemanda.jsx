@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 import {
   Box,
@@ -25,8 +24,6 @@ const DetalhesDemanda = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
 
-  const location = useLocation();
-
   useEffect(() => {
     if (mode === "dark") {
       setCorFundoTextArea("#212121");
@@ -50,19 +47,30 @@ const DetalhesDemanda = (props) => {
       setOpenModal(true);
     } else {
       setEditar(true);
-      props.setEdicao(true);
     }
   }
 
   function resetarTextoInput() {
-    props.setEdicao(false);
-    props.setSalvarClick(false);
     setEditar(false);
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
-    setBeneficios(props.dados.beneficios);
+    setBeneficios(formatarBeneficios(props.dados.beneficios));
+  }
+
+  const formatarBeneficios = (listaBeneficios) => {
+    const aux = listaBeneficios.map((beneficio) => {
+      return {
+        id: beneficio.id,
+        tipoBeneficio: beneficio.tipoBeneficio?.charAt(0) + (beneficio.tipoBeneficio?.substring(1, beneficio.tipoBeneficio?.length))?.toLowerCase() || "Real",
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: true,
+      };
+    });
+    return aux;
   }
 
   useEffect(() => {
@@ -70,18 +78,7 @@ const DetalhesDemanda = (props) => {
     setProblema(props.dados.problema);
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
-    setBeneficios(props.dados.beneficios);
-
-    const aux = props.dados.beneficios.map((beneficio) => {
-      return {
-        tipoBeneficio: beneficio.tipoBeneficio,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: beneficio.visible,
-      };
-    });
-    setBeneficios(aux);
+    setBeneficios(formatarBeneficios(props.dados.beneficios));
   }, [props.dados]);
 
   const save = () => {
@@ -265,7 +262,7 @@ const DetalhesDemanda = (props) => {
                 </Typography>
               </Box>
               <Box className="mt-2 flex flex-col gap-5">
-                {props.dados.beneficios.map((beneficio, index) => {
+                {beneficios?.map((beneficio, index) => {
                   if (beneficio.visible) {
                     return (
                       <BeneficiosDetalheDemanda

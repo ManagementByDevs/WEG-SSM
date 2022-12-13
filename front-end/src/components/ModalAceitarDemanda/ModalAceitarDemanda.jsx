@@ -26,7 +26,7 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const ModalAceitarDemanda = (props) => {
-  const tamanhos = ["1", "2", "3"];
+  const tamanhos = ["Muito Pequeno", "Pequeno", "Médio", "Grande", "Muito Grande"];
   const buSolicitantes = ["1", "2", "3"];
   const bus = [
     "BU1",
