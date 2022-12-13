@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import {
   Box,
   FormControl,
@@ -6,6 +6,7 @@ import {
   MenuItem,
   Typography,
   Divider,
+  IconButton,
 } from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
@@ -15,12 +16,14 @@ import FontConfig from "../../service/FontConfig";
 import ResponsavelNegocio from "../ResponsavelNegocio/ResponsavelNegocio";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
-const FormularioCustosProposta = () => {
+const FormularioGeralProposta = (props) => {
   const { mode } = useContext(ColorModeContext);
   const [responsavelNegocio, setResponsavelNegocio] = useState([
     { nome: "", area: "", visible: true },
   ]);
+  const inputFile = useRef(null);
 
   const deleteResponsavel = (indexResponsavel) => {
     let aux = responsavelNegocio.map((responsavel) => {
@@ -32,6 +35,19 @@ const FormularioCustosProposta = () => {
     });
     aux[indexResponsavel].visible = false;
     setResponsavelNegocio(aux);
+  };
+
+  const onAddAnexoButtonClick = () => {
+    inputFile.current.click();
+  };
+
+  const onFilesSelect = () => {
+    for (let file of inputFile.current.files) {
+      props.setGerais({
+        ...props.gerais,
+        anexos: [...props.gerais.anexos, file],
+      });
+    }
   };
 
   return (
@@ -253,19 +269,62 @@ const FormularioCustosProposta = () => {
         <Divider />
         <Box sx={{ marginLeft: "6.1rem" }}>
           <Box className="flex items-center mt-8">
-            <Typography
-              sx={{
-                fontSize: FontConfig.big,
-                fontWeight: "600",
-                marginRight: "5px",
-              }}
-            >
-              Anexos:
-            </Typography>
-            <AddCircleOutlineOutlinedIcon
-              className="delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main", cursor: "pointer" }}
-            />
+            <Box className="w-full">
+              <Typography
+                sx={{
+                  fontSize: FontConfig.big,
+                  fontWeight: "600",
+                  marginRight: "5px",
+                }}
+              >
+                Anexos:
+              <AddCircleOutlineOutlinedIcon
+                className="delay-120 hover:scale-110 duration-300"
+                sx={{ color: "icon.main", cursor: "pointer" }}
+                onClick={onAddAnexoButtonClick}
+                />
+              </Typography>
+              <input
+                onChange={onFilesSelect}
+                ref={inputFile}
+                type="file"
+                multiple
+                hidden
+              />
+              {props.gerais.anexos.length > 0 ? (
+                <Box className="flex flex-col gap-2">
+                  {props.gerais.anexos.map((anexo, index) => (
+                    <Box
+                      key={index}
+                      className="flex justify-between items-center"
+                    >
+                      <Typography
+                        sx={{
+                          color: "text.primary",
+                          fontSize: FontConfig.default,
+                        }}
+                      >
+                        {anexo.name}
+                      </Typography>
+                      <IconButton
+                        onClick={() =>
+                          props.setGerais({...props.gerais, anexos: props.gerais.anexos.filter((anexo, i) => i !== index)})
+                        }
+                      >
+                        <CloseIcon sx={{ color: "text.primary" }} />
+                      </IconButton>
+                    </Box>
+                  ))}
+                </Box>
+              ) : (
+                <Typography
+                  textAlign="center"
+                  sx={{ color: "text.primary", fontSize: FontConfig.default }}
+                >
+                  Nenhum anexo adicionado
+                </Typography>
+              )}
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -273,4 +332,4 @@ const FormularioCustosProposta = () => {
   );
 };
 
-export default FormularioCustosProposta;
+export default FormularioGeralProposta;

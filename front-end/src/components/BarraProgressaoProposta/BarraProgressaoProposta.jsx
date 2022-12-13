@@ -38,6 +38,18 @@ const BarraProgressaoProposta = (props) => {
   // UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML)
   const [escopo, setEscopo] = useState("");
 
+  // Dados gerais definidos na página de dados gerais da criação de demanda
+  const [gerais, setGerais] = useState({
+    periodoExecucacaoInicio: "",
+    periodoExecucacaoFim: "",
+    qtdPaybackSimples: "",
+    unidadePaybackSimples: "",
+    ppm: "",
+    linkJira: "",
+    responsaveisNegocio: [],
+    anexos: [],
+  });
+
   // Lista de benefícios definidos na segunda página da criação de demanda
   const [paginaBeneficios, setPaginaBeneficios] = useState([]);
 
@@ -219,7 +231,9 @@ const BarraProgressaoProposta = (props) => {
         <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />
       )}
       {activeStep == 2 && <FormularioCustosProposta />}
-      {activeStep == 3 && <FormularioGeralProposta />}
+      {activeStep == 3 && (
+        <FormularioGeralProposta gerais={gerais} setGerais={setGerais} />
+      )}
       <Button
         variant="outlined"
         color="tertiary"
