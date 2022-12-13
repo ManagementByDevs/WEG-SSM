@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 
 import { Box } from '@mui/system';
+import { Typography } from '@mui/material';
 
 const ContainerProposta = (props) => {
     
@@ -14,11 +15,39 @@ const ContainerProposta = (props) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'column',
+    };
+
+    const parteCima = {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    };
+
+    const parteBaixo = {
+        width: '100%',
+
     };
 
     return (
         <Box sx={containerGeral}>
-            Container da proposta aqui
+            <Box sx={parteCima}>
+                <Typography>
+                    Propostas: 
+                </Typography>
+                <Typography>
+                    01/2022
+                </Typography>
+            </Box>
+            <Box sx={parteBaixo}>
+                {/* <Typography>
+                    Dificuldade para o gerenciamento de demandas
+                </Typography>
+                <Typography>
+                    Grande dificuldade para o gerencimento de demandas na weg
+                </Typography> */}
+            </Box>
         </Box>
     );
 };
