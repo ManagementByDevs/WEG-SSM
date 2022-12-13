@@ -49,16 +49,39 @@ const FormularioCustosProposta = () => {
           }}
           variant="contained"
           disableElevation
-          onClick={() => setCustos([...custos, {}])}
+          onClick={() => {
+            setCustos([
+              ...custos,
+              {
+                tipoDispesa: "",
+                perfilDespesa: "",
+                periodoExecucao: "",
+                horas: "",
+                valorHora: "",
+                total: "",
+                ccs: "",
+                visible: true,
+              },
+            ]);
+          }}
         >
           Adicionar Custos
           <AddCircleOutlineOutlinedIcon className="ml-2" />
         </Button>
       </Box>
       <Box>
-        {custos?.map((custo, index) => (
-          <Custos key={index} dados={custo} deletarCustos={deletarCustos} />
-        ))}
+        {custos?.map((custo, index) => {
+          return (
+            custo.visible && (
+              <Custos
+                key={index}
+                index={index}
+                dados={custo}
+                deletarCustos={deletarCustos}
+              />
+            )
+          );
+        })}
       </Box>
     </Box>
   );
