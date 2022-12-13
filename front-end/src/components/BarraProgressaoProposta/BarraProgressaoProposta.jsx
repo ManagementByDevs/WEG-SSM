@@ -106,19 +106,6 @@ const BarraProgressaoProposta = (props) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      throw new Error("Você não pode pular um passo que não é opcional!");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
-
   const criarDemanda = () => {
     handleClick(true);
   };
@@ -185,6 +172,19 @@ const BarraProgressaoProposta = (props) => {
   }, [open]);
 
   const [editar, setEditar] = useState(false);
+
+  const [custos, setCustos] = useState([
+    {
+      tipoDispesa: "",
+      perfilDespesa: "",
+      periodoExecucao: "",
+      horas: "",
+      valorHora: "",
+      total: "",
+      ccs: "",
+      visible: true,
+    },
+  ]);
 
   return (
     <>
