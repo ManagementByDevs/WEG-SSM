@@ -14,10 +14,6 @@ const DetalhesDemandaPagina = () => {
   
   const [dados, setDados] = useState(location.state);
 
-  useEffect(() => {
-    console.log("dados", dados)
-  }, [dados])
-
   return (
     <FundoComHeader>
       <Box className="p-2">
