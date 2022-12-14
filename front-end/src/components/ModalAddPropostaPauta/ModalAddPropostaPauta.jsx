@@ -10,6 +10,7 @@ import {
     Checkbox,
     FormGroup,
     FormControlLabel,
+    Paper
 } from '@mui/material';
 
 import Backdrop from '@mui/material/Backdrop';
@@ -25,13 +26,13 @@ const ModalAddPropostaPauta = (props) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 450,
-        height: 450,
+        width: 500,
+        height: 500,
         bgcolor: 'background.paper',
         borderRadius: '5px',
         borderTop: '10px solid #00579D',
         boxShadow: 24,
-        p: 3,
+        p: 2,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -42,19 +43,21 @@ const ModalAddPropostaPauta = (props) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        p: 1.5
     };
 
     const botaoCriar = {
         width: '7rem',
         border: 'solid 1px',
-        color: 'tertiary'
+        color: 'tertiary.main'
     };
 
     const botaoDesabilitado = {
         width: '7rem',
         border: 'solid 1px',
-        color: 'tertiary.main'
+        color: 'primary.main',
+        backgroundColor: 'visualizado.false',
     };
 
     const botaoHabilitado = {
@@ -68,7 +71,8 @@ const ModalAddPropostaPauta = (props) => {
         flexDirection: 'column',
         overflow: 'auto',
         width: '100%',
-        height: '80%'
+        height: '80%',
+        p: 1.5
     };
 
     // props para abrir o modal através de outra tela
@@ -115,28 +119,25 @@ const ModalAddPropostaPauta = (props) => {
 
                     <Box sx={listaPropostas}>
                         <ContainerProposta></ContainerProposta>
-                        <ContainerProposta></ContainerProposta>
-                        <ContainerProposta></ContainerProposta>
-                        <ContainerProposta></ContainerProposta>
                     </Box>
 
-                    <Divider sx={{ marginTop: '1%' }} />
+                    <Divider sx={{ marginTop: '2%', width: '80%', borderColor: 'tertiary.main' }} />
 
                     <Box sx={parteCheck}>
                         <Typography fontWeight={650} fontSize={FontConfig.veryBig} color={'primary.main'}>
-                            Adicionar Como
+                            Adicionar Como Proposta
                         </Typography>
                         <Box>
                             <FormGroup>
-                                <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                                    <FormControlLabel checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Proposta publicada" />
-                                    <FormControlLabel checked={check[1]} onChange={mudarCheck2} control={<Checkbox />} label="Proposta não publicada" />
+                                <Box sx={{ display: 'flex', justifyContent: 'center', padding: '4px' }}>
+                                    <FormControlLabel checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Publicada" />
+                                    <FormControlLabel checked={check[1]} onChange={mudarCheck2} control={<Checkbox />} label="Não publicada" />
                                 </Box>
                             </FormGroup>
                         </Box>
-                        <Box sx={{ width: '15rem', display: 'flex', justifyContent: 'space-between', marginTop: '2%' }}>
-                            <Button sx={botaoCriar} variant="container" disableElevation>Criar Pauta</Button>
-                            <Button sx={botaoDesabilitado} variant="container" disableElevation>Adicionar</Button>
+                        <Box sx={{ width: '90%', display: 'flex', justifyContent: 'space-between', marginTop: '3%' }}>
+                            <Button sx={botaoCriar} disableElevation>Criar Pauta</Button>
+                            <Button sx={botaoDesabilitado}  disableElevation disabled>Adicionar</Button>
                         </Box>
                     </Box>
                 </Box>
