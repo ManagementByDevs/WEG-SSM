@@ -22,11 +22,19 @@ const FormularioPropostaProposta = (props) => {
         visible: true,
       },
     ],
+    anexo: [{ name: "teste.png" }],
   });
 
   return (
     <Box>
-      <DetalhesDemanda dados={dados} setDados={setDados} edicao={props.editar} setEdicao={props.setEditar} salvarClick={props.salvarClick} setSalvarClick={props.setSalvarClick}/>
+      <DetalhesDemanda
+        dados={dados}
+        setDados={setDados}
+        edicao={props.editar}
+        setEdicao={props.setEditar}
+        salvarClick={props.salvarClick}
+        setSalvarClick={props.setSalvarClick}
+      />
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 
 import {
   Box,
@@ -6,11 +6,14 @@ import {
   Button,
   Divider,
   TextareaAutosize,
+  Paper,
+  IconButton,
 } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
@@ -23,6 +26,7 @@ import ColorModeContext from "../../service/TemaContext";
 const DetalhesDemanda = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
+  const inputFile = useRef(null);
 
   useEffect(() => {
     if (mode === "dark") {
@@ -57,13 +61,18 @@ const DetalhesDemanda = (props) => {
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
+    setAnexos(props.dados.anexo);
   }
 
   const formatarBeneficios = (listaBeneficios) => {
     const aux = listaBeneficios.map((beneficio) => {
       return {
         id: beneficio.id,
-        tipoBeneficio: beneficio.tipoBeneficio?.charAt(0) + (beneficio.tipoBeneficio?.substring(1, beneficio.tipoBeneficio?.length))?.toLowerCase() || "Real",
+        tipoBeneficio:
+          beneficio.tipoBeneficio?.charAt(0) +
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -71,7 +80,7 @@ const DetalhesDemanda = (props) => {
       };
     });
     return aux;
-  }
+  };
 
   useEffect(() => {
     setTituloDemanda(props.dados.titulo);
@@ -79,16 +88,22 @@ const DetalhesDemanda = (props) => {
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
+    setAnexos(props.dados.anexo);
+    setMapAbleAnexos(props.dados.anexo);
   }, [props.dados]);
 
   const save = () => {
+    console.log("anexos ", Array.from(anexos));
     props.setDados({
       titulo: tituloDemanda,
       problema: problema,
       proposta: proposta,
       frequencia: frequencia,
       beneficios: beneficios,
+      anexos: anexos,
     });
+    setMapAbleAnexos(Array.from(anexos));
+    setAnexos(Array.from(anexos));
   };
 
   useEffect(() => {
@@ -102,6 +117,8 @@ const DetalhesDemanda = (props) => {
   const [proposta, setProposta] = useState(props.dados.proposta);
   const [frequencia, setFrequencia] = useState(props.dados.frequencia);
   const [beneficios, setBeneficios] = useState(null);
+  const [anexos, setAnexos] = useState([]);
+  const [mapAbleAnexos, setMapAbleAnexos] = useState(props.dados.anexo);
 
   const alterarTexto = (e, input) => {
     if (input === "titulo") {
@@ -160,6 +177,26 @@ const DetalhesDemanda = (props) => {
   const confirmAceitarDemanda = (dados) => {
     console.log(dados);
   };
+
+  // Coloca o arquivo selecionado no input no state de anexos
+  const onFilesSelect = () => {
+    for (let file of inputFile.current.files) {
+      setAnexos([...anexos, file]);
+    }
+  };
+
+  // Aciona o input de anexos ao clicar no add anexos
+  const onAddAnexoButtonClick = () => {
+    inputFile.current.click();
+  };
+
+  useEffect(() => {
+    console.log("props.dados ", props.dados);
+  }, [props.dados]);
+
+  // useEffect(() => {
+  //   setMapAbleAnexos(Array.from(props.dados.anexo));
+  // }, [props.dados]);
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
@@ -301,7 +338,40 @@ const DetalhesDemanda = (props) => {
               >
                 Anexos:
               </Typography>
-              <Box>AQUI JAZ ANEXOS</Box>
+              {mapAbleAnexos.length > 0 ? (
+                <Box className="flex flex-col gap-2">
+                  {mapAbleAnexos.map((anexo, index) => (
+                    <Paper
+                      key={index}
+                      className="flex justify-between items-center"
+                      sx={{
+                        borderLeftWidth: "4px",
+                        borderLeftColor: "primary.main",
+                        borderLeftStyle: "solid",
+                        backgroundColor: "background.default",
+                        padding: "0.5rem 1rem",
+                      }}
+                      elevation={0}
+                    >
+                      <Typography
+                        sx={{
+                          color: "text.primary",
+                          fontSize: FontConfig.default,
+                        }}
+                      >
+                        {anexo.nome ? anexo.nome : anexo.name}
+                      </Typography>
+                    </Paper>
+                  ))}
+                </Box>
+              ) : (
+                <Typography
+                  textAlign="center"
+                  sx={{ color: "text.primary", fontSize: FontConfig.default }}
+                >
+                  Nenhum anexo adicionado
+                </Typography>
+              )}
             </Box>
           </>
         ) : (
@@ -453,9 +523,57 @@ const DetalhesDemanda = (props) => {
                 <AddCircleOutlineOutlinedIcon
                   className="delay-120 hover:scale-110 duration-300 ml-1"
                   sx={{ color: "primary.main", cursor: "pointer" }}
+                  onClick={onAddAnexoButtonClick}
+                />
+                <input
+                  onChange={onFilesSelect}
+                  ref={inputFile}
+                  type="file"
+                  multiple
+                  hidden
                 />
               </Box>
-              <Box>AQUI JAZ ANEXOS</Box>
+              {anexos.length > 0 ? (
+                <Box className="flex flex-col gap-2">
+                  {anexos.map((anexo, index) => (
+                    <Paper
+                      key={index}
+                      className="flex justify-between items-center"
+                      sx={{
+                        borderLeftWidth: "4px",
+                        borderLeftColor: "primary.main",
+                        borderLeftStyle: "solid",
+                        backgroundColor: "background.default",
+                        padding: "0.2rem 1rem",
+                      }}
+                      elevation={0}
+                    >
+                      <Typography
+                        sx={{
+                          color: "text.primary",
+                          fontSize: FontConfig.default,
+                        }}
+                      >
+                        {anexo.nome ? anexo.nome : anexo.name}
+                      </Typography>
+                      <IconButton
+                        onClick={() =>
+                          setAnexos(anexos.filter((__, i) => i !== index))
+                        }
+                      >
+                        <CloseIcon sx={{ color: "text.primary" }} />
+                      </IconButton>
+                    </Paper>
+                  ))}
+                </Box>
+              ) : (
+                <Typography
+                  textAlign="center"
+                  sx={{ color: "text.primary", fontSize: FontConfig.default }}
+                >
+                  Nenhum anexo adicionado
+                </Typography>
+              )}
             </Box>
           </>
         )}

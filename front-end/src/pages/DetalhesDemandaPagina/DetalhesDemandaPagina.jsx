@@ -27,6 +27,7 @@ const DetalhesDemandaPagina = () => {
         visible: true,
       },
     ],
+    anexo: [{ name: "teste.png" }],
   });
 
   const location = useLocation();
@@ -36,8 +37,9 @@ const DetalhesDemandaPagina = () => {
   };
 
   useEffect(() => {
+    console.log(location.state);
     setDados(location.state);
-  }, [])
+  }, []);
 
   return (
     <FundoComHeader>

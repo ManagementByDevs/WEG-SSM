@@ -7,6 +7,7 @@ import {
   Typography,
   Divider,
   IconButton,
+  Paper,
 } from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
@@ -37,10 +38,12 @@ const FormularioGeralProposta = (props) => {
     setResponsavelNegocio(aux);
   };
 
+  // Aciona o input de anexos ao clicar no add anexos
   const onAddAnexoButtonClick = () => {
     inputFile.current.click();
   };
 
+  // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
       props.setGerais({
@@ -294,9 +297,10 @@ const FormularioGeralProposta = (props) => {
               {props.gerais.anexos.length > 0 ? (
                 <Box className="flex flex-col gap-2">
                   {props.gerais.anexos.map((anexo, index) => (
-                    <Box
+                    <Paper
                       key={index}
                       className="flex justify-between items-center"
+                      sx={{borderLeftWidth: '4px', borderLeftColor: 'primary.main', borderLeftStyle: 'solid', backgroundColor: 'background.default', padding: '0.2rem 1rem'}}
                     >
                       <Typography
                         sx={{
@@ -313,7 +317,7 @@ const FormularioGeralProposta = (props) => {
                       >
                         <CloseIcon sx={{ color: "text.primary" }} />
                       </IconButton>
-                    </Box>
+                    </Paper>
                   ))}
                 </Box>
               ) : (
