@@ -37,7 +37,6 @@ const DetalhesDemandaPagina = () => {
   };
 
   useEffect(() => {
-    console.log(location.state);
     setDados(location.state);
   }, []);
 

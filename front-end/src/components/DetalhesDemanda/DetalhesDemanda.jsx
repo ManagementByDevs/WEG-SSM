@@ -51,11 +51,13 @@ const DetalhesDemanda = (props) => {
       setOpenModal(true);
     } else {
       setEditar(true);
+      props.setEdicao(true)
     }
   }
 
   function resetarTextoInput() {
     setEditar(false);
+    props.setEdicao(false)
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
     setProposta(props.dados.proposta);
