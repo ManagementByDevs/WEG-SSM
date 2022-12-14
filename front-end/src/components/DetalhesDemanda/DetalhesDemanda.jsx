@@ -51,7 +51,9 @@ const DetalhesDemanda = (props) => {
       setOpenModal(true);
     } else {
       setEditar(true);
-      props.setEdicao(true)
+      if (props.setEdicao) {
+        props.setEdicao(true)
+      }
     }
   }
 
@@ -330,7 +332,7 @@ const DetalhesDemanda = (props) => {
               </Typography>
               {props.dados.anexo.length > 0 ? (
                 <Box className="flex flex-col gap-2">
-                  {props.dados.anexo?.map((anexo, index) => (
+                  {props.dados.anexo.map((anexo, index) => (
                     <Paper
                       key={index}
                       className="flex justify-between items-center"
@@ -545,11 +547,10 @@ const DetalhesDemanda = (props) => {
                         }}
                       >
                         {anexo.nome ? anexo.nome : anexo.name}
-
                       </Typography>
                       <IconButton
                         onClick={() =>
-                          setAnexos(anexos.filter((__, i) => i !== index))
+                          setAnexos(anexos.filter((anexo, i) => i !== index))
                         }
                       >
                         <CloseIcon sx={{ color: "text.primary" }} />
