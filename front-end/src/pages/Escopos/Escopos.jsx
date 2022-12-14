@@ -170,6 +170,7 @@ const Escopos = () => {
                       open={abrirOrdenacao}
                       setOpen={setOpenOrdenacao}
                       tipoComponente='escopo'
+                      modalEscopo={true}
                     />
                   )}
                 </Box>
