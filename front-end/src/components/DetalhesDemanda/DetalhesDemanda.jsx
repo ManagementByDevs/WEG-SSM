@@ -22,6 +22,8 @@ import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceit
 import FontConfig from "../../service/FontConfig";
 
 import ColorModeContext from "../../service/TemaContext";
+import BeneficioService from '../../service/beneficioService';
+import DemandaService from '../../service/demandaService';
 
 const DetalhesDemanda = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -40,12 +42,6 @@ const DetalhesDemanda = (props) => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  useEffect(() => {
-    if (props.salvarClick) {
-      save();
-    }
-  }, [props.salvarClick]);
-
   function editarDemanda() {
     if (editar) {
       setOpenModal(true);
@@ -62,6 +58,7 @@ const DetalhesDemanda = (props) => {
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
     setAnexos(props.dados.anexo);
+    excluirBeneficiosAdicionados();
   }
 
   const formatarBeneficios = (listaBeneficios) => {
@@ -70,9 +67,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -81,6 +78,22 @@ const DetalhesDemanda = (props) => {
     });
     return aux;
   };
+
+  const formatarBeneficiosRequisicao = (listaBeneficios) => {
+    let listaNova = [];
+    for (let beneficio of listaBeneficios) {
+      if (beneficio.visible) {
+        listaNova.push({
+          id: beneficio.id,
+          memoriaCalculo: beneficio.memoriaCalculo,
+          moeda: beneficio.moeda,
+          valor_mensal: beneficio.valor_mensal,
+          tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
+        });
+      }
+    }
+    return listaNova;
+  }
 
   useEffect(() => {
     setTituloDemanda(props.dados.titulo);
@@ -92,20 +105,6 @@ const DetalhesDemanda = (props) => {
     setMapAbleAnexos(props.dados.anexo);
   }, [props.dados]);
 
-  const save = () => {
-    console.log("anexos ", Array.from(anexos));
-    props.setDados({
-      titulo: tituloDemanda,
-      problema: problema,
-      proposta: proposta,
-      frequencia: frequencia,
-      beneficios: beneficios,
-      anexos: anexos,
-    });
-    setMapAbleAnexos(Array.from(anexos));
-    setAnexos(Array.from(anexos));
-  };
-
   useEffect(() => {
     if (!props.edicao) {
       setEditar(false);
@@ -116,7 +115,12 @@ const DetalhesDemanda = (props) => {
   const [problema, setProblema] = useState(props.dados.problema);
   const [proposta, setProposta] = useState(props.dados.proposta);
   const [frequencia, setFrequencia] = useState(props.dados.frequencia);
+
   const [beneficios, setBeneficios] = useState(null);
+  const [beneficiosNovos, setBeneficiosNovos] = useState([]);
+  const [beneficiosExcluidos, setBeneficiosExcluidos] = useState([]);
+  const [demandaEmEdicao, setDemandaEmEdicao] = useState(false);
+
   const [anexos, setAnexos] = useState([]);
   const [mapAbleAnexos, setMapAbleAnexos] = useState(props.dados.anexo);
 
@@ -130,34 +134,6 @@ const DetalhesDemanda = (props) => {
     } else if (input === "frequencia") {
       setFrequencia(e.target.value);
     }
-  };
-
-  const alterarTextoBeneficio = (beneficio, index) => {
-    let aux = props.dados.beneficios.map((beneficio) => {
-      return {
-        tipoBeneficio: beneficio.tipoBeneficio,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: beneficio.visible,
-      };
-    });
-    aux[index] = beneficio;
-    setBeneficios(aux);
-  };
-
-  const deleteBeneficio = (indexBeneficio) => {
-    let aux = props.dados.beneficios.map((beneficio) => {
-      return {
-        tipoBeneficio: beneficio.tipoBeneficio,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: beneficio.visible,
-      };
-    });
-    aux[indexBeneficio].visible = false;
-    setBeneficios(aux);
   };
 
   // UseState do modal de aceitar demanda
@@ -190,13 +166,89 @@ const DetalhesDemanda = (props) => {
     inputFile.current.click();
   };
 
-  useEffect(() => {
-    console.log("props.dados ", props.dados);
-  }, [props.dados]);
-
   // useEffect(() => {
   //   setMapAbleAnexos(Array.from(props.dados.anexo));
   // }, [props.dados]);
+
+  const adicionarBeneficio = () => {
+    BeneficioService.post({ tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '' }).then((response) => {
+      let beneficioNovo = { id: response.id, tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '', visible: true };
+      setBeneficiosNovos([...beneficiosNovos, beneficioNovo]);
+      setBeneficios([...beneficios, beneficioNovo])
+    })
+  }
+
+  const alterarTextoBeneficio = (beneficio, index) => {
+    let aux = beneficios.map((beneficio) => {
+      return {
+        id: beneficio.id,
+        tipoBeneficio: beneficio.tipoBeneficio,
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: beneficio.visible,
+      };
+    });
+    aux[index] = beneficio;
+    setBeneficios(aux);
+  };
+
+  const deleteBeneficio = (indexBeneficio) => {
+    let aux = beneficios.map((beneficio) => {
+      return {
+        id: beneficio.id,
+        tipoBeneficio: beneficio.tipoBeneficio,
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: beneficio.visible,
+      };
+    });
+    aux[indexBeneficio].visible = false;
+    setBeneficiosExcluidos([...beneficiosExcluidos, aux[indexBeneficio]]);
+    setBeneficios(aux);
+  };
+
+  const excluirBeneficiosRemovidos = () => {
+    for (let beneficio of beneficiosExcluidos) {
+      BeneficioService.delete(beneficio.id).then((response) => { })
+    }
+    setBeneficiosExcluidos([]);
+  }
+
+  const excluirBeneficiosAdicionados = () => {
+    for (let beneficio of beneficiosNovos) {
+      BeneficioService.delete(beneficio.id).then((response) => { })
+    }
+    setBeneficiosNovos([]);
+  }
+
+  const salvarEdicao = () => {
+
+    let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
+    let contagem = 0;
+
+    for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
+      BeneficioService.put(beneficio).then((response) => { })
+      contagem++;
+
+      if (contagem == listaBeneficiosFinal.length) {
+        setDemandaEmEdicao(true);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (demandaEmEdicao) {
+      const demandaAtualizada = { id: props.dados.id, titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia, beneficios: formatarBeneficiosRequisicao(beneficios), data: props.dados.data, status: props.dados.status, solicitante: props.dados.solicitante };
+      DemandaService.put(demandaAtualizada, anexos).then((response) => {
+        setEditar(false);
+        excluirBeneficiosRemovidos();
+        setDemandaEmEdicao(false);
+        props.setDados(response);
+      })
+    }
+  }, [demandaEmEdicao])
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
@@ -455,18 +507,7 @@ const DetalhesDemanda = (props) => {
                 </Typography>
                 <AddCircleOutlineOutlinedIcon
                   className="delay-120 hover:scale-110 duration-300 ml-1"
-                  onClick={() => {
-                    setBeneficios([
-                      ...beneficios,
-                      {
-                        tipo: "",
-                        valor: "",
-                        moeda: "",
-                        memoriaCalculo: "",
-                        visible: true,
-                      },
-                    ]);
-                  }}
+                  onClick={() => { adicionarBeneficio() }}
                   sx={{ color: "primary.main", cursor: "pointer" }}
                 />
               </Box>
@@ -627,8 +668,7 @@ const DetalhesDemanda = (props) => {
             }}
             variant="contained"
             onClick={() => {
-              save();
-              setEditar(false);
+              salvarEdicao()
             }}
           >
             Salvar

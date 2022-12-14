@@ -928,15 +928,18 @@ public class DemandaController {
     /**
      * Método PUT para editar uma demanda já existente
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid DemandaDTO demandaDto) {
-        if (!demandaService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
-        }
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestParam("anexos")List<MultipartFile> files, @RequestParam("demanda") String demandaJSON) {
+        DemandaUtil demandaUtil = new DemandaUtil();
+        Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
+        demanda.setAnexos(files);
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
 
-        Demanda demanda = new Demanda();
-        BeanUtils.copyProperties(demandaDto, demanda);
-        demanda.setId(id);
+    @PutMapping("/sem-arquivos")
+    public ResponseEntity<Object> updateSemArquivos(@RequestParam("demanda") String demandaJSON) {
+        DemandaUtil demandaUtil = new DemandaUtil();
+        Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 

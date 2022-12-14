@@ -7,7 +7,7 @@ class BeneficioService {
     }
 
     async put(beneficio) {
-        return (await axios.post(`/beneficio/`, beneficio, { headers: { "Content-Type": "application/json" } })).data;
+        return (await axios.put(`/beneficio/`, beneficio, { headers: { "Content-Type": "application/json" } })).data;
     }
 
     async delete(idBeneficio) {

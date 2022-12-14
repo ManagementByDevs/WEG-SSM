@@ -15,6 +15,14 @@ public class DemandaUtil {
         return convertDTOToModel(demandaDTO);
     }
 
+    public Demanda convertJsonToModelDirect(String demandaJSON) {
+        try {
+            return this.objectMapper.readValue(demandaJSON, Demanda.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private DemandaDTO convertJsonToDTO(String demandaJSON){
         try {
             return this.objectMapper.readValue(demandaJSON, DemandaDTO.class);

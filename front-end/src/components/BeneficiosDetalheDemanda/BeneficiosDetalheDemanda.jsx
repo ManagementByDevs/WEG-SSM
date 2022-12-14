@@ -162,25 +162,26 @@ const BeneficiosDetalheDemanda = (props) => {
                     />
                   </td>
                   <td align="center">
-                    <Box
-                      value={props.beneficio.moeda}
-                      fontSize={FontConfig.medium}
-                      onChange={(e) => {
-                        props.setBeneficio(
-                          { ...props.beneficio, moeda: e.target.value },
-                          props.index
-                        );
-                      }}
-                      color="text.primary"
-                      className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
-                      sx={{
-                        width: "80%;",
-                        height: "30px",
-                        backgroundColor: "background.default",
-                      }}
-                      component="input"
-                      placeholder="Digite o tipo da moeda..."
-                    />
+                    <FormControl
+                      variant="standard"
+                      sx={{ marginRight: "10px", minWidth: 90 }}
+                    >
+                      <Select
+                        labelId="demo-simple-select-standard-label"
+                        id="demo-simple-select-standard"
+                        value={props.beneficio.moeda}
+                        onChange={(e) => {
+                          props.setBeneficio(
+                            { ...props.beneficio, moeda: e.target.value },
+                            props.index
+                          );
+                        }}
+                      >
+                        <MenuItem value={"Real"}>BR</MenuItem>
+                        <MenuItem value={"Dolar"}>UR</MenuItem>
+                        <MenuItem value={"Euro"}>EUR</MenuItem>
+                      </Select>
+                    </FormControl>
                   </td>
                   <td
                     align="center"
