@@ -12,7 +12,7 @@ const ModalFiltro = (props) => {
 
     const styleModal = {
         position: 'absolute',
-        top: '37.5%',
+        top: '34%',
         left: '37%',
         transform: 'translate(-50%, -50%)',
         width: 297,
@@ -30,7 +30,7 @@ const ModalFiltro = (props) => {
 
     const styleModalFiltro = {
         position: 'absolute',
-        top: '41%',
+        top: '39%',
         left: '83%',
         transform: 'translate(-50%, -50%)',
         width: 270,
