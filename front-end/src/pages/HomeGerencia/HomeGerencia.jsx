@@ -231,7 +231,7 @@ const HomeGerencia = () => {
               <Box className="flex gap-4 w-2/4">
                 {/* Input de pesquisa */}
                 <Box
-                  className="flex justify-between border px-3 py-1"
+                  className="flex justify-between items-center border px-3 py-1"
                   sx={{ backgroundColor: "input.main", width: "50%" }}
                 >
                   {/* Input de pesquisa */}
