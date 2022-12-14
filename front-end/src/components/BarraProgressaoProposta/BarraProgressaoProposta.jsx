@@ -230,7 +230,7 @@ const BarraProgressaoProposta = (props) => {
       {activeStep == 1 && (
         <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />
       )}
-      {activeStep == 2 && <FormularioCustosProposta />}
+      {activeStep == 2 && <FormularioCustosProposta custos={custos} setCustos={setCustos}/>}
       {activeStep == 3 && (
         <FormularioGeralProposta gerais={gerais} setGerais={setGerais} />
       )}

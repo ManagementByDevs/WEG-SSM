@@ -282,7 +282,7 @@ const FormularioGeralProposta = (props) => {
               >
                 Anexos:
               <AddCircleOutlineOutlinedIcon
-                className="delay-120 hover:scale-110 duration-300"
+                className="ml-1 delay-120 hover:scale-110 duration-300"
                 sx={{ color: "icon.main", cursor: "pointer" }}
                 onClick={onAddAnexoButtonClick}
                 />
