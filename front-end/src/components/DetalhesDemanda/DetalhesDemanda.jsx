@@ -47,10 +47,14 @@ const DetalhesDemanda = (props) => {
       setOpenModal(true);
     } else {
       setEditar(true);
+      if (props.setEdicao) {
+        props.setEdicao(true)
+      }
     }
   }
 
   function resetarTextoInput() {
+    excluirBeneficiosAdicionados();
     setEditar(false);
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
@@ -58,7 +62,6 @@ const DetalhesDemanda = (props) => {
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
     setAnexos(props.dados.anexo);
-    excluirBeneficiosAdicionados();
   }
 
   const formatarBeneficios = (listaBeneficios) => {
@@ -96,13 +99,13 @@ const DetalhesDemanda = (props) => {
   }
 
   useEffect(() => {
+    console.log("props.dados ", props.dados);
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
     setAnexos(props.dados.anexo);
-    setMapAbleAnexos(props.dados.anexo);
   }, [props.dados]);
 
   useEffect(() => {
@@ -121,8 +124,7 @@ const DetalhesDemanda = (props) => {
   const [beneficiosExcluidos, setBeneficiosExcluidos] = useState([]);
   const [demandaEmEdicao, setDemandaEmEdicao] = useState(false);
 
-  const [anexos, setAnexos] = useState([]);
-  const [mapAbleAnexos, setMapAbleAnexos] = useState(props.dados.anexo);
+  const [anexos, setAnexos] = useState(props.dados.anexo);
 
   const alterarTexto = (e, input) => {
     if (input === "titulo") {
@@ -157,6 +159,7 @@ const DetalhesDemanda = (props) => {
   // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
+      console.log(anexos);
       setAnexos([...anexos, file]);
     }
   };
@@ -390,9 +393,9 @@ const DetalhesDemanda = (props) => {
               >
                 Anexos:
               </Typography>
-              {mapAbleAnexos.length > 0 ? (
+              {props.dados.anexo.length > 0 ? (
                 <Box className="flex flex-col gap-2">
-                  {mapAbleAnexos.map((anexo, index) => (
+                  {props.dados.anexo.map((anexo, index) => (
                     <Paper
                       key={index}
                       className="flex justify-between items-center"
@@ -576,7 +579,7 @@ const DetalhesDemanda = (props) => {
               </Box>
               {anexos.length > 0 ? (
                 <Box className="flex flex-col gap-2">
-                  {anexos.map((anexo, index) => (
+                  {anexos?.map((anexo, index) => (
                     <Paper
                       key={index}
                       className="flex justify-between items-center"
@@ -599,7 +602,7 @@ const DetalhesDemanda = (props) => {
                       </Typography>
                       <IconButton
                         onClick={() =>
-                          setAnexos(anexos.filter((__, i) => i !== index))
+                          setAnexos(anexos.filter((anexo, i) => i !== index))
                         }
                       >
                         <CloseIcon sx={{ color: "text.primary" }} />

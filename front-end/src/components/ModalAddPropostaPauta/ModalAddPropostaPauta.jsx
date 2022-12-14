@@ -18,6 +18,7 @@ import Backdrop from '@mui/material/Backdrop';
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 import ContainerProposta from '../ContainerProposta/ContainerProposta';
+import { useEffect } from 'react';
 
 const ModalAddPropostaPauta = (props) => {
 
@@ -50,19 +51,14 @@ const ModalAddPropostaPauta = (props) => {
     const botaoCriar = {
         width: '7rem',
         border: 'solid 1px',
-        color: 'tertiary.main'
+        color: 'tertiary.main',
+        p: 1
     };
 
     const botaoDesabilitado = {
         width: '7rem',
         border: 'solid 1px',
-        color: 'primary.main',
-        backgroundColor: 'visualizado.false',
-    };
-
-    const botaoHabilitado = {
-        width: '7rem',
-        border: 'solid 1px'
+        p: 1
     };
 
     const listaPropostas = {
@@ -106,6 +102,21 @@ const ModalAddPropostaPauta = (props) => {
         }
     }
 
+    const [habilitadoAdd, setHabilitadoAdd] = useState(false);
+    const [indexPautaSelecionada, setIndexPautaSelecionada] = useState(null);
+    const [novaPauta, setnovaPauta] = useState(false);
+
+    useEffect(() => {
+        console.log(habilitadoAdd)
+    }, [habilitadoAdd])
+
+    const [listaPautas, setListaPautas] = useState([1, 2]);
+
+    const addPauta = () => {
+        setListaPautas([...listaPautas, listaPautas.length + 1]);
+        setnovaPauta(true);
+    };
+
     return (
         <Modal
             open={open}
@@ -118,7 +129,12 @@ const ModalAddPropostaPauta = (props) => {
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} ></CloseIcon>
 
                     <Box sx={listaPropostas}>
-                        <ContainerProposta></ContainerProposta>
+                        {listaPautas.map((proposta, index) => {
+                            return (
+                                <ContainerProposta key={index} setIndexPautaSelecionada={setIndexPautaSelecionada} index={index} indexPautaSelecionada={indexPautaSelecionada} novaPauta={novaPauta} />
+                            )
+                        })}
+
                     </Box>
 
                     <Divider sx={{ marginTop: '2%', width: '80%', borderColor: 'tertiary.main' }} />
@@ -136,8 +152,8 @@ const ModalAddPropostaPauta = (props) => {
                             </FormGroup>
                         </Box>
                         <Box sx={{ width: '90%', display: 'flex', justifyContent: 'space-between', marginTop: '3%' }}>
-                            <Button sx={botaoCriar} disableElevation>Criar Pauta</Button>
-                            <Button sx={botaoDesabilitado}  disableElevation disabled>Adicionar</Button>
+                            <Button sx={botaoCriar} disableElevation onClick={addPauta} disabled={novaPauta != false}>Criar Pauta</Button>
+                            <Button sx={botaoDesabilitado} disableElevation disabled={indexPautaSelecionada == null} variant="contained" onClick={handleClose}>Adicionar</Button>
                         </Box>
                     </Box>
                 </Box>

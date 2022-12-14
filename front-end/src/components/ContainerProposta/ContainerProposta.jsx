@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 
 import { Box } from '@mui/system';
 import { Typography, Paper } from '@mui/material';
@@ -8,7 +8,9 @@ const ContainerProposta = (props) => {
     const containerGeral = {
         width: '90%',
         height: '5rem',
-        border: 'solid 1px black',
+        border: '1px solid',
+        borderLeft: 'solid 6px',
+        borderColor: 'primary.main',
         borderRadius: '5px',
         p: 4,
         margin: '1%',
@@ -16,7 +18,24 @@ const ContainerProposta = (props) => {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        cursor: 'pointer'
+        cursor: 'pointer',
+    };
+
+    const containerSelecionado = {
+        width: '90%',
+        height: '5rem',
+        border: '1px solid',
+        borderLeft: 'solid 6px',
+        borderColor: 'primary.main',
+        borderRadius: '5px',
+        p: 4,
+        margin: '1%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        backgroundColor: 'rgba(196, 196, 196, 0.7)'
     };
 
     const parteCima = {
@@ -41,26 +60,23 @@ const ContainerProposta = (props) => {
         textOverflow: "ellipsis",
     };
 
-    const containerSelecionado = {
-        width: '90%',
-        height: '5rem',
-        border: 'solid 1px black',
-        borderRadius: '5px',
-        p: 4,
-        margin: '1%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        cursor: 'pointer',
-        backgroundColor: 'rgba(196, 196, 196, 0.7)'
-    };
-
     const [pautaSelecionada, setPautaSelecionada] = useState(false);
 
     const selecionarPauta = () => {
-        setPautaSelecionada(!pautaSelecionada);
+        if (props.indexPautaSelecionada == props.index) {
+            props.setIndexPautaSelecionada(null);
+        } else {
+            props.setIndexPautaSelecionada(props.index);
+        }
     };
+
+    useEffect(() => {
+        if (props.indexPautaSelecionada == props.index) {
+            setPautaSelecionada(!pautaSelecionada)
+        } else {
+            setPautaSelecionada(false)
+        }
+    }, [props.indexPautaSelecionada])
 
     return (
         <>
@@ -74,14 +90,20 @@ const ContainerProposta = (props) => {
                             01/2022
                         </Typography>
                     </Box>
-                    <Box sx={parteBaixo}>
-                        <Typography sx={tituloProposta}>
-                            Titulo da primeira proposta
-                        </Typography>
-                        <Typography sx={tituloProposta}>
-                            Titulo da segunda proposta
-                        </Typography>
-                    </Box>
+                    {!props.novaPauta ?
+                        <Box sx={parteBaixo}>
+                            <Typography sx={tituloProposta}>
+                                Titulo da primeira proposta
+                            </Typography>
+                            <Typography sx={tituloProposta}>
+                                Titulo da segunda proposta
+                            </Typography>
+                        </Box>
+                        :
+                        <Box sx={parteBaixo}>
+                            <Typography>OI</Typography>
+                        </Box>
+                    }
                 </Paper >
                 :
                 <Paper sx={containerSelecionado} onClick={selecionarPauta} >

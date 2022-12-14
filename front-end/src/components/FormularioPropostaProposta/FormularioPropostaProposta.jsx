@@ -22,7 +22,7 @@ const FormularioPropostaProposta = (props) => {
         visible: true,
       },
     ],
-    anexo: [{ name: "teste.png" }],
+    anexo: [],
   });
 
   return (

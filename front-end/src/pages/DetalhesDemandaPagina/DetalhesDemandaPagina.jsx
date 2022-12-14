@@ -10,26 +10,6 @@ import Caminho from "../../components/Caminho/Caminho";
 import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
 
 const DetalhesDemandaPagina = () => {
-  const [dados, setDados] = useState({
-    titulo: "Sistema de Gestão de Demandas",
-    problema:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-    proposta:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-    frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-    beneficios: [
-      {
-        tipo: "Real",
-        valorMensal: "300,00",
-        moeda: "BR",
-        memoriaCalculo:
-          "aqui vai a memória de cálculo, onde conterá as informações necessárias dele",
-        visible: true,
-      },
-    ],
-    anexo: [{ name: "teste.png" }],
-  });
-
   const location = useLocation();
 
   const showDetails = () => {
@@ -38,7 +18,15 @@ const DetalhesDemandaPagina = () => {
 
   useEffect(() => {
     setDados(location.state);
+
+    let listaAnexos = [];
+    for (let arquivo of location.state.anexo) {
+      listaAnexos.push(new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }));
+    }
+    setDados({ ...dados, anexo: listaAnexos });
   }, []);
+
+  const [dados, setDados] = useState(location.state);
 
   return (
     <FundoComHeader>
@@ -53,7 +41,6 @@ const DetalhesDemandaPagina = () => {
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
-              onClick={showDetails}
             />
           </Box>
         </Box>

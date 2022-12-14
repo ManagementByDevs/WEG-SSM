@@ -7,22 +7,10 @@ import FontConfig from "../../service/FontConfig";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
-const FormularioCustosProposta = () => {
-  const [custos, setCustos] = useState([
-    {
-      tipoDispesa: "",
-      perfilDespesa: "",
-      periodoExecucao: "",
-      horas: "",
-      valorHora: "",
-      total: "",
-      ccs: "",
-      visible: true,
-    },
-  ]);
+const FormularioCustosProposta = (props) => {
 
   const deletarCustos = (index) => {
-    let aux = custos.map((custo) => {
+    let aux = props.custos.map((custo) => {
       return {
         tipoDispesa: custo.tipoDispesa,
         perfilDespesa: custo.perfilDespesa,
@@ -35,7 +23,7 @@ const FormularioCustosProposta = () => {
       };
     });
     aux[index].visible = false;
-    setCustos(aux);
+    props.setCustos(aux);
   };
 
   return (
@@ -50,8 +38,8 @@ const FormularioCustosProposta = () => {
           variant="contained"
           disableElevation
           onClick={() => {
-            setCustos([
-              ...custos,
+            props.setCustos([
+              ...props.custos,
               {
                 tipoDispesa: "",
                 perfilDespesa: "",
@@ -70,7 +58,7 @@ const FormularioCustosProposta = () => {
         </Button>
       </Box>
       <Box>
-        {custos?.map((custo, index) => {
+        {props.custos?.map((custo, index) => {
           return (
             custo.visible && (
               <Custos
