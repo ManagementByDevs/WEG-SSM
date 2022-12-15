@@ -24,7 +24,7 @@ const Demanda = (props) => {
       }
     }
 
-    if(props.demanda.status == "ASSESSMENT") {
+    if (props.demanda.status == "ASSESSMENT") {
       return "#11B703";
     }
   }
@@ -44,7 +44,7 @@ const Demanda = (props) => {
       }
     }
 
-    if(props.demanda.status == "ASSESSMENT") {
+    if (props.demanda.status == "ASSESSMENT") {
       return "Aprovada";
     }
   };
@@ -67,91 +67,99 @@ const Demanda = (props) => {
   };
 
   return (
-    <Paper
-      onClick={props.onClick}
-      sx={{
-        "&:hover": {
-          backgroundColor: "hover.main",
-        },
-        borderColor: "primary.main",
-        minWidth: "550px",
-        maxWidth: "100%",
-        minHeight: tamanhoHeight,
-        maxHeight: "12rem",
-        cursor: "pointer",
-      }}
-      className={`items-center h-30 text-justify border-t-4 pt-2 pb-3 px-6 drop-shadow-lg`}
-    >
-      <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
-        {/* Título da demanda */}
-        <Typography
-          fontSize={FontConfig.veryBig}
-          sx={{ fontWeight: "600" }}
-          color="text.primary"
-        >
-          {props.demanda.titulo}
-        </Typography>
-
-        {/* Lógica para mostrar o status da demanda somente caso o usuário seja o dono dela */}
-        {parseInt(localStorage.getItem("usuarioId")) ==
-          props.demanda?.solicitante?.id && (
-          <Box className={`items-center text-justify flex`}>
-            <Typography
-              fontSize={FontConfig.default}
-              sx={{ fontWeight: "600" }}
-            >
-              {formatarNomeStatus()}
-            </Typography>
-            <Box
-              sx={{
-                backgroundColor: corStatus,
-                width: "12px",
-                height: "12px",
-                borderRadius: "10px",
-                marginLeft: "10px",
-              }}
-              className={`items-center h-30 text-justify`}
-            />
-          </Box>
-        )}
-      </Box>
-
-      {/* Proposta da demanda */}
-      <Typography
-        gutterBottom
-        fontSize={FontConfig.default}
-        color="text.secondary"
+    <>
+      {/* Abrindo o modal de motivo recusa */}
+      {abrirModal && (
+        <ModalMotivoRecusa
+          open={abrirModal}
+          setOpen={setOpenModal}
+          motivoRecusa={props.demanda?.motivoRecusa}
+        />
+      )}
+      <Paper
+        onClick={props.onClick}
+        sx={{
+          "&:hover": {
+            backgroundColor: "hover.main",
+          },
+          borderColor: "primary.main",
+          minWidth: "550px",
+          maxWidth: "100%",
+          minHeight: tamanhoHeight,
+          maxHeight: "12rem",
+          cursor: "pointer",
+        }}
+        className={`items-center h-30 text-justify border-t-4 pt-2 pb-3 px-6 drop-shadow-lg`}
       >
-        {props.demanda.proposta}
-      </Typography>
-      <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
-        {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
-        {parseInt(localStorage.getItem("usuarioId")) !=
-        props.demanda?.solicitante?.id ? (
+        <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
+          {/* Título da demanda */}
           <Typography
-            fontSize={FontConfig.default}
-            sx={{ fontWeight: "600", cursor: "default" }}
+            fontSize={FontConfig.veryBig}
+            sx={{ fontWeight: "600" }}
             color="text.primary"
           >
-            {props.demanda.solicitante?.nome}
+            {props.demanda.titulo}
           </Typography>
-        ) : props.demanda?.status == "CANCELLED" &&
-          props.demanda?.solicitante?.id ===
-            parseInt(localStorage.getItem("usuarioId")) ? (
-          <Button onClick={abrirModalMotivoRecusa} variant="contained">
-            Motivo
-          </Button>
-        ) : null}
-        {/* Abrindo o modal de motivo recusa */}
-        {abrirModal && (
-          <ModalMotivoRecusa
-            open={abrirModal}
-            setOpen={setOpenModal}
-            motivoRecusa={props.demanda?.motivoRecusa}
-          />
-        )}
-      </Box>
-    </Paper>
+
+          {/* Lógica para mostrar o status da demanda somente caso o usuário seja o dono dela */}
+          {parseInt(localStorage.getItem("usuarioId")) ==
+            props.demanda?.solicitante?.id && (
+            <Box className={`items-center text-justify flex`}>
+              <Typography
+                fontSize={FontConfig.default}
+                sx={{ fontWeight: "600" }}
+              >
+                {formatarNomeStatus()}
+              </Typography>
+              <Box
+                sx={{
+                  backgroundColor: corStatus,
+                  width: "12px",
+                  height: "12px",
+                  borderRadius: "10px",
+                  marginLeft: "10px",
+                }}
+                className={`items-center h-30 text-justify`}
+              />
+            </Box>
+          )}
+        </Box>
+
+        {/* Proposta da demanda */}
+        <Typography
+          gutterBottom
+          fontSize={FontConfig.default}
+          color="text.secondary"
+        >
+          {props.demanda.proposta}
+        </Typography>
+        <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
+          {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
+          {parseInt(localStorage.getItem("usuarioId")) !=
+          props.demanda?.solicitante?.id ? (
+            <Typography
+              fontSize={FontConfig.default}
+              sx={{ fontWeight: "600", cursor: "default" }}
+              color="text.primary"
+            >
+              {props.demanda.solicitante?.nome}
+            </Typography>
+          ) : props.demanda?.status == "CANCELLED" &&
+            props.demanda?.solicitante?.id ===
+              parseInt(localStorage.getItem("usuarioId")) ? (
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                abrirModalMotivoRecusa();
+              }}
+              variant="contained"
+            >
+              Motivo
+            </Button>
+          ) : null}
+        </Box>
+      </Paper>
+    </>
   );
 };
 
