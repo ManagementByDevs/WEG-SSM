@@ -45,7 +45,7 @@ const Pautas = (props) => {
             </Typography>
           )}
           {props.tipo === "pauta" && (
-            <Box sx={{marginRight: "-16px"}}>
+            <Box sx={{marginRight: "-16px"}} className="ml-2">
               <Tooltip title="Deletar">
                 <IconButton>
                   <DeleteOutlineOutlinedIcon
