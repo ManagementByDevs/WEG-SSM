@@ -940,6 +940,7 @@ public class DemandaController {
     public ResponseEntity<Object> updateSemArquivos(@RequestParam("demanda") String demandaJSON) {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
+        demanda.setAnexo(null);
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 

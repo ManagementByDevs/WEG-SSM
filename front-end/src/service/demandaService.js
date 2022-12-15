@@ -44,7 +44,7 @@ class DemandaService {
 
         form.append("demanda", JSON.stringify(demanda));
         for (let arquivo of arquivos) {
-            form.append("anexos", new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }));
+            form.append("anexos", arquivo);
         }
 
         console.log(form.getAll("anexos"));

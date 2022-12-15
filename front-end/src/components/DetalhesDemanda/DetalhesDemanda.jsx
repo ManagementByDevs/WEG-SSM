@@ -24,6 +24,7 @@ import FontConfig from "../../service/FontConfig";
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from '../../service/beneficioService';
 import DemandaService from '../../service/demandaService';
+import AnexoService from "../../service/anexoService";
 
 const DetalhesDemanda = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -99,7 +100,6 @@ const DetalhesDemanda = (props) => {
   }
 
   useEffect(() => {
-    console.log("props.dados ", props.dados);
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
     setProposta(props.dados.proposta);
@@ -123,6 +123,8 @@ const DetalhesDemanda = (props) => {
   const [beneficiosNovos, setBeneficiosNovos] = useState([]);
   const [beneficiosExcluidos, setBeneficiosExcluidos] = useState([]);
   const [demandaEmEdicao, setDemandaEmEdicao] = useState(false);
+
+  const [anexosExcluidos, setAnexosExcluidos] = useState([]);
 
   const [anexos, setAnexos] = useState(props.dados.anexo);
 
@@ -159,10 +161,20 @@ const DetalhesDemanda = (props) => {
   // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
-      console.log(anexos);
       setAnexos([...anexos, file]);
     }
   };
+
+  const removerAnexo = (index) => {
+    setAnexosExcluidos([...anexosExcluidos, anexos[index]]);
+    let listaNova = [];
+    for (let anexo of anexos) {
+      if (anexo.id != anexos[index].id) {
+        listaNova.push(anexo);
+      }
+    }
+    setAnexos([...listaNova]);
+  }
 
   // Aciona o input de anexos ao clicar no add anexos
   const onAddAnexoButtonClick = () => {
@@ -393,7 +405,7 @@ const DetalhesDemanda = (props) => {
               >
                 Anexos:
               </Typography>
-              {props.dados.anexo.length > 0 ? (
+              {props.dados.anexo != null && props.dados.anexo.length > 0 ? (
                 <Box className="flex flex-col gap-2">
                   {props.dados.anexo.map((anexo, index) => (
                     <Paper
@@ -601,9 +613,7 @@ const DetalhesDemanda = (props) => {
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
                       <IconButton
-                        onClick={() =>
-                          setAnexos(anexos.filter((anexo, i) => i !== index))
-                        }
+                        onClick={() => { removerAnexo(index) }}
                       >
                         <CloseIcon sx={{ color: "text.primary" }} />
                       </IconButton>
