@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
@@ -45,18 +45,24 @@ const Pautas = (props) => {
             </Typography>
           )}
           {props.tipo === "pauta" && (
-            <DeleteOutlineOutlinedIcon
-              className="delay-120 hover:scale-110 duration-300 ml-5"
-              sx={{
-                color: "icon.main",
-                cursor: "pointer",
-                fontSize: "30px",
-              }}
-            />
+            <Box sx={{marginRight: "-16px"}}>
+              <Tooltip title="Deletar">
+                <IconButton>
+                  <DeleteOutlineOutlinedIcon
+                    className="delay-120 hover:scale-110 duration-300 "
+                    sx={{
+                      color: "icon.main",
+                      cursor: "pointer",
+                      fontSize: "30px",
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+            </Box>
           )}
         </Box>
       </Box>
-      <Box className="flex items-center">
+      <Box className="flex items-center mt-3">
         <Typography fontSize={FontConfig.medium} fontWeight="600">
           Comissão:
         </Typography>
