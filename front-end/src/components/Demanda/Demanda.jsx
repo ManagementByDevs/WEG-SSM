@@ -1,5 +1,7 @@
+import React, { useState } from "react";
+
 import { Box, Typography, Button, Paper } from "@mui/material";
-import React, { useState, useEffect } from "react";
+
 import FontConfig from "../../service/FontConfig";
 
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
@@ -53,9 +55,9 @@ const Demanda = (props) => {
     if (
       parseInt(localStorage.getItem("userId")) != props.demanda?.solicitante?.id
     ) {
-      return "10rem";
+      return "8rem";
     } else {
-      return "12rem";
+      return "10rem";
     }
   }
 
