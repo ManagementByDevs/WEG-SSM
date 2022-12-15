@@ -16,6 +16,7 @@ import DetalhesPauta from "./pages/DetalhesPauta/DetalhesPauta";
 import ToggleColorMode from "./service/TemaProvedor";
 import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
+import NotFound from "./pages/NotFound/NotFound";
 
 const App = () => {
   useEffect(() => {
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="escopos" element={<Escopos />} />
           <Route path="detalhes-ata" element={<DetalhesAta />} />
           <Route path="detalhes-pauta" element={<DetalhesPauta />} />
+          <Route path="not-found" element={<NotFound />} />
         </Routes>
       </Router>
     </ToggleColorMode>

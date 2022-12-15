@@ -46,7 +46,7 @@ const PropostaDeAta = (props) => {
         });
         setBeneficios(aux);
     }, [dados]);
-    
+
     // useState utilizado no componente
 
     const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
@@ -58,7 +58,7 @@ const PropostaDeAta = (props) => {
 
 
     // função para aparecer a parte da comissão, caso seja uma porposta de uma pauta
-    
+
     useEffect(() => {
         setPropostaDePauta(props.propostaPauta)
     })
@@ -67,6 +67,10 @@ const PropostaDeAta = (props) => {
 
     const [parecer, setParecer] = useState('');
     const [parecerComissao, setParecerComissao] = useState(false);
+
+    // useState para a pauta criada
+
+    const [parecerDG, setParecerDG] = useState(false);
 
 
     // mudar o conteúdo do select e 
@@ -263,21 +267,29 @@ const PropostaDeAta = (props) => {
                         >
                             Parecer Comissão:
                         </Typography>
-                        <FormControl sx={{ width: "12rem", marginLeft: "2%" }}>
-                            <Select
-                                value={parecer}
-                                onChange={mudarParecer}
-                                displayEmpty
-                                inputProps={{ 'aria-label': 'Without label' }}
-                            >
-                                <MenuItem value="">
-                                    Aprovado
-                                </MenuItem>
-                                <MenuItem value={1}>Reprovado</MenuItem>
-                                <MenuItem value={2}>Mais Informações</MenuItem>
-                                <MenuItem value={3}>Business Case</MenuItem>
-                            </Select>
-                        </FormControl>
+
+                        {/* Aparecer o select do parecer da comissao ou aparecer o resultado do parecer, caso a pauta ja esteja criada */}
+                        {!parecerDG ?
+                            <FormControl sx={{ width: "12rem", marginLeft: "2%" }}>
+                                <Select
+                                    value={parecer}
+                                    onChange={mudarParecer}
+                                    displayEmpty
+                                    inputProps={{ 'aria-label': 'Without label' }}
+                                >
+                                    <MenuItem value="">
+                                        Aprovado
+                                    </MenuItem>
+                                    <MenuItem value={1}>Reprovado</MenuItem>
+                                    <MenuItem value={2}>Mais Informações</MenuItem>
+                                    <MenuItem value={3}>Business Case</MenuItem>
+                                </Select>
+                            </FormControl>
+                            :
+                            <Box sx={{marginLeft: '2%'}}>
+                                Aprovado
+                            </Box>
+                        }
                     </Box>
 
                     {parecerComissao ?
@@ -289,6 +301,34 @@ const PropostaDeAta = (props) => {
                         </Box>
                         :
                         <></>
+                    }
+
+                    {/* Adicionar o parecer da dg */}
+                    {!parecerDG ?
+                        <></>
+                        :
+                        <Box sx={{marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center"}}>
+                            <Typography
+                                fontSize={FontConfig.veryBig}
+                                fontWeight="600"
+                                color="text.primary">
+                                Parecer DG: 
+                            </Typography>
+
+                            <FormControl sx={{ width: "12rem", marginLeft: "2%" }}>
+                                <Select
+                                    value={parecer}
+                                    onChange={mudarParecer}
+                                    displayEmpty
+                                    inputProps={{ 'aria-label': 'Without label' }}
+                                >
+                                    <MenuItem value="">
+                                        Aprovado
+                                    </MenuItem>
+                                    <MenuItem value={1}>Reprovado</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
                     }
 
                 </Box>

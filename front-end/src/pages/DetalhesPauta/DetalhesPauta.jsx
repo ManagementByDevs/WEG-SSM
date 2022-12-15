@@ -123,6 +123,10 @@ const DetalhesPauta = (props) => {
         }
     };
 
+    const criarAta = () => {
+
+    };
+
     return (
         <FundoComHeader>
             <Box className="p-2">
@@ -222,7 +226,7 @@ const DetalhesPauta = (props) => {
                 </Box>
 
                 <Box className="flex fixed justify-end"
-                    sx={{ width: "20rem", bottom: "20px", right: "20px" }}>
+                    sx={{ width: "25rem", bottom: "20px", right: "20px" }}>
                     <Box className="flex justify-around w-full">
                         <Button
                             sx={{
@@ -255,15 +259,22 @@ const DetalhesPauta = (props) => {
                             variant="contained"
                             onClick={proximo}
                         >
-                            {botaoProximo ?
-                                <Typography>
-                                    Próximo
-                                </Typography>
-                                :
-                                <Typography>
-                                    Criar Ata
-                                </Typography>
-                            }
+                            <Typography>
+                                Próximo
+                            </Typography>
+                        </Button>
+                        <Button
+                            sx={{
+                                backgroundColor: "primary.main",
+                                color: "text.white",
+                                fontSize: FontConfig.default,
+                            }}
+                            variant="contained"
+                            onClick={criarAta}
+                        >
+                            <Typography>
+                                Criar Ata
+                            </Typography>
                         </Button>
                     </Box>
                 </Box>

@@ -97,6 +97,11 @@ const DetalhesAta = (props) => {
     const [indexProposta, setIndexProposta] = useState(-1);
     const [botaoProximo, setBotaoProximo] = useState(true);
     const [indexTitulo, setIndexTitulo] = useState(0);
+    const [ata, setAta] = useState(false);
+
+    
+    // useState para a pauta criada
+    const [pautaCriada, setPautaCriada] = useState(false);
 
     // funções para visualização das propostas, voltar, próximo...
 
@@ -132,8 +137,8 @@ const DetalhesAta = (props) => {
         }
     }
 
-    const minimizarBotoes = () => {
-        
+    const criarAta = () => {
+
     }
 
     return (
@@ -244,7 +249,7 @@ const DetalhesAta = (props) => {
 
                     {/* botões de navegação entre as proposta da ata */}
                     <Box className="flex fixed justify-end"
-                        sx={{ width: "20rem", bottom: "20px", right: "20px" }}>
+                        sx={{ width: "25rem", bottom: "20px", right: "20px" }}>
                         <Box className="flex justify-around w-full">
                             <Button
                                 sx={{
@@ -277,27 +282,35 @@ const DetalhesAta = (props) => {
                                 variant="contained"
                                 onClick={proximo}
                             >
-                                {botaoProximo ?
-                                    <Typography>
-                                        Próximo
-                                    </Typography>
-                                    :
-                                    <Typography>
-                                        Criar
-                                    </Typography>
-                                }
+                                <Typography>
+                                    Próximo
+                                </Typography>
                             </Button>
-                            <Button
-                                sx={{
-                                    backgroundColor: "primary.main",
-                                    color: "text.white",
-                                    fontSize: FontConfig.default,
-                                }}
-                                variant="contained"
-                                onClick={minimizarBotoes}
-                            >
-                                <FormatIndentDecreaseIcon></FormatIndentDecreaseIcon>
-                            </Button>
+                            {!pautaCriada ?
+                                <Button
+                                    sx={{
+                                        backgroundColor: "primary.main",
+                                        color: "text.white",
+                                        fontSize: FontConfig.default,
+                                    }}
+                                    variant="contained"
+                                    onClick={criarAta}
+                                >
+                                    Criar
+                                </Button>
+                                :
+                                <Button
+                                    sx={{
+                                        backgroundColor: "primary.main",
+                                        color: "text.white",
+                                        fontSize: FontConfig.default,
+                                    }}
+                                    variant="contained"
+                                    onClick={criarAta}
+                                >
+                                    Publicar
+                                </Button>
+                            }
                         </Box>
                     </Box>
                 </Box>
