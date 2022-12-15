@@ -18,7 +18,7 @@ import {
 
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
-import ContainerProposta from '../ContainerProposta/ContainerProposta';
+import ContainerPauta from '../ContainerPauta/ContainerPauta';
 
 const ModalAddPropostaPauta = (props) => {
 
@@ -221,7 +221,7 @@ const ModalAddPropostaPauta = (props) => {
                         {/* Exibe as pautas do sistema */}
                         {listaPautas.map((proposta, index) => {
                             return (
-                                <ContainerProposta key={index} setIndexPautaSelecionada={setIndexPautaSelecionada} index={index} indexPautaSelecionada={indexPautaSelecionada} />
+                                <ContainerPauta key={index} setIndexPautaSelecionada={setIndexPautaSelecionada} index={index} indexPautaSelecionada={indexPautaSelecionada} />
                             )
                         })}
 

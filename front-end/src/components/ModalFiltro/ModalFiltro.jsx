@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import {React,  useState, useEffect } from "react";
 
 import { Modal, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from '@mui/material';
 
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
-import { useEffect } from "react";
 
 const ModalFiltro = (props) => {
 

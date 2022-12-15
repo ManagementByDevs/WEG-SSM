@@ -81,7 +81,7 @@ const getDesignTokens = (mode) => ({
                     false: '#E4E4E4'
                 },
                 hover: {
-                    main: '#E4E4E4'
+                    main: '#EBEBEB',
                 }
             }
     },

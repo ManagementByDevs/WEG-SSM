@@ -99,6 +99,10 @@ const DetalhesAta = (props) => {
     const [indexTitulo, setIndexTitulo] = useState(0);
     const [ata, setAta] = useState(false);
 
+    
+    // useState para a pauta criada
+    const [pautaCriada, setPautaCriada] = useState(false);
+
     // funções para visualização das propostas, voltar, próximo...
 
     const voltarSumario = () => {
@@ -241,13 +245,6 @@ const DetalhesAta = (props) => {
                                 <PropostaDeAta dadosProposta={dadosProposta} propostaPauta={true} />
                             </Box>
                         }
-
-                        {!ata &&
-                            <Box>
-                                Aqui vai o parecer da dg
-                            </Box>
-                        }
-
                     </Box>
 
                     {/* botões de navegação entre as proposta da ata */}
@@ -289,17 +286,31 @@ const DetalhesAta = (props) => {
                                     Próximo
                                 </Typography>
                             </Button>
-                            <Button
-                                sx={{
-                                    backgroundColor: "primary.main",
-                                    color: "text.white",
-                                    fontSize: FontConfig.default,
-                                }}
-                                variant="contained"
-                                onClick={criarAta}
-                            >
-                                Criar
-                            </Button>
+                            {!pautaCriada ?
+                                <Button
+                                    sx={{
+                                        backgroundColor: "primary.main",
+                                        color: "text.white",
+                                        fontSize: FontConfig.default,
+                                    }}
+                                    variant="contained"
+                                    onClick={criarAta}
+                                >
+                                    Criar
+                                </Button>
+                                :
+                                <Button
+                                    sx={{
+                                        backgroundColor: "primary.main",
+                                        color: "text.white",
+                                        fontSize: FontConfig.default,
+                                    }}
+                                    variant="contained"
+                                    onClick={criarAta}
+                                >
+                                    Publicar
+                                </Button>
+                            }
                         </Box>
                     </Box>
                 </Box>

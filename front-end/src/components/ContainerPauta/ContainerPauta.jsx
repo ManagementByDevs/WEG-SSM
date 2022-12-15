@@ -3,7 +3,7 @@ import { React, useState, useEffect } from 'react';
 import { Box } from '@mui/system';
 import { Typography, Paper } from '@mui/material';
 
-const ContainerProposta = (props) => {
+const ContainerPauta = (props) => {
 
     const containerGeral = {
         width: '90%',
@@ -131,4 +131,4 @@ const ContainerProposta = (props) => {
     );
 };
 
-export default ContainerProposta;
+export default ContainerPauta;
