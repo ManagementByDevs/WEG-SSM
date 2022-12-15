@@ -22,9 +22,10 @@ const Demanda = (props) => {
       if (props.demanda.motivoRecusa != null) {
         return "#FFD600";
       }
-      if (props.demanda.analista != null) {
-        return "#11B703";
-      }
+    }
+
+    if(props.demanda.status == "ASSESSMENT") {
+      return "#11B703";
     }
   }
 
@@ -41,9 +42,10 @@ const Demanda = (props) => {
       if (props.demanda.motivoRecusa != null) {
         return "Aguardando Edição";
       }
-      if (props.demanda.analista != null) {
-        return "Aprovada";
-      }
+    }
+
+    if(props.demanda.status == "ASSESSMENT") {
+      return "Aprovada";
     }
   };
 

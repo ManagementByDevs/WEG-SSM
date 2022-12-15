@@ -1972,6 +1972,14 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
+    @PutMapping("/status/{id}/{status}")
+    public ResponseEntity<Object> atualizarStatus(@PathVariable(value = "id") Long id,
+                                                  @PathVariable(value = "status") Status status) {
+        Demanda demanda = demandaService.findById(id).get();
+        demanda.setStatus(status);
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
+
     /**
      * Método DELETE para editar uma demanda, editando sua visibilidade para false
      */
