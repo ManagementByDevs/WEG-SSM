@@ -20,6 +20,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import ContainerProposta from '../ContainerProposta/ContainerProposta';
 import { useEffect } from 'react';
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 const ModalAddPropostaPauta = (props) => {
 
     const cssModal = {
@@ -71,6 +76,69 @@ const ModalAddPropostaPauta = (props) => {
         p: 1.5
     };
 
+    const containerGeral = {
+        width: '90%',
+        height: '5.5rem',
+        border: '1px solid',
+        borderLeft: 'solid 6px',
+        borderColor: 'primary.main',
+        borderRadius: '5px',
+        p: 4,
+        margin: '1%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        cursor: 'pointer',
+    };
+
+    const containerSelecionado = {
+        width: '90%',
+        height: '5.5rem',
+        border: '1px solid',
+        borderLeft: 'solid 6px',
+        borderColor: 'primary.main',
+        borderRadius: '5px',
+        p: 4,
+        margin: '1%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        backgroundColor: 'rgba(196, 196, 196, 0.7)'
+    };
+
+    const parteCima = {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    };
+
+    const parteBaixo = {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        width: '100%',
+        marginTop: '2%'
+    };
+
+    const selectComissao = {
+        width: '10rem',
+    };
+
+    const data = {
+        width: '10rem',
+        border: 'solid 1px',
+        color: 'grey',
+        textAlign: 'center',
+        borderRadius: '3px',
+        color: 'primary.secondary',
+        background: 'transparent',
+        filter: 'white'
+    };
+
     // props para abrir o modal através de outra tela
 
     let open = false;
@@ -105,6 +173,8 @@ const ModalAddPropostaPauta = (props) => {
     const [habilitadoAdd, setHabilitadoAdd] = useState(false);
     const [indexPautaSelecionada, setIndexPautaSelecionada] = useState(null);
     const [novaPauta, setnovaPauta] = useState(false);
+    const [novaPautaSelecionada, setnovaPautaSelecionada] = useState(false);
+    const [botaoNovaPauta, setBotaoNovaPauta] = useState(false);
 
     useEffect(() => {
         console.log(habilitadoAdd)
@@ -113,8 +183,20 @@ const ModalAddPropostaPauta = (props) => {
     const [listaPautas, setListaPautas] = useState([1, 2]);
 
     const addPauta = () => {
-        setListaPautas([...listaPautas, listaPautas.length + 1]);
         setnovaPauta(true);
+    };
+
+    const [inputData, setInputData] = useState("");
+
+    const [comissao, setComissao] = useState("");
+
+    const handleChange = (event) => {
+        setComissao(event.target.value);
+    };
+
+    const selecionarNovaPauta = () => {
+        setnovaPautaSelecionada(!novaPautaSelecionada);
+        setBotaoNovaPauta(!botaoNovaPauta);
     };
 
     return (
@@ -129,11 +211,70 @@ const ModalAddPropostaPauta = (props) => {
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} ></CloseIcon>
 
                     <Box sx={listaPropostas}>
+
                         {listaPautas.map((proposta, index) => {
                             return (
-                                <ContainerProposta key={index} setIndexPautaSelecionada={setIndexPautaSelecionada} index={index} indexPautaSelecionada={indexPautaSelecionada} novaPauta={novaPauta} />
+                                <ContainerProposta key={index} setIndexPautaSelecionada={setIndexPautaSelecionada} index={index} indexPautaSelecionada={indexPautaSelecionada} />
                             )
                         })}
+
+                        {novaPauta &&
+                            <>
+                                {!novaPautaSelecionada ?
+                                    <Paper sx={containerGeral} onClick={selecionarNovaPauta}>
+                                        <Box sx={parteCima}>
+                                            <Typography>
+                                                Propostas:
+                                            </Typography>
+                                            <input style={data} type="date"></input>
+                                        </Box>
+
+                                        <Box sx={parteBaixo}>
+                                            <FormControl sx={selectComissao} size="small">
+                                                <Select
+                                                    value={comissao}
+                                                    onChange={handleChange}
+                                                    displayEmpty
+                                                    inputProps={{ 'aria-label': 'Without label' }}
+                                                >
+                                                    <MenuItem value="">
+                                                        Comissão
+                                                    </MenuItem>
+                                                    <MenuItem value={1}>Exemplo 01</MenuItem>
+                                                    <MenuItem value={2}>Exemplo 02</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </Box>
+                                    </Paper >
+                                    :
+                                    <Paper sx={containerSelecionado} onClick={selecionarNovaPauta}>
+                                        <Box sx={parteCima}>
+                                            <Typography>
+                                                Propostas:
+                                            </Typography>
+                                            <input style={data} type="date"></input>
+                                        </Box>
+
+                                        <Box sx={parteBaixo}>
+                                            <FormControl sx={selectComissao} size="small">
+                                                <Select
+                                                    value={comissao}
+                                                    onChange={handleChange}
+                                                    displayEmpty
+                                                    inputProps={{ 'aria-label': 'Without label' }}
+                                                >
+                                                    <MenuItem value="">
+                                                        Comissão
+                                                    </MenuItem>
+                                                    <MenuItem value={1}>Exemplo 01</MenuItem>
+                                                    <MenuItem value={2}>Exemplo 02</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </Box>
+                                    </Paper >
+                                }
+                            </>
+                        }
 
                     </Box>
 
@@ -153,7 +294,7 @@ const ModalAddPropostaPauta = (props) => {
                         </Box>
                         <Box sx={{ width: '90%', display: 'flex', justifyContent: 'space-between', marginTop: '3%' }}>
                             <Button sx={botaoCriar} disableElevation onClick={addPauta} disabled={novaPauta != false}>Criar Pauta</Button>
-                            <Button sx={botaoDesabilitado} disableElevation disabled={indexPautaSelecionada == null} variant="contained" onClick={handleClose}>Adicionar</Button>
+                            <Button sx={botaoDesabilitado} disableElevation disabled={indexPautaSelecionada == null && botaoNovaPauta == false} variant="contained" onClick={handleClose}>Adicionar</Button>
                         </Box>
                     </Box>
                 </Box>

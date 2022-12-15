@@ -7,7 +7,7 @@ const ContainerProposta = (props) => {
 
     const containerGeral = {
         width: '90%',
-        height: '5rem',
+        height: '5.5rem',
         border: '1px solid',
         borderLeft: 'solid 6px',
         borderColor: 'primary.main',
@@ -23,7 +23,7 @@ const ContainerProposta = (props) => {
 
     const containerSelecionado = {
         width: '90%',
-        height: '5rem',
+        height: '5.5rem',
         border: '1px solid',
         borderLeft: 'solid 6px',
         borderColor: 'primary.main',
@@ -90,20 +90,16 @@ const ContainerProposta = (props) => {
                             01/2022
                         </Typography>
                     </Box>
-                    {!props.novaPauta ?
-                        <Box sx={parteBaixo}>
-                            <Typography sx={tituloProposta}>
-                                Titulo da primeira proposta
-                            </Typography>
-                            <Typography sx={tituloProposta}>
-                                Titulo da segunda proposta
-                            </Typography>
-                        </Box>
-                        :
-                        <Box sx={parteBaixo}>
-                            <Typography>OI</Typography>
-                        </Box>
-                    }
+
+                    <Box sx={parteBaixo}>
+                        <Typography sx={tituloProposta}>
+                            Titulo da primeira proposta
+                        </Typography>
+                        <Typography sx={tituloProposta}>
+                            Titulo da segunda proposta
+                        </Typography>
+                    </Box>
+
                 </Paper >
                 :
                 <Paper sx={containerSelecionado} onClick={selecionarPauta} >
