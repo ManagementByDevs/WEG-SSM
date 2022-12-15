@@ -135,9 +135,9 @@ const Demanda = (props) => {
           >
             {props.demanda.solicitante?.nome}
           </Typography>
-        ) : props.demanda.status === "CANCELLED" &&
-          props.demanda.solicitante.id ===
-            parseInt(localStorage.getItem("userId")) ? (
+        ) : props.demanda?.status == "CANCELLED" &&
+          props.demanda?.solicitante?.id ===
+            parseInt(localStorage.getItem("usuarioId")) ? (
           <Button onClick={abrirModalMotivoRecusa} variant="contained">
             Motivo
           </Button>
@@ -147,7 +147,7 @@ const Demanda = (props) => {
           <ModalMotivoRecusa
             open={abrirModal}
             setOpen={setOpenModal}
-            motivoRecusa={"Aqui vai o texto de motivo da recusa"}
+            motivoRecusa={props.demanda?.motivoRecusa}
           />
         )}
       </Box>
