@@ -102,6 +102,7 @@ const UserModal = () => {
     // Função para sair da conta do usuário
     const sair = () => {
         localStorage.removeItem("usuarioId");
+        localStorage.removeItem("user");
     }
 
     useEffect(() => {

@@ -1,10 +1,11 @@
 import "./App.css";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  Outlet,
 } from "react-router-dom";
 
 import Home from "./pages/Home/Home";
@@ -23,36 +24,30 @@ import ToggleColorMode from "./service/TemaProvedor";
 import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 
-import UserContext from "./service/UserContext";
-
 const App = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
-  const userValueContext = useMemo(
-    () => ({
-      user,
-      setUser: () => {
-        setUser();
-      },
-    }),
-    [user]
-  );
+  // const userValueContext = useMemo(
+  //   () => ({
+  //     user,
+  //     setUser: (e) => {
+  //       setUser(e);
+  //     },
+  //   }),
+  //   [user]
+  // );
+
+  // useEffect(() => {
+  //   console.log("app user: ", user);
+  // }, [user]);
 
   return (
     <ToggleColorMode>
-      <UserContext.Provider value={userValueContext}>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/home-gerencia" element={<HomeGerencia />} />
+      {/* <UserContext.Provider value={userValueContext}> */}
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route element={<ProtectedRoute />}>
             <Route path="/criar-demanda" element={<CriarDemanda />} />
             <Route path="/criar-proposta" element={<CriarProposta />} />
             <Route path="/notificacao" element={<Notificacao />} />
@@ -66,19 +61,64 @@ const App = () => {
             <Route path="detalhes-ata" element={<DetalhesAta />} />
             <Route path="detalhes-pauta" element={<DetalhesPauta />} />
             <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Router>
-      </UserContext.Provider>
+          </Route>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <DetermineHomeUser />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+      {/* </UserContext.Provider> */}
     </ToggleColorMode>
   );
 };
 
-const ProtectedRoute = ({ user, children }) => {
-  if (!user) {
-    return <Navigate to="/login" />;
+const ProtectedRoute = ({
+  tipoUsuario = "",
+  children,
+  redirectPath = "/login",
+}) => {
+  const [user, setUser] = useState(
+    localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null
+  );
+
+  // useEffect(() => {
+  //   if (localStorage.getItem("user")) {
+  //     setUser(JSON.parse(localStorage.getItem("user")));
+  //   } else {
+  //     setUser(null);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    console.log("user:", user);
+  }, [user]);
+
+  if (!user || (tipoUsuario && !tipoUsuario.includes(user.tipoUsuario))) {
+    return <Navigate to={redirectPath} replace />;
   }
 
-  return children;
+  return children ? children : <Outlet />;
+};
+
+const DetermineHomeUser = () => {
+  const [user, setUser] = useState(
+    localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null
+  );
+
+  if (user.tipoUsuario === "SOLICITANTE") {
+    return <Home />;
+  } else {
+    return <HomeGerencia />;
+  }
 };
 
 export default App;
