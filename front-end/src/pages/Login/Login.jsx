@@ -48,6 +48,7 @@ const Login = (props) => {
                 if (e != null && e != "") {
                     // Salvar token recebido no localstorage
                     localStorage.setItem('usuarioId', e.id);
+                    localStorage.setItem('user', JSON.stringify(e));
                     navigate('/');
                 } else {
                     setOpenFeedbackDadosInvalidos(true);
