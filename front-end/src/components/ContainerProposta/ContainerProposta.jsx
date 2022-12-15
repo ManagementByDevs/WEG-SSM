@@ -90,6 +90,7 @@ const ContainerProposta = (props) => {
                             Propostas:
                         </Typography>
                         <Typography>
+                            {/* props.dataAta */}
                             01/2022
                         </Typography>
                     </Box>
@@ -111,6 +112,7 @@ const ContainerProposta = (props) => {
                             Propostas:
                         </Typography>
                         <Typography>
+                            {/* props.dataAta */}
                             01/2022
                         </Typography>
                     </Box>

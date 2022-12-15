@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { React, useState, useEffect } from "react";
 
 import {
     Box,
@@ -9,13 +9,13 @@ import {
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
+import FormatIndentDecreaseIcon from '@mui/icons-material/FormatIndentDecrease';
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 
 import FontConfig from "../../service/FontConfig";
-import { useEffect } from "react";
 
 const DetalhesAta = (props) => {
 
@@ -130,6 +130,10 @@ const DetalhesAta = (props) => {
             setDadosProposta(listaProposta[indexProposta + 1]);
             setIndexProposta(indexProposta + 1);
         }
+    }
+
+    const minimizarBotoes = () => {
+        
     }
 
     return (
@@ -282,6 +286,17 @@ const DetalhesAta = (props) => {
                                         Criar
                                     </Typography>
                                 }
+                            </Button>
+                            <Button
+                                sx={{
+                                    backgroundColor: "primary.main",
+                                    color: "text.white",
+                                    fontSize: FontConfig.default,
+                                }}
+                                variant="contained"
+                                onClick={minimizarBotoes}
+                            >
+                                <FormatIndentDecreaseIcon></FormatIndentDecreaseIcon>
                             </Button>
                         </Box>
                     </Box>

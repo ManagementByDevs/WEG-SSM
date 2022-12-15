@@ -145,14 +145,9 @@ const Home = () => {
 
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
   const [abrirFiltro, setOpenFiltro] = useState(false);
-  const [abrirModalAddProp, setOpenModalAddProposta] = useState(false);
 
   const abrirModalOrdenacao = () => {
     setOpenOrdenacao(true);
-  };
-
-  const abrirModalAddProposta = () => {
-    setOpenModalAddProposta(true);
   };
 
   const abrirModalFiltro = () => {
@@ -311,9 +306,6 @@ const Home = () => {
                     filtroDemanda={true}
                   />
                 )}
-
-                <Button onClick={abrirModalAddProposta}>Add Proposta em Pauta</Button>
-                {abrirModalAddProp && <ModalAddPropostaPauta open={abrirModalAddProp} setOpen={setOpenModalAddProposta}  />}
               </Box>
 
               {/* Botão de criar demanda */}
