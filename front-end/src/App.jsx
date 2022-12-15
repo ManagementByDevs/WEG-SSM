@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -25,7 +25,10 @@ import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 
 const App = () => {
-
+  /*
+  Tipos possíveis de usuários:
+  [SOLICITANTE, ANALISTA, GERENTE, GETOR]
+  */
   return (
     <ToggleColorMode>
       <Router>
@@ -33,7 +36,6 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/criar-demanda" element={<CriarDemanda />} />
-            <Route path="/criar-proposta" element={<CriarProposta />} />
             <Route path="/notificacao" element={<Notificacao />} />
             <Route path="/chat" element={<Chat />} />
             <Route
@@ -42,8 +44,6 @@ const App = () => {
             />
             <Route path="/editar-escopo" element={<EditarEscopo />} />
             <Route path="escopos" element={<Escopos />} />
-            <Route path="detalhes-ata" element={<DetalhesAta />} />
-            <Route path="detalhes-pauta" element={<DetalhesPauta />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
           <Route
@@ -54,6 +54,39 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/criar-proposta"
+            element={
+              <ProtectedRoute
+                tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                redirectPath="/"
+              >
+                <CriarProposta />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="detalhes-ata"
+            element={
+              <ProtectedRoute
+                tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                redirectPath="/"
+              >
+                <DetalhesAta />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="detalhes-pauta"
+            element={
+              <ProtectedRoute
+                tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                redirectPath="/"
+              >
+                <DetalhesPauta />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Router>
     </ToggleColorMode>
@@ -61,24 +94,29 @@ const App = () => {
 };
 
 const ProtectedRoute = ({
-  tipoUsuario = "",
+  tiposUsuarioAllowed = "",
   children,
   redirectPath = "/login",
 }) => {
+  // Quando formos retirar o user do localstorage,
+  // lembrar de deletar no Login.jsx a linha de adicionar o user no localstorage na função login;
+  // Lembrar de deletar no UserModal.jsx a linha de deletar o user do localstorage na função sair;
   const [user, setUser] = useState(
     localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user"))
       : null
   );
 
-  useEffect(() => {
-    console.log("user:", user);
-  }, [user]);
-
-  if (!user || (tipoUsuario && !tipoUsuario.includes(user.tipoUsuario))) {
+  // Caso não tenha usuário logado ou o usuário não possua um tipo que possa acessar tal
+  // página, redireciona para o redirectPath (Valor padrão é login)
+  if (
+    !user ||
+    (tiposUsuarioAllowed && !tiposUsuarioAllowed.includes(user.tipoUsuario))
+  ) {
     return <Navigate to={redirectPath} replace />;
   }
 
+  // Caso o componente esteja sendo usado como Layout Route, não possuirá um children, retornando o Outlet
   return children ? children : <Outlet />;
 };
 
