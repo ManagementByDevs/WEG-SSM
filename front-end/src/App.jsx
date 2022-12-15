@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useMemo, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -25,25 +25,9 @@ import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 
 const App = () => {
-  // const [user, setUser] = useState(null);
-
-  // const userValueContext = useMemo(
-  //   () => ({
-  //     user,
-  //     setUser: (e) => {
-  //       setUser(e);
-  //     },
-  //   }),
-  //   [user]
-  // );
-
-  // useEffect(() => {
-  //   console.log("app user: ", user);
-  // }, [user]);
 
   return (
     <ToggleColorMode>
-      {/* <UserContext.Provider value={userValueContext}> */}
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -72,7 +56,6 @@ const App = () => {
           />
         </Routes>
       </Router>
-      {/* </UserContext.Provider> */}
     </ToggleColorMode>
   );
 };
@@ -87,14 +70,6 @@ const ProtectedRoute = ({
       ? JSON.parse(localStorage.getItem("user"))
       : null
   );
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("user")) {
-  //     setUser(JSON.parse(localStorage.getItem("user")));
-  //   } else {
-  //     setUser(null);
-  //   }
-  // }, []);
 
   useEffect(() => {
     console.log("user:", user);
