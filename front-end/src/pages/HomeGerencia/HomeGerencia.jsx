@@ -497,7 +497,7 @@ const HomeGerencia = () => {
                   sx={{
                     display: "grid",
                     gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(700px, 1fr))",
                   }}
                 >
                   {pautas?.map((pauta, index) => {
@@ -510,7 +510,7 @@ const HomeGerencia = () => {
                   sx={{
                     display: "grid",
                     gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(700px, 1fr))",
                   }}
                 >
                   {atas?.map((ata, index) => {
