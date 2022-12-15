@@ -89,7 +89,7 @@ const Demanda = (props) => {
           maxHeight: "12rem",
           cursor: "pointer",
         }}
-        className={`items-center h-30 text-justify border-t-4 pt-2 pb-3 px-6 drop-shadow-lg`}
+        className={`items-center h-30 text-justify border-t-4 pt-2 pb-3 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
       >
         <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
           {/* Título da demanda */}

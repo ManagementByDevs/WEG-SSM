@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Button, Tab } from "@mui/material";
+import { Box, Button, Tab, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -359,14 +359,18 @@ const HomeGerencia = () => {
                   {/* Container para os ícones */}
                   <Box className="flex gap-2">
                     {/* Ícone de pesquisa */}
-                    <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
+                    <Tooltip title="Pesquisar">
+                      <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
+                    </Tooltip>
 
                     {/* Ícone de ordenação */}
-                    <SwapVertIcon
-                      onClick={() => { }}
-                      className="cursor-pointer"
-                      sx={{ color: "text.secondary" }}
-                    />
+                    <Tooltip title="Ordenação">
+                      <SwapVertIcon
+                        onClick={() => { }}
+                        className="cursor-pointer"
+                        sx={{ color: "text.secondary" }}
+                      />
+                    </Tooltip>
                   </Box>
                 </Box>
 

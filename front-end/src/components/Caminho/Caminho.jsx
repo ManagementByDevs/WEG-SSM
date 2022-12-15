@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Tooltip } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 
@@ -16,12 +16,14 @@ const Caminho = () => {
 
     const getPathName = (item) => {
         item = item.charAt(0).toUpperCase() + item.slice(1);
-        return item.replaceAll('-' , ' ') 
+        return item.replaceAll('-', ' ')
     }
 
     return (
         <Box className='flex items-center gap-x-1' color="link.main">
-            <HomeOutlinedIcon className='cursor-pointer' sx={{ fontSize: '32px' }} onClick={() => { navigate("/") }} />
+            <Tooltip title="Home">
+                <HomeOutlinedIcon className='cursor-pointer' sx={{ fontSize: '32px' }} onClick={() => { navigate("/") }} />
+            </Tooltip>
             <ArrowForwardIosOutlinedIcon sx={{ fontSize: '20px' }} />
             {listaCaminho.map((item, index) => {
                 if (item !== "") {

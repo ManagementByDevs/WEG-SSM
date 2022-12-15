@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 
-import { Box, Button, Paper, Tooltip, Typography } from "@mui/material";
+import { Box, Paper, Tooltip, Typography, IconButton } from "@mui/material";
 
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
@@ -155,30 +155,34 @@ const DemandaGerencia = (props) => {
                     // Se for uma proposta, mostra o icone de chat
                     tipo === "proposta" && (
                       <Tooltip title="Chat">
-                        <ChatOutlinedIcon
-                          className="delay-120 hover:scale-110 duration-300 ml-5"
-                          sx={{
-                            color: "icon.main",
-                            cursor: "pointer",
-                            fontSize: "30px",
-                          }}
-                        />
+                        <IconButton>
+                          <ChatOutlinedIcon
+                            className="delay-120 hover:scale-110 duration-300"
+                            sx={{
+                              color: "icon.main",
+                              cursor: "pointer",
+                              fontSize: "30px",
+                            }}
+                          />
+                        </IconButton>
                       </Tooltip>
                     )
                   }
                   <Tooltip title="Histórico">
-                    <HistoryOutlinedIcon
-                      className="delay-120 hover:scale-110 duration-300 ml-5"
-                      sx={{
-                        color: "icon.main",
-                        cursor: "pointer",
-                        fontSize: "30px",
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        abrirModalHistorico();
-                      }}
-                    />
+                    <IconButton>
+                      <HistoryOutlinedIcon
+                        className="delay-120 hover:scale-110 duration-300"
+                        sx={{
+                          color: "icon.main",
+                          cursor: "pointer",
+                          fontSize: "30px",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          abrirModalHistorico();
+                        }}
+                      />
+                    </IconButton>
                   </Tooltip>
                 </Box>
               </Box>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Box, Button } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -153,14 +153,18 @@ const Escopos = () => {
                 {/* Container para os ícones */}
                 <Box className="flex gap-2">
                   {/* Ícone de pesquisa */}
-                  <SearchOutlinedIcon onClick={buscarEscopos} className="hover:cursor-pointer" sx={{ color: "text.secondary" }} />
+                  <Tooltip title="Pesquisar">
+                    <SearchOutlinedIcon onClick={buscarEscopos} className="hover:cursor-pointer" sx={{ color: "text.secondary" }} />
+                  </Tooltip>
 
                   {/* Ícone de ordenação */}
-                  <SwapVertIcon
-                    onClick={abrirModalOrdenacao}
-                    className="cursor-pointer"
-                    sx={{ color: "text.secondary" }}
-                  />
+                  <Tooltip title="Ordenação">
+                    <SwapVertIcon
+                      onClick={abrirModalOrdenacao}
+                      className="cursor-pointer"
+                      sx={{ color: "text.secondary" }}
+                    />
+                  </Tooltip>
 
                   {/* Modal de ordenação */}
                   {abrirOrdenacao && (

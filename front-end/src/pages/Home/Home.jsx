@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Tab, Box, Snackbar, Alert } from "@mui/material";
+import { Button, Tab, Box, Snackbar, Alert, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -253,18 +253,22 @@ const Home = () => {
                   {/* Container para os ícones */}
                   <Box className="flex gap-2">
                     {/* Ícone de pesquisa */}
-                    <SearchOutlinedIcon
-                      onClick={pesquisaTitulo}
-                      className="hover:cursor-pointer"
-                      sx={{ color: "text.secondary" }}
-                    />
+                    <Tooltip title="Pesquisar">
+                      <SearchOutlinedIcon
+                        onClick={pesquisaTitulo}
+                        className="hover:cursor-pointer"
+                        sx={{ color: "text.secondary" }}
+                      />
+                    </Tooltip>
 
                     {/* Ícone de ordenação */}
-                    <SwapVertIcon
-                      onClick={abrirModalOrdenacao}
-                      className="cursor-pointer"
-                      sx={{ color: "text.secondary" }}
-                    />
+                    <Tooltip title="Ordenação">
+                      <SwapVertIcon
+                        onClick={abrirModalOrdenacao}
+                        className="cursor-pointer"
+                        sx={{ color: "text.secondary" }}
+                      />
+                    </Tooltip>
 
                     {/* Modal de ordenação */}
                     {abrirOrdenacao && (

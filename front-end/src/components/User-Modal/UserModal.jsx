@@ -235,17 +235,19 @@ const UserModal = () => {
           </MenuItem>
           <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4 mt-1">
             {/* <Typography color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 500 }}>Tema</Typography> */}
-            <FormControlLabel
-              control={
-                <MaterialUISwitch
-                  checked={temaDark}
-                  onChange={() => {
-                    setTemaDark(!temaDark);
-                  }}
-                  sx={{ m: 1 }}
-                />
-              }
-            />
+            <Tooltip title="Modo Escuro/Claro">
+              <FormControlLabel
+                control={
+                  <MaterialUISwitch
+                    checked={temaDark}
+                    onChange={() => {
+                      setTemaDark(!temaDark);
+                    }}
+                    sx={{ m: 1 }}
+                  />
+                }
+              />
+            </Tooltip>
           </Box>
 
           {/* Link para deslogar do sistema */}
