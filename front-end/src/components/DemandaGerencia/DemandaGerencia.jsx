@@ -36,7 +36,7 @@ const DemandaGerencia = (props) => {
   return (
     <Paper
       onClick={props.onClick}
-      className="flex flex-col border-t-4 pt-2 pb-3 px-6 drop-shadow-lg"
+      className="flex flex-col border-t-4 pt-2 pb-3 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200"
       sx={{
         "&:hover": {
           backgroundColor: "hover.main",
