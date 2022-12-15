@@ -310,19 +310,20 @@ const DetalhesDemanda = (props) => {
           sx={{ top: "10px", right: "10px" }}
           onClick={editarDemanda}
         >
-          {!editar ? (
+          {props.usuario?.id == props.dados.solicitante?.id && !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
             />
-          ) : (
+          ) : null}
+          {props.usuario?.id == props.dados.solicitante?.id && editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
             />
-          )}
+          ) : null}
         </Box>
         {!editar ? (
           <>
@@ -657,7 +658,7 @@ const DetalhesDemanda = (props) => {
         className="flex fixed justify-end"
         sx={{ width: "20rem", bottom: "20px", right: "20px" }}
       >
-        {props.botao == "sim" && !editar && (
+        {props.usuario?.tipoUsuario == "ANALISTA" && props.botao == "sim" && !editar && (
           <Box className="flex justify-around w-full">
             <Button
               sx={{

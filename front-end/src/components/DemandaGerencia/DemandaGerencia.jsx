@@ -1,4 +1,4 @@
-import {React, useState} from "react";
+import { React, useState } from "react";
 
 import { Box, Paper, Typography } from "@mui/material";
 
@@ -35,6 +35,7 @@ const DemandaGerencia = (props) => {
 
   return (
     <Paper
+      onClick={props.onClick}
       className="flex flex-col border-t-4 pt-2 pb-3 px-6 drop-shadow-lg"
       sx={{
         "&:hover": {
@@ -166,7 +167,7 @@ const DemandaGerencia = (props) => {
                   }}
                   onClick={abrirModalHistorico}
                 />
-                {modalHistorico && <ModalHistoricoDemanda open={modalHistorico} setOpen={setModalHistorico}/>}
+                {modalHistorico && <ModalHistoricoDemanda open={modalHistorico} setOpen={setModalHistorico} />}
               </Box>
             </Box>
           </Box>

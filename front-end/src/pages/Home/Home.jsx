@@ -96,7 +96,6 @@ const Home = () => {
   const buscarDemandas = () => {
     if (params.departamento != null || params.solicitante != null) {
       DemandaService.getPage(params, ordenacao + page).then((e) => {
-        console.log(e.content);
         setListaDemandas(e.content);
       });
     }

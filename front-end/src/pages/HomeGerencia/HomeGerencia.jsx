@@ -116,6 +116,7 @@ const HomeGerencia = () => {
         break;
       case "2":
         if (params.status != null && params.analista != null) {
+          console.log(params);
           DemandaService.getPage(params, ordenacao + page).then((response) => {
             setListaItens([...response.content]);
           })

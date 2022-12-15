@@ -9,8 +9,23 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
 
+import UsuarioService from "../../service/usuarioService";
+
 const DetalhesDemandaPagina = () => {
   const location = useLocation();
+
+  const [dados, setDados] = useState(location.state);
+
+  // Usuário que está logado no sistema
+  const [usuario, setUsuario] = useState({
+    id: 0,
+    email: "",
+    nome: "",
+    senha: "",
+    tipo_usuario: 0,
+    visibilidade: 1,
+    departamento: null,
+  });
 
   const showDetails = () => {
     dados.beneficios[0].teste = "a;";
@@ -24,9 +39,16 @@ const DetalhesDemandaPagina = () => {
       listaAnexos.push(new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }));
     }
     setDados({ ...dados, anexo: listaAnexos });
+    buscarUsuario();
   }, []);
 
-  const [dados, setDados] = useState(location.state);
+  const buscarUsuario = () => {
+    UsuarioService.getUsuarioById(
+      parseInt(localStorage.getItem("usuarioId"))
+    ).then((e) => {
+      setUsuario(e);
+    });
+  }
 
   return (
     <FundoComHeader>
@@ -46,6 +68,7 @@ const DetalhesDemandaPagina = () => {
         </Box>
         <DetalhesDemanda
           dados={dados}
+          usuario={usuario}
           setDados={setDados}
           botao="sim"
           salvar="sim"
