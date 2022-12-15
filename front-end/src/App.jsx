@@ -18,12 +18,11 @@ import HomeGerencia from "./pages/HomeGerencia/HomeGerencia";
 import Escopos from "./pages/Escopos/Escopos";
 import DetalhesAta from "./pages/DetalhesAta/DetalhesAta";
 import DetalhesPauta from "./pages/DetalhesPauta/DetalhesPauta";
-import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-
-import ToggleColorMode from "./service/TemaProvedor";
 import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 import NotFound from "./pages/NotFound/NotFound";
+
+import ToggleColorMode from "./service/TemaProvedor";
 
 const App = () => {
   /*
@@ -45,7 +44,7 @@ const App = () => {
             />
             <Route path="/editar-escopo" element={<EditarEscopo />} />
             <Route path="escopos" element={<Escopos />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
           <Route
             path="/"
