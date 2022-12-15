@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 
 import {
     Modal,
@@ -10,22 +10,19 @@ import {
     Checkbox,
     FormGroup,
     FormControlLabel,
-    Paper
+    Paper,
+    Select,
+    FormControl,
+    MenuItem
 } from '@mui/material';
-
-import Backdrop from '@mui/material/Backdrop';
 
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 import ContainerProposta from '../ContainerProposta/ContainerProposta';
-import { useEffect } from 'react';
-
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 const ModalAddPropostaPauta = (props) => {
+
+    // variáveis de estilo para os itens do componente 
 
     const cssModal = {
         position: 'absolute',
@@ -170,29 +167,36 @@ const ModalAddPropostaPauta = (props) => {
         }
     }
 
+    // useStates utilizados no componente
+
     const [habilitadoAdd, setHabilitadoAdd] = useState(false);
     const [indexPautaSelecionada, setIndexPautaSelecionada] = useState(null);
     const [novaPauta, setnovaPauta] = useState(false);
     const [novaPautaSelecionada, setnovaPautaSelecionada] = useState(false);
     const [botaoNovaPauta, setBotaoNovaPauta] = useState(false);
+    const [listaPautas, setListaPautas] = useState([1, 2]);
+    const [inputData, setInputData] = useState("");
+    const [comissao, setComissao] = useState("");
+
+    // useEffect para habilitar ou desabilitar o botão de adicionar
 
     useEffect(() => {
-        console.log(habilitadoAdd)
+
     }, [habilitadoAdd])
 
-    const [listaPautas, setListaPautas] = useState([1, 2]);
+    // função para adicionar uma nova pauta
 
     const addPauta = () => {
         setnovaPauta(true);
     };
 
-    const [inputData, setInputData] = useState("");
-
-    const [comissao, setComissao] = useState("");
+    // função para mudar o valor do select na nova pauta criada
 
     const handleChange = (event) => {
         setComissao(event.target.value);
     };
+
+    // função para selecionar a nova pauta
 
     const selecionarNovaPauta = () => {
         setnovaPautaSelecionada(!novaPautaSelecionada);
@@ -206,20 +210,25 @@ const ModalAddPropostaPauta = (props) => {
             closeAfterTransition
         >
             <Fade in={open}>
+
+                {/* Início conteúdo modal */}
                 <Box sx={cssModal}>
                     <Typography fontWeight={650} fontSize={FontConfig.smallTitle} color={'primary.main'}>Selecione a Pauta</Typography>
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} ></CloseIcon>
 
                     <Box sx={listaPropostas}>
 
+                        {/* Exibe as pautas do sistema */}
                         {listaPautas.map((proposta, index) => {
                             return (
                                 <ContainerProposta key={index} setIndexPautaSelecionada={setIndexPautaSelecionada} index={index} indexPautaSelecionada={indexPautaSelecionada} />
                             )
                         })}
 
+                        {/* Nova pauta criada */}
                         {novaPauta &&
                             <>
+                                {/* Verificar se a nova pauta foi selecionada */}
                                 {!novaPautaSelecionada ?
                                     <Paper sx={containerGeral} onClick={selecionarNovaPauta}>
                                         <Box sx={parteCima}>
@@ -280,6 +289,8 @@ const ModalAddPropostaPauta = (props) => {
 
                     <Divider sx={{ marginTop: '2%', width: '80%', borderColor: 'tertiary.main' }} />
 
+                    {/* Parte de baixo do componente, com a opção de selecionar se é uma pauta publicada ou não publicada, 
+                        assim como opção de criar nova pauta ou adicionar em alguma pauta */}
                     <Box sx={parteCheck}>
                         <Typography fontWeight={650} fontSize={FontConfig.veryBig} color={'primary.main'}>
                             Adicionar Como Proposta
