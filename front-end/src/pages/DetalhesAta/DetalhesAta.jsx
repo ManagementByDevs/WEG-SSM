@@ -97,6 +97,7 @@ const DetalhesAta = (props) => {
     const [indexProposta, setIndexProposta] = useState(-1);
     const [botaoProximo, setBotaoProximo] = useState(true);
     const [indexTitulo, setIndexTitulo] = useState(0);
+    const [ata, setAta] = useState(false);
 
     // funções para visualização das propostas, voltar, próximo...
 
@@ -132,8 +133,8 @@ const DetalhesAta = (props) => {
         }
     }
 
-    const minimizarBotoes = () => {
-        
+    const criarAta = () => {
+
     }
 
     return (
@@ -240,11 +241,18 @@ const DetalhesAta = (props) => {
                                 <PropostaDeAta dadosProposta={dadosProposta} propostaPauta={true} />
                             </Box>
                         }
+
+                        {!ata &&
+                            <Box>
+                                Aqui vai o parecer da dg
+                            </Box>
+                        }
+
                     </Box>
 
                     {/* botões de navegação entre as proposta da ata */}
                     <Box className="flex fixed justify-end"
-                        sx={{ width: "20rem", bottom: "20px", right: "20px" }}>
+                        sx={{ width: "25rem", bottom: "20px", right: "20px" }}>
                         <Box className="flex justify-around w-full">
                             <Button
                                 sx={{
@@ -277,15 +285,9 @@ const DetalhesAta = (props) => {
                                 variant="contained"
                                 onClick={proximo}
                             >
-                                {botaoProximo ?
-                                    <Typography>
-                                        Próximo
-                                    </Typography>
-                                    :
-                                    <Typography>
-                                        Criar
-                                    </Typography>
-                                }
+                                <Typography>
+                                    Próximo
+                                </Typography>
                             </Button>
                             <Button
                                 sx={{
@@ -294,9 +296,9 @@ const DetalhesAta = (props) => {
                                     fontSize: FontConfig.default,
                                 }}
                                 variant="contained"
-                                onClick={minimizarBotoes}
+                                onClick={criarAta}
                             >
-                                <FormatIndentDecreaseIcon></FormatIndentDecreaseIcon>
+                                Criar
                             </Button>
                         </Box>
                     </Box>
