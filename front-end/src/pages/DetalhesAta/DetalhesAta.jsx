@@ -9,7 +9,6 @@ import {
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
-import FormatIndentDecreaseIcon from '@mui/icons-material/FormatIndentDecrease';
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";

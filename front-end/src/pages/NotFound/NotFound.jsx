@@ -1,16 +1,14 @@
-import { React, useState } from 'react';
+import React from 'react';
 
 import { Typography, Box, Button } from '@mui/material';
-
+import { useNavigate } from "react-router-dom";
 import FontConfig from '../../service/FontConfig';
 
-import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-
 import Error from '../../assets/Error.png';
-import { height } from '@mui/system';
 
 const NotFound = (props) => {
+
+    let navigate = useNavigate();
 
     const containerPagina = {
         with: '100vw',
@@ -35,10 +33,14 @@ const NotFound = (props) => {
         p: 1
     };
 
+    const voltarPaginaPrincipal = () => {
+        navigate('/')
+    };
+
     return (
         <Box sx={containerPagina}>
             <Box sx={containerNotFound}>
-                
+
                 <img src={Error} />
 
                 <Typography fontSize={FontConfig.title} color={'primary.main'} fontWeight={650}>
@@ -50,10 +52,10 @@ const NotFound = (props) => {
                 </Typography>
 
                 <Typography fontSize={FontConfig.veryBig} fontWeight={500}>
-                    Por favor, volte para a página principal
+                    Por favor, volte para a página principal.
                 </Typography>
 
-                <Button sx={botaoVoltar} variant="contained">
+                <Button sx={botaoVoltar} onClick={voltarPaginaPrincipal} variant="contained">
                     Voltar
                 </Button>
             </Box>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { React, useState } from 'react';
 import { Box, Typography, Button, Divider } from '@mui/material';
 
 import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
@@ -12,7 +12,7 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 const Notificacao = () => {
     const [abrirFiltro, setOpenFiltro] = useState(false);
 
-    const abrirModalFiltro = () =>{
+    const abrirModalFiltro = () => {
         setOpenFiltro(true);
     }
 
@@ -25,7 +25,7 @@ const Notificacao = () => {
                         <Typography fontSize={FontConfig.title} color={'icon.main'} sx={{ fontWeight: '600', cursor: 'default' }}>Notificações</Typography>
                     </Box>
                     <Box className='w-10/12'>
-                    <Divider sx={{borderColor: 'tertiary.main'}}/>
+                        <Divider sx={{ borderColor: 'tertiary.main' }} />
                     </Box>
                     <Box className='w-full flex justify-center'>
                         <Box className='w-10/12 flex justify-end ' color={'icon.main'} sx={{ margin: '5px' }}>
@@ -34,15 +34,11 @@ const Notificacao = () => {
                         {abrirFiltro && <ModalFiltro open={abrirFiltro} setOpen={setOpenFiltro} filtroDemanda={false} />}
                     </Box>
                     <Box className='w-full flex justify-center'>
-                        <Box className='flex flex-col gap-3' sx={{width: '70%', marginTop: '2%' }}>
-                            <NotificacaoComponente lido={false}/>
-                            <NotificacaoComponente lido={false}/>
-                            <NotificacaoComponente lido={false}/>
-                            <NotificacaoComponente lido={true}/>
-                            <NotificacaoComponente lido={true}/>
-                            <NotificacaoComponente lido={true}/>
-                            <NotificacaoComponente lido={true}/>
-                            <NotificacaoComponente lido={true}/>
+                        <Box className='flex flex-col gap-3' sx={{ width: '70%', marginTop: '2%' }}>
+                            <NotificacaoComponente lido={false} />
+                            <NotificacaoComponente lido={false} />
+                            <NotificacaoComponente lido={true} />
+                            <NotificacaoComponente lido={true} />
                         </Box>
                     </Box>
                 </Box>
