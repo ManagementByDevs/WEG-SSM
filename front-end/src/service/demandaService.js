@@ -42,6 +42,10 @@ class DemandaService {
         }
     }
 
+    async atualizarStatus(idDemanda, statusNovo) {
+        return (await axios.put(`/demanda/status/${idDemanda}/${statusNovo}`, { headers: { "Content-Type": "multipart/form-data" } })).data;
+    }
+
     async put(demanda, arquivos) {
         let form = new FormData();
 

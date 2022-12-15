@@ -18,6 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceitarDemanda";
+import ModalRecusarDemanda from "../ModalRecusarDemanda/ModalRecusarDemanda";
 
 import FontConfig from "../../service/FontConfig";
 
@@ -45,6 +46,9 @@ const DetalhesDemanda = (props) => {
 
   // UseState do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
+  const [openModalRecusa, setOpenModalRecusa] = useState(false);
+
+  const [motivoRecusaDemanda, setMotivoRecusaDemanda] = useState("");
 
   useEffect(() => {
     if (mode === "dark") {
@@ -272,17 +276,31 @@ const DetalhesDemanda = (props) => {
     setOpenModalAceitarDemanda(false);
   };
 
+  // Função para fechar o modal de recusa
+  const handleCloseModalRecusar = () => {
+    setMotivoRecusaDemanda("");
+    setOpenModalRecusa(false);
+  };
+
   // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
     setOpenModalAceitarDemanda(true);
   };
+
+  const abrirRecusaDemanda = () => {
+    setOpenModalRecusa(true);
+  }
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
     console.log(dados);
   };
 
-
+  // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
+  const confirmRecusaDemanda = () => {
+    setOpenModalRecusa(false);
+    console.log(motivoRecusaDemanda);
+  };
 
 
   return (
@@ -292,6 +310,14 @@ const DetalhesDemanda = (props) => {
         setOpen={setOpenModalAceitarDemanda}
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
+      />
+      <ModalRecusarDemanda
+        open={openModalRecusa}
+        setOpen={setOpenModalRecusa}
+        handleClose={handleCloseModalRecusar}
+        confirmRecusarDemanda={confirmRecusaDemanda}
+        motivo={motivoRecusaDemanda}
+        setMotivo={setMotivoRecusaDemanda}
       />
       <ModalConfirmacao
         open={openModal}
@@ -667,6 +693,7 @@ const DetalhesDemanda = (props) => {
                 fontSize: FontConfig.default,
               }}
               variant="contained"
+              onClick={abrirRecusaDemanda}
             >
               Recusar
             </Button>
@@ -677,6 +704,7 @@ const DetalhesDemanda = (props) => {
                 fontSize: FontConfig.default,
               }}
               variant="contained"
+              onClick={abrirRecusaDemanda}
             >
               Devolver
             </Button>

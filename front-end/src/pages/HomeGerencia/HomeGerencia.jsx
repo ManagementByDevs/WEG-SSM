@@ -116,7 +116,6 @@ const HomeGerencia = () => {
         break;
       case "2":
         if (params.status != null && params.analista != null) {
-          console.log(params);
           DemandaService.getPage(params, ordenacao + page).then((response) => {
             setListaItens([...response.content]);
           })
@@ -279,7 +278,6 @@ const HomeGerencia = () => {
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
   const verDemanda = (demanda) => {
-    console.log(demanda);
     if (demanda.status == "ASSESSMENT") {
       navigate("/criar-proposta", { state: demanda });
     } else {
