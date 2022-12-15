@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -49,6 +50,7 @@ const DetalhesDemanda = (props) => {
   const [openModalRecusa, setOpenModalRecusa] = useState(false);
 
   const [motivoRecusaDemanda, setMotivoRecusaDemanda] = useState("");
+  const [modoModalRecusa, setModoModalRecusa] = useState("recusa");
 
   useEffect(() => {
     if (mode === "dark") {
@@ -61,6 +63,8 @@ const DetalhesDemanda = (props) => {
   const [editar, setEditar] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTituloDemanda(props.dados.titulo);
@@ -287,7 +291,8 @@ const DetalhesDemanda = (props) => {
     setOpenModalAceitarDemanda(true);
   };
 
-  const abrirRecusaDemanda = () => {
+  const abrirRecusaDemanda = (modo) => {
+    setModoModalRecusa(modo);
     setOpenModalRecusa(true);
   }
 
@@ -298,8 +303,19 @@ const DetalhesDemanda = (props) => {
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmRecusaDemanda = () => {
-    setOpenModalRecusa(false);
-    console.log(motivoRecusaDemanda);
+    if (motivoRecusaDemanda != "") {
+      setOpenModalRecusa(false);
+
+      if (modoModalRecusa == "devolucao") {
+        DemandaService.put({ ...props.dados, motivoRecusa: motivoRecusaDemanda }, []).then((response) => {
+          navigate('/');
+        })
+      } else {
+        DemandaService.put({ ...props.dados, motivoRecusa: motivoRecusaDemanda, status: "CANCELLED" }, []).then((response) => {
+          navigate('/');
+        })
+      }
+    }
   };
 
 
@@ -693,7 +709,7 @@ const DetalhesDemanda = (props) => {
                 fontSize: FontConfig.default,
               }}
               variant="contained"
-              onClick={abrirRecusaDemanda}
+              onClick={() => { abrirRecusaDemanda('recusa') }}
             >
               Recusar
             </Button>
@@ -704,7 +720,7 @@ const DetalhesDemanda = (props) => {
                 fontSize: FontConfig.default,
               }}
               variant="contained"
-              onClick={abrirRecusaDemanda}
+              onClick={() => { abrirRecusaDemanda('devolucao') }}
             >
               Devolver
             </Button>
