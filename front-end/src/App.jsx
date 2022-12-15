@@ -18,10 +18,6 @@ import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 
 const App = () => {
-  useEffect(() => {
-    document.title = "WEG-SSM";
-    document.documentElement.lang = "pt-BR";
-  }, []);
 
   return (
     <ToggleColorMode>
