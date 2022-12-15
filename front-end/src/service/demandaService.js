@@ -21,6 +21,9 @@ class DemandaService {
         if (params.solicitante != null) {
             params.solicitante = JSON.stringify(params.solicitante);
         }
+        if (params.analista != null) {
+            params.analista = JSON.stringify(params.analista);
+        }
         return (await axios.get(demanda + `/page?${page}`, { params: params, headers: { "Content-Type": "multipart/form-data" } })).data;
     }
 
@@ -32,7 +35,7 @@ class DemandaService {
             form.append("anexos", arquivo);
         }
 
-        if(arquivos.length > 0) {
+        if (arquivos.length > 0) {
             return (await axios.post(`/demanda/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
         } else {
             return (await axios.post(`/demanda/sem-arquivos/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
@@ -47,7 +50,7 @@ class DemandaService {
             form.append("anexos", arquivo);
         }
 
-        if(arquivos.length > 0) {
+        if (arquivos.length > 0) {
             return (await axios.put(`/demanda`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
         } else {
             return (await axios.put(`/demanda/sem-arquivos`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;

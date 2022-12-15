@@ -24,16 +24,16 @@ public class Demanda {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String titulo;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 2000)
     private String problema;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 2000)
     private String proposta;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 100)
     private String frequencia;
 
     @Column(length = 20)

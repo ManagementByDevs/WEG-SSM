@@ -18,9 +18,9 @@ const DemandaGerencia = (props) => {
   const tipo = props.tipo;
 
   function getCorStatus() {
-    if (props.dados.status === "Backlog") {
+    if (props.dados.status === "BACKLOG") {
       return "#00579D";
-    } else if (props.dados.status === "Assessment") {
+    } else if (props.dados.status === "ASSESSMENT") {
       return "#8862A2";
     }
   }
@@ -37,7 +37,6 @@ const DemandaGerencia = (props) => {
         minWidth: "729px",
         cursor: "pointer",
       }}
-      onClick={props.onClick}
     >
       {/* Container titulo e status */}
       <Box className="flex w-full justify-between">
@@ -55,7 +54,7 @@ const DemandaGerencia = (props) => {
                 fontWeight="600"
                 sx={{ color: "primary.main" }}
               >
-                PPM {props.dados.ppm}
+                PPM
               </Typography>
             )}
             {props.dados.titulo}
@@ -96,7 +95,7 @@ const DemandaGerencia = (props) => {
                 fontWeight="600"
                 sx={{ color: "text.secondary", marginLeft: "5px" }}
               >
-                {props.dados.solicitante}
+                {props.dados.solicitante.nome}
               </Typography>
             </Box>
 
@@ -111,7 +110,7 @@ const DemandaGerencia = (props) => {
                 fontWeight="600"
                 sx={{ color: "text.secondary", marginLeft: "5px" }}
               >
-                {props.dados.departamento}
+                {props.dados.departamento?.nome || "Não Atribuído"}
               </Typography>
             </Box>
           </Box>
@@ -131,7 +130,7 @@ const DemandaGerencia = (props) => {
                   width: "50%",
                 }}
               >
-                {props.dados.gerenteResponsavel}
+                {props.dados.gerenteResponsavel?.nome || "Não Atribuído"}
               </Typography>
             </Box>
             <Box>

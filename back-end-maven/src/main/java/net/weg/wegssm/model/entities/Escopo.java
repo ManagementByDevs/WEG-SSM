@@ -23,16 +23,16 @@ public class Escopo {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(length = 50)
+    @Column(length = 100)
     private String titulo;
 
-    @Column(length = 200)
+    @Column(length = 2000)
     private String problema;
 
-    @Column(length = 200)
+    @Column(length = 2000)
     private String proposta;
 
-    @Column(length = 30)
+    @Column(length = 100)
     private String frequencia;
 
     @Column
