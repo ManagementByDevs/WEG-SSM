@@ -47,7 +47,6 @@ class DemandaService {
             form.append("anexos", arquivo);
         }
 
-        console.log(form.getAll("anexos"));
         if(arquivos.length > 0) {
             return (await axios.put(`/demanda`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
         } else {

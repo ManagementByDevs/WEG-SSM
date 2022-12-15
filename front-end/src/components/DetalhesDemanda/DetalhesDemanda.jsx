@@ -24,12 +24,27 @@ import FontConfig from "../../service/FontConfig";
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from '../../service/beneficioService';
 import DemandaService from '../../service/demandaService';
-import AnexoService from "../../service/anexoService";
 
 const DetalhesDemanda = (props) => {
+
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
   const inputFile = useRef(null);
+
+  const [tituloDemanda, setTituloDemanda] = useState(props.dados.titulo);
+  const [problema, setProblema] = useState(props.dados.problema);
+  const [proposta, setProposta] = useState(props.dados.proposta);
+  const [frequencia, setFrequencia] = useState(props.dados.frequencia);
+
+  const [beneficios, setBeneficios] = useState(null);
+  const [beneficiosNovos, setBeneficiosNovos] = useState([]);
+  const [beneficiosExcluidos, setBeneficiosExcluidos] = useState([]);
+
+  const [demandaEmEdicao, setDemandaEmEdicao] = useState(false);
+  const [anexos, setAnexos] = useState(props.dados.anexo);
+
+  // UseState do modal de aceitar demanda
+  const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
 
   useEffect(() => {
     if (mode === "dark") {
@@ -43,6 +58,26 @@ const DetalhesDemanda = (props) => {
 
   const [openModal, setOpenModal] = useState(false);
 
+  useEffect(() => {
+    setTituloDemanda(props.dados.titulo);
+    setProblema(props.dados.problema);
+    setProposta(props.dados.proposta);
+    setFrequencia(props.dados.frequencia);
+    setBeneficios(formatarBeneficios(props.dados.beneficios));
+    setAnexos(props.dados.anexo);
+  }, [props.dados]);
+
+
+
+  // ----------------------------------------------------------------------------------------------------------------------------
+  // Funções de edição da demanda
+
+  useEffect(() => {
+    if (!props.edicao) {
+      setEditar(false);
+    }
+  }, [props.edicao]);
+
   function editarDemanda() {
     if (editar) {
       setOpenModal(true);
@@ -54,6 +89,7 @@ const DetalhesDemanda = (props) => {
     }
   }
 
+  // Função de cancelamento da edição da demanda, retornando os dados ao salvamento anterior
   function resetarTextoInput() {
     excluirBeneficiosAdicionados();
     setEditar(false);
@@ -65,6 +101,7 @@ const DetalhesDemanda = (props) => {
     setAnexos(props.dados.anexo);
   }
 
+  // Função para formatar os benefícios recebidos do banco para a lista de benefícios na página
   const formatarBeneficios = (listaBeneficios) => {
     const aux = listaBeneficios.map((beneficio) => {
       return {
@@ -83,6 +120,7 @@ const DetalhesDemanda = (props) => {
     return aux;
   };
 
+  // Função para formatar os benefícios do front-end para enviá-los ao salvamento da demanda
   const formatarBeneficiosRequisicao = (listaBeneficios) => {
     let listaNova = [];
     for (let beneficio of listaBeneficios) {
@@ -99,35 +137,6 @@ const DetalhesDemanda = (props) => {
     return listaNova;
   }
 
-  useEffect(() => {
-    setTituloDemanda(props.dados.titulo);
-    setProblema(props.dados.problema);
-    setProposta(props.dados.proposta);
-    setFrequencia(props.dados.frequencia);
-    setBeneficios(formatarBeneficios(props.dados.beneficios));
-    setAnexos(props.dados.anexo);
-  }, [props.dados]);
-
-  useEffect(() => {
-    if (!props.edicao) {
-      setEditar(false);
-    }
-  }, [props.edicao]);
-
-  const [tituloDemanda, setTituloDemanda] = useState(props.dados.titulo);
-  const [problema, setProblema] = useState(props.dados.problema);
-  const [proposta, setProposta] = useState(props.dados.proposta);
-  const [frequencia, setFrequencia] = useState(props.dados.frequencia);
-
-  const [beneficios, setBeneficios] = useState(null);
-  const [beneficiosNovos, setBeneficiosNovos] = useState([]);
-  const [beneficiosExcluidos, setBeneficiosExcluidos] = useState([]);
-  const [demandaEmEdicao, setDemandaEmEdicao] = useState(false);
-
-  const [anexosExcluidos, setAnexosExcluidos] = useState([]);
-
-  const [anexos, setAnexos] = useState(props.dados.anexo);
-
   const alterarTexto = (e, input) => {
     if (input === "titulo") {
       setTituloDemanda(e.target.value);
@@ -140,22 +149,9 @@ const DetalhesDemanda = (props) => {
     }
   };
 
-  // UseState do modal de aceitar demanda
-  const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
-
-  // Função para fechar o modal de confirmação
-  const handleCloseModalAceitarDemanda = () => {
-    setOpenModalAceitarDemanda(false);
-  };
-
-  // Acionado quando o usuário clicar em "Aceitar" na demanda
-  const aceitarDemanda = () => {
-    setOpenModalAceitarDemanda(true);
-  };
-
-  // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
-  const confirmAceitarDemanda = (dados) => {
-    console.log(dados);
+  // Aciona o input de anexos ao clicar no add anexos
+  const onAddAnexoButtonClick = () => {
+    inputFile.current.click();
   };
 
   // Coloca o arquivo selecionado no input no state de anexos
@@ -165,8 +161,8 @@ const DetalhesDemanda = (props) => {
     }
   };
 
+  // Função para remover um anexo da lista de anexos
   const removerAnexo = (index) => {
-    setAnexosExcluidos([...anexosExcluidos, anexos[index]]);
     let listaNova = [];
     for (let anexo of anexos) {
       if (anexo.id != anexos[index].id) {
@@ -176,15 +172,7 @@ const DetalhesDemanda = (props) => {
     setAnexos([...listaNova]);
   }
 
-  // Aciona o input de anexos ao clicar no add anexos
-  const onAddAnexoButtonClick = () => {
-    inputFile.current.click();
-  };
-
-  // useEffect(() => {
-  //   setMapAbleAnexos(Array.from(props.dados.anexo));
-  // }, [props.dados]);
-
+  // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
   const adicionarBeneficio = () => {
     BeneficioService.post({ tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '' }).then((response) => {
       let beneficioNovo = { id: response.id, tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '', visible: true };
@@ -193,6 +181,7 @@ const DetalhesDemanda = (props) => {
     })
   }
 
+  // Função para atualizar o benefício quando ele recebe alguma alteração
   const alterarTextoBeneficio = (beneficio, index) => {
     let aux = beneficios.map((beneficio) => {
       return {
@@ -208,6 +197,7 @@ const DetalhesDemanda = (props) => {
     setBeneficios(aux);
   };
 
+  // Função para excluir um benefício da lista
   const deleteBeneficio = (indexBeneficio) => {
     let aux = beneficios.map((beneficio) => {
       return {
@@ -224,6 +214,7 @@ const DetalhesDemanda = (props) => {
     setBeneficios(aux);
   };
 
+  // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
       BeneficioService.delete(beneficio.id).then((response) => { })
@@ -231,6 +222,7 @@ const DetalhesDemanda = (props) => {
     setBeneficiosExcluidos([]);
   }
 
+  // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
       BeneficioService.delete(beneficio.id).then((response) => { })
@@ -238,21 +230,26 @@ const DetalhesDemanda = (props) => {
     setBeneficiosNovos([]);
   }
 
+  // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
-
     let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
     let contagem = 0;
 
-    for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-      BeneficioService.put(beneficio).then((response) => { })
-      contagem++;
+    if (listaBeneficiosFinal.length > 0) {
+      for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
+        BeneficioService.put(beneficio).then((response) => { })
+        contagem++;
 
-      if (contagem == listaBeneficiosFinal.length) {
-        setDemandaEmEdicao(true);
+        if (contagem == listaBeneficiosFinal.length) {
+          setDemandaEmEdicao(true);
+        }
       }
+    } else {
+      setDemandaEmEdicao(true);
     }
   }
 
+  // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
     if (demandaEmEdicao) {
       const demandaAtualizada = { id: props.dados.id, titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia, beneficios: formatarBeneficiosRequisicao(beneficios), data: props.dados.data, status: props.dados.status, solicitante: props.dados.solicitante };
@@ -263,7 +260,30 @@ const DetalhesDemanda = (props) => {
         props.setDados(response);
       })
     }
-  }, [demandaEmEdicao])
+  }, [demandaEmEdicao]);
+
+
+
+  // -----------------------------------------------------------------------------------------------------------------------------------
+  // Funções de aceite/recusa do analista/gerente
+
+  // Função para fechar o modal de confirmação
+  const handleCloseModalAceitarDemanda = () => {
+    setOpenModalAceitarDemanda(false);
+  };
+
+  // Acionado quando o usuário clicar em "Aceitar" na demanda
+  const aceitarDemanda = () => {
+    setOpenModalAceitarDemanda(true);
+  };
+
+  // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
+  const confirmAceitarDemanda = (dados) => {
+    console.log(dados);
+  };
+
+
+
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
