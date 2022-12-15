@@ -4,7 +4,6 @@ import {
   Modal,
   Typography,
   Box,
-  Button,
   Checkbox,
   FormGroup,
   FormControlLabel,
@@ -14,7 +13,6 @@ import {
 import Fade from "@mui/material/Fade";
 import FontConfig from "../../service/FontConfig";
 import CloseIcon from "@mui/icons-material/Close";
-import zIndex from "@mui/material/styles/zIndex";
 
 const ModalOrdenacao = (props) => {
 

@@ -10,6 +10,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import FontConfig from '../../service/FontConfig';
 
 import UsuarioService from "../../service/usuarioService"
+import Feedback from '../../components/Feedback/Feedback';
 
 const Login = (props) => {
     // Variável para usar função de navegação do react-router-dom
@@ -20,6 +21,8 @@ const Login = (props) => {
 
     // Variável usada como valor para os inputs de email e senha, para posterior login
     const [dados, setDados] = useState({ email: "", senha: "" });
+    const [dadosInvalidos, setDadosInvalidos] = useState(false);
+    const [dadosFaltantes, setDadosFaltantes] = useState(false);
 
     // Função para mudar a visualização da senha (ver ou não)
     const mudarVisualizacaoSenha = () => {
@@ -44,6 +47,7 @@ const Login = (props) => {
                     localStorage.setItem('usuarioId', e.id);
                     navigate('/');
                 } else {
+
                     // Abrir modal de feedback de usuário ou senha inválidos
                 }
             });
@@ -109,6 +113,9 @@ const Login = (props) => {
                                 Entrar
                             </Button>
                         </div>
+                        {/* {
+                            <Feedback open={true} handleClose={funcao para deixar o open false} status={"o status que quer: sucesso, erro, aviso, info"} mensagem={"mensagem que quer que apareça"}/>
+                        } */}
                     </div>
                 </Paper>
             </Paper>
