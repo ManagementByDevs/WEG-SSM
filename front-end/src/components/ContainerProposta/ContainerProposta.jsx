@@ -60,6 +60,8 @@ const ContainerProposta = (props) => {
         textOverflow: "ellipsis",
     };
 
+    // verificações para selecionar apenas uma pauta conforme seu index
+
     const [pautaSelecionada, setPautaSelecionada] = useState(false);
 
     const selecionarPauta = () => {
@@ -80,6 +82,7 @@ const ContainerProposta = (props) => {
 
     return (
         <>
+            {/* Verificação para ver se a pauta foi selecionada ou não */}
             {!pautaSelecionada ?
                 <Paper sx={containerGeral} onClick={selecionarPauta} >
                     <Box sx={parteCima}>
