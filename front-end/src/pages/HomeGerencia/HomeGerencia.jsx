@@ -21,9 +21,114 @@ import ModalInformarMotivo from "../../components/ModalInformarMotivo/ModalInfor
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Pauta from "../../components/Pauta/Pauta";
 
+import UsuarioService from "../../service/usuarioService";
+import DemandaService from "../../service/demandaService";
+
 const HomeGerencia = () => {
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
+
+  const [listaItens, setListaItens] = useState([]);
+
+  // String para ordenação das demandas
+  const [page, setPage] = useState("size=20&page=0");
+  const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
+
+  const [usuario, setUsuario] = useState({
+    id: 0,
+    email: "",
+    nome: "",
+    senha: "",
+    tipoUsuario: "",
+    visibilidade: 1,
+    departamento: null,
+  });
+
+  // Parâmetros para pesquisa das demandas (filtros)
+  const [params, setParams] = useState({
+    titulo: null,
+    solicitante: null,
+    gerente: null,
+    analista: null,
+    forum: null,
+    departamento: null,
+    tamanho: null,
+    status: null,
+  });
+
+  // UseEffect para buscar o usuário assim que entrar na página
+  useEffect(() => {
+    buscarUsuario();
+  }, []);
+
+  useEffect(() => {
+    switch (value) {
+      case "1":
+        if (usuario.tipoUsuario == "GERENTE") {
+          setParams({ ...params, gerente: usuario, status: "BACKLOG", analista: null });
+        } else {
+          setParams({ ...params, gerente: null, status: "BACKLOG", analista: null });
+        }
+        break;
+      case "2":
+        setParams({ ...params, gerente: null, status: "ASSESSMENT", analista: usuario });
+        break;
+      case "3":
+        break;
+      case "4":
+        break;
+      case "5":
+        break;
+    }
+  }, [value]);
+
+  // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
+  useEffect(() => {
+    if (usuario.tipoUsuario == "GERENTE") {
+      setParams({ ...params, gerente: usuario, status: "BACKLOG" });
+    } else {
+      setParams({ ...params, status: 'BACKLOG' });
+    }
+  }, [usuario]);
+
+  // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
+  useEffect(() => {
+    buscarItens();
+  }, [params]);
+
+  // Função para buscar o usuário logado no sistema
+  const buscarUsuario = () => {
+    UsuarioService.getUsuarioById(
+      parseInt(localStorage.getItem("usuarioId"))
+    ).then((e) => {
+      setUsuario(e);
+    });
+  };
+
+  const buscarItens = () => {
+    switch (value) {
+      case "1":
+        if (params.status != null || params.gerente != null) {
+          DemandaService.getPage(params, ordenacao + page).then((response) => {
+            setListaItens([...response.content]);
+          })
+        }
+        break;
+      case "2":
+        if (params.status != null && params.analista != null) {
+          DemandaService.getPage(params, ordenacao + page).then((response) => {
+            setListaItens([...response.content]);
+          })
+        }
+        break;
+      case "3":
+        break;
+      case "4":
+        break;
+      case "5":
+        break;
+    }
+  }
 
   const [demandas, setDemandas] = useState([
     {
@@ -173,7 +278,12 @@ const HomeGerencia = () => {
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
   const verDemanda = (demanda) => {
-    navigate("/criar-proposta", { state: demanda });
+    console.log(demanda);
+    if (demanda.status == "ASSESSMENT") {
+      navigate("/criar-proposta", { state: demanda });
+    } else {
+      navigate("/detalhes-demanda", { state: demanda });
+    }
   };
 
   const navigate = useNavigate();
@@ -328,15 +438,16 @@ const HomeGerencia = () => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(720px, 1fr))",
                   }}
                 >
-                  {demandas?.map((demanda, index) => {
+                  {listaItens?.map((demanda, index) => {
                     return (
-                      demanda.status === "Backlog" ?
-                        <DemandaGerencia
-                          key={index}
-                          dados={demanda}
-                          tipo="demanda"
-                        />
-                        : null
+                      <DemandaGerencia
+                        key={index}
+                        dados={demanda}
+                        tipo="demanda"
+                        onClick={() => {
+                          verDemanda(demanda);
+                        }}
+                      />
                     )
                   })}
                 </Box>
@@ -349,18 +460,16 @@ const HomeGerencia = () => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(720px, 1fr))",
                   }}
                 >
-                  {demandas?.map((demanda, index) => {
+                  {listaItens?.map((demanda, index) => {
                     return (
-                      demanda.status === "Assessment" ?
-                        <DemandaGerencia
-                          key={index}
-                          dados={demanda}
-                          tipo="demanda"
-                          onClick={() => {
-                            verDemanda(demanda);
-                          }}
-                        />
-                        : null
+                      <DemandaGerencia
+                        key={index}
+                        dados={demanda}
+                        tipo="demanda"
+                        onClick={() => {
+                          verDemanda(demanda);
+                        }}
+                      />
                     )
                   })}
                 </Box>

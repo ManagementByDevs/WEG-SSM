@@ -1,6 +1,3 @@
-import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-
 import {
   Button,
   Paper,
@@ -11,6 +8,8 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
+import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 
@@ -20,6 +19,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import FontConfig from "../../service/FontConfig";
 
 import UsuarioService from "../../service/usuarioService";
+import Feedback from "../../components/Feedback/Feedback";
 
 const Login = (props) => {
   // Variável para usar função de navegação do react-router-dom
@@ -30,6 +30,8 @@ const Login = (props) => {
 
   // Variável usada como valor para os inputs de email e senha, para posterior login
   const [dados, setDados] = useState({ email: "", senha: "" });
+  const [dadosInvalidos, setDadosInvalidos] = useState(false);
+  const [dadosFaltantes, setDadosFaltantes] = useState(false);
 
   // Função para mudar a visualização da senha (ver ou não)
   const mudarVisualizacaoSenha = () => {
@@ -55,10 +57,12 @@ const Login = (props) => {
           localStorage.setItem("user", JSON.stringify(e));
           navigate("/");
         } else {
+          setDadosInvalidos(true);
           // Abrir modal de feedback de usuário ou senha inválidos
         }
       });
     } else {
+      setDadosFaltantes(true);
       // Abrir modal de feedback de dados não preenchidos
     }
   };
@@ -149,6 +153,24 @@ const Login = (props) => {
                 Entrar
               </Button>
             </div>
+
+            {dadosInvalidos && (
+              <Feedback
+                open={true}
+                handleClose={true}
+                status={"erro"}
+                mensagem={"Dados inválidos!"}
+              />
+            )}
+
+            {dadosFaltantes && (
+              <Feedback
+                open={true}
+                handleClose={true}
+                status={"erro"}
+                mensagem={"Preencha todos os campos!"}
+              />
+            )}
           </div>
         </Paper>
       </Paper>

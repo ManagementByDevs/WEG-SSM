@@ -285,4 +285,260 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
     Page<Demanda> findByTamanho(String tamanho, Pageable pageable);
 
     Page<Demanda> findBySolicitante(Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamento(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndTamanho(Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForum(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForum(Usuario analista, String titulo, Usuario gerente, Forum forum, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario gerente, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndDepartamento(Usuario analista, String titulo, Usuario gerente, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndTamanho(Usuario analista, String titulo, Usuario gerente, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerente(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndStatus(Usuario analista, String titulo, Usuario gerente, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndGerente(Usuario analista, String titulo, Usuario gerente, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Forum forum, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndDepartamento(Usuario analista, String titulo, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndTamanho(Usuario analista, String titulo, Usuario solicitante, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Forum forum, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndTamanho(Usuario analista, String titulo, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForum(Usuario analista, String titulo, Usuario solicitante, Forum forum, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndStatus(Usuario analista, String titulo, Forum forum, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndForum(Usuario analista, String titulo, Forum forum, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndDepartamentoAndTamanho(Usuario analista, String titulo, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndDepartamentoAndStatus(Usuario analista, String titulo, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndDepartamento(Usuario analista, String titulo, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndTamanho(Usuario analista, String titulo, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndTamanhoAndStatus(Usuario analista, String titulo, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndTamanho(Usuario analista, String titulo, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndStatus(Usuario analista, String titulo, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitante(Usuario analista, String titulo, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContainingAndStatus(Usuario analista, String titulo, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTituloContaining(Usuario analista, String titulo, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndTamanhoAndStatus(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndTamanho(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamentoAndTamanho(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamentoAndSolicitante(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamentoAndStatus(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamento(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndSolicitanteAndTamanhoAndStatus(Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndSolicitanteAndTamanho(Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndTamanhoAndStatus(Usuario analista, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndTamanho(Usuario analista, Usuario gerente, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndSolicitanteAndStatus(Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndSolicitante(Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForumAndStatus(Usuario analista, Usuario gerente, Forum forum, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndForum(Usuario analista, Usuario gerente, Forum forum, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndDepartamentoAndSolicitanteAndTamanhoAndStatus(Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndDepartamentoAndSolicitanteAndTamanho(Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndDepartamentoAndTamanho(Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndDepartamentoAndSolicitanteAndStatus(Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndDepartamentoAndSolicitante(Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndDepartamentoAndStatus(Usuario analista, Usuario gerente, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndDepartamento(Usuario analista, Usuario gerente, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndSolicitanteAndTamanhoAndStatus(Usuario analista, Usuario gerente, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndSolicitanteAndTamanho(Usuario analista, Usuario gerente, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndTamanhoAndStatus(Usuario analista, Usuario gerente, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndTamanho(Usuario analista, Usuario gerente, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndSolicitanteAndStatus(Usuario analista, Usuario gerente, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndSolicitante(Usuario analista, Usuario gerente, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerenteAndStatus(Usuario analista, Usuario gerente, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndGerente(Usuario analista, Usuario gerente, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndDepartamentoAndSolicitanteAndTamanhoAndStatus(Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndDepartamentoAndSolicitanteAndTamanho(Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndDepartamentoAndTamanho(Usuario analista, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndDepartamentoAndSolicitanteAndStatus(Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndDepartamentoAndSolicitante(Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndDepartamentoAndStatus(Usuario analista, Forum forum, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndDepartamento(Usuario analista, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndSolicitanteAndTamanhoAndStatus(Usuario analista, Forum forum, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndSolicitanteAndTamanho(Usuario analista, Forum forum, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndTamanhoAndStatus(Usuario analista, Forum forum, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndTamanho(Usuario analista, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndSolicitanteAndStatus(Usuario analista, Forum forum, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndSolicitante(Usuario analista, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForumAndStatus(Usuario analista, Forum forum, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndForum(Usuario analista, Forum forum, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndDepartamentoAndSolicitanteAndTamanhoAndStatus(Usuario analista, Departamento departamento, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndDepartamentoAndSolicitanteAndTamanho(Usuario analista, Departamento departamento, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndDepartamentoAndTamanhoAndStatus(Usuario analista, Departamento departamento, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndDepartamentoAndTamanho(Usuario analista, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndDepartamentoAndSolicitanteAndStatus(Usuario analista, Departamento departamento, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndDepartamentoAndSolicitante(Usuario analista, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndDepartamentoAndStatus(Usuario analista, Departamento departamento, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndDepartamento(Usuario analista, Departamento departamento, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndSolicitanteAndTamanhoAndStatus(Usuario analista, Usuario solicitante, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndSolicitanteAndTamanho(Usuario analista, Usuario solicitante, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTamanhoAndStatus(Usuario analista, String tamanho, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndTamanho(Usuario analista, String tamanho, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndSolicitanteAndStatus(Usuario analista, Usuario solicitante, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndSolicitante(Usuario analista, Usuario solicitante, Pageable pageable);
+
+    Page<Demanda> findPageByAnalistaAndStatus(Usuario analista, Status status, Pageable pageable);
+
+    Page<Demanda> findPageByAnalista(Usuario analista, Pageable pageable);
 }

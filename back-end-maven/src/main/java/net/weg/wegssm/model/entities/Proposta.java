@@ -23,7 +23,7 @@ public class Proposta {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 20000)
     private String escopo;
 
     @Column(nullable = false)
