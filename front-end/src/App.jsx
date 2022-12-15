@@ -18,17 +18,13 @@ import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 
 const App = () => {
-
   return (
     <ToggleColorMode>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login></Login>} />
-          <Route path="/" element={<Home></Home>} />
-          <Route
-            path="/home-gerencia"
-            element={<HomeGerencia></HomeGerencia>}
-          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home-gerencia" element={<HomeGerencia />} />
           <Route path="/criar-demanda" element={<CriarDemanda />} />
           <Route path="/criar-proposta" element={<CriarProposta />} />
           <Route path="/notificacao" element={<Notificacao />} />
