@@ -9,10 +9,6 @@ import {
   Typography,
   Box,
   TextareaAutosize,
-  FormControl,
-  Select,
-  MenuItem,
-  IconButton,
 } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
@@ -21,6 +17,8 @@ import ColorModeContext from "../../service/TemaContext";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+
+import LinhaTabelaCustos from "../LinhaTabelaCustos/LinhaTabelaCustos";
 
 const Custos = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -108,102 +106,21 @@ const Custos = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <td align="center" className="pt-5 pb-5">
-                  <FormControl
-                    variant="standard"
-                    sx={{ marginRight: "10px", minWidth: 130,  marginTop: "0.8rem" }}
-                  >
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                    >
-                      <MenuItem value={"1"}>Tipo 1</MenuItem>
-                      <MenuItem value={"2"}>Tipo 2</MenuItem>
-                      <MenuItem value={"3"}>Tipo 3</MenuItem>
-                    </Select>
-                  </FormControl>
-                </td>
-                <td align="center" className="pt-5 pb-5">
-                  <FormControl
-                    variant="standard"
-                    sx={{ marginRight: "10px", minWidth: 130,  marginTop: "0.8rem" }}
-                  >
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                    >
-                      <MenuItem value={"1"}>Perfil 1</MenuItem>
-                      <MenuItem value={"2"}>Perfil 2</MenuItem>
-                      <MenuItem value={"3"}>Perfil 3</MenuItem>
-                    </Select>
-                  </FormControl>
-                </td>
-                <td align="center" className="pt-5 pb-5">
-                  <TextareaAutosize
-                    style={{
-                      width: "95%",
-                      resize: "none",
-                      textAlign: "center",
-                      backgroundColor: corFundoTextArea,
-                      marginTop: "0.8rem",
-                    }}
-                    fontSize={FontConfig.medium}
-                    className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                    placeholder="Digite o período..."
-                  />
-                </td>
-                <td align="center" className="pt-5 pb-5">
-                  <TextareaAutosize
-                    style={{
-                      width: "90%",
-                      resize: "none",
-                      textAlign: "center",
-                      backgroundColor: corFundoTextArea,
-                      marginTop: "0.8rem",
-                    }}
-                    fontSize={FontConfig.medium}
-                    className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                    placeholder="Digite as horas..."
-                  />
-                </td>
-                <td align="center" className="pt-5 pb-5">
-                  <TextareaAutosize
-                    style={{
-                      width: "95%",
-                      resize: "none",
-                      textAlign: "center",
-                      backgroundColor: corFundoTextArea,
-                      marginTop: "0.8rem",
-                    }}
-                    fontSize={FontConfig.medium}
-                    className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                    placeholder="Digite o valor..."
-                  />
-                </td>
-                <td align="center" className="pb-5 relative">
-                  <Box className="flex w-full justify-end absolute" sx={{width: '98%'}}>
-                    <DeleteOutlineOutlinedIcon
-                      fontSize="medium"
-                      className="mt-1 delay-120 hover:scale-110 duration-300"
-                      titleAccess="Excluir linha"
-                      sx={{ color: "icon.main", cursor: "pointer" }}
+              {props.dados.despesas?.map((despesa, index) => {
+                return (
+                  despesa.visible && (
+                    <LinhaTabelaCustos
+                      key={index}
+                      dados={despesa}
+                      index={index}
+                      deletarLinhaCustos={props.deletarLinhaCustos}
+                      indexCusto={props.index}
+                      setCustos={props.setCustos}
+                      custos={props.custos}
                     />
-                  </Box>
-                  <TextareaAutosize
-                    style={{
-                      width: "95%",
-                      resize: "none",
-                      textAlign: "center",
-                      backgroundColor: corFundoTextArea,
-                      marginTop: "2rem",
-                    }}
-                    fontSize={FontConfig.medium}
-                    className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                    placeholder="Digite o total..."
-                  />
-                </td>
-              </TableRow>
+                  )
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -213,10 +130,11 @@ const Custos = (props) => {
             className="m-1 mr-3 delay-120 hover:scale-110 duration-300"
             titleAccess="Adicionar nova linha"
             sx={{ color: "icon.main", cursor: "pointer" }}
+            onClick={() => props.setDespesas(props.index)}
           />
         </Box>
       </Paper>
-      <Paper sx={{ width: "20%" }}>
+      <Paper sx={{ width: "20%", height: "100%" }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">
             <TableHead
@@ -237,15 +155,16 @@ const Custos = (props) => {
             <TableBody>
               <TableRow>
                 <td align="center" className="pb-5 relative">
-                <Box className="flex w-full justify-end absolute" sx={{width: '98%'}}>
-                  <IconButton>
+                  <Box
+                    className="flex w-full justify-end absolute"
+                    sx={{ width: "98%" }}
+                  >
                     <DeleteOutlineOutlinedIcon
                       fontSize="medium"
                       className="mt-1 delay-120 hover:scale-110 duration-300"
                       titleAccess="Excluir linha"
                       sx={{ color: "icon.main", cursor: "pointer" }}
                     />
-                  </IconButton>
                   </Box>
                   <TextareaAutosize
                     style={{
@@ -258,6 +177,20 @@ const Custos = (props) => {
                     fontSize={FontConfig.medium}
                     className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                     placeholder="Digite os CCs..."
+                    value={props.dados.ccs}
+                    onChange={(e) => {
+                      props.setCustos(
+                        props.custos.map((custo, index) => {
+                          if (index === props.index) {
+                            return {
+                              ...custo,
+                              ccs: e.target.value,
+                            };
+                          }
+                          return custo;
+                        })
+                      );
+                    }}
                   />
                 </td>
               </TableRow>
