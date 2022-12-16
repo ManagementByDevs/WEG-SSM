@@ -1961,6 +1961,7 @@ public class DemandaController {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
         demanda.setAnexos(files);
+        System.out.println(demanda.getAnexo().get(0).getDados());
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 

@@ -318,6 +318,37 @@ const DetalhesDemanda = (props) => {
     }
   };
 
+  function base64ToArrayBuffer(base64) {
+    const binaryString = window.atob(base64);
+    const bytes = new Uint8Array(binaryString.length);
+    return bytes.map((byte, i) => binaryString.charCodeAt(i));
+  }
+
+  const baixarAnexo = (index) => {
+
+    const file = anexos[index];
+    const blob = new Blob([base64ToArrayBuffer(file.dados)]);
+    const fileName = `${file.nome}`;
+
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, fileName);
+
+    } else {
+
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    }
+  }
+
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
@@ -676,7 +707,8 @@ const DetalhesDemanda = (props) => {
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
                       <IconButton
-                        onClick={() => { removerAnexo(index) }}
+                        // onClick={() => { removerAnexo(index) }}
+                        onClick={() => { baixarAnexo(index) }}
                       >
                         <CloseIcon sx={{ color: "text.primary" }} />
                       </IconButton>
