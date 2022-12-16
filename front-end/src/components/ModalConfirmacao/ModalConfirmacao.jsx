@@ -63,6 +63,8 @@ const ModalConfirmacao = (props) => {
         return "Sim";
       case "enviar":
         return "Enviar";
+      case "criar":
+        return "Criar";
     }
   };
 

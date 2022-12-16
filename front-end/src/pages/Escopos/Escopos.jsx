@@ -10,6 +10,7 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Escopo from "../../components/Escopo/Escopo";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import Feedback from '../../components/Feedback/Feedback';
 
 import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
@@ -25,6 +26,7 @@ const Escopos = () => {
 
   const [escopoSelecionado, setEscopoSelecionado] = useState(null);
   const [inputPesquisa, setInputPesquisa] = useState('');
+  const [feedbackDeletar, setFeedbackDeletar] = useState(false);
 
   useEffect(() => {
     if (!escopos) {
@@ -84,11 +86,12 @@ const Escopos = () => {
   const abrirModalOrdenacao = () => {
     setOpenOrdenacao(true);
   };
-
+  
   const onDeleteClickEscopo = () => {
     EscopoService.excluirEscopo(escopoSelecionado.id).then((response) => {
       buscarEscopos();
     })
+    setFeedbackDeletar(true);
   };
 
   const onTrashCanClick = (index) => {
@@ -190,6 +193,11 @@ const Escopos = () => {
                 return <Escopo key={index} escopo={escopo} index={index} onclick={() => { openEscopo(escopo) }} handleDelete={onTrashCanClick} />;
               })}
             </Box>
+
+            {/* Feedback de escopo deletado com sucesso */}
+            <Feedback open={feedbackDeletar} handleClose={() => {
+              setFeedbackDeletar(false);
+            }} status={"sucesso"} mensagem={"Escopo deletado com sucesso!"} />
           </Box>
         </Box>
       </Box>

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import {
   Box,
   FormControl,
@@ -21,13 +21,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const FormularioGeralProposta = (props) => {
   const { mode } = useContext(ColorModeContext);
-  const [responsavelNegocio, setResponsavelNegocio] = useState([
-    { nome: "", area: "", visible: true },
-  ]);
   const inputFile = useRef(null);
 
   const deleteResponsavel = (indexResponsavel) => {
-    let aux = responsavelNegocio.map((responsavel) => {
+    let aux = props.gerais.responsaveisNegocio.map((responsavel) => {
       return {
         nome: responsavel.nome,
         area: responsavel.area,
@@ -35,7 +32,7 @@ const FormularioGeralProposta = (props) => {
       };
     });
     aux[indexResponsavel].visible = false;
-    setResponsavelNegocio(aux);
+    props.setGerais({ ...props.gerais, responsaveisNegocio: [...aux] });
   };
 
   // Aciona o input de anexos ao clicar no add anexos
@@ -88,6 +85,13 @@ const FormularioGeralProposta = (props) => {
                   component="input"
                   type="date"
                   placeholder="Digite o código..."
+                  value={props.gerais.periodoExecucacaoInicio}
+                  onChange={(e) =>
+                    props.setGerais({
+                      ...props.gerais,
+                      periodoExecucacaoInicio: e.target.value,
+                    })
+                  }
                 />
               </Box>
               <Box>
@@ -108,6 +112,13 @@ const FormularioGeralProposta = (props) => {
                   component="input"
                   type="date"
                   placeholder="Digite o código..."
+                  value={props.gerais.periodoExecucacaoFim}
+                  onChange={(e) =>
+                    props.setGerais({
+                      ...props.gerais,
+                      periodoExecucacaoFim: e.target.value,
+                    })
+                  }
                 />
               </Box>
             </Box>
@@ -140,6 +151,13 @@ const FormularioGeralProposta = (props) => {
                 }}
                 component="input"
                 placeholder="Qtd"
+                value={props.gerais.qtdPaybackSimples}
+                onChange={(e) =>
+                  props.setGerais({
+                    ...props.gerais,
+                    qtdPaybackSimples: e.target.value,
+                  })
+                }
               />
               <FormControl
                 variant="standard"
@@ -148,10 +166,17 @@ const FormularioGeralProposta = (props) => {
                 <Select
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
+                  value={props.gerais.unidadePaybackSimples}
+                  onChange={(e) =>
+                    props.setGerais({
+                      ...props.gerais,
+                      unidadePaybackSimples: e.target.value,
+                    })
+                  }
                 >
-                  <MenuItem value={"Real"}>Dias</MenuItem>
-                  <MenuItem value={"Potencial"}>Semanas</MenuItem>
-                  <MenuItem value={"Qualitativo"}>Meses</MenuItem>
+                  <MenuItem value={"DIAS"}>Dias</MenuItem>
+                  <MenuItem value={"SEMANAS"}>Semanas</MenuItem>
+                  <MenuItem value={"MESES"}>Meses</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -184,6 +209,13 @@ const FormularioGeralProposta = (props) => {
                 }}
                 component="input"
                 placeholder="Digite o código..."
+                value={props.gerais.ppm}
+                onChange={(e) =>
+                  props.setGerais({
+                    ...props.gerais,
+                    ppm: e.target.value,
+                  })
+                }
               />
             </Box>
           </Box>
@@ -216,6 +248,13 @@ const FormularioGeralProposta = (props) => {
               }}
               component="input"
               placeholder="Insira o link do jira..."
+              value={props.gerais.linkJira}
+              onChange={(e) =>
+                props.setGerais({
+                  ...props.gerais,
+                  linkJira: e.target.value,
+                })
+              }
             />
           </Box>
         </Box>
@@ -246,24 +285,36 @@ const FormularioGeralProposta = (props) => {
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "primary.main", cursor: "pointer" }}
               onClick={() => {
-                setResponsavelNegocio([
-                  ...responsavelNegocio,
-                  {
-                    nome: "",
-                    area: "",
-                    visible: true,
-                  },
-                ]);
+                props.setGerais({
+                  ...props.gerais,
+                  responsaveisNegocio: [
+                    ...props.gerais.responsaveisNegocio,
+                    {
+                      nome: "",
+                      area: "",
+                      visible: true,
+                    },
+                  ],
+                });
               }}
             />
           </Box>
-          {responsavelNegocio?.map((item, index) => {
+          {props.gerais.responsaveisNegocio?.map((item, index) => {
             if (item.visible) {
               return (
                 <ResponsavelNegocio
                   dados={item}
+                  setDados={(event) => {
+                    let aux = [...props.gerais.responsaveisNegocio];
+                    aux[index] = event;
+                    props.setGerais({
+                      ...props.gerais,
+                      responsaveisNegocio: [...aux],
+                    });
+                  }}
                   index={index}
                   deleteResponsavel={deleteResponsavel}
+                  key={index}
                 />
               );
             }
@@ -281,10 +332,10 @@ const FormularioGeralProposta = (props) => {
                 }}
               >
                 Anexos:
-              <AddCircleOutlineOutlinedIcon
-                className="ml-1 delay-120 hover:scale-110 duration-300"
-                sx={{ color: "icon.main", cursor: "pointer" }}
-                onClick={onAddAnexoButtonClick}
+                <AddCircleOutlineOutlinedIcon
+                  className="ml-1 delay-120 hover:scale-110 duration-300"
+                  sx={{ color: "icon.main", cursor: "pointer" }}
+                  onClick={onAddAnexoButtonClick}
                 />
               </Typography>
               <input
@@ -300,7 +351,13 @@ const FormularioGeralProposta = (props) => {
                     <Paper
                       key={index}
                       className="flex justify-between items-center"
-                      sx={{borderLeftWidth: '4px', borderLeftColor: 'primary.main', borderLeftStyle: 'solid', backgroundColor: 'background.default', padding: '0.2rem 1rem'}}
+                      sx={{
+                        borderLeftWidth: "4px",
+                        borderLeftColor: "primary.main",
+                        borderLeftStyle: "solid",
+                        backgroundColor: "background.default",
+                        padding: "0.2rem 1rem",
+                      }}
                     >
                       <Typography
                         sx={{
@@ -312,7 +369,12 @@ const FormularioGeralProposta = (props) => {
                       </Typography>
                       <IconButton
                         onClick={() =>
-                          props.setGerais({...props.gerais, anexos: props.gerais.anexos.filter((anexo, i) => i !== index)})
+                          props.setGerais({
+                            ...props.gerais,
+                            anexos: props.gerais.anexos.filter(
+                              (anexo, i) => i !== index
+                            ),
+                          })
                         }
                       >
                         <CloseIcon sx={{ color: "text.primary" }} />

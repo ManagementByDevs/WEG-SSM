@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { Button, Tab, Box, Snackbar, Alert, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
@@ -25,6 +26,19 @@ import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalA
 const Home = () => {
   // Lista de demandas presente
   const [listaDemandas, setListaDemandas] = useState([]);
+
+  // Abrir modal feedback de demanda criada
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.feedback) {
+      setFeedbackDemandaCriada(true);
+    }
+  },[location.state?.feedback]);
 
   // Usuário que está logado no sistema
   const [usuario, setUsuario] = useState({
@@ -133,6 +147,7 @@ const Home = () => {
   const [state, setState] = React.useState({
     open: false,
   });
+
   const { open } = state;
 
   const handleClick = (newState) => () => {
@@ -184,8 +199,6 @@ const Home = () => {
     }
   };
 
-  const navigate = useNavigate();
-
   return (
     // Container pai
     <FundoComHeader>
@@ -194,6 +207,10 @@ const Home = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
+        <Feedback open={feedbackDemandaCriada} handleClose={() => {
+          setFeedbackDemandaCriada(false);
+        }} status={"sucesso"} mensagem={"Demanda criada com sucesso!"} />
+
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
           {/* Sistema de abas */}

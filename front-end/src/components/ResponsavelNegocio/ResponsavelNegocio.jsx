@@ -36,6 +36,10 @@ const ResponsavelNegocio = (props) => {
             }}
             component="input"
             placeholder="Insira o responsável pelo negócio..."
+            value={props.dados.nome}
+            onChange={(e) =>
+              props.setDados({ ...props.dados, nome: e.target.value })
+            }
           />
         </Box>
       </Box>
@@ -67,6 +71,10 @@ const ResponsavelNegocio = (props) => {
             }}
             component="input"
             placeholder="Insira a área do responsável..."
+            value={props.dados.area}
+            onChange={(e) =>
+              props.setDados({ ...props.dados, area: e.target.value })
+            }
           />
         </Box>
       </Box>
