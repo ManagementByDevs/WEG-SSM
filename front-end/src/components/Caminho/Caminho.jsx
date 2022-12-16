@@ -31,17 +31,17 @@ const Caminho = (props) => {
             {listaCaminho.map((item, index) => {
                 if (item !== "") {
                     return (
-                        <>
+                        <Box key={index}>
                             {!props.feedback ?
-                                <Typography key={index} className='cursor-pointer' fontSize={FontConfig.default} sx={{ fontWeight: 500 }} onClick={() => { navigate("/" + item) }}>
+                                <Typography className='cursor-pointer' fontSize={FontConfig.default} sx={{ fontWeight: 500 }} onClick={() => { navigate("/" + item) }}>
                                     {getPathName(item)}
                                 </Typography>
                                 :
-                                <Typography key={index} className='cursor-pointer' fontSize={FontConfig.default} sx={{ fontWeight: 500 }} onClick={() => { setOpenFeedback(true) }}>
+                                <Typography className='cursor-pointer' fontSize={FontConfig.default} sx={{ fontWeight: 500 }} onClick={() => { setOpenFeedback(true) }}>
                                     {getPathName(item)}
                                 </Typography>
                             }
-                        </>
+                        </Box>
                     )
                 }
             })}

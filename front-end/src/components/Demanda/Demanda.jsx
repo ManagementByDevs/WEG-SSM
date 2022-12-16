@@ -15,18 +15,11 @@ const Demanda = (props) => {
   function getStatusColor() {
     if (props.demanda.status == "CANCELLED") {
       return "#DA0303";
-    }
-
-    if (props.demanda.status == "BACKLOG") {
-      if (props.demanda.analista == null) {
-        return "#C4C4C4";
-      }
-      if (props.demanda.motivoRecusa != null) {
-        return "#FFD600";
-      }
-    }
-
-    if (props.demanda.status == "ASSESSMENT") {
+    } else if (props.demanda.status == "BACKLOG_REVISAO") {
+      return "#C4C4C4";
+    } else if (props.demanda.status == "BACKLOG_EDICAO") {
+      return "#FFD600";
+    } else if (props.demanda.status == "ASSESSMENT") {
       return "#11B703";
     }
   }
@@ -35,18 +28,11 @@ const Demanda = (props) => {
   const formatarNomeStatus = () => {
     if (props.demanda.status == "CANCELLED") {
       return "Reprovada";
-    }
-
-    if (props.demanda.status == "BACKLOG") {
-      if (props.demanda.analista == null) {
-        return "Aguardando Revisão";
-      }
-      if (props.demanda.motivoRecusa != null) {
-        return "Aguardando Edição";
-      }
-    }
-
-    if (props.demanda.status == "ASSESSMENT") {
+    } else if (props.demanda.status == "BACKLOG_REVISAO") {
+      return "Aguardando Revisão";
+    } else if (props.demanda.status == "BACKLOG_EDICAO") {
+      return "Aguardando Edição";
+    } else if (props.demanda.status == "ASSESSMENT") {
       return "Aprovada";
     }
   };
@@ -106,25 +92,25 @@ const Demanda = (props) => {
           {/* Lógica para mostrar o status da demanda somente caso o usuário seja o dono dela */}
           {parseInt(localStorage.getItem("usuarioId")) ==
             props.demanda?.solicitante?.id && (
-            <Box className={`items-center text-justify flex`}>
-              <Typography
-                fontSize={FontConfig.default}
-                sx={{ fontWeight: "600" }}
-              >
-                {formatarNomeStatus()}
-              </Typography>
-              <Box
-                sx={{
-                  backgroundColor: corStatus,
-                  width: "12px",
-                  height: "12px",
-                  borderRadius: "10px",
-                  marginLeft: "10px",
-                }}
-                className={`items-center h-30 text-justify`}
-              />
-            </Box>
-          )}
+              <Box className={`items-center text-justify flex`}>
+                <Typography
+                  fontSize={FontConfig.default}
+                  sx={{ fontWeight: "600" }}
+                >
+                  {formatarNomeStatus()}
+                </Typography>
+                <Box
+                  sx={{
+                    backgroundColor: corStatus,
+                    width: "12px",
+                    height: "12px",
+                    borderRadius: "10px",
+                    marginLeft: "10px",
+                  }}
+                  className={`items-center h-30 text-justify`}
+                />
+              </Box>
+            )}
         </Box>
 
         {/* Proposta da demanda */}
@@ -138,7 +124,7 @@ const Demanda = (props) => {
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {parseInt(localStorage.getItem("usuarioId")) !=
-          props.demanda?.solicitante?.id ? (
+            props.demanda?.solicitante?.id ? (
             <Typography
               fontSize={FontConfig.default}
               sx={{ fontWeight: "600", cursor: "default" }}
@@ -146,9 +132,9 @@ const Demanda = (props) => {
             >
               {props.demanda.solicitante?.nome}
             </Typography>
-          ) : props.demanda?.status == "CANCELLED" &&
+          ) : (props.demanda?.status == "CANCELLED" || props.demanda?.status == "BACKLOG_EDICAO") &&
             props.demanda?.solicitante?.id ===
-              parseInt(localStorage.getItem("usuarioId")) ? (
+            parseInt(localStorage.getItem("usuarioId")) ? (
             <Button
               onClick={(e) => {
                 e.stopPropagation();

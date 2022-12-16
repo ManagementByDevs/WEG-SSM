@@ -68,14 +68,14 @@ const HomeGerencia = () => {
           setParams({
             ...params,
             gerente: usuario,
-            status: "BACKLOG",
+            status: "BACKLOG_APROVACAO",
             analista: null,
           });
         } else {
           setParams({
             ...params,
             gerente: null,
-            status: "BACKLOG",
+            status: "BACKLOG_REVISAO",
             analista: null,
           });
         }
@@ -100,9 +100,9 @@ const HomeGerencia = () => {
   // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
   useEffect(() => {
     if (usuario.tipoUsuario == "GERENTE") {
-      setParams({ ...params, gerente: usuario, status: "BACKLOG" });
+      setParams({ ...params, gerente: usuario, status: "BACKLOG_APROVACAO" });
     } else {
-      setParams({ ...params, status: "BACKLOG" });
+      setParams({ ...params, status: "BACKLOG_REVISAO" });
     }
   }, [usuario]);
 

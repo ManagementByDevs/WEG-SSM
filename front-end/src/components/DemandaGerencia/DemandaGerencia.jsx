@@ -20,7 +20,7 @@ const DemandaGerencia = (props) => {
   const tipo = props.tipo;
 
   function getCorStatus() {
-    if (props.dados.status === "BACKLOG") {
+    if (props.dados.status === "BACKLOG_REVISAO") {
       return "#00579D";
     } else if (props.dados.status === "ASSESSMENT") {
       return "#8862A2";
@@ -32,6 +32,14 @@ const DemandaGerencia = (props) => {
   const abrirModalHistorico = () => {
     setModalHistorico(true);
   };
+
+  const formatarStatus = () => {
+    if (props.dados.status == "BACKLOG_REVISAO") {
+      return "Backlog";
+    } else if (props.dados.status == "ASSESSMENT") {
+      return "Assessment";
+    }
+  }
 
   return (
     <>

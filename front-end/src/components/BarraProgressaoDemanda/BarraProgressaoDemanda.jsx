@@ -229,13 +229,13 @@ const BarraProgressaoDemanda = (props) => {
         paginaDados.proposta &&
         paginaDados.frequencia
       ) {
-        const demandaFinal = {
+        let demandaFinal = {
           titulo: paginaDados.titulo,
           problema: paginaDados.problema,
           proposta: paginaDados.proposta,
           frequencia: paginaDados.frequencia,
           beneficios: formatarBeneficios(paginaBeneficios),
-          status: "BACKLOG",
+          status: "BACKLOG_REVISAO",
         };
 
         DemandaService.post(
@@ -243,8 +243,8 @@ const BarraProgressaoDemanda = (props) => {
           paginaArquivos,
           parseInt(localStorage.getItem("usuarioId"))
         ).then((e) => {
-          excluirEscopo();
           direcionarHome(true);
+          excluirEscopo();
         });
       } else {
         setFeedbackDadosFaltantes(true);
