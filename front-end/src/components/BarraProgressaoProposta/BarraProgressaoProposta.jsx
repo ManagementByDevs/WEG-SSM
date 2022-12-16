@@ -46,7 +46,13 @@ const BarraProgressaoProposta = (props) => {
     unidadePaybackSimples: "",
     ppm: "",
     linkJira: "",
-    responsaveisNegocio: [],
+    responsaveisNegocio: [
+      {
+        nome: "",
+        area: "",
+        visible: true,
+      },
+    ],
     anexos: [],
   });
 

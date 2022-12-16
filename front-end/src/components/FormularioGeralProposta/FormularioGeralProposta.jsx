@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import {
   Box,
   FormControl,
@@ -21,13 +21,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const FormularioGeralProposta = (props) => {
   const { mode } = useContext(ColorModeContext);
-  const [responsavelNegocio, setResponsavelNegocio] = useState([
-    { nome: "", area: "", visible: true },
-  ]);
   const inputFile = useRef(null);
 
   const deleteResponsavel = (indexResponsavel) => {
-    let aux = props.responsaveisNegocio.map((responsavel) => {
+    let aux = props.gerais.responsaveisNegocio.map((responsavel) => {
       return {
         nome: responsavel.nome,
         area: responsavel.area,
@@ -35,7 +32,7 @@ const FormularioGeralProposta = (props) => {
       };
     });
     aux[indexResponsavel].visible = false;
-    props.setResponsaveisNegocio(aux);
+    props.setGerais({ ...props.gerais, responsaveisNegocio: [...aux] });
   };
 
   // Aciona o input de anexos ao clicar no add anexos
@@ -170,7 +167,12 @@ const FormularioGeralProposta = (props) => {
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
                   value={props.gerais.unidadePaybackSimples}
-                  onChange={(e) => props.setGerais({...props.gerais, unidadePaybackSimples: e.target.value})}
+                  onChange={(e) =>
+                    props.setGerais({
+                      ...props.gerais,
+                      unidadePaybackSimples: e.target.value,
+                    })
+                  }
                 >
                   <MenuItem value={"DIAS"}>Dias</MenuItem>
                   <MenuItem value={"SEMANAS"}>Semanas</MenuItem>
@@ -283,24 +285,36 @@ const FormularioGeralProposta = (props) => {
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "primary.main", cursor: "pointer" }}
               onClick={() => {
-                props.setResponsaveisNegocio([
-                  ...props.responsaveisNegocio,
-                  {
-                    nome: "",
-                    area: "",
-                    visible: true,
-                  },
-                ]);
+                props.setGerais({
+                  ...props.gerais,
+                  responsaveisNegocio: [
+                    ...props.gerais.responsaveisNegocio,
+                    {
+                      nome: "",
+                      area: "",
+                      visible: true,
+                    },
+                  ],
+                });
               }}
             />
           </Box>
-          {props.responsaveisNegocio?.map((item, index) => {
+          {props.gerais.responsaveisNegocio?.map((item, index) => {
             if (item.visible) {
               return (
                 <ResponsavelNegocio
                   dados={item}
+                  setDados={(event) => {
+                    let aux = [...props.gerais.responsaveisNegocio];
+                    aux[index] = event;
+                    props.setGerais({
+                      ...props.gerais,
+                      responsaveisNegocio: [...aux],
+                    });
+                  }}
                   index={index}
                   deleteResponsavel={deleteResponsavel}
+                  key={index}
                 />
               );
             }
