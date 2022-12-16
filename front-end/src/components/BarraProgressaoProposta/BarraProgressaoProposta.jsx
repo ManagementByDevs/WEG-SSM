@@ -198,6 +198,10 @@ const BarraProgressaoProposta = (props) => {
     },
   ]);
 
+  useEffect(() => {
+    console.log(gerais);
+  }, [gerais]);
+
   return (
     <>
       <Stepper activeStep={activeStep}>
@@ -230,7 +234,9 @@ const BarraProgressaoProposta = (props) => {
       {activeStep == 1 && (
         <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />
       )}
-      {activeStep == 2 && <FormularioCustosProposta custos={custos} setCustos={setCustos}/>}
+      {activeStep == 2 && (
+        <FormularioCustosProposta custos={custos} setCustos={setCustos} />
+      )}
       {activeStep == 3 && (
         <FormularioGeralProposta gerais={gerais} setGerais={setGerais} />
       )}
