@@ -14,9 +14,11 @@ import {
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioAnexosDemanda from "../FormularioAnexosDemanda/FormularioAnexosDemanda";
+import Feedback from "../Feedback/Feedback";
 
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
 const BarraProgressaoDemanda = (props) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -179,11 +181,14 @@ const BarraProgressaoDemanda = (props) => {
   const [state, setState] = React.useState({
     open: false,
   });
+
   const { open } = state;
 
   const handleClick = (newState) => () => {
     setState({ open: true, ...newState });
   };
+
+  // Modal de confirmação para a criação da demanda
 
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
 
@@ -207,6 +212,8 @@ const BarraProgressaoDemanda = (props) => {
     }
     return listaNova;
   };
+
+  const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
 
   // UseEffect para criar a demanda usando os dados recebidos das páginas
   useEffect(() => {
@@ -232,13 +239,17 @@ const BarraProgressaoDemanda = (props) => {
           parseInt(localStorage.getItem("usuarioId"))
         ).then((e) => {
           excluirEscopo();
-          navigate("/");
+          direcionarHome(true);
         });
       } else {
-        // Fazer feedback de campos obrigatórios faltantes
+        setFeedbackDadosFaltantes(true);
       }
     }
   }, [open]);
+
+  const direcionarHome = (feedbackDemanda) => {
+    navigate("/", { state: { feedback: feedbackDemanda } });
+  };
 
   const handleClose = () => {
     setState({ ...state, open: false });
@@ -309,7 +320,7 @@ const BarraProgressaoDemanda = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={handleClick()}
+            onClick={abrirModalConfirmacao}
             disableElevation
           >
             Criar
@@ -324,9 +335,13 @@ const BarraProgressaoDemanda = (props) => {
             Próximo
           </Button>
         )}
-        {/* {modalConfirmacao && <ModalConfirmacao open={modalConfirmacao} setOpen={setOpenConfirmacao} textoModal={"enviarDemanda"} textoBotao={"enviar"} />} */}
+        {modalConfirmacao && <ModalConfirmacao open={modalConfirmacao} setOpen={setOpenConfirmacao} textoModal={"enviarDemanda"} textoBotao={"enviar"} onConfirmClick={handleClick()} />}
       </Box>
+      <Feedback open={feedbackDadosFaltantes} handleClose={() => {
+        setFeedbackDadosFaltantes(false);
+      }} status={"erro"} mensagem={"Preencha todos os campos obrigatórios!"} />
     </>
+
   );
 };
 
