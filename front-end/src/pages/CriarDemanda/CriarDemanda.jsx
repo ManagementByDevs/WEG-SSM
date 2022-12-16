@@ -10,7 +10,7 @@ const CriarDemanda = () => {
     return (
         <FundoComHeader>
             <Box className='p-2'>
-                <Caminho />
+                <Caminho feedback={true}/>
                 <Box className='w-full flex justify-center'>
                     <Box className='w-5/6'>
                         <BarraProgressaoDemanda steps={['Dados', 'Benefícios', 'Anexos']} />

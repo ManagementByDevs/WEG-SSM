@@ -260,7 +260,7 @@ const DetalhesDemanda = (props) => {
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
     if (demandaEmEdicao) {
-      const demandaAtualizada = { id: props.dados.id, titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia, beneficios: formatarBeneficiosRequisicao(beneficios), data: props.dados.data, status: props.dados.status, solicitante: props.dados.solicitante };
+      const demandaAtualizada = { id: props.dados.id, titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia, beneficios: formatarBeneficiosRequisicao(beneficios), data: props.dados.data, status: "BACKLOG_REVISAO", solicitante: props.dados.solicitante };
       DemandaService.put(demandaAtualizada, anexos).then((response) => {
         setEditar(false);
         excluirBeneficiosRemovidos();
@@ -307,7 +307,7 @@ const DetalhesDemanda = (props) => {
       setOpenModalRecusa(false);
 
       if (modoModalRecusa == "devolucao") {
-        DemandaService.put({ ...props.dados, motivoRecusa: motivoRecusaDemanda }, []).then((response) => {
+        DemandaService.put({ ...props.dados, motivoRecusa: motivoRecusaDemanda, status: "BACKLOG_EDICAO" }, []).then((response) => {
           navigate('/');
         })
       } else {
@@ -383,14 +383,14 @@ const DetalhesDemanda = (props) => {
           sx={{ top: "10px", right: "10px" }}
           onClick={editarDemanda}
         >
-          {props.usuario?.id == props.dados.solicitante?.id && !editar ? (
+          {props.usuario?.id == props.dados.solicitante?.id && props.dados.status == "BACKLOG_EDICAO" && !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
             />
           ) : null}
-          {props.usuario?.id == props.dados.solicitante?.id && editar ? (
+          {props.usuario?.id == props.dados.solicitante?.id && props.dados.status == "BACKLOG_EDICAO" && editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"

@@ -70,8 +70,7 @@ const PropostaDeAta = (props) => {
 
     // useState para a pauta criada
 
-    const [parecerDG, setParecerDG] = useState(false);
-
+    const [parecerDG, setParecerDG] = useState(props.parecerDG);
 
     // mudar o conteúdo do select e 
     const mudarParecer = (event) => {
