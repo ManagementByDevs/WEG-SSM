@@ -65,13 +65,28 @@ const HomeGerencia = () => {
     switch (value) {
       case "1":
         if (usuario.tipoUsuario == "GERENTE") {
-          setParams({ ...params, gerente: usuario, status: "BACKLOG", analista: null });
+          setParams({
+            ...params,
+            gerente: usuario,
+            status: "BACKLOG",
+            analista: null,
+          });
         } else {
-          setParams({ ...params, gerente: null, status: "BACKLOG", analista: null });
+          setParams({
+            ...params,
+            gerente: null,
+            status: "BACKLOG",
+            analista: null,
+          });
         }
         break;
       case "2":
-        setParams({ ...params, gerente: null, status: "ASSESSMENT", analista: usuario });
+        setParams({
+          ...params,
+          gerente: null,
+          status: "ASSESSMENT",
+          analista: usuario,
+        });
         break;
       case "3":
         break;
@@ -87,7 +102,7 @@ const HomeGerencia = () => {
     if (usuario.tipoUsuario == "GERENTE") {
       setParams({ ...params, gerente: usuario, status: "BACKLOG" });
     } else {
-      setParams({ ...params, status: 'BACKLOG' });
+      setParams({ ...params, status: "BACKLOG" });
     }
   }, [usuario]);
 
@@ -111,14 +126,14 @@ const HomeGerencia = () => {
         if (params.status != null || params.gerente != null) {
           DemandaService.getPage(params, ordenacao + page).then((response) => {
             setListaItens([...response.content]);
-          })
+          });
         }
         break;
       case "2":
         if (params.status != null && params.analista != null) {
           DemandaService.getPage(params, ordenacao + page).then((response) => {
             setListaItens([...response.content]);
-          })
+          });
         }
         break;
       case "3":
@@ -128,7 +143,7 @@ const HomeGerencia = () => {
       case "5":
         break;
     }
-  }
+  };
 
   const [demandas, setDemandas] = useState([
     {
@@ -203,25 +218,26 @@ const HomeGerencia = () => {
       numeroSequencial: "1/2022",
       comissao: "Comissão 1",
       analistaResponsavel: "Kenzo Sato",
-      data: "01/01/2022"
+      data: "01/01/2022",
     },
     {
       numeroSequencial: "2/2022",
       comissao: "Comissão 2",
       analistaResponsavel: "Kenzo S",
-      data: "02/02/2022"
+      data: "02/02/2022",
     },
     {
       numeroSequencial: "3/2022",
       comissao: "Comissão 3",
       analistaResponsavel: "Kenzo S",
-      data: "03/03/2022"
+      data: "03/03/2022",
     },
     {
       numeroSequencial: "4/2022",
       comissao: "Comissão 4",
-      analistaResponsavel: "Kenzo Sato tem nome muito grande mesmo até passa o componente",
-      data: "04/04/2022"
+      analistaResponsavel:
+        "Kenzo Sato tem nome muito grande mesmo até passa o componente",
+      data: "04/04/2022",
     },
   ]);
 
@@ -285,6 +301,10 @@ const HomeGerencia = () => {
     }
   };
 
+  const isGerente = !(
+    JSON.parse(localStorage.getItem("user")).tipoUsuario == "GERENTE"
+  );
+
   const navigate = useNavigate();
 
   return (
@@ -311,26 +331,50 @@ const HomeGerencia = () => {
                   label="Demandas"
                   value="1"
                 />
-                <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Criar Propostas"
-                  value="2"
-                />
-                <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Propostas"
-                  value="3"
-                />
-                <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Pautas"
-                  value="4"
-                />
-                <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Atas"
-                  value="5"
-                />
+                
+                {isGerente && (
+                  <Tab
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
+                    label="Criar Propostas"
+                    value="2"
+                  />
+                )}
+
+                {isGerente && (
+                  <Tab
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
+                    label="Propostas"
+                    value="3"
+                  />
+                )}
+
+                {isGerente && (
+                  <Tab
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
+                    label="Pautas"
+                    value="4"
+                  />
+                )}
+
+                {isGerente && (
+                  <Tab
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
+                    label="Atas"
+                    value="5"
+                  />
+                )}
               </TabList>
             </Box>
 
@@ -366,7 +410,7 @@ const HomeGerencia = () => {
                     {/* Ícone de ordenação */}
                     <Tooltip title="Ordenação">
                       <SwapVertIcon
-                        onClick={() => { }}
+                        onClick={() => {}}
                         className="cursor-pointer"
                         sx={{ color: "text.secondary" }}
                       />
@@ -403,7 +447,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => { }}
+                  onClick={() => {}}
                   variant="contained"
                   disableElevation
                 >
@@ -451,77 +495,85 @@ const HomeGerencia = () => {
                           verDemanda(demanda);
                         }}
                       />
-                    )
-                  })}
-                </Box>
-              </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(720px, 1fr))",
-                  }}
-                >
-                  {listaItens?.map((demanda, index) => {
-                    return (
-                      <DemandaGerencia
-                        key={index}
-                        dados={demanda}
-                        tipo="demanda"
-                        onClick={() => {
-                          verDemanda(demanda);
-                        }}
-                      />
-                    )
-                  })}
-                </Box>
-              </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(720px, 1fr))",
-                  }}
-                >
-                  {propostas?.map((proposta, index) => {
-                    return (
-                      <DemandaGerencia
-                        key={index}
-                        dados={proposta}
-                        tipo="proposta"
-                      />
                     );
                   })}
                 </Box>
               </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(700px, 1fr))",
-                  }}
-                >
-                  {pautas?.map((pauta, index) => {
-                    return <Pauta key={index} dados={pauta} tipo="pauta" />;
-                  })}
-                </Box>
-              </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="5" onClick={() => { }}>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(700px, 1fr))",
-                  }}
-                >
-                  {atas?.map((ata, index) => {
-                    return <Pauta key={index} dados={ata} tipo="ata" />;
-                  })}
-                </Box>
-              </TabPanel>
+              {isGerente && (
+                <>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                    <Box
+                      sx={{
+                        display: "grid",
+                        gap: "1rem",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(720px, 1fr))",
+                      }}
+                    >
+                      {listaItens?.map((demanda, index) => {
+                        return (
+                          <DemandaGerencia
+                            key={index}
+                            dados={demanda}
+                            tipo="demanda"
+                            onClick={() => {
+                              verDemanda(demanda);
+                            }}
+                          />
+                        );
+                      })}
+                    </Box>
+                  </TabPanel>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                    <Box
+                      sx={{
+                        display: "grid",
+                        gap: "1rem",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(720px, 1fr))",
+                      }}
+                    >
+                      {propostas?.map((proposta, index) => {
+                        return (
+                          <DemandaGerencia
+                            key={index}
+                            dados={proposta}
+                            tipo="proposta"
+                          />
+                        );
+                      })}
+                    </Box>
+                  </TabPanel>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
+                    <Box
+                      sx={{
+                        display: "grid",
+                        gap: "1rem",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(700px, 1fr))",
+                      }}
+                    >
+                      {pautas?.map((pauta, index) => {
+                        return <Pauta key={index} dados={pauta} tipo="pauta" />;
+                      })}
+                    </Box>
+                  </TabPanel>
+                  <TabPanel sx={{ padding: 0 }} value="5" onClick={() => {}}>
+                    <Box
+                      sx={{
+                        display: "grid",
+                        gap: "1rem",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(700px, 1fr))",
+                      }}
+                    >
+                      {atas?.map((ata, index) => {
+                        return <Pauta key={index} dados={ata} tipo="ata" />;
+                      })}
+                    </Box>
+                  </TabPanel>
+                </>
+              )}
             </Box>
           </TabContext>
         </Box>

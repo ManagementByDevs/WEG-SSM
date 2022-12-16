@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 
 import JoditEditor from "jodit-react";
 
@@ -7,8 +7,10 @@ const TextEditor = (props) => {
 
   const config = {
     readonly: false, // Todas opções encontradas em https://xdsoft.net/jodit/doc/
-    height: '700',
-    placeholder: 'Digite aqui o escopo da proposta...',
+    height: "700",
+    placeholder: "Digite aqui o escopo da proposta...",
+    allowResizeX: false,
+    allowResizeY: false,
   };
 
   const handleUpdate = (newContent) => {

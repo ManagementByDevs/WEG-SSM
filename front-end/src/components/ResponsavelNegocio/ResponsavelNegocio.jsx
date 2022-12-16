@@ -37,7 +37,9 @@ const ResponsavelNegocio = (props) => {
             component="input"
             placeholder="Insira o responsável pelo negócio..."
             value={props.dados.nome}
-            onChange={(e) => props.setDados({...props.dados, nome: e.target.value})}
+            onChange={(e) =>
+              props.setDados({ ...props.dados, nome: e.target.value })
+            }
           />
         </Box>
       </Box>
