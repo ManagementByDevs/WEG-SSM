@@ -57,11 +57,23 @@ const BarraProgressaoDemanda = (props) => {
       } else {
         idEscopo = location.state;
         EscopoService.buscarPorId(location.state).then((response) => {
-          setPaginaDados({ titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia });
+          setPaginaDados({
+            titulo: response.titulo,
+            problema: response.problema,
+            proposta: response.proposta,
+            frequencia: response.frequencia,
+          });
           receberBeneficios(response.beneficios);
           receberArquivos(response.anexo);
-          setUltimoEscopo({ id: response.id, titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia, beneficios: formatarBeneficios(response.beneficios) });
-        })
+          setUltimoEscopo({
+            id: response.id,
+            titulo: response.titulo,
+            problema: response.problema,
+            proposta: response.proposta,
+            frequencia: response.frequencia,
+            beneficios: formatarBeneficios(response.beneficios),
+          });
+        });
       }
     }
   }, []);
@@ -79,20 +91,33 @@ const BarraProgressaoDemanda = (props) => {
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-      let tipoNovo = beneficio.tipoBeneficio.charAt(0) + (beneficio.tipoBeneficio.substring(1, beneficio.tipoBeneficio.length)).toLowerCase();
-      listaNova.push({ id: beneficio.id, tipoBeneficio: tipoNovo, valor_mensal: beneficio.valor_mensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: true })
+      let tipoNovo =
+        beneficio.tipoBeneficio.charAt(0) +
+        beneficio.tipoBeneficio
+          .substring(1, beneficio.tipoBeneficio.length)
+          .toLowerCase();
+      listaNova.push({
+        id: beneficio.id,
+        tipoBeneficio: tipoNovo,
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: true,
+      });
     }
     setPaginaBeneficios(listaNova);
-  }
+  };
 
   // Função para formatar os arquivos recebidos no banco para a lista da página de edição
   const receberArquivos = (arquivos) => {
     let listaArquivos = [];
     for (let arquivo of arquivos) {
-      listaArquivos.push(new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }))
+      listaArquivos.push(
+        new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo })
+      );
     }
     setPaginaArquivos(listaArquivos);
-  }
+  };
 
   // Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página
   const salvarEscopo = (id) => {
@@ -102,30 +127,30 @@ const BarraProgressaoDemanda = (props) => {
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios(paginaBeneficios)
+      beneficios: formatarBeneficios(paginaBeneficios),
     });
 
     try {
       EscopoService.salvarDados(ultimoEscopo).then((response) => {
         //Confirmação de salvamento (se sobrar tempo)
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   // Função para atualizar os anexos de um escopo quando um anexo for adicionado / removido
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
       EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
-        (response) => { }
+        (response) => {}
       );
     } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
     }
   };
 
   // Função para excluir o escopo determinado quando a demanda a partir dele for criada
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
   };
 
   const isStepOptional = (step) => {
@@ -252,79 +277,84 @@ const BarraProgressaoDemanda = (props) => {
         status="sucesso"
         mensagem="Demanda criada com sucesso!"
       /> */}
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
+      <Box className="w-full h-full">
+        <Stepper activeStep={activeStep} className="mt-4" alternativeLabel>
+          {steps.map((label, index) => {
+            const stepProps = {};
+            const labelProps = {};
+            if (isStepOptional(index)) {
+              labelProps.optional = (
+                <Typography variant="caption">Optional</Typography>
+              );
+            }
+            if (isStepSkipped(index)) {
+              stepProps.completed = false;
+            }
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
             );
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {activeStep == 0 && (
-        <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
-      )}
-      {activeStep == 1 && (
-        <FormularioBeneficiosDemanda
-          dados={paginaBeneficios}
-          setDados={setPaginaBeneficios}
-        />
-      )}
-      {activeStep == 2 && (
-        <FormularioAnexosDemanda
-          salvarEscopo={salvarAnexosEscopo}
-          dados={paginaArquivos}
-          setDados={setPaginaArquivos}
-        />
-      )}
-      <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-        <Button
-          variant="outlined"
-          color="tertiary"
-          disabled={activeStep === 0}
-          onClick={handleBack}
-          sx={{ mr: 1 }}
-          disableElevation
-        >
-          Voltar
-        </Button>
-        <Box sx={{ flex: "1 1 auto" }} />
-        {isStepOptional(activeStep) && (
-          <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-            Pular
-          </Button>
+          })}
+        </Stepper>
+        {activeStep == 0 && (
+          <FormularioDadosDemanda
+            dados={paginaDados}
+            setDados={setPaginaDados}
+          />
         )}
+        {activeStep == 1 && (
+          <FormularioBeneficiosDemanda
+            dados={paginaBeneficios}
+            setDados={setPaginaBeneficios}
+          />
+        )}
+        {activeStep == 2 && (
+          <FormularioAnexosDemanda
+            salvarEscopo={salvarAnexosEscopo}
+            dados={paginaArquivos}
+            setDados={setPaginaArquivos}
+          />
+        )}
+        <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          <Button
+            variant="outlined"
+            color="tertiary"
+            disabled={activeStep === 0}
+            onClick={handleBack}
+            sx={{ mr: 1 }}
+            disableElevation
+          >
+            Voltar
+          </Button>
+          <Box sx={{ flex: "1 1 auto" }} />
+          {isStepOptional(activeStep) && (
+            <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+              Pular
+            </Button>
+          )}
 
-        {activeStep === steps.length - 1 ? (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleClick()}
-            disableElevation
-          >
-            Criar
-          </Button>
-        ) : (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleNext}
-            disableElevation
-          >
-            Próximo
-          </Button>
-        )}
-        {/* {modalConfirmacao && <ModalConfirmacao open={modalConfirmacao} setOpen={setOpenConfirmacao} textoModal={"enviarDemanda"} textoBotao={"enviar"} />} */}
+          {activeStep === steps.length - 1 ? (
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={handleClick()}
+              disableElevation
+            >
+              Criar
+            </Button>
+          ) : (
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={handleNext}
+              disableElevation
+            >
+              Próximo
+            </Button>
+          )}
+          {/* {modalConfirmacao && <ModalConfirmacao open={modalConfirmacao} setOpen={setOpenConfirmacao} textoModal={"enviarDemanda"} textoBotao={"enviar"} />} */}
+        </Box>
       </Box>
     </>
   );
