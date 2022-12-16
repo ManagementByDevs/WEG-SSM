@@ -34,11 +34,11 @@ const DetalhesDemandaPagina = () => {
   useEffect(() => {
     setDados(location.state);
 
-    let listaAnexos = [];
-    for (let arquivo of location.state.anexo) {
-      listaAnexos.push(new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }));
-    }
-    setDados({ ...dados, anexo: listaAnexos });
+    // let listaAnexos = [];
+    // for (let arquivo of location.state.anexo) {
+    //   listaAnexos.push(new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }));
+    // }
+    // setDados({ ...dados, anexo: listaAnexos });
     buscarUsuario();
   }, []);
 

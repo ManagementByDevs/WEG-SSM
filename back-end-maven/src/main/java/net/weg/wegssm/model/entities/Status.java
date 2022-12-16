@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum Status {
 
-    BACKLOG("Backlog"),
+    BACKLOG_REVISAO("Backlog Revisão"),
+    BACKLOG_EDICAO("Backlog Edição"),
+    BACKLOG_APROVACAO("Backlog Aprovação"),
     CANCELLED("Cancelled"),
     TO_DO("To_Do"),
     BUSINESS_CASE("Business_Case"),
