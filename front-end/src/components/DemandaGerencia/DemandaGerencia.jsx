@@ -169,17 +169,17 @@ const DemandaGerencia = (props) => {
                     )
                   }
                   <Tooltip title="Histórico">
-                    <IconButton>
+                    <IconButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        abrirModalHistorico();
+                      }}>
                       <HistoryOutlinedIcon
                         className="delay-120 hover:scale-110 duration-300"
                         sx={{
                           color: "icon.main",
                           cursor: "pointer",
                           fontSize: "30px",
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          abrirModalHistorico();
                         }}
                       />
                     </IconButton>
