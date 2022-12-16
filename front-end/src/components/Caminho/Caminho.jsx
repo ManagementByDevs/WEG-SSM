@@ -45,7 +45,6 @@ const Caminho = (props) => {
                     )
                 }
             })}
-            {feedback && <ModalConfirmacao open={feedback} setOpen={setOpenFeedback} textoModal={"sairCriacao"} textoBotao={"sim"} />}
         </Box>
     )
 }

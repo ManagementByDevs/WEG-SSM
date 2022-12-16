@@ -13,10 +13,13 @@ import OtherHousesIcon from '@mui/icons-material/OtherHouses';
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
+import { useNavigate } from "react-router-dom";
 
 import FontConfig from "../../service/FontConfig";
 
 const DetalhesAta = (props) => {
+
+    const navigate = useNavigate();
 
     // Varuáveis de estilo para usar no componente 
 
@@ -100,7 +103,7 @@ const DetalhesAta = (props) => {
 
     
     // useState para a pauta criada
-    const [pautaCriada, setPautaCriada] = useState(false);
+    const [ataCriada, setAtaCriada] = useState(false);
 
     // funções para visualização das propostas, voltar, próximo...
 
@@ -137,7 +140,7 @@ const DetalhesAta = (props) => {
     }
 
     const criarAta = () => {
-
+        navigate('/', { state: { feedback: true } })
     }
 
     return (
@@ -241,12 +244,12 @@ const DetalhesAta = (props) => {
                             :
                             <Box>
                                 <Typography sx={{ marginBottom: '2%', display: 'flex', justifyContent: 'center' }} fontSize={FontConfig.title} fontWeight={650}>Proposta  {indexProposta}</Typography>
-                                <PropostaDeAta dadosProposta={dadosProposta} propostaPauta={true} />
+                                <PropostaDeAta dadosProposta={dadosProposta} propostaPauta={true} parecerDG={false} />
                             </Box>
                         }
                     </Box>
 
-                    {/* botões de navegação entre as proposta da ata */}
+                    {/* botões de navegação entre as propostas da ata */}
                     <Box className="flex fixed justify-end"
                         sx={{ width: "25rem", bottom: "20px", right: "20px" }}>
                         <Box className="flex justify-around w-full">
@@ -285,7 +288,7 @@ const DetalhesAta = (props) => {
                                     Próximo
                                 </Typography>
                             </Button>
-                            {!pautaCriada ?
+                            {!ataCriada ?
                                 <Button
                                     sx={{
                                         backgroundColor: "primary.main",
@@ -305,7 +308,7 @@ const DetalhesAta = (props) => {
                                         fontSize: FontConfig.default,
                                     }}
                                     variant="contained"
-                                    onClick={criarAta}
+                                    // onClick={criarAta}
                                 >
                                     Publicar
                                 </Button>
