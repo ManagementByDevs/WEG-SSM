@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/front-end/src/pages/EditarEscopo/EditarEscopo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/EscopoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/EscopoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/EscopoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/EscopoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/EscopoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/EscopoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/BarraProgressaoDemanda/BarraProgressaoDemanda.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/BarraProgressaoDemanda/BarraProgressaoDemanda.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/DetalhesDemanda/DetalhesDemanda.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/DetalhesDemanda/DetalhesDemanda.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/ModalAceitarDemanda/ModalAceitarDemanda.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/ModalAceitarDemanda/ModalAceitarDemanda.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/ModalOrdenacao/ModalOrdenacao.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/ModalOrdenacao/ModalOrdenacao.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/PropostaDeAta/PropostaDeAta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/PropostaDeAta/PropostaDeAta.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Escopos/Escopos.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Escopos/Escopos.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Home/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/service/escopoService.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/escopoService.js" afterDir="false" />
-    </list>
+    <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
