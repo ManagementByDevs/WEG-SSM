@@ -191,9 +191,14 @@ const BarraProgressaoDemanda = (props) => {
   // Modal de confirmação para a criação da demanda
 
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
+  const [modalSairDemanda, setModalSairDemanda] = useState(false);
 
   const abrirModalConfirmacao = () => {
     setOpenConfirmacao(true);
+  };
+
+  const abrirModalSairDemanda = () => {
+    setModalSairDemanda(true);
   };
 
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
@@ -257,12 +262,6 @@ const BarraProgressaoDemanda = (props) => {
 
   return (
     <>
-      {/* <Feedback
-        open={open}
-        handleClose={handleClose}
-        status="sucesso"
-        mensagem="Demanda criada com sucesso!"
-      /> */}
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -336,7 +335,10 @@ const BarraProgressaoDemanda = (props) => {
           </Button>
         )}
         {modalConfirmacao && <ModalConfirmacao open={modalConfirmacao} setOpen={setOpenConfirmacao} textoModal={"enviarDemanda"} textoBotao={"enviar"} onConfirmClick={handleClick()} />}
+        {modalSairDemanda && <ModalConfirmacao open={modalSairDemanda} setOpen={setModalSairDemanda} textoModal={"sairCriacao"} textoBotao={"sim"} onConfirmClick={handleClick()} />}
       </Box>
+
+      {/* Feedback de dados faltantes */}
       <Feedback open={feedbackDadosFaltantes} handleClose={() => {
         setFeedbackDadosFaltantes(false);
       }} status={"erro"} mensagem={"Preencha todos os campos obrigatórios!"} />
