@@ -15,8 +15,11 @@ import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 import FontConfig from "../../service/FontConfig";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from "react-router-dom";
 
 const DetalhesPauta = (props) => {
+
+    const navigate = useNavigate();
 
     const tituloProposta = {
         textDecoration: "underline",
@@ -124,7 +127,7 @@ const DetalhesPauta = (props) => {
     };
 
     const criarAta = () => {
-
+        navigate("/detalhes-ata");
     };
 
     return (

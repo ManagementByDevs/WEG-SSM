@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { Box, Button, Tab, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
@@ -21,6 +21,7 @@ import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import ModalInformarMotivo from "../../components/ModalInformarMotivo/ModalInformarMotivo";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Pauta from "../../components/Pauta/Pauta";
+import Feedback from "../../components/Feedback/Feedback";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -321,8 +322,20 @@ const HomeGerencia = () => {
   const abrirModalOrdenacao = () => {
     setOpenOrdenacao(true);
   };
+  const abrirDetalhesPauta = () => {
+    console.log("clicou")
+  }
 
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const [feedbackAta, setOpenFeedbackAta] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.feedback) {
+      setOpenFeedbackAta(true);
+    }
+  }, [location.state?.feedback]);
 
   return (
     <FundoComHeader>
@@ -331,6 +344,11 @@ const HomeGerencia = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
+        {/* Feedback ata criada */}
+        <Feedback open={feedbackAta} handleClose={() => {
+          setOpenFeedbackAta(false);
+        }} status={"sucesso"} mensagem={"Ata criada com sucesso!"} />
+
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
           {/* Sistema de abas */}
@@ -583,7 +601,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { navigate("/detalhes-pauta"); }}>
                     <Box
                       sx={{
                         display: "grid",
@@ -597,7 +615,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="5" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="5" onClick={() => { navigate("/detalhes-ata", {}) }}>
                     <Box
                       sx={{
                         display: "grid",
