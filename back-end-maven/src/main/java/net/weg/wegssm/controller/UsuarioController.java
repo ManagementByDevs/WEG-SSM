@@ -3,6 +3,7 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.UsuarioDTO;
 import net.weg.wegssm.model.entities.Departamento;
+import net.weg.wegssm.model.entities.TipoUsuario;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
@@ -59,6 +60,11 @@ public class UsuarioController {
     @GetMapping("/departamento/{departamento}")
     public ResponseEntity<List<Usuario>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento) {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByDepartamento(departamento));
+    }
+
+    @GetMapping("/tipo_usuario/{tipo_usuario}")
+    public ResponseEntity<List<Usuario>> findByTipoUsuario(@PathVariable(value = "tipo_usuario") TipoUsuario tipo_usuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByTipoUsuario(tipo_usuario));
     }
 
     /**

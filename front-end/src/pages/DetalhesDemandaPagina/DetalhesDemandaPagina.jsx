@@ -27,18 +27,8 @@ const DetalhesDemandaPagina = () => {
     departamento: null,
   });
 
-  const showDetails = () => {
-    dados.beneficios[0].teste = "a;";
-  };
-
   useEffect(() => {
     setDados(location.state);
-
-    // let listaAnexos = [];
-    // for (let arquivo of location.state.anexo) {
-    //   listaAnexos.push(new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }));
-    // }
-    // setDados({ ...dados, anexo: listaAnexos });
     buscarUsuario();
   }, []);
 
