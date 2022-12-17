@@ -15,6 +15,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
+import DownloadIcon from "@mui/icons-material/Download";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
@@ -24,11 +25,10 @@ import ModalRecusarDemanda from "../ModalRecusarDemanda/ModalRecusarDemanda";
 import FontConfig from "../../service/FontConfig";
 
 import ColorModeContext from "../../service/TemaContext";
-import BeneficioService from '../../service/beneficioService';
-import DemandaService from '../../service/demandaService';
+import BeneficioService from "../../service/beneficioService";
+import DemandaService from "../../service/demandaService";
 
 const DetalhesDemanda = (props) => {
-
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
   const inputFile = useRef(null);
@@ -75,8 +75,6 @@ const DetalhesDemanda = (props) => {
     setAnexos(props.dados.anexo);
   }, [props.dados]);
 
-
-
   // ----------------------------------------------------------------------------------------------------------------------------
   // Funções de edição da demanda
 
@@ -92,7 +90,7 @@ const DetalhesDemanda = (props) => {
     } else {
       setEditar(true);
       if (props.setEdicao) {
-        props.setEdicao(true)
+        props.setEdicao(true);
       }
     }
   }
@@ -116,9 +114,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || "Real",
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -143,7 +141,7 @@ const DetalhesDemanda = (props) => {
       }
     }
     return listaNova;
-  }
+  };
 
   const alterarTexto = (e, input) => {
     if (input === "titulo") {
@@ -171,6 +169,7 @@ const DetalhesDemanda = (props) => {
 
   // Função para remover um anexo da lista de anexos
   const removerAnexo = (index) => {
+    updateAnexosRemovidos(index);
     let listaNova = [];
     for (let anexo of anexos) {
       if (anexo.id != anexos[index].id) {
@@ -178,16 +177,28 @@ const DetalhesDemanda = (props) => {
       }
     }
     setAnexos([...listaNova]);
-  }
+  };
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
   const adicionarBeneficio = () => {
-    BeneficioService.post({ tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '' }).then((response) => {
-      let beneficioNovo = { id: response.id, tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '', visible: true };
+    BeneficioService.post({
+      tipoBeneficio: "",
+      valor_mensal: "",
+      moeda: "",
+      memoriaCalculo: "",
+    }).then((response) => {
+      let beneficioNovo = {
+        id: response.id,
+        tipoBeneficio: "",
+        valor_mensal: "",
+        moeda: "",
+        memoriaCalculo: "",
+        visible: true,
+      };
       setBeneficiosNovos([...beneficiosNovos, beneficioNovo]);
-      setBeneficios([...beneficios, beneficioNovo])
-    })
-  }
+      setBeneficios([...beneficios, beneficioNovo]);
+    });
+  };
 
   // Função para atualizar o benefício quando ele recebe alguma alteração
   const alterarTextoBeneficio = (beneficio, index) => {
@@ -225,18 +236,18 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => { })
+      BeneficioService.delete(beneficio.id).then((response) => {});
     }
     setBeneficiosExcluidos([]);
-  }
+  };
 
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => { })
+      BeneficioService.delete(beneficio.id).then((response) => {});
     }
     setBeneficiosNovos([]);
-  }
+  };
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
@@ -245,7 +256,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => { })
+        BeneficioService.put(beneficio).then((response) => {});
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -255,22 +266,31 @@ const DetalhesDemanda = (props) => {
     } else {
       setDemandaEmEdicao(true);
     }
-  }
+  };
 
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
     if (demandaEmEdicao) {
-      const demandaAtualizada = { id: props.dados.id, titulo: tituloDemanda, problema: problema, proposta: proposta, frequencia: frequencia, beneficios: formatarBeneficiosRequisicao(beneficios), data: props.dados.data, status: "BACKLOG_REVISAO", solicitante: props.dados.solicitante };
+      const demandaAtualizada = {
+        id: props.dados.id,
+        titulo: tituloDemanda,
+        problema: problema,
+        proposta: proposta,
+        frequencia: frequencia,
+        beneficios: formatarBeneficiosRequisicao(beneficios),
+        data: props.dados.data,
+        status: "BACKLOG_REVISAO",
+        solicitante: props.dados.solicitante,
+      };
       DemandaService.put(demandaAtualizada, anexos).then((response) => {
         setEditar(false);
         excluirBeneficiosRemovidos();
         setDemandaEmEdicao(false);
+        console.log("Response: ", response);
         props.setDados(response);
-      })
+      });
     }
   }, [demandaEmEdicao]);
-
-
 
   // -----------------------------------------------------------------------------------------------------------------------------------
   // Funções de aceite/recusa do analista/gerente
@@ -294,7 +314,7 @@ const DetalhesDemanda = (props) => {
   const abrirRecusaDemanda = (modo) => {
     setModoModalRecusa(modo);
     setOpenModalRecusa(true);
-  }
+  };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
@@ -307,13 +327,27 @@ const DetalhesDemanda = (props) => {
       setOpenModalRecusa(false);
 
       if (modoModalRecusa == "devolucao") {
-        DemandaService.put({ ...props.dados, motivoRecusa: motivoRecusaDemanda, status: "BACKLOG_EDICAO" }, []).then((response) => {
-          navigate('/');
-        })
+        DemandaService.put(
+          {
+            ...props.dados,
+            motivoRecusa: motivoRecusaDemanda,
+            status: "BACKLOG_EDICAO",
+          },
+          []
+        ).then((response) => {
+          navigate("/");
+        });
       } else {
-        DemandaService.put({ ...props.dados, motivoRecusa: motivoRecusaDemanda, status: "CANCELLED" }, []).then((response) => {
-          navigate('/');
-        })
+        DemandaService.put(
+          {
+            ...props.dados,
+            motivoRecusa: motivoRecusaDemanda,
+            status: "CANCELLED",
+          },
+          []
+        ).then((response) => {
+          navigate("/");
+        });
       }
     }
   };
@@ -325,30 +359,48 @@ const DetalhesDemanda = (props) => {
   }
 
   const baixarAnexo = (index) => {
-
     const file = anexos[index];
     const blob = new Blob([base64ToArrayBuffer(file.dados)]);
     const fileName = `${file.nome}`;
 
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, fileName);
-
     } else {
-
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', fileName);
-        link.style.visibility = 'hidden';
+        link.setAttribute("href", url);
+        link.setAttribute("download", fileName);
+        link.style.visibility = "hidden";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }
     }
-  }
+  };
 
+  // Lógica para anexos ------------------------------------------------------
+  const [novosAnexos, setNovosAnexos] = useState([]);
+  const [anexosRemovidos, setAnexosRemovidos] = useState([]);
+
+  const updateAnexosRemovidos = (indexAnexo) => {
+    let anexo = anexos[indexAnexo];
+
+    setAnexosRemovidos([
+      ...anexosRemovidos,
+      props.dados.anexo.filter(
+        (anexoItem) => anexo.id && anexoItem.id == anexo.id
+      ),
+    ]);
+
+    //lembrar de resetar essas variáveis depois de salvar e ou sair
+  };
+
+  useEffect(() => {
+    console.log("anexos", anexos);
+    console.log("anexosRemovidos", anexosRemovidos);
+  }, [anexos, anexosRemovidos]);
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
@@ -383,14 +435,18 @@ const DetalhesDemanda = (props) => {
           sx={{ top: "10px", right: "10px" }}
           onClick={editarDemanda}
         >
-          {props.usuario?.id == props.dados.solicitante?.id && props.dados.status == "BACKLOG_EDICAO" && !editar ? (
+          {props.usuario?.id == props.dados.solicitante?.id &&
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
             />
           ) : null}
-          {props.usuario?.id == props.dados.solicitante?.id && props.dados.status == "BACKLOG_EDICAO" && editar ? (
+          {props.usuario?.id == props.dados.solicitante?.id &&
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -510,7 +566,7 @@ const DetalhesDemanda = (props) => {
                         borderLeftColor: "primary.main",
                         borderLeftStyle: "solid",
                         backgroundColor: "background.default",
-                        padding: "0.5rem 1rem",
+                        padding: "0.2rem 1rem",
                       }}
                       elevation={0}
                     >
@@ -522,6 +578,13 @@ const DetalhesDemanda = (props) => {
                       >
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
+                      <IconButton
+                        onClick={() => {
+                          baixarAnexo(index);
+                        }}
+                      >
+                        <DownloadIcon sx={{ color: "text.primary" }} />
+                      </IconButton>
                     </Paper>
                   ))}
                 </Box>
@@ -616,7 +679,9 @@ const DetalhesDemanda = (props) => {
                 </Typography>
                 <AddCircleOutlineOutlinedIcon
                   className="delay-120 hover:scale-110 duration-300 ml-1"
-                  onClick={() => { adicionarBeneficio() }}
+                  onClick={() => {
+                    adicionarBeneficio();
+                  }}
                   sx={{ color: "primary.main", cursor: "pointer" }}
                 />
               </Box>
@@ -706,12 +771,15 @@ const DetalhesDemanda = (props) => {
                       >
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
-                      <IconButton
-                        // onClick={() => { removerAnexo(index) }}
-                        onClick={() => { baixarAnexo(index) }}
-                      >
-                        <CloseIcon sx={{ color: "text.primary" }} />
-                      </IconButton>
+                      <Box className="flex gap-2">
+                        <IconButton
+                          onClick={() => {
+                            removerAnexo(index);
+                          }}
+                        >
+                          <CloseIcon sx={{ color: "text.primary" }} />
+                        </IconButton>
+                      </Box>
                     </Paper>
                   ))}
                 </Box>
@@ -732,43 +800,49 @@ const DetalhesDemanda = (props) => {
         className="flex fixed justify-end"
         sx={{ width: "20rem", bottom: "20px", right: "20px" }}
       >
-        {props.usuario?.tipoUsuario == "ANALISTA" && props.botao == "sim" && !editar && (
-          <Box className="flex justify-around w-full">
-            <Button
-              sx={{
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-              }}
-              variant="contained"
-              onClick={() => { abrirRecusaDemanda('recusa') }}
-            >
-              Recusar
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-              }}
-              variant="contained"
-              onClick={() => { abrirRecusaDemanda('devolucao') }}
-            >
-              Devolver
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-              }}
-              variant="contained"
-              onClick={aceitarDemanda}
-            >
-              Aceitar
-            </Button>
-          </Box>
-        )}
+        {props.usuario?.tipoUsuario == "ANALISTA" &&
+          props.botao == "sim" &&
+          !editar && (
+            <Box className="flex justify-around w-full">
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
+                variant="contained"
+                onClick={() => {
+                  abrirRecusaDemanda("recusa");
+                }}
+              >
+                Recusar
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
+                variant="contained"
+                onClick={() => {
+                  abrirRecusaDemanda("devolucao");
+                }}
+              >
+                Devolver
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
+                variant="contained"
+                onClick={aceitarDemanda}
+              >
+                Aceitar
+              </Button>
+            </Box>
+          )}
         {editar && props.salvar && (
           <Button
             sx={{
@@ -778,7 +852,7 @@ const DetalhesDemanda = (props) => {
             }}
             variant="contained"
             onClick={() => {
-              salvarEdicao()
+              salvarEdicao();
             }}
           >
             Salvar

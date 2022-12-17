@@ -2,6 +2,7 @@ package net.weg.wegssm.model.service;
 
 import net.weg.wegssm.model.entities.Ata;
 import net.weg.wegssm.model.entities.Departamento;
+import net.weg.wegssm.model.entities.TipoUsuario;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -58,5 +59,9 @@ public class UsuarioService {
 
     public Boolean existsByEmailAndSenha(String email, String senha) {
         return usuarioRepository.existsByEmailAndSenha(email, senha);
+    }
+
+    public List<Usuario> findByTipoUsuario(TipoUsuario tipo_usuario) {
+        return usuarioRepository.findByTipoUsuario(tipo_usuario);
     }
 }
