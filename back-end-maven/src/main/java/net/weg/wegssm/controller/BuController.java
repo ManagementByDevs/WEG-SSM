@@ -18,6 +18,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/bu")
 public class BuController {
 

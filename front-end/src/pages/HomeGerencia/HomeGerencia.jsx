@@ -17,6 +17,7 @@ import FontConfig from "../../service/FontConfig";
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
 import ModalHistoricoDemanda from "../../components/ModalHistoricoDemanda/ModalHistoricoDemanda";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
+import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import ModalInformarMotivo from "../../components/ModalInformarMotivo/ModalInformarMotivo";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Pauta from "../../components/Pauta/Pauta";
@@ -33,6 +34,11 @@ const HomeGerencia = () => {
   // String para ordenação das demandas
   const [page, setPage] = useState("size=20&page=0");
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
+  // Valor do input de pesquisa
+  const [valorPesquisa, setValorPesquisa] = useState("");
+
+  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
+  const [filtrosAtuais, setFiltrosAtuais] = useState({ solicitante: "", forum: "", tamanho: "", gerente: "", departamento: "" });
 
   const [usuario, setUsuario] = useState({
     id: 0,
@@ -60,6 +66,33 @@ const HomeGerencia = () => {
   useEffect(() => {
     buscarUsuario();
   }, []);
+
+  // UseEffect para redefinir os parâmteros quando a ordenação for modificada
+  useEffect(() => {
+    setParams({ titulo: valorPesquisa, solicitante: params.solicitante, gerente: params.gerente, analista: params.analista, forum: params.forum, tamanho: params.tamanho, status: params.status, departamento: params.departamento });
+  }, [ordenacao]);
+
+  useEffect(() => {
+    let paramsTemp = { solicitante: null, forum: null, tamanho: null, gerente: null, departamento: null };
+
+    if (filtrosAtuais.solicitante != "") {
+      paramsTemp.solicitante = filtrosAtuais.solicitante;
+    }
+    if (filtrosAtuais.forum != "") {
+      paramsTemp.forum = filtrosAtuais.forum;
+    }
+    if (filtrosAtuais.tamanho != "") {
+      paramsTemp.tamanho = filtrosAtuais.tamanho;
+    }
+    if (filtrosAtuais.gerente != "") {
+      paramsTemp.gerente = filtrosAtuais.gerente;
+    }
+    if (filtrosAtuais.departamento != "") {
+      paramsTemp.departamento = filtrosAtuais.departamento;
+    }
+
+    setParams({ titulo: valorPesquisa, solicitante: paramsTemp.solicitante, gerente: paramsTemp.gerente, analista: params.analista, forum: paramsTemp.forum, tamanho: paramsTemp.tamanho, status: params.status, departamento: paramsTemp.departamento });
+  }, [filtrosAtuais]);
 
   useEffect(() => {
     switch (value) {
@@ -144,38 +177,6 @@ const HomeGerencia = () => {
         break;
     }
   };
-
-  const [demandas, setDemandas] = useState([
-    {
-      titulo: "Demanda 1",
-      status: "Backlog",
-      solicitante: "Kenzo Sato",
-      departamento: "TI",
-      gerenteResponsavel:
-        "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
-    },
-    {
-      titulo: "Demanda 2",
-      status: "Backlog",
-      solicitante: "Kenzo Sato",
-      departamento: "TI",
-      gerenteResponsavel: "João da Silva",
-    },
-    {
-      titulo: "Demanda 3",
-      status: "Assessment",
-      solicitante: "Kenzo Sato",
-      departamento: "TI",
-      gerenteResponsavel: "João da Silva",
-    },
-    {
-      titulo: "Demanda 4",
-      status: "Assessment",
-      solicitante: "Kenzo Sato",
-      departamento: "TI",
-      gerenteResponsavel: "João da Silva",
-    },
-  ]);
 
   const [propostas, setPropostas] = useState([
     {
@@ -282,14 +283,9 @@ const HomeGerencia = () => {
   };
 
   const [modalFiltro, setOpenModal] = useState(false);
-  const [modalMotivo, setOpenModalMotivo] = useState(false);
 
   const abrirModalFiltro = () => {
     setOpenModal(true);
-  };
-
-  const abrirModalInformarMotivo = () => {
-    setOpenModalMotivo(true);
   };
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
@@ -304,6 +300,27 @@ const HomeGerencia = () => {
   const isGerente = !(
     JSON.parse(localStorage.getItem("user")).tipoUsuario == "GERENTE"
   );
+
+  // Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter"
+  const eventoTeclado = (e) => {
+    if (e.key == "Enter") {
+      pesquisaTitulo();
+    }
+  };
+
+  // Função para salvar o input de pesquisa quando houver alteração
+  const salvarPesquisa = (e) => {
+    setValorPesquisa(e.target.value);
+  };
+
+  // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
+  const pesquisaTitulo = () => {
+    setParams({ titulo: valorPesquisa, solicitante: params.solicitante, gerente: params.gerente, analista: params.analista, forum: params.forum, tamanho: params.tamanho, status: params.status, departamento: params.departamento });
+  };
+
+  const abrirModalOrdenacao = () => {
+    setOpenOrdenacao(true);
+  };
 
   const navigate = useNavigate();
 
@@ -331,7 +348,7 @@ const HomeGerencia = () => {
                   label="Demandas"
                   value="1"
                 />
-                
+
                 {isGerente && (
                   <Tab
                     sx={{
@@ -398,23 +415,43 @@ const HomeGerencia = () => {
                       fontSize: FontConfig.medium,
                     }}
                     placeholder="Pesquisar por título..."
+                    onKeyDown={(e) => {
+                      eventoTeclado(e);
+                    }}
+                    onBlur={() => {
+                      pesquisaTitulo();
+                    }}
+                    onChange={(e) => {
+                      salvarPesquisa(e);
+                    }}
                   />
 
                   {/* Container para os ícones */}
                   <Box className="flex gap-2">
                     {/* Ícone de pesquisa */}
-                    <Tooltip title="Pesquisar">
+                    <Tooltip className="hover:cursor-pointer" title="Pesquisar" onClick={() => { pesquisaTitulo(); }}>
                       <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                     </Tooltip>
 
                     {/* Ícone de ordenação */}
                     <Tooltip title="Ordenação">
                       <SwapVertIcon
-                        onClick={() => {}}
+                        onClick={() => { abrirModalOrdenacao(); }}
                         className="cursor-pointer"
                         sx={{ color: "text.secondary" }}
                       />
                     </Tooltip>
+
+                    {/* Modal de ordenação */}
+                    {abrirOrdenacao && (
+                      <ModalOrdenacao
+                        ordenacao={ordenacao}
+                        setOrdenacao={setOrdenacao}
+                        open={abrirOrdenacao}
+                        setOpen={setOpenOrdenacao}
+                        tipoComponente='demanda'
+                      />
+                    )}
                   </Box>
                 </Box>
 
@@ -436,6 +473,8 @@ const HomeGerencia = () => {
                   <ModalFiltroGerencia
                     open={modalFiltro}
                     setOpen={setOpenModal}
+                    filtro={filtrosAtuais}
+                    setFiltro={setFiltrosAtuais}
                   />
                 )}
 
@@ -447,7 +486,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => {}}
+                  onClick={() => { }}
                   variant="contained"
                   disableElevation
                 >
@@ -501,7 +540,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
                     <Box
                       sx={{
                         display: "grid",
@@ -524,7 +563,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                     <Box
                       sx={{
                         display: "grid",
@@ -544,7 +583,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
                     <Box
                       sx={{
                         display: "grid",
@@ -558,7 +597,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="5" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="5" onClick={() => { }}>
                     <Box
                       sx={{
                         display: "grid",
@@ -579,9 +618,7 @@ const HomeGerencia = () => {
         </Box>
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
-        {demandas.length > 18 && value == "1" ? (
-          <Paginacao tipo={value} />
-        ) : propostas.length > 18 && value == "3" ? (
+        {listaItens.length > 18 ? (
           <Paginacao tipo={value} />
         ) : null}
       </Box>

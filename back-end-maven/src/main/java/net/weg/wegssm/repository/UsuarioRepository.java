@@ -1,6 +1,7 @@
 package net.weg.wegssm.repository;
 
 import net.weg.wegssm.model.entities.Departamento;
+import net.weg.wegssm.model.entities.TipoUsuario;
 import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -42,4 +43,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Usuario findByEmailAndSenha(String email, String senha);
 
     Boolean existsByEmailAndSenha(String email, String senha);
+
+    List<Usuario> findByTipoUsuario(TipoUsuario tipo_usuario);
 }
