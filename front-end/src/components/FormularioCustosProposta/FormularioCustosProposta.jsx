@@ -12,7 +12,7 @@ const FormularioCustosProposta = (props) => {
   const deletarCustos = (index) => {
     let aux = props.custos.map((custo) => {
       return {
-        tipoDispesa: custo.tipoDispesa,
+        tipoDespesa: custo.tipoDespesa,
         perfilDespesa: custo.perfilDespesa,
         periodoExecucao: custo.periodoExecucao,
         horas: custo.horas,
@@ -41,7 +41,7 @@ const FormularioCustosProposta = (props) => {
             props.setCustos([
               ...props.custos,
               {
-                tipoDispesa: "",
+                tipoDespesa: "",
                 perfilDespesa: "",
                 periodoExecucao: "",
                 horas: "",
@@ -66,6 +66,10 @@ const FormularioCustosProposta = (props) => {
                 index={index}
                 dados={custo}
                 deletarCustos={deletarCustos}
+                setDespesas={props.setDespesas}
+                deletarLinhaCustos={props.deletarLinhaCustos}
+                setCustos={props.setCustos}
+                custos={props.custos}
               />
             )
           );

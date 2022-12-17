@@ -279,7 +279,7 @@ const DetalhesDemanda = (props) => {
         frequencia: frequencia,
         beneficios: formatarBeneficiosRequisicao(beneficios),
         data: props.dados.data,
-        status: props.dados.status,
+        status: "BACKLOG_REVISAO",
         solicitante: props.dados.solicitante,
       };
       DemandaService.put(demandaAtualizada, anexos).then((response) => {
@@ -328,7 +328,11 @@ const DetalhesDemanda = (props) => {
 
       if (modoModalRecusa == "devolucao") {
         DemandaService.put(
-          { ...props.dados, motivoRecusa: motivoRecusaDemanda },
+          {
+            ...props.dados,
+            motivoRecusa: motivoRecusaDemanda,
+            status: "BACKLOG_EDICAO",
+          },
           []
         ).then((response) => {
           navigate("/");
@@ -431,14 +435,18 @@ const DetalhesDemanda = (props) => {
           sx={{ top: "10px", right: "10px" }}
           onClick={editarDemanda}
         >
-          {props.usuario?.id == props.dados.solicitante?.id && !editar ? (
+          {props.usuario?.id == props.dados.solicitante?.id &&
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
             />
           ) : null}
-          {props.usuario?.id == props.dados.solicitante?.id && editar ? (
+          {props.usuario?.id == props.dados.solicitante?.id &&
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"

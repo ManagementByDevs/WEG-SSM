@@ -193,16 +193,41 @@ const BarraProgressaoProposta = (props) => {
 
   const [custos, setCustos] = useState([
     {
-      tipoDispesa: "",
+      despesas: [
+        {
+          tipoDespesa: "",
+          perfilDespesa: "",
+          periodoExecucao: "",
+          horas: "",
+          valorHora: "",
+          total: "",
+          visible: true,
+        },
+      ],
+      ccs: "",
+      visible: true,
+    },
+  ]);
+
+  const setDespesas = (index) => {
+    let custosNovos = [...custos];
+    custosNovos[index].despesas.push({
+      tipoDespesa: "",
       perfilDespesa: "",
       periodoExecucao: "",
       horas: "",
       valorHora: "",
       total: "",
-      ccs: "",
       visible: true,
-    },
-  ]);
+    });
+    setCustos(custosNovos);
+  };
+
+  const deletarLinhaCustos = (index, indexCusto) => {
+    let custosNovos = [...custos];
+    custosNovos[indexCusto].despesas.splice(index, 1);
+    setCustos(custosNovos);
+  };
 
   useEffect(() => {
     console.log(gerais);
@@ -241,7 +266,12 @@ const BarraProgressaoProposta = (props) => {
         <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />
       )}
       {activeStep == 2 && (
-        <FormularioCustosProposta custos={custos} setCustos={setCustos} />
+        <FormularioCustosProposta
+          custos={custos}
+          setCustos={setCustos}
+          setDespesas={setDespesas}
+          deletarLinhaCustos={deletarLinhaCustos}
+        />
       )}
       {activeStep == 3 && (
         <FormularioGeralProposta gerais={gerais} setGerais={setGerais} />

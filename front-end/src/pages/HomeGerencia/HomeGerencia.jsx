@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { Box, Button, Tab, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
@@ -20,6 +20,7 @@ import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalInformarMotivo from "../../components/ModalInformarMotivo/ModalInformarMotivo";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Pauta from "../../components/Pauta/Pauta";
+import Feedback from "../../components/Feedback/Feedback";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -68,14 +69,14 @@ const HomeGerencia = () => {
           setParams({
             ...params,
             gerente: usuario,
-            status: "BACKLOG",
+            status: "BACKLOG_APROVACAO",
             analista: null,
           });
         } else {
           setParams({
             ...params,
             gerente: null,
-            status: "BACKLOG",
+            status: "BACKLOG_REVISAO",
             analista: null,
           });
         }
@@ -100,9 +101,9 @@ const HomeGerencia = () => {
   // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
   useEffect(() => {
     if (usuario.tipoUsuario == "GERENTE") {
-      setParams({ ...params, gerente: usuario, status: "BACKLOG" });
+      setParams({ ...params, gerente: usuario, status: "BACKLOG_APROVACAO" });
     } else {
-      setParams({ ...params, status: "BACKLOG" });
+      setParams({ ...params, status: "BACKLOG_REVISAO" });
     }
   }, [usuario]);
 
@@ -305,7 +306,20 @@ const HomeGerencia = () => {
     JSON.parse(localStorage.getItem("user")).tipoUsuario == "GERENTE"
   );
 
+  const abrirDetalhesPauta = () => {
+    console.log("clicou")
+  }
+
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const [feedbackAta, setOpenFeedbackAta] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.feedback) {
+      setOpenFeedbackAta(true);
+    }
+  }, [location.state?.feedback]);
 
   return (
     <FundoComHeader>
@@ -314,6 +328,11 @@ const HomeGerencia = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
+        {/* Feedback ata criada */}
+        <Feedback open={feedbackAta} handleClose={() => {
+          setOpenFeedbackAta(false);
+        }} status={"sucesso"} mensagem={"Ata criada com sucesso!"} />
+
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
           {/* Sistema de abas */}
@@ -331,7 +350,7 @@ const HomeGerencia = () => {
                   label="Demandas"
                   value="1"
                 />
-                
+
                 {isGerente && (
                   <Tab
                     sx={{
@@ -410,7 +429,7 @@ const HomeGerencia = () => {
                     {/* Ícone de ordenação */}
                     <Tooltip title="Ordenação">
                       <SwapVertIcon
-                        onClick={() => {}}
+                        onClick={() => { }}
                         className="cursor-pointer"
                         sx={{ color: "text.secondary" }}
                       />
@@ -447,7 +466,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => {}}
+                  onClick={() => { }}
                   variant="contained"
                   disableElevation
                 >
@@ -501,7 +520,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
                     <Box
                       sx={{
                         display: "grid",
@@ -524,7 +543,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                     <Box
                       sx={{
                         display: "grid",
@@ -544,7 +563,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { navigate("/detalhes-pauta"); }}>
                     <Box
                       sx={{
                         display: "grid",
@@ -558,7 +577,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="5" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="5" onClick={() => { navigate("/detalhes-ata", {}) }}>
                     <Box
                       sx={{
                         display: "grid",

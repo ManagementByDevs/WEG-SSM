@@ -43,7 +43,7 @@ const ModalConfirmacao = (props) => {
   const mensagemModal = (tipoMensagem) => {
     switch (tipoMensagem) {
       case "descartarRascunho":
-        return "Deseja descartar o rascunho?";
+        return "Deseja descartar o escopo?";
       case "sairCriacao":
         return "Deseja sair da criação da demanda?";
       case "enviarDemanda":
