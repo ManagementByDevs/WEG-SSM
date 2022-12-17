@@ -6,22 +6,16 @@ import Custos from "../Custos/Custos";
 import FontConfig from "../../service/FontConfig";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { useEffect } from "react";
 
 const FormularioCustosProposta = (props) => {
 
+  useEffect (() => {
+    console.log("props.custos: ", props.custos)
+  }, [props.custos])
+
   const deletarCustos = (index) => {
-    let aux = props.custos.map((custo) => {
-      return {
-        tipoDespesa: custo.tipoDespesa,
-        perfilDespesa: custo.perfilDespesa,
-        periodoExecucao: custo.periodoExecucao,
-        horas: custo.horas,
-        valorHora: custo.valorHora,
-        total: custo.total,
-        ccs: custo.ccs,
-        visible: custo.visible,
-      };
-    });
+    let aux = [...props.custos];
     aux[index].visible = false;
     props.setCustos(aux);
   };
@@ -41,12 +35,7 @@ const FormularioCustosProposta = (props) => {
             props.setCustos([
               ...props.custos,
               {
-                tipoDespesa: "",
-                perfilDespesa: "",
-                periodoExecucao: "",
-                horas: "",
-                valorHora: "",
-                total: "",
+                despesas: [],
                 ccs: "",
                 visible: true,
               },
