@@ -51,9 +51,6 @@ const Caminho = (props) => {
                   className="cursor-pointer"
                   fontSize={FontConfig.default}
                   sx={{ fontWeight: 500 }}
-                  onClick={() => {
-                    setOpenFeedback(true);
-                  }}
                 >
                   {getPathName(item)}
                 </Typography>
