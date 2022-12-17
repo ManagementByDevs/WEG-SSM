@@ -88,7 +88,7 @@ const DemandaGerencia = (props) => {
           <Box className="w-1/4 h-full">
             <Box className="flex items-center gap-2 justify-end">
               <Typography fontSize={FontConfig.medium} fontWeight="600">
-                {props.dados.status}
+                {formatarStatus(props.dados.status)}
               </Typography>
               <Box
                 className="rounded-full"
