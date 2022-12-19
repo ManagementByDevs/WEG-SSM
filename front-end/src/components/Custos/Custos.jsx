@@ -8,6 +8,7 @@ import {
   Paper,
   Typography,
   Box,
+  Tooltip,
 } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
@@ -23,12 +24,14 @@ const Custos = (props) => {
     <Box className="flex w-full mt-5">
       <Box className="flex items-center">
         {props.index > 0 ? (
-          <DeleteOutlineOutlinedIcon
-            fontSize="large"
-            className="mr-2 delay-120 hover:scale-110 duration-300"
-            sx={{ color: "icon.main", cursor: "pointer" }}
-            onClick={() => props.deletarCustos(props.index)}
-          />
+          <Tooltip title="Excluir tabela de custos">
+            <DeleteOutlineOutlinedIcon
+              fontSize="large"
+              className="mr-2 delay-120 hover:scale-110 duration-300"
+              sx={{ color: "icon.main", cursor: "pointer" }}
+              onClick={() => props.deletarCustos(props.index)}
+            />
+          </Tooltip>
         ) : (
           <Box className="flex mr-2 p-4"></Box>
         )}
@@ -123,7 +126,7 @@ const Custos = (props) => {
                     despesa.visible && (
                       <LinhaTabelaCustos
                         key={index}
-                        dados={despesa}
+                        dados={props.dados}
                         index={index}
                         deletarLinhaCustos={props.deletarLinhaCustos}
                         indexCusto={props.index}
@@ -137,17 +140,18 @@ const Custos = (props) => {
             </Table>
           </TableContainer>
           <Box className="w-full flex justify-end">
-            <AddCircleOutlineOutlinedIcon
-              fontSize="medium"
-              className="m-1 mr-3 delay-120 hover:scale-110 duration-300"
-              titleAccess="Adicionar nova linha"
-              sx={{ color: "icon.main", cursor: "pointer" }}
-              onClick={() => props.setDespesas(props.index)}
-            />
+            <Tooltip title="Adicionar nova linha">
+              <AddCircleOutlineOutlinedIcon
+                fontSize="medium"
+                className="m-1 mr-3 delay-120 hover:scale-110 duration-300"
+                sx={{ color: "icon.main", cursor: "pointer" }}
+                onClick={() => props.setDespesas(props.index)}
+              />
+            </Tooltip>
           </Box>
         </Paper>
       </Box>
-      <Paper sx={{ width: "20%", height: "100%" }}>
+      <Paper sx={{ width: "30%", height: "100%" }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">
             <TableHead
@@ -172,9 +176,11 @@ const Custos = (props) => {
                     <LinhaTabelaCCs
                       key={index}
                       dados={props.dados}
-                      setCustos={props.setCustos}
                       index={index}
-                      
+                      // deletarLinhaCcs={props.deletarLinhaCcs}
+                      indexCusto={props.index}
+                      setCustos={props.setCustos}
+                      custos={props.custos}
                     />
                   )
                 );
@@ -183,12 +189,13 @@ const Custos = (props) => {
           </Table>
         </TableContainer>
         <Box className="w-full flex justify-end">
-          <AddCircleOutlineOutlinedIcon
-            fontSize="medium"
-            className="m-1 mr-3 delay-120 hover:scale-110 duration-300"
-            titleAccess="Adicionar nova linha"
-            sx={{ color: "icon.main", cursor: "pointer" }}
-          />
+          <Tooltip title="Adicionar nova linha">
+            <AddCircleOutlineOutlinedIcon
+              fontSize="medium"
+              className="m-1 mr-3 delay-120 hover:scale-110 duration-300"
+              sx={{ color: "icon.main", cursor: "pointer" }}
+            />
+          </Tooltip>
         </Box>
       </Paper>
     </Box>

@@ -204,10 +204,13 @@ const BarraProgressaoProposta = (props) => {
           visible: true,
         },
       ],
-      ccs: [{
-        codigo: "",
-        porcentagem: "",
-      }],
+      ccs: [
+        {
+          codigo: "",
+          porcentagem: "",
+          visible: true,
+        },
+      ],
       visible: true,
     },
   ]);
