@@ -174,11 +174,11 @@ const ModalFiltroGerencia = (props) => {
                                     onChange={selecionarTamanho}
                                 >
                                     <MenuItem selected value={""}>Selecionar</MenuItem>
-                                    <MenuItem value={1}>Muito Pequeno</MenuItem>
-                                    <MenuItem value={2}>Pequeno</MenuItem>
-                                    <MenuItem value={3}>Médio</MenuItem>
-                                    <MenuItem value={4}>Grande</MenuItem>
-                                    <MenuItem value={5}>Muito Grande</MenuItem>
+                                    <MenuItem value={"Muito Pequeno"}>Muito Pequeno</MenuItem>
+                                    <MenuItem value={"Pequeno"}>Pequeno</MenuItem>
+                                    <MenuItem value={"Médio"}>Médio</MenuItem>
+                                    <MenuItem value={"Grande"}>Grande</MenuItem>
+                                    <MenuItem value={"Muito Grande"}>Muito Grande</MenuItem>
                                 </Select>
                             </FormControl>
                         </Box>

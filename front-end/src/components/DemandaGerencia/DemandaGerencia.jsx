@@ -153,7 +153,7 @@ const DemandaGerencia = (props) => {
                     width: "50%",
                   }}
                 >
-                  {props.dados.gerenteResponsavel?.nome || "Não Atribuído"}
+                  {props.dados.gerente?.nome || "Não Atribuído"}
                 </Typography>
               </Box>
               <Box>

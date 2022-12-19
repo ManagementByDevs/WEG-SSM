@@ -19,6 +19,8 @@ const Demanda = (props) => {
       return "#C4C4C4";
     } else if (props.demanda.status == "BACKLOG_EDICAO") {
       return "#FFD600";
+    } else if(props.demanda.status == "BACKLOG_APROVACAO") {
+      return "#00579D";
     } else if (props.demanda.status == "ASSESSMENT") {
       return "#11B703";
     }
@@ -32,6 +34,8 @@ const Demanda = (props) => {
       return "Aguardando Revisão";
     } else if (props.demanda.status == "BACKLOG_EDICAO") {
       return "Aguardando Edição";
+    } else if(props.demanda.status == "BACKLOG_APROVACAO") {
+      return "Aguardando Aprovação";
     } else if (props.demanda.status == "ASSESSMENT") {
       return "Aprovada";
     }

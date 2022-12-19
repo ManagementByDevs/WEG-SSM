@@ -22,6 +22,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 import FontConfig from "../../service/FontConfig";
 import BuService from "../../service/buService";
+import ForumService from "../../service/forumService";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -30,6 +31,7 @@ const ModalAceitarDemanda = (props) => {
   const tamanhos = ["Muito Pequeno", "Pequeno", "Médio", "Grande", "Muito Grande"];
   const [listaBus, setListaBus] = useState([]);
   const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
+  const [listaForum, setListaForum] = useState([]);
 
   const inputFile = useRef(null);
 
@@ -38,11 +40,18 @@ const ModalAceitarDemanda = (props) => {
   const [busBeneficiadas, setBusBeneficiadas] = useState([]);
   const [secaoTI, setSecaoTI] = useState("");
   const [anexos, setAnexos] = useState([]);
+  const [forum, setForum] = useState("");
 
   useEffect(() => {
     if (listaBus.length == 0) {
       BuService.getAll().then((response) => {
         setListaBus([...response]);
+      })
+    }
+
+    if (listaForum.length == 0) {
+      ForumService.getAll().then((response) => {
+        setListaForum([...response]);
       })
     }
   }, []);
@@ -101,7 +110,7 @@ const ModalAceitarDemanda = (props) => {
           fullWidth
         >
           {listaBus.map((option) => (
-            <MenuItem key={option.id} value={option.id}>
+            <MenuItem key={option.id} value={option}>
               {option.nome}
             </MenuItem>
           ))}
@@ -148,10 +157,29 @@ const ModalAceitarDemanda = (props) => {
             setSecaoTI(newValue);
           }}
           fullWidth
+          noOptionsText="Nenhuma seção encontrada"
           renderInput={(params) => (
             <TextField variant="standard" {...params} label="Seção TI" />
           )}
         />
+
+        <TextField
+          select
+          label="Fórum"
+          value={forum}
+          onChange={(event) => setForum(event.target.value)}
+          variant="standard"
+          fullWidth
+        >
+          {listaForum.map((option) => (
+            <MenuItem key={option.id} value={option}>
+              {option.nome}
+            </MenuItem>
+          ))}
+          {listaForum.length == 0 ? (
+            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>Nenhum fórum encontrado</Typography>
+          ) : null}
+        </TextField>
 
         <Box className="flex w-full justify-between items-center">
           <Typography sx={{ color: "text.primary", fontSize: FontConfig.big }}>
@@ -209,6 +237,7 @@ const ModalAceitarDemanda = (props) => {
               busBeneficiadas,
               secaoTI,
               anexos,
+              forum
             });
             props.handleClose();
           }}
