@@ -114,9 +114,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -236,7 +236,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -244,7 +244,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosNovos([]);
   };
@@ -256,7 +256,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -281,6 +281,7 @@ const DetalhesDemanda = (props) => {
         data: props.dados.data,
         status: "BACKLOG_REVISAO",
         solicitante: props.dados.solicitante,
+        gerente: props.dados.gerente
       };
       DemandaService.put(demandaAtualizada, anexos).then((response) => {
         setEditar(false);
@@ -318,7 +319,28 @@ const DetalhesDemanda = (props) => {
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
-    console.log(dados);
+    const demandaAtualizada = {
+      id: props.dados.id,
+      titulo: props.dados.titulo,
+      problema: props.dados.problema,
+      proposta: props.dados.proposta,
+      frequencia: props.dados.frequencia,
+      beneficios: props.dados.beneficios,
+      data: props.dados.data,
+      status: "BACKLOG_APROVACAO",
+      solicitante: props.dados.solicitante,
+      tamanho: dados.tamanho,
+      secaoTI: dados.secaoTI,
+      busBeneficiadas: dados.busBeneficiadas,
+      buSolicitante: dados.buSolicitante,
+      forum: dados.forum,
+      analista: props.usuario,
+      gerente: props.dados.gerente
+    };
+
+    DemandaService.put(demandaAtualizada, []).then((response) => {
+      navigate('/');
+    });
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -351,6 +373,12 @@ const DetalhesDemanda = (props) => {
       }
     }
   };
+
+  const aceitarDemandaGerente = () => {
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then((response) => {
+      navigate('/');
+    });
+  }
 
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
@@ -436,8 +464,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -445,8 +473,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -838,6 +866,36 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={aceitarDemanda}
+              >
+                Aceitar
+              </Button>
+            </Box>
+          )}
+        {props.usuario?.tipoUsuario == "GERENTE" &&
+          props.botao == "sim" &&
+          !editar && (
+            <Box className="flex justify-around w-3/4">
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
+                variant="contained"
+                onClick={() => {
+                  abrirRecusaDemanda("recusa");
+                }}
+              >
+                Recusar
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
+                variant="contained"
+                onClick={aceitarDemandaGerente}
               >
                 Aceitar
               </Button>

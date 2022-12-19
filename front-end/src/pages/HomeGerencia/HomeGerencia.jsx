@@ -70,7 +70,7 @@ const HomeGerencia = () => {
 
   // UseEffect para redefinir os parâmteros quando a ordenação for modificada
   useEffect(() => {
-    setParams({ titulo: valorPesquisa, solicitante: params.solicitante, gerente: params.gerente, analista: params.analista, forum: params.forum, tamanho: params.tamanho, status: params.status, departamento: params.departamento });
+    setParams({ titulo: valorPesquisa, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento) });
   }, [ordenacao]);
 
   useEffect(() => {
@@ -316,7 +316,7 @@ const HomeGerencia = () => {
 
   // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
   const pesquisaTitulo = () => {
-    setParams({ titulo: valorPesquisa, solicitante: params.solicitante, gerente: params.gerente, analista: params.analista, forum: params.forum, tamanho: params.tamanho, status: params.status, departamento: params.departamento });
+    setParams({ titulo: valorPesquisa, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento) });
   };
 
   const abrirModalOrdenacao = () => {
