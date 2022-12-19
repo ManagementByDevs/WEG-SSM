@@ -56,7 +56,9 @@ const FormularioCustosProposta = (props) => {
                 dados={custo}
                 deletarCustos={deletarCustos}
                 setDespesas={props.setDespesas}
+                setCcs={props.setCcs}
                 deletarLinhaCustos={props.deletarLinhaCustos}
+                deletarLinhaCCs={props.deletarLinhaCCs}
                 setCustos={props.setCustos}
                 custos={props.custos}
               />

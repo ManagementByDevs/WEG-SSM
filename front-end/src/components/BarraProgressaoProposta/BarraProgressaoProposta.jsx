@@ -229,9 +229,25 @@ const BarraProgressaoProposta = (props) => {
     setCustos(custosNovos);
   };
 
+  const setCcs = (index) => {
+    let custosNovos = [...custos];
+    custosNovos[index].ccs.push({
+      codigo: "",
+      porcentagem: "",
+      visible: true,
+    });
+    setCustos(custosNovos);
+  }
+
   const deletarLinhaCustos = (index, indexCusto) => {
     let custosNovos = [...custos];
     custosNovos[indexCusto].despesas.splice(index, 1);
+    setCustos(custosNovos);
+  };
+
+  const deletarLinhaCCs = (index, indexCusto) => {
+    let custosNovos = [...custos];
+    custosNovos[indexCusto].ccs.splice(index, 1);
     setCustos(custosNovos);
   };
 
@@ -276,7 +292,9 @@ const BarraProgressaoProposta = (props) => {
           custos={custos}
           setCustos={setCustos}
           setDespesas={setDespesas}
+          setCcs={setCcs}
           deletarLinhaCustos={deletarLinhaCustos}
+          deletarLinhaCCs={deletarLinhaCCs}
         />
       )}
       {activeStep == 3 && (

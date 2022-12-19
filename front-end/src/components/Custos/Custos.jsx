@@ -151,7 +151,7 @@ const Custos = (props) => {
           </Box>
         </Paper>
       </Box>
-      <Paper sx={{ width: "30%", height: "100%" }}>
+      <Paper sx={{ width: "25%", height: "100%" }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">
             <TableHead
@@ -177,7 +177,7 @@ const Custos = (props) => {
                       key={index}
                       dados={props.dados}
                       index={index}
-                      // deletarLinhaCcs={props.deletarLinhaCcs}
+                      deletarLinhaCCs={props.deletarLinhaCCs}
                       indexCusto={props.index}
                       setCustos={props.setCustos}
                       custos={props.custos}
@@ -194,6 +194,7 @@ const Custos = (props) => {
               fontSize="medium"
               className="m-1 mr-3 delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main", cursor: "pointer" }}
+              onClick={() => props.setCcs(props.index)}
             />
           </Tooltip>
         </Box>

@@ -8,6 +8,7 @@ import {
   Select,
   MenuItem,
   Tooltip,
+  InputLabel
 } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
@@ -34,6 +35,7 @@ const LinhaTabelaCustos = (props) => {
           variant="standard"
           sx={{ marginRight: "10px", minWidth: 130, marginTop: "0.8rem" }}
         >
+          <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
@@ -56,6 +58,7 @@ const LinhaTabelaCustos = (props) => {
           variant="standard"
           sx={{ marginRight: "10px", minWidth: 130, marginTop: "0.8rem" }}
         >
+          <InputLabel id="demo-simple-select-label">Perfil</InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
@@ -73,7 +76,7 @@ const LinhaTabelaCustos = (props) => {
           </Select>
         </FormControl>
       </td>
-      <td align="center" className="pt-5 pb-5">
+      <td align="center" className="pt-8 pb-5">
         <TextareaAutosize
           style={{
             width: "95%",
@@ -94,7 +97,7 @@ const LinhaTabelaCustos = (props) => {
           }}
         />
       </td>
-      <td align="center" className="pt-5 pb-5">
+      <td align="center" className="pt-8 pb-5">
         <TextareaAutosize
           style={{
             width: "90%",
@@ -114,7 +117,7 @@ const LinhaTabelaCustos = (props) => {
           }}
         />
       </td>
-      <td align="center" className="pt-5 pb-5">
+      <td align="center" className="pt-8 pb-5">
         <TextareaAutosize
           style={{
             width: "95%",
@@ -154,7 +157,7 @@ const LinhaTabelaCustos = (props) => {
             resize: "none",
             textAlign: "center",
             backgroundColor: corFundoTextArea,
-            marginTop: "2rem",
+            marginTop: "2.8rem",
           }}
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"

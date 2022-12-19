@@ -4,7 +4,6 @@ import {
   Box,
   Tooltip,
   TextField,
-  FormControl,
   Input,
   InputAdornment,
 } from "@mui/material";
@@ -27,7 +26,7 @@ const LinhaTabelaCCs = (props) => {
     }
   }, [mode]);
   return (
-    <TableRow>
+    <TableRow className="border-b">
       <td align="center" className="pb-5 relative">
         <Box className="flex w-full justify-end absolute" sx={{ width: "98%" }}>
           <Tooltip title="Excluir linha">
@@ -35,25 +34,27 @@ const LinhaTabelaCCs = (props) => {
               fontSize="medium"
               className="mt-1 delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main", cursor: "pointer" }}
+              onClick={() =>
+                props.deletarLinhaCCs(props.index, props.indexCusto)
+              }
             />
           </Tooltip>
         </Box>
         <Box
           className="flex w-full justify-around pr-10 pl-4"
-          sx={{ marginTop: "2rem" }}
+          sx={{ marginTop: "2.8rem" }}
         >
-          <TextField
-            id="outlined-basic"
-            label="Digite o código"
-            variant="outlined"
+          <Input
+            className="border rounded drop-shadow-sm outline-none"
+            fontSize={FontConfig.medium}
+            placeholder="Digite o código..."
             size="small"
             style={{
               width: "70%",
+              height: "2.4rem",
               backgroundColor: corFundoTextArea,
+              paddingLeft: "10px",
             }}
-            fontSize={FontConfig.medium}
-            className="flex outline-none border-solid border drop-shadow-sm rounded"
-            placeholder="Digite o código..."
             value={props.dados.ccs[props.index].codigo}
             onChange={(e) => {
               let aux = [...props.custos];
@@ -63,23 +64,24 @@ const LinhaTabelaCCs = (props) => {
           />
           <Input
             className="border rounded drop-shadow-sm outline-none"
-            id="standard-adornment-weight"
-            endAdornment={<InputAdornment position="end">%</InputAdornment>}
+            endAdornment={
+              <InputAdornment className="mb-1" position="end">
+                %
+              </InputAdornment>
+            }
             aria-describedby="standard-weight-helper-text"
-            inputProps={{
-              "aria-label": "weight"
-            }}
             fontSize={FontConfig.medium}
             size="small"
             style={{
-              width: "18%",
+              width: "22%",
               backgroundColor: corFundoTextArea,
               padding: "0 10px",
             }}
             value={props.dados.ccs[props.index].porcentagem}
             onChange={(e) => {
               let aux = [...props.custos];
-              aux[props.indexCusto].ccs[props.index].porcentagem = e.target.value;
+              aux[props.indexCusto].ccs[props.index].porcentagem =
+                e.target.value;
               props.setCustos(aux);
             }}
           />
