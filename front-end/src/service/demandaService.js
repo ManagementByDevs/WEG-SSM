@@ -60,6 +60,15 @@ class DemandaService {
             return (await axios.put(`/demanda/sem-arquivos`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
         }
     }
+
+    async putSemAnexos(demanda) {
+        console.log("aaaa")
+        let form = new FormData();
+
+        form.append("demanda", JSON.stringify(demanda));
+
+        return (await axios.put(`/demanda/manter-arquivos-velhos`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+    }
 }
 
 export default new DemandaService();

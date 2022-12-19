@@ -27,6 +27,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
@@ -1969,6 +1970,15 @@ public class DemandaController {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
         demanda.setAnexo(null);
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
+
+    @PutMapping("/manter-arquivos-velhos")
+    public ResponseEntity<Object> updateManterArquivos(@RequestParam("demanda") String demandaJSON) {
+        DemandaUtil demandaUtil = new DemandaUtil();
+        Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
+        Optional<Demanda> demandaVelha = demandaService.findById(demanda.getId());
+        demanda.setAnexosWithoutMultiparFile(demandaVelha.get().getAnexo());
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 

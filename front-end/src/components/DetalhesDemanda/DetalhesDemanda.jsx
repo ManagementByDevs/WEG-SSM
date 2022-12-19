@@ -27,6 +27,7 @@ import FontConfig from "../../service/FontConfig";
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from "../../service/beneficioService";
 import DemandaService from "../../service/demandaService";
+import AnexoService from "../../service/anexoService";
 
 const DetalhesDemanda = (props) => {
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -163,20 +164,35 @@ const DetalhesDemanda = (props) => {
   // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
-      setAnexos([...anexos, file]);
+      if (!existsInAnexos(file)) {
+        updateAnexosNovos(file);
+        setAnexos([...anexos, file]);
+      } else {
+        // feedback de anexo já existente
+        console.log("já há um anexo com esse nome");
+      }
     }
+  };
+
+  const existsInAnexos = (anexo) => {
+    return (
+      anexos.filter((anexoItem) => {
+        console.log(!anexo.id && anexoItem.name == anexo.nome);
+        return (
+          (anexoItem.nome == anexo.name) ||
+          (anexo.id && anexoItem.nome == anexo.nome)
+        );
+      }).length > 0
+    );
   };
 
   // Função para remover um anexo da lista de anexos
   const removerAnexo = (index) => {
     updateAnexosRemovidos(index);
-    let listaNova = [];
-    for (let anexo of anexos) {
-      if (anexo.id != anexos[index].id) {
-        listaNova.push(anexo);
-      }
-    }
-    setAnexos([...listaNova]);
+    removeAnexosNovos(anexos[index]);
+    let aux = [...anexos];
+    aux.splice(index, 1);
+    setAnexos(aux);
   };
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
@@ -281,14 +297,54 @@ const DetalhesDemanda = (props) => {
         data: props.dados.data,
         status: "BACKLOG_REVISAO",
         solicitante: props.dados.solicitante,
+        anexo: props.dados.anexo,
       };
-      DemandaService.put(demandaAtualizada, anexos).then((response) => {
-        setEditar(false);
-        excluirBeneficiosRemovidos();
-        setDemandaEmEdicao(false);
-        console.log("Response: ", response);
-        props.setDados(response);
-      });
+
+      console.log("demanda: ", demandaAtualizada);
+      const anexosVelhos = [];
+      for (let anexo of anexos) {
+        if (anexo.id) {
+          anexosVelhos.push(
+            new File([base64ToArrayBuffer(anexo.dados)], anexo.nome, {
+              type: anexo.tipo,
+            })
+          );
+        }
+      }
+
+      if (novosAnexos.length > 0) {
+        console.log("entrou novos aenxos lenght > 0");
+        DemandaService.put(demandaAtualizada, [
+          ...anexosVelhos,
+          ...novosAnexos,
+        ]).then((response) => {
+          // atualizar demanda salva no location
+
+          setEditar(false);
+          excluirBeneficiosRemovidos();
+          setDemandaEmEdicao(false);
+          console.log("Response: ", response);
+          props.setDados(response);
+        });
+      } else {
+        console.log("entrou novos aenxos lenght > 0 else");
+        DemandaService.putSemAnexos(demandaAtualizada).then((response) => {
+          // atualizar demanda salva no location
+
+          setEditar(false);
+          excluirBeneficiosRemovidos();
+          setDemandaEmEdicao(false);
+          console.log("Response: ", response);
+          props.setDados(response);
+        });
+      }
+    }
+
+    if (anexosRemovidos.length > 0) {
+      console.log("entrou anexos removidos");
+      for (let anexoRemovido of anexosRemovidos) {
+        AnexoService.deleteById(anexoRemovido.id);
+      }
     }
   }, [demandaEmEdicao]);
 
@@ -381,26 +437,60 @@ const DetalhesDemanda = (props) => {
   };
 
   // Lógica para anexos ------------------------------------------------------
+  // Novos anexos que serão adicionados na demanda
   const [novosAnexos, setNovosAnexos] = useState([]);
+
+  // Anexos que já estavam na demanda e que serão removidos
   const [anexosRemovidos, setAnexosRemovidos] = useState([]);
 
+  // Irá atualizar a lista para que contenha os anexos que foram removidos da demanda e que já estavam salvos no banco de dados
   const updateAnexosRemovidos = (indexAnexo) => {
     let anexo = anexos[indexAnexo];
 
-    setAnexosRemovidos([
+    setAnexosRemovidos(
       ...anexosRemovidos,
       props.dados.anexo.filter(
-        (anexoItem) => anexo.id && anexoItem.id == anexo.id
-      ),
-    ]);
+        // anexo.id - se tiver, quer dizer que é um anexo que já estava na demanda (salvo no banco de dados)
+        (anexoItem) => {
+          return anexo.id && anexoItem.id == anexo.id;
+        }
+      )
+    );
+  };
+  //lembrar de resetar essas variáveis depois de salvar e/ou sair
 
-    //lembrar de resetar essas variáveis depois de salvar e ou sair
+  // Irá atualizar a lista para que contenha os anexos que foram adicionados na demanda (somente novos anexos)
+  const updateAnexosNovos = (anexo) => {
+    if (!existsInArray(novosAnexos, anexo)) {
+      setNovosAnexos([...novosAnexos, anexo]);
+    }
+  };
+
+  // Função que verifica se um determinado anexo já existe na lista provida
+  const existsInArray = (array, anexo) => {
+    console.log(anexo);
+    return (
+      array.filter((anexoItem) => {
+        console.log(anexoItem.nome == anexo.nome);
+        return anexoItem.name == anexo.name;
+      }).length > 0
+    );
+  };
+
+  // Função que remove um anexo da lista anexosNovos caso o usuário o remova, só é removido anexos que não estavam salvos no banco de dados
+  const removeAnexosNovos = (anexo) => {
+    setNovosAnexos(
+      novosAnexos.filter((anexoItem) => {
+        return anexoItem.name != anexo.name && !anexoItem.id;
+      })
+    );
   };
 
   useEffect(() => {
     console.log("anexos", anexos);
     console.log("anexosRemovidos", anexosRemovidos);
-  }, [anexos, anexosRemovidos]);
+    console.log("novosAnexos", novosAnexos);
+  }, [anexos, anexosRemovidos, novosAnexos]);
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
@@ -436,7 +526,7 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
+          // props.dados.status == "BACKLOG_EDICAO" &&
           !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
@@ -445,7 +535,7 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
+          // props.dados.status == "BACKLOG_EDICAO" &&
           editar ? (
             <EditOffOutlinedIcon
               fontSize="large"

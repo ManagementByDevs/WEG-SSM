@@ -111,4 +111,8 @@ public class Demanda {
         }
     }
 
+    public void setAnexosWithoutMultiparFile(List<Anexo> files) {
+        this.anexo = files;
+    }
+
 }

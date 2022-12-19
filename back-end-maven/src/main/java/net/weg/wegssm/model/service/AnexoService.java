@@ -2,6 +2,7 @@ package net.weg.wegssm.model.service;
 
 import net.weg.wegssm.model.entities.Anexo;
 import net.weg.wegssm.repository.AnexoRepository;
+import net.weg.wegssm.repository.DemandaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,10 @@ import java.util.List;
 public class AnexoService {
 
     private AnexoRepository anexoRepository;
+
+    public AnexoService(AnexoRepository anexoRepository) {
+        this.anexoRepository = anexoRepository;
+    }
 
     public Anexo findById(Long id) {
         return anexoRepository.findById(id).get();
