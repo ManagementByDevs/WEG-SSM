@@ -7,6 +7,8 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Tooltip,
+  InputLabel
 } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
@@ -33,15 +35,17 @@ const LinhaTabelaCustos = (props) => {
           variant="standard"
           sx={{ marginRight: "10px", minWidth: 130, marginTop: "0.8rem" }}
         >
+          <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={props.dados.tipoDespesa}
+            value={props.dados.despesas[props.index].tipoDespesa}
             onChange={(e) => {
-                let aux = [...props.custos];
-                aux[props.indexCusto].despesas[props.index].tipoDespesa = e.target.value;
-                props.setCustos(aux);
-              }}
+              let aux = [...props.custos];
+              aux[props.indexCusto].despesas[props.index].tipoDespesa =
+                e.target.value;
+              props.setCustos(aux);
+            }}
           >
             <MenuItem value={"1"}>Tipo 1</MenuItem>
             <MenuItem value={"2"}>Tipo 2</MenuItem>
@@ -54,15 +58,17 @@ const LinhaTabelaCustos = (props) => {
           variant="standard"
           sx={{ marginRight: "10px", minWidth: 130, marginTop: "0.8rem" }}
         >
+          <InputLabel id="demo-simple-select-label">Perfil</InputLabel>
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={props.dados.perfilDespesa}
+            value={props.dados.despesas[props.index].perfilDespesa}
             onChange={(e) => {
-                let aux = [...props.custos];
-                aux[props.indexCusto].despesas[props.index].perfilDespesa = e.target.value;
-                props.setCustos(aux);
-              }}
+              let aux = [...props.custos];
+              aux[props.indexCusto].despesas[props.index].perfilDespesa =
+                e.target.value;
+              props.setCustos(aux);
+            }}
           >
             <MenuItem value={"1"}>Perfil 1</MenuItem>
             <MenuItem value={"2"}>Perfil 2</MenuItem>
@@ -70,7 +76,7 @@ const LinhaTabelaCustos = (props) => {
           </Select>
         </FormControl>
       </td>
-      <td align="center" className="pt-5 pb-5">
+      <td align="center" className="pt-8 pb-5">
         <TextareaAutosize
           style={{
             width: "95%",
@@ -82,15 +88,16 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite o período..."
-          value={props.dados.periodoExecucao}
+          value={props.dados.despesas[props.index].periodoExecucao}
           onChange={(e) => {
             let aux = [...props.custos];
-            aux[props.indexCusto].despesas[props.index].periodoExecucao = e.target.value;
+            aux[props.indexCusto].despesas[props.index].periodoExecucao =
+              e.target.value;
             props.setCustos(aux);
           }}
         />
       </td>
-      <td align="center" className="pt-5 pb-5">
+      <td align="center" className="pt-8 pb-5">
         <TextareaAutosize
           style={{
             width: "90%",
@@ -102,7 +109,7 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite as horas..."
-          value={props.dados.horas}
+          value={props.dados.despesas[props.index].horas}
           onChange={(e) => {
             let aux = [...props.custos];
             aux[props.indexCusto].despesas[props.index].horas = e.target.value;
@@ -110,7 +117,7 @@ const LinhaTabelaCustos = (props) => {
           }}
         />
       </td>
-      <td align="center" className="pt-5 pb-5">
+      <td align="center" className="pt-8 pb-5">
         <TextareaAutosize
           style={{
             width: "95%",
@@ -122,25 +129,27 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite o valor..."
-          value={props.dados.valorHora}
+          value={props.dados.despesas[props.index].valorHora}
           onChange={(e) => {
             let aux = [...props.custos];
-            aux[props.indexCusto].despesas[props.index].valorHora = e.target.value;
+            aux[props.indexCusto].despesas[props.index].valorHora =
+              e.target.value;
             props.setCustos(aux);
           }}
         />
       </td>
       <td align="center" className="pb-5 relative">
         <Box className="flex w-full justify-end absolute" sx={{ width: "98%" }}>
-          <DeleteOutlineOutlinedIcon
-            fontSize="medium"
-            className="mt-1 delay-120 hover:scale-110 duration-300"
-            titleAccess="Excluir linha"
-            sx={{ color: "icon.main", cursor: "pointer" }}
-            onClick={() =>
-              props.deletarLinhaCustos(props.index, props.indexCusto)
-            }
-          />
+          <Tooltip title="Excluir linha">
+            <DeleteOutlineOutlinedIcon
+              fontSize="medium"
+              className="mt-1 delay-120 hover:scale-110 duration-300"
+              sx={{ color: "icon.main", cursor: "pointer" }}
+              onClick={() =>
+                props.deletarLinhaCustos(props.index, props.indexCusto)
+              }
+            />
+          </Tooltip>
         </Box>
         <TextareaAutosize
           style={{
@@ -148,12 +157,12 @@ const LinhaTabelaCustos = (props) => {
             resize: "none",
             textAlign: "center",
             backgroundColor: corFundoTextArea,
-            marginTop: "2rem",
+            marginTop: "2.8rem",
           }}
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite o total..."
-          value={props.dados.total}
+          value={props.dados.despesas[props.index].total}
           onChange={(e) => {
             let aux = [...props.custos];
             aux[props.indexCusto].despesas[props.index].total = e.target.value;
