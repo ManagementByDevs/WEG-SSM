@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import Custos from "../Custos/Custos";
 
@@ -9,10 +9,9 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import { useEffect } from "react";
 
 const FormularioCustosProposta = (props) => {
-
-  useEffect (() => {
-    console.log("props.custos: ", props.custos)
-  }, [props.custos])
+  useEffect(() => {
+    console.log("props.custos: ", props.custos);
+  }, [props.custos]);
 
   const deletarCustos = (index) => {
     let aux = [...props.custos];
@@ -22,7 +21,21 @@ const FormularioCustosProposta = (props) => {
 
   return (
     <Box className="flex flex-col">
-      <Box className="flex w-full justify-end mt-10">
+      <Box className="flex w-full justify-between mt-10 items-end">
+        <Box className="flex ml-10">
+          <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
+            Total:
+          </Typography>
+          <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
+            00:00h
+          </Typography>
+          <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
+            -
+          </Typography>
+          <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
+            R$00,00
+          </Typography>
+        </Box>
         <Button
           sx={{
             backgroundColor: "primary.main",
@@ -35,8 +48,24 @@ const FormularioCustosProposta = (props) => {
             props.setCustos([
               ...props.custos,
               {
-                despesas: [],
-                ccs: "",
+                despesas: [
+                  {
+                    tipoDespesa: "",
+                    perfilDespesa: "",
+                    periodoExecucao: "",
+                    horas: "",
+                    valorHora: "",
+                    total: "",
+                    visible: true,
+                  },
+                ],
+                ccs: [
+                  {
+                    codigo: "",
+                    porcentagem: "",
+                    visible: true,
+                  },
+                ],
                 visible: true,
               },
             ]);
@@ -66,6 +95,7 @@ const FormularioCustosProposta = (props) => {
           );
         })}
       </Box>
+      <Box className="w-full" sx={{ height: "8rem" }} />
     </Box>
   );
 };

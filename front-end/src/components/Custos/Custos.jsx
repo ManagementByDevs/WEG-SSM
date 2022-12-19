@@ -20,138 +20,159 @@ import LinhaTabelaCustos from "../LinhaTabelaCustos/LinhaTabelaCustos";
 import LinhaTabelaCCs from "../LinhaTabelaCCs/LinhaTabelaCCs";
 
 const Custos = (props) => {
+
+  const [horasTotais, setHorasTotais] = useState("00:00");
+
+  const [valorTotal, setValorTotal] = useState("00,00");
+
+  const [porcentagemTotal, setPorcentagemTotal] = useState(0);
+
   return (
     <Box className="flex w-full mt-5">
-      <Box className="flex items-center">
+      <Box className="flex items-top mr-2">
         {props.index > 0 ? (
-          <Tooltip title="Excluir tabela de custos">
-            <DeleteOutlineOutlinedIcon
-              fontSize="large"
-              className="mr-2 delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main", cursor: "pointer" }}
-              onClick={() => props.deletarCustos(props.index)}
-            />
-          </Tooltip>
-        ) : (
-          <Box className="flex mr-2 p-4"></Box>
-        )}
-        <Paper className="w-full mr-3">
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: "90%" }} aria-label="customized table">
-              <TableHead sx={{ backgroundColor: "primary.main" }}>
-                <TableRow>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "5%" }}
-                  >
-                    <Typography
-                      fontSize={FontConfig.big}
-                      fontWeight="800"
-                      color="text.white"
-                    >
-                      Tipo da Despesa
-                    </Typography>
-                  </th>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "5%" }}
-                  >
-                    <Typography
-                      fontSize={FontConfig.big}
-                      fontWeight="800"
-                      color="text.white"
-                    >
-                      Perfil da Despesa
-                    </Typography>
-                  </th>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "10%" }}
-                  >
-                    <Typography
-                      fontSize={FontConfig.big}
-                      fontWeight="800"
-                      color="text.white"
-                    >
-                      Período de Execução (Meses)
-                    </Typography>
-                  </th>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "7%" }}
-                  >
-                    <Typography
-                      fontSize={FontConfig.big}
-                      fontWeight="800"
-                      color="text.white"
-                    >
-                      Horas
-                    </Typography>
-                  </th>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "8%" }}
-                  >
-                    <Typography
-                      fontSize={FontConfig.big}
-                      fontWeight="800"
-                      color="text.white"
-                    >
-                      Valor Hora
-                    </Typography>
-                  </th>
-                  <th
-                    align="center"
-                    className="p-4 w-0"
-                    style={{ width: "10%" }}
-                  >
-                    <Typography
-                      fontSize={FontConfig.big}
-                      fontWeight="800"
-                      color="text.white"
-                    >
-                      Total
-                    </Typography>
-                  </th>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {props.dados.despesas?.map((despesa, index) => {
-                  return (
-                    despesa.visible && (
-                      <LinhaTabelaCustos
-                        key={index}
-                        dados={props.dados}
-                        index={index}
-                        deletarLinhaCustos={props.deletarLinhaCustos}
-                        indexCusto={props.index}
-                        setCustos={props.setCustos}
-                        custos={props.custos}
-                      />
-                    )
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Box className="w-full flex justify-end">
-            <Tooltip title="Adicionar nova linha">
-              <AddCircleOutlineOutlinedIcon
-                fontSize="medium"
-                className="m-1 mr-3 delay-120 hover:scale-110 duration-300"
+          <Box className="h-full flex items-center">
+            <Tooltip title="Excluir tabela de custos">
+              <DeleteOutlineOutlinedIcon
+                fontSize="large"
+                className="mr-2 delay-120 hover:scale-110 duration-300"
                 sx={{ color: "icon.main", cursor: "pointer" }}
-                onClick={() => props.setDespesas(props.index)}
+                onClick={() => props.deletarCustos(props.index)}
               />
             </Tooltip>
           </Box>
-        </Paper>
+        ) : (
+          <Box className="flex mr-2 p-4"></Box>
+        )}
+        <Box>
+          <Paper className="w-full mr-3 pb-1">
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: "90%" }} aria-label="customized table">
+                <TableHead sx={{ backgroundColor: "primary.main" }}>
+                  <TableRow>
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "5%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
+                        Tipo da Despesa
+                      </Typography>
+                    </th>
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "5%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
+                        Perfil da Despesa
+                      </Typography>
+                    </th>
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "10%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
+                        Período de Execução (Meses)
+                      </Typography>
+                    </th>
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "7%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
+                        Horas
+                      </Typography>
+                    </th>
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "8%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
+                        Valor Hora
+                      </Typography>
+                    </th>
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "10%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
+                        Total
+                      </Typography>
+                    </th>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {props.dados.despesas?.map((despesa, index) => {
+                    return (
+                      despesa.visible && (
+                        <LinhaTabelaCustos
+                          key={index}
+                          dados={props.dados}
+                          index={index}
+                          deletarLinhaCustos={props.deletarLinhaCustos}
+                          indexCusto={props.index}
+                          setCustos={props.setCustos}
+                          custos={props.custos}
+                        />
+                      )
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Box className="w-full flex justify-between items-center m-2">
+              <Box className="flex w-full">
+                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>Total: </Typography>
+                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
+                  {horasTotais}h
+                </Typography>
+                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>-</Typography>
+                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
+                  R${valorTotal}
+                </Typography>
+              </Box>
+              <Tooltip title="Adicionar nova linha">
+                <AddCircleOutlineOutlinedIcon
+                  fontSize="medium"
+                  className="mr-3 delay-120 hover:scale-110 duration-300"
+                  sx={{ color: "icon.main", cursor: "pointer" }}
+                  onClick={() => props.setDespesas(props.index)}
+                />
+              </Tooltip>
+            </Box>
+          </Paper>
+        </Box>
       </Box>
-      <Paper sx={{ width: "25%", height: "100%" }}>
+      <Paper className="h-full pb-1" sx={{ width: "25%" }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">
             <TableHead
@@ -188,11 +209,15 @@ const Custos = (props) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box className="w-full flex justify-end">
+        <Box className="w-full flex justify-between items-center m-2">
+          <Box className="flex">
+            <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>Total:</Typography>
+            <Typography fontSize={FontConfig.medium}>{porcentagemTotal}% </Typography>
+          </Box>
           <Tooltip title="Adicionar nova linha">
             <AddCircleOutlineOutlinedIcon
               fontSize="medium"
-              className="m-1 mr-3 delay-120 hover:scale-110 duration-300"
+              className="mr-3 delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main", cursor: "pointer" }}
               onClick={() => props.setCcs(props.index)}
             />

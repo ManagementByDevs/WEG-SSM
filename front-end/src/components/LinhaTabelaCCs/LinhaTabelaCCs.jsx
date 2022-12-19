@@ -25,6 +25,7 @@ const LinhaTabelaCCs = (props) => {
       setCorFundoTextArea("#FFFF");
     }
   }, [mode]);
+
   return (
     <TableRow className="border-b">
       <td align="center" className="pb-5 relative">
