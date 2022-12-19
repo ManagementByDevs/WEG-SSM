@@ -40,6 +40,9 @@ public class Usuario {
     @Column(nullable = false)
     private TipoUsuario tipoUsuario;
 
+    @Column
+    private Long gerenteId;
+
     // Foreign key
 
     @ManyToOne

@@ -297,6 +297,7 @@ const DetalhesDemanda = (props) => {
         data: props.dados.data,
         status: "BACKLOG_REVISAO",
         solicitante: props.dados.solicitante,
+        gerente: props.dados.gerente,
         anexo: props.dados.anexo,
       };
 
@@ -374,7 +375,28 @@ const DetalhesDemanda = (props) => {
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
-    console.log(dados);
+    const demandaAtualizada = {
+      id: props.dados.id,
+      titulo: props.dados.titulo,
+      problema: props.dados.problema,
+      proposta: props.dados.proposta,
+      frequencia: props.dados.frequencia,
+      beneficios: props.dados.beneficios,
+      data: props.dados.data,
+      status: "BACKLOG_APROVACAO",
+      solicitante: props.dados.solicitante,
+      tamanho: dados.tamanho,
+      secaoTI: dados.secaoTI,
+      busBeneficiadas: dados.busBeneficiadas,
+      buSolicitante: dados.buSolicitante,
+      forum: dados.forum,
+      analista: props.usuario,
+      gerente: props.dados.gerente
+    };
+
+    DemandaService.put(demandaAtualizada, []).then((response) => {
+      navigate('/');
+    });
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -407,6 +429,12 @@ const DetalhesDemanda = (props) => {
       }
     }
   };
+
+  const aceitarDemandaGerente = () => {
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then((response) => {
+      navigate('/');
+    });
+  }
 
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
@@ -526,7 +554,7 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          // props.dados.status == "BACKLOG_EDICAO" &&
+          props.dados.status == "BACKLOG_EDICAO" &&
           !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
@@ -535,7 +563,7 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          // props.dados.status == "BACKLOG_EDICAO" &&
+          props.dados.status == "BACKLOG_EDICAO" &&
           editar ? (
             <EditOffOutlinedIcon
               fontSize="large"

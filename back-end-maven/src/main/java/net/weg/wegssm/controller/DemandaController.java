@@ -1918,6 +1918,7 @@ public class DemandaController {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
         Usuario usuario = usuarioService.findById(usuarioId).get();
+        Usuario gerente = usuarioService.findById(usuario.getGerenteId()).get();
 
         ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
         for (Beneficio beneficio : demanda.getBeneficios()) {
@@ -1928,6 +1929,7 @@ public class DemandaController {
         demanda.setDepartamento(usuario.getDepartamento());
         demanda.setBeneficios(listaBeneficios);
         demanda.setSolicitante(usuario);
+        demanda.setGerente(gerente);
         demanda.setAnexos(files);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
@@ -1940,6 +1942,7 @@ public class DemandaController {
         Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
         Usuario usuario = usuarioService.findById(usuarioId).get();
         Departamento departamento = usuario.getDepartamento();
+        Usuario gerente = usuarioService.findById(usuario.getGerenteId()).get();
 
         ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
         for (Beneficio beneficio : demanda.getBeneficios()) {
@@ -1950,6 +1953,7 @@ public class DemandaController {
         demanda.setDepartamento(departamento);
         demanda.setBeneficios(listaBeneficios);
         demanda.setSolicitante(usuario);
+        demanda.setGerente(gerente);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }

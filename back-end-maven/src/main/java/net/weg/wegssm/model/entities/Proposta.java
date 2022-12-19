@@ -91,8 +91,8 @@ public class Proposta {
 
     @ManyToMany
     @JoinTable(
-            name = "demanda_bu",
-            joinColumns = @JoinColumn(name = "demanda_id"),
+            name = "proposta_bu",
+            joinColumns = @JoinColumn(name = "proposta_id"),
             inverseJoinColumns = @JoinColumn(name = "bu_id"))
     private List<Bu> busBeneficiadas;
 
