@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Box, Avatar, Typography, Divider } from "@mui/material";
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
 
 import logoWeg from "../../assets/logo-weg.png";
 
@@ -13,6 +15,7 @@ import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import { useEffect } from "react";
 
 const Chat = () => {
   const [chatAberto, setChatAberto] = useState(false);
@@ -20,6 +23,47 @@ const Chat = () => {
   function abrirChat() {
     setChatAberto(true);
   }
+
+  // Chat com webSocket
+
+  const [chatPrivado, setChatPrivado] = useState(new Map());
+  const [chatPublico, setChatPublico] = useState([]);
+  const [tab, setTab] = useState("CHAT");
+
+  const [dadosUsuario, setDadosUsuario] = useState({
+    solicitante: "",
+    analista: "",
+    connected: false,
+    mensagem: "",
+    data: "",
+    // anexos: []
+  });
+
+  useEffect(() => {
+    console.log("Dados do usuário: ", dadosUsuario);
+  }, [dadosUsuario]);
+
+  const connect = () => {
+    let Sock = new SockJS('http://localhost:3000/ws');
+    stompClient = over(Sock);
+    stompClient.connect({}, onConnected, onError);
+  };
+
+  const onConnected = () => {
+    setDadosUsuario({...dadosUsuario, "connected": true});
+    stompClient.subscribe("/chat/public", onMessageReceived);
+    stompClient.subscribe("/usuario/" + dadosUsuario.analista + "/private", onPrivateMessage);
+  };
+
+  const userJoin = () => {
+    var mensagemChat = {
+      remetente: dadosUsuario.analista,
+      status: "ENVIADA"
+    };
+
+    stompClient.send("/chat")
+  };
+
 
   return (
     <FundoComHeader>
@@ -58,16 +102,6 @@ const Chat = () => {
                 </Box>
               </Box>
               <Contato onClick={abrirChat} />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
               <Contato />
               <Contato />
             </Box>
