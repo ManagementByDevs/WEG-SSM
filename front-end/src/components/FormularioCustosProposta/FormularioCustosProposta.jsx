@@ -19,6 +19,9 @@ const FormularioCustosProposta = (props) => {
     props.setCustos(aux);
   };
 
+  const [HorasTotais, setHorasTotais] = useState(0);
+  const [ValorTotal, setValorTotal] = useState(0);
+
   return (
     <Box className="flex flex-col">
       <Box className="flex w-full justify-between mt-10 items-end">
@@ -27,13 +30,13 @@ const FormularioCustosProposta = (props) => {
             Total:
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
-            00:00h
+            {HorasTotais}h
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
             -
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
-            R$00,00
+            R${ValorTotal.toFixed(2)}
           </Typography>
         </Box>
         <Button
@@ -90,6 +93,10 @@ const FormularioCustosProposta = (props) => {
                 deletarLinhaCCs={props.deletarLinhaCCs}
                 setCustos={props.setCustos}
                 custos={props.custos}
+                horasTotais={props.HorasTotais}
+                setHorasTotais={props.setHorasTotais}
+                valorTotal={props.ValorTotal}
+                setValorTotal={props.setValorTotal}
               />
             )
           );

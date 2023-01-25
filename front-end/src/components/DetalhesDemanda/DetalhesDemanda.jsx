@@ -9,6 +9,7 @@ import {
   TextareaAutosize,
   Paper,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
@@ -115,9 +116,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -179,7 +180,7 @@ const DetalhesDemanda = (props) => {
       anexos.filter((anexoItem) => {
         console.log(!anexo.id && anexoItem.name == anexo.nome);
         return (
-          (anexoItem.nome == anexo.name) ||
+          anexoItem.nome == anexo.name ||
           (anexo.id && anexoItem.nome == anexo.nome)
         );
       }).length > 0
@@ -252,7 +253,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -260,7 +261,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosNovos([]);
   };
@@ -272,7 +273,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -314,12 +315,16 @@ const DetalhesDemanda = (props) => {
       }
 
       if (novosAnexos.length > 0) {
-        console.log("entrou novos aenxos lenght > 0");
+        console.log("entrou novos anexos lenght > 0");
         DemandaService.put(demandaAtualizada, [
           ...anexosVelhos,
           ...novosAnexos,
         ]).then((response) => {
           // atualizar demanda salva no location
+
+          for (let anexo of anexos) {
+            AnexoService.deleteById(anexo.id);
+          }
 
           setEditar(false);
           excluirBeneficiosRemovidos();
@@ -391,11 +396,11 @@ const DetalhesDemanda = (props) => {
       buSolicitante: dados.buSolicitante,
       forum: dados.forum,
       analista: props.usuario,
-      gerente: props.dados.gerente
+      gerente: props.dados.gerente,
     };
 
     DemandaService.put(demandaAtualizada, []).then((response) => {
-      navigate('/');
+      navigate("/");
     });
   };
 
@@ -413,7 +418,7 @@ const DetalhesDemanda = (props) => {
           },
           []
         ).then((response) => {
-          navigate("/");
+          navegarHome(2)
         });
       } else {
         DemandaService.put(
@@ -424,7 +429,7 @@ const DetalhesDemanda = (props) => {
           },
           []
         ).then((response) => {
-          navigate("/");
+          navegarHome(3)
         });
       }
     }
@@ -432,7 +437,7 @@ const DetalhesDemanda = (props) => {
 
   const aceitarDemandaGerente = () => {
     DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then((response) => {
-      navigate('/');
+      navegarHome(1)
     });
   }
 
@@ -444,8 +449,16 @@ const DetalhesDemanda = (props) => {
 
   const baixarAnexo = (index) => {
     const file = anexos[index];
-    const blob = new Blob([base64ToArrayBuffer(file.dados)]);
-    const fileName = `${file.nome}`;
+    let blob;
+    let fileName;
+    
+    if (anexos[index] instanceof File) {
+      blob = file;
+      fileName = file.name;
+    } else {
+      blob = new Blob([base64ToArrayBuffer(file.dados)]);
+      fileName = `${file.nome}`;
+    }
 
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, fileName);
@@ -475,15 +488,13 @@ const DetalhesDemanda = (props) => {
   const updateAnexosRemovidos = (indexAnexo) => {
     let anexo = anexos[indexAnexo];
 
-    setAnexosRemovidos(
+    setAnexosRemovidos([
       ...anexosRemovidos,
-      props.dados.anexo.filter(
+      ...anexos.filter(
         // anexo.id - se tiver, quer dizer que é um anexo que já estava na demanda (salvo no banco de dados)
-        (anexoItem) => {
-          return anexo.id && anexoItem.id == anexo.id;
-        }
-      )
-    );
+        (anexoItem) => anexo.id && anexoItem.id == anexo.id
+      ),
+    ]);
   };
   //lembrar de resetar essas variáveis depois de salvar e/ou sair
 
@@ -512,6 +523,19 @@ const DetalhesDemanda = (props) => {
         return anexoItem.name != anexo.name && !anexoItem.id;
       })
     );
+  };
+
+  // Aparecer o feedback sobre a demanda
+
+  const navegarHome = (tipoFeedback) => {
+    switch (tipoFeedback) {
+      case 1:
+        navigate("/", { state: { feedback: "2" } });
+      case 2:
+        navigate("/", { state: { feedback: "3" } });
+      case 3:
+        navigate("/", { state: { feedback: "4" } });
+    }
   };
 
   useEffect(() => {
@@ -554,8 +578,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -563,8 +587,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -696,13 +720,15 @@ const DetalhesDemanda = (props) => {
                       >
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
-                      <IconButton
-                        onClick={() => {
-                          baixarAnexo(index);
-                        }}
-                      >
-                        <DownloadIcon sx={{ color: "text.primary" }} />
-                      </IconButton>
+                      <Tooltip title="Baixar">
+                        <IconButton
+                          onClick={() => {
+                            baixarAnexo(index);
+                          }}
+                        >
+                          <DownloadIcon sx={{ color: "text.primary" }} />
+                        </IconButton>
+                      </Tooltip>
                     </Paper>
                   ))}
                 </Box>
@@ -890,13 +916,24 @@ const DetalhesDemanda = (props) => {
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
                       <Box className="flex gap-2">
-                        <IconButton
-                          onClick={() => {
-                            removerAnexo(index);
-                          }}
-                        >
-                          <CloseIcon sx={{ color: "text.primary" }} />
-                        </IconButton>
+                        <Tooltip title="Baixar">
+                          <IconButton
+                            onClick={() => {
+                              baixarAnexo(index);
+                            }}
+                          >
+                            <DownloadIcon sx={{ color: "text.primary" }} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Remover">
+                          <IconButton
+                            onClick={() => {
+                              removerAnexo(index);
+                            }}
+                          >
+                            <CloseIcon sx={{ color: "text.primary" }} />
+                          </IconButton>
+                        </Tooltip>
                       </Box>
                     </Paper>
                   ))}

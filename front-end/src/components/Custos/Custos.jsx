@@ -21,11 +21,46 @@ import LinhaTabelaCCs from "../LinhaTabelaCCs/LinhaTabelaCCs";
 
 const Custos = (props) => {
 
-  const [horasTotais, setHorasTotais] = useState("00:00");
+  const [horasTotais, setHorasTotais] = useState(0);
 
-  const [valorTotal, setValorTotal] = useState("00,00");
+  useEffect(() => {
+    let aux = 0;
+    for (let i = 0; i < props.custos[props.index].despesas.length; i++) {
+      aux += props.custos[props.index].despesas[i].horas * 1;
+    }
+    setHorasTotais(aux);
+  }, [props.custos]);
+
+  const [valorTotal, setValorTotal] = useState(0);
+
+  useEffect(() => {
+    let aux = 0;
+    for (let i = 0; i < props.custos[props.index].despesas.length; i++) {
+      aux += props.custos[props.index].despesas[i].total * 1;
+    }
+    setValorTotal(aux.toFixed(2));
+  }, [props.custos]);
 
   const [porcentagemTotal, setPorcentagemTotal] = useState(0);
+
+  useEffect(() => {
+    let aux = 0;
+    for (let i = 0; i < props.custos[props.index].ccs.length; i++) {
+      aux += props.custos[props.index].ccs[i].porcentagem * 1;
+    }
+    setPorcentagemTotal(aux);
+  }, [props.custos]);
+
+  useEffect(() => {
+    let aux = (props.horasTotais * 1) + (horasTotais * 1);
+    props.setHorasTotais(aux);
+  }, [horasTotais]);
+
+  useEffect(() => {
+    let aux = (props.valorTotal * 1) + (valorTotal * 1);
+    props.setValorTotal(aux.toFixed(2));
+  }, [valorTotal]);
+
 
   return (
     <Box className="flex w-full mt-5">
