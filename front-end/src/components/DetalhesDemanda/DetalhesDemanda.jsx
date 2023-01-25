@@ -9,6 +9,7 @@ import {
   TextareaAutosize,
   Paper,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
@@ -179,7 +180,7 @@ const DetalhesDemanda = (props) => {
       anexos.filter((anexoItem) => {
         console.log(!anexo.id && anexoItem.name == anexo.nome);
         return (
-          (anexoItem.nome == anexo.name) ||
+          anexoItem.nome == anexo.name ||
           (anexo.id && anexoItem.nome == anexo.nome)
         );
       }).length > 0
@@ -314,12 +315,16 @@ const DetalhesDemanda = (props) => {
       }
 
       if (novosAnexos.length > 0) {
-        console.log("entrou novos aenxos lenght > 0");
+        console.log("entrou novos anexos lenght > 0");
         DemandaService.put(demandaAtualizada, [
           ...anexosVelhos,
           ...novosAnexos,
         ]).then((response) => {
           // atualizar demanda salva no location
+
+          for (let anexo of anexos) {
+            AnexoService.deleteById(anexo.id);
+          }
 
           setEditar(false);
           excluirBeneficiosRemovidos();
@@ -391,11 +396,11 @@ const DetalhesDemanda = (props) => {
       buSolicitante: dados.buSolicitante,
       forum: dados.forum,
       analista: props.usuario,
-      gerente: props.dados.gerente
+      gerente: props.dados.gerente,
     };
 
     DemandaService.put(demandaAtualizada, []).then((response) => {
-      navigate('/');
+      navigate("/");
     });
   };
 
@@ -431,10 +436,12 @@ const DetalhesDemanda = (props) => {
   };
 
   const aceitarDemandaGerente = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then((response) => {
-      navigate('/');
-    });
-  }
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(
+      (response) => {
+        navigate("/");
+      }
+    );
+  };
 
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
@@ -444,8 +451,16 @@ const DetalhesDemanda = (props) => {
 
   const baixarAnexo = (index) => {
     const file = anexos[index];
-    const blob = new Blob([base64ToArrayBuffer(file.dados)]);
-    const fileName = `${file.nome}`;
+    let blob;
+    let fileName;
+    
+    if (anexos[index] instanceof File) {
+      blob = file;
+      fileName = file.name;
+    } else {
+      blob = new Blob([base64ToArrayBuffer(file.dados)]);
+      fileName = `${file.nome}`;
+    }
 
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, fileName);
@@ -475,15 +490,13 @@ const DetalhesDemanda = (props) => {
   const updateAnexosRemovidos = (indexAnexo) => {
     let anexo = anexos[indexAnexo];
 
-    setAnexosRemovidos(
+    setAnexosRemovidos([
       ...anexosRemovidos,
-      props.dados.anexo.filter(
+      ...anexos.filter(
         // anexo.id - se tiver, quer dizer que é um anexo que já estava na demanda (salvo no banco de dados)
-        (anexoItem) => {
-          return anexo.id && anexoItem.id == anexo.id;
-        }
-      )
-    );
+        (anexoItem) => anexo.id && anexoItem.id == anexo.id
+      ),
+    ]);
   };
   //lembrar de resetar essas variáveis depois de salvar e/ou sair
 
@@ -696,13 +709,15 @@ const DetalhesDemanda = (props) => {
                       >
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
-                      <IconButton
-                        onClick={() => {
-                          baixarAnexo(index);
-                        }}
-                      >
-                        <DownloadIcon sx={{ color: "text.primary" }} />
-                      </IconButton>
+                      <Tooltip title="Baixar">
+                        <IconButton
+                          onClick={() => {
+                            baixarAnexo(index);
+                          }}
+                        >
+                          <DownloadIcon sx={{ color: "text.primary" }} />
+                        </IconButton>
+                      </Tooltip>
                     </Paper>
                   ))}
                 </Box>
@@ -890,13 +905,24 @@ const DetalhesDemanda = (props) => {
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
                       <Box className="flex gap-2">
-                        <IconButton
-                          onClick={() => {
-                            removerAnexo(index);
-                          }}
-                        >
-                          <CloseIcon sx={{ color: "text.primary" }} />
-                        </IconButton>
+                        <Tooltip title="Baixar">
+                          <IconButton
+                            onClick={() => {
+                              baixarAnexo(index);
+                            }}
+                          >
+                            <DownloadIcon sx={{ color: "text.primary" }} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Remover">
+                          <IconButton
+                            onClick={() => {
+                              removerAnexo(index);
+                            }}
+                          >
+                            <CloseIcon sx={{ color: "text.primary" }} />
+                          </IconButton>
+                        </Tooltip>
                       </Box>
                     </Paper>
                   ))}
