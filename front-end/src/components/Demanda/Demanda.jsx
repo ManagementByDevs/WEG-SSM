@@ -35,7 +35,7 @@ const Demanda = (props) => {
     } else if (props.demanda.status == "BACKLOG_EDICAO") {
       return "Aguardando Edição";
     } else if(props.demanda.status == "BACKLOG_APROVACAO") {
-      return "Aguardando Aprovação";
+      return "Em Aprovação";
     } else if (props.demanda.status == "ASSESSMENT") {
       return "Aprovada";
     }

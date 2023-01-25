@@ -38,7 +38,7 @@ const Home = () => {
     if (location.state?.feedback) {
       setFeedbackDemandaCriada(true);
     }
-  },[location.state?.feedback]);
+  }, [location.state?.feedback]);
 
   // Usuário que está logado no sistema
   const [usuario, setUsuario] = useState({
@@ -66,6 +66,11 @@ const Home = () => {
   const [page, setPage] = useState("size=20&page=0");
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
   const [filtroAtual, setFiltroAtual] = useState(null);
+
+  // Valores dos checkboxes no modal de ordenação
+  const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
+  const [ordenacaoScore, setOrdenacaoScore] = useState([false, false]);
+  const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
@@ -96,6 +101,28 @@ const Home = () => {
       setParams({ ...params, departamento: usuario.departamento });
     }
   }, [ordenacao]);
+
+  // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
+  useEffect(() => {
+    let textoNovo = "";
+    if (ordenacaoTitulo[1]) {
+      textoNovo += "sort=titulo,asc&";
+    }
+    if (ordenacaoTitulo[0]) {
+      textoNovo += "sort=titulo,desc&";
+    }
+    if (ordenacaoDate[0]) {
+      textoNovo += "sort=data,asc&";
+    }
+    if (ordenacaoDate[1]) {
+      textoNovo += "sort=data,desc&";
+    }
+    if (textoNovo == "") {
+      textoNovo = "sort=id,asc&";
+    }
+
+    setOrdenacao(textoNovo);
+  }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -290,11 +317,18 @@ const Home = () => {
                     {/* Modal de ordenação */}
                     {abrirOrdenacao && (
                       <ModalOrdenacao
-                        ordenacao={ordenacao}
-                        setOrdenacao={setOrdenacao}
                         open={abrirOrdenacao}
                         setOpen={setOpenOrdenacao}
                         tipoComponente='demanda'
+
+                        ordenacaoTitulo={ordenacaoTitulo}
+                        setOrdenacaoTitulo={setOrdenacaoTitulo}
+
+                        ordenacaoScore={ordenacaoScore}
+                        setOrdenacaoScore={setOrdenacaoScore}
+
+                        ordenacaoDate={ordenacaoDate}
+                        setOrdenacaoDate={setOrdenacaoDate}
                       />
                     )}
                   </Box>
