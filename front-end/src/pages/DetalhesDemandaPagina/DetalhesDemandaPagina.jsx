@@ -40,6 +40,11 @@ const DetalhesDemandaPagina = () => {
     });
   }
 
+  const updateDemandaProps = (demanda) => {
+    setDados(demanda);
+    location.state = demanda;
+  }
+
   return (
     <FundoComHeader>
       <Box className="p-2">
@@ -62,6 +67,7 @@ const DetalhesDemandaPagina = () => {
           setDados={setDados}
           botao="sim"
           salvar="sim"
+          updateDemandaProps={updateDemandaProps}
         />
       </Box>
     </FundoComHeader>
