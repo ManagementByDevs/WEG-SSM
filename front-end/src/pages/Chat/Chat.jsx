@@ -61,15 +61,6 @@ const Chat = () => {
               <Contato />
               <Contato />
               <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
-              <Contato />
             </Box>
             {!chatAberto ? (
               <Box

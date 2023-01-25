@@ -71,95 +71,59 @@ const ModalOrdenacao = (props) => {
   let open = false;
   open = props.open;
   const setOpen = props.setOpen;
-
-  // useState para limitar um checkbox
-
-  const [checkTitulo, setCheckTitulo] = useState([false, false]);
-  const [checkScore, setCheckScore] = useState([false, false]);
-  const [checkDate, setCheckDate] = useState([false, false]);
   const [cssEscopo, setCssEscopo] = useState(false);
 
   useEffect(() => {
     if (props.modalEscopo == true) {
       setCssEscopo(true)
     }
-  });
-
-  useEffect(() => {
-    let textoNovo = "";
-    if (checkTitulo[1]) {
-      textoNovo += "sort=titulo,asc&";
-    }
-    if (checkTitulo[0]) {
-      textoNovo += "sort=titulo,desc&";
-    }
-
-    if (checkDate[0]) {
-      if (props.tipoComponente == 'escopo') {
-        textoNovo += "sort=ultimaModificacao,asc&";
-      } else {
-        textoNovo += "sort=data,asc&";
-      }
-    }
-    if (checkDate[1]) {
-      if (props.tipoComponente == 'escopo') {
-        textoNovo += "sort=ultimaModificacao,desc&";
-      } else {
-        textoNovo += "sort=data,desc&";
-      }
-    }
-
-    if (textoNovo == "") {
-      textoNovo = "sort=id,asc&";
-    }
-    props.setOrdenacao(textoNovo);
-  }, [checkTitulo, checkScore, checkDate]);
+  }, []);
 
   function mudarCheck1() {
-    if (checkTitulo[0]) {
-      setCheckTitulo([false, false]);
+    if (props.ordenacaoTitulo[0]) {
+      props.setOrdenacaoTitulo([false, false]);
     } else {
-      setCheckTitulo([true, false]);
+      props.setOrdenacaoTitulo([true, false]);
     }
   }
 
   function mudarCheck2() {
-    if (checkTitulo[1]) {
-      setCheckTitulo([false, false]);
+    if (props.ordenacaoTitulo[1]) {
+      props.setOrdenacaoTitulo([false, false]);
     } else {
-      setCheckTitulo([false, true]);
+      props.setOrdenacaoTitulo([false, true]);
     }
   }
 
   function mudarCheck3() {
-    if (checkScore[0]) {
-      setCheckScore([false, false]);
+    if (props.ordenacaoScore[0]) {
+      props.setOrdenacaoScore([false, false]);
     } else {
-      setCheckScore([true, false]);
+      props.setOrdenacaoScore([true, false]);
     }
   }
 
   function mudarCheck4() {
-    if (checkScore[1]) {
-      setCheckScore([false, false]);
+    if (props.ordenacaoScore[1]) {
+      props.setOrdenacaoScore([false, false]);
     } else {
-      setCheckScore([false, true]);
+      props.setOrdenacaoScore([false, true]);
     }
   }
 
   function mudarCheck5() {
-    if (checkDate[0]) {
-      setCheckDate([false, false]);
+    if (props.ordenacaoDate[0]) {
+      props.setOrdenacaoDate([false, false]);
     } else {
-      setCheckDate([true, false]);
+      props.setOrdenacaoDate([true, false]);
     }
   }
 
   function mudarCheck6() {
-    if (checkDate[1]) {
-      setCheckDate([false, false]);
+    if (props.ordenacaoDate[1]) {
+      props.setOrdenacaoDate([false, false]);
     } else {
-      setCheckDate([false, true]);
+      props.setOrdenacaoDate([false, true]);
     }
   }
 
@@ -202,13 +166,13 @@ const ModalOrdenacao = (props) => {
                   </Typography>
                   <div style={styleDiv}>
                     <FormControlLabel
-                      checked={checkTitulo[1]}
+                      checked={props.ordenacaoTitulo[1]}
                       onChange={mudarCheck2}
                       control={<Checkbox />}
                       label="A-Z"
                     />
                     <FormControlLabel
-                      checked={checkTitulo[0]}
+                      checked={props.ordenacaoTitulo[0]}
                       onChange={mudarCheck1}
                       control={<Checkbox />}
                       label="Z-A"
@@ -234,13 +198,13 @@ const ModalOrdenacao = (props) => {
                     </Typography>
                     <div style={styleDiv}>
                       <FormControlLabel
-                        checked={checkScore[1]}
+                        checked={props.ordenacaoScore[1]}
                         onChange={mudarCheck4}
                         control={<Checkbox />}
                         label="Maior Score"
                       />
                       <FormControlLabel
-                        checked={checkScore[0]}
+                        checked={props.ordenacaoScore[0]}
                         onChange={mudarCheck3}
                         control={<Checkbox />}
                         label="Menor Score"
@@ -265,13 +229,13 @@ const ModalOrdenacao = (props) => {
                   </Typography>
                   <div style={styleDiv}>
                     <FormControlLabel
-                      checked={checkDate[1]}
+                      checked={props.ordenacaoDate[1]}
                       onChange={mudarCheck6}
                       control={<Checkbox />}
                       label="Mais Nova"
                     />
                     <FormControlLabel
-                      checked={checkDate[0]}
+                      checked={props.ordenacaoDate[0]}
                       onChange={mudarCheck5}
                       control={<Checkbox />}
                       label="Mais Velha"
@@ -307,13 +271,13 @@ const ModalOrdenacao = (props) => {
                   </Typography>
                   <div style={styleDiv}>
                     <FormControlLabel
-                      checked={checkTitulo[1]}
+                      checked={props.ordenacaoTitulo[1]}
                       onChange={mudarCheck2}
                       control={<Checkbox />}
                       label="A-Z"
                     />
                     <FormControlLabel
-                      checked={checkTitulo[0]}
+                      checked={props.ordenacaoTitulo[0]}
                       onChange={mudarCheck1}
                       control={<Checkbox />}
                       label="Z-A"
@@ -339,13 +303,13 @@ const ModalOrdenacao = (props) => {
                     </Typography>
                     <div style={styleDiv}>
                       <FormControlLabel
-                        checked={checkScore[1]}
+                        checked={props.ordenacaoScore[1]}
                         onChange={mudarCheck4}
                         control={<Checkbox />}
                         label="Maior Score"
                       />
                       <FormControlLabel
-                        checked={checkScore[0]}
+                        checked={props.ordenacaoScore[0]}
                         onChange={mudarCheck3}
                         control={<Checkbox />}
                         label="Menor Score"
@@ -370,13 +334,13 @@ const ModalOrdenacao = (props) => {
                   </Typography>
                   <div style={styleDiv}>
                     <FormControlLabel
-                      checked={checkDate[1]}
+                      checked={props.ordenacaoDate[1]}
                       onChange={mudarCheck6}
                       control={<Checkbox />}
                       label="Mais Nova"
                     />
                     <FormControlLabel
-                      checked={checkDate[0]}
+                      checked={props.ordenacaoDate[0]}
                       onChange={mudarCheck5}
                       control={<Checkbox />}
                       label="Mais Velha"

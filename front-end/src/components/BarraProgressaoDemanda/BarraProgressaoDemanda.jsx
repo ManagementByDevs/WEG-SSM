@@ -253,7 +253,7 @@ const BarraProgressaoDemanda = (props) => {
   }, [open]);
 
   const direcionarHome = (feedbackDemanda) => {
-    navigate("/", { state: { feedback: feedbackDemanda } });
+    navigate("/", { state: { feedback: "1" } });
   };
 
   const handleClose = () => {

@@ -34,11 +34,27 @@ const Home = () => {
 
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
+  // feedbacks para o gerenciamento da demanda por parte do analista 
+
+  const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
+
   useEffect(() => {
-    if (location.state?.feedback) {
+
+    console.log("State aqui: ", location.state?.feedback)
+
+    if (location.state?.feedback == "1") {
       setFeedbackDemandaCriada(true);
+    } else if (location.state?.feedback == "2") {
+      setFeedbackDemandaAceita(true);
+    } else if (location.state?.feedback == "3") {
+      setFeedbackDemandaRecusada(true);
+    } else if (location.state?.feedback == "4") {
+      console.log("Foi devolvida")
+      setFeedbackDemandaDevolvida(true);
     }
-  },[location.state?.feedback]);
+  }, [location.state?.feedback]);
 
   // Usuário que está logado no sistema
   const [usuario, setUsuario] = useState({
@@ -66,6 +82,11 @@ const Home = () => {
   const [page, setPage] = useState("size=20&page=0");
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
   const [filtroAtual, setFiltroAtual] = useState(null);
+
+  // Valores dos checkboxes no modal de ordenação
+  const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
+  const [ordenacaoScore, setOrdenacaoScore] = useState([false, false]);
+  const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
@@ -96,6 +117,28 @@ const Home = () => {
       setParams({ ...params, departamento: usuario.departamento });
     }
   }, [ordenacao]);
+
+  // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
+  useEffect(() => {
+    let textoNovo = "";
+    if (ordenacaoTitulo[1]) {
+      textoNovo += "sort=titulo,asc&";
+    }
+    if (ordenacaoTitulo[0]) {
+      textoNovo += "sort=titulo,desc&";
+    }
+    if (ordenacaoDate[0]) {
+      textoNovo += "sort=data,asc&";
+    }
+    if (ordenacaoDate[1]) {
+      textoNovo += "sort=data,desc&";
+    }
+    if (textoNovo == "") {
+      textoNovo = "sort=id,asc&";
+    }
+
+    setOrdenacao(textoNovo);
+  }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -211,6 +254,18 @@ const Home = () => {
           setFeedbackDemandaCriada(false);
         }} status={"sucesso"} mensagem={"Demanda criada com sucesso!"} />
 
+        <Feedback open={feedbackDemandaAceita} handleClose={() => {
+          setFeedbackDemandaAceita(false);
+        }} status={"sucesso"} mensagem={"Demanda aceita com sucesso!"} />
+
+        <Feedback open={feedbackDemandaRecusada} handleClose={() => {
+          setFeedbackDemandaRecusada(false);
+        }} status={"sucesso"} mensagem={"Demanda recusada com sucesso!"} />
+
+        <Feedback open={feedbackDemandaDevolvida} handleClose={() => {
+          setFeedbackDemandaDevolvida(false);
+        }} status={"sucesso"} mensagem={"Demanda devolvida com sucesso!"} />
+
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
           {/* Sistema de abas */}
@@ -290,11 +345,18 @@ const Home = () => {
                     {/* Modal de ordenação */}
                     {abrirOrdenacao && (
                       <ModalOrdenacao
-                        ordenacao={ordenacao}
-                        setOrdenacao={setOrdenacao}
                         open={abrirOrdenacao}
                         setOpen={setOpenOrdenacao}
                         tipoComponente='demanda'
+
+                        ordenacaoTitulo={ordenacaoTitulo}
+                        setOrdenacaoTitulo={setOrdenacaoTitulo}
+
+                        ordenacaoScore={ordenacaoScore}
+                        setOrdenacaoScore={setOrdenacaoScore}
+
+                        ordenacaoDate={ordenacaoDate}
+                        setOrdenacaoDate={setOrdenacaoDate}
                       />
                     )}
                   </Box>
