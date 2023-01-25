@@ -34,11 +34,28 @@ const Home = () => {
 
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
+  // feedbacks para o gerenciamento da demanda por parte do analista 
+
+  const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
+
   useEffect(() => {
-    if (location.state?.feedback) {
+
+    console.log("State aqui: ", location.state?.feedback)
+
+    if (location.state?.feedback == "1") {
       setFeedbackDemandaCriada(true);
+    } else if (location.state?.feedback == "2") {
+      setFeedbackDemandaAceita(true);
+    } else if (location.state?.feedback == "3") {
+      setFeedbackDemandaRecusada(true);
+    } else if (location.state?.feedback == "4") {
+      console.log("Foi devolvida")
+      setFeedbackDemandaDevolvida(true);
     }
-  },[location.state?.feedback]);
+  }, [location.state?.feedback]);
+
 
   // Usuário que está logado no sistema
   const [usuario, setUsuario] = useState({
@@ -210,6 +227,18 @@ const Home = () => {
         <Feedback open={feedbackDemandaCriada} handleClose={() => {
           setFeedbackDemandaCriada(false);
         }} status={"sucesso"} mensagem={"Demanda criada com sucesso!"} />
+
+        <Feedback open={feedbackDemandaAceita} handleClose={() => {
+          setFeedbackDemandaAceita(false);
+        }} status={"sucesso"} mensagem={"Demanda aceita com sucesso!"} />
+
+        <Feedback open={feedbackDemandaRecusada} handleClose={() => {
+          setFeedbackDemandaRecusada(false);
+        }} status={"sucesso"} mensagem={"Demanda recusada com sucesso!"} />
+
+        <Feedback open={feedbackDemandaDevolvida} handleClose={() => {
+          setFeedbackDemandaDevolvida(false);
+        }} status={"sucesso"} mensagem={"Demanda devolvida com sucesso!"} />
 
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
