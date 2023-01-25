@@ -58,7 +58,7 @@ const Custos = (props) => {
 
   useEffect(() => {
     let aux = (props.valorTotal * 1) + (valorTotal * 1);
-    props.setValorTotal(aux.toFixed(2));
+    props.setValorTotal(aux);
   }, [valorTotal]);
 
 

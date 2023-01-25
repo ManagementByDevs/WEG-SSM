@@ -93,10 +93,10 @@ const FormularioCustosProposta = (props) => {
                 deletarLinhaCCs={props.deletarLinhaCCs}
                 setCustos={props.setCustos}
                 custos={props.custos}
-                horasTotais={props.HorasTotais}
-                setHorasTotais={props.setHorasTotais}
-                valorTotal={props.ValorTotal}
-                setValorTotal={props.setValorTotal}
+                horasTotais={HorasTotais}
+                setHorasTotais={setHorasTotais}
+                valorTotal={ValorTotal}
+                setValorTotal={setValorTotal}
               />
             )
           );
