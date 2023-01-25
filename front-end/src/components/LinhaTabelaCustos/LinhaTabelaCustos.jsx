@@ -8,7 +8,7 @@ import {
   Select,
   MenuItem,
   Tooltip,
-  InputLabel
+  InputLabel,
 } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
@@ -27,6 +27,19 @@ const LinhaTabelaCustos = (props) => {
       setCorFundoTextArea("#FFFF");
     }
   }, [mode]);
+
+  useEffect(() => {
+    let aux = [...props.custos];
+    aux[props.indexCusto].despesas[props.index].total = (
+      aux[props.indexCusto].despesas[props.index].horas *
+      1 *
+      (aux[props.indexCusto].despesas[props.index].valorHora * 1)
+    ).toFixed(2);
+    props.setCustos(aux);
+  }, [
+    props.custos[props.indexCusto].despesas[props.index].horas,
+    props.custos[props.indexCusto].despesas[props.index].valorHora,
+  ]);
 
   return (
     <TableRow className="border-b">
@@ -138,8 +151,8 @@ const LinhaTabelaCustos = (props) => {
           }}
         />
       </td>
-      <td align="center" className="pb-5 relative">
-        <Box className="flex w-full justify-end absolute" sx={{ width: "98%" }}>
+      <td className="relative">
+        <Box className="flex w-full justify-end absolute" sx={{ width: "98%", top: 0 }}>
           <Tooltip title="Excluir linha">
             <DeleteOutlineOutlinedIcon
               fontSize="medium"
@@ -151,24 +164,7 @@ const LinhaTabelaCustos = (props) => {
             />
           </Tooltip>
         </Box>
-        <TextareaAutosize
-          style={{
-            width: "95%",
-            resize: "none",
-            textAlign: "center",
-            backgroundColor: corFundoTextArea,
-            marginTop: "2.8rem",
-          }}
-          fontSize={FontConfig.medium}
-          className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          placeholder="Digite o total..."
-          value={props.dados.despesas[props.index].total}
-          onChange={(e) => {
-            let aux = [...props.custos];
-            aux[props.indexCusto].despesas[props.index].total = e.target.value;
-            props.setCustos(aux);
-          }}
-        />
+        <Box className="flex justify-center mt-5">{props.dados.despesas[props.index].total}</Box>
       </td>
     </TableRow>
   );

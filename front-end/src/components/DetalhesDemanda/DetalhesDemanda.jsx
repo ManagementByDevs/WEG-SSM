@@ -116,9 +116,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -253,7 +253,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -261,7 +261,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosNovos([]);
   };
@@ -273,7 +273,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -418,7 +418,7 @@ const DetalhesDemanda = (props) => {
           },
           []
         ).then((response) => {
-          navigate("/");
+          navegarHome(2)
         });
       } else {
         DemandaService.put(
@@ -429,19 +429,17 @@ const DetalhesDemanda = (props) => {
           },
           []
         ).then((response) => {
-          navigate("/");
+          navegarHome(3)
         });
       }
     }
   };
 
   const aceitarDemandaGerente = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(
-      (response) => {
-        navigate("/");
-      }
-    );
-  };
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then((response) => {
+      navegarHome(1)
+    });
+  }
 
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
@@ -527,6 +525,19 @@ const DetalhesDemanda = (props) => {
     );
   };
 
+  // Aparecer o feedback sobre a demanda
+
+  const navegarHome = (tipoFeedback) => {
+    switch (tipoFeedback) {
+      case 1:
+        navigate("/", { state: { feedback: "2" } });
+      case 2:
+        navigate("/", { state: { feedback: "3" } });
+      case 3:
+        navigate("/", { state: { feedback: "4" } });
+    }
+  };
+
   useEffect(() => {
     console.log("anexos", anexos);
     console.log("anexosRemovidos", anexosRemovidos);
@@ -567,8 +578,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -576,8 +587,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
