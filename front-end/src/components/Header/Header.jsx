@@ -5,6 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 import IdiomaModal from '../Idioma-Modal/IdiomaModal';
 import UserModal from '../User-Modal/UserModal';
 
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+
 import LogoBranca from '../../assets/LogoBranca.png';
 import Grid from "../../assets/GridSemFundo.png";
 
@@ -39,6 +41,12 @@ const Header = (props) => {
 
             {/* Parte direita do header */}
             <div className='flex items-center gap-4'>
+
+                {/* Icon de notificações */}
+                <Tooltip title="Notificações">
+                    <NotificationsNoneIcon sx={{fontSize: "30px", color: "#FFFF", cursor: 'pointer'}}/>
+                </Tooltip>
+
                 {/* Componente da parte do idioma da página */}
                 <IdiomaModal />
 
