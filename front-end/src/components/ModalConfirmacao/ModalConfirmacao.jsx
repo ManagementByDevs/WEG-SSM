@@ -54,6 +54,8 @@ const ModalConfirmacao = (props) => {
         return "Deseja descartar a proposta?";
       case "cancelarEdicao":
         return "Deseja descartar as alterações?";
+      case "aceitarDemanda":
+        return "Deseja aceitar a demanda?";
     }
   };
 
@@ -65,6 +67,8 @@ const ModalConfirmacao = (props) => {
         return "Enviar";
       case "criar":
         return "Criar";
+      case "aceitar":
+        return "Aceitar";
     }
   };
 
