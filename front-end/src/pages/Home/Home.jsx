@@ -67,7 +67,8 @@ const Home = () => {
   // String para ordenação das demandas
   const [page, setPage] = useState("size=20&page=0");
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
-  const [filtroAtual, setFiltroAtual] = useState(null);
+
+  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false]);
 
   // Valores dos checkboxes no modal de ordenação
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
@@ -126,6 +127,23 @@ const Home = () => {
     setOrdenacao(textoNovo);
   }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
 
+  // UseEffect para atualizar o string de filtro quando algum checkbox for ativado
+  useEffect(() => {
+    if (listaFiltros[0]) {
+      atualizarFiltro("ASSESSMENT");
+    } else if (listaFiltros[1]) {
+      atualizarFiltro("CANCELLED");
+    } else if (listaFiltros[2]) {
+      atualizarFiltro("BACKLOG_EDICAO");
+    } else if (listaFiltros[3]) {
+      atualizarFiltro("BACKLOG_REVISAO");
+    } else if (listaFiltros[4]) {
+      atualizarFiltro("BACKLOG_APROVACAO");
+    } else {
+      atualizarFiltro(null);
+    }
+  }, [listaFiltros]);
+
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
     UsuarioService.getUsuarioById(
@@ -148,14 +166,8 @@ const Home = () => {
   const atualizarFiltro = (status) => {
     if (params.solicitante != null) {
       setParams({ ...params, solicitante: usuario, status: status });
-      setFiltroAtual(status);
     } else {
-      setParams({
-        ...params,
-        departamento: usuario.departamento,
-        status: status,
-      });
-      setFiltroAtual(status);
+      setParams({ ...params, departamento: usuario.departamento, status: status });
     }
   };
 
@@ -356,11 +368,13 @@ const Home = () => {
                 {/* Modal de filtro */}
                 {abrirFiltro && (
                   <ModalFiltro
-                    filtros={filtroAtual}
                     setParams={atualizarFiltro}
                     open={abrirFiltro}
                     setOpen={setOpenFiltro}
                     filtroDemanda={true}
+
+                    listaFiltros={listaFiltros}
+                    setListaFiltros={setListaFiltros}
                   />
                 )}
               </Box>

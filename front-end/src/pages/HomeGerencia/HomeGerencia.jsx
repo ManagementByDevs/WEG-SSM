@@ -35,11 +35,17 @@ const HomeGerencia = () => {
   // String para ordenação das demandas
   const [page, setPage] = useState("size=20&page=0");
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
+
+  // Valores dos checkboxes no modal de ordenação
+  const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
+  const [ordenacaoScore, setOrdenacaoScore] = useState([false, false]);
+  const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
+
   // Valor do input de pesquisa
   const [valorPesquisa, setValorPesquisa] = useState("");
 
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
-  const [filtrosAtuais, setFiltrosAtuais] = useState({ solicitante: "", forum: "", tamanho: "", gerente: "", departamento: "" });
+  const [filtrosAtuais, setFiltrosAtuais] = useState({ solicitante: null, forum: "", tamanho: "", gerente: null, departamento: "" });
 
   const [usuario, setUsuario] = useState({
     id: 0,
@@ -111,6 +117,8 @@ const HomeGerencia = () => {
     } else if (localStorage.getItem('tipoFeedback') == "4") {
       setFeedbackDemandaRecusada(true);
     }
+
+    localStorage.removeItem('tipoFeedback');
     
   }, []);
 
@@ -163,6 +171,28 @@ const HomeGerencia = () => {
   useEffect(() => {
     buscarItens();
   }, [params]);
+
+  // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
+  useEffect(() => {
+    let textoNovo = "";
+    if (ordenacaoTitulo[1]) {
+      textoNovo += "sort=titulo,asc&";
+    }
+    if (ordenacaoTitulo[0]) {
+      textoNovo += "sort=titulo,desc&";
+    }
+    if (ordenacaoDate[0]) {
+      textoNovo += "sort=data,asc&";
+    }
+    if (ordenacaoDate[1]) {
+      textoNovo += "sort=data,desc&";
+    }
+    if (textoNovo == "") {
+      textoNovo = "sort=id,asc&";
+    }
+
+    setOrdenacao(textoNovo);
+  }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -494,11 +524,18 @@ const HomeGerencia = () => {
                     {/* Modal de ordenação */}
                     {abrirOrdenacao && (
                       <ModalOrdenacao
-                        ordenacao={ordenacao}
-                        setOrdenacao={setOrdenacao}
                         open={abrirOrdenacao}
                         setOpen={setOpenOrdenacao}
                         tipoComponente='demanda'
+
+                        ordenacaoTitulo={ordenacaoTitulo}
+                        setOrdenacaoTitulo={setOrdenacaoTitulo}
+
+                        ordenacaoScore={ordenacaoScore}
+                        setOrdenacaoScore={setOrdenacaoScore}
+
+                        ordenacaoDate={ordenacaoDate}
+                        setOrdenacaoDate={setOrdenacaoDate}
                       />
                     )}
                   </Box>

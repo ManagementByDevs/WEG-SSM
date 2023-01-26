@@ -51,6 +51,9 @@ const DetalhesDemanda = (props) => {
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
   const [openModalRecusa, setOpenModalRecusa] = useState(false);
 
+  // modal para a confirmação da aprovação da demanda
+  const [modalAprovarDemanda, setModalAprovarDemanda] = useState(false);
+
   const [motivoRecusaDemanda, setMotivoRecusaDemanda] = useState("");
   const [modoModalRecusa, setModoModalRecusa] = useState("recusa");
 
@@ -373,9 +376,20 @@ const DetalhesDemanda = (props) => {
     setOpenModalAceitarDemanda(true);
   };
 
+  const aprovarDemanda = () => {
+    setModalAprovarDemanda(true);
+  };
+
   const abrirRecusaDemanda = (modo) => {
     setModoModalRecusa(modo);
     setOpenModalRecusa(true);
+  };
+
+  // Devolver a demanda para o analista 
+  const aprovarDemandaGerencia = () => {
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then((response) => {
+      navegarHome(1)
+    });
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -451,7 +465,7 @@ const DetalhesDemanda = (props) => {
     const file = anexos[index];
     let blob;
     let fileName;
-    
+
     if (anexos[index] instanceof File) {
       blob = file;
       fileName = file.name;
@@ -527,18 +541,22 @@ const DetalhesDemanda = (props) => {
   // Aparecer o feedback sobre a demanda
 
   const navegarHome = (tipoFeedback) => {
+
     localStorage.removeItem('tipoFeedback');
-    
+
     switch (tipoFeedback) {
       case 1:
         localStorage.setItem('tipoFeedback', '2');
         navigate("/");
+        break;
       case 2:
         localStorage.setItem('tipoFeedback', '3');
         navigate("/");
+        break;
       case 3:
         localStorage.setItem('tipoFeedback', '4');
         navigate("/");
+        break;
     }
   };
 
@@ -571,6 +589,13 @@ const DetalhesDemanda = (props) => {
         onCancelClick={setEditar}
         textoModal="cancelarEdicao"
         textoBotao="sim"
+      />
+      <ModalConfirmacao
+        open={modalAprovarDemanda}
+        setOpen={setModalAprovarDemanda}
+        onConfirmClick={aprovarDemandaGerencia}
+        textoModal="aceitarDemanda"
+        textoBotao="aceitar"
       />
       <Box
         className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
@@ -976,6 +1001,7 @@ const DetalhesDemanda = (props) => {
               >
                 Recusar
               </Button>
+
               <Button
                 sx={{
                   backgroundColor: "primary.main",
@@ -989,6 +1015,7 @@ const DetalhesDemanda = (props) => {
               >
                 Devolver
               </Button>
+
               <Button
                 sx={{
                   backgroundColor: "primary.main",
@@ -1002,6 +1029,39 @@ const DetalhesDemanda = (props) => {
               </Button>
             </Box>
           )}
+
+        {/* caso o usuário seja um gerente */}
+        {props.usuario?.tipoUsuario == "GERENTE" &&
+          props.botao == "sim" &&
+          !editar && (
+            <Box className="flex justify-around w-full">
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
+                variant="contained"
+                onClick={() => {
+                  abrirRecusaDemanda("recusa");
+                }}
+              >
+                Recusar
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
+                variant="contained"
+                onClick={aprovarDemanda}
+              >
+                Aceitar
+              </Button>
+            </Box>
+          )}
+
         {editar && props.salvar && (
           <Button
             sx={{
