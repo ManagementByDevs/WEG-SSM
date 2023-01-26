@@ -7,6 +7,10 @@ class DemandaService {
         return (await axios.get(demanda)).data;
     }
 
+    async getById(id) {
+        return (await axios.get(demanda + "/" + id)).data;
+    }
+
     async getPage(params, page) {
 
         if (params.departamento != null) {

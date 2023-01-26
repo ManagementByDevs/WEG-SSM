@@ -95,6 +95,25 @@ const HomeGerencia = () => {
     setParams({ titulo: valorPesquisa, solicitante: paramsTemp.solicitante, gerente: paramsTemp.gerente, analista: params.analista, forum: paramsTemp.forum, tamanho: paramsTemp.tamanho, status: params.status, departamento: paramsTemp.departamento });
   }, [filtrosAtuais]);
 
+
+  // feedbacks para o gerenciamento das demandas por parte do analista
+
+  const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
+  
+  useEffect(() => {
+    
+    if (localStorage.getItem('tipoFeedback') == "2") {
+      setFeedbackDemandaAceita(true);
+    } else if (localStorage.getItem('tipoFeedback') == "3") {
+      setFeedbackDemandaDevolvida(true);
+    } else if (localStorage.getItem('tipoFeedback') == "4") {
+      setFeedbackDemandaRecusada(true);
+    }
+    
+  }, []);
+
   useEffect(() => {
     switch (value) {
       case "1":
@@ -348,6 +367,18 @@ const HomeGerencia = () => {
         <Feedback open={feedbackAta} handleClose={() => {
           setOpenFeedbackAta(false);
         }} status={"sucesso"} mensagem={"Ata criada com sucesso!"} />
+
+        <Feedback open={feedbackDemandaAceita} handleClose={() => {
+          setFeedbackDemandaAceita(false);
+        }} status={"sucesso"} mensagem={"Demanda aceita com sucesso!"} />
+
+        <Feedback open={feedbackDemandaRecusada} handleClose={() => {
+          setFeedbackDemandaRecusada(false);
+        }} status={"sucesso"} mensagem={"Demanda recusada com sucesso!"} />
+
+        <Feedback open={feedbackDemandaDevolvida} handleClose={() => {
+          setFeedbackDemandaDevolvida(false);
+        }} status={"sucesso"} mensagem={"Demanda devolvida com sucesso!"} />
 
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>

@@ -320,16 +320,14 @@ const DetalhesDemanda = (props) => {
           ...anexosVelhos,
           ...novosAnexos,
         ]).then((response) => {
-          // atualizar demanda salva no location
-
           for (let anexo of anexos) {
             AnexoService.deleteById(anexo.id);
           }
+          // atualizar demanda salva no location
 
           setEditar(false);
           excluirBeneficiosRemovidos();
           setDemandaEmEdicao(false);
-          console.log("Response: ", response);
           props.setDados(response);
         });
       } else {
@@ -340,14 +338,16 @@ const DetalhesDemanda = (props) => {
           setEditar(false);
           excluirBeneficiosRemovidos();
           setDemandaEmEdicao(false);
-          console.log("Response: ", response);
           props.setDados(response);
         });
       }
     }
 
+    DemandaService.getById(props.dados.id).then((res) => {
+      props.updateDemandaProps(res);
+    })
+
     if (anexosRemovidos.length > 0) {
-      console.log("entrou anexos removidos");
       for (let anexoRemovido of anexosRemovidos) {
         AnexoService.deleteById(anexoRemovido.id);
       }
@@ -527,13 +527,18 @@ const DetalhesDemanda = (props) => {
   // Aparecer o feedback sobre a demanda
 
   const navegarHome = (tipoFeedback) => {
+    localStorage.removeItem('tipoFeedback');
+    
     switch (tipoFeedback) {
       case 1:
-        navigate("/", { state: { feedback: "2" } });
+        localStorage.setItem('tipoFeedback', '2');
+        navigate("/");
       case 2:
-        navigate("/", { state: { feedback: "3" } });
+        localStorage.setItem('tipoFeedback', '3');
+        navigate("/");
       case 3:
-        navigate("/", { state: { feedback: "4" } });
+        localStorage.setItem('tipoFeedback', '4');
+        navigate("/");
     }
   };
 
