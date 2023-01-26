@@ -94,8 +94,8 @@ const BarraProgressaoProposta = (props) => {
       beneficios: paginaBeneficios,
     });
 
-    EscopoService.salvarDados(ultimoEscopo).then((response) => {
-      console.log(response);
+    EscopoService.salvarDados(ultimoEscopo).then((res) => {
+      console.log("escopo ",res);
     });
   };
 
@@ -250,10 +250,6 @@ const BarraProgressaoProposta = (props) => {
     custosNovos[indexCusto].ccs.splice(index, 1);
     setCustos(custosNovos);
   };
-
-  useEffect(() => {
-    console.log(gerais);
-  }, [gerais]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -11,6 +11,10 @@ const Escopo = (props) => {
     <Paper
       className="flex flex-col gap-1 border-t-4 pt-2 pb-3 px-6 cursor-pointer"
       sx={{ borderColor: "primary.main" }}
+      onClick={(e) => {
+        e.stopPropagation();
+        props.onclick(props.index);
+      }}
     >
       {/* Container titulo e progressao */}
       <Box className="flex w-full gap-4 items-center">
@@ -18,7 +22,6 @@ const Escopo = (props) => {
           className="w-3/4 overflow-hidden text-ellipsis whitespace-nowrap"
           fontSize={FontConfig.veryBig}
           fontWeight="600"
-          onClick={() => props.onclick(props.index)}
         >
           {props.escopo.titulo}
         </Typography>
@@ -53,15 +56,17 @@ const Escopo = (props) => {
             {props.escopo.proposta}
           </Typography>
         </Box>
-        <DeleteIcon
-          className="absolute bottom-0 hover:cursor-pointer"
-          sx={{ right: "-10px" }}
-          color="primary"
-          onClick={(e) => {
-            e.stopPropagation();
-            props.handleDelete(props.index);
-          }}
-        />
+        <Tooltip title="Excluir">
+          <DeleteIcon
+            className="absolute bottom-0 hover:cursor-pointer"
+            sx={{ right: "-10px" }}
+            color="primary"
+            onClick={(e) => {
+              e.stopPropagation();
+              props.handleDelete(props.index);
+            }}
+          />
+        </Tooltip>
       </Box>
     </Paper>
   );

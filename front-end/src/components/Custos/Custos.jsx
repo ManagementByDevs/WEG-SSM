@@ -51,17 +51,6 @@ const Custos = (props) => {
     setPorcentagemTotal(aux);
   }, [props.custos]);
 
-  useEffect(() => {
-    let aux = (props.horasTotais * 1) + (horasTotais * 1);
-    props.setHorasTotais(aux);
-  }, [horasTotais]);
-
-  useEffect(() => {
-    let aux = (props.valorTotal * 1) + (valorTotal * 1);
-    props.setValorTotal(aux.toFixed(2));
-  }, [valorTotal]);
-
-
   return (
     <Box className="flex w-full mt-5">
       <Box className="flex items-top mr-2">
