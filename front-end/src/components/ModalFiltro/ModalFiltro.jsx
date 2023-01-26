@@ -79,23 +79,6 @@ const ModalFiltro = (props) => {
     open = props.open;
     const setOpen = props.setOpen;
 
-    useEffect(() => {
-        if (props.filtros) {
-            if (props.filtros == "ASSESSMENT") {
-                setCheck([true, false, false, false]);
-            }
-            if (props.filtros == "CANCELLED") {
-                setCheck([false, true, false, false]);
-            }
-            if (props.filtros == "BACKLOG_EDICAO") {
-                setCheck([false, false, true, false]);
-            }
-            if (props.filtros == "BACKLOG_REVISAO") {
-                setCheck([false, false, true, false]);
-            }
-        }
-    }, [])
-
     // abrir e fechar modal
 
     const handleOpen = () => setOpen(true);
@@ -108,70 +91,42 @@ const ModalFiltro = (props) => {
     // funções para permitir o check de apenas um checkbox
 
     function mudarCheck1() {
-        if (check[0]) {
-            setCheck([false, false, false, false, false]);
+        if (props.listaFiltros[0]) {
+            props.setListaFiltros([false, false, false, false, false]);
         } else {
-            setCheck([true, false, false, false, false]);
+            props.setListaFiltros([true, false, false, false, false]);
         }
-        atualizarParams(1, !check[0]);
     }
 
     function mudarCheck2() {
-        if (check[1]) {
-            setCheck([false, false, false, false, false]);
+        if (props.listaFiltros[1]) {
+            props.setListaFiltros([false, false, false, false, false]);
         } else {
-            setCheck([false, true, false, false, false]);
+            props.setListaFiltros([false, true, false, false, false]);
         }
-        atualizarParams(2, !check[1]);
     }
 
     function mudarCheck3() {
-        if (check[2]) {
-            setCheck([false, false, false, false, false]);
+        if (props.listaFiltros[2]) {
+            props.setListaFiltros([false, false, false, false, false]);
         } else {
-            setCheck([false, false, true, false, false]);
+            props.setListaFiltros([false, false, true, false, false]);
         }
-        atualizarParams(3, !check[2]);
     }
 
     function mudarCheck4() {
-        if (check[3]) {
-            setCheck([false, false, false, false, false]);
+        if (props.listaFiltros[3]) {
+            props.setListaFiltros([false, false, false, false, false]);
         } else {
-            setCheck([false, false, false, true, false]);
+            props.setListaFiltros([false, false, false, true, false]);
         }
-        atualizarParams(4, !check[3]);
     }
 
     function mudarCheck5() {
-        if (check[4]) {
-            setCheck([false, false, false, false, false]);
+        if (props.listaFiltros[4]) {
+            props.setListaFiltros([false, false, false, false, false]);
         } else {
-            setCheck([false, false, false, false, true]);
-        }
-        atualizarParams(5, !check[4]);
-    }
-
-    const atualizarParams = (numero, adicionar) => {
-
-        if (!adicionar) {
-            props.setParams(null);
-        }
-
-        if (numero == 1 && adicionar) {
-            props.setParams("ASSESSMENT");
-        }
-        if (numero == 2 && adicionar) {
-            props.setParams("CANCELLED");
-        }
-        if (numero == 3 && adicionar) {
-            props.setParams("BACKLOG_EDICAO");
-        }
-        if (numero == 4 && adicionar) {
-            props.setParams("BACKLOG_REVISAO");
-        }
-        if (numero == 5 && adicionar) {
-            props.setParams("BACKLOG_APROVACAO");
+            props.setListaFiltros([false, false, false, false, true]);
         }
     }
 
@@ -197,11 +152,11 @@ const ModalFiltro = (props) => {
                                             Status:
                                         </Typography>
                                         <Box sx={styleDiv}>
-                                            <FormControlLabel checked={check[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aprovada" />
-                                            <FormControlLabel checked={check[1]} onChange={mudarCheck2} control={<Checkbox />} label="Reprovada" />
-                                            <FormControlLabel checked={check[2]} onChange={mudarCheck3} control={<Checkbox />} label="Aguardando Edição" />
-                                            <FormControlLabel checked={check[3]} onChange={mudarCheck4} control={<Checkbox />} label="Aguardando Revisão" />
-                                            <FormControlLabel checked={check[4]} onChange={mudarCheck5} control={<Checkbox />} label="Em Aprovação" />
+                                            <FormControlLabel checked={props.listaFiltros[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aprovada" />
+                                            <FormControlLabel checked={props.listaFiltros[1]} onChange={mudarCheck2} control={<Checkbox />} label="Reprovada" />
+                                            <FormControlLabel checked={props.listaFiltros[2]} onChange={mudarCheck3} control={<Checkbox />} label="Aguardando Edição" />
+                                            <FormControlLabel checked={props.listaFiltros[3]} onChange={mudarCheck4} control={<Checkbox />} label="Aguardando Revisão" />
+                                            <FormControlLabel checked={props.listaFiltros[4]} onChange={mudarCheck5} control={<Checkbox />} label="Em Aprovação" />
                                         </Box>
                                     </FormGroup>
                                 </Grid>

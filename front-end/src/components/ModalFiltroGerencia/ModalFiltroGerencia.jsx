@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl } from "@mui/material";
+import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
 
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
+import UsuarioService from "../../service/usuarioService";
 
 const ModalFiltroGerencia = (props) => {
 
@@ -74,13 +75,13 @@ const ModalFiltroGerencia = (props) => {
     // abrir e fechar modal
 
     const handleOpen = () => setOpen(true);
-    const handleClose = () => {
-        props.setFiltro({ solicitante: "", forum: "", tamanho: "", gerente: "", departamento: "" });
-        setOpen(false);
-    }
 
     const [listaForum, setListaForum] = useState([]);
     const [listaDepartamento, setListaDepartamento] = useState([]);
+
+    // Listas usadas para os inputs de solicitante e gerente
+    const [listaSolicitantes, setListaSolicitantes] = useState([]);
+    const [listaGerentes, setListaGerentes] = useState([]);
 
     useState(() => {
         if (listaForum.length == 0) {
@@ -95,9 +96,18 @@ const ModalFiltroGerencia = (props) => {
         }
     }, [])
 
-    const selecionarSolicitante = (event) => {
-        props.setFiltro({ solicitante: event.target.value, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento });
-    };
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+    const limparFiltro = () => {
+        props.setFiltro({ solicitante: null, forum: "", tamanho: "", gerente: null, departamento: "" });
+        handleClose();
+    }
+
+    const selecionarSolicitante = (event, value) => {
+        props.setFiltro({ solicitante: value, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento });
+    }
 
     const selecionarForum = (event) => {
         props.setFiltro({ solicitante: props.filtro.solicitante, forum: event.target.value, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento });
@@ -107,13 +117,31 @@ const ModalFiltroGerencia = (props) => {
         props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: event.target.value, gerente: props.filtro.gerente, departamento: props.filtro.departamento });
     };
 
-    const selecionarGerente = (event) => {
-        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: event.target.value, departamento: props.filtro.departamento });
+    const selecionarGerente = (event, value) => {
+        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: value, departamento: props.filtro.departamento });
     };
 
     const selecionarDepartamento = (event) => {
         props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: event.target.value });
     };
+
+    // Pesquisa de solicitantes feita quando algum input é digitado
+    const pesquisarSolicitantes = (event) => {
+        if (event?.target.value.length > 0) {
+            UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "SOLICITANTE").then((response) => {
+                setListaSolicitantes(response);
+            });
+        }
+    }
+
+    // Pesquisa de gerentes feita quando algum input é digitado
+    const pesquisarGerentes = (event) => {
+        if (event.target.value.length > 0) {
+            UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "GERENTE").then((response) => {
+                setListaGerentes(response);
+            });
+        }
+    }
 
     return (
         <Modal
@@ -133,20 +161,20 @@ const ModalFiltroGerencia = (props) => {
                     </Typography>
                     <Box sx={styleFiltros}>
                         <Box sx={styleFiltroEsquerda}>
-                            <FormControl sx={{ width: '15rem' }}>
-                                <InputLabel id="demo-simple-select-label">Solicitante</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={props.filtro.solicitante}
-                                    label="Solicitante"
-                                    onChange={selecionarSolicitante}
-                                >
-                                    <MenuItem selected value={""}>Selecionar</MenuItem>
-                                    <MenuItem value={1}>Cléber Andrade</MenuItem>
-                                    <MenuItem value={2}>Jair dos Santos</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                options={listaSolicitantes}
+                                noOptionsText={"Sem Resultados"}
+                                sx={{ width: 240 }}
+                                value={props.filtro.solicitante}
+                                onInputChange={(e) => { pesquisarSolicitantes(e) }}
+                                onChange={(e, value) => { selecionarSolicitante(e, value) }}
+                                getOptionLabel={(option) => {
+                                    return option?.nome || "";
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Solicitante" />}
+                            />
                             <FormControl sx={{ width: '15rem' }}>
                                 <InputLabel id="demo-simple-select-label">Fórum</InputLabel>
                                 <Select
@@ -183,20 +211,20 @@ const ModalFiltroGerencia = (props) => {
                             </FormControl>
                         </Box>
                         <Box sx={styleFiltroDireita}>
-                            <FormControl sx={{ width: '15rem' }}>
-                                <InputLabel id="demo-simple-select-label">Gerente Responsável</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={props.filtro.gerente}
-                                    label="Gerente Responsável"
-                                    onChange={selecionarGerente}
-                                >
-                                    <MenuItem selected value={""}>Selecionar</MenuItem>
-                                    <MenuItem value={1}>Jair</MenuItem>
-                                    <MenuItem value={2}>Jairo</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                options={listaGerentes}
+                                noOptionsText={"Sem Resultados"}
+                                sx={{ width: 240 }}
+                                value={props.filtro.gerente}
+                                onInputChange={(e) => { pesquisarGerentes(e) }}
+                                onChange={(e, value) => { selecionarGerente(e, value) }}
+                                getOptionLabel={(option) => {
+                                    return option?.nome || "";
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Gerente Responsável" />}
+                            />
                             <FormControl sx={{ width: '15rem' }}>
                                 <InputLabel id="demo-simple-select-label">Departamento</InputLabel>
                                 <Select
@@ -220,7 +248,7 @@ const ModalFiltroGerencia = (props) => {
                             </Box>
                         </Box>
                     </Box>
-                    <Button onClick={handleClose} variant="contained" disableElevation color="primary" sx={{ marginTop: '1%', width: '8rem', height: '3rem', fontSize: FontConfig.normal }}>Limpar Filtros</Button>
+                    <Button onClick={limparFiltro} variant="contained" disableElevation color="primary" sx={{ marginTop: '1%', width: '8rem', height: '3rem', fontSize: FontConfig.normal }}>Limpar Filtros</Button>
                 </Box>
             </Fade>
         </Modal>

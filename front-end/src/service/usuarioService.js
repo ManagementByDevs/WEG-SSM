@@ -11,6 +11,10 @@ class UsuarioService {
     async getUsuarioById(id) {
         return (await axios.get(usuario + `/${id}`)).data;
     }
+
+    async getUsuarioByNomeAndTipo(nome, tipo) {
+        return (await axios.get(usuario + `/filtragem/${nome}/${tipo}`)).data;
+    }
 }
 
 export default new UsuarioService();

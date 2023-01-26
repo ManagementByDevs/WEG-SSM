@@ -7,9 +7,11 @@ import net.weg.wegssm.model.entities.TipoUsuario;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,6 +67,13 @@ public class UsuarioController {
     @GetMapping("/tipo_usuario/{tipo_usuario}")
     public ResponseEntity<List<Usuario>> findByTipoUsuario(@PathVariable(value = "tipo_usuario") TipoUsuario tipo_usuario) {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByTipoUsuario(tipo_usuario));
+    }
+
+    @GetMapping("/filtragem/{nome}/{tipo_usuario}")
+    public ResponseEntity<List<Usuario>> findByNomeAndTipoUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                                  @PathVariable(value = "nome") String nome,
+                                                                  @PathVariable(value = "tipo_usuario") TipoUsuario tipo_usuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByNomeAndTipoUsuario(nome, tipo_usuario, pageable));
     }
 
     /**
