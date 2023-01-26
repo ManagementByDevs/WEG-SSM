@@ -507,7 +507,6 @@ const DetalhesDemanda = (props) => {
 
   // Função que verifica se um determinado anexo já existe na lista provida
   const existsInArray = (array, anexo) => {
-    console.log(anexo);
     return (
       array.filter((anexoItem) => {
         console.log(anexoItem.nome == anexo.nome);
