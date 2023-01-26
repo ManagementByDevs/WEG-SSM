@@ -253,7 +253,11 @@ const BarraProgressaoDemanda = (props) => {
   }, [open]);
 
   const direcionarHome = (feedbackDemanda) => {
-    navigate("/", { state: { feedback: "1" } });
+    localStorage.removeItem('tipoFeedback');
+
+    localStorage.setItem('tipoFeedback', '1');
+    
+    navigate("/");
   };
 
   const handleClose = () => {

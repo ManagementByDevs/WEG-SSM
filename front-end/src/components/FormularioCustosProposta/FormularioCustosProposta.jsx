@@ -9,18 +9,36 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import { useEffect } from "react";
 
 const FormularioCustosProposta = (props) => {
-  useEffect(() => {
-    console.log("props.custos: ", props.custos);
-  }, [props.custos]);
-
   const deletarCustos = (index) => {
     let aux = [...props.custos];
     aux[index].visible = false;
     props.setCustos(aux);
   };
 
-  const [HorasTotais, setHorasTotais] = useState(0);
-  const [ValorTotal, setValorTotal] = useState(0);
+
+  const [horasTotais, setHorasTotais] = useState(0);
+  const [valorTotal, setValorTotal] = useState(0);
+
+  useEffect(() => {
+    let aux = 0;
+    for (let i = 0; i < props.custos.length; i++) {
+      for (let j = 0; j < props.custos[i].despesas.length; j++) {
+        aux += props.custos[i].despesas[j].horas * 1;
+      }
+    }
+    setHorasTotais(aux);
+  }, [props.custos]);
+
+  useEffect(() => {
+    let aux = 0;
+    for (let i = 0; i < props.custos.length; i++) {
+      for (let j = 0; j < props.custos[i].despesas.length; j++) {
+        aux += props.custos[i].despesas[j].total * 1;
+      }
+    }
+    setValorTotal(aux.toFixed(2));
+  }, [props.custos]);
+
 
   return (
     <Box className="flex flex-col">
@@ -30,13 +48,13 @@ const FormularioCustosProposta = (props) => {
             Total:
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
-            {HorasTotais}h
+            {horasTotais}h
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
             -
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
-            R${ValorTotal.toFixed(2)}
+            R${valorTotal}
           </Typography>
         </Box>
         <Button
@@ -93,10 +111,6 @@ const FormularioCustosProposta = (props) => {
                 deletarLinhaCCs={props.deletarLinhaCCs}
                 setCustos={props.setCustos}
                 custos={props.custos}
-                horasTotais={HorasTotais}
-                setHorasTotais={setHorasTotais}
-                valorTotal={ValorTotal}
-                setValorTotal={setValorTotal}
               />
             )
           );
