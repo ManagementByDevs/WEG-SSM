@@ -12,7 +12,6 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import FormularioPropostaProposta from "../FormularioPropostaProposta/FormularioPropostaProposta";
-import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCustosProposta";
 import FormularioGeralProposta from "../FormularioGeralProposta/FormularioGeralProposta";
 import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEscopoProposta";
@@ -107,6 +106,7 @@ const BarraProgressaoProposta = (props) => {
     return skipped.has(step);
   };
 
+  // Função para passar para próxima página
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       criarDemanda();
@@ -120,10 +120,12 @@ const BarraProgressaoProposta = (props) => {
     setSkipped(newSkipped);
   };
 
+  // Função para voltar para página anterior
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  // Função para criar a demanda
   const criarDemanda = () => {
     handleClick(true);
   };

@@ -8,6 +8,7 @@ import {
   Divider,
   IconButton,
   Paper,
+  Tooltip
 } from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
@@ -281,23 +282,25 @@ const FormularioGeralProposta = (props) => {
             >
               *
             </Typography>
-            <AddCircleOutlineOutlinedIcon
-              className="delay-120 hover:scale-110 duration-300"
-              sx={{ color: "primary.main", cursor: "pointer" }}
-              onClick={() => {
-                props.setGerais({
-                  ...props.gerais,
-                  responsaveisNegocio: [
-                    ...props.gerais.responsaveisNegocio,
-                    {
-                      nome: "",
-                      area: "",
-                      visible: true,
-                    },
-                  ],
-                });
-              }}
-            />
+            <Tooltip title="Adicionar um novo responsável">
+              <AddCircleOutlineOutlinedIcon
+                className="delay-120 hover:scale-110 duration-300"
+                sx={{ color: "primary.main", cursor: "pointer" }}
+                onClick={() => {
+                  props.setGerais({
+                    ...props.gerais,
+                    responsaveisNegocio: [
+                      ...props.gerais.responsaveisNegocio,
+                      {
+                        nome: "",
+                        area: "",
+                        visible: true,
+                      },
+                    ],
+                  });
+                }}
+              />
+            </Tooltip>
           </Box>
           {props.gerais.responsaveisNegocio?.map((item, index) => {
             if (item.visible) {
@@ -332,11 +335,13 @@ const FormularioGeralProposta = (props) => {
                 }}
               >
                 Anexos:
-                <AddCircleOutlineOutlinedIcon
-                  className="ml-1 delay-120 hover:scale-110 duration-300"
-                  sx={{ color: "icon.main", cursor: "pointer" }}
-                  onClick={onAddAnexoButtonClick}
-                />
+                <Tooltip title="Adicionar um novo anexo">
+                  <AddCircleOutlineOutlinedIcon
+                    className="ml-1 delay-120 hover:scale-110 duration-300"
+                    sx={{ color: "icon.main", cursor: "pointer" }}
+                    onClick={onAddAnexoButtonClick}
+                  />
+                </Tooltip>
               </Typography>
               <input
                 onChange={onFilesSelect}
