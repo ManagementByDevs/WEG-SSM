@@ -30,16 +30,52 @@ const NotificacaoModal = (props) => {
     setAnchorEl(null);
   };
 
+  const [notificacoes, setNotificacoes] = useState([
+    {
+      tipo: "Aviso",
+      notificacao: "Essa é o titulo da notificação",
+      data: "01/25/2023",
+      lida: false,
+    },
+    {
+      tipo: "Aviso",
+      notificacao: "notificação Essa titulo é o  da ",
+      data: "01/16/2023",
+      lida: false,
+    },
+    {
+      tipo: "Aviso",
+      notificacao: "titulo Essa é o notificação da ",
+      data: "01/25/2023",
+      lida: false,
+    },
+  ]);
+
   return (
     <>
       {/* Title  */}
       <Tooltip title="Notificações">
-        <IconButton size="small" aria-haspopup="true">
-          {/* Icone de notificações */}
-          <NotificationsNoneIcon
-            sx={{ fontSize: "30px", color: "#FFFF", cursor: "pointer" }}
-            onClick={handleClick}
-          />
+        <IconButton size="small" aria-haspopup="true" onClick={handleClick}>
+          {/* Manter a bolinha e o icon de notificacao juntos */}
+          <Box className="relative">
+            {/* Icone de notificações */}
+            <NotificationsNoneIcon
+              sx={{ fontSize: "30px", color: "#FFFF", cursor: "pointer" }}
+            />
+            {
+              // Verifica se tem notificação não lida
+              notificacoes?.map((notificacao, index) => {
+                if (!notificacao.lida) {
+                  return (
+                    <Box
+                      key={index}
+                      className="absolute top-0 right-0.5 w-3 h-3 bg-red-500 rounded-full"
+                    ></Box>
+                  );
+                }
+              })
+            }
+          </Box>
         </IconButton>
       </Tooltip>
 
@@ -61,9 +97,24 @@ const NotificacaoModal = (props) => {
       >
         <Box className="w-52 px-3 py-2 max-h-72">
           {/* Componente Notificacao (Cada notificacao que aparece) */}
-          <Notificacao />
-          <Notificacao />
-          <Notificacao />
+          {notificacoes?.map((notificacao, index) => {
+            if (!notificacao.lida) {
+              return (
+                <Notificacao
+                  key={index}
+                  notificacao={notificacao}
+                  index={index}
+                />
+              );
+            }
+          })}
+          {/* Caso não haja notificação não lida, aparece a mensagem abaixo */}
+          {notificacoes?.map((notificacao) => {
+            if (notificacao.lida) {
+              cont++;
+            }
+          })}
+          {/* Ver mais */}
           <Box className="flex justify-center w-full pt-1">
             <Typography
               color={"link.main"}

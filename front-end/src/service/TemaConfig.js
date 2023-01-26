@@ -77,7 +77,7 @@ const getDesignTokens = (mode) => ({
                     main: '#00579D'
                 },
                 visualizado: {
-                    true: '#FFFFFF',
+                    true: '#E4E4E4',
                     false: '#E4E4E4'
                 },
                 hover: {
