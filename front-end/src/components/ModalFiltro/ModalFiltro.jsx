@@ -224,6 +224,7 @@ const ModalFiltro = (props) => {
                                             <Typography sx={{ color: 'secundary.main', fontSize: FontConfig.big, fontWeight: '600' }}>
                                                 Data:
                                             </Typography>
+                                            {/* <input style={styleInput} type="date" max={new Date()}></input> */}
                                             <input style={styleInput} type="date"></input>
                                         </Box>
                                     </FormGroup>
