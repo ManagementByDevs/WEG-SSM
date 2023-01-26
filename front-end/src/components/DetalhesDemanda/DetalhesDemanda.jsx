@@ -320,16 +320,14 @@ const DetalhesDemanda = (props) => {
           ...anexosVelhos,
           ...novosAnexos,
         ]).then((response) => {
-          // atualizar demanda salva no location
-
           for (let anexo of anexos) {
             AnexoService.deleteById(anexo.id);
           }
+          // atualizar demanda salva no location
 
           setEditar(false);
           excluirBeneficiosRemovidos();
           setDemandaEmEdicao(false);
-          console.log("Response: ", response);
           props.setDados(response);
         });
       } else {
@@ -340,14 +338,16 @@ const DetalhesDemanda = (props) => {
           setEditar(false);
           excluirBeneficiosRemovidos();
           setDemandaEmEdicao(false);
-          console.log("Response: ", response);
           props.setDados(response);
         });
       }
     }
 
+    DemandaService.getById(props.dados.id).then((res) => {
+      props.updateDemandaProps(res);
+    })
+
     if (anexosRemovidos.length > 0) {
-      console.log("entrou anexos removidos");
       for (let anexoRemovido of anexosRemovidos) {
         AnexoService.deleteById(anexoRemovido.id);
       }

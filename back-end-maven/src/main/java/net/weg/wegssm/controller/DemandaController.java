@@ -1878,7 +1878,7 @@ public class DemandaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
         }
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.findById(id).get());
     }
 
     /**
