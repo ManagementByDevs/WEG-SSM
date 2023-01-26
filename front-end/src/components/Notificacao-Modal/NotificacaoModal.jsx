@@ -12,6 +12,7 @@ import {
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import Notificacao from "../Notificacao/Notificacao";
+import FontConfig from "../../service/FontConfig";
 
 const NotificacaoModal = (props) => {
   // UseState para poder visualizar e alterar a visibilidade das notificacoes
@@ -29,6 +30,9 @@ const NotificacaoModal = (props) => {
   const handleClose = (src) => {
     setAnchorEl(null);
   };
+
+  //   Contador para ver se tem notificação não lida
+  let contNaoLidas = 0;
 
   const [notificacoes, setNotificacoes] = useState([
     {
@@ -99,6 +103,7 @@ const NotificacaoModal = (props) => {
           {/* Componente Notificacao (Cada notificacao que aparece) */}
           {notificacoes?.map((notificacao, index) => {
             if (!notificacao.lida) {
+              contNaoLidas++;
               return (
                 <Notificacao
                   key={index}
@@ -109,11 +114,19 @@ const NotificacaoModal = (props) => {
             }
           })}
           {/* Caso não haja notificação não lida, aparece a mensagem abaixo */}
-          {notificacoes?.map((notificacao) => {
-            if (notificacao.lida) {
-              cont++;
-            }
-          })}
+          {contNaoLidas === 0 && (
+            <Box className="flex items-center text-center w-full pt-1">
+              <Typography
+              fontSize={FontConfig.default}
+                color={"text.secondary"}
+                sx={{
+                  fontWeight: 600,
+                }}
+              >
+                Nenhuma notificação encontrada!
+              </Typography>
+            </Box>
+          )}
           {/* Ver mais */}
           <Box className="flex justify-center w-full pt-1">
             <Typography
@@ -126,7 +139,7 @@ const NotificacaoModal = (props) => {
                 },
               }}
             >
-              Ver mais (3)
+              Ver mais ({contNaoLidas})
             </Typography>
           </Box>
         </Box>
