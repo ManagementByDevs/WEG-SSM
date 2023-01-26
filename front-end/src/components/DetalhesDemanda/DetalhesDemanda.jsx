@@ -528,13 +528,18 @@ const DetalhesDemanda = (props) => {
   // Aparecer o feedback sobre a demanda
 
   const navegarHome = (tipoFeedback) => {
+    localStorage.removeItem('tipoFeedback');
+    
     switch (tipoFeedback) {
       case 1:
-        navigate("/", { state: { feedback: "2" } });
+        localStorage.setItem('tipoFeedback', '2');
+        navigate("/");
       case 2:
-        navigate("/", { state: { feedback: "3" } });
+        localStorage.setItem('tipoFeedback', '3');
+        navigate("/");
       case 3:
-        navigate("/", { state: { feedback: "4" } });
+        localStorage.setItem('tipoFeedback', '4');
+        navigate("/");
     }
   };
 
