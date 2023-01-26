@@ -117,6 +117,8 @@ const HomeGerencia = () => {
     } else if (localStorage.getItem('tipoFeedback') == "4") {
       setFeedbackDemandaRecusada(true);
     }
+
+    localStorage.removeItem('tipoFeedback');
     
   }, []);
 
