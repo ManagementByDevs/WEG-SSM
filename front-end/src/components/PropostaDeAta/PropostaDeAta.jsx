@@ -256,7 +256,7 @@ const PropostaDeAta = (props) => {
 
             {/* Parecer da comissão caso seja uma proposta de uma pauta */}
 
-            {propostaDePauta ?
+            {!propostaDePauta ?
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                     <Box sx={{ marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center" }}>
                         <Typography

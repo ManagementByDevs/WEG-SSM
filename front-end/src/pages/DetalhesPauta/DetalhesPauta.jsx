@@ -22,6 +22,8 @@ const DetalhesPauta = (props) => {
 
     const navigate = useNavigate();
 
+    // Variáveis de estilo para o componente
+
     const tituloProposta = {
         textDecoration: "underline",
         cursor: "pointer",
@@ -91,7 +93,7 @@ const DetalhesPauta = (props) => {
 
     const [proposta, setProposta] = useState(false);
     const [botaoProximo, setBotaoProximo] = useState(true);
-    const [dadosProposta, setDadosProposta] = useState(listaProposta[1]);
+    const [dadosProposta, setDadosProposta] = useState(listaProposta[0]);
     const [indexProposta, setIndexProposta] = useState(-1);
     const [indexTitulo, setIndexTitulo] = useState(0);
     const [minimizar, setMinimizar] = useState(false);
@@ -128,12 +130,14 @@ const DetalhesPauta = (props) => {
         }
     };
 
-    const criarAta = () => {
-        navigate("/detalhes-ata");
-    };
-
     const minimizarBotoes = () => {
         setMinimizar(!minimizar);
+    };
+
+    // Feedback de ata criada com sucesso
+
+    const feedbackAta = () => {
+        navigate("/detalhes-ata", { state: { feedback: true } });
     };
 
     return (
@@ -281,7 +285,7 @@ const DetalhesPauta = (props) => {
                                         fontSize: FontConfig.default,
                                     }}
                                     variant="contained"
-                                    onClick={criarAta}
+                                    onClick={feedbackAta}
                                 >
                                     <Typography>
                                         Criar Ata
