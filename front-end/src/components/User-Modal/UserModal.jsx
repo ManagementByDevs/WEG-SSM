@@ -11,6 +11,7 @@ import {
   Box,
   FormControlLabel,
   Switch,
+  Slider,
 } from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
@@ -19,7 +20,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlined";
 
-import FontConfig from "../../service/FontConfig";
+import FontContext from "../../service/FontContext";
 import ColorModeContext from "../../service/TemaContext";
 
 import UsuarioService from "../../service/usuarioService";
@@ -71,7 +72,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const UserModal = () => {
+const UserModal = (props) => {
   // Desestruturação de objeto em duas variáveis:
   // - Mode: modo do tema atual ("light" ou "dark")
   // - toggleColorMode: função para alternar o tema
@@ -128,6 +129,175 @@ const UserModal = () => {
   useEffect(() => {
     toggleColorMode();
   }, [temaDark]);
+
+  // Personalizar o slider da fonte
+  const SliderMark = styled(Slider)(({ theme }) => ({
+    color: theme.palette.mode === "dark" ? "#3880ff" : "#3880ff",
+    height: 4,
+    padding: "15px 0",
+    "& .MuiSlider-thumb": {
+      height: 18,
+      width: 18,
+      backgroundColor: "#fff",
+      "&:focus, &:hover, &.Mui-active": {
+        boxShadow:
+          "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)",
+      },
+    },
+    "& .MuiSlider-valueLabel": {
+      fontSize: 13,
+      fontWeight: "normal",
+      top: 0,
+      backgroundColor: "unset",
+      color: theme.palette.text.primary,
+      "&:before": {
+        display: "none",
+      },
+      "& *": {
+        background: "transparent",
+        color: theme.palette.mode === "dark" ? "#fff" : "#000",
+      },
+    },
+    "& .MuiSlider-track": {
+      border: "none",
+    },
+    "& .MuiSlider-rail": {
+      opacity: 0.5,
+      backgroundColor: "#bfbfbf",
+    },
+    "& .MuiSlider-mark": {
+      backgroundColor: "#bfbfbf",
+      height: 9,
+      width: 2,
+      "&.MuiSlider-markActive": {
+        opacity: 1,
+        backgroundColor: "currentColor",
+      },
+    },
+  }));
+
+  // Mudar o value para texto
+  function valuetext(value) {
+    if (value === 0) {
+      return "Normal";
+    } else if (value === -1) {
+      return "Pequeno";
+    } else if (value === -2) {
+      return "Muito Pequeno";
+    } else if (value === 1) {
+      return "Grande";
+    } else if (value === 2) {
+      return "Muito Grande";
+    }
+  }
+
+  // Funções para aumentar o value do slider
+  const aumentarValue = (event) => {
+    if (valueSlider === 2) {
+      setValueSlider(2);
+    } else {
+      setValueSlider(valueSlider + 1);
+    }
+  };
+
+  // Funções para diminuir o value do slider
+  const diminuirValue = (event) => {
+    if (valueSlider === -2) {
+      setValueSlider(-2);
+    } else {
+      setValueSlider(valueSlider - 1);
+    }
+  };
+
+  // UseState para poder visualizar e alterar o value do slider
+  const [valueSlider, setValueSlider] = useState(0);
+
+  // Função para mudar o value do slider
+  const handleChange = (event, newValue) => {
+    if (typeof newValue === "number") {
+      setValueSlider(newValue);
+    }
+  };
+
+  //useContext para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // UseEffect para alterar o tamanho da fonte
+  useEffect(() => {
+    switch (valueSlider) {
+      case 0:
+        setFontConfig({
+          verySmall: "10px",
+          small: "12px",
+          default: "14px",
+          medium: "16px",
+          big: "18px",
+          veryBig: "20px",
+          smallTitle: "30px",
+          title: "36px",
+        });
+        break;
+      case -1:
+        setFontConfig({
+          verySmall: "8px",
+          small: "10px",
+          default: "12px",
+          medium: "14px",
+          big: "16px",
+          veryBig: "18px",
+          smallTitle: "28px",
+          title: "34px",
+        });
+        break;
+      case -2:
+        setFontConfig({
+          verySmall: "6px",
+          small: "8px",
+          default: "10px",
+          medium: "12px",
+          big: "14px",
+          veryBig: "16px",
+          smallTitle: "26px",
+          title: "32px",
+        });
+        break;
+      case 1:
+        setFontConfig({
+          verySmall: "12px",
+          small: "14px",
+          default: "16px",
+          medium: "18px",
+          big: "20px",
+          veryBig: "22px",
+          smallTitle: "32px",
+          title: "38px",
+        });
+        break;
+      case 2:
+        setFontConfig({
+          verySmall: "14px",
+          small: "16px",
+          default: "18px",
+          medium: "20px",
+          big: "22px",
+          veryBig: "24px",
+          smallTitle: "34px", 
+          title: "40px",
+        });
+        break;
+      default:
+        setFontConfig({
+          verySmall: "10px",
+          small: "12px",
+          default: "14px",
+          medium: "16px",
+          big: "18px",
+          veryBig: "20px",
+          smallTitle: "30px",
+          title: "36px",
+        });
+    }
+  }, [valueSlider]);
 
   return (
     <>
@@ -233,7 +403,54 @@ const UserModal = () => {
             )}
             Chats
           </MenuItem>
-          <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4 mt-1">
+
+          {/* Slider para mudar o tamanho da fonte */}
+          <Box className="flex justify-center w-full mt-4">
+            <Box
+              className="flex items-center justify-around"
+              sx={{ width: "85%" }}
+            >
+              {/* Letra A pequena, para diminuir a fonto */}
+              <Tooltip title="Diminui fonte">
+                <IconButton onClick={diminuirValue} size="small">
+                  <Typography
+                    fontSize={FontConfig.default}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    A
+                  </Typography>
+                </IconButton>
+              </Tooltip>
+              {/* Slider */}
+              <Box className="w-24 h-8">
+                <SliderMark
+                  aria-label="Small steps"
+                  defaultValue={0}
+                  step={1}
+                  value={valueSlider}
+                  onChange={handleChange}
+                  marks
+                  min={-2}
+                  max={2}
+                  valueLabelFormat={valuetext}
+                  valueLabelDisplay="auto"
+                />
+              </Box>
+              {/* Letra A grande, para aumentar a fonte */}
+              <Tooltip title="Diminui fonte">
+                <IconButton onClick={aumentarValue} size="small">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    A
+                  </Typography>
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
+
+          <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4">
             {/* <Typography color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 500 }}>Tema</Typography> */}
             <Tooltip title="Modo Escuro/Claro">
               <FormControlLabel

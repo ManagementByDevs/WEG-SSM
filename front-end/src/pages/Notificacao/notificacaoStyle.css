@@ -1,0 +1,15 @@
+.noticacao-table-row:hover .notificacao-table-row-td {
+    display: none;
+}
+
+.noticacao-table-row:hover .notificacao-table-row-td-action {
+    display: block !important;
+}
+
+.notificacao-table-row-td:hover {
+    display: none;
+}
+
+.notificacao-table-row-td-action {
+    display: none !important;
+}

@@ -24,17 +24,22 @@ const Notificacao = (props) => {
   return (
     // Container da natificacao
     <Box
-      className="flex items-center border rounded px-2 py-1 mb-2 delay-120 hover:scale-105 duration-300"
+      className="flex items-center border rounded px-2 py-1 mt-2 delay-120 hover:scale-105 duration-300"
       title={props.notificacao.notificacao}
       onClick={handleClick}
       sx={{
-        width: "100%",
+        width: "92%",
+        height: "90%",
         backgroundColor: corNotificacao,
         cursor: "pointer",
       }}
     >
+      {/* Icon da notificacao */}
       <HighlightOffOutlinedIcon sx={{ fontSize: "35px", marginRight: "5px" }} />
-      <Box className="flex flex-col w-32 mt-2">
+
+      {/* Texto da notificacao */}
+      <Box className="flex flex-col w-44 mt-2">
+        {/* A propria notificacao */}
         <Typography
           className="overflow-hidden text-ellipsis whitespace-nowrap"
           fontSize={FontConfig.default}
@@ -43,6 +48,7 @@ const Notificacao = (props) => {
         >
           {props.notificacao.notificacao}
         </Typography>
+        {/* O tempo da notificação */}
         <Typography
           className="text-end "
           fontSize={FontConfig.small}

@@ -2,6 +2,7 @@ package net.weg.wegssm.repository;
 
 import net.weg.wegssm.model.entities.Notificacao;
 import net.weg.wegssm.model.entities.TipoNotificacao;
+import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +19,12 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
      * @return
      */
     List<Notificacao> findByTipoNotificacao(TipoNotificacao tipoNotificacao);
+
+    /**
+     * Lista as notificações do usuário
+     * @param usuario
+     * @return lista de notificações
+     */
+    List<Notificacao> findByUsuario(Usuario usuario);
 
 }

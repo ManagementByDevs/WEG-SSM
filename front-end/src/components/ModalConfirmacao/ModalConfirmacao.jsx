@@ -56,6 +56,8 @@ const ModalConfirmacao = (props) => {
         return "Deseja descartar as alterações?";
       case "aceitarDemanda":
         return "Deseja aceitar a demanda?";
+      case "confirmarExclusao":
+        return "Tem certeza que deseja excluir?";
     }
   };
 

@@ -14,30 +14,42 @@ import {
   Tooltip,
 } from "@mui/material";
 
+import "./notificacaoStyle.css";
+
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+
 import FontConfig from "../../service/FontConfig";
-import NotificacaoComponente from "../../components/NotificacaoComponente/NotificacaoComponente";
 
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
-import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const Notificacao = () => {
+  // Modal de filtro
   const [abrirFiltro, setOpenFiltro] = useState(false);
+  // Modal de confirmação de exclusão individual
+  const [openModalConfirmDelete, setOpenModalConfirmDelete] = useState(false);
+  // Modal de confirmação de exclusão múltipla
+  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] =
+    useState(false);
 
-  const abrirModalFiltro = () => {
-    setOpenFiltro(true);
-  };
+  // UseState para saber qual notificação deletar ao usar o botão de delete individual
+  const [indexDelete, setIndexDelete] = useState(null);
 
+  // Cria uma linha da tabela retornando um objeto
   const createRow = (title, date, visualizado, tipo_icone) => {
     return { checked: false, title, date, visualizado, tipo_icone };
   };
 
+  // Linhas da tabela
   const [rows, setRows] = useState([
     createRow(
       "Frozen yoghurt Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit quam amet enim odio sint. Iure beatae alias assumenda neque quod!",
@@ -46,11 +58,17 @@ const Notificacao = () => {
       1
     ),
     createRow("Eclair", "10/10/20 - 18:23", false, 2),
-    createRow("Ice cream sandwich", "10/10/20 - 18:23", true, 1),
-    createRow("Cupcake", "10/10/20 - 18:23", true, 1),
+    createRow("Ice cream sandwich", "10/10/20 - 18:23", true, 3),
+    createRow("Cupcake", "10/10/20 - 18:23", true, 4),
     createRow("Gingerbread", "10/10/20 - 18:23", true, 2),
   ]);
 
+  // Handler que atualiza o estado do modal de filtro
+  const abrirModalFiltro = () => {
+    setOpenFiltro(true);
+  };
+
+  // Atualiza o estado da linha ao clicar no checkbox
   const onSelectRowClick = (event, index) => {
     let aux = [...rows];
     aux[index].checked = event.target.checked;
@@ -58,6 +76,7 @@ const Notificacao = () => {
     setRows(aux);
   };
 
+  // Atualiza o estado de todas as linhas ao clicar no checkbox de seleção de todas as linhas da tabela
   const onSelectAllClick = (isSelect) => {
     let aux = [...rows];
     aux.forEach((row) => {
@@ -66,11 +85,8 @@ const Notificacao = () => {
     setRows(aux);
   };
 
-  useEffect(() => {
-    console.log("rows", rows);
-  }, [rows]);
-
-  const onReadOrUnreadClick = () => {
+  // Atualiza o estado de visualizado de todas as linhas selecionadas
+  const onMultiReadOrUnreadClick = () => {
     let listWithCheckeds = [...rows.filter((row) => row.checked)];
     let bool = listWithCheckeds.every((row) => row.visualizado);
 
@@ -84,15 +100,48 @@ const Notificacao = () => {
     setRows(newList);
   };
 
-  const deleteRow = () => {
+  // Deleta todas as linhas selecionadas
+  const onMultiDeleteRowClick = () => {
     let aux = rows.filter((row) => {
       return !row.checked;
     });
     setRows(aux);
   };
 
+  // Atualiza o estado de visualizado da linha selecionada
+  const onReadOrUnreadClick = (index) => {
+    let aux = [...rows];
+    aux[index].visualizado = !aux[index].visualizado;
+    setRows(aux);
+  };
+
+  // Deleta linha selecionada
+  const onDeleteClick = () => {
+    let aux = [...rows];
+    aux.splice(indexDelete, 1);
+    setRows(aux);
+  };
+
   return (
     <FundoComHeader>
+      <ModalConfirmacao
+        open={openModalConfirmDelete}
+        setOpen={setOpenModalConfirmDelete}
+        textoModal={"confirmarExclusao"}
+        onConfirmClick={onDeleteClick}
+        onCancelClick={() => {}}
+        textoBotao={"sim"}
+      />
+
+      <ModalConfirmacao
+        open={openModalConfirmMultiDelete}
+        setOpen={setOpenModalConfirmMultiDelete}
+        textoModal={"confirmarExclusao"}
+        onConfirmClick={onMultiDeleteRowClick}
+        onCancelClick={() => {}}
+        textoBotao={"sim"}
+      />
+
       <Box className="p-2">
         <Caminho />
         <Box className="w-full flex flex-col items-center">
@@ -117,14 +166,18 @@ const Notificacao = () => {
               {rows.find((row) => row.checked) ? (
                 <Box className="w-1/12 flex justify-center">
                   <Tooltip title="Deletar">
-                    <IconButton onClick={deleteRow}>
+                    <IconButton
+                      onClick={() => {
+                        setOpenModalConfirmMultiDelete(true);
+                      }}
+                    >
                       <DeleteOutlineOutlinedIcon
                         sx={{ color: "primary.main" }}
                       />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Marcar como lido">
-                    <IconButton onClick={onReadOrUnreadClick}>
+                    <IconButton onClick={onMultiReadOrUnreadClick}>
                       {rows.every((row) => row.visualizado) ? (
                         <MarkEmailUnreadOutlinedIcon
                           sx={{ color: "primary.main" }}
@@ -175,7 +228,9 @@ const Notificacao = () => {
                             color: "white",
                           },
                         }}
-                        checked={rows.every((row) => row.checked)}
+                        checked={
+                          rows.every((row) => row.checked) && rows.length > 0
+                        }
                         onChange={(e) => {
                           onSelectAllClick(e.target.checked);
                         }}
@@ -189,7 +244,7 @@ const Notificacao = () => {
                 <TableBody>
                   {rows.map((row, index) => (
                     <TableRow
-                      className="drop-shadow-lg"
+                      className="drop-shadow-lg noticacao-table-row"
                       selected={!row.visualizado}
                       hover
                       key={index}
@@ -215,7 +270,7 @@ const Notificacao = () => {
                       </td>
                       <td className="text-center">
                         {row.tipo_icone == 1 ? (
-                          <HighlightOffOutlinedIcon
+                          <CheckCircleOutlineIcon
                             color="primary"
                             sx={{ fontSize: "30px", marginX: "0.5rem" }}
                           />
@@ -225,20 +280,54 @@ const Notificacao = () => {
                             sx={{ fontSize: "30px", marginX: "0.5rem" }}
                           />
                         ) : row.tipo_icone == 3 ? (
-                          <ErrorOutlineOutlinedIcon
+                          <HelpOutlineIcon
                             color="primary"
                             sx={{ fontSize: "30px", marginX: "0.5rem" }}
                           />
                         ) : (
-                          <ErrorOutlineOutlinedIcon
+                          <ChatBubbleOutlineIcon
                             color="primary"
                             sx={{ fontSize: "30px", marginX: "0.5rem" }}
                           />
                         )}
                       </td>
                       <td className="text-center">
-                        <Typography fontSize={FontConfig.default}>
+                        <Typography
+                          className="notificacao-table-row-td"
+                          fontSize={FontConfig.default}
+                        >
                           {row.date}
+                        </Typography>
+                        <Typography className="notificacao-table-row-td-action">
+                          {row.visualizado ? (
+                            <Tooltip title="Marcar como não lido">
+                              <MarkEmailUnreadOutlinedIcon
+                                onClick={() => onReadOrUnreadClick(index)}
+                                className="cursor-pointer"
+                                sx={{ color: "primary.main" }}
+                              />
+                            </Tooltip>
+                          ) : (
+                            <Tooltip title="Marcar como lido">
+                              <MarkEmailReadOutlinedIcon
+                                onClick={() => onReadOrUnreadClick(index)}
+                                className="cursor-pointer"
+                                sx={{ color: "primary.main" }}
+                              />
+                            </Tooltip>
+                          )}
+                          <Tooltip
+                            title="Deletar"
+                            className="cursor-pointer ml-4"
+                          >
+                            <DeleteOutlineOutlinedIcon
+                              onClick={() => {
+                                setIndexDelete(index);
+                                setOpenModalConfirmDelete(true);
+                              }}
+                              sx={{ color: "primary.main" }}
+                            />
+                          </Tooltip>
                         </Typography>
                       </td>
                     </TableRow>
