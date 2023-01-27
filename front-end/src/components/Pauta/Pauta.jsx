@@ -47,7 +47,9 @@ const Pautas = (props) => {
           {props.tipo === "pauta" && (
             <Box sx={{marginRight: "-16px"}} className="ml-2">
               <Tooltip title="Deletar">
-                <IconButton>
+                <IconButton onClick={(e) => {
+                  e.stopPropagation();
+                }}>
                   <DeleteOutlineOutlinedIcon
                     className="delay-120 hover:scale-110 duration-300 "
                     sx={{

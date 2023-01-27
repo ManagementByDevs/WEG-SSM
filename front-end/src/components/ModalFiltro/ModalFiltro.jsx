@@ -130,6 +130,15 @@ const ModalFiltro = (props) => {
         }
     }
 
+    const getTodaysDate = () => {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const yyyy = today.getFullYear();
+        console.log(yyyy + '-' + mm + '-' + dd)
+        return yyyy + '-' + mm + '-' + dd;
+    }
+
     return (
         <Modal
             open={props.open}
@@ -179,7 +188,7 @@ const ModalFiltro = (props) => {
                                             <Typography sx={{ color: 'secundary.main', fontSize: FontConfig.big, fontWeight: '600' }}>
                                                 Data:
                                             </Typography>
-                                            <input style={styleInput} type="date"></input>
+                                            <input style={styleInput} type="date" max={getTodaysDate()}></input>
                                         </Box>
                                     </FormGroup>
                                 </Grid>

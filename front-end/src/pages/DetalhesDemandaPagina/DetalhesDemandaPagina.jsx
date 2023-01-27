@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 
@@ -38,12 +38,12 @@ const DetalhesDemandaPagina = () => {
     ).then((e) => {
       setUsuario(e);
     });
-  }
+  };
 
   const updateDemandaProps = (demanda) => {
     setDados(demanda);
     location.state = demanda;
-  }
+  };
 
   return (
     <FundoComHeader>
@@ -54,11 +54,13 @@ const DetalhesDemandaPagina = () => {
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
           >
-            <SaveAltOutlinedIcon
-              fontSize="large"
-              className="delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main" }}
-            />
+            <IconButton>
+              <SaveAltOutlinedIcon
+                fontSize="large"
+                className="delay-120 hover:scale-110 duration-600"
+                sx={{ color: "icon.main" }}
+              />
+            </IconButton>
           </Box>
         </Box>
         <DetalhesDemanda

@@ -127,6 +127,7 @@ const HomeGerencia = () => {
       setFeedbackDemandaRecusada(true);
     }
 
+    localStorage.removeItem('tipoFeedback');
   }, []);
 
   useEffect(() => {
@@ -429,7 +430,7 @@ const HomeGerencia = () => {
         {/* Feedback ata criada */}
         <Feedback open={feedbackAta} handleClose={() => {
           setOpenFeedbackAta(false);
-        }} status={"sucesso"} mensagem={"Ata criada com sucesso!"} />
+        }} status={"sucesso"} mensagem={"Ata publicada com sucesso!"} />
 
         <Feedback open={feedbackDemandaAceita} handleClose={() => {
           setFeedbackDemandaAceita(false);

@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import {
     Box,
@@ -9,17 +10,19 @@ import {
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
+import DensitySmallIcon from '@mui/icons-material/DensitySmall';
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
-import { useNavigate } from "react-router-dom";
+import Feedback from "../../components/Feedback/Feedback";
 
 import FontConfig from "../../service/FontConfig";
 
 const DetalhesAta = (props) => {
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     // Varuáveis de estilo para usar no componente 
 
@@ -100,10 +103,23 @@ const DetalhesAta = (props) => {
     const [botaoProximo, setBotaoProximo] = useState(true);
     const [indexTitulo, setIndexTitulo] = useState(0);
     const [ata, setAta] = useState(false);
+    const [minimizar, setMinimizar] = useState(false);
 
-    
+    // feedback para ata criada com sucesso
+
+    const [feedbackAta, setFeedbackAta] = useState(false);
+
     // useState para a pauta criada
+
     const [ataCriada, setAtaCriada] = useState(false);
+
+    // useEffect usado para feedback
+
+    useEffect(() => {
+        if (location.state?.feedback) {
+            setFeedbackAta(true);
+        }
+    }, [location.state?.feedback]);
 
     // funções para visualização das propostas, voltar, próximo...
 
@@ -143,6 +159,10 @@ const DetalhesAta = (props) => {
         navigate('/', { state: { feedback: true } })
     }
 
+    const minimizarBotoes = () => {
+        setMinimizar(!minimizar);
+    };
+
     return (
         // Começo com o header da página
         <FundoComHeader>
@@ -162,6 +182,11 @@ const DetalhesAta = (props) => {
                         />
                     </Box>
                 </Box>
+
+                {/* Feedback ata criada com sucesso */}
+                <Feedback open={feedbackAta} handleClose={() => {
+                    setFeedbackAta(false);
+                }} status={"sucesso"} mensagem={"Ata criada com sucesso!"} />
 
                 {/* container geral da tela */}
                 <Box className="flex flex-col justify-center relative items-center mt-3">
@@ -244,7 +269,7 @@ const DetalhesAta = (props) => {
                             :
                             <Box>
                                 <Typography sx={{ marginBottom: '2%', display: 'flex', justifyContent: 'center' }} fontSize={FontConfig.title} fontWeight={650}>Proposta  {indexProposta}</Typography>
-                                <PropostaDeAta dadosProposta={dadosProposta} propostaPauta={true} parecerDG={false} />
+                                <PropostaDeAta dadosProposta={dadosProposta} propostaPauta={false} parecerDG={true} />
                             </Box>
                         }
                     </Box>
@@ -253,65 +278,89 @@ const DetalhesAta = (props) => {
                     <Box className="flex fixed justify-end"
                         sx={{ width: "25rem", bottom: "20px", right: "20px" }}>
                         <Box className="flex justify-around w-full">
-                            <Button
-                                sx={{
-                                    backgroundColor: "primary.main",
-                                    color: "text.white",
-                                    fontSize: FontConfig.default,
-                                }}
-                                variant="contained"
-                                onClick={() => voltar()}
-                            >
-                                Voltar
-                            </Button>
-                            <Button
-                                sx={{
-                                    backgroundColor: "primary.main",
-                                    color: "text.white",
-                                    fontSize: FontConfig.default,
-                                }}
-                                variant="contained"
-                                onClick={voltarSumario}
-                            >
-                                <OtherHousesIcon></OtherHousesIcon>
-                            </Button>
-                            <Button
-                                sx={{
-                                    backgroundColor: "primary.main",
-                                    color: "text.white",
-                                    fontSize: FontConfig.default,
-                                }}
-                                variant="contained"
-                                onClick={proximo}
-                            >
-                                <Typography>
-                                    Próximo
-                                </Typography>
-                            </Button>
-                            {!ataCriada ?
-                                <Button
-                                    sx={{
-                                        backgroundColor: "primary.main",
-                                        color: "text.white",
-                                        fontSize: FontConfig.default,
-                                    }}
-                                    variant="contained"
-                                    onClick={criarAta}
-                                >
-                                    Criar
-                                </Button>
+                            {!minimizar &&
+                                <Box className="flex justify-around w-full">
+                                    <Button
+                                        sx={{
+                                            backgroundColor: "primary.main",
+                                            color: "text.white",
+                                            fontSize: FontConfig.default,
+                                        }}
+                                        variant="contained"
+                                        onClick={() => voltar()}
+                                    >
+                                        Voltar
+                                    </Button>
+                                    <Button
+                                        sx={{
+                                            backgroundColor: "primary.main",
+                                            color: "text.white",
+                                            fontSize: FontConfig.default,
+                                        }}
+                                        variant="contained"
+                                        onClick={voltarSumario}
+                                    >
+                                        <OtherHousesIcon></OtherHousesIcon>
+                                    </Button>
+                                    <Button
+                                        sx={{
+                                            backgroundColor: "primary.main",
+                                            color: "text.white",
+                                            fontSize: FontConfig.default,
+                                        }}
+                                        variant="contained"
+                                        onClick={proximo}
+                                    >
+                                        <Typography>
+                                            Próximo
+                                        </Typography>
+                                    </Button>
+
+                                    <Button
+                                        sx={{
+                                            backgroundColor: "primary.main",
+                                            color: "text.white",
+                                            fontSize: FontConfig.default,
+                                        }}
+                                        variant="contained"
+                                        onClick={criarAta}
+                                    >
+                                        Publicar
+                                    </Button>
+
+                                </Box>
+                            }
+
+                            {!minimizar ?
+                                <Box>
+                                    <Button
+                                        sx={{
+                                            backgroundColor: "primary.main",
+                                            color: "text.white",
+                                            fontSize: FontConfig.default,
+                                        }}
+                                        variant="contained"
+                                        onClick={minimizarBotoes}
+                                    >
+                                        <DensitySmallIcon></DensitySmallIcon>
+                                    </Button>
+                                </Box>
                                 :
-                                <Button
-                                    sx={{
-                                        backgroundColor: "primary.main",
-                                        color: "text.white",
-                                        fontSize: FontConfig.default,
-                                    }}
-                                    variant="contained"
-                                    // onClick={criarAta}
-                                >
-                                    Publicar
-                                </Button>
+                                <Box sx={{
+                                    marginLeft: '84%'
+                                }}>
+                                    <Button
+                                        sx={{
+                                            backgroundColor: "primary.main",
+                                            color: "text.white",
+                                            fontSize: FontConfig.default,
+                                        }}
+                                        variant="contained"
+                                        onClick={minimizarBotoes}
+                                    >
+                                        <DensitySmallIcon></DensitySmallIcon>
+                                    </Button>
+                                </Box>
                             }
                         </Box>
                     </Box>
