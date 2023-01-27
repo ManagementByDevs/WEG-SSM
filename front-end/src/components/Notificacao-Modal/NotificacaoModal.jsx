@@ -12,6 +12,7 @@ import {
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import Notificacao from "../Notificacao/Notificacao";
+import FontConfig from "../../service/FontConfig";
 
 const NotificacaoModal = (props) => {
   // UseState para poder visualizar e alterar a visibilidade das notificacoes
@@ -30,6 +31,9 @@ const NotificacaoModal = (props) => {
     setAnchorEl(null);
   };
 
+  //   Contador para ver se tem notificação não lida
+  let contNaoLidas = 0;
+
   const [notificacoes, setNotificacoes] = useState([
     {
       tipo: "Aviso",
@@ -41,6 +45,18 @@ const NotificacaoModal = (props) => {
       tipo: "Aviso",
       notificacao: "notificação Essa titulo é o  da ",
       data: "01/16/2023",
+      lida: false,
+    },
+    {
+      tipo: "Aviso",
+      notificacao: "titulo Essa é o notificação da ",
+      data: "01/25/2023",
+      lida: false,
+    },
+    {
+      tipo: "Aviso",
+      notificacao: "titulo Essa é o notificação da ",
+      data: "01/25/2023",
       lida: false,
     },
     {
@@ -95,27 +111,38 @@ const NotificacaoModal = (props) => {
         }}
         {...props}
       >
-        <Box className="w-52 px-3 py-2 max-h-72">
-          {/* Componente Notificacao (Cada notificacao que aparece) */}
-          {notificacoes?.map((notificacao, index) => {
-            if (!notificacao.lida) {
-              return (
-                <Notificacao
-                  key={index}
-                  notificacao={notificacao}
-                  index={index}
-                />
-              );
-            }
-          })}
-          {/* Caso não haja notificação não lida, aparece a mensagem abaixo */}
-          {notificacoes?.map((notificacao) => {
-            if (notificacao.lida) {
-              cont++;
-            }
-          })}
-          {/* Ver mais */}
-          <Box className="flex justify-center w-full pt-1">
+        <Box className="w-72 px-3 py-2 max-h-60 overflow-hidden">
+          <Box className="flex flex-col items-center overflow-y-auto overflow-x-hidden" sx={{maxHeight: "12.5rem"}}>
+            {/* Componente Notificacao (Cada notificacao que aparece) */}
+            {notificacoes?.map((notificacao, index) => {
+              if (!notificacao.lida) {
+                contNaoLidas++;
+                return (
+                  <Notificacao
+                    key={index}
+                    notificacao={notificacao}
+                    index={index}
+                  />
+                );
+              }
+            })}
+            {/* Caso não haja notificação não lida, aparece a mensagem abaixo */}
+            {contNaoLidas === 0 && (
+              <Box className="flex items-center text-center w-full pt-1">
+                <Typography
+                  fontSize={FontConfig.default}
+                  color={"text.secondary"}
+                  sx={{
+                    fontWeight: 600,
+                  }}
+                >
+                  Nenhuma notificação encontrada!
+                </Typography>
+              </Box>
+            )}
+          </Box>
+          {/* Ver Tudo */}
+          <Box className="flex justify-center w-full py-1">
             <Typography
               color={"link.main"}
               sx={{
@@ -126,7 +153,7 @@ const NotificacaoModal = (props) => {
                 },
               }}
             >
-              Ver mais (3)
+              Ver Tudo ({contNaoLidas})
             </Typography>
           </Box>
         </Box>

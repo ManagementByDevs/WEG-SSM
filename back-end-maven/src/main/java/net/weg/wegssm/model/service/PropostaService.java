@@ -31,9 +31,7 @@ public class PropostaService {
         return propostaRepository.findById(id);
     }
 
-    public Optional<Proposta> findByPpm(Long ppm){ return propostaRepository.findByCodigoPPM(ppm); }
-
-//    public List<Proposta> findByTitulo(String titulo){ return propostaRepository.findByTitulo(titulo); }
+    public Proposta findByPpm(Long ppm){ return propostaRepository.findByCodigoPPM(ppm); }
 
     public Boolean existsById(Long id){ return propostaRepository.existsById(id); }
 
@@ -1073,5 +1071,13 @@ public class PropostaService {
 
     public List<Proposta> findByTitulo(String titulo) {
         return propostaRepository.findByTitulo(titulo);
+    }
+
+    public Boolean existsByPPM(Long ppm) {
+        return propostaRepository.existsByCodigoPPM(ppm);
+    }
+
+    public Proposta findByPPM(Long ppm) {
+        return propostaRepository.findByCodigoPPM(ppm);
     }
 }
