@@ -535,4 +535,260 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     Page<Proposta> findByVisibilidade(boolean b, Pageable pageable);
 
     List<Proposta> findByTitulo(String titulo);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamento(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForum(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamento(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndGerente(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamento(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndForum(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Forum forum, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamento(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContainingAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTituloContaining(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamento(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndForumAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndForumAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndForumAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndForum(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndDepartamento(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerenteAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndGerente(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario gerente, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndForumAndDepartamento(boolean b, Status status, Usuario analista, Long codigoPPM, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndForumAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndForumAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndForumAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndForum(boolean b, Status status, Usuario analista, Long codigoPPM, Forum forum, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndDepartamentoAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndDepartamento(boolean b, Status status, Usuario analista, Long codigoPPM, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndTamanho(boolean b, Status status, Usuario analista, Long codigoPPM, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPMAndSolicitante(boolean b, Status status, Usuario analista, Long codigoPPM, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndCodigoPPM(boolean b, Status status, Usuario analista, Long codigoPPM, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamento(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndTamanho(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForum(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Forum forum, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndTamanho(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamento(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndTamanho(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerente(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario gerente, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndTamanho(boolean b, Usuario analista, Long codigoPPM, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamento(boolean b, Usuario analista, Long codigoPPM, String titulo, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndTamanho(boolean b, Usuario analista, Long codigoPPM, String titulo, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForum(boolean b, Usuario analista, Long codigoPPM, String titulo, Forum forum, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndTamanho(boolean b, Usuario analista, Long codigoPPM, String titulo, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamento(boolean b, Usuario analista, Long codigoPPM, String titulo, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndTamanho(boolean b, Usuario analista, Long codigoPPM, String titulo, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String titulo, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContaining(boolean b, Usuario analista, Long codigoPPM, String titulo, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndTamanho(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamento(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndTamanho(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForum(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Forum forum, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndTamanho(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndDepartamento(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndTamanho(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndGerente(boolean b, Usuario analista, Long codigoPPM, Usuario gerente, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndTamanho(boolean b, Usuario analista, Long codigoPPM, Forum forum, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndDepartamento(boolean b, Usuario analista, Long codigoPPM, Forum forum, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Forum forum, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndTamanho(boolean b, Usuario analista, Long codigoPPM, Forum forum, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Forum forum, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndForum(boolean b, Usuario analista, Long codigoPPM, Forum forum, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndDepartamentoAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndDepartamentoAndTamanho(boolean b, Usuario analista, Long codigoPPM, Departamento departamento, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndDepartamentoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Departamento departamento, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndDepartamento(boolean b, Usuario analista, Long codigoPPM, Departamento departamento, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTamanhoAndSolicitante(boolean b, Usuario analista, Long codigoPPM, String tamanho, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndTamanho(boolean b, Usuario analista, Long codigoPPM, String tamanho, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPMAndSolicitante(boolean b, Usuario analista, Long codigoPPM, Usuario solicitante, Pageable pageable);
+
+    Page<Proposta> findByVisibilidadeAndAnalistaAndCodigoPPM(boolean b, Usuario analista, Long codigoPPM, Pageable pageable);
 }
