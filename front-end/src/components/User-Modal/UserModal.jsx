@@ -11,6 +11,7 @@ import {
   Box,
   FormControlLabel,
   Switch,
+  Slider,
 } from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
@@ -71,7 +72,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const UserModal = () => {
+const UserModal = (props) => {
   // Desestruturação de objeto em duas variáveis:
   // - Mode: modo do tema atual ("light" ou "dark")
   // - toggleColorMode: função para alternar o tema
@@ -128,6 +129,95 @@ const UserModal = () => {
   useEffect(() => {
     toggleColorMode();
   }, [temaDark]);
+
+  // Personalizar o slider da fonte
+  const SliderMark = styled(Slider)(({ theme }) => ({
+    color: theme.palette.mode === "dark" ? "#3880ff" : "#3880ff",
+    height: 4,
+    padding: "15px 0",
+    "& .MuiSlider-thumb": {
+      height: 18,
+      width: 18,
+      backgroundColor: "#fff",
+      "&:focus, &:hover, &.Mui-active": {
+        boxShadow:
+          "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)",
+      },
+    },
+    "& .MuiSlider-valueLabel": {
+      fontSize: 13,
+      fontWeight: "normal",
+      top: 0,
+      backgroundColor: "unset",
+      color: theme.palette.text.primary,
+      "&:before": {
+        display: "none",
+      },
+      "& *": {
+        background: "transparent",
+        color: theme.palette.mode === "dark" ? "#fff" : "#000",
+      },
+    },
+    "& .MuiSlider-track": {
+      border: "none",
+    },
+    "& .MuiSlider-rail": {
+      opacity: 0.5,
+      backgroundColor: "#bfbfbf",
+    },
+    "& .MuiSlider-mark": {
+      backgroundColor: "#bfbfbf",
+      height: 9,
+      width: 2,
+      "&.MuiSlider-markActive": {
+        opacity: 1,
+        backgroundColor: "currentColor",
+      },
+    },
+  }));
+
+  // Mudar o value para texto
+  function valuetext(value) {
+    if (value === 0) {
+      return "Normal";
+    } else if (value === -1) {
+      return "Pequeno";
+    } else if (value === -2) {
+      return "Muito Pequeno";
+    } else if (value === 1) {
+      return "Grande";
+    } else if (value === 2) {
+      return "Muito Grande";
+    }
+  }
+
+  // Funções para aumentar o value do slider
+  const aumentarValue = (event) => {
+    if (valueSlider === 2) {
+      setValueSlider(2);
+    } else {
+      setValueSlider(valueSlider + 1);
+    }
+  };
+
+  // Funções para diminuir o value do slider
+  const diminuirValue = (event) => {
+    if (valueSlider === -2) {
+      setValueSlider(-2);
+    } else {
+      setValueSlider(valueSlider - 1);
+    }
+  };
+
+  // UseState para poder visualizar e alterar o value do slider
+  const [valueSlider, setValueSlider] = useState(0);
+
+  // Função para mudar o value do slider
+  const handleChange = (event, newValue) => {
+    if (typeof newValue === "number") {
+      setValueSlider(newValue);
+    }
+  };
 
   return (
     <>
@@ -233,7 +323,54 @@ const UserModal = () => {
             )}
             Chats
           </MenuItem>
-          <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4 mt-1">
+
+          {/* Slider para mudar o tamanho da fonte */}
+          <Box className="flex justify-center w-full mt-4">
+            <Box
+              className="flex items-center justify-around"
+              sx={{ width: "85%" }}
+            >
+              {/* Letra A pequena, para diminuir a fonto */}
+              <Tooltip title="Diminui fonte">
+                <IconButton onClick={diminuirValue} size="small">
+                  <Typography
+                    fontSize={FontConfig.default}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    A
+                  </Typography>
+                </IconButton>
+              </Tooltip>
+              {/* Slider */}
+              <Box className="w-24 h-8">
+                <SliderMark
+                  aria-label="Small steps"
+                  defaultValue={0}
+                  step={1}
+                  value={valueSlider}
+                  onChange={handleChange}
+                  marks
+                  min={-2}
+                  max={2}
+                  valueLabelFormat={valuetext}
+                  valueLabelDisplay="auto"
+                />
+              </Box>
+              {/* Letra A grande, para aumentar a fonte */}
+              <Tooltip title="Diminui fonte">
+                <IconButton onClick={aumentarValue} size="small">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    A
+                  </Typography>
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
+
+          <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4">
             {/* <Typography color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 500 }}>Tema</Typography> */}
             <Tooltip title="Modo Escuro/Claro">
               <FormControlLabel

@@ -53,6 +53,18 @@ const NotificacaoModal = (props) => {
       data: "01/25/2023",
       lida: false,
     },
+    {
+      tipo: "Aviso",
+      notificacao: "titulo Essa é o notificação da ",
+      data: "01/25/2023",
+      lida: false,
+    },
+    {
+      tipo: "Aviso",
+      notificacao: "titulo Essa é o notificação da ",
+      data: "01/25/2023",
+      lida: false,
+    },
   ]);
 
   return (
@@ -99,36 +111,38 @@ const NotificacaoModal = (props) => {
         }}
         {...props}
       >
-        <Box className="w-52 px-3 py-2 max-h-72">
-          {/* Componente Notificacao (Cada notificacao que aparece) */}
-          {notificacoes?.map((notificacao, index) => {
-            if (!notificacao.lida) {
-              contNaoLidas++;
-              return (
-                <Notificacao
-                  key={index}
-                  notificacao={notificacao}
-                  index={index}
-                />
-              );
-            }
-          })}
-          {/* Caso não haja notificação não lida, aparece a mensagem abaixo */}
-          {contNaoLidas === 0 && (
-            <Box className="flex items-center text-center w-full pt-1">
-              <Typography
-              fontSize={FontConfig.default}
-                color={"text.secondary"}
-                sx={{
-                  fontWeight: 600,
-                }}
-              >
-                Nenhuma notificação encontrada!
-              </Typography>
-            </Box>
-          )}
-          {/* Ver mais */}
-          <Box className="flex justify-center w-full pt-1">
+        <Box className="w-72 px-3 py-2 max-h-60 overflow-hidden">
+          <Box className="flex flex-col items-center overflow-y-auto overflow-x-hidden" sx={{maxHeight: "12.5rem"}}>
+            {/* Componente Notificacao (Cada notificacao que aparece) */}
+            {notificacoes?.map((notificacao, index) => {
+              if (!notificacao.lida) {
+                contNaoLidas++;
+                return (
+                  <Notificacao
+                    key={index}
+                    notificacao={notificacao}
+                    index={index}
+                  />
+                );
+              }
+            })}
+            {/* Caso não haja notificação não lida, aparece a mensagem abaixo */}
+            {contNaoLidas === 0 && (
+              <Box className="flex items-center text-center w-full pt-1">
+                <Typography
+                  fontSize={FontConfig.default}
+                  color={"text.secondary"}
+                  sx={{
+                    fontWeight: 600,
+                  }}
+                >
+                  Nenhuma notificação encontrada!
+                </Typography>
+              </Box>
+            )}
+          </Box>
+          {/* Ver Tudo */}
+          <Box className="flex justify-center w-full py-1">
             <Typography
               color={"link.main"}
               sx={{
@@ -139,7 +153,7 @@ const NotificacaoModal = (props) => {
                 },
               }}
             >
-              Ver mais ({contNaoLidas})
+              Ver Tudo ({contNaoLidas})
             </Typography>
           </Box>
         </Box>
