@@ -1,11 +1,15 @@
-import React, { } from 'react';
+import React, { useContext } from 'react';
 import { Box, Divider, getInitColorSchemeScript } from '@mui/material';
 
 import FontConfig from '../../service/FontConfig';
 
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
+import FontContext from "../../service/FontContext";
+
 const NotificacaoComponente = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     const lido = props.lido;
 

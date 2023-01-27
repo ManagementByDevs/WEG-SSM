@@ -12,7 +12,11 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import FontContext from "../../service/FontContext";
+
 const PropostaDeAta = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // Variáveis de estilo para usar no componente
 

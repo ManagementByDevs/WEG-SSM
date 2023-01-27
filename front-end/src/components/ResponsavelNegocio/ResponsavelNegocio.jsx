@@ -1,11 +1,16 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Box, Typography } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
+import FontContext from "../../service/FontContext";
+
 const ResponsavelNegocio = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   return (
     <Box className="flex w-full mt-5 items-end">
       <Box className="flex flex-col">

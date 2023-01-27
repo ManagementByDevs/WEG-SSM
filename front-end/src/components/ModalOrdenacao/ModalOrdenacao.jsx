@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   Modal,
@@ -14,7 +14,11 @@ import Fade from "@mui/material/Fade";
 import FontConfig from "../../service/FontConfig";
 import CloseIcon from "@mui/icons-material/Close";
 
+import FontContext from "../../service/FontContext";
+
 const ModalOrdenacao = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   let style = {
     position: "absolute",

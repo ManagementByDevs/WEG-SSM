@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { Modal, Typography, Box, Divider } from '@mui/material';
 
@@ -10,7 +10,11 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import ContainerHistorico from "../ContainerHistorico/ContainerHistorico";
 
+import FontContext from "../../service/FontContext";
+
 const ModalHistoricoDemanda = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // Variáveis de estilo para o modal
 
