@@ -30,7 +30,12 @@ import BeneficioService from "../../service/beneficioService";
 import DemandaService from "../../service/demandaService";
 import AnexoService from "../../service/anexoService";
 
+import FontContext from "../../service/FontContext";
+
 const DetalhesDemanda = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
   const inputFile = useRef(null);

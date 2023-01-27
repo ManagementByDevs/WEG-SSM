@@ -20,7 +20,12 @@ import ResponsavelNegocio from "../ResponsavelNegocio/ResponsavelNegocio";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 
+import FontContext from "../../service/FontContext";
+
 const FormularioGeralProposta = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const { mode } = useContext(ColorModeContext);
   const inputFile = useRef(null);
 

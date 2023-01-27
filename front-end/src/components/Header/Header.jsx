@@ -6,12 +6,15 @@ import IdiomaModal from "../Idioma-Modal/IdiomaModal";
 import UserModal from "../User-Modal/UserModal";
 import NotificacaoModal from "../Notificacao-Modal/NotificacaoModal";
 
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-
 import LogoBranca from "../../assets/LogoBranca.png";
 import Grid from "../../assets/GridSemFundo.png";
 
+import FontContext from "../../service/FontContext";
+
 const Header = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   // Variável para pegar informações da URL
   const location = useLocation();
 

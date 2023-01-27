@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
 
 import { Box, Paper, Tooltip, Typography, IconButton } from "@mui/material";
 
@@ -9,7 +9,12 @@ import FontConfig from "../../service/FontConfig";
 
 import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemanda";
 
+import FontContext from "../../service/FontContext";
+
 const DemandaGerencia = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   // Como usar:
   // Ao chamar o componente, passar duas props:
   // - dados: um objeto com os dados da demanda ou proposta

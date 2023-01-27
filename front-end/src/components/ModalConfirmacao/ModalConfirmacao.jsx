@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { Modal, Typography, Box, Button } from "@mui/material";
 
@@ -8,7 +8,12 @@ import FontConfig from "../../service/FontConfig";
 
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
+import FontContext from "../../service/FontContext";
+
 const ModalConfirmacao = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
   // Como chamar:
   // <ModalConfirmacao open={boolean} setOpen={function} textoModal={"descartarRascunho"} onConfirmClick={'funcao executada ao confirmar'} onCancelClick={'funcao executada ao cancelar'} textoBotao={"sim"}/>
 

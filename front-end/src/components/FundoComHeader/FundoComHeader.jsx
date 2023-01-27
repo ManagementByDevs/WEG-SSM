@@ -4,7 +4,12 @@ import { Box } from "@mui/material";
 
 import Header from "../Header/Header";
 
+import FontContext from "../../service/FontContext";
+
 const FundoComHeader = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   return (
     <Box
       sx={{

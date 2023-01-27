@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
 
@@ -8,7 +8,11 @@ import FontConfig from "../../service/FontConfig";
 import CloseIcon from '@mui/icons-material/Close';
 import UsuarioService from "../../service/usuarioService";
 
+import FontContext from "../../service/FontContext";
+
 const ModalFiltroGerencia = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // variáveis de estilo para o modal do filtro
 

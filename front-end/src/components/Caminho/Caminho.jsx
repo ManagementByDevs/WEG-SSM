@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Typography, Box, Tooltip } from "@mui/material";
@@ -7,7 +7,12 @@ import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutl
 
 import FontConfig from "../../service/FontConfig";
 
+import FontContext from "../../service/FontContext";
+
 const Caminho = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const navigate = useNavigate();
 
   const caminhoURL = useLocation().pathname;
