@@ -15,22 +15,30 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import FontConfig from "../../service/FontConfig";
 
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
-import ModalHistoricoDemanda from "../../components/ModalHistoricoDemanda/ModalHistoricoDemanda";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
-import ModalInformarMotivo from "../../components/ModalInformarMotivo/ModalInformarMotivo";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Pauta from "../../components/Pauta/Pauta";
 import Feedback from "../../components/Feedback/Feedback";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
+import ForumService from "../../service/forumService";
+import DepartamentoService from "../../service/departamentoService";
 
 const HomeGerencia = () => {
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
 
   const [listaItens, setListaItens] = useState([]);
+
+  // Listas para os inputs de fórum e departamento no modal de filtro
+  const [listaForum, setListaForum] = useState([]);
+  const [listaDepartamento, setListaDepartamento] = useState([]);
+
+  // Listas usadas para os inputs de solicitante e gerente no modal de filtro
+  const [listaSolicitantes, setListaSolicitantes] = useState([]);
+  const [listaGerentes, setListaGerentes] = useState([]);
 
   // String para ordenação das demandas
   const [page, setPage] = useState("size=20&page=0");
@@ -72,6 +80,7 @@ const HomeGerencia = () => {
   // UseEffect para buscar o usuário assim que entrar na página
   useEffect(() => {
     buscarUsuario();
+    buscarFiltros();
   }, []);
 
   // UseEffect para redefinir os parâmteros quando a ordenação for modificada
@@ -107,9 +116,9 @@ const HomeGerencia = () => {
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
   const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
-  
+
   useEffect(() => {
-    
+
     if (localStorage.getItem('tipoFeedback') == "2") {
       setFeedbackDemandaAceita(true);
     } else if (localStorage.getItem('tipoFeedback') == "3") {
@@ -117,7 +126,7 @@ const HomeGerencia = () => {
     } else if (localStorage.getItem('tipoFeedback') == "4") {
       setFeedbackDemandaRecusada(true);
     }
-    
+
   }, []);
 
   useEffect(() => {
@@ -191,6 +200,32 @@ const HomeGerencia = () => {
 
     setOrdenacao(textoNovo);
   }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
+
+  // Função para buscar a lista de fóruns e departamentos para o modal de filtros
+  const buscarFiltros = () => {
+    if (listaForum.length == 0) {
+      ForumService.getAll().then((response) => {
+        setListaForum(response);
+      })
+    }
+    if (listaDepartamento.length == 0) {
+      DepartamentoService.getAll().then((response) => {
+        setListaDepartamento(response);
+      })
+    }
+  }
+
+  const buscarPorNumero = (numero) => {
+    DemandaService.getById(numero).then((response) => {
+      setListaItens([response]);
+    })
+  }
+
+  const buscarPorPPM = (ppm) => {
+    DemandaService.getByPPM(ppm).then((response) => {
+      setListaItens([response]);
+    })
+  }
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -559,6 +594,18 @@ const HomeGerencia = () => {
                     setOpen={setOpenModal}
                     filtro={filtrosAtuais}
                     setFiltro={setFiltrosAtuais}
+
+                    listaForuns={listaForum}
+                    listaDepartamentos={listaDepartamento}
+
+                    listaSolicitantes={listaSolicitantes}
+                    setListaSolicitantes={setListaSolicitantes}
+
+                    listaGerentes={listaGerentes}
+                    setListaGerentes={setListaGerentes}
+
+                    buscarPorNumero={buscarPorNumero}
+                    buscarPorPPM={buscarPorPPM}
                   />
                 )}
 

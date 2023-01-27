@@ -11,6 +11,10 @@ class DemandaService {
         return (await axios.get(demanda + "/" + id)).data;
     }
 
+    async getByPPM(ppm) {
+        return (await axios.get(demanda + `/ppm/${ppm}`)).data;
+    }
+
     async getPage(params, page) {
 
         if (params.departamento != null) {

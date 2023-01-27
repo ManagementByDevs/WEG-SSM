@@ -6,9 +6,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import FontConfig from "../../service/FontConfig";
 import CloseIcon from '@mui/icons-material/Close';
-
-import ForumService from "../../service/forumService";
-import DepartamentoService from "../../service/departamentoService";
 import UsuarioService from "../../service/usuarioService";
 
 const ModalFiltroGerencia = (props) => {
@@ -76,26 +73,6 @@ const ModalFiltroGerencia = (props) => {
 
     const handleOpen = () => setOpen(true);
 
-    const [listaForum, setListaForum] = useState([]);
-    const [listaDepartamento, setListaDepartamento] = useState([]);
-
-    // Listas usadas para os inputs de solicitante e gerente
-    const [listaSolicitantes, setListaSolicitantes] = useState([]);
-    const [listaGerentes, setListaGerentes] = useState([]);
-
-    useState(() => {
-        if (listaForum.length == 0) {
-            ForumService.getAll().then((response) => {
-                setListaForum(response);
-            })
-        }
-        if (listaDepartamento.length == 0) {
-            DepartamentoService.getAll().then((response) => {
-                setListaDepartamento(response);
-            })
-        }
-    }, [])
-
     const handleClose = () => {
         setOpen(false);
     }
@@ -127,19 +104,33 @@ const ModalFiltroGerencia = (props) => {
 
     // Pesquisa de solicitantes feita quando algum input é digitado
     const pesquisarSolicitantes = (event) => {
-        if (event?.target.value.length > 0) {
+        if (event?.target.value?.length > 0) {
             UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "SOLICITANTE").then((response) => {
-                setListaSolicitantes(response);
+                props.setListaSolicitantes(response);
             });
         }
     }
 
     // Pesquisa de gerentes feita quando algum input é digitado
     const pesquisarGerentes = (event) => {
-        if (event.target.value.length > 0) {
+        if (event?.target.value?.length > 0) {
             UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "GERENTE").then((response) => {
-                setListaGerentes(response);
+                props.setListaGerentes(response);
             });
+        }
+    }
+
+    // Função para salvar o número sequencial digitado no input
+    const salvarNumero = (event) => {
+        if (event?.target?.value?.length > 0) {
+            props.buscarPorNumero(event.target.value);
+        }
+    }
+
+    // Função para salvar o número PPM digitado no input
+    const salvarPPM = (event) => {
+        if (event?.target?.value?.length > 0) {
+            props.buscarPorNumero(event?.target?.value);
         }
     }
 
@@ -164,7 +155,7 @@ const ModalFiltroGerencia = (props) => {
                             <Autocomplete
                                 disablePortal
                                 id="combo-box-demo"
-                                options={listaSolicitantes}
+                                options={props.listaSolicitantes}
                                 noOptionsText={"Sem Resultados"}
                                 sx={{ width: 240 }}
                                 value={props.filtro.solicitante}
@@ -185,7 +176,7 @@ const ModalFiltroGerencia = (props) => {
                                     onChange={selecionarForum}
                                 >
                                     <MenuItem selected value={""}>Selecionar</MenuItem>
-                                    {listaForum.map((forum) => {
+                                    {props.listaForuns.map((forum) => {
                                         return (
                                             <MenuItem key={forum.id} value={forum}>{forum.nome}</MenuItem>
                                         )
@@ -214,7 +205,7 @@ const ModalFiltroGerencia = (props) => {
                             <Autocomplete
                                 disablePortal
                                 id="combo-box-demo"
-                                options={listaGerentes}
+                                options={props.listaGerentes}
                                 noOptionsText={"Sem Resultados"}
                                 sx={{ width: 240 }}
                                 value={props.filtro.gerente}
@@ -235,7 +226,7 @@ const ModalFiltroGerencia = (props) => {
                                     onChange={selecionarDepartamento}
                                 >
                                     <MenuItem selected value={""}>Selecionar</MenuItem>
-                                    {listaDepartamento.map((departamento) => {
+                                    {props.listaDepartamentos.map((departamento) => {
                                         return (
                                             <MenuItem key={departamento.id} value={departamento}>{departamento.nome}</MenuItem>
                                         )
@@ -243,8 +234,8 @@ const ModalFiltroGerencia = (props) => {
                                 </Select>
                             </FormControl>
                             <Box sx={styleInputFiltro}>
-                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #c4c4c4', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
-                                <input style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #c4c4c4', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>
+                                <input onChange={(e) => { salvarNumero(e) }} style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #c4c4c4', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
+                                <input onChange={(e) => { salvarPPM(e) }} style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #c4c4c4', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>
                             </Box>
                         </Box>
                     </Box>
