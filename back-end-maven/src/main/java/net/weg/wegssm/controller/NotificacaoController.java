@@ -9,6 +9,7 @@ import net.weg.wegssm.model.entities.Notificacao;
 import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.TipoNotificacao;
 import net.weg.wegssm.model.service.NotificacaoService;
+import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import java.util.List;
 public class NotificacaoController {
 
     private NotificacaoService notificacaoService;
+    private UsuarioService usuarioService;
 
     /**
      * Método GET para buscar todas as notificações
@@ -52,7 +54,21 @@ public class NotificacaoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma notificação com este id.");
         }
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(notificacaoService.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findById(id).get());
+    }
+
+    /**
+     * Método GET para buscar as notificações de um usuário
+     * @param id
+     * @return List de Notificação
+     */
+    @GetMapping("user/{id}")
+    public ResponseEntity<Object> findByUserId(@PathVariable(value = "id") Long id) {
+        if (!usuarioService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID de usuário não existente");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByUsuario(usuarioService.findById(id).get()));
     }
 
     /**
