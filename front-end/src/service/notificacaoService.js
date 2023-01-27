@@ -4,8 +4,8 @@ const notificacaoPath = "/notificacoes";
 
 class NotificacaoService {
     
-    async getAll(userId) {
-        return (await axios.get(`${notificacaoPath}/${userId}`)).data;
+    async getByUserId(userId) {
+        return (await axios.get(`${notificacaoPath}/user/${userId}`)).data;
     }
 }
 
