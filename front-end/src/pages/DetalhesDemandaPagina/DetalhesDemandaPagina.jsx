@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Box, IconButton } from "@mui/material";
@@ -11,7 +11,12 @@ import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
 
 import UsuarioService from "../../service/usuarioService";
 
+import FontContext from "../../service/FontContext";
+
 const DetalhesDemandaPagina = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const location = useLocation();
 
   const [dados, setDados] = useState(location.state);

@@ -14,7 +14,12 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 
+import FontContext from "../../service/FontContext";
+
 const Chat = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const [chatAberto, setChatAberto] = useState(false);
 
   function abrirChat() {

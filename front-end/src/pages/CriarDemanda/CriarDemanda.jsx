@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 
 import { Box } from '@mui/material';
 
@@ -6,7 +6,12 @@ import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
 import Caminho from '../../components/Caminho/Caminho';
 import BarraProgressaoDemanda from '../../components/BarraProgressaoDemanda/BarraProgressaoDemanda';
 
+import FontContext from "../../service/FontContext";
+
 const CriarDemanda = () => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
+
     return (
         <FundoComHeader>
             <Box className='p-2'>
