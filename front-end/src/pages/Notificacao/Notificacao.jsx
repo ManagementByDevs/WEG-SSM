@@ -21,6 +21,7 @@ import Caminho from "../../components/Caminho/Caminho";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import FontConfig from "../../service/FontConfig";
+import NotificacaoService from "../../service/notificacaoService";
 
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
@@ -126,6 +127,14 @@ const Notificacao = () => {
     aux.splice(indexDelete, 1);
     setRows(aux);
   };
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("user"));
+    console.log("user: ", user);
+    NotificacaoService.getByUserId(parseInt(user.id)).then((data) => {
+      console.log("data: ", data)
+    });
+  }, [])
 
   return (
     <FundoComHeader>
