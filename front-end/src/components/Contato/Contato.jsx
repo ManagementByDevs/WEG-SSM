@@ -1,10 +1,12 @@
 import { Box, Typography, Avatar } from '@mui/material'
-import React from 'react'
+import React, {useContext} from 'react'
 import FontConfig from '../../service/FontConfig'
 
+import FontContext from "../../service/FontContext";
+
 const Contato = (props) => {
-
-
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     const tituloDemanda = 'Colocar pote de bala nas mesas de TI'
 

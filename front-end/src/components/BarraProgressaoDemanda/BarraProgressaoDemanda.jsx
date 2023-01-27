@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -20,7 +20,12 @@ import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
+import FontContext from "../../service/FontContext";
+
 const BarraProgressaoDemanda = (props) => {
+  // Contexto para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;

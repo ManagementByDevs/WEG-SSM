@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -13,6 +13,7 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Demanda from "../../components/Demanda/Demanda";
 import Feedback from "../../components/Feedback/Feedback";
 
+import FontContext from "../../service/FontContext";
 import FontConfig from "../../service/FontConfig";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 
@@ -21,9 +22,12 @@ import DemandaService from "../../service/demandaService";
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 
-import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalAddPropostaPauta";
+
 
 const Home = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
   // Lista de demandas presente
   const [listaDemandas, setListaDemandas] = useState([]);
 

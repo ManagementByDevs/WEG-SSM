@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import { Typography, Box, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,11 @@ import FontConfig from '../../service/FontConfig';
 
 import Error from '../../assets/Error.png';
 
+import FontContext from "../../service/FontContext";
+
 const NotFound = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     let navigate = useNavigate();
 

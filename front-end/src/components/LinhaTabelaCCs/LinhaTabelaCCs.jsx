@@ -14,7 +14,12 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 import ColorModeContext from "../../service/TemaContext";
 
+import FontContext from "../../service/FontContext";
+
 const LinhaTabelaCCs = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
 

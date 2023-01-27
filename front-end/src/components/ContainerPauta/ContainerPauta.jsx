@@ -1,9 +1,13 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
 
 import { Box } from '@mui/system';
 import { Typography, Paper } from '@mui/material';
 
+import FontContext from "../../service/FontContext";
+
 const ContainerPauta = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     const containerGeral = {
         width: '90%',

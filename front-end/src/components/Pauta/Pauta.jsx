@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 
 import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 
@@ -6,7 +6,12 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 import FontConfig from "../../service/FontConfig";
 
+import FontContext from "../../service/FontContext";
+
 const Pautas = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   return (
     <Paper
       className="flex flex-col border-t-4 pt-2 pb-3 px-6"

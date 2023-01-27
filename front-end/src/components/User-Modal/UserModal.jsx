@@ -20,7 +20,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlined";
 
-import FontConfig from "../../service/FontConfig";
+import FontContext from "../../service/FontContext";
 import ColorModeContext from "../../service/TemaContext";
 
 import UsuarioService from "../../service/usuarioService";
@@ -218,6 +218,86 @@ const UserModal = (props) => {
       setValueSlider(newValue);
     }
   };
+
+  //useContext para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // UseEffect para alterar o tamanho da fonte
+  useEffect(() => {
+    switch (valueSlider) {
+      case 0:
+        setFontConfig({
+          verySmall: "10px",
+          small: "12px",
+          default: "14px",
+          medium: "16px",
+          big: "18px",
+          veryBig: "20px",
+          smallTitle: "30px",
+          title: "36px",
+        });
+        break;
+      case -1:
+        setFontConfig({
+          verySmall: "8px",
+          small: "10px",
+          default: "12px",
+          medium: "14px",
+          big: "16px",
+          veryBig: "18px",
+          smallTitle: "28px",
+          title: "34px",
+        });
+        break;
+      case -2:
+        setFontConfig({
+          verySmall: "6px",
+          small: "8px",
+          default: "10px",
+          medium: "12px",
+          big: "14px",
+          veryBig: "16px",
+          smallTitle: "26px",
+          title: "32px",
+        });
+        break;
+      case 1:
+        setFontConfig({
+          verySmall: "12px",
+          small: "14px",
+          default: "16px",
+          medium: "18px",
+          big: "20px",
+          veryBig: "22px",
+          smallTitle: "32px",
+          title: "38px",
+        });
+        break;
+      case 2:
+        setFontConfig({
+          verySmall: "14px",
+          small: "16px",
+          default: "18px",
+          medium: "20px",
+          big: "22px",
+          veryBig: "24px",
+          smallTitle: "34px", 
+          title: "40px",
+        });
+        break;
+      default:
+        setFontConfig({
+          verySmall: "10px",
+          small: "12px",
+          default: "14px",
+          medium: "16px",
+          big: "18px",
+          veryBig: "20px",
+          smallTitle: "30px",
+          title: "36px",
+        });
+    }
+  }, [valueSlider]);
 
   return (
     <>

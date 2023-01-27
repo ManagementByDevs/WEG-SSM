@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
 import { Box } from '@mui/material'
 
@@ -6,7 +6,11 @@ import InputComLabel from '../InputComLabel/InputComLabel'
 
 import FontConfig from '../../service/FontConfig'
 
+import FontContext from "../../service/FontContext";
+
 const FormularioDadosDemanda = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Todas as funções de salvamento modificam diretamente as variáveis do componente "BarraProgressãoDemanda" (paginaDados)
   // através do "props"

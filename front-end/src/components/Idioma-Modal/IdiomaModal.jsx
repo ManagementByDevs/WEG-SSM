@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Menu, MenuItem, Tooltip, IconButton } from '@mui/material/';
 
 import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
 import EstadosUnidos from "../../assets/estados-unidos.png";
 
+import FontContext from "../../service/FontContext";
+
 const IdiomaModal = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   // UseState para poder visualizar e alterar a imagem da linguagem selecionada (Valor padrão é Brasil)
   const [idioma, setIdioma] = useState(Brasil);
 

@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Snackbar, Alert } from "@mui/material";
 
+import FontContext from "../../service/FontContext";
+
 const Feedback = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   // Como chamar:
   // <Feedback open={true} handleClose={funcao para deixar o open false} status={"o status que quer: sucesso, erro, aviso, info"} mensagem={"mensagem que quer que apareça"}/>
 

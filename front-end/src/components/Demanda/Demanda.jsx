@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { Box, Typography, Button, Paper } from "@mui/material";
 
@@ -6,7 +6,12 @@ import FontConfig from "../../service/FontConfig";
 
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 
+import FontContext from "../../service/FontContext";
+
 const Demanda = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   // Cor do status da demansa
   let corStatus = getStatusColor();
   let tamanhoHeight = getTamanhoHeight();

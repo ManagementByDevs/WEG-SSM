@@ -1,8 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 
 import { Box, Typography } from "@mui/material";
 
+import FontContext from "../../service/FontContext";
+
 const InputComLabel = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Função para salvar o valor do props recebido para o input (mudando também o valor do próprio input)
   const save = (e) => {

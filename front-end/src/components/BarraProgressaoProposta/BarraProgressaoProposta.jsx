@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   Box,
@@ -19,7 +19,11 @@ import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEsco
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
 
+import FontContext from "../../service/FontContext";
+
 const BarraProgressaoProposta = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;

@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { Typography, Box } from '@mui/material';
 
 import FontConfig from '../../service/FontConfig';
 
+import FontContext from "../../service/FontContext";
+
 const ContainerHistorico = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // variável de estilo para o container do histórico
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import {
   FormControl,
@@ -11,7 +11,12 @@ import {
 
 import FontConfig from "../../service/FontConfig";
 
+import FontContext from "../../service/FontContext";
+
 const Paginacao = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const [valor, setValor] = React.useState(18);
 
   const handleChange = (event) => {

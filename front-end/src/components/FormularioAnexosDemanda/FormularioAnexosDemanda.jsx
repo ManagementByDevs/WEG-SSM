@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useContext } from 'react'
 
 import { Box, Button, Typography, IconButton } from '@mui/material'
 
@@ -13,7 +13,12 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import FontConfig from '../../service/FontConfig'
 
+import FontContext from "../../service/FontContext";
+
 const FormularioAnexosDemanda = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
+    
     const dragArea = useRef(null);
     const inputFile = useRef(null);
     const [mapAbleFileList, setMapAbleFileList] = useState([]);

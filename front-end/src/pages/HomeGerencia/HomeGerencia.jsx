@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { Box, Button, Tab, Tooltip } from "@mui/material";
@@ -11,6 +11,8 @@ import AddIcon from "@mui/icons-material/Add";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
+
+import FontContext from "../../service/FontContext";
 
 import FontConfig from "../../service/FontConfig";
 
@@ -27,6 +29,10 @@ import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
 
 const HomeGerencia = () => {
+
+  // Contexto para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
 
