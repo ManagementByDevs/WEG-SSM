@@ -24,7 +24,7 @@ public class Notificacao {
     private String titulo;
 
     @Column(nullable = false)
-    private String notificacao;
+    private Boolean visualizado;
 
     @Column(nullable = false)
     private Date data;

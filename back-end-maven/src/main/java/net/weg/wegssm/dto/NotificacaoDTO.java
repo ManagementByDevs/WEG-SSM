@@ -12,7 +12,7 @@ public class NotificacaoDTO {
 
     private Long id;
     private String titulo;
-    private String notificacao;
+    private Boolean visualizado;
     private Date data;
     private TipoNotificacao tipoNotificacao;
     private Usuario usuario;

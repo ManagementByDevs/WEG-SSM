@@ -3,6 +3,7 @@ package net.weg.wegssm.model.service;
 import net.weg.wegssm.model.entities.Notificacao;
 import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.TipoNotificacao;
+import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.NotificacaoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,10 @@ public class NotificacaoService {
 
     public void deleteById(Long id) {
         notificacaoRepository.deleteById(id);
+    }
+
+    public List<Notificacao> findByUsuario(Usuario usuario) {
+        return notificacaoRepository.findByUsuario(usuario);
     }
 
 }
