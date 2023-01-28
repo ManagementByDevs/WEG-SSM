@@ -70,7 +70,6 @@ class DemandaService {
     }
 
     async putSemAnexos(demanda) {
-        console.log("aaaa")
         let form = new FormData();
 
         form.append("demanda", JSON.stringify(demanda));

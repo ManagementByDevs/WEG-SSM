@@ -20,7 +20,6 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
-import FontConfig from "../../service/FontConfig";
 import NotificacaoService from "../../service/notificacaoService";
 
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
@@ -28,17 +27,17 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 import FontContext from "../../service/FontContext";
 
 const Notificacao = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   // Modal de filtro
   const [abrirFiltro, setOpenFiltro] = useState(false);
   // Modal de confirmação de exclusão individual
@@ -50,24 +49,36 @@ const Notificacao = () => {
   // UseState para saber qual notificação deletar ao usar o botão de delete individual
   const [indexDelete, setIndexDelete] = useState(null);
 
+  // Linhas da tabela
+  const [rows, setRows] = useState([]);
+
   // Cria uma linha da tabela retornando um objeto
-  const createRow = (title, date, visualizado, tipo_icone) => {
-    return { checked: false, title, date, visualizado, tipo_icone };
+  const createRows = (dataset) => {
+    let rows = [];
+
+    for (let data of dataset) {
+      rows.push({
+        checked: false,
+        title: data.titulo,
+        date: formatDate(data.data),
+        visualizado: data.visualizado,
+        tipo_icone: data.tipoNotificacao,
+        id: data.id,
+        userId: data.usuario.id,
+      });
+    }
+
+    return rows;
   };
 
-  // Linhas da tabela
-  const [rows, setRows] = useState([
-    createRow(
-      "Frozen yoghurt Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit qusectetur adipisicing elit. Odit earum sapiente optio atque totam unde, reiciendis soluta qui velit quam amet enim odio sint. Iure beatae alias assumenda neque quod!",
-      "10/10/20 - 18:23",
-      false,
-      1
-    ),
-    createRow("Eclair", "10/10/20 - 18:23", false, 2),
-    createRow("Ice cream sandwich", "10/10/20 - 18:23", true, 3),
-    createRow("Cupcake", "10/10/20 - 18:23", true, 4),
-    createRow("Gingerbread", "10/10/20 - 18:23", true, 2),
-  ]);
+  // formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd
+  const formatDate = (fullDate) => {
+    const data = new Date(fullDate);
+    const dd = String(data.getDate()).padStart(2, "0");
+    const mm = String(data.getMonth() + 1).padStart(2, "0");
+    const yyyy = data.getFullYear();
+    return yyyy + "-" + mm + "-" + dd;
+  };
 
   // Handler que atualiza o estado do modal de filtro
   const abrirModalFiltro = () => {
@@ -99,7 +110,8 @@ const Notificacao = () => {
     let newList = rows.map((row) => {
       if (row.checked) {
         row.visualizado = !bool;
-        row.checked = false;
+        updateNotificacao(row);
+        // row.checked = false;
       }
       return row;
     });
@@ -109,32 +121,81 @@ const Notificacao = () => {
   // Deleta todas as linhas selecionadas
   const onMultiDeleteRowClick = () => {
     let aux = rows.filter((row) => {
-      return !row.checked;
+      return row.checked;
     });
-    setRows(aux);
+
+    for (let notificacao of aux) {
+      deleteNotificacao(notificacao);
+    }
   };
 
   // Atualiza o estado de visualizado da linha selecionada
   const onReadOrUnreadClick = (index) => {
     let aux = [...rows];
     aux[index].visualizado = !aux[index].visualizado;
-    setRows(aux);
+    updateNotificacao(aux[index]);
   };
 
   // Deleta linha selecionada
   const onDeleteClick = () => {
-    let aux = [...rows];
-    aux.splice(indexDelete, 1);
-    setRows(aux);
+    deleteNotificacao(rows[indexDelete]);
   };
 
-  useEffect(() => {
+  // Busca as notificações do usuário no banco de dados
+  const buscarNotificacoes = () => {
     let user = JSON.parse(localStorage.getItem("user"));
-    console.log("user: ", user);
     NotificacaoService.getByUserId(parseInt(user.id)).then((data) => {
-      console.log("data: ", data)
+      setRows(createRows(data));
     });
-  }, [])
+  };
+
+  // Delete uma notificação no banco de dados
+  const deleteNotificacao = (notificacao) => {
+    NotificacaoService.delete(notificacao.id).then(() => {
+      buscarNotificacoes();
+    });
+  };
+
+  // Converte a data para o formato yyyy-mm-dd hh:mm:ss (utilizado no banco de dados)
+  const convertDateToSQLDate = (date) => {
+    return new Date(date).toISOString().slice(0, 19);
+  };
+
+  const convertTipoIconeToEnum = (tipo) => {
+    switch (tipo) {
+      case "APROVADO":
+        return 0;
+      case "REPROVADO":
+        return 1;
+      case "MAIS_INFORMACOES":
+        return 2;
+      case "MENSAGENS":
+        return 3;
+    }
+  };
+
+  // Atualiza a notificação no banco de dados
+  const updateNotificacao = (notificacao) => {
+    NotificacaoService.put({
+      id: notificacao.id,
+      titulo: notificacao.title,
+      data: convertDateToSQLDate(notificacao.date),
+      tipoNotificacao: convertTipoIconeToEnum(notificacao.tipo_icone),
+      visualizado: notificacao.visualizado,
+      usuario: { id: notificacao.userId },
+    }).then(() => {
+      buscarNotificacoes();
+    });
+  };
+
+  // Busca as notificações do usuário ao carregar a página
+  useEffect(() => {
+    buscarNotificacoes();
+  }, []);
+
+  useEffect(() => {
+    console.log("Rows: ", rows);
+  }, [rows]);
 
   return (
     <FundoComHeader>
@@ -250,9 +311,15 @@ const Notificacao = () => {
                         }}
                       />
                     </th>
-                    <th className="text-white">Título</th>
-                    <th className="text-white">Tipo</th>
-                    <th className="w-1/10 text-white">Data</th>
+                    <th className="text-white">
+                      <Typography fontSize={FontConfig.big}>Tipo</Typography>
+                    </th>
+                    <th className="text-white">
+                      <Typography fontSize={FontConfig.big}>Título</Typography>
+                    </th>
+                    <th className="w-1/10 text-white">
+                      <Typography fontSize={FontConfig.big}>Data</Typography>
+                    </th>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -265,9 +332,6 @@ const Notificacao = () => {
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
-                      onClick={(e) => {
-                        console.log("oi");
-                      }}
                     >
                       <td className="text-center">
                         <Checkbox
@@ -277,23 +341,18 @@ const Notificacao = () => {
                           }}
                         />
                       </td>
-                      <td className="text-left">
-                        <Typography fontSize={FontConfig.medium}>
-                          {row.title}
-                        </Typography>
-                      </td>
                       <td className="text-center">
-                        {row.tipo_icone == 1 ? (
+                        {row.tipo_icone == "APROVADO" ? (
                           <CheckCircleOutlineIcon
                             color="primary"
                             sx={{ fontSize: "30px", marginX: "0.5rem" }}
                           />
-                        ) : row.tipo_icone == 2 ? (
+                        ) : row.tipo_icone == "REPROVADO" ? (
                           <ErrorOutlineOutlinedIcon
                             color="primary"
                             sx={{ fontSize: "30px", marginX: "0.5rem" }}
                           />
-                        ) : row.tipo_icone == 3 ? (
+                        ) : row.tipo_icone == "MAIS_INFORMACOES" ? (
                           <HelpOutlineIcon
                             color="primary"
                             sx={{ fontSize: "30px", marginX: "0.5rem" }}
@@ -304,6 +363,11 @@ const Notificacao = () => {
                             sx={{ fontSize: "30px", marginX: "0.5rem" }}
                           />
                         )}
+                      </td>
+                      <td className="text-left">
+                        <Typography fontSize={FontConfig.medium}>
+                          {row.title}
+                        </Typography>
                       </td>
                       <td className="text-center">
                         <Typography

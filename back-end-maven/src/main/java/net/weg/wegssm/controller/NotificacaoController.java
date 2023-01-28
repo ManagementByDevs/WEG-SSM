@@ -118,11 +118,23 @@ public class NotificacaoController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody NotificacaoDTO notificacaoDTO) {
+    public ResponseEntity<Object> save(@RequestBody @Valid NotificacaoDTO notificacaoDTO) {
         Notificacao notificcao = new Notificacao();
         BeanUtils.copyProperties(notificacaoDTO, notificcao);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(notificacaoService.save(notificcao));
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody @Valid NotificacaoDTO notificacaoDTO) {
+        if (!notificacaoService.existsById(notificacaoDTO.getId())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não existe uma notificação com o ID fornecido!");
+        }
+
+        Notificacao notificacao = new Notificacao();
+        BeanUtils.copyProperties(notificacaoDTO, notificacao);
+
+        return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.save(notificacao));
     }
 
     /**
