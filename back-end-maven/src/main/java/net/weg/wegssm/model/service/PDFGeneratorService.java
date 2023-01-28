@@ -78,11 +78,11 @@ public class PDFGeneratorService {
         table.setSpacingBefore(5);
 
         PdfPCell cell = new PdfPCell();
-        cell.setBackgroundColor(CMYKColor.BLUE);
+        cell.setBackgroundColor(CMYKColor.WHITE);
         cell.setPadding(5);
 
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN);
-        font.setColor(CMYKColor.WHITE);
+        font.setColor(CMYKColor.BLACK);
 
         cell.setPhrase(new Phrase("Tipo", font));
         table.addCell(cell);
@@ -114,13 +114,14 @@ public class PDFGeneratorService {
 
         // Adicionando tudo na página pdf
 
-        document.add(table);
+
         document.add(paragraph);
         document.add(paragraph2);
         document.add(paragraph3);
         document.add(paragraph4);
         document.add(paragraph5);
         document.add(paragraph6);
+        document.add(table);
         document.add(paragraph7);
         document.add(paragraph8);
         document.add(paragraph9);
