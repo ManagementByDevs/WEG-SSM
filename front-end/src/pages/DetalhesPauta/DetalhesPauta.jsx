@@ -1,4 +1,4 @@
-import { useState, useEffect, React } from "react";
+import { useState, useEffect, React, useContext } from "react";
 
 import {
     Box,
@@ -18,7 +18,11 @@ import FontConfig from "../../service/FontConfig";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router-dom";
 
+import FontContext from "../../service/FontContext";
+
 const DetalhesPauta = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     const navigate = useNavigate();
 

@@ -19,7 +19,11 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import LinhaTabelaCustos from "../LinhaTabelaCustos/LinhaTabelaCustos";
 import LinhaTabelaCCs from "../LinhaTabelaCCs/LinhaTabelaCCs";
 
+import FontContext from "../../service/FontContext";
+
 const Custos = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   const [horasTotais, setHorasTotais] = useState(0);
 

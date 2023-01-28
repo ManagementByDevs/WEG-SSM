@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   Tooltip,
@@ -14,7 +14,12 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Notificacao from "../Notificacao/Notificacao";
 import FontConfig from "../../service/FontConfig";
 
+import FontContext from "../../service/FontContext";
+
 const NotificacaoModal = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   // UseState para poder visualizar e alterar a visibilidade das notificacoes
   const [anchorEl, setAnchorEl] = useState(null);
 

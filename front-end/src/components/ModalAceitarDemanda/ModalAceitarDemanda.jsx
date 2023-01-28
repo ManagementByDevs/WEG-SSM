@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 
 import {
   Button,
@@ -20,6 +20,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 
+import FontContext from "../../service/FontContext";
 import FontConfig from "../../service/FontConfig";
 import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
@@ -27,7 +28,11 @@ import ForumService from "../../service/forumService";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+
 const ModalAceitarDemanda = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
   const tamanhos = ["Muito Pequeno", "Pequeno", "Médio", "Grande", "Muito Grande"];
   const [listaBus, setListaBus] = useState([]);
   const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];

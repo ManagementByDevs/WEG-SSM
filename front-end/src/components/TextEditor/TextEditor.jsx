@@ -1,8 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 
 import JoditEditor from "jodit-react";
 
+import FontContext from "../../service/FontContext";
+
 const TextEditor = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const editor = useRef(null);
 
   const config = {

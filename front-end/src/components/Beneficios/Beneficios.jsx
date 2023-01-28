@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Beneficios.css";
 
 import { Box, Select, FormControl, InputLabel, MenuItem } from '@mui/material'
@@ -7,7 +7,11 @@ import InputComLabel from '../InputComLabel/InputComLabel';
 
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
+import FontContext from "../../service/FontContext";
+
 const Beneficios = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     const [dadosBeneficio, setDadosBeneficio] = useState({ id: props.dados.id, tipoBeneficio: props.dados.tipoBeneficio, valor_mensal: props.dados.valor_mensal, moeda: props.dados.moeda, memoriaCalculo: props.dados.memoriaCalculo, visible: true });
 

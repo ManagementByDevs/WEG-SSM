@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 
 import { Box, Paper, Tooltip, Typography } from "@mui/material";
 
@@ -6,7 +6,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import FontConfig from "../../service/FontConfig";
 
+import FontContext from "../../service/FontContext";
+
 const Escopo = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   return (
     <Paper
       className="flex flex-col gap-1 border-t-4 pt-2 pb-3 px-6 cursor-pointer"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { Box, Button, Tooltip } from "@mui/material";
 
@@ -16,7 +16,11 @@ import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
 import { useNavigate } from "react-router-dom";
 
+import FontContext from "../../service/FontContext";
+
 const Escopos = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   const navigate = useNavigate();
   const [escopos, setEscopos] = useState(null);

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box, Typography, FormControlLabel, Tooltip } from "@mui/material";
 
 import FontConfig from "../../service/FontConfig";
 
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 
+import FontContext from "../../service/FontContext";
+
 const Notificacao = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   // Calculo de datas
   let dataAtual = new Date();
   let dataNotificacao = new Date(props.notificacao.data);

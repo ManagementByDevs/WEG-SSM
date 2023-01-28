@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
 
 import {
     Modal,
@@ -20,7 +20,11 @@ import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 import ContainerPauta from '../ContainerPauta/ContainerPauta';
 
+import FontContext from "../../service/FontContext";
+
 const ModalAddPropostaPauta = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // variáveis de estilo para os itens do componente 
 

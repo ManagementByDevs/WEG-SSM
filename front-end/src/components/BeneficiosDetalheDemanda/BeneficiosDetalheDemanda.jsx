@@ -11,7 +11,6 @@ import {
   Typography,
   Box,
   TextareaAutosize,
-  Button,
   FormControl,
   Select,
   MenuItem,
@@ -23,7 +22,12 @@ import FontConfig from "../../service/FontConfig";
 
 import ColorModeContext from "../../service/TemaContext";
 
+import FontContext from "../../service/FontContext";
+
 const BeneficiosDetalheDemanda = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
 

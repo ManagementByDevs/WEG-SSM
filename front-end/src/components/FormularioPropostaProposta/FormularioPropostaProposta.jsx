@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { Box } from "@mui/material";
 
 import DetalhesDemanda from "../DetalhesDemanda/DetalhesDemanda";
 
+import FontContext from "../../service/FontContext";
+
 const FormularioPropostaProposta = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const [dados, setDados] = useState({
     titulo: "Sistema de Gestão de Demandas",
     problema:

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Typography,
@@ -21,6 +21,7 @@ import Caminho from "../../components/Caminho/Caminho";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import FontConfig from "../../service/FontConfig";
+import NotificacaoService from "../../service/notificacaoService";
 
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
@@ -32,7 +33,12 @@ import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
+import FontContext from "../../service/FontContext";
+
 const Notificacao = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   // Modal de filtro
   const [abrirFiltro, setOpenFiltro] = useState(false);
   // Modal de confirmação de exclusão individual
@@ -121,6 +127,14 @@ const Notificacao = () => {
     aux.splice(indexDelete, 1);
     setRows(aux);
   };
+
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("user"));
+    console.log("user: ", user);
+    NotificacaoService.getByUserId(parseInt(user.id)).then((data) => {
+      console.log("data: ", data)
+    });
+  }, [])
 
   return (
     <FundoComHeader>

@@ -351,21 +351,6 @@ const UserModal = (props) => {
               {usuario.departamento.nome}
             </Typography>
           ) : null}
-          <MenuItem
-            className="gap-2"
-            onClick={() => {
-              handleClose();
-              navigate("/notificacao");
-            }}
-          >
-            <NotificationsOutlinedIcon />
-            Notificações
-          </MenuItem>
-
-          {/* Divisão de um item clicável e outro no modal */}
-          <div className="w-full flex justify-center pt-1.5">
-            <hr className="w-10/12 my-1.5" />
-          </div>
 
           <MenuItem
             className="gap-2"
@@ -401,11 +386,17 @@ const UserModal = (props) => {
             ) : (
               <MarkChatUnreadOutlinedIcon />
             )}
+            <Typography
+              color={"text.primary"}
+              fontSize={FontConfig.medium}
+              sx={{ fontWeight: 500 }}
+            >
             Chats
+            </Typography>
           </MenuItem>
 
           {/* Slider para mudar o tamanho da fonte */}
-          <Box className="flex justify-center w-full mt-4">
+          <Box className="flex justify-center w-full mt-1">
             <Box
               className="flex items-center justify-around"
               sx={{ width: "85%" }}

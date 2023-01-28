@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { Modal, Typography, Box, Fade, TextareaAutosize, Backdrop, Button } from '@mui/material';
 
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 
+import FontContext from "../../service/FontContext";
+
 const ModalRecusarDemanda = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // Variável de estilo para o modal
 

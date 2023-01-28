@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import './FormularioBeneficiosDemanda.css';
 
 import { Box, Button } from '@mui/material'
@@ -8,7 +8,12 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import Beneficios from '../Beneficios/Beneficios';
 import BeneficioService from '../../service/beneficioService';
 
+import FontContext from "../../service/FontContext";
+
 const FormularioBeneficiosDemanda = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
   // Lista de benefícios adicionadas
   const [beneficios, setBeneficios] = useState([]);
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box, Button, Typography } from "@mui/material";
 
 import Custos from "../Custos/Custos";
@@ -8,7 +8,12 @@ import FontConfig from "../../service/FontConfig";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { useEffect } from "react";
 
+import FontContext from "../../service/FontContext";
+
 const FormularioCustosProposta = (props) => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+  
   const deletarCustos = (index) => {
     let aux = [...props.custos];
     aux[index].visible = false;

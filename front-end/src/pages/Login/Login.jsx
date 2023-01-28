@@ -1,5 +1,5 @@
 import { Button, Paper, TextField, InputAdornment, FormControlLabel, Checkbox, Typography, IconButton } from '@mui/material'
-import { React, useState } from 'react'
+import { React, useState, useContext } from 'react'
 import { useNavigate } from "react-router-dom";
 
 import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
@@ -12,7 +12,12 @@ import FontConfig from '../../service/FontConfig';
 import UsuarioService from "../../service/usuarioService"
 import Feedback from '../../components/Feedback/Feedback';
 
+import FontContext from "../../service/FontContext";
+
 const Login = (props) => {
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
+    
     // Variável para usar função de navegação do react-router-dom
     let navigate = useNavigate();
 
