@@ -145,7 +145,7 @@ const ModalFiltro = (props) => {
 
     // função para pegar o valor do input e passar para o componente pai
     const getValue = (newValue) => {
-        props.setData(newValue);
+        props.setDate(newValue);
     }
 
     return (

@@ -45,9 +45,9 @@ const Notificacao = () => {
   // Modal de confirmação de exclusão múltipla
   const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] =
     useState(false);
-
   // UseState para saber qual notificação deletar ao usar o botão de delete individual
   const [indexDelete, setIndexDelete] = useState(null);
+  const [filterDate, setFilterDate] = useState(null);
 
   // Linhas da tabela
   const [rows, setRows] = useState([]);
@@ -194,6 +194,10 @@ const Notificacao = () => {
   }, []);
 
   useEffect(() => {
+    console.log("filterDate",filterDate);
+  }, [filterDate])
+
+  useEffect(() => {
     console.log("Rows: ", rows);
   }, [rows]);
 
@@ -287,6 +291,7 @@ const Notificacao = () => {
                 open={abrirFiltro}
                 setOpen={setOpenFiltro}
                 filtroDemanda={false}
+                setDate={setFilterDate}
               />
             )}
           </Box>

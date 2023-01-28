@@ -8,6 +8,10 @@ class NotificacaoService {
         return (await axios.get(`${notificacaoPath}/user/${userId}`)).data;
     }
 
+    async getByDate(date) {
+        return (await axios.get(`${notificacaoPath}/date/${date}`)).data
+    }
+
     async post(notificacao) {
         return (await axios.post(`${notificacaoPath}`, notificacao)).data;
     }

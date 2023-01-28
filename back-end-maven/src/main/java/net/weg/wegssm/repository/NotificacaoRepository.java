@@ -6,6 +6,7 @@ import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 
@@ -26,5 +27,12 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
      * @return lista de notificações
      */
     List<Notificacao> findByUsuario(Usuario usuario);
+
+    /**
+     * Lista as notificações pela data escolhida
+     * @param data
+     * @return
+     */
+    List<Notificacao> findByData(Data data);
 
 }
