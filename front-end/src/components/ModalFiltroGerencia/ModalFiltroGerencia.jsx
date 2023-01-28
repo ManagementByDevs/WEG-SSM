@@ -62,9 +62,8 @@ const ModalFiltroGerencia = (props) => {
 
     const styleInputFiltro = {
         display: "flex",
-        justifyContent: "space-evenly",
         alignItems: 'center',
-        width: "100%",
+        width: "92%",
     }
 
     // variáveis para abrir o modal através de outra tela
@@ -87,23 +86,23 @@ const ModalFiltroGerencia = (props) => {
     }
 
     const selecionarSolicitante = (event, value) => {
-        props.setFiltro({ solicitante: value, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento });
+        props.setFiltro({ solicitante: value, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     }
 
     const selecionarForum = (event) => {
-        props.setFiltro({ solicitante: props.filtro.solicitante, forum: event.target.value, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento });
+        props.setFiltro({ solicitante: props.filtro.solicitante, forum: event.target.value, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     };
 
     const selecionarTamanho = (event) => {
-        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: event.target.value, gerente: props.filtro.gerente, departamento: props.filtro.departamento });
+        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: event.target.value, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     };
 
     const selecionarGerente = (event, value) => {
-        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: value, departamento: props.filtro.departamento });
+        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: value, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     };
 
     const selecionarDepartamento = (event) => {
-        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: event.target.value });
+        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: event.target.value, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     };
 
     // Pesquisa de solicitantes feita quando algum input é digitado
@@ -126,16 +125,12 @@ const ModalFiltroGerencia = (props) => {
 
     // Função para salvar o número sequencial digitado no input
     const salvarNumero = (event) => {
-        if (event?.target?.value?.length > 0) {
-            props.buscarPorNumero(event.target.value);
-        }
+        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: event?.target?.value || null, codigoPPM: props.filtro.codigoPPM });
     }
 
     // Função para salvar o número PPM digitado no input
     const salvarPPM = (event) => {
-        if (event?.target?.value?.length > 0) {
-            props.buscarPorNumero(event?.target?.value);
-        }
+        props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: event?.target?.value || null });
     }
 
     return (
@@ -238,8 +233,8 @@ const ModalFiltroGerencia = (props) => {
                                 </Select>
                             </FormControl>
                             <Box sx={styleInputFiltro}>
-                                <input onChange={(e) => { salvarNumero(e) }} style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #c4c4c4', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>
-                                <input onChange={(e) => { salvarPPM(e) }} style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #c4c4c4', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>
+                                {props.modo == "demanda" && <input onChange={(e) => { salvarNumero(e) }} style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #c4c4c4', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="Número"></input>}
+                                {props.modo == "proposta" && <input onChange={(e) => { salvarPPM(e) }} style={{ width: '7rem', height: '2.938rem', textAlign: 'center', border: 'solid 1px #c4c4c4', color: 'primary.main', borderRadius: '5px', background: 'transparent' }} placeholder="PPM"></input>}
                             </Box>
                         </Box>
                     </Box>
