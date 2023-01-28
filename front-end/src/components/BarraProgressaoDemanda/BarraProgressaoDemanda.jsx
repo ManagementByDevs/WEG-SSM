@@ -25,7 +25,7 @@ import FontContext from "../../service/FontContext";
 const BarraProgressaoDemanda = (props) => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
@@ -64,11 +64,23 @@ const BarraProgressaoDemanda = (props) => {
       } else {
         idEscopo = location.state;
         EscopoService.buscarPorId(location.state).then((response) => {
-          setPaginaDados({ titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia });
+          setPaginaDados({
+            titulo: response.titulo,
+            problema: response.problema,
+            proposta: response.proposta,
+            frequencia: response.frequencia,
+          });
           receberBeneficios(response.beneficios);
           receberArquivos(response.anexo);
-          setUltimoEscopo({ id: response.id, titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia, beneficios: formatarBeneficios(response.beneficios) });
-        })
+          setUltimoEscopo({
+            id: response.id,
+            titulo: response.titulo,
+            problema: response.problema,
+            proposta: response.proposta,
+            frequencia: response.frequencia,
+            beneficios: formatarBeneficios(response.beneficios),
+          });
+        });
       }
     }
   }, []);
@@ -86,20 +98,33 @@ const BarraProgressaoDemanda = (props) => {
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-      let tipoNovo = beneficio.tipoBeneficio.charAt(0) + (beneficio.tipoBeneficio.substring(1, beneficio.tipoBeneficio.length)).toLowerCase();
-      listaNova.push({ id: beneficio.id, tipoBeneficio: tipoNovo, valor_mensal: beneficio.valor_mensal, moeda: beneficio.moeda, memoriaCalculo: beneficio.memoriaCalculo, visible: true })
+      let tipoNovo =
+        beneficio.tipoBeneficio.charAt(0) +
+        beneficio.tipoBeneficio
+          .substring(1, beneficio.tipoBeneficio.length)
+          .toLowerCase();
+      listaNova.push({
+        id: beneficio.id,
+        tipoBeneficio: tipoNovo,
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: true,
+      });
     }
     setPaginaBeneficios(listaNova);
-  }
+  };
 
   // Função para formatar os arquivos recebidos no banco para a lista da página de edição
   const receberArquivos = (arquivos) => {
     let listaArquivos = [];
     for (let arquivo of arquivos) {
-      listaArquivos.push(new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo }))
+      listaArquivos.push(
+        new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo })
+      );
     }
     setPaginaArquivos(listaArquivos);
-  }
+  };
 
   // Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página
   const salvarEscopo = (id) => {
@@ -109,30 +134,30 @@ const BarraProgressaoDemanda = (props) => {
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios(paginaBeneficios)
+      beneficios: formatarBeneficios(paginaBeneficios),
     });
 
     try {
       EscopoService.salvarDados(ultimoEscopo).then((response) => {
         //Confirmação de salvamento (se sobrar tempo)
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   // Função para atualizar os anexos de um escopo quando um anexo for adicionado / removido
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
       EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
-        (response) => { }
+        (response) => {}
       );
     } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
     }
   };
 
   // Função para excluir o escopo determinado quando a demanda a partir dele for criada
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
   };
 
   const isStepOptional = (step) => {
@@ -258,10 +283,10 @@ const BarraProgressaoDemanda = (props) => {
   }, [open]);
 
   const direcionarHome = (feedbackDemanda) => {
-    localStorage.removeItem('tipoFeedback');
+    localStorage.removeItem("tipoFeedback");
 
-    localStorage.setItem('tipoFeedback', '1');
-    
+    localStorage.setItem("tipoFeedback", "1");
+
     navigate("/");
   };
 
@@ -285,7 +310,9 @@ const BarraProgressaoDemanda = (props) => {
           }
           return (
             <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+              <StepLabel {...labelProps}>
+                <Typography fontSize={FontConfig.default}>{label}</Typography>
+              </StepLabel>
             </Step>
           );
         })}
@@ -315,12 +342,12 @@ const BarraProgressaoDemanda = (props) => {
           sx={{ mr: 1 }}
           disableElevation
         >
-          Voltar
+          <Typography fontSize={FontConfig.default}>Voltar</Typography>
         </Button>
         <Box sx={{ flex: "1 1 auto" }} />
         {isStepOptional(activeStep) && (
           <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-            Pular
+            <Typography fontSize={FontConfig.default}>Pular</Typography>
           </Button>
         )}
 
@@ -331,7 +358,7 @@ const BarraProgressaoDemanda = (props) => {
             onClick={abrirModalConfirmacao}
             disableElevation
           >
-            Criar
+            <Typography fontSize={FontConfig.default}>Criar</Typography>
           </Button>
         ) : (
           <Button
@@ -340,19 +367,39 @@ const BarraProgressaoDemanda = (props) => {
             onClick={handleNext}
             disableElevation
           >
-            Próximo
+            <Typography fontSize={FontConfig.default}>Próximo</Typography>
           </Button>
         )}
-        {modalConfirmacao && <ModalConfirmacao open={modalConfirmacao} setOpen={setOpenConfirmacao} textoModal={"enviarDemanda"} textoBotao={"enviar"} onConfirmClick={handleClick()} />}
-        {modalSairDemanda && <ModalConfirmacao open={modalSairDemanda} setOpen={setModalSairDemanda} textoModal={"sairCriacao"} textoBotao={"sim"} onConfirmClick={handleClick()} />}
+        {modalConfirmacao && (
+          <ModalConfirmacao
+            open={modalConfirmacao}
+            setOpen={setOpenConfirmacao}
+            textoModal={"enviarDemanda"}
+            textoBotao={"enviar"}
+            onConfirmClick={handleClick()}
+          />
+        )}
+        {modalSairDemanda && (
+          <ModalConfirmacao
+            open={modalSairDemanda}
+            setOpen={setModalSairDemanda}
+            textoModal={"sairCriacao"}
+            textoBotao={"sim"}
+            onConfirmClick={handleClick()}
+          />
+        )}
       </Box>
 
       {/* Feedback de dados faltantes */}
-      <Feedback open={feedbackDadosFaltantes} handleClose={() => {
-        setFeedbackDadosFaltantes(false);
-      }} status={"erro"} mensagem={"Preencha todos os campos obrigatórios!"} />
+      <Feedback
+        open={feedbackDadosFaltantes}
+        handleClose={() => {
+          setFeedbackDadosFaltantes(false);
+        }}
+        status={"erro"}
+        mensagem={"Preencha todos os campos obrigatórios!"}
+      />
     </>
-
   );
 };
 

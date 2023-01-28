@@ -149,6 +149,7 @@ const NotificacaoModal = (props) => {
           {/* Ver Tudo */}
           <Box className="flex justify-center w-full py-1">
             <Typography
+            fontSize={FontConfig.default}
               color={"link.main"}
               sx={{
                 fontWeight: 600,
