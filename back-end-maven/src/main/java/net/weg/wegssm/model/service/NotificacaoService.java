@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,10 @@ public class NotificacaoService {
 
     public List<Notificacao> findByUsuario(Usuario usuario) {
         return notificacaoRepository.findByUsuario(usuario);
+    }
+
+    public List<Notificacao> findByData(Data data) {
+        return notificacaoRepository.findByData(data);
     }
 
 }

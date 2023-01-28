@@ -14,7 +14,7 @@ const InputComLabel = (props) => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "110%" }}>
       <Box className="flex">
         <Typography
           fontSize={props.fontConfig}

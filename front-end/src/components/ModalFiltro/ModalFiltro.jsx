@@ -1,8 +1,7 @@
-import { React, useState, useEffect, useContext } from "react";
+import { React, useState, useContext } from "react";
 
-import { Modal, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from '@mui/material';
+import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from '@mui/material';
 
-import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 
 import FontContext from "../../service/FontContext";
@@ -134,13 +133,19 @@ const ModalFiltro = (props) => {
         }
     }
 
+    // função para pegar a data atual no modelo yyyy-mm-dd
     const getTodaysDate = () => {
         const today = new Date();
         const dd = String(today.getDate()).padStart(2, '0');
-        const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
         const yyyy = today.getFullYear();
         console.log(yyyy + '-' + mm + '-' + dd)
         return yyyy + '-' + mm + '-' + dd;
+    }
+
+    // função para pegar o valor do input e passar para o componente pai
+    const getValue = (newValue) => {
+        props.setDate(newValue);
     }
 
     return (
@@ -165,7 +170,7 @@ const ModalFiltro = (props) => {
                                             Status:
                                         </Typography>
                                         <Box sx={styleDiv}>
-                                            <FormControlLabel checked={props.listaFiltros[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aprovada" />
+                                            <FormControlLabel checked={props.listaFiltros[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aprovada"/>
                                             <FormControlLabel checked={props.listaFiltros[1]} onChange={mudarCheck2} control={<Checkbox />} label="Reprovada" />
                                             <FormControlLabel checked={props.listaFiltros[2]} onChange={mudarCheck3} control={<Checkbox />} label="Aguardando Edição" />
                                             <FormControlLabel checked={props.listaFiltros[3]} onChange={mudarCheck4} control={<Checkbox />} label="Aguardando Revisão" />
@@ -192,7 +197,7 @@ const ModalFiltro = (props) => {
                                             <Typography sx={{ color: 'secundary.main', fontSize: FontConfig.big, fontWeight: '600' }}>
                                                 Data:
                                             </Typography>
-                                            <input style={styleInput} type="date" max={getTodaysDate()}></input>
+                                            <input onChange={(e) => getValue(e.target.value)} style={styleInput} type="date" max={getTodaysDate()} />
                                         </Box>
                                     </FormGroup>
                                 </Grid>

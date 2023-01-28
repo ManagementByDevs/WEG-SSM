@@ -37,14 +37,14 @@ const App = () => {
     smallTitle: "30px",
     title: "36px",
   });
-
+  
   const fontSize = useMemo(
     () => ({
       FontConfig,
-      setFontConfig
+      setFontConfig,
     }),
     [FontConfig]
-  );
+    );
 
   /*
   Tipos possíveis de usuários:
@@ -57,16 +57,34 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="/criar-demanda" element={<CriarDemanda />} />
-              <Route path="/notificacao" element={<Notificacao />} />
-              <Route path="/chat" element={<Chat />} />
+              <Route
+                path="/criar-demanda"
+                element={<CriarDemanda />}
+              />
+              <Route
+                path="/notificacao"
+                element={<Notificacao />}
+              />
+              <Route
+                path="/chat"
+                element={<Chat />}
+              />
               <Route
                 path="/detalhes-demanda"
                 element={<DetalhesDemandaPagina />}
               />
-              <Route path="/editar-escopo" element={<EditarEscopo />} />
-              <Route path="escopos" element={<Escopos />} />
-              <Route path="*" element={<NotFound />} />
+              <Route
+                path="/editar-escopo"
+                element={<EditarEscopo />}
+              />
+              <Route
+                path="escopos"
+                element={<Escopos />}
+              />
+              <Route
+                path="*"
+                element={<NotFound />}
+              />
             </Route>
             <Route
               path="/"
