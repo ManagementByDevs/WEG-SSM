@@ -170,7 +170,7 @@ const ModalFiltro = (props) => {
                                             Status:
                                         </Typography>
                                         <Box sx={styleDiv}>
-                                            <FormControlLabel checked={props.listaFiltros[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aprovada" />
+                                            <FormControlLabel checked={props.listaFiltros[0]} onChange={mudarCheck1} control={<Checkbox />} label="Aprovada"/>
                                             <FormControlLabel checked={props.listaFiltros[1]} onChange={mudarCheck2} control={<Checkbox />} label="Reprovada" />
                                             <FormControlLabel checked={props.listaFiltros[2]} onChange={mudarCheck3} control={<Checkbox />} label="Aguardando Edição" />
                                             <FormControlLabel checked={props.listaFiltros[3]} onChange={mudarCheck4} control={<Checkbox />} label="Aguardando Revisão" />

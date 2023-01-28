@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
-import './FormularioBeneficiosDemanda.css';
+import React, { useState, useEffect, useContext } from "react";
+import "./FormularioBeneficiosDemanda.css";
 
-import { Box, Button } from '@mui/material'
+import { Box, Button, Typography } from "@mui/material";
 
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
-import Beneficios from '../Beneficios/Beneficios';
-import BeneficioService from '../../service/beneficioService';
+import Beneficios from "../Beneficios/Beneficios";
+import BeneficioService from "../../service/beneficioService";
 
 import FontContext from "../../service/FontContext";
 
@@ -20,60 +20,103 @@ const FormularioBeneficiosDemanda = (props) => {
   // UseEffect para pegar os benefícios já adicionados na demanda na troca de página
   useEffect(() => {
     setBeneficios(props.dados);
-  }, [])
+  }, []);
 
   // Adiciona um benefício na lista de benefícios
   function adicionarBeneficio() {
-    BeneficioService.post({ tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '' }).then((response) => {
-      setBeneficios([...beneficios, { id: response.id, tipoBeneficio: '', valor_mensal: '', moeda: '', memoriaCalculo: '', visible: true }]);
-    })
+    BeneficioService.post({
+      tipoBeneficio: "",
+      valor_mensal: "",
+      moeda: "",
+      memoriaCalculo: "",
+    }).then((response) => {
+      setBeneficios([
+        ...beneficios,
+        {
+          id: response.id,
+          tipoBeneficio: "",
+          valor_mensal: "",
+          moeda: "",
+          memoriaCalculo: "",
+          visible: true,
+        },
+      ]);
+    });
   }
 
   // Função genérica para salvar os dados de um benefício
   function salvarDados(dados) {
-    setBeneficios(beneficios.map(beneficio => {
-      if (beneficio.id === dados.id) {
-        beneficio = dados;
-      }
-      return beneficio;
-    }));
+    setBeneficios(
+      beneficios.map((beneficio) => {
+        if (beneficio.id === dados.id) {
+          beneficio = dados;
+        }
+        return beneficio;
+      })
+    );
   }
 
   // Função que irá setar a visibildade de um benefício para false, sendo o benefício excluído da lista savedBeneficios
   function removerBeneficio(desiredIndex) {
-    setBeneficios(beneficios.map((beneficio, index) => {
-      if (index === desiredIndex) {
-        beneficio.visible = false;
-        BeneficioService.delete(beneficio.id).then((response) => {})
-      }
-      return beneficio;
-    }));
+    setBeneficios(
+      beneficios.map((beneficio, index) => {
+        if (index === desiredIndex) {
+          beneficio.visible = false;
+          BeneficioService.delete(beneficio.id).then((response) => {});
+        }
+        return beneficio;
+      })
+    );
   }
 
   // UseEffect que irá atualizar a lista de benefícios a serem salvos (que não foram excluídos)
   useEffect(() => {
-    props.setDados(beneficios?.filter(beneficio => beneficio.visible === true));
+    props.setDados(
+      beneficios?.filter((beneficio) => beneficio.visible === true)
+    );
   }, [beneficios]);
 
   return (
-    <Box className="flex justify-center items-center" sx={{ height: '45rem' }}>
-      <Box className='w-3/4 flex flex-col' sx={{ height: '85%' }}>
-        <Button className='rounded flex justify-evenly' color='primary' variant='contained' disableElevation sx={{ width: '10%' }} onClick={adicionarBeneficio}>
-          Adicionar
-          <AddOutlinedIcon />
-        </Button>
-        <Box className='flex flex-col overflow-auto' sx={{ marginTop: '3%', gap: '5%', paddingRight: '20px' }}>
-          {
-            beneficios?.map((beneficio, index) => {
-              if (beneficio.visible) {
-                return <Beneficios key={index} save={salvarDados} index={index} removerBeneficio={removerBeneficio} dados={beneficio} />;
-              }
-            })
-          }
+    <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
+      <Box className="w-3/4 flex flex-col" sx={{ height: "85%" }}>
+        <Box>
+          <Button
+            className="rounded flex justify-evenly"
+            color="primary"
+            variant="contained"
+            disableElevation
+            onClick={adicionarBeneficio}
+          >
+            <Typography fontSize={FontConfig.default}>Adicionar</Typography>
+            <AddOutlinedIcon />
+          </Button>
+        </Box>
+        <Box
+          className="flex flex-col overflow-auto"
+          sx={{
+            marginTop: "3%",
+            gap: "5%",
+            paddingRight: "20px",
+            minHeight: "35rem",
+          }}
+        >
+          {beneficios?.map((beneficio, index) => {
+            if (beneficio.visible) {
+              return (
+                <Beneficios
+                  key={index}
+                  save={salvarDados}
+                  index={index}
+                  removerBeneficio={removerBeneficio}
+                  dados={beneficio}
+                />
+              );
+            }
+          })}
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default FormularioBeneficiosDemanda
+export default FormularioBeneficiosDemanda;

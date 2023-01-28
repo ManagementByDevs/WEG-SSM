@@ -5,9 +5,8 @@ import {
   Typography,
   IconButton,
   Menu,
-  MenuItem,
-  FormControlLabel,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
@@ -17,6 +16,9 @@ import FontConfig from "../../service/FontConfig";
 import FontContext from "../../service/FontContext";
 
 const NotificacaoModal = (props) => {
+
+  const navigate = useNavigate();
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
   
@@ -149,6 +151,7 @@ const NotificacaoModal = (props) => {
           {/* Ver Tudo */}
           <Box className="flex justify-center w-full py-1">
             <Typography
+            fontSize={FontConfig.default}
               color={"link.main"}
               sx={{
                 fontWeight: 600,
@@ -157,6 +160,11 @@ const NotificacaoModal = (props) => {
                   textDecoration: "underline",
                 },
               }}
+              // Se clicar ir para a pagina de notificacao
+              onClick={() => {
+                navigate("/notificacao");
+              }}
+
             >
               Ver Tudo ({contNaoLidas})
             </Typography>

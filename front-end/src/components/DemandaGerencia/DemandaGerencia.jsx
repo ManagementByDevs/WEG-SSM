@@ -144,7 +144,7 @@ const DemandaGerencia = (props) => {
             </Box>
             {/* Infos gerente responsável e icons */}
             <Box className="flex items-end justify-end w-full">
-              <Box className="flex" sx={{ width: "19rem" }}>
+              <Box className="flex" sx={{ width: "24rem" }}>
                 <Typography fontSize={FontConfig.default} fontWeight="600">
                   Gerente responsável:
                 </Typography>
