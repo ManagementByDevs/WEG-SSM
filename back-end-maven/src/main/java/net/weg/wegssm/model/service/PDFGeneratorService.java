@@ -37,7 +37,7 @@ public class PDFGeneratorService {
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(21);
-        fontTitle.setColor(Color.BLACK);
+        fontTitle.setColor(Color.decode("#00579D"));
         fontTitle.setStyle(Font.BOLD);
 
         Paragraph paragraph = new Paragraph(demanda.getTitulo(), fontTitle);
