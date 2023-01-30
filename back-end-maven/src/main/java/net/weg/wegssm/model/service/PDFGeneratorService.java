@@ -28,6 +28,7 @@ public class PDFGeneratorService {
         demanda.setTitulo("Título");
 
         // Criando a página do pdf
+        
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
@@ -129,5 +130,9 @@ public class PDFGeneratorService {
 
         document.close();
     }
+
+    public void exportPauta(){}
+
+    public void exportAta(){}
 
 }
