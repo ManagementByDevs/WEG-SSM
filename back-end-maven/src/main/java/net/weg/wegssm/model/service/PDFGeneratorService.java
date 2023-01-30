@@ -25,19 +25,18 @@ public class PDFGeneratorService {
 
         demanda.setFrequencia("Aqui vai a frequencia");
         demanda.setProposta("Aqui vai a proposta");
-        demanda.setTitulo("Título");
+        demanda.setTitulo("Modelo PDF");
 
         // Criando a página do pdf
         
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
         document.open();
-        document.setMarginMirroring(true);
 
         // Criando a formatação da página pdf
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
-        fontTitle.setSize(21);
+        fontTitle.setSize(24);
         fontTitle.setColor(Color.decode("#00579D"));
         fontTitle.setStyle(Font.BOLD);
 
@@ -53,19 +52,22 @@ public class PDFGeneratorService {
         fontParagraph2.setStyle(Font.BOLD);
 
         Font fontParagraph3 = FontFactory.getFont(FontFactory.HELVETICA);
-        fontParagraph2.setSize(16);
+        fontParagraph2.setSize(15);
 
         Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
         paragraph2.setAlignment(Paragraph.ALIGN_BASELINE);
+        paragraph2.setSpacingAfter(10);
 
         Paragraph paragraph3 = new Paragraph(demanda.getProblema(), fontParagraph3);
         paragraph3.setAlignment(Paragraph.ALIGN_BASELINE);
+        paragraph3.setIndentationLeft(40);
 
         Paragraph paragraph4 = new Paragraph("Proposta: ", fontParagraph2);
         paragraph4.setAlignment(Paragraph.ALIGN_JUSTIFIED);
 
         Paragraph paragraph5 = new Paragraph(demanda.getProposta(), fontParagraph3);
         paragraph5.setAlignment(Paragraph.ALIGN_JUSTIFIED);
+        paragraph5.setIndentationLeft(40);
 
         Paragraph paragraph6 = new Paragraph("Benefícios: ", fontParagraph2);
         paragraph6.setAlignment(Paragraph.ANCHOR);
@@ -79,11 +81,12 @@ public class PDFGeneratorService {
         table.setSpacingBefore(5);
 
         PdfPCell cell = new PdfPCell();
-        cell.setBackgroundColor(CMYKColor.WHITE);
+        cell.setBackgroundColor(Color.decode("#00579D"));
         cell.setPadding(5);
 
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN);
-        font.setColor(CMYKColor.BLACK);
+        font.setColor(CMYKColor.WHITE);
+
 
         cell.setPhrase(new Phrase("Tipo", font));
         table.addCell(cell);
@@ -106,12 +109,14 @@ public class PDFGeneratorService {
 
         Paragraph paragraph8 = new Paragraph(demanda.getFrequencia(), fontParagraph3);
         paragraph8.setAlignment(Paragraph.ANCHOR);
+        paragraph8.setIndentationLeft(40);
 
         Paragraph paragraph9 = new Paragraph("Anexos: ", fontParagraph2);
         paragraph9.setAlignment(Paragraph.ANCHOR);
 
         Paragraph paragraph10 = new Paragraph(String.valueOf(demanda.getAnexo()), fontParagraph3);
         paragraph10.setAlignment(Paragraph.ANCHOR);
+        paragraph10.setIndentationLeft(40);
 
         // Adicionando tudo na página pdf
 
