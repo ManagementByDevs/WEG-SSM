@@ -23,19 +23,18 @@ import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao
 import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceitarDemanda";
 import ModalRecusarDemanda from "../ModalRecusarDemanda/ModalRecusarDemanda";
 
-import FontConfig from "../../service/FontConfig";
-
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from "../../service/beneficioService";
 import DemandaService from "../../service/demandaService";
 import AnexoService from "../../service/anexoService";
+import NotificacaoService from "../../service/notificacaoService";
 
 import FontContext from "../../service/FontContext";
 
 const DetalhesDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
   const inputFile = useRef(null);
@@ -124,9 +123,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || "Real",
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -261,7 +260,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => { });
+      BeneficioService.delete(beneficio.id).then((response) => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -269,7 +268,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => { });
+      BeneficioService.delete(beneficio.id).then((response) => {});
     }
     setBeneficiosNovos([]);
   };
@@ -281,7 +280,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => { });
+        BeneficioService.put(beneficio).then((response) => {});
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -323,7 +322,6 @@ const DetalhesDemanda = (props) => {
       }
 
       if (novosAnexos.length > 0) {
-        console.log("entrou novos anexos lenght > 0");
         DemandaService.put(demandaAtualizada, [
           ...anexosVelhos,
           ...novosAnexos,
@@ -339,7 +337,6 @@ const DetalhesDemanda = (props) => {
           props.setDados(response);
         });
       } else {
-        console.log("entrou novos aenxos lenght > 0 else");
         DemandaService.putSemAnexos(demandaAtualizada).then((response) => {
           // atualizar demanda salva no location
 
@@ -353,7 +350,7 @@ const DetalhesDemanda = (props) => {
 
     DemandaService.getById(props.dados.id).then((res) => {
       props.updateDemandaProps(res);
-    })
+    });
 
     if (anexosRemovidos.length > 0) {
       for (let anexoRemovido of anexosRemovidos) {
@@ -390,11 +387,13 @@ const DetalhesDemanda = (props) => {
     setOpenModalRecusa(true);
   };
 
-  // Devolver a demanda para o analista 
+  // Devolver a demanda para o analista
   const aprovarDemandaGerencia = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then((response) => {
-      navegarHome(1)
-    });
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(
+      (response) => {
+        navegarHome(1);
+      }
+    );
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -421,6 +420,12 @@ const DetalhesDemanda = (props) => {
     DemandaService.put(demandaAtualizada, []).then((response) => {
       navigate("/");
     });
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        NotificacaoService.aprovado,
+        props.dados
+      )
+    );
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -437,7 +442,7 @@ const DetalhesDemanda = (props) => {
           },
           []
         ).then((response) => {
-          navegarHome(2)
+          navegarHome(2);
         });
       } else {
         DemandaService.put(
@@ -448,17 +453,28 @@ const DetalhesDemanda = (props) => {
           },
           []
         ).then((response) => {
-          navegarHome(3)
+          navegarHome(3);
         });
       }
+
+      NotificacaoService.post(
+        NotificacaoService.createNotificationObject(
+          modoModalRecusa == "devolucao"
+            ? NotificacaoService.maisInformacoes
+            : NotificacaoService.reprovado,
+          props.dados
+        )
+      );
     }
   };
 
   const aceitarDemandaGerente = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then((response) => {
-      navegarHome(1)
-    });
-  }
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(
+      (response) => {
+        navegarHome(1);
+      }
+    );
+  };
 
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
@@ -546,20 +562,19 @@ const DetalhesDemanda = (props) => {
   // Aparecer o feedback sobre a demanda
 
   const navegarHome = (tipoFeedback) => {
-
-    localStorage.removeItem('tipoFeedback');
+    localStorage.removeItem("tipoFeedback");
 
     switch (tipoFeedback) {
       case 1:
-        localStorage.setItem('tipoFeedback', '2');
+        localStorage.setItem("tipoFeedback", "2");
         navigate("/");
         break;
       case 2:
-        localStorage.setItem('tipoFeedback', '3');
+        localStorage.setItem("tipoFeedback", "3");
         navigate("/");
         break;
       case 3:
-        localStorage.setItem('tipoFeedback', '4');
+        localStorage.setItem("tipoFeedback", "4");
         navigate("/");
         break;
     }
@@ -612,8 +627,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -621,8 +636,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
