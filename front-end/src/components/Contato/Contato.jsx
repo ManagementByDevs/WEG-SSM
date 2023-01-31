@@ -1,33 +1,59 @@
-import { Box, Typography, Avatar } from '@mui/material'
-import React, {useContext} from 'react'
-import FontConfig from '../../service/FontConfig'
+import { Box, Typography, Avatar } from "@mui/material";
+import React, { useContext } from "react";
+import FontConfig from "../../service/FontConfig";
 
 import FontContext from "../../service/FontContext";
 
 const Contato = (props) => {
-    // Context para alterar o tamanho da fonte
-    const { FontConfig, setFontConfig } = useContext(FontContext);
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
 
-    const tituloDemanda = 'Colocar pote de bala nas mesas de TI'
+  const corSelecionado = () => {
+    console.log("teste");
+  };
 
-    return (
-        <Box onClick={props.onClick} className="flex justify-evenly items-center rounded-lg border delay-120 hover:scale-105 duration-300" sx={{
-            width: '90%', minWidth: '195px', minHeight: '8%', cursor: 'pointer',
-            "&:hover": {
-                backgroundColor: 'visualizado.false'
-            }
-        }} title={tituloDemanda}>
-            <Box className="flex justify-content items-center">
-                <Avatar sx={{ width: '3rem', height: '3rem' }} />
-            </Box>
-            <Box className="flex justify-content flex-col" sx={{ width: '70%' }}>
-                <Typography fontSize={FontConfig.medium} fontWeight="600">Nome</Typography>
-                <Typography fontSize={FontConfig.small} fontWeight="400" className="overflow-hidden truncate" sx={{ width: '100%' }}>Demanda: "{tituloDemanda}"</Typography>
-            </Box>
+  return (
+    <Box
+      onClick={props.onClick}
+      className="flex justify-evenly items-center rounded-lg border delay-120 hover:scale-105 duration-300"
+      sx={{
+        width: "90%",
+        minWidth: "195px",
+        minHeight: "8%",
+        cursor: "pointer",
+        "&:hover": {
+          backgroundColor: "visualizado.false",
+        },
+      }}
+      title={props.usuario.demanda}
+    >
+      <Box className="flex justify-content items-center">
+        <Avatar sx={{ width: "3rem", height: "3rem" }} />
+      </Box>
+      <Box className="flex justify-content flex-col" sx={{ width: "70%" }}>
+        <Box className="flex justify-between">
+          <Typography fontSize={FontConfig.medium} fontWeight="600">
+            {props.usuario.nome}
+          </Typography>
+          <Typography
+            fontSize={FontConfig.default}
+            fontWeight="600"
+            sx={{ color: "primary.main" }}
+          >
+            {props.usuario.codigoDemanda}
+          </Typography>
         </Box>
-    )
-}
+        <Typography
+          fontSize={FontConfig.small}
+          fontWeight="400"
+          className="overflow-hidden truncate"
+          sx={{ width: "100%" }}
+        >
+          Demanda: {props.usuario.demanda}
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
 
-
-
-export default Contato
+export default Contato;

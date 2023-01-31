@@ -40,6 +40,10 @@ const getDesignTokens = (mode) => ({
                     true: '#22252C',
                     false: '#2E2E2E'
                 },
+                chat: {
+                    outro: "#2E2E2E",
+                    eu: "#2382BA"
+                },
                 hover: {
                     main: '#2E2E2E'
                 }
@@ -79,6 +83,10 @@ const getDesignTokens = (mode) => ({
                 visualizado: {
                     true: '#E4E4E4',
                     false: '#E4E4E4'
+                },
+                chat: {
+                    outro: "#E4E4E4",
+                    eu: "#6AACDA"
                 },
                 hover: {
                     main: '#EBEBEB',
