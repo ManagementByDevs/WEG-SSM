@@ -1,5 +1,12 @@
-import React, { useState, useContext } from "react";
-import { Box, Avatar, Typography, Divider } from "@mui/material";
+import React, { useState, useContext, useEffect } from "react";
+import {
+  Box,
+  Avatar,
+  Typography,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import logoWeg from "../../assets/logo-weg.png";
 
@@ -10,7 +17,7 @@ import Mensagem from "../../components/Mensagem/Mensagem";
 
 import FontConfig from "../../service/FontConfig";
 
-import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
@@ -20,6 +27,23 @@ import FontContext from "../../service/FontContext";
 const Chat = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  const [pesquisaContato, setpesquisaContato] = useState("");
+  const [resultadosContato, setresultadosContato] = useState([]);
+
+  const onChange = (evt) => {
+    setpesquisaContato(evt.target.value);
+  };
+
+  useEffect(() => {
+    const resultados = usuarios.filter((usuario) => {
+      usuario.nome
+        .toLowerCase()
+        .includes(pesquisaContato.toLowerCase())});
+
+    console.log(resultados);
+    setresultadosContato(resultados);
+  }, [pesquisaContato]);
 
   const [usuarios, setUsuarios] = useState([
     {
@@ -36,7 +60,8 @@ const Chat = () => {
           remetente: "Thiago",
         },
         {
-          texto: "Tudo sim, e você? Vou testar um texto grande aqui, então vou escrever muito aqui para ter um exemplo de como é um texto grande.",
+          texto:
+            "Tudo sim, e você? Vou testar um texto grande aqui, então vou escrever muito aqui para ter um exemplo de como é um texto grande.",
           data: "10/10/2021",
           hora: "10:01",
           remetente: "Eu",
@@ -138,6 +163,16 @@ const Chat = () => {
     setIndexUsuario(index);
   }
 
+  const [texto, setTexto] = useState();
+
+  const save = (e) => {
+    setTexto(e.target.value);
+  };
+
+  const salvarTexto = () => {
+    // aqui é o salvar (utiliza a variavel texto para pegar o valor do texto)
+  };
+
   return (
     <FundoComHeader>
       <Box className="p-2">
@@ -162,6 +197,7 @@ const Chat = () => {
                 <Box
                   className="w-full"
                   component="input"
+                  onChange={onChange}
                   sx={{
                     backgroundColor: "input.main",
                     outline: "none",
@@ -174,7 +210,20 @@ const Chat = () => {
                   <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                 </Box>
               </Box>
-              {usuarios.map((usuario, index) => {
+              {resultadosContato.map((resultado, index) => {
+                return (
+                  <Contato
+                    key={index}
+                    onClick={() => {
+                      abrirChat(index);
+                    }}
+                    usuario={resultado}
+                    index={index}
+                  />
+                );
+              })}
+
+              {/* {usuarios.map((usuario, index) => {
                 return (
                   <Contato
                     key={index}
@@ -185,7 +234,7 @@ const Chat = () => {
                     index={index}
                   />
                 );
-              })}
+              })} */}
             </Box>
             {indexUsuario == null ? (
               <Box
@@ -232,13 +281,26 @@ const Chat = () => {
                       </Typography>
                     </Box>
                   </Box>
+                  <Box className="mr-5">
+                    <Tooltip title="Encerrar chat">
+                      <IconButton>
+                        <CommentsDisabledIcon
+                          sx={{
+                            fontSize: "30px",
+                            color: "#FFFF",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                 </Box>
                 <Box
                   className="flex flex-col mt-4"
                   sx={{ width: "95%", height: "85%" }}
                 >
-                {
-                  usuarios[indexUsuario].mensagens.map((mensagem, index) => {
+                  {/* Por enquanto está usando um componente mensagens para pegar as mensagens */}
+                  {usuarios[indexUsuario].mensagens.map((mensagem, index) => {
                     return (
                       <Mensagem
                         key={index}
@@ -247,8 +309,7 @@ const Chat = () => {
                         usuario={usuarios[indexUsuario]}
                       />
                     );
-                  })
-                }
+                  })}
                 </Box>
                 <Box
                   className="flex border px-3 py-1 m-4 rounded items-center"
@@ -259,6 +320,9 @@ const Chat = () => {
                   }}
                 >
                   <Box
+                    onChange={(e) => {
+                      save(e);
+                    }}
                     className="w-full"
                     component="input"
                     sx={{
@@ -270,9 +334,13 @@ const Chat = () => {
                     placeholder="Escreva sua mensagem..."
                   />
                   <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                    <AttachFileOutlinedIcon
-                      sx={{ color: "primary.main", cursor: "pointer" }}
-                    />
+                    <Tooltip title="Enviar Anexo">
+                      <IconButton>
+                        <AttachFileOutlinedIcon
+                          sx={{ color: "primary.main", cursor: "pointer" }}
+                        />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
                   <Divider
                     orientation="vertical"
@@ -282,9 +350,17 @@ const Chat = () => {
                     }}
                   />
                   <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                    <SendOutlinedIcon
-                      sx={{ color: "primary.main", cursor: "pointer" }}
-                    />
+                    <Tooltip title="Enviar mensagem">
+                      <IconButton
+                        onClick={() => {
+                          salvarTexto();
+                        }}
+                      >
+                        <SendOutlinedIcon
+                          sx={{ color: "primary.main", cursor: "pointer" }}
+                        />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
                 </Box>
               </Box>
