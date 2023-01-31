@@ -1,5 +1,5 @@
 import { Box, Typography, Avatar } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import FontConfig from "../../service/FontConfig";
 
 import FontContext from "../../service/FontContext";
@@ -8,9 +8,17 @@ const Contato = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  const [corFundoContato, setCorFundoContato] = useState("transparent");
+
   const corSelecionado = () => {
-    console.log("teste");
     props.onClick();
+    if (props.usuarioAtual != props.index) {
+      console.log("com cor")
+      setCorFundoContato("visualizado.false");
+    } else {
+      console.log("sem cor")
+      setCorFundoContato("transparent");
+    }
   };
 
   return (
@@ -22,6 +30,7 @@ const Contato = (props) => {
         minWidth: "195px",
         minHeight: "8%",
         cursor: "pointer",
+        backgroundColor:{corFundoContato},
         "&:hover": {
           backgroundColor: "visualizado.false",
         },

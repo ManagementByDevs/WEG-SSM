@@ -219,6 +219,7 @@ const Chat = () => {
                     }}
                     usuario={resultado}
                     index={index}
+                    usuarioAtual={indexUsuario}
                   />
                 );
               })}
