@@ -30,6 +30,10 @@ const Home = () => {
 
   // Lista de demandas presente
   const [listaDemandas, setListaDemandas] = useState([]);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
+  const [paginaAtual, setPaginaAtual] = useState(0);
+  const [tamanhoPagina, setTamanhoPagina] = useState(20);
 
   // Abrir modal feedback de demanda criada
 
@@ -39,11 +43,9 @@ const Home = () => {
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
   useEffect(() => {
-
     if (localStorage.getItem('tipoFeedback') == "1") {
       setFeedbackDemandaCriada(true);
     } 
-
   }, []);
 
   // Usuário que está logado no sistema
@@ -161,6 +163,7 @@ const Home = () => {
   const buscarDemandas = () => {
     if (params.departamento != null || params.solicitante != null) {
       DemandaService.getPage(params, ordenacao + page).then((e) => {
+        setTotalPaginas(e.totalPages);
         setListaDemandas(e.content);
       });
     }
@@ -448,8 +451,8 @@ const Home = () => {
         </Box>
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
-        {listaDemandas.length > 18 && value == "1" ? (
-          <Paginacao tipo={value} />
+        {(totalPaginas > 1 || listaDemandas.length > 20) && value == "1" ? (
+          <Paginacao setPage={setPage} tipo={value} />
         ) : null}
       </Box>
     </FundoComHeader>

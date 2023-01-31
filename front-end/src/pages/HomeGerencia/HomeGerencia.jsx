@@ -59,7 +59,8 @@ const HomeGerencia = () => {
   const [valorPesquisa, setValorPesquisa] = useState("");
 
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
-  const [filtrosAtuais, setFiltrosAtuais] = useState({ solicitante: null, forum: "", tamanho: "", gerente: null, departamento: "" });
+  const [filtrosAtuais, setFiltrosAtuais] = useState({ solicitante: null, forum: "", tamanho: "", gerente: null, departamento: "", id: null, codigoPPM: null });
+  const [modoFiltro, setModoFiltro] = useState("demanda");
 
   const [usuario, setUsuario] = useState({
     id: 0,
@@ -81,6 +82,8 @@ const HomeGerencia = () => {
     departamento: null,
     tamanho: null,
     status: null,
+    codigoPPM: null,
+    id: null
   });
 
   // UseEffect para buscar o usuário assim que entrar na página
@@ -91,11 +94,11 @@ const HomeGerencia = () => {
 
   // UseEffect para redefinir os parâmteros quando a ordenação for modificada
   useEffect(() => {
-    setParams({ titulo: valorPesquisa, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento) });
+    setParams({ titulo: valorPesquisa, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento), codigoPPM: params.codigoPPM, id: params.id });
   }, [ordenacao]);
 
   useEffect(() => {
-    let paramsTemp = { solicitante: null, forum: null, tamanho: null, gerente: null, departamento: null };
+    let paramsTemp = { solicitante: null, forum: null, tamanho: null, gerente: null, departamento: null, codigoPPM: null, id: null };
 
     if (filtrosAtuais.solicitante != "") {
       paramsTemp.solicitante = filtrosAtuais.solicitante;
@@ -112,8 +115,14 @@ const HomeGerencia = () => {
     if (filtrosAtuais.departamento != "") {
       paramsTemp.departamento = filtrosAtuais.departamento;
     }
+    if (filtrosAtuais.codigoPPM != "") {
+      paramsTemp.codigoPPM = filtrosAtuais.codigoPPM;
+    }
+    if (filtrosAtuais.id != "") {
+      paramsTemp.id = filtrosAtuais.id;
+    }
 
-    setParams({ titulo: valorPesquisa, solicitante: paramsTemp.solicitante, gerente: paramsTemp.gerente, analista: params.analista, forum: paramsTemp.forum, tamanho: paramsTemp.tamanho, status: params.status, departamento: paramsTemp.departamento });
+    setParams({ titulo: valorPesquisa, solicitante: paramsTemp.solicitante, gerente: paramsTemp.gerente, analista: params.analista, forum: paramsTemp.forum, tamanho: paramsTemp.tamanho, status: params.status, departamento: paramsTemp.departamento, codigoPPM: paramsTemp.codigoPPM, id: paramsTemp.id });
   }, [filtrosAtuais]);
 
 
@@ -154,6 +163,7 @@ const HomeGerencia = () => {
             analista: null,
           });
         }
+        setModoFiltro('demanda');
         break;
       case "2":
         setParams({
@@ -162,12 +172,16 @@ const HomeGerencia = () => {
           status: "ASSESSMENT",
           analista: usuario,
         });
+        setModoFiltro('demanda');
         break;
       case "3":
+        setModoFiltro('proposta');
         break;
       case "4":
+        setModoFiltro('proposta');
         break;
       case "5":
+        setModoFiltro('proposta');
         break;
     }
   }, [value]);
@@ -601,6 +615,7 @@ const HomeGerencia = () => {
                     setOpen={setOpenModal}
                     filtro={filtrosAtuais}
                     setFiltro={setFiltrosAtuais}
+                    modo={modoFiltro}
 
                     listaForuns={listaForum}
                     listaDepartamentos={listaDepartamento}
@@ -756,7 +771,7 @@ const HomeGerencia = () => {
         </Box>
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
-        {listaItens.length > 18 ? (
+        {listaItens.length > 20 ? (
           <Paginacao tipo={value} />
         ) : null}
       </Box>
