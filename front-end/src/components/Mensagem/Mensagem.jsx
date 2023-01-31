@@ -35,7 +35,7 @@ const Mensagem = (props) => {
                 >
                   {props.usuario.mensagens[props.index].hora}
                 </Typography>
-                <DoneAllIcon fontSize="small" />
+                <DoneAllIcon fontSize="small" sx={{color: "#FFFF"}}/>
               </Box>
             </Box>
           </Box>

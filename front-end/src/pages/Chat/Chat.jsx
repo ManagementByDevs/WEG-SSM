@@ -36,12 +36,12 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    const resultados = usuarios.filter((usuario) => {
-      usuario.nome
-        .toLowerCase()
-        .includes(pesquisaContato.toLowerCase())});
-
-    console.log(resultados);
+    const resultados = [];
+    usuarios.filter((usuario) => {
+      if (usuario.nome.toLowerCase().includes(pesquisaContato.toLowerCase())) {
+        resultados.push(usuario);
+      }
+    });
     setresultadosContato(resultados);
   }, [pesquisaContato]);
 
@@ -222,19 +222,6 @@ const Chat = () => {
                   />
                 );
               })}
-
-              {/* {usuarios.map((usuario, index) => {
-                return (
-                  <Contato
-                    key={index}
-                    onClick={() => {
-                      abrirChat(index);
-                    }}
-                    usuario={usuario}
-                    index={index}
-                  />
-                );
-              })} */}
             </Box>
             {indexUsuario == null ? (
               <Box
