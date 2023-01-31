@@ -42,7 +42,7 @@ public class Demanda {
     @Column(length = 45)
     private String secaoTI;
 
-    @Column(length = 200)
+    @Column(length = 1000)
     private String motivoRecusa;
 
     @Column(nullable = false)

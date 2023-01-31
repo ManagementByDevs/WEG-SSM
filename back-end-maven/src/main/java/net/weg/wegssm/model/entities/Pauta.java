@@ -30,11 +30,8 @@ public class Pauta {
     @Column(nullable = false)
     private Date fimDataReuniao;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String comissao;
-
-    @Column
-    private Boolean visibilidade;
 
     @OneToMany
     @JoinColumn(name = "pauta_id")

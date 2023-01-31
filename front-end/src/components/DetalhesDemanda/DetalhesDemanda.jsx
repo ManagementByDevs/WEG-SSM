@@ -415,6 +415,7 @@ const DetalhesDemanda = (props) => {
       forum: dados.forum,
       analista: props.usuario,
       gerente: props.dados.gerente,
+      departamento: props.dados.departamento
     };
 
     DemandaService.put(demandaAtualizada, []).then((response) => {

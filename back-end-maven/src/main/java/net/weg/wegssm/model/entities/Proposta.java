@@ -19,12 +19,9 @@ import java.util.List;
 public class Proposta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
-
-    @Column(nullable = false, length = 15000)
-    private String escopo;
 
     @Column(nullable = false)
     private Date inicioExecucao;
@@ -56,7 +53,7 @@ public class Proposta {
     @Column
     private ParecerGerencia parecerComissao;
 
-    @Column(length = 200)
+    @Column(length = 1000)
     private String parecerInformacao;
 
     @Column
@@ -65,16 +62,16 @@ public class Proposta {
     @Column
     private Boolean visibilidade;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String titulo;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 2000)
     private String problema;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 2000)
     private String proposta;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 100)
     private String frequencia;
 
     @Column(nullable = false, length = 20)
@@ -84,6 +81,10 @@ public class Proposta {
     private String secaoTI;
 
     // foreign keys
+
+    @OneToOne
+    @JoinColumn(name = "proposta_id")
+    private EscopoProposta escopoProposta;
 
     @ManyToOne
     @JoinColumn(name = "bu_solicitante")
@@ -117,8 +118,8 @@ public class Proposta {
     private Departamento departamento;
 
     @OneToMany
-    @JoinColumn(name = "custo_id")
-    private List<Custo> custo;
+    @JoinColumn(name = "proposta_id")
+    private List<TabelaCusto> tabelaCustos;
 
     @OneToMany
     @JoinColumn(name = "responsavel_negocio_id")

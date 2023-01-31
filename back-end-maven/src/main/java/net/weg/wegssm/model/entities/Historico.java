@@ -22,9 +22,6 @@ public class Historico {
     private Long id;
 
     @Column(nullable = false)
-    private Long numeroVersao;
-
-    @Column(nullable = false)
     private Date data;
 
     @ManyToOne
@@ -45,5 +42,9 @@ public class Historico {
     @ManyToOne
     @JoinColumn(name = "demanda_id")
     private Demanda demanda;
+
+    @ManyToOne
+    @JoinColumn(name = "proposta_id")
+    private Proposta proposta;
 
 }

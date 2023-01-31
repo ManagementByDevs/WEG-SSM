@@ -48,4 +48,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByTipoUsuario(TipoUsuario tipo_usuario);
 
     List<Usuario> findByNomeContainingAndTipoUsuario(String nome, TipoUsuario tipo_usuario, Pageable pageable);
+
+    Usuario findByDepartamentoAndTipoUsuario(Departamento departamento, TipoUsuario tipoUsuario);
 }

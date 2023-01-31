@@ -17,7 +17,7 @@ import FontContext from "../../service/FontContext";
 const Login = (props) => {
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
-    
+
     // Variável para usar função de navegação do react-router-dom
     let navigate = useNavigate();
 
@@ -68,6 +68,13 @@ const Login = (props) => {
         }
     }
 
+    // Função para "ouvir" um evento de teclado no input de pesquisa e fazer o login caso seja a tecla "Enter"
+    const eventoTeclado = (e) => {
+        if (e.key == "Enter") {
+            login();
+        }
+    };
+
     return (
         // Div Principal com width preenchendo a tela
         <FundoComHeader>
@@ -81,6 +88,9 @@ const Login = (props) => {
                         {/* Input de texto do email do usuário */}
                         <TextField value={dados.email}
                             onChange={(e) => { atualizarInput(1, e) }}
+                            onKeyDown={(e) => {
+                                eventoTeclado(e);
+                            }}
                             className='w-8/12' id="filled-basic"
                             label="Email" variant="filled"
                             color='primary'
@@ -90,6 +100,9 @@ const Login = (props) => {
                         <TextField
                             value={dados.senha}
                             onChange={(e) => { atualizarInput(2, e) }}
+                            onKeyDown={(e) => {
+                                eventoTeclado(e);
+                            }}
                             className='w-8/12'
                             id="input-with-icon-textfield"
                             label="Senha"

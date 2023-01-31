@@ -68,4 +68,8 @@ public class UsuarioService {
     public List<Usuario> findByNomeAndTipoUsuario(String nome, TipoUsuario tipo_usuario, Pageable pageable) {
         return usuarioRepository.findByNomeContainingAndTipoUsuario(nome, tipo_usuario, pageable);
     }
+
+    public Usuario findByDepartamentoAndTipoUsuario(Departamento departamento, TipoUsuario tipoUsuario) {
+        return usuarioRepository.findByDepartamentoAndTipoUsuario(departamento, tipoUsuario);
+    }
 }

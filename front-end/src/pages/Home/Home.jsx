@@ -45,7 +45,7 @@ const Home = () => {
   useEffect(() => {
     if (localStorage.getItem('tipoFeedback') == "1") {
       setFeedbackDemandaCriada(true);
-    } 
+    }
   }, []);
 
   // Usuário que está logado no sistema
@@ -71,7 +71,6 @@ const Home = () => {
   });
 
   // String para ordenação das demandas
-  const [page, setPage] = useState("size=20&page=0");
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
 
   const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false]);
@@ -150,6 +149,11 @@ const Home = () => {
     }
   }, [listaFiltros]);
 
+  // UseEffect para buscar demandas quando a paginação for modificada
+  useEffect(() => {
+    setParams({ titulo: params.titulo, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), forum: JSON.parse(params.forum), departamento: JSON.parse(params.departamento), tamanho: params.tamanho, status: params.status })
+  }, [tamanhoPagina, paginaAtual])
+
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
     UsuarioService.getUsuarioById(
@@ -162,7 +166,7 @@ const Home = () => {
   // Função para buscar as demandas com os parâmetros e ordenação
   const buscarDemandas = () => {
     if (params.departamento != null || params.solicitante != null) {
-      DemandaService.getPage(params, ordenacao + page).then((e) => {
+      DemandaService.getPage(params, ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual).then((e) => {
         setTotalPaginas(e.totalPages);
         setListaDemandas(e.content);
       });
@@ -438,7 +442,7 @@ const Home = () => {
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
         {(totalPaginas > 1 || listaDemandas.length > 20) && value == "1" ? (
-          <Paginacao setPage={setPage} tipo={value} />
+          <Paginacao totalPaginas={totalPaginas} setTamanho={setTamanhoPagina} tamanhoPagina={tamanhoPagina} tipo={value} setPaginaAtual={setPaginaAtual} />
         ) : null}
       </Box>
     </FundoComHeader>

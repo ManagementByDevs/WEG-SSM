@@ -139,8 +139,7 @@ public class ChatController {
         }
 
         Chat chat = new Chat();
-        chat.setUsuarioBloqueado(false);
-        chat.setVisibilidade(true);
+        chat.setConversa_encerrada(false);
         BeanUtils.copyProperties(chatDto, chat);
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.save(chat));
@@ -160,7 +159,6 @@ public class ChatController {
         }
 
         Chat chat = chatService.findById(id).get();
-        chat.setVisibilidade(false);
         chatService.save(chat);
 
         return ResponseEntity.status(HttpStatus.OK).body(chat);

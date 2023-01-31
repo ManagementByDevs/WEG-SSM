@@ -11,7 +11,10 @@ public enum Status {
     CANCELLED("Cancelled"),
     TO_DO("To_Do"),
     BUSINESS_CASE("Business_Case"),
-    ASSESSMENT("Assessment"),
+    ASSESSMENT("Assessment Criação"),
+    ASSESSMENT_APROVACAO("Assessment Aprovação"),
+    ASSESSMENT_EDICAO("Assessment Edição"),
+    ASSESSMENT_DG("Assessment DG"),
     DONE("Done");
 
     String status;

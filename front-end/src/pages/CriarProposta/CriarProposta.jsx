@@ -1,4 +1,5 @@
-import React, {useContext} from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import { Box } from "@mui/material";
 
@@ -12,13 +13,21 @@ const CriarProposta = () => {
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
+    const location = useLocation();
+
+    const [dados, setDados] = useState(location.state);
+
+    useEffect(() => {
+        setDados(location.state);
+    }, [])
+
     return (
         <FundoComHeader>
             <Box className='p-2'>
                 <Caminho />
                 <Box className='w-full flex justify-center'>
                     <Box className='w-5/6'>
-                        <BarraProgressaoProposta steps={['Proposta','Escopo', 'Custos', 'Gerais']} />
+                        <BarraProgressaoProposta dados={dados} steps={['Proposta', 'Escopo', 'Custos', 'Gerais']} />
                     </Box>
                 </Box>
             </Box>
