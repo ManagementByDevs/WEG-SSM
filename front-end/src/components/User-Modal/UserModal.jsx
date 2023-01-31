@@ -209,8 +209,26 @@ const UserModal = (props) => {
     }
   };
 
+  //useContext para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // Função para pegar o valor do fontConfig já salvo anteriormente
+  const getValueByContext = (fontConfigDefault) => {
+    if (fontConfigDefault == "10px") {
+      return -2;
+    } else if (fontConfigDefault == "12px") {
+      return -1;
+    } else if (fontConfigDefault == "14px") {
+      return 0;
+    } else if (fontConfigDefault == "16px") {
+      return 1;
+    } else if (fontConfigDefault == "18px") {
+      return 2;
+    }
+  }
+
   // UseState para poder visualizar e alterar o value do slider
-  const [valueSlider, setValueSlider] = useState(0);
+  const [valueSlider, setValueSlider] = useState(getValueByContext(FontConfig.default));
 
   // Função para mudar o value do slider
   const handleChange = (event, newValue) => {
@@ -218,9 +236,6 @@ const UserModal = (props) => {
       setValueSlider(newValue);
     }
   };
-
-  //useContext para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // UseEffect para alterar o tamanho da fonte
   useEffect(() => {
@@ -416,7 +431,7 @@ const UserModal = (props) => {
               <Box className="w-24 h-8">
                 <SliderMark
                   aria-label="Small steps"
-                  defaultValue={0}
+                  defaultValue={getValueByContext(FontConfig.default)}
                   step={1}
                   value={valueSlider}
                   onChange={handleChange}

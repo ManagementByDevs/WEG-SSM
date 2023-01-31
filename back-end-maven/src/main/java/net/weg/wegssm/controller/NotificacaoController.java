@@ -73,6 +73,11 @@ public class NotificacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByUsuario(usuarioService.findById(id).get()));
     }
 
+    /**
+     * Método GET para buscar as notificações pela data
+     * @param data
+     * @return
+     */
     @GetMapping("/date/{data}")
     public  ResponseEntity<Object> findByData(@PathVariable(value = "data") Data data) {
         return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByData(data));
