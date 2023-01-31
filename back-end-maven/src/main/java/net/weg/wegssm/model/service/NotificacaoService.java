@@ -45,8 +45,8 @@ public class NotificacaoService {
         notificacaoRepository.deleteById(id);
     }
 
-    public List<Notificacao> findByUsuario(Usuario usuario) {
-        return notificacaoRepository.findByUsuario(usuario);
+    public Page<Notificacao> findByUsuario(Usuario usuario, Pageable pageable) {
+        return notificacaoRepository.findByUsuario(usuario, pageable);
     }
 
     public List<Notificacao> findByData(Data data) {

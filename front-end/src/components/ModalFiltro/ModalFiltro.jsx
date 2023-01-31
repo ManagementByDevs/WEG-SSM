@@ -5,6 +5,7 @@ import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid, Fa
 import CloseIcon from '@mui/icons-material/Close';
 
 import FontContext from "../../service/FontContext";
+import DateService from "../../service/dateService";
 
 const ModalFiltro = (props) => {
     // Context para alterar o tamanho da fonte
@@ -135,12 +136,7 @@ const ModalFiltro = (props) => {
 
     // função para pegar a data atual no modelo yyyy-mm-dd
     const getTodaysDate = () => {
-        const today = new Date();
-        const dd = String(today.getDate()).padStart(2, '0');
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const yyyy = today.getFullYear();
-        console.log(yyyy + '-' + mm + '-' + dd)
-        return yyyy + '-' + mm + '-' + dd;
+        return DateService.getTodaysDateUSFormat();
     }
 
     // função para pegar o valor do input e passar para o componente pai

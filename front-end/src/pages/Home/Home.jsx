@@ -192,20 +192,6 @@ const Home = () => {
     }
   };
 
-  const [state, setState] = React.useState({
-    open: false,
-  });
-
-  const { open } = state;
-
-  const handleClick = (newState) => () => {
-    setState({ open: true, ...newState });
-  };
-
-  const handleClose = () => {
-    setState({ ...state, open: false });
-  };
-
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
   const [abrirFiltro, setOpenFiltro] = useState(false);
 

@@ -19,11 +19,10 @@ import "./notificacaoStyle.css";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 import NotificacaoService from "../../service/notificacaoService";
 
-import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
-import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
@@ -38,8 +37,6 @@ const Notificacao = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Modal de filtro
-  const [abrirFiltro, setOpenFiltro] = useState(false);
   // Modal de confirmação de exclusão individual
   const [openModalConfirmDelete, setOpenModalConfirmDelete] = useState(false);
   // Modal de confirmação de exclusão múltipla
@@ -47,7 +44,14 @@ const Notificacao = () => {
     useState(false);
   // UseState para saber qual notificação deletar ao usar o botão de delete individual
   const [indexDelete, setIndexDelete] = useState(null);
-  const [filterDate, setFilterDate] = useState(null);
+  // UseState que irá conter o resultado da busca pela página de notificações
+  const [pageData, setPageData] = useState(null);
+  // UseState que têm informações sobre a página atual
+  const [page, setPage] = useState("size=20&page=0");
+
+  useEffect(() => {
+    buscarNotificacoes();
+  }, [page]);
 
   // Linhas da tabela
   const [rows, setRows] = useState([]);
@@ -80,11 +84,6 @@ const Notificacao = () => {
     return yyyy + "-" + mm + "-" + dd;
   };
 
-  // Handler que atualiza o estado do modal de filtro
-  const abrirModalFiltro = () => {
-    setOpenFiltro(true);
-  };
-
   // Atualiza o estado da linha ao clicar no checkbox
   const onSelectRowClick = (event, index) => {
     let aux = [...rows];
@@ -111,7 +110,6 @@ const Notificacao = () => {
       if (row.checked) {
         row.visualizado = !bool;
         updateNotificacao(row);
-        // row.checked = false;
       }
       return row;
     });
@@ -144,8 +142,9 @@ const Notificacao = () => {
   // Busca as notificações do usuário no banco de dados
   const buscarNotificacoes = () => {
     let user = JSON.parse(localStorage.getItem("user"));
-    NotificacaoService.getByUserId(parseInt(user.id)).then((data) => {
-      setRows(createRows(data));
+    NotificacaoService.getByUserId(parseInt(user.id), page).then((data) => {
+      setRows(createRows(data.content));
+      setPageData(data);
     });
   };
 
@@ -161,6 +160,7 @@ const Notificacao = () => {
     return new Date(date).toISOString().slice(0, 19);
   };
 
+  // Converte o tipo do ícone resgatado do banco de dados para um valor que será interpretado pelo front-end
   const convertTipoIconeToEnum = (tipo) => {
     switch (tipo) {
       case "APROVADO":
@@ -192,14 +192,6 @@ const Notificacao = () => {
   useEffect(() => {
     buscarNotificacoes();
   }, []);
-
-  useEffect(() => {
-    console.log("filterDate",filterDate);
-  }, [filterDate])
-
-  useEffect(() => {
-    console.log("Rows: ", rows);
-  }, [rows]);
 
   return (
     <FundoComHeader>
@@ -236,189 +228,190 @@ const Notificacao = () => {
           <Box className="w-10/12">
             <Divider sx={{ borderColor: "tertiary.main" }} />
           </Box>
-          <Box className="w-full flex justify-center">
-            <Box
-              className="w-10/12 h-10 flex justify-between "
-              color={"icon.main"}
-              sx={{ margin: "5px" }}
-            >
-              {rows.find((row) => row.checked) ? (
-                <Box className="w-1/12 flex justify-center">
-                  <Tooltip title="Deletar">
-                    <IconButton
-                      onClick={() => {
-                        setOpenModalConfirmMultiDelete(true);
-                      }}
-                    >
-                      <DeleteOutlineOutlinedIcon
-                        sx={{ color: "primary.main" }}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Marcar como lido">
-                    <IconButton onClick={onMultiReadOrUnreadClick}>
-                      {rows.every((row) => row.visualizado) ? (
-                        <MarkEmailUnreadOutlinedIcon
-                          sx={{ color: "primary.main" }}
-                        />
-                      ) : (
-                        <MarkEmailReadOutlinedIcon
-                          sx={{ color: "primary.main" }}
-                        />
-                      )}
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              ) : (
-                <Box />
-              )}
-              <Button
-                onClick={abrirModalFiltro}
-                sx={{
-                  backgroundColor: "primary.main",
-                  color: "text.white",
-                  fontSize: FontConfig.default,
-                }}
-                variant="contained"
-                disableElevation
-              >
-                <Typography fontSize={FontConfig.medium}>Filtrar</Typography>
-                <FilterAltOutlinedIcon />
-              </Button>
-            </Box>
-            {abrirFiltro && (
-              <ModalFiltro
-                open={abrirFiltro}
-                setOpen={setOpenFiltro}
-                filtroDemanda={false}
-                setDate={setFilterDate}
-              />
-            )}
-          </Box>
-          <Box className="w-10/12 flex justify-center">
-            <Paper sx={{ width: "100%" }} square>
-              <Table sx={{ width: "100%" }}>
-                <TableHead>
-                  <TableRow sx={{ backgroundColor: "primary.main" }}>
-                    <th className="w-1/12">
-                      <Checkbox
-                        sx={{
-                          color: "white",
-                          "&.Mui-checked": {
-                            color: "white",
-                          },
-                        }}
-                        checked={
-                          rows.every((row) => row.checked) && rows.length > 0
-                        }
-                        onChange={(e) => {
-                          onSelectAllClick(e.target.checked);
-                        }}
-                      />
-                    </th>
-                    <th className="text-white">
-                      <Typography fontSize={FontConfig.big}>Tipo</Typography>
-                    </th>
-                    <th className="text-white">
-                      <Typography fontSize={FontConfig.big}>Título</Typography>
-                    </th>
-                    <th className="w-1/10 text-white">
-                      <Typography fontSize={FontConfig.big}>Data</Typography>
-                    </th>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, index) => (
-                    <TableRow
-                      className="drop-shadow-lg noticacao-table-row"
-                      selected={!row.visualizado}
-                      hover
-                      key={index}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                    >
-                      <td className="text-center">
-                        <Checkbox
-                          checked={row.checked}
-                          onChange={(e) => {
-                            onSelectRowClick(e, index);
+          {pageData?.totalPages >= 1 ? (
+            <>
+              <Box className="w-full flex justify-center">
+                <Box
+                  className="w-10/12 h-10 flex justify-between "
+                  color={"icon.main"}
+                  sx={{ margin: "5px" }}
+                >
+                  {rows.find((row) => row.checked) ? (
+                    <Box className="w-1/12 flex justify-center">
+                      <Tooltip title="Deletar">
+                        <IconButton
+                          onClick={() => {
+                            setOpenModalConfirmMultiDelete(true);
                           }}
-                        />
-                      </td>
-                      <td className="text-center">
-                        {row.tipo_icone == "APROVADO" ? (
-                          <CheckCircleOutlineIcon
-                            color="primary"
-                            sx={{ fontSize: "30px", marginX: "0.5rem" }}
-                          />
-                        ) : row.tipo_icone == "REPROVADO" ? (
-                          <ErrorOutlineOutlinedIcon
-                            color="primary"
-                            sx={{ fontSize: "30px", marginX: "0.5rem" }}
-                          />
-                        ) : row.tipo_icone == "MAIS_INFORMACOES" ? (
-                          <HelpOutlineIcon
-                            color="primary"
-                            sx={{ fontSize: "30px", marginX: "0.5rem" }}
-                          />
-                        ) : (
-                          <ChatBubbleOutlineIcon
-                            color="primary"
-                            sx={{ fontSize: "30px", marginX: "0.5rem" }}
-                          />
-                        )}
-                      </td>
-                      <td className="text-left">
-                        <Typography fontSize={FontConfig.medium}>
-                          {row.title}
-                        </Typography>
-                      </td>
-                      <td className="text-center">
-                        <Typography
-                          className="notificacao-table-row-td"
-                          fontSize={FontConfig.default}
                         >
-                          {row.date}
-                        </Typography>
-                        <Typography className="notificacao-table-row-td-action">
-                          {row.visualizado ? (
-                            <Tooltip title="Marcar como não lido">
-                              <MarkEmailUnreadOutlinedIcon
-                                onClick={() => onReadOrUnreadClick(index)}
-                                className="cursor-pointer"
-                                sx={{ color: "primary.main" }}
-                              />
-                            </Tooltip>
-                          ) : (
-                            <Tooltip title="Marcar como lido">
-                              <MarkEmailReadOutlinedIcon
-                                onClick={() => onReadOrUnreadClick(index)}
-                                className="cursor-pointer"
-                                sx={{ color: "primary.main" }}
-                              />
-                            </Tooltip>
-                          )}
-                          <Tooltip
-                            title="Deletar"
-                            className="cursor-pointer ml-4"
-                          >
-                            <DeleteOutlineOutlinedIcon
-                              onClick={() => {
-                                setIndexDelete(index);
-                                setOpenModalConfirmDelete(true);
-                              }}
+                          <DeleteOutlineOutlinedIcon
+                            sx={{ color: "primary.main" }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Marcar como lido">
+                        <IconButton onClick={onMultiReadOrUnreadClick}>
+                          {rows.every((row) => row.visualizado) ? (
+                            <MarkEmailUnreadOutlinedIcon
                               sx={{ color: "primary.main" }}
                             />
-                          </Tooltip>
-                        </Typography>
-                      </td>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Paper>
-          </Box>
+                          ) : (
+                            <MarkEmailReadOutlinedIcon
+                              sx={{ color: "primary.main" }}
+                            />
+                          )}
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  ) : (
+                    <Box />
+                  )}
+                </Box>
+              </Box>
+              <Box className="w-10/12 flex justify-center">
+                <Paper sx={{ width: "100%" }} square>
+                  <Table className="mb-8" sx={{ width: "100%" }}>
+                    <TableHead>
+                      <TableRow sx={{ backgroundColor: "primary.main" }}>
+                        <th className="w-1/12">
+                          <Checkbox
+                            sx={{
+                              color: "white",
+                              "&.Mui-checked": {
+                                color: "white",
+                              },
+                            }}
+                            checked={
+                              rows.every((row) => row.checked) &&
+                              rows.length > 0
+                            }
+                            onChange={(e) => {
+                              onSelectAllClick(e.target.checked);
+                            }}
+                          />
+                        </th>
+                        <th className="text-white">
+                          <Typography fontSize={FontConfig.big}>
+                            Tipo
+                          </Typography>
+                        </th>
+                        <th className="text-white">
+                          <Typography fontSize={FontConfig.big}>
+                            Título
+                          </Typography>
+                        </th>
+                        <th className="w-1/10 text-white">
+                          <Typography fontSize={FontConfig.big}>
+                            Data
+                          </Typography>
+                        </th>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rows.map((row, index) => (
+                        <TableRow
+                          className="drop-shadow-lg noticacao-table-row"
+                          selected={!row.visualizado}
+                          hover
+                          key={index}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <td className="text-center">
+                            <Checkbox
+                              checked={row.checked}
+                              onChange={(e) => {
+                                onSelectRowClick(e, index);
+                              }}
+                            />
+                          </td>
+                          <td className="text-center">
+                            {row.tipo_icone == "APROVADO" ? (
+                              <CheckCircleOutlineIcon
+                                color="primary"
+                                sx={{ fontSize: "30px", marginX: "0.5rem" }}
+                              />
+                            ) : row.tipo_icone == "REPROVADO" ? (
+                              <ErrorOutlineOutlinedIcon
+                                color="primary"
+                                sx={{ fontSize: "30px", marginX: "0.5rem" }}
+                              />
+                            ) : row.tipo_icone == "MAIS_INFORMACOES" ? (
+                              <HelpOutlineIcon
+                                color="primary"
+                                sx={{ fontSize: "30px", marginX: "0.5rem" }}
+                              />
+                            ) : (
+                              <ChatBubbleOutlineIcon
+                                color="primary"
+                                sx={{ fontSize: "30px", marginX: "0.5rem" }}
+                              />
+                            )}
+                          </td>
+                          <td className="text-left">
+                            <Typography fontSize={FontConfig.medium}>
+                              {row.title}
+                            </Typography>
+                          </td>
+                          <td className="text-center">
+                            <Typography
+                              className="notificacao-table-row-td"
+                              fontSize={FontConfig.default}
+                            >
+                              {row.date}
+                            </Typography>
+                            <Typography className="notificacao-table-row-td-action">
+                              {row.visualizado ? (
+                                <Tooltip title="Marcar como não lido">
+                                  <MarkEmailUnreadOutlinedIcon
+                                    onClick={() => onReadOrUnreadClick(index)}
+                                    className="cursor-pointer"
+                                    sx={{ color: "primary.main" }}
+                                  />
+                                </Tooltip>
+                              ) : (
+                                <Tooltip title="Marcar como lido">
+                                  <MarkEmailReadOutlinedIcon
+                                    onClick={() => onReadOrUnreadClick(index)}
+                                    className="cursor-pointer"
+                                    sx={{ color: "primary.main" }}
+                                  />
+                                </Tooltip>
+                              )}
+                              <Tooltip
+                                title="Deletar"
+                                className="cursor-pointer ml-4"
+                              >
+                                <DeleteOutlineOutlinedIcon
+                                  onClick={() => {
+                                    setIndexDelete(index);
+                                    setOpenModalConfirmDelete(true);
+                                  }}
+                                  sx={{ color: "primary.main" }}
+                                />
+                              </Tooltip>
+                            </Typography>
+                          </td>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  {pageData?.totalPages >= 1 && (
+                    <Box className="flex justify-end">
+                      <Paginacao setPage={setPage} />
+                    </Box>
+                  )}
+                </Paper>
+              </Box>
+            </>
+          ) : (
+            <Box className="flex justify-center items-center h-32">
+              <Typography fontSize={FontConfig.big}>
+                Não há nenhuma notificação
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </FundoComHeader>

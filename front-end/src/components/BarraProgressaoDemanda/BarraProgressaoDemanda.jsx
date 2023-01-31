@@ -202,13 +202,13 @@ const BarraProgressaoDemanda = (props) => {
     setActiveStep(0);
   };
 
-  const [demandaCriada, setDemandaCriada] = React.useState(false);
+  const [demandaCriada, setDemandaCriada] = useState(false);
 
   const criarDemanda = () => {
     handleClick(true);
   };
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     open: false,
   });
 
