@@ -47,7 +47,11 @@ const HomeGerencia = () => {
   const [listaGerentes, setListaGerentes] = useState([]);
 
   // String para ordenação das demandas
-  const [page, setPage] = useState("size=20&page=0");
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
+  const [paginaAtual, setPaginaAtual] = useState(0);
+  const [tamanhoPagina, setTamanhoPagina] = useState(20);
+
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
 
   // Valores dos checkboxes no modal de ordenação
@@ -198,7 +202,7 @@ const HomeGerencia = () => {
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
   useEffect(() => {
     buscarItens();
-  }, [params]);
+  }, [params, paginaAtual, tamanhoPagina]);
 
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
   useEffect(() => {
@@ -261,15 +265,17 @@ const HomeGerencia = () => {
     switch (value) {
       case "1":
         if (params.status != null || params.gerente != null) {
-          DemandaService.getPage(params, ordenacao + page).then((response) => {
+          DemandaService.getPage(params, ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual).then((response) => {
             setListaItens([...response.content]);
+            setTotalPaginas(response.totalPages);
           });
         }
         break;
       case "2":
         if (params.status != null && params.analista != null) {
-          DemandaService.getPage(params, ordenacao + page).then((response) => {
+          DemandaService.getPage(params, ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual).then((response) => {
             setListaItens([...response.content]);
+            setTotalPaginas(response.totalPages);
           });
         }
         break;
@@ -771,8 +777,8 @@ const HomeGerencia = () => {
         </Box>
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
-        {listaItens.length > 20 ? (
-          <Paginacao tipo={value} />
+        {(totalPaginas > 1 || listaItens.length > 20) ? (
+          <Paginacao totalPaginas={totalPaginas} setTamanho={setTamanhoPagina} tamanhoPagina={tamanhoPagina} tipo={value} setPaginaAtual={setPaginaAtual} />
         ) : null}
       </Box>
     </FundoComHeader>

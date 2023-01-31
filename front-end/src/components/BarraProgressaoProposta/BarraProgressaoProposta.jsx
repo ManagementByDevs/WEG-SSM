@@ -30,6 +30,30 @@ const BarraProgressaoProposta = (props) => {
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
   var idEscopo = null;
 
+  const [dadosDemanda, setDadosDemanda] = useState({
+    titulo: "",
+    status: null,
+    problema: "",
+    proposta: "",
+    beneficios: [],
+    frequencia: "",
+    anexo: [],
+    solicitante: null,
+    analista: null,
+    gerente: null,
+    buSolicitante: null,
+    busBeneficiadas: [],
+    data: "",
+    departamento: null,
+    forum: null,
+    secaoTI: null
+  });
+
+  useEffect(() => {
+    setDadosDemanda(props.dados);
+    console.log(props.dados);
+  }, []);
+
   // Dados da página inicial da criação de demanda
   const [paginaDados, setPaginaDados] = useState({
     titulo: "",
@@ -67,17 +91,17 @@ const BarraProgressaoProposta = (props) => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!idEscopo) {
-      idEscopo = 1;
-      EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
-        (response) => {
-          idEscopo = response.id;
-          setUltimoEscopo({ id: idEscopo });
-        }
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!idEscopo) {
+  //     idEscopo = 1;
+  //     EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
+  //       (response) => {
+  //         idEscopo = response.id;
+  //         setUltimoEscopo({ id: idEscopo });
+  //       }
+  //     );
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (ultimoEscopo) {
@@ -98,7 +122,7 @@ const BarraProgressaoProposta = (props) => {
     });
 
     EscopoService.salvarDados(ultimoEscopo).then((res) => {
-      console.log("escopo ",res);
+      console.log("escopo ", res);
     });
   };
 
@@ -280,6 +304,8 @@ const BarraProgressaoProposta = (props) => {
       </Stepper>
       {activeStep == 0 && (
         <FormularioPropostaProposta
+          dados={dadosDemanda}
+          setDados={setDadosDemanda}
           editar={editar}
           setEditar={setEditar}
           salvarClick={salvarClick}

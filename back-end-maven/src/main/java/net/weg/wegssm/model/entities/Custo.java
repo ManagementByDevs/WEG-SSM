@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Custo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
 
@@ -33,8 +33,5 @@ public class Custo {
 
     @Column(nullable = false)
     private Double valorHora;
-
-    @Column
-    private String css;
 
 }

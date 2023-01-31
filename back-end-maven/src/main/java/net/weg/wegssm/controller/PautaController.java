@@ -139,7 +139,6 @@ public class PautaController {
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid PautaDTO pautaDto) {
         Pauta pauta = new Pauta();
-        pauta.setVisibilidade(true);
         BeanUtils.copyProperties(pautaDto, pauta);
 
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
@@ -189,7 +188,6 @@ public class PautaController {
         }
 
         Pauta pauta = pautaService.findById(id).get();
-        pauta.setVisibilidade(false);
         pautaService.save(pauta);
 
         return ResponseEntity.status(HttpStatus.OK).body(pauta);

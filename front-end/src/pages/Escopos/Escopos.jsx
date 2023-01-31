@@ -24,8 +24,6 @@ const Escopos = () => {
 
   const navigate = useNavigate();
   const [escopos, setEscopos] = useState(null);
-  const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
-  const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
 
   const [escopoSelecionado, setEscopoSelecionado] = useState(null);
@@ -38,13 +36,9 @@ const Escopos = () => {
     }
   }, []);
 
-  useEffect(() => {
-    buscarEscopos();
-  }, [ordenacao])
-
   const buscarEscopos = () => {
     if (inputPesquisa == "") {
-      EscopoService.buscarPorUsuario(parseInt(localStorage.getItem("usuarioId")), ordenacao).then((response) => {
+      EscopoService.buscarPorUsuario(parseInt(localStorage.getItem("usuarioId")), "sort=id,asc&").then((response) => {
         let listaEscopos = [];
         for (let escopo of response.content) {
           listaEscopos.push({ id: escopo.id, titulo: escopo.titulo, problema: escopo.problema, proposta: escopo.proposta, frequencia: escopo.frequencia, beneficios: escopo.beneficios, anexos: escopo.anexo, ultimaModificacao: escopo.ultimaModificacao, porcentagem: calculaPorcentagem(escopo) });
@@ -52,7 +46,7 @@ const Escopos = () => {
         setEscopos([...listaEscopos]);
       })
     } else {
-      EscopoService.buscarPorTitulo(parseInt(localStorage.getItem("usuarioId")), inputPesquisa, ordenacao).then((response) => {
+      EscopoService.buscarPorTitulo(parseInt(localStorage.getItem("usuarioId")), inputPesquisa, "sort=id,asc&").then((response) => {
         let listaEscopos = [];
         for (let escopo of response.content) {
           listaEscopos.push({ id: escopo.id, titulo: escopo.titulo, problema: escopo.problema, proposta: escopo.proposta, frequencia: escopo.frequencia, beneficios: escopo.beneficios, anexos: escopo.anexo, ultimaModificacao: escopo.ultimaModificacao, porcentagem: calculaPorcentagem(escopo) });
@@ -86,10 +80,6 @@ const Escopos = () => {
   const openEscopo = (escopo) => {
     navigate("/editar-escopo", { state: escopo.id });
   }
-
-  const abrirModalOrdenacao = () => {
-    setOpenOrdenacao(true);
-  };
   
   const onDeleteClickEscopo = () => {
     EscopoService.excluirEscopo(escopoSelecionado.id).then((response) => {
@@ -163,27 +153,6 @@ const Escopos = () => {
                   <Tooltip title="Pesquisar">
                     <SearchOutlinedIcon onClick={buscarEscopos} className="hover:cursor-pointer" sx={{ color: "text.secondary" }} />
                   </Tooltip>
-
-                  {/* Ícone de ordenação */}
-                  <Tooltip title="Ordenação">
-                    <SwapVertIcon
-                      onClick={abrirModalOrdenacao}
-                      className="cursor-pointer"
-                      sx={{ color: "text.secondary" }}
-                    />
-                  </Tooltip>
-
-                  {/* Modal de ordenação */}
-                  {abrirOrdenacao && (
-                    <ModalOrdenacao
-                      ordenacao={ordenacao}
-                      setOrdenacao={setOrdenacao}
-                      open={abrirOrdenacao}
-                      setOpen={setOpenOrdenacao}
-                      tipoComponente='escopo'
-                      modalEscopo={true}
-                    />
-                  )}
                 </Box>
               </Box>
             </Box>

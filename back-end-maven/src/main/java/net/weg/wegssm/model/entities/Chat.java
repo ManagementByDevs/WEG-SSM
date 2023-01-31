@@ -20,10 +20,7 @@ public class Chat {
     private Long id;
 
     @Column(nullable = false)
-    private Boolean usuarioBloqueado;
-
-    @Column
-    private Boolean visibilidade;
+    private Boolean conversa_encerrada;
 
     // Foreign keys
 

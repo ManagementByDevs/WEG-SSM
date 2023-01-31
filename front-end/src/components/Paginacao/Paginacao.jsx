@@ -16,13 +16,14 @@ import FontContext from "../../service/FontContext";
 const Paginacao = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
-  const [valor, setValor] = React.useState(20);
 
   const handleChange = (event) => {
-    setValor(event.target.value);
-    props.setPage(`size=${event.target.value}&page=0`);
+    props.setTamanho(event.target.value);
   };
+
+  const mudarPagina = (event, page) => {
+    props.setPaginaAtual(page - 1);
+  }
 
   return (
     <Box className="flex items-end" sx={{marginBottom: "30px"}}>
@@ -36,7 +37,7 @@ const Paginacao = (props) => {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={valor}
+          value={props.tamanhoPagina}
           onChange={handleChange}
         >
           <MenuItem value={20}>20</MenuItem>
@@ -45,7 +46,7 @@ const Paginacao = (props) => {
           <MenuItem value={80}>80</MenuItem>
         </Select>
       </FormControl>
-      <Pagination count={10} shape="rounded" />
+      <Pagination onChange={(e, page) => mudarPagina(e, page)} count={props.totalPaginas} shape="rounded" />
     </Box>
   );
 };

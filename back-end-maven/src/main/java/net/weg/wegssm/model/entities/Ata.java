@@ -28,6 +28,9 @@ public class Ata {
     @Column(nullable = false, length = 14)
     private String numeroSequencial;
 
+    @Column(nullable = false, length = 100)
+    private String comissao;
+
     @Column
     private Boolean visibilidade;
 

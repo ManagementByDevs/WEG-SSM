@@ -3462,7 +3462,7 @@ public class DemandaController {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
         Usuario usuario = usuarioService.findById(usuarioId).get();
-        Usuario gerente = usuarioService.findById(usuario.getGerenteId()).get();
+        Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(usuario.getDepartamento(), TipoUsuario.GERENTE);
 
         ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
         for (Beneficio beneficio : demanda.getBeneficios()) {
@@ -3485,8 +3485,7 @@ public class DemandaController {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
         Usuario usuario = usuarioService.findById(usuarioId).get();
-        Departamento departamento = usuario.getDepartamento();
-        Usuario gerente = usuarioService.findById(usuario.getGerenteId()).get();
+        Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(usuario.getDepartamento(), TipoUsuario.GERENTE);
 
         ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
         for (Beneficio beneficio : demanda.getBeneficios()) {
@@ -3494,7 +3493,7 @@ public class DemandaController {
         }
 
         demanda.setData(new Date());
-        demanda.setDepartamento(departamento);
+        demanda.setDepartamento(usuario.getDepartamento());
         demanda.setBeneficios(listaBeneficios);
         demanda.setSolicitante(usuario);
         demanda.setGerente(gerente);
