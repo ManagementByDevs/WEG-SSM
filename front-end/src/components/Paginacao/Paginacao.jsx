@@ -9,8 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import FontConfig from "../../service/FontConfig";
-
 import FontContext from "../../service/FontContext";
 
 const Paginacao = (props) => {

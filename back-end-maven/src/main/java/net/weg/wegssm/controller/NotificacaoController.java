@@ -65,14 +65,19 @@ public class NotificacaoController {
      * @return List de Notificação
      */
     @GetMapping("user/{id}")
-    public ResponseEntity<Object> findByUserId(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Page<Notificacao>> findByUserId(@PathVariable(value = "id") Long id, @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         if (!usuarioService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID de usuário não existente");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByUsuario(usuarioService.findById(id).get()));
+        return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByUsuario(usuarioService.findById(id).get(), pageable));
     }
 
+    /**
+     * Método GET para buscar as notificações pela data
+     * @param data
+     * @return
+     */
     @GetMapping("/date/{data}")
     public  ResponseEntity<Object> findByData(@PathVariable(value = "data") Data data) {
         return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByData(data));
