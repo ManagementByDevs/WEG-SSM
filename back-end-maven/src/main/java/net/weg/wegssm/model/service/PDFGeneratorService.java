@@ -4,16 +4,17 @@ import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.*;
-import net.weg.wegssm.model.entities.Beneficio;
-import net.weg.wegssm.model.entities.Demanda;
-import net.weg.wegssm.model.entities.TipoBeneficio;
+import net.weg.wegssm.model.entities.*;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,7 +23,7 @@ public class PDFGeneratorService {
 
     private static DemandaService demandaService;
 
-    public void export(HttpServletResponse response) throws IOException {
+    public void exportDemanda(HttpServletResponse response) throws IOException {
 
         Demanda demanda = new Demanda();
         Beneficio beneficio1 = new Beneficio();
@@ -59,6 +60,9 @@ public class PDFGeneratorService {
         demanda.setProblema("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum");
         demanda.setBeneficios(listaBeneficios);
 
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
         // Criando a página do pdf
 
         Document document = new Document(PageSize.A4);
@@ -73,7 +77,7 @@ public class PDFGeneratorService {
         fontTitle.setStyle(Font.BOLD);
 
         Paragraph paragraph = new Paragraph(demanda.getTitulo(), fontTitle);
-        paragraph.setSpacingBefore(20);
+        paragraph.setSpacingBefore(15);
 
         Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph.setSize(18);
@@ -86,8 +90,14 @@ public class PDFGeneratorService {
         Font fontParagraph3 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph2.setSize(15);
 
+        Font fontParagraph4 = FontFactory.getFont(FontFactory.HELVETICA);
+        fontParagraph4.setSize(12);
+
         Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
         paragraph2.setSpacingBefore(20);
+
+        Paragraph paragraph11 = new Paragraph("Data de emissão: " + currentDateTime, fontParagraph4);
+        paragraph11.setSpacingBefore(20);
 
         Paragraph paragraph3 = new Paragraph(demanda.getProblema(), fontParagraph3);
         paragraph3.setIndentationLeft(40);
@@ -112,6 +122,7 @@ public class PDFGeneratorService {
         img.setAbsolutePosition(460, 740);
 
         document.add(img);
+        document.add(paragraph11);
         document.add(paragraph);
         document.add(paragraph2);
         document.add(paragraph3);
@@ -174,16 +185,19 @@ public class PDFGeneratorService {
         paragraph9.setAlignment(Paragraph.ANCHOR);
         paragraph9.setSpacingBefore(15);
 
-        Paragraph paragraph10 = new Paragraph(String.valueOf(demanda.getAnexo()), fontParagraph3);
-        paragraph10.setIndentationLeft(40);
-        paragraph10.setSpacingBefore(5);
-
         // Adicionando tudo na página pdf
 
         document.add(paragraph7);
         document.add(paragraph8);
         document.add(paragraph9);
-        document.add(paragraph10);
+
+//        for (Anexo anexo : demanda.getAnexo()) {
+//            Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
+//            paragraph10.setIndentationLeft(40);
+//            paragraph10.setSpacingBefore(5);
+//
+//            document.add(paragraph10);
+//        }
 
         document.close();
     }
@@ -199,6 +213,19 @@ public class PDFGeneratorService {
         TipoBeneficio tipoBeneficio2 = TipoBeneficio.POTENCIAL;
         TipoBeneficio tipoBeneficio3 = TipoBeneficio.REAL;
 
+        ResponsavelNegocio responsavelNegocio = new ResponsavelNegocio();
+        responsavelNegocio.setArea("TI");
+        responsavelNegocio.setNome("Matheus");
+
+        List<ResponsavelNegocio> listaResponsavelNgc = new ArrayList<>();
+
+        listaResponsavelNgc.add(responsavelNegocio);
+
+        Proposta proposta = new Proposta();
+
+        proposta.setResponsavelNegocio(listaResponsavelNgc);
+        proposta.setLinkJira("https://link.com.br");
+
         beneficio1.setTipoBeneficio(tipoBeneficio1);
         beneficio1.setMoeda("BR");
         beneficio1.setMemoriaCalculo("Memória de cálculo");
@@ -223,6 +250,9 @@ public class PDFGeneratorService {
         demanda.setTitulo("A Falha na Procura de Demandas");
         demanda.setProblema("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum");
         demanda.setBeneficios(listaBeneficios);
+
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
 
         // Criando a página do pdf
 
@@ -251,8 +281,24 @@ public class PDFGeneratorService {
         Font fontParagraph3 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph2.setSize(15);
 
+        Font fontParagraph4 = FontFactory.getFont(FontFactory.HELVETICA);
+        fontParagraph4.setSize(12);
+
+        Paragraph  paragraph23 = new Paragraph("Data de emissão: " + currentDateTime, fontParagraph4);
+        paragraph23.setSpacingBefore(20);
+
+        Paragraph paragraph11 = new Paragraph("Código PPM: ", fontParagraph2);
+        paragraph11.setSpacingBefore(15);
+
+        Paragraph paragraph12 = new Paragraph(String.valueOf(proposta.getCodigoPPM()), fontParagraph3);
+        paragraph12.setIndentationLeft(40);
+        paragraph12.setSpacingBefore(5);
+
+        Paragraph paragraph13 = new Paragraph("Responsável Negócio: ", fontParagraph2);
+        paragraph13.setSpacingBefore(15);
+
         Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
-        paragraph2.setSpacingBefore(20);
+        paragraph2.setSpacingBefore(15);
 
         Paragraph paragraph3 = new Paragraph(demanda.getProblema(), fontParagraph3);
         paragraph3.setIndentationLeft(40);
@@ -277,7 +323,20 @@ public class PDFGeneratorService {
         img.setAbsolutePosition(460, 740);
 
         document.add(img);
+        document.add(paragraph23);
         document.add(paragraph);
+        document.add(paragraph11);
+        document.add(paragraph12);
+        document.add(paragraph13);
+
+        for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()){
+            Paragraph p = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontParagraph3);
+            p.setIndentationLeft(40);
+            p.setSpacingBefore(5);
+
+            document.add(p);
+        }
+
         document.add(paragraph2);
         document.add(paragraph3);
         document.add(paragraph4);
@@ -335,20 +394,59 @@ public class PDFGeneratorService {
         paragraph8.setIndentationLeft(40);
         paragraph8.setSpacingBefore(5);
 
+        Paragraph paragraph15 = new Paragraph("Custos: ", fontParagraph2);
+        paragraph15.setSpacingBefore(15);
+
+        Paragraph paragraph16 = new Paragraph(String.valueOf(proposta.getTabelaCustos()), fontParagraph3);
+        paragraph16.setIndentationLeft(40);
+        paragraph16.setSpacingBefore(5);
+
+        Paragraph paragraph17 = new Paragraph("Período de Execução: ", fontParagraph2);
+        paragraph17.setSpacingBefore(15);
+
+        Paragraph paragraph18 = new Paragraph(String.valueOf(proposta.getInicioExecucao()) + " à " + String.valueOf(proposta.getFimExecucao()), fontParagraph3);
+        paragraph18.setIndentationLeft(40);
+        paragraph18.setSpacingBefore(5);
+
+        Paragraph paragraph19 = new Paragraph("Payback Simples: ", fontParagraph2);
+        paragraph19.setSpacingBefore(15);
+
+        Paragraph paragraph20 = new Paragraph(String.valueOf(proposta.getPaybackValor()) + " " + String.valueOf(proposta.getPaybackTipo()), fontParagraph3);
+        paragraph20.setIndentationLeft(40);
+        paragraph20.setSpacingBefore(5);
+
+        Paragraph paragraph21 = new Paragraph("Link Jira: ", fontParagraph2);
+        paragraph21.setSpacingBefore(15);
+
+        Paragraph paragraph22 = new Paragraph(proposta.getLinkJira(), fontParagraph3);
+        paragraph22.setIndentationLeft(40);
+        paragraph22.setSpacingBefore(5);
+
         Paragraph paragraph9 = new Paragraph("Anexos: ", fontParagraph2);
         paragraph9.setAlignment(Paragraph.ANCHOR);
         paragraph9.setSpacingBefore(15);
-
-        Paragraph paragraph10 = new Paragraph(String.valueOf(demanda.getAnexo()), fontParagraph3);
-        paragraph10.setIndentationLeft(40);
-        paragraph10.setSpacingBefore(5);
 
         // Adicionando tudo na página pdf
 
         document.add(paragraph7);
         document.add(paragraph8);
+        document.add(paragraph15);
+        document.add(paragraph16);
+        document.add(paragraph17);
+        document.add(paragraph18);
+        document.add(paragraph19);
+        document.add(paragraph20);
+        document.add(paragraph21);
+        document.add(paragraph22);
         document.add(paragraph9);
-        document.add(paragraph10);
+
+//        for(Anexo anexo : proposta.getDemanda().getAnexo()){
+//            Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
+//            paragraph10.setIndentationLeft(40);
+//            paragraph10.setSpacingBefore(5);
+//
+//            document.add(paragraph10);
+//        }
 
         document.close();
     }
