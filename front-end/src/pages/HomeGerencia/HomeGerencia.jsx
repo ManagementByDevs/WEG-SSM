@@ -29,7 +29,37 @@ import DemandaService from "../../service/demandaService";
 import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
 
+import Tour from "reactour";
+
 const HomeGerencia = () => {
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  const stepsDemandas = [
+    {
+      selector: "#primeiro",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -64,7 +94,15 @@ const HomeGerencia = () => {
   const [valorPesquisa, setValorPesquisa] = useState("");
 
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
-  const [filtrosAtuais, setFiltrosAtuais] = useState({ solicitante: null, forum: "", tamanho: "", gerente: null, departamento: "", id: null, codigoPPM: null });
+  const [filtrosAtuais, setFiltrosAtuais] = useState({
+    solicitante: null,
+    forum: "",
+    tamanho: "",
+    gerente: null,
+    departamento: "",
+    id: null,
+    codigoPPM: null,
+  });
   const [modoFiltro, setModoFiltro] = useState("demanda");
 
   const [usuario, setUsuario] = useState({
@@ -88,7 +126,7 @@ const HomeGerencia = () => {
     tamanho: null,
     status: null,
     codigoPPM: null,
-    id: null
+    id: null,
   });
 
   // UseEffect para buscar o usuário assim que entrar na página
@@ -99,11 +137,30 @@ const HomeGerencia = () => {
 
   // UseEffect para redefinir os parâmteros quando a ordenação for modificada
   useEffect(() => {
-    setParams({ titulo: valorPesquisa, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento), codigoPPM: params.codigoPPM, id: params.id });
+    setParams({
+      titulo: valorPesquisa,
+      solicitante: JSON.parse(params.solicitante),
+      gerente: JSON.parse(params.gerente),
+      analista: JSON.parse(params.analista),
+      forum: JSON.parse(params.forum),
+      tamanho: params.tamanho,
+      status: params.status,
+      departamento: JSON.parse(params.departamento),
+      codigoPPM: params.codigoPPM,
+      id: params.id,
+    });
   }, [ordenacao]);
 
   useEffect(() => {
-    let paramsTemp = { solicitante: null, forum: null, tamanho: null, gerente: null, departamento: null, codigoPPM: null, id: null };
+    let paramsTemp = {
+      solicitante: null,
+      forum: null,
+      tamanho: null,
+      gerente: null,
+      departamento: null,
+      codigoPPM: null,
+      id: null,
+    };
 
     if (filtrosAtuais.solicitante != "") {
       paramsTemp.solicitante = filtrosAtuais.solicitante;
@@ -127,27 +184,37 @@ const HomeGerencia = () => {
       paramsTemp.id = filtrosAtuais.id;
     }
 
-    setParams({ titulo: valorPesquisa, solicitante: paramsTemp.solicitante, gerente: paramsTemp.gerente, analista: params.analista, forum: paramsTemp.forum, tamanho: paramsTemp.tamanho, status: params.status, departamento: paramsTemp.departamento, codigoPPM: paramsTemp.codigoPPM, id: paramsTemp.id });
+    setParams({
+      titulo: valorPesquisa,
+      solicitante: paramsTemp.solicitante,
+      gerente: paramsTemp.gerente,
+      analista: params.analista,
+      forum: paramsTemp.forum,
+      tamanho: paramsTemp.tamanho,
+      status: params.status,
+      departamento: paramsTemp.departamento,
+      codigoPPM: paramsTemp.codigoPPM,
+      id: paramsTemp.id,
+    });
   }, [filtrosAtuais]);
-
 
   // feedbacks para o gerenciamento das demandas por parte do analista
 
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
+    useState(false);
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
 
   useEffect(() => {
-
-    if (localStorage.getItem('tipoFeedback') == "2") {
+    if (localStorage.getItem("tipoFeedback") == "2") {
       setFeedbackDemandaAceita(true);
-    } else if (localStorage.getItem('tipoFeedback') == "3") {
+    } else if (localStorage.getItem("tipoFeedback") == "3") {
       setFeedbackDemandaDevolvida(true);
-    } else if (localStorage.getItem('tipoFeedback') == "4") {
+    } else if (localStorage.getItem("tipoFeedback") == "4") {
       setFeedbackDemandaRecusada(true);
     }
 
-    localStorage.removeItem('tipoFeedback');
+    localStorage.removeItem("tipoFeedback");
   }, []);
 
   useEffect(() => {
@@ -168,7 +235,7 @@ const HomeGerencia = () => {
             analista: null,
           });
         }
-        setModoFiltro('demanda');
+        setModoFiltro("demanda");
         break;
       case "2":
         setParams({
@@ -177,16 +244,16 @@ const HomeGerencia = () => {
           status: "ASSESSMENT",
           analista: usuario,
         });
-        setModoFiltro('demanda');
+        setModoFiltro("demanda");
         break;
       case "3":
-        setModoFiltro('proposta');
+        setModoFiltro("proposta");
         break;
       case "4":
-        setModoFiltro('proposta');
+        setModoFiltro("proposta");
         break;
       case "5":
-        setModoFiltro('proposta');
+        setModoFiltro("proposta");
         break;
     }
   }, [value]);
@@ -232,26 +299,26 @@ const HomeGerencia = () => {
     if (listaForum.length == 0) {
       ForumService.getAll().then((response) => {
         setListaForum(response);
-      })
+      });
     }
     if (listaDepartamento.length == 0) {
       DepartamentoService.getAll().then((response) => {
         setListaDepartamento(response);
-      })
+      });
     }
-  }
+  };
 
   const buscarPorNumero = (numero) => {
     DemandaService.getById(numero).then((response) => {
       setListaItens([response]);
-    })
-  }
+    });
+  };
 
   const buscarPorPPM = (ppm) => {
     DemandaService.getByPPM(ppm).then((response) => {
       setListaItens([response]);
-    })
-  }
+    });
+  };
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -266,7 +333,10 @@ const HomeGerencia = () => {
     switch (value) {
       case "1":
         if (params.status != null || params.gerente != null) {
-          DemandaService.getPage(params, ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual).then((response) => {
+          DemandaService.getPage(
+            params,
+            ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+          ).then((response) => {
             setListaItens([...response.content]);
             setTotalPaginas(response.totalPages);
           });
@@ -274,7 +344,10 @@ const HomeGerencia = () => {
         break;
       case "2":
         if (params.status != null && params.analista != null) {
-          DemandaService.getPage(params, ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual).then((response) => {
+          DemandaService.getPage(
+            params,
+            ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+          ).then((response) => {
             setListaItens([...response.content]);
             setTotalPaginas(response.totalPages);
           });
@@ -426,15 +499,24 @@ const HomeGerencia = () => {
 
   // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
   const pesquisaTitulo = () => {
-    setParams({ titulo: valorPesquisa, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento) });
+    setParams({
+      titulo: valorPesquisa,
+      solicitante: JSON.parse(params.solicitante),
+      gerente: JSON.parse(params.gerente),
+      analista: JSON.parse(params.analista),
+      forum: JSON.parse(params.forum),
+      tamanho: params.tamanho,
+      status: params.status,
+      departamento: JSON.parse(params.departamento),
+    });
   };
 
   const abrirModalOrdenacao = () => {
     setOpenOrdenacao(true);
   };
   const abrirDetalhesPauta = () => {
-    console.log("clicou")
-  }
+    console.log("clicou");
+  };
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -449,28 +531,55 @@ const HomeGerencia = () => {
 
   return (
     <FundoComHeader>
-      <Ajuda/>
+      <Tour
+        steps={stepsDemandas}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
       {/* Div container */}
       <Box
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
         {/* Feedback ata criada */}
-        <Feedback open={feedbackAta} handleClose={() => {
-          setOpenFeedbackAta(false);
-        }} status={"sucesso"} mensagem={"Ata publicada com sucesso!"} />
+        <Feedback
+          open={feedbackAta}
+          handleClose={() => {
+            setOpenFeedbackAta(false);
+          }}
+          status={"sucesso"}
+          mensagem={"Ata publicada com sucesso!"}
+        />
 
-        <Feedback open={feedbackDemandaAceita} handleClose={() => {
-          setFeedbackDemandaAceita(false);
-        }} status={"sucesso"} mensagem={"Demanda aceita com sucesso!"} />
+        <Feedback
+          open={feedbackDemandaAceita}
+          handleClose={() => {
+            setFeedbackDemandaAceita(false);
+          }}
+          status={"sucesso"}
+          mensagem={"Demanda aceita com sucesso!"}
+        />
 
-        <Feedback open={feedbackDemandaRecusada} handleClose={() => {
-          setFeedbackDemandaRecusada(false);
-        }} status={"sucesso"} mensagem={"Demanda recusada com sucesso!"} />
+        <Feedback
+          open={feedbackDemandaRecusada}
+          handleClose={() => {
+            setFeedbackDemandaRecusada(false);
+          }}
+          status={"sucesso"}
+          mensagem={"Demanda recusada com sucesso!"}
+        />
 
-        <Feedback open={feedbackDemandaDevolvida} handleClose={() => {
-          setFeedbackDemandaDevolvida(false);
-        }} status={"sucesso"} mensagem={"Demanda devolvida com sucesso!"} />
+        <Feedback
+          open={feedbackDemandaDevolvida}
+          handleClose={() => {
+            setFeedbackDemandaDevolvida(false);
+          }}
+          status={"sucesso"}
+          mensagem={"Demanda devolvida com sucesso!"}
+        />
 
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
@@ -544,6 +653,7 @@ const HomeGerencia = () => {
                 <Box
                   className="flex justify-between items-center border px-3 py-1"
                   sx={{ backgroundColor: "input.main", width: "50%" }}
+                  id="primeiro"
                 >
                   {/* Input de pesquisa */}
                   <Box
@@ -570,14 +680,22 @@ const HomeGerencia = () => {
                   {/* Container para os ícones */}
                   <Box className="flex gap-2">
                     {/* Ícone de pesquisa */}
-                    <Tooltip className="hover:cursor-pointer" title="Pesquisar" onClick={() => { pesquisaTitulo(); }}>
+                    <Tooltip
+                      className="hover:cursor-pointer"
+                      title="Pesquisar"
+                      onClick={() => {
+                        pesquisaTitulo();
+                      }}
+                    >
                       <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                     </Tooltip>
 
                     {/* Ícone de ordenação */}
                     <Tooltip title="Ordenação">
                       <SwapVertIcon
-                        onClick={() => { abrirModalOrdenacao(); }}
+                        onClick={() => {
+                          abrirModalOrdenacao();
+                        }}
                         className="cursor-pointer"
                         sx={{ color: "text.secondary" }}
                       />
@@ -588,14 +706,11 @@ const HomeGerencia = () => {
                       <ModalOrdenacao
                         open={abrirOrdenacao}
                         setOpen={setOpenOrdenacao}
-                        tipoComponente='demanda'
-
+                        tipoComponente="demanda"
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
-
                         ordenacaoScore={ordenacaoScore}
                         setOrdenacaoScore={setOrdenacaoScore}
-
                         ordenacaoDate={ordenacaoDate}
                         setOrdenacaoDate={setOrdenacaoDate}
                       />
@@ -605,6 +720,7 @@ const HomeGerencia = () => {
 
                 {/* Botão de filtrar */}
                 <Button
+                  id="segundo"
                   className="flex gap-1"
                   sx={{
                     backgroundColor: "primary.main",
@@ -624,16 +740,12 @@ const HomeGerencia = () => {
                     filtro={filtrosAtuais}
                     setFiltro={setFiltrosAtuais}
                     modo={modoFiltro}
-
                     listaForuns={listaForum}
                     listaDepartamentos={listaDepartamento}
-
                     listaSolicitantes={listaSolicitantes}
                     setListaSolicitantes={setListaSolicitantes}
-
                     listaGerentes={listaGerentes}
                     setListaGerentes={setListaGerentes}
-
                     buscarPorNumero={buscarPorNumero}
                     buscarPorPPM={buscarPorPPM}
                   />
@@ -647,7 +759,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => { }}
+                  onClick={() => {}}
                   variant="contained"
                   disableElevation
                 >
@@ -678,6 +790,7 @@ const HomeGerencia = () => {
             <Box className="mt-6">
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
+              <Ajuda onClick={() => setIsTourOpen(true)} />
                 <Box
                   sx={{
                     display: "grid",
@@ -701,7 +814,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
                     <Box
                       sx={{
                         display: "grid",
@@ -724,7 +837,7 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                     <Box
                       sx={{
                         display: "grid",
@@ -744,7 +857,13 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { navigate("/detalhes-pauta"); }}>
+                  <TabPanel
+                    sx={{ padding: 0 }}
+                    value="4"
+                    onClick={() => {
+                      navigate("/detalhes-pauta");
+                    }}
+                  >
                     <Box
                       sx={{
                         display: "grid",
@@ -758,7 +877,13 @@ const HomeGerencia = () => {
                       })}
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="5" onClick={() => { navigate("/detalhes-ata", {}) }}>
+                  <TabPanel
+                    sx={{ padding: 0 }}
+                    value="5"
+                    onClick={() => {
+                      navigate("/detalhes-ata", {});
+                    }}
+                  >
                     <Box
                       sx={{
                         display: "grid",
@@ -779,8 +904,14 @@ const HomeGerencia = () => {
         </Box>
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
-        {(totalPaginas > 1 || listaItens.length > 20) ? (
-          <Paginacao totalPaginas={totalPaginas} setTamanho={setTamanhoPagina} tamanhoPagina={tamanhoPagina} tipo={value} setPaginaAtual={setPaginaAtual} />
+        {totalPaginas > 1 || listaItens.length > 20 ? (
+          <Paginacao
+            totalPaginas={totalPaginas}
+            setTamanho={setTamanhoPagina}
+            tamanhoPagina={tamanhoPagina}
+            tipo={value}
+            setPaginaAtual={setPaginaAtual}
+          />
         ) : null}
       </Box>
     </FundoComHeader>

@@ -8,15 +8,19 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 import { keyframes } from "@emotion/react";
 
-const aparecer = keyframes({ from: { width: "1.3rem" }, to: { width: "3.2rem" } });
+const aparecer = keyframes({
+  from: { width: "1.3rem" },
+  to: { width: "3.2rem" },
+});
 const sumir = keyframes({ from: { width: "3.2rem" }, to: { width: "1.3rem" } });
 
-const Ajuda = () => {
+const Ajuda = (props) => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   return (
     <Box
+      onClick={props.onClick}
       className="flex absolute items-center "
       sx={{
         width: "1.5rem",
