@@ -33,7 +33,6 @@ const ModalAceitarDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  const tamanhos = ["Muito Pequeno", "Pequeno", "Médio", "Grande", "Muito Grande"];
   const [listaBus, setListaBus] = useState([]);
   const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
   const [listaForum, setListaForum] = useState([]);
@@ -99,11 +98,11 @@ const ModalAceitarDemanda = (props) => {
           variant="standard"
           fullWidth
         >
-          {tamanhos.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
+          <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>{"Muito Pequeno"}</MenuItem>
+          <MenuItem key={"Pequeno"} value={"Pequeno"}>{"Pequeno"}</MenuItem>
+          <MenuItem key={"Médio"} value={"Médio"}>{"Médio"}</MenuItem>
+          <MenuItem key={"Grande"} value={"Grande"}>{"Grande"}</MenuItem>
+          <MenuItem key={"Muito Grande"} value={"Muito Grande"}>{"Muito Grande"}</MenuItem>
         </TextField>
 
         <TextField

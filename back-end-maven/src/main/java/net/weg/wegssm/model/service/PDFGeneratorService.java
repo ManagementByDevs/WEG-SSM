@@ -3,6 +3,7 @@ package net.weg.wegssm.model.service;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 import net.weg.wegssm.model.entities.*;
 import org.springframework.stereotype.Service;
@@ -105,6 +106,7 @@ public class PDFGeneratorService {
             table.setWidths(new int[]{3, 3, 3, 3});
             table.setSpacingBefore(15);
 
+            table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
             table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
@@ -169,55 +171,8 @@ public class PDFGeneratorService {
     }
 
     public void exportProposta(HttpServletResponse response) throws IOException {
-        Demanda demanda = new Demanda();
-        Beneficio beneficio1 = new Beneficio();
-        Beneficio beneficio2 = new Beneficio();
-        Beneficio beneficio3 = new Beneficio();
-        List<Beneficio> listaBeneficios = new ArrayList<>();
-
-        TipoBeneficio tipoBeneficio1 = TipoBeneficio.QUALITATIVO;
-        TipoBeneficio tipoBeneficio2 = TipoBeneficio.POTENCIAL;
-        TipoBeneficio tipoBeneficio3 = TipoBeneficio.REAL;
-
-        ResponsavelNegocio responsavelNegocio = new ResponsavelNegocio();
-        responsavelNegocio.setArea("TI");
-        responsavelNegocio.setNome("Matheus");
-
-        List<ResponsavelNegocio> listaResponsavelNgc = new ArrayList<>();
-
-        listaResponsavelNgc.add(responsavelNegocio);
 
         Proposta proposta = new Proposta();
-
-        proposta.setDemanda(demanda);
-
-        proposta.setResponsavelNegocio(listaResponsavelNgc);
-        proposta.setLinkJira("https://link.com.br");
-
-        beneficio1.setTipoBeneficio(tipoBeneficio1);
-        beneficio1.setMoeda("BR");
-        beneficio1.setMemoriaCalculo("Memória de cálculo");
-        beneficio1.setValor_mensal(2.00);
-
-        beneficio2.setTipoBeneficio(tipoBeneficio2);
-        beneficio2.setMoeda("BR");
-        beneficio2.setMemoriaCalculo("Memória de cálculo 2");
-        beneficio2.setValor_mensal(4.00);
-
-        beneficio3.setTipoBeneficio(tipoBeneficio3);
-        beneficio3.setMoeda("BR");
-        beneficio3.setMemoriaCalculo("Memória de cálculo 3");
-        beneficio3.setValor_mensal(6.00);
-
-        listaBeneficios.add(beneficio1);
-        listaBeneficios.add(beneficio2);
-        listaBeneficios.add(beneficio3);
-
-        demanda.setFrequencia("Muito Alta");
-        demanda.setProposta("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ");
-        demanda.setTitulo("A Falha na Procura de Demandas");
-        demanda.setProblema("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum");
-        demanda.setBeneficios(listaBeneficios);
 
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -235,7 +190,7 @@ public class PDFGeneratorService {
         fontTitle.setColor(Color.decode("#00579D"));
         fontTitle.setStyle(Font.BOLD);
 
-        Paragraph paragraph = new Paragraph(demanda.getTitulo(), fontTitle);
+        Paragraph paragraph = new Paragraph(proposta.getDemanda().getTitulo(), fontTitle);
         paragraph.setSpacingBefore(20);
 
         Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
@@ -320,6 +275,7 @@ public class PDFGeneratorService {
             table.setWidths(new int[]{3, 3, 3, 3});
             table.setSpacingBefore(15);
 
+            table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
             table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
@@ -480,7 +436,16 @@ public class PDFGeneratorService {
         document.add(paragraph3);
         document.add(paragraph4);
 
+        int contadorProposta = 1;
+
         for (Proposta proposta : pauta.getPropostas()) {
+
+            Paragraph paragraph30 = new Paragraph("Proposta " + contadorProposta, fontTitle);
+            paragraph30.setSpacingBefore(20);
+            paragraph30.setAlignment(Element.ALIGN_CENTER);
+
+            contadorProposta++;
+
             Paragraph paragraph5 = new Paragraph("Código PPM: ", fontParagraph2);
             paragraph5.setSpacingBefore(15);
 
@@ -508,6 +473,7 @@ public class PDFGeneratorService {
             Paragraph paragraph12 = new Paragraph("Benefícios: ", fontParagraph2);
             paragraph12.setSpacingBefore(15);
 
+            document.add(paragraph30);
             document.add(paragraph5);
             document.add(paragraph6);
 
@@ -533,6 +499,7 @@ public class PDFGeneratorService {
                 table.setWidths(new int[]{3, 3, 3, 3});
                 table.setSpacingBefore(15);
 
+                table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
                 table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
@@ -647,6 +614,68 @@ public class PDFGeneratorService {
 
         Ata ata = new Ata();
 
+        List<Proposta> listaPropostas = new ArrayList<>();
+
+        Demanda demanda = new Demanda();
+        Beneficio beneficio1 = new Beneficio();
+        Beneficio beneficio2 = new Beneficio();
+        Beneficio beneficio3 = new Beneficio();
+        List<Beneficio> listaBeneficios = new ArrayList<>();
+
+        TipoBeneficio tipoBeneficio1 = TipoBeneficio.QUALITATIVO;
+        TipoBeneficio tipoBeneficio2 = TipoBeneficio.POTENCIAL;
+        TipoBeneficio tipoBeneficio3 = TipoBeneficio.REAL;
+
+        ResponsavelNegocio responsavelNegocio = new ResponsavelNegocio();
+        responsavelNegocio.setArea("TI");
+        responsavelNegocio.setNome("Matheus");
+
+        List<ResponsavelNegocio> listaResponsavelNgc = new ArrayList<>();
+
+        listaResponsavelNgc.add(responsavelNegocio);
+
+        Proposta proposta1 = new Proposta();
+        Proposta proposta2 = new Proposta();
+
+        proposta2.setDemanda(demanda);
+        proposta1.setDemanda(demanda);
+
+        proposta1.setResponsavelNegocio(listaResponsavelNgc);
+        proposta1.setLinkJira("https://link.com.br");
+
+        proposta2.setResponsavelNegocio(listaResponsavelNgc);
+        proposta2.setLinkJira("https://link.com.br");
+
+        beneficio1.setTipoBeneficio(tipoBeneficio1);
+        beneficio1.setMoeda("BR");
+        beneficio1.setMemoriaCalculo("Memória de cálculo");
+        beneficio1.setValor_mensal(2.00);
+
+        beneficio2.setTipoBeneficio(tipoBeneficio2);
+        beneficio2.setMoeda("BR");
+        beneficio2.setMemoriaCalculo("Memória de cálculo 2");
+        beneficio2.setValor_mensal(4.00);
+
+        beneficio3.setTipoBeneficio(tipoBeneficio3);
+        beneficio3.setMoeda("BR");
+        beneficio3.setMemoriaCalculo("Memória de cálculo 3");
+        beneficio3.setValor_mensal(6.00);
+
+        listaBeneficios.add(beneficio1);
+        listaBeneficios.add(beneficio2);
+        listaBeneficios.add(beneficio3);
+
+        demanda.setFrequencia("Muito Alta");
+        demanda.setProposta("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ");
+        demanda.setTitulo("A Falha na Procura de Demandas");
+        demanda.setProblema("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum");
+        demanda.setBeneficios(listaBeneficios);
+
+        listaPropostas.add(proposta1);
+        listaPropostas.add(proposta2);
+
+        ata.setPropostas(listaPropostas);
+
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
@@ -708,7 +737,16 @@ public class PDFGeneratorService {
         document.add(paragraph4);
         document.add(paragraph26);
 
+        int contadorPropostas = 1;
+
         for (Proposta proposta : ata.getPropostas()) {
+
+            Paragraph paragraph30 = new Paragraph("Proposta: " + contadorPropostas, fontTitle);
+            paragraph30.setSpacingBefore(20);
+            paragraph30.setAlignment(Element.ALIGN_CENTER);
+
+            contadorPropostas++;
+
             Paragraph paragraph5 = new Paragraph("Código PPM: ", fontParagraph2);
             paragraph5.setSpacingBefore(15);
 
@@ -736,6 +774,7 @@ public class PDFGeneratorService {
             Paragraph paragraph12 = new Paragraph("Benefícios: ", fontParagraph2);
             paragraph12.setSpacingBefore(15);
 
+            document.add(paragraph30);
             document.add(paragraph5);
             document.add(paragraph6);
 
@@ -761,6 +800,7 @@ public class PDFGeneratorService {
                 table.setWidths(new int[]{3, 3, 3, 3});
                 table.setSpacingBefore(15);
 
+                table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
                 table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
@@ -847,9 +887,9 @@ public class PDFGeneratorService {
             paragraph27.setAlignment(Paragraph.ANCHOR);
             paragraph27.setSpacingBefore(15);
 
-            Paragraph paragraph28 = new Paragraph(String.valueOf(proposta.getParecerDG()), fontParagraph2);
-            paragraph28.setAlignment(Paragraph.ANCHOR);
-            paragraph28.setSpacingBefore(15);
+            Paragraph paragraph28 = new Paragraph(String.valueOf(proposta.getParecerDG()), fontParagraph3);
+            paragraph28.setIndentationLeft(40);
+            paragraph28.setSpacingBefore(5);
 
             document.add(paragraph13);
             document.add(paragraph14);

@@ -19,19 +19,19 @@ public class Custo {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false, length = 45)
+    @Column
     private String tipo;
 
-    @Column(nullable = false, length = 45)
+    @Column
     private String perfil;
 
-    @Column(nullable = false)
+    @Column
     private Long periodoExecucao;
 
-    @Column(nullable = false)
+    @Column
     private Double horas;
 
-    @Column(nullable = false)
+    @Column
     private Double valorHora;
 
 }

@@ -22,6 +22,7 @@ import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import PropostaService from "../../service/propostaService";
 
 import FontContext from "../../service/FontContext";
+import beneficioService from "../../service/beneficioService";
 
 const BarraProgressaoProposta = (props) => {
   // Context para alterar o tamanho da fonte
@@ -47,7 +48,8 @@ const BarraProgressaoProposta = (props) => {
     data: "",
     departamento: null,
     forum: null,
-    secaoTI: null
+    secaoTI: null,
+    tamanho: ""
   });
 
   const [listaBeneficios, setListaBeneficios] = useState([]);
@@ -95,12 +97,6 @@ const BarraProgressaoProposta = (props) => {
       },
     ]
   });
-
-  // Lista de benefícios definidos na segunda página da criação de demanda
-  const [paginaBeneficios, setPaginaBeneficios] = useState([]);
-
-  // Lista de anexos definidos na terceira página da criação de demanda
-  const [paginaArquivos, setPaginaArquivos] = useState([]);
 
   const navigate = useNavigate();
 
@@ -155,8 +151,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
     let listaNova = [];
-    for (let beneficio of paginaBeneficios) {
-      delete beneficio.id;
+    for (let beneficio of listaBeneficios) {
       delete beneficio.visible;
       listaNova.push({
         ...beneficio,
@@ -228,9 +223,17 @@ const BarraProgressaoProposta = (props) => {
     setCustos(custosNovos);
   };
 
+  // Função para excluir os benefícios retirados da lista que foram criados no banco
+  const excluirBeneficios = () => {
+    for (const beneficio of listaBeneficiosExcluidos) {
+      beneficioService.delete(beneficio.id).then((response) => { })
+    }
+  }
+
   // UseEffect para criação da proposta
   useEffect(() => {
     if (open) {
+
       let listaNova = [];
       for (const responsavel of gerais.responsaveisNegocio) {
         ResponsavelNegocioService.post(responsavel).then((response) => {
@@ -238,7 +241,10 @@ const BarraProgressaoProposta = (props) => {
         })
       }
 
+      excluirBeneficios();
+
       const propostaFinal = {
+        demanda: dadosDemanda,
         titulo: dadosDemanda.titulo,
         status: "ASSESSMENT_APROVACAO",
         problema: dadosDemanda.problema,
@@ -254,7 +260,9 @@ const BarraProgressaoProposta = (props) => {
         departamento: dadosDemanda.departamento,
         forum: dadosDemanda.forum,
         secaoTI: dadosDemanda.secaoTI,
-        responsaveisNegocio: listaNova
+        tamanho: dadosDemanda.tamanho,
+        responsaveisNegocio: listaNova,
+        beneficios: formatarBeneficios(listaBeneficios)
       }
     }
   }, [open]);

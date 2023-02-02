@@ -83,11 +83,11 @@ public class Proposta {
     @Column(nullable = false, length = 45)
     private String secaoTI;
 
-    // foreign keys
+    @Lob
+    @Column
+    private byte[] escopo;
 
-    @OneToOne
-    @JoinColumn(name = "proposta_id")
-    private EscopoProposta escopoProposta;
+    // foreign keys
 
     @ManyToOne
     @JoinColumn(name = "bu_solicitante")

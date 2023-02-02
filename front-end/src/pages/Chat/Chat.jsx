@@ -26,6 +26,11 @@ import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao
 
 import FontContext from "../../service/FontContext";
 
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
+
+var stompClient = null;
+
 const Chat = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -190,196 +195,320 @@ const Chat = () => {
     // aqui é o deletar
   };
 
+  // Começo da integração do chat
+  const [privateChats, setPrivateChats] = useState(new Map());
+  const [publicChats, setPublicChats] = useState([]);
+  const [tab, setTab] = useState("CHATROOM");
+
+  const nomeUsuario = localStorage.getItem("user");
+
+  const [userData, setUserData] = useState({
+    username: '',
+    receivername: '',
+    connected: false,
+    message: ''
+  });
+
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
+
+  const connect = () => {
+    let Sock = new SockJS('http://localhost:8080/ws');
+    stompClient = over(Sock);
+    stompClient.connect({}, onConnected, onError);
+  };
+
+  const onConnected = () => {
+    setUserData({ ...userData, "connected": true });
+    stompClient.subscribe('/chat/public', onMessageReceived);
+    stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessage);
+    userJoin();
+  };
+
+  const userJoin = () => {
+    var chatMessage = {
+      senderName: userData.username,
+      status: "JOIN"
+    };
+
+    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+  };
+
+  const onMessageReceived = (payload) => {
+    var payloadData = JSON.parse(payload.body);
+
+    switch (payloadData.status) {
+      case "JOIN":
+        if (!privateChats.get(payloadData.username)) {
+          privateChats.set(payloadData.senderName, []);
+          setPrivateChats(new Map(privateChats));
+        }
+        break;
+      case "MESSAGE":
+        publicChats.push(payloadData);
+        setPublicChats([...publicChats]);
+        break;
+    }
+  };
+
+  const onPrivateMessage = (payload) => {
+    console.log(payload);
+
+    var payloadData = JSON.parse(payload.body);
+
+    if (privateChats.get(payload.senderName)) {
+      privateChats.get(payloadData.senderName).push(payloadData);
+      setPrivateChats(new Map(privateChats));
+    } else {
+      let list = [];
+      list.push(payloadData);
+      privateChats.set(payloadData.senderName, list);
+      setPrivateChats(new Map(privateChats));
+    }
+  };
+
+  const onError = (err) => {
+    console.log(err);
+  };
+
+  const handleMessage = (event) => {
+    const { value } = event.target;
+    setUserData({ ...userData, "message": value });
+  };
+
+  const sendValue = () => {
+    if (stompClient) {
+      var chatMessage = {
+        senderName: userData.username,
+        message: userData.message,
+        status: "MESSAGE"
+      };
+
+      console.log(chatMessage);
+      stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+      setUserData({ ...userData, "message": "" });
+    }
+  };
+
+  const sendPrivateValue = () => {
+    if (stompClient) {
+      var chatMessage = {
+        senderName: userData.username,
+        receiverName: tab,
+        message: userData.message,
+        status: "MESSAGE"
+      }
+
+      if (userData.username != tab) {
+        privateChats.get(tab).push(chatMessage);
+        setPrivateChats(new Map(privateChats));
+      }
+
+      stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+      setUserData({ ...userData, "message": "" });
+    }
+  };
+
+  const handleUsername = (event) => {
+    const { value } = event.target;
+    setUserData({ ...userData, "username": value });
+  }
+
+  const registerUser = () => {
+    connect();
+  }
+
   return (
     <>
       {
         abrirModal && (
-          <ModalConfirmacao open={abrirModal} setOpen={setOpenModal} textoModal={"fecharChat"} onConfirmClick={deletarChat} onCancelClick={fecharModalCancelarChat} textoBotao={"sim"}/>
+          <ModalConfirmacao open={abrirModal} setOpen={setOpenModal} textoModal={"fecharChat"} onConfirmClick={deletarChat} onCancelClick={fecharModalCancelarChat} textoBotao={"sim"} />
         )
       }
-    <FundoComHeader>
-      <Box className="p-2">
-        <Caminho />
-        <Box className="w-full flex justify-center items-center">
-          <Box
-            className="flex justify-evenly items-center rounded border mt-4"
-            sx={{ width: "100rem", height: "50rem" }}
-          >
+      <FundoComHeader>
+        <Box className="p-2">
+          <Caminho />
+          <Box className="w-full flex justify-center items-center">
             <Box
-              className="flex items-center rounded border flex-col gap-3 overflow-y-auto overflow-x-hidden"
-              sx={{ width: "20%", height: "95%" }}
+              className="flex justify-evenly items-center rounded border mt-4"
+              sx={{ width: "100rem", height: "50rem" }}
             >
               <Box
-                className="flex border px-3 py-1 m-4 rounded-lg"
-                sx={{
-                  backgroundColor: "input.main",
-                  width: "90%",
-                  height: "5%",
-                }}
+                className="flex items-center rounded border flex-col gap-3 overflow-y-auto overflow-x-hidden"
+                sx={{ width: "20%", height: "95%" }}
               >
                 <Box
-                  className="w-full"
-                  component="input"
-                  onChange={onChange}
-                  sx={{
-                    backgroundColor: "input.main",
-                    outline: "none",
-                    color: "text.primary",
-                    fontSize: FontConfig.medium,
-                  }}
-                  placeholder="Pesquisar por nome..."
-                />
-                <Box className="flex gap-2">
-                  <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
-                </Box>
-              </Box>
-              {resultadosContato.map((resultado, index) => {
-                return (
-                  <Contato
-                    key={index}
-                    onClick={() => {
-                      abrirChat(index);
-                    }}
-                    usuario={resultado}
-                    index={index}
-                    usuarioAtual={indexUsuario}
-                  />
-                );
-              })}
-            </Box>
-            {indexUsuario == null ? (
-              <Box
-                className="flex flex-col items-center justify-center rounded border"
-                sx={{ width: "75%", height: "95%", cursor: "default" }}
-              >
-                <img src={logoWeg} alt="chat" />
-                <Typography
-                  fontSize={FontConfig.title}
-                  color={"text.secondary"}
-                  sx={{ fontWeight: "600" }}
-                >
-                  Selecione alguma conversa
-                </Typography>
-              </Box>
-            ) : (
-              <Box
-                className="flex flex-col items-center justify-between rounded border"
-                sx={{ width: "75%", height: "95%" }}
-              >
-                <Box
-                  className="flex justify-between items-center w-full rounded-t"
-                  sx={{ backgroundColor: "primary.main", height: "10%" }}
-                >
-                  <Box className="flex items-center">
-                    <Avatar
-                      className="ml-7"
-                      sx={{ width: "3.5rem", height: "3.5rem" }}
-                      src={usuarios[indexUsuario].foto}
-                    />
-                    <Box
-                      className="flex flex-col ml-3"
-                      sx={{ cursor: "default", color: "#FFFF" }}
-                    >
-                      <Typography
-                        className="ml-2"
-                        fontSize={FontConfig.veryBig}
-                        fontWeight="600"
-                      >
-                        {usuarios[indexUsuario].nome}
-                      </Typography>
-                      <Typography fontSize={FontConfig.small}>
-                        {usuarios[indexUsuario].cargo}
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box className="mr-5">
-                    <Tooltip title="Encerrar chat">
-                      <IconButton onClick={abrirModalCancelarChat}>
-                        <CommentsDisabledIcon
-                          sx={{
-                            fontSize: "30px",
-                            color: "#FFFF",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </Box>
-                <Box
-                  className="flex flex-col mt-4"
-                  sx={{ width: "95%", height: "85%" }}
-                >
-                  {/* Por enquanto está usando um componente mensagens para pegar as mensagens */}
-                  {usuarios[indexUsuario].mensagens.map((mensagem, index) => {
-                    return (
-                      <Mensagem
-                        key={index}
-                        mensagem={mensagem}
-                        index={index}
-                        usuario={usuarios[indexUsuario]}
-                      />
-                    );
-                  })}
-                </Box>
-                <Box
-                  className="flex border px-3 py-1 m-4 rounded items-center"
+                  className="flex border px-3 py-1 m-4 rounded-lg"
                   sx={{
                     backgroundColor: "input.main",
                     width: "90%",
-                    height: "6.5%",
+                    height: "5%",
                   }}
                 >
                   <Box
-                    onChange={(e) => {
-                      save(e);
-                    }}
                     className="w-full"
                     component="input"
+                    onChange={onChange}
                     sx={{
                       backgroundColor: "input.main",
                       outline: "none",
                       color: "text.primary",
                       fontSize: FontConfig.medium,
                     }}
-                    placeholder="Escreva sua mensagem..."
+                    placeholder="Pesquisar por nome..."
                   />
-                  <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                    <Tooltip title="Enviar Anexo">
-                      <IconButton>
-                        <AttachFileOutlinedIcon
-                          sx={{ color: "primary.main", cursor: "pointer" }}
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                  <Divider
-                    orientation="vertical"
-                    sx={{
-                      borderColor: "primary.main",
-                      margin: "0 10px 0 10px",
-                    }}
-                  />
-                  <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                    <Tooltip title="Enviar mensagem">
-                      <IconButton
-                        onClick={() => {
-                          salvarTexto();
-                        }}
-                      >
-                        <SendOutlinedIcon
-                          sx={{ color: "primary.main", cursor: "pointer" }}
-                        />
-                      </IconButton>
-                    </Tooltip>
+                  <Box className="flex gap-2">
+                    <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                   </Box>
                 </Box>
+                {resultadosContato.map((resultado, index) => {
+                  return (
+                    <Contato
+                      key={index}
+                      onClick={() => {
+                        abrirChat(index);
+                      }}
+                      usuario={resultado}
+                      index={index}
+                      usuarioAtual={indexUsuario}
+                    />
+                  );
+                })}
               </Box>
-            )}
+              {indexUsuario == null ? (
+                <Box
+                  className="flex flex-col items-center justify-center rounded border"
+                  sx={{ width: "75%", height: "95%", cursor: "default" }}
+                >
+                  <img src={logoWeg} alt="chat" />
+                  <Typography
+                    fontSize={FontConfig.title}
+                    color={"text.secondary"}
+                    sx={{ fontWeight: "600" }}
+                  >
+                    Selecione alguma conversa
+                  </Typography>
+                </Box>
+              ) : (
+                <Box
+                  className="flex flex-col items-center justify-between rounded border"
+                  sx={{ width: "75%", height: "95%" }}
+                >
+                  <Box
+                    className="flex justify-between items-center w-full rounded-t"
+                    sx={{ backgroundColor: "primary.main", height: "10%" }}
+                  >
+                    <Box className="flex items-center">
+                      <Avatar
+                        className="ml-7"
+                        sx={{ width: "3.5rem", height: "3.5rem" }}
+                        src={usuarios[indexUsuario].foto}
+                      />
+                      <Box
+                        className="flex flex-col ml-3"
+                        sx={{ cursor: "default", color: "#FFFF" }}
+                      >
+                        <Typography
+                          className="ml-2"
+                          fontSize={FontConfig.veryBig}
+                          fontWeight="600"
+                        >
+                          {usuarios[indexUsuario].nome}
+                        </Typography>
+                        <Typography fontSize={FontConfig.small}>
+                          {usuarios[indexUsuario].cargo}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box className="mr-5">
+                      <Tooltip title="Encerrar chat">
+                        <IconButton onClick={abrirModalCancelarChat}>
+                          <CommentsDisabledIcon
+                            sx={{
+                              fontSize: "30px",
+                              color: "#FFFF",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
+                  <Box
+                    className="flex flex-col mt-4"
+                    sx={{ width: "95%", height: "85%" }}
+                  >
+                    {/* Por enquanto está usando um componente mensagens para pegar as mensagens */}
+                    {usuarios[indexUsuario].mensagens.map((mensagem, index) => {
+                      return (
+                        <Mensagem
+                          key={index}
+                          mensagem={mensagem}
+                          index={index}
+                          usuario={usuarios[indexUsuario]}
+                        />
+                      );
+                    })}
+                  </Box>
+                  <Box
+                    className="flex border px-3 py-1 m-4 rounded items-center"
+                    sx={{
+                      backgroundColor: "input.main",
+                      width: "90%",
+                      height: "6.5%",
+                    }}
+                  >
+                    <Box
+                      onChange={(e) => {
+                        save(e);
+                      }}
+                      className="w-full"
+                      component="input"
+                      sx={{
+                        backgroundColor: "input.main",
+                        outline: "none",
+                        color: "text.primary",
+                        fontSize: FontConfig.medium,
+                      }}
+                      placeholder="Escreva sua mensagem..."
+                    />
+                    <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
+                      <Tooltip title="Enviar Anexo">
+                        <IconButton>
+                          <AttachFileOutlinedIcon
+                            sx={{ color: "primary.main", cursor: "pointer" }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                    <Divider
+                      orientation="vertical"
+                      sx={{
+                        borderColor: "primary.main",
+                        margin: "0 10px 0 10px",
+                      }}
+                    />
+                    <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
+                      <Tooltip title="Enviar mensagem">
+                        <IconButton
+                          onClick={() => {
+                            salvarTexto();
+                          }}
+                        >
+                          <SendOutlinedIcon
+                            sx={{ color: "primary.main", cursor: "pointer" }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
+                </Box>
+              )}
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </FundoComHeader>
+      </FundoComHeader>
     </>
   );
 };

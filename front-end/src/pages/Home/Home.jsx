@@ -2,27 +2,36 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-import { Button, Tab, Box, Snackbar, Alert, Tooltip } from "@mui/material";
+import {
+  Button,
+  Tab,
+  Box,
+  Snackbar,
+  Alert,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
+
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AddIcon from "@mui/icons-material/Add";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Demanda from "../../components/Demanda/Demanda";
 import Feedback from "../../components/Feedback/Feedback";
 
 import FontContext from "../../service/FontContext";
-import FontConfig from "../../service/FontConfig";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
-
-
+import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
 
 const Home = () => {
   // Context para alterar o tamanho da fonte
@@ -35,6 +44,8 @@ const Home = () => {
   const [paginaAtual, setPaginaAtual] = useState(0);
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
 
+  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
+
   // Abrir modal feedback de demanda criada
 
   const navigate = useNavigate();
@@ -43,7 +54,7 @@ const Home = () => {
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem('tipoFeedback') == "1") {
+    if (localStorage.getItem("tipoFeedback") == "1") {
       setFeedbackDemandaCriada(true);
     }
   }, []);
@@ -73,7 +84,13 @@ const Home = () => {
   // String para ordenação das demandas
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
 
-  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false]);
+  const [listaFiltros, setListaFiltros] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   // Valores dos checkboxes no modal de ordenação
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
@@ -151,8 +168,16 @@ const Home = () => {
 
   // UseEffect para buscar demandas quando a paginação for modificada
   useEffect(() => {
-    setParams({ titulo: params.titulo, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), forum: JSON.parse(params.forum), departamento: JSON.parse(params.departamento), tamanho: params.tamanho, status: params.status })
-  }, [tamanhoPagina, paginaAtual])
+    setParams({
+      titulo: params.titulo,
+      solicitante: JSON.parse(params.solicitante),
+      gerente: JSON.parse(params.gerente),
+      forum: JSON.parse(params.forum),
+      departamento: JSON.parse(params.departamento),
+      tamanho: params.tamanho,
+      status: params.status,
+    });
+  }, [tamanhoPagina, paginaAtual]);
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
@@ -166,7 +191,10 @@ const Home = () => {
   // Função para buscar as demandas com os parâmetros e ordenação
   const buscarDemandas = () => {
     if (params.departamento != null || params.solicitante != null) {
-      DemandaService.getPage(params, ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual).then((e) => {
+      DemandaService.getPage(
+        params,
+        ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+      ).then((e) => {
         setTotalPaginas(e.totalPages);
         setListaDemandas(e.content);
       });
@@ -178,7 +206,11 @@ const Home = () => {
     if (params.solicitante != null) {
       setParams({ ...params, solicitante: usuario, status: status });
     } else {
-      setParams({ ...params, departamento: usuario.departamento, status: status });
+      setParams({
+        ...params,
+        departamento: usuario.departamento,
+        status: status,
+      });
     }
   };
 
@@ -245,9 +277,14 @@ const Home = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
-        <Feedback open={feedbackDemandaCriada} handleClose={() => {
-          setFeedbackDemandaCriada(false);
-        }} status={"sucesso"} mensagem={"Demanda criada com sucesso!"} />
+        <Feedback
+          open={feedbackDemandaCriada}
+          handleClose={() => {
+            setFeedbackDemandaCriada(false);
+          }}
+          status={"sucesso"}
+          mensagem={"Demanda criada com sucesso!"}
+        />
 
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
@@ -330,38 +367,56 @@ const Home = () => {
                       <ModalOrdenacao
                         open={abrirOrdenacao}
                         setOpen={setOpenOrdenacao}
-                        tipoComponente='demanda'
-
+                        tipoComponente="demanda"
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
-
                         ordenacaoScore={ordenacaoScore}
                         setOrdenacaoScore={setOrdenacaoScore}
-
                         ordenacaoDate={ordenacaoDate}
                         setOrdenacaoDate={setOrdenacaoDate}
                       />
                     )}
                   </Box>
                 </Box>
+                <Box className="flex gap-2">
+                  {/* Botão de filtrar */}
+                  {value == 1 && (
+                    <Button
+                      sx={{
+                        backgroundColor: "primary.main",
+                        color: "text.white",
+                        fontSize: FontConfig.default,
+                      }}
+                      onClick={abrirModalFiltro}
+                      variant="contained"
+                      disableElevation
+                    >
+                      Filtrar <FilterAltOutlinedIcon />
+                    </Button>
+                  )}
 
-                {/* Botão de filtrar */}
-                {value == 1 && (
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                    }}
-                    onClick={abrirModalFiltro}
-                    variant="contained"
-                    disableElevation
-                  >
-                    Filtrar <FilterAltOutlinedIcon />
-                  </Button>
-
-                )}
-
+                  {nextModoVisualizacao == "TABLE" ? (
+                    <Tooltip title="Visualização em tabela">
+                      <IconButton
+                        onClick={() => {
+                          setNextModoVisualizacao("GRID");
+                        }}
+                      >
+                        <ViewListIcon color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="Visualização em bloco">
+                      <IconButton
+                        onClick={() => {
+                          setNextModoVisualizacao("TABLE");
+                        }}
+                      >
+                        <ViewModuleIcon color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Box>
                 {/* Modal de filtro */}
                 {abrirFiltro && (
                   <ModalFiltro
@@ -369,7 +424,6 @@ const Home = () => {
                     open={abrirFiltro}
                     setOpen={setOpenFiltro}
                     filtroDemanda={true}
-
                     listaFiltros={listaFiltros}
                     setListaFiltros={setListaFiltros}
                   />
@@ -399,7 +453,12 @@ const Home = () => {
             <Box className="mt-6">
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
-                <Box
+                <DemandaModoVisualizacao
+                  listaDemandas={listaDemandas}
+                  onDemandaClick={verDemanda}
+                  nextModoVisualizacao={nextModoVisualizacao}
+                />
+                {/* <Box
                   sx={{
                     display: "grid",
                     gap: "1rem",
@@ -434,7 +493,7 @@ const Home = () => {
                       }}
                     />
                   ))}
-                </Box>
+                </Box> */}
               </TabPanel>
             </Box>
           </TabContext>
@@ -442,7 +501,13 @@ const Home = () => {
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
         {(totalPaginas > 1 || listaDemandas.length > 20) && value == "1" ? (
-          <Paginacao totalPaginas={totalPaginas} setTamanho={setTamanhoPagina} tamanhoPagina={tamanhoPagina} tipo={value} setPaginaAtual={setPaginaAtual} />
+          <Paginacao
+            totalPaginas={totalPaginas}
+            setTamanho={setTamanhoPagina}
+            tamanhoPagina={tamanhoPagina}
+            tipo={value}
+            setPaginaAtual={setPaginaAtual}
+          />
         ) : null}
       </Box>
     </FundoComHeader>
