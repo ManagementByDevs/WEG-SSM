@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 @Service
 public class PDFGeneratorService {
 
@@ -481,7 +480,7 @@ public class PDFGeneratorService {
         document.add(paragraph3);
         document.add(paragraph4);
 
-        for(Proposta proposta : pauta.getPropostas()){
+        for (Proposta proposta : pauta.getPropostas()) {
             Paragraph paragraph5 = new Paragraph("Código PPM: ", fontParagraph2);
             paragraph5.setSpacingBefore(15);
 
@@ -709,7 +708,7 @@ public class PDFGeneratorService {
         document.add(paragraph4);
         document.add(paragraph26);
 
-        for(Proposta proposta : ata.getPropostas()){
+        for (Proposta proposta : ata.getPropostas()) {
             Paragraph paragraph5 = new Paragraph("Código PPM: ", fontParagraph2);
             paragraph5.setSpacingBefore(15);
 
@@ -865,11 +864,11 @@ public class PDFGeneratorService {
             document.add(paragraph23);
 
 //            for (Anexo anexo : proposta.getDemanda().getAnexo()) {
-//                Paragraph paragraph24 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
-//                paragraph24.setIndentationLeft(40);
-//                paragraph24.setSpacingBefore(5);
+//                Paragraph paragraph29 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
+//                paragraph29.setIndentationLeft(40);
+//                paragraph29.setSpacingBefore(5);
 //
-//                document.add(paragraph24);
+//                document.add(paragraph29);
 //            }
 
             document.add(paragraph24);
@@ -882,5 +881,4 @@ public class PDFGeneratorService {
         document.close();
 
     }
-
 }
