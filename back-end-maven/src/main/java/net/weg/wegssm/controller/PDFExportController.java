@@ -47,9 +47,36 @@ public class PDFExportController {
         response.setHeader(headerKey, headerValue);
 
         this.pdfGeneratorService.exportProposta(response);
-
     }
 
-//    @GetMapping("/pdf/pauta")
+    @GetMapping("/pdf/pauta")
+    public void generatePDFPauta(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=pdf_pauta_" + currentDateTime + " .pdf";
+
+        response.setHeader(headerKey, headerValue);
+
+        this.pdfGeneratorService.exportPauta(response);
+    }
+
+    @GetMapping("/pdf/ata")
+    public void generatePDFAta(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=pdf_ata_" + currentDateTime + " .pdf";
+
+        response.setHeader(headerKey, headerValue);
+
+        this.pdfGeneratorService.exportAta(response);
+    }
 
 }
