@@ -274,45 +274,45 @@ const Chat = () => {
 
   const handleMessage = (event) => {
     const { value } = event.target;
-    setUserData({...userData, "message": value});
+    setUserData({ ...userData, "message": value });
   };
 
   const sendValue = () => {
-    if(stompClient) {
+    if (stompClient) {
       var chatMessage = {
         senderName: userData.username,
-        message: userData.message, 
+        message: userData.message,
         status: "MESSAGE"
       };
 
       console.log(chatMessage);
       stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-      setUserData({...userData, "message": ""});
+      setUserData({ ...userData, "message": "" });
     }
   };
 
   const sendPrivateValue = () => {
-    if(stompClient) {
+    if (stompClient) {
       var chatMessage = {
         senderName: userData.username,
-        receiverName: tab, 
+        receiverName: tab,
         message: userData.message,
         status: "MESSAGE"
       }
 
-      if(userData.username != tab){
+      if (userData.username != tab) {
         privateChats.get(tab).push(chatMessage);
         setPrivateChats(new Map(privateChats));
       }
 
       stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-      setUserData({...userData, "message": ""});
+      setUserData({ ...userData, "message": "" });
     }
   };
 
   const handleUsername = (event) => {
     const { value } = event.target;
-    setUserData({...userData, "username": value});
+    setUserData({ ...userData, "username": value });
   }
 
   const registerUser = () => {
