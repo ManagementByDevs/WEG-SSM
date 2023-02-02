@@ -17,6 +17,7 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/responsavel_negocio")
+@CrossOrigin(origins = "localhost:3000")
 public class ResponsavelNegocioController {
 
     private ResponsavelNegocioService responsavelNegocioService;

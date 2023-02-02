@@ -18,6 +18,8 @@ import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEsco
 
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
+import ResponsavelNegocioService from "../../service/responsavelNegocioService";
+import PropostaService from "../../service/propostaService";
 
 import FontContext from "../../service/FontContext";
 
@@ -35,7 +37,6 @@ const BarraProgressaoProposta = (props) => {
     status: null,
     problema: "",
     proposta: "",
-    beneficios: [],
     frequencia: "",
     anexo: [],
     solicitante: null,
@@ -49,18 +50,31 @@ const BarraProgressaoProposta = (props) => {
     secaoTI: null
   });
 
+  const [listaBeneficios, setListaBeneficios] = useState([]);
+  const [listaBeneficiosExcluidos, setListaBeneficiosExcluidos] = useState([]);
+
   useEffect(() => {
     setDadosDemanda(props.dados);
-    console.log(props.dados);
   }, []);
 
-  // Dados da página inicial da criação de demanda
-  const [paginaDados, setPaginaDados] = useState({
-    titulo: "",
-    problema: "",
-    proposta: "",
-    frequencia: "",
-  });
+  // UseEffect para formatar os benefícios recebidos do banco para os necessários na edição
+  useEffect(() => {
+    const aux = dadosDemanda?.beneficios?.map((beneficio) => {
+      return {
+        id: beneficio.id,
+        tipoBeneficio:
+          beneficio.tipoBeneficio?.charAt(0) +
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: true,
+      };
+    });
+    setListaBeneficios(aux);
+  }, [dadosDemanda]);
 
   // UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML)
   const [escopo, setEscopo] = useState("");
@@ -79,8 +93,7 @@ const BarraProgressaoProposta = (props) => {
         area: "",
         visible: true,
       },
-    ],
-    anexos: [],
+    ]
   });
 
   // Lista de benefícios definidos na segunda página da criação de demanda
@@ -90,41 +103,6 @@ const BarraProgressaoProposta = (props) => {
   const [paginaArquivos, setPaginaArquivos] = useState([]);
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (!idEscopo) {
-  //     idEscopo = 1;
-  //     EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
-  //       (response) => {
-  //         idEscopo = response.id;
-  //         setUltimoEscopo({ id: idEscopo });
-  //       }
-  //     );
-  //   }
-  // }, []);
-
-  useEffect(() => {
-    if (ultimoEscopo) {
-      setTimeout(() => {
-        salvarEscopo(ultimoEscopo.id);
-      }, 10000);
-    }
-  }, [ultimoEscopo]);
-
-  const salvarEscopo = (id) => {
-    setUltimoEscopo({
-      id: id,
-      titulo: paginaDados.titulo,
-      problema: paginaDados.problema,
-      proposta: paginaDados.proposta,
-      frequencia: paginaDados.frequencia,
-      beneficios: paginaBeneficios,
-    });
-
-    EscopoService.salvarDados(ultimoEscopo).then((res) => {
-      console.log("escopo ", res);
-    });
-  };
 
   const isStepOptional = (step) => {
     return false;
@@ -188,37 +166,6 @@ const BarraProgressaoProposta = (props) => {
     return listaNova;
   };
 
-  // UseEffect para criar a demanda usando os dados recebidos das páginas
-  useEffect(() => {
-    if (open) {
-      if (
-        paginaDados.titulo != "" &&
-        paginaDados.problema &&
-        paginaDados.proposta &&
-        paginaDados.frequencia
-      ) {
-        const demandaFinal = {
-          titulo: paginaDados.titulo,
-          problema: paginaDados.problema,
-          proposta: paginaDados.proposta,
-          frequencia: paginaDados.frequencia,
-          beneficios: formatarBeneficios(),
-          status: "BACKLOG",
-        };
-
-        DemandaService.post(
-          demandaFinal,
-          paginaArquivos,
-          parseInt(localStorage.getItem("usuarioId"))
-        ).then((e) => {
-          navigate("/");
-        });
-      } else {
-        // Fazer feedback de campos obrigatórios faltantes
-      }
-    }
-  }, [open]);
-
   const [editar, setEditar] = useState(false);
 
   const [custos, setCustos] = useState([
@@ -281,6 +228,37 @@ const BarraProgressaoProposta = (props) => {
     setCustos(custosNovos);
   };
 
+  // UseEffect para criação da proposta
+  useEffect(() => {
+    if (open) {
+      let listaNova = [];
+      for (const responsavel of gerais.responsaveisNegocio) {
+        ResponsavelNegocioService.post(responsavel).then((response) => {
+          listaNova.push(response);
+        })
+      }
+
+      const propostaFinal = {
+        titulo: dadosDemanda.titulo,
+        status: "ASSESSMENT_APROVACAO",
+        problema: dadosDemanda.problema,
+        proposta: dadosDemanda.proposta,
+        frequencia: dadosDemanda.frequencia,
+        anexo: dadosDemanda.anexo,
+        solicitante: dadosDemanda.solicitante,
+        analista: dadosDemanda.analista,
+        gerente: dadosDemanda.gerente,
+        buSolicitante: dadosDemanda.buSolicitante,
+        busBeneficiadas: dadosDemanda.busBeneficiadas,
+        data: dadosDemanda.data,
+        departamento: dadosDemanda.departamento,
+        forum: dadosDemanda.forum,
+        secaoTI: dadosDemanda.secaoTI,
+        responsaveisNegocio: listaNova
+      }
+    }
+  }, [open]);
+
   return (
     <>
       <Stepper activeStep={activeStep}>
@@ -305,11 +283,16 @@ const BarraProgressaoProposta = (props) => {
       {activeStep == 0 && (
         <FormularioPropostaProposta
           dados={dadosDemanda}
-          setDados={setDadosDemanda}
+          setDadosDemanda={setDadosDemanda}
           editar={editar}
           setEditar={setEditar}
           salvarClick={salvarClick}
           setSalvarClick={setSalvarClick}
+
+          beneficios={listaBeneficios}
+          setBeneficios={setListaBeneficios}
+          beneficiosExcluidos={listaBeneficiosExcluidos}
+          setBeneficiosExcluidos={setListaBeneficiosExcluidos}
         />
       )}
       {activeStep == 1 && (
@@ -326,7 +309,12 @@ const BarraProgressaoProposta = (props) => {
         />
       )}
       {activeStep == 3 && (
-        <FormularioGeralProposta gerais={gerais} setGerais={setGerais} />
+        <FormularioGeralProposta
+          gerais={gerais}
+          setGerais={setGerais}
+          dados={dadosDemanda}
+          setDados={setDadosDemanda}
+        />
       )}
       <Button
         variant="outlined"
@@ -348,16 +336,6 @@ const BarraProgressaoProposta = (props) => {
           disableElevation
         >
           Criar
-        </Button>
-      ) : editar ? (
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={salvarAlteracoes}
-          sx={{ position: "fixed", bottom: 50, right: 160 }}
-          disableElevation
-        >
-          Salvar
         </Button>
       ) : (
         <Button

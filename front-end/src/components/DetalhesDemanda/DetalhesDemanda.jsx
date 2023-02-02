@@ -123,9 +123,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -185,7 +185,6 @@ const DetalhesDemanda = (props) => {
   const existsInAnexos = (anexo) => {
     return (
       anexos.filter((anexoItem) => {
-        console.log(!anexo.id && anexoItem.name == anexo.nome);
         return (
           anexoItem.nome == anexo.name ||
           (anexo.id && anexoItem.nome == anexo.nome)
@@ -260,7 +259,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -268,19 +267,20 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosNovos([]);
   };
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
+    console.log("Aaaaaaaaaaa")
     let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
     let contagem = 0;
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -295,6 +295,7 @@ const DetalhesDemanda = (props) => {
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
     if (demandaEmEdicao) {
+      console.log('aaaaaaa')
       const demandaAtualizada = {
         id: props.dados.id,
         titulo: tituloDemanda,
@@ -307,9 +308,10 @@ const DetalhesDemanda = (props) => {
         solicitante: props.dados.solicitante,
         gerente: props.dados.gerente,
         anexo: props.dados.anexo,
+        departamento: props.dados?.departamento,
+        analista: props.dados?.analista
       };
 
-      console.log("demanda: ", demandaAtualizada);
       const anexosVelhos = [];
       for (let anexo of anexos) {
         if (anexo.id) {
@@ -348,9 +350,11 @@ const DetalhesDemanda = (props) => {
       }
     }
 
-    DemandaService.getById(props.dados.id).then((res) => {
-      props.updateDemandaProps(res);
-    });
+    if (props.dados.id) {
+      DemandaService.getById(props.dados.id).then((res) => {
+        props.updateDemandaProps(res);
+      });
+    }
 
     if (anexosRemovidos.length > 0) {
       for (let anexoRemovido of anexosRemovidos) {
@@ -545,7 +549,6 @@ const DetalhesDemanda = (props) => {
   const existsInArray = (array, anexo) => {
     return (
       array.filter((anexoItem) => {
-        console.log(anexoItem.nome == anexo.nome);
         return anexoItem.name == anexo.name;
       }).length > 0
     );
@@ -580,12 +583,6 @@ const DetalhesDemanda = (props) => {
         break;
     }
   };
-
-  useEffect(() => {
-    console.log("anexos", anexos);
-    console.log("anexosRemovidos", anexosRemovidos);
-    console.log("novosAnexos", novosAnexos);
-  }, [anexos, anexosRemovidos, novosAnexos]);
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
@@ -627,9 +624,9 @@ const DetalhesDemanda = (props) => {
           sx={{ top: "10px", right: "10px" }}
           onClick={editarDemanda}
         >
-          {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+          {((props.usuario?.id == props.dados.solicitante?.id &&
+            props.dados.status == "BACKLOG_EDICAO") || (props.dados?.analista && props.dados.status == "ASSESSMENT")) &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -637,8 +634,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"

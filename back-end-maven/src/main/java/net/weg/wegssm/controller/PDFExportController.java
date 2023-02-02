@@ -19,19 +19,64 @@ public class PDFExportController {
         this.pdfGeneratorService = pdfGeneratorService;
     }
 
-    @GetMapping("/pdf/generate")
-    public void generatePDF(HttpServletResponse response) throws IOException {
+    @GetMapping("/pdf/demanda")
+    public void generatePDFDemanda(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
 
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=pdf_" + currentDateTime + " .pdf";
+        String headerValue = "attachment; filename=pdf_demanda_" + currentDateTime + " .pdf";
 
         response.setHeader(headerKey, headerValue);
 
-        this.pdfGeneratorService.export(response);
+        this.pdfGeneratorService.exportDemanda(response);
+    }
+
+    @GetMapping("/pdf/proposta")
+    public void generatePDFProposta(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=pdf_proposta_" + currentDateTime + " .pdf";
+
+        response.setHeader(headerKey, headerValue);
+
+        this.pdfGeneratorService.exportProposta(response);
+    }
+
+    @GetMapping("/pdf/pauta")
+    public void generatePDFPauta(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=pdf_pauta_" + currentDateTime + " .pdf";
+
+        response.setHeader(headerKey, headerValue);
+
+        this.pdfGeneratorService.exportPauta(response);
+    }
+
+    @GetMapping("/pdf/ata")
+    public void generatePDFAta(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=pdf_ata_" + currentDateTime + " .pdf";
+
+        response.setHeader(headerKey, headerValue);
+
+        this.pdfGeneratorService.exportAta(response);
     }
 
 }
