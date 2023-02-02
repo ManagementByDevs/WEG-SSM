@@ -19,9 +19,11 @@ public class NotificacaoService {
 
     private NotificacaoRepository notificacaoRepository;
 
-    public NotificacaoService(NotificacaoRepository notificacaoRepository) { this.notificacaoRepository = notificacaoRepository; }
+    public NotificacaoService(NotificacaoRepository notificacaoRepository) {
+        this.notificacaoRepository = notificacaoRepository;
+    }
 
-    public List<Notificacao> findAll(){
+    public List<Notificacao> findAll() {
         return notificacaoRepository.findAll();
     }
 
@@ -29,13 +31,17 @@ public class NotificacaoService {
         return notificacaoRepository.findAll(pageable);
     }
 
-    public Optional<Notificacao> findById(Long id){
+    public Optional<Notificacao> findById(Long id) {
         return notificacaoRepository.findById(id);
     }
 
-    public List<Notificacao> findByTipoNotificacao(TipoNotificacao tipoNotificacao){ return notificacaoRepository.findByTipoNotificacao(tipoNotificacao); }
+    public List<Notificacao> findByTipoNotificacao(TipoNotificacao tipoNotificacao) {
+        return notificacaoRepository.findByTipoNotificacao(tipoNotificacao);
+    }
 
-    public boolean existsById(Long id) { return notificacaoRepository.existsById(id); }
+    public boolean existsById(Long id) {
+        return notificacaoRepository.existsById(id);
+    }
 
     public <S extends Notificacao> S save(S entity) {
         return notificacaoRepository.save(entity);
@@ -51,6 +57,10 @@ public class NotificacaoService {
 
     public List<Notificacao> findByData(Data data) {
         return notificacaoRepository.findByData(data);
+    }
+
+    public Page<Notificacao> findByUsuarioAndVisualizado(Usuario usuario, Boolean visualizado, Pageable pageable) {
+        return notificacaoRepository.findByUsuarioAndVisualizado(usuario, visualizado, pageable);
     }
 
 }

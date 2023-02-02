@@ -82,7 +82,7 @@ const getDesignTokens = (mode) => ({
                 },
                 visualizado: {
                     true: '#E4E4E4',
-                    false: '#E4E4E4'
+                    false: '#FFFFFF'
                 },
                 chat: {
                     outro: "#E4E4E4",

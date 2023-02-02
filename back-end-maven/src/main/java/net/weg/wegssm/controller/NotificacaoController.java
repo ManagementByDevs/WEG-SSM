@@ -61,11 +61,12 @@ public class NotificacaoController {
 
     /**
      * Método GET para buscar as notificações de um usuário
+     *
      * @param id
      * @return List de Notificação
      */
     @GetMapping("user/{id}")
-    public ResponseEntity<Page<Notificacao>> findByUserId(@PathVariable(value = "id") Long id, @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<Notificacao>> findByUserId(@PathVariable(value = "id") Long id, @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         if (!usuarioService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -73,13 +74,23 @@ public class NotificacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByUsuario(usuarioService.findById(id).get(), pageable));
     }
 
+    @GetMapping("user/modal-notificacao/{id}")
+    public ResponseEntity<Page<Notificacao>> findByUsuarioAndVisualizado(@PathVariable(value = "id") Long id, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        if (!usuarioService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByUsuarioAndVisualizado(usuarioService.findById(id).get(), false, pageable));
+    }
+
     /**
      * Método GET para buscar as notificações pela data
+     *
      * @param data
      * @return
      */
     @GetMapping("/date/{data}")
-    public  ResponseEntity<Object> findByData(@PathVariable(value = "data") Data data) {
+    public ResponseEntity<Object> findByData(@PathVariable(value = "data") Data data) {
         return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByData(data));
     }
 
@@ -138,6 +149,7 @@ public class NotificacaoController {
 
     /**
      * Método PUT para atualizar a notificação
+     *
      * @param notificacaoDTO
      * @return
      */

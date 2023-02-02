@@ -3,6 +3,7 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.PropostaService;
+import net.weg.wegssm.model.service.UsuarioService;
 import net.weg.wegssm.util.PropostaUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,14 +16,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/proposta")
+@CrossOrigin(origins = "localhost:3000")
 public class PropostaController {
 
     private PropostaService propostaService;
+    private UsuarioService usuarioService;
 
     /**
      * Método GET para listar todas as propostas
@@ -3933,6 +3937,18 @@ public class PropostaController {
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
 
         proposta.setAnexos(files);
+        proposta.setData(new Date());
+        proposta.setVisibilidade(true);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
+    }
+
+    @PostMapping("/sem-arquivos")
+    public ResponseEntity<Object> saveSemArquivos(@RequestParam("proposta") String propostaJSON) {
+        PropostaUtil propostaUtil = new PropostaUtil();
+        Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
+
+        proposta.setData(new Date());
         proposta.setVisibilidade(true);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));

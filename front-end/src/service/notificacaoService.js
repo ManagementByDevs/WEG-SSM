@@ -17,6 +17,12 @@ class NotificacaoService {
     return (await axios.get(`${notificacaoPath}/date/${date}`)).data;
   }
 
+  async getByUserIdAndNotVisualizado(userId) {
+    return (
+      await axios.get(`${notificacaoPath}/user/modal-notificacao/${userId}`)
+    ).data;
+  }
+
   async post(notificacao) {
     return (await axios.post(`${notificacaoPath}`, notificacao)).data;
   }

@@ -36,5 +36,5 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
      * @return
      */
     List<Notificacao> findByData(Data data);
-
+    Page<Notificacao> findByUsuarioAndVisualizado(Usuario usuario, Boolean visualizado, Pageable pageable);
 }
