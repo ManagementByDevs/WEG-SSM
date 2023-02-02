@@ -22,6 +22,8 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+
 import FontContext from "../../service/FontContext";
 
 const Chat = () => {
@@ -173,7 +175,28 @@ const Chat = () => {
     // aqui é o salvar (utiliza a variavel texto para pegar o valor do texto)
   };
 
+  const [abrirModal, setOpenModal] = useState(false);
+
+  const abrirModalCancelarChat = () => {
+    setOpenModal(true);
+  };
+
+  const fecharModalCancelarChat = () => {
+    setOpenModal(false);
+  };
+
+  const deletarChat = () => {
+    fecharModalCancelarChat();
+    // aqui é o deletar
+  };
+
   return (
+    <>
+      {
+        abrirModal && (
+          <ModalConfirmacao open={abrirModal} setOpen={setOpenModal} textoModal={"fecharChat"} onConfirmClick={deletarChat} onCancelClick={fecharModalCancelarChat} textoBotao={"sim"}/>
+        )
+      }
     <FundoComHeader>
       <Box className="p-2">
         <Caminho />
@@ -271,7 +294,7 @@ const Chat = () => {
                   </Box>
                   <Box className="mr-5">
                     <Tooltip title="Encerrar chat">
-                      <IconButton>
+                      <IconButton onClick={abrirModalCancelarChat}>
                         <CommentsDisabledIcon
                           sx={{
                             fontSize: "30px",
@@ -357,6 +380,7 @@ const Chat = () => {
         </Box>
       </Box>
     </FundoComHeader>
+    </>
   );
 };
 

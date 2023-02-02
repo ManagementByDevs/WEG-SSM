@@ -22,6 +22,7 @@ import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Pauta from "../../components/Pauta/Pauta";
 import Feedback from "../../components/Feedback/Feedback";
+import Ajuda from "../../components/Ajuda/Ajuda";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -448,6 +449,7 @@ const HomeGerencia = () => {
 
   return (
     <FundoComHeader>
+      <Ajuda/>
       {/* Div container */}
       <Box
         className="flex justify-center mt-8"
