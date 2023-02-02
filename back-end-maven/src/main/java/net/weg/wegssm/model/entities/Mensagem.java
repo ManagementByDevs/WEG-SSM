@@ -32,6 +32,9 @@ public class Mensagem {
     @Column(nullable = false, length = 200)
     private String texto;
 
+    @Column()
+    private StatusChat status;
+
     // Foreign keys
 
     @ManyToOne

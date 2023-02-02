@@ -1,5 +1,5 @@
 import { Box, Typography, Avatar } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import FontConfig from "../../service/FontConfig";
 
 import FontContext from "../../service/FontContext";
@@ -8,27 +8,26 @@ const Contato = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  const [corFundoContato, setCorFundoContato] = useState();
+  const [corSelecionado, setCorSelecionado] = useState("transparent");
 
-  const corSelecionado = () => {
-    props.onClick();
-    if (props.usuarioAtual != props.index) {
-      setCorFundoContato("chat.eu");
+  useEffect(() => {
+    if(props.usuarioAtual === props.index) {
+      setCorSelecionado("chat.eu");
     } else {
-      setCorFundoContato("transparent");
+      setCorSelecionado("transparent");
     }
-  };
+  }, [props.usuarioAtual]);
 
   return (
     <Box
-      onClick={corSelecionado}
+      onClick={props.onClick}
       className="flex justify-evenly items-center rounded-lg border delay-120 hover:scale-105 duration-300"
       sx={{
         width: "90%",
         minWidth: "195px",
         minHeight: "8%",
         cursor: "pointer",
-        backgroundColor:corFundoContato,
+        backgroundColor: corSelecionado,
         "&:hover": {
           backgroundColor: "chat.eu",
         },

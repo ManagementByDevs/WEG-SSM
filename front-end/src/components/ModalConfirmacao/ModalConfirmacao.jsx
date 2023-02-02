@@ -63,6 +63,8 @@ const ModalConfirmacao = (props) => {
         return "Deseja aceitar a demanda?";
       case "confirmarExclusao":
         return "Tem certeza que deseja excluir?";
+      case "fecharChat":
+        return "Deseja realmente fechar este chat?";
     }
   };
 
