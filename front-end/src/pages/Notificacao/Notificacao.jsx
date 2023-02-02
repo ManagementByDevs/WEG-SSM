@@ -21,8 +21,10 @@ import Caminho from "../../components/Caminho/Caminho";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import NotificacaoDetermineIcon from "../../components/NotificacaoDetermineIcon/NotificacaoDetermineIcon";
+import Feedback from "../../components/Feedback/Feedback";
 
 import NotificacaoService from "../../service/notificacaoService";
+import DateService from "../../service/dateService";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
@@ -49,6 +51,12 @@ const Notificacao = () => {
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
   // Total de páginas do componente de paginação
   const [totalPaginas, setTotalPaginas] = useState(1);
+  // UseState para controlar o estado do feedback de lido/não lido
+  const [feedback, setFeedback] = useState({
+    visibilidade: false,
+    tipo: "sucesso",
+    mensagem: "sfd",
+  });
 
   useEffect(() => {
     buscarNotificacoes();
@@ -78,7 +86,7 @@ const Notificacao = () => {
 
   // formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd
   const formatDate = (fullDate) => {
-    const data = new Date(fullDate);
+    const data = DateService.getDateByPreviousDate(fullDate);
     const dd = String(data.getDate()).padStart(2, "0");
     const mm = String(data.getMonth() + 1).padStart(2, "0");
     const yyyy = data.getFullYear();
@@ -114,7 +122,18 @@ const Notificacao = () => {
       }
       return row;
     });
+
+    openFeedback(
+      bool
+        ? "Notificações marcadas como não lidas com sucesso!"
+        : "Notificações marcadas como lidas com sucesso! "
+    );
     setRows(newList);
+  };
+
+  // Abre o feedback com a mensagem passada por parâmetro
+  const openFeedback = (mensagem) => {
+    setFeedback({ visibilidade: true, tipo: "info", mensagem });
   };
 
   // Deleta todas as linhas selecionadas
@@ -126,6 +145,8 @@ const Notificacao = () => {
     for (let notificacao of aux) {
       deleteNotificacao(notificacao);
     }
+
+    openFeedback("Notificações deletadas com sucesso!")
   };
 
   // Atualiza o estado de visualizado da linha selecionada
@@ -133,11 +154,13 @@ const Notificacao = () => {
     let aux = [...rows];
     aux[index].visualizado = !aux[index].visualizado;
     updateNotificacao(aux[index]);
+    openFeedback(!aux[index].visualizado ? "Notificação marcada como não lida com sucesso!" : "Notificação marcada como lida com sucesso!");
   };
 
   // Deleta linha selecionada
   const onDeleteClick = () => {
     deleteNotificacao(rows[indexDelete]);
+    openFeedback("Notificação deletada com sucesso!");
   };
 
   // Busca as notificações do usuário no banco de dados
@@ -199,6 +222,15 @@ const Notificacao = () => {
 
   return (
     <FundoComHeader>
+      <Feedback
+        open={feedback.visibilidade}
+        handleClose={() => {
+          setFeedback({ ...feedback, visibilidade: false });
+        }}
+        status={feedback.tipo}
+        mensagem={feedback.mensagem}
+      />
+
       <ModalConfirmacao
         open={openModalConfirmDelete}
         setOpen={setOpenModalConfirmDelete}

@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Box, Tooltip, Typography, IconButton, Menu } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import Notificacao from "../Notificacao/Notificacao";
+import Feedback from "../Feedback/Feedback";
 
 import FontContext from "../../service/FontContext";
 import NotificacaoService from "../../service/notificacaoService";
-import { useEffect } from "react";
 
 const NotificacaoModal = (props) => {
   const navigate = useNavigate();
@@ -18,6 +18,9 @@ const NotificacaoModal = (props) => {
 
   // UseState para poder visualizar e alterar a visibilidade das notificacoes
   const [anchorEl, setAnchorEl] = useState(null);
+
+  // UseState para poder visualizar e alterar a visibilidade do feedback de notificação lida
+  const [feedback, setFeedback] = useState(false);
 
   // Variável que é usada para saber se o menu está aberto ou não
   const open = Boolean(anchorEl);
@@ -86,11 +89,20 @@ const NotificacaoModal = (props) => {
   }, []);
 
   const onNotificationItemClick = () => {
+    setFeedback(true);
     buscarNotificacoes();
   };
 
   return (
     <>
+      <Feedback
+        open={feedback}
+        handleClose={() => {
+          setFeedback(false);
+        }}
+        status={"info"}
+        mensagem={"Notificação lida com sucesso!"}
+      />
       {/* Title  */}
       <Tooltip title="Notificações">
         <IconButton size="small" aria-haspopup="true" onClick={handleClick}>
