@@ -50,6 +50,9 @@ public class Proposta {
     @Column(nullable = false)
     private Status status;
 
+    @Column(nullable = false)
+    private Date data;
+
     @Column
     private ParecerGerencia parecerComissao;
 

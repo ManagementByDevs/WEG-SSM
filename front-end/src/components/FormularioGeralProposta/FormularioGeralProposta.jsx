@@ -25,7 +25,7 @@ import FontContext from "../../service/FontContext";
 const FormularioGeralProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   const { mode } = useContext(ColorModeContext);
   const inputFile = useRef(null);
 
@@ -49,10 +49,7 @@ const FormularioGeralProposta = (props) => {
   // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
-      props.setGerais({
-        ...props.gerais,
-        anexos: [...props.gerais.anexos, file],
-      });
+      props.setDados({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: [...props.dados.anexo, file], solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI });
     }
   };
 
@@ -355,9 +352,9 @@ const FormularioGeralProposta = (props) => {
                 multiple
                 hidden
               />
-              {props.gerais.anexos.length > 0 ? (
+              {props.dados.anexo.length > 0 ? (
                 <Box className="flex flex-col gap-2">
-                  {props.gerais.anexos.map((anexo, index) => (
+                  {props.dados.anexo.map((anexo, index) => (
                     <Paper
                       key={index}
                       className="flex justify-between items-center"
@@ -379,11 +376,10 @@ const FormularioGeralProposta = (props) => {
                       </Typography>
                       <IconButton
                         onClick={() =>
-                          props.setGerais({
-                            ...props.gerais,
-                            anexos: props.gerais.anexos.filter(
+                          props.setDados({
+                            titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo.filter(
                               (anexo, i) => i !== index
-                            ),
+                            ), solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI
                           })
                         }
                       >
