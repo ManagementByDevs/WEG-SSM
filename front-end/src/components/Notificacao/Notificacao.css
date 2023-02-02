@@ -1,0 +1,19 @@
+.notificacao-item-componente {
+    position: relative;
+}
+
+.notificacao-item-componente:hover .notificacao-item-componente-read-icon {
+    display: block !important;
+}
+
+.notificacao-item-componente:hover .notificacao-item-componente-titulo {
+    width: 83%;
+}
+
+.notificacao-item-componente-read-icon {
+    display: none !important;
+    color: #00579D;
+    position: absolute;
+    right: 4%;
+}
+

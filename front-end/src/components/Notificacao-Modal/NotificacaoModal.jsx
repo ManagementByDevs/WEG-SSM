@@ -1,27 +1,21 @@
 import React, { useState, useContext } from "react";
-import {
-  Box,
-  Tooltip,
-  Typography,
-  IconButton,
-  Menu,
-} from "@mui/material";
+import { Box, Tooltip, Typography, IconButton, Menu } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 import Notificacao from "../Notificacao/Notificacao";
-import FontConfig from "../../service/FontConfig";
 
 import FontContext from "../../service/FontContext";
+import NotificacaoService from "../../service/notificacaoService";
+import { useEffect } from "react";
 
 const NotificacaoModal = (props) => {
-
   const navigate = useNavigate();
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   // UseState para poder visualizar e alterar a visibilidade das notificacoes
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -39,7 +33,7 @@ const NotificacaoModal = (props) => {
   };
 
   //   Contador para ver se tem notificação não lida
-  let contNaoLidas = 0;
+  const [contNaoLidas, setContNaoLidas] = useState(0);
 
   const [notificacoes, setNotificacoes] = useState([
     {
@@ -73,6 +67,27 @@ const NotificacaoModal = (props) => {
       lida: false,
     },
   ]);
+
+  const buscarNotificacoes = () => {
+    let user = JSON.parse(localStorage.getItem("user"));
+    NotificacaoService.getByUserIdAndNotVisualizado(user.id)
+      .then((response) => {
+        setNotificacoes(response.content);
+        setContNaoLidas(response.totalElements);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    buscarNotificacoes();
+  }, []);
+
+  const onNotificationItemClick = () => {
+    buscarNotificacoes();
+  };
 
   return (
     <>
@@ -119,23 +134,24 @@ const NotificacaoModal = (props) => {
         {...props}
       >
         <Box className="w-72 px-3 py-2 max-h-60 overflow-hidden">
-          <Box className="flex flex-col items-center overflow-y-auto overflow-x-hidden" sx={{maxHeight: "12.5rem"}}>
+          <Box
+            className="flex flex-col items-center overflow-y-auto overflow-x-hidden"
+            sx={{ maxHeight: "12.5rem" }}
+          >
             {/* Componente Notificacao (Cada notificacao que aparece) */}
             {notificacoes?.map((notificacao, index) => {
-              if (!notificacao.lida) {
-                contNaoLidas++;
-                return (
-                  <Notificacao
-                    key={index}
-                    notificacao={notificacao}
-                    index={index}
-                  />
-                );
-              }
+              return (
+                <Notificacao
+                  key={index}
+                  notificacao={notificacao}
+                  onNotificacaoClick={onNotificationItemClick}
+                  index={index}
+                />
+              );
             })}
             {/* Caso não haja notificação não lida, aparece a mensagem abaixo */}
             {contNaoLidas === 0 && (
-              <Box className="flex items-center text-center w-full pt-1">
+              <Box className="flex items-center justify-center text-center w-full pt-1">
                 <Typography
                   fontSize={FontConfig.default}
                   color={"text.secondary"}
@@ -149,9 +165,9 @@ const NotificacaoModal = (props) => {
             )}
           </Box>
           {/* Ver Tudo */}
-          <Box className="flex justify-center w-full py-1">
+          <Box className="flex justify-center w-full py-1 mt-2">
             <Typography
-            fontSize={FontConfig.default}
+              fontSize={FontConfig.default}
               color={"link.main"}
               sx={{
                 fontWeight: 600,
@@ -164,9 +180,10 @@ const NotificacaoModal = (props) => {
               onClick={() => {
                 navigate("/notificacao");
               }}
-
             >
-              Ver Tudo ({contNaoLidas})
+              {contNaoLidas > 0
+                ? "Ver Tudo (" + contNaoLidas + ")"
+                : "Ver notificações"}
             </Typography>
           </Box>
         </Box>

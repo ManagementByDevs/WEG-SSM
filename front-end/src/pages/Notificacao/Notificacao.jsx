@@ -20,16 +20,13 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
+import NotificacaoDetermineIcon from "../../components/NotificacaoDetermineIcon/NotificacaoDetermineIcon";
 
 import NotificacaoService from "../../service/notificacaoService";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 import FontContext from "../../service/FontContext";
 
@@ -44,14 +41,18 @@ const Notificacao = () => {
     useState(false);
   // UseState para saber qual notificação deletar ao usar o botão de delete individual
   const [indexDelete, setIndexDelete] = useState(null);
-  // UseState que irá conter o resultado da busca pela página de notificações
-  const [pageData, setPageData] = useState(null);
   // UseState que têm informações sobre a página atual
   const [page, setPage] = useState("size=20&page=0");
+  // Pagina atual do componente de paginação
+  const [paginaAtual, setPaginaAtual] = useState(0);
+  // Tamanho da página do componente de paginação
+  const [tamanhoPagina, setTamanhoPagina] = useState(20);
+  // Total de páginas do componente de paginação
+  const [totalPaginas, setTotalPaginas] = useState(1);
 
   useEffect(() => {
     buscarNotificacoes();
-  }, [page]);
+  }, [page, paginaAtual, tamanhoPagina]);
 
   // Linhas da tabela
   const [rows, setRows] = useState([]);
@@ -142,9 +143,12 @@ const Notificacao = () => {
   // Busca as notificações do usuário no banco de dados
   const buscarNotificacoes = () => {
     let user = JSON.parse(localStorage.getItem("user"));
-    NotificacaoService.getByUserId(parseInt(user.id), page).then((data) => {
+    NotificacaoService.getByUserId(
+      parseInt(user.id),
+      "size=" + tamanhoPagina + "&page=" + paginaAtual
+    ).then((data) => {
       setRows(createRows(data.content));
-      setPageData(data);
+      setTotalPaginas(data.totalPages);
     });
   };
 
@@ -228,7 +232,7 @@ const Notificacao = () => {
           <Box className="w-10/12">
             <Divider sx={{ borderColor: "tertiary.main" }} />
           </Box>
-          {pageData?.totalPages >= 1 ? (
+          {totalPaginas >= 1 ? (
             <>
               <Box className="w-full flex justify-center">
                 <Box
@@ -327,27 +331,9 @@ const Notificacao = () => {
                             />
                           </td>
                           <td className="text-center">
-                            {row.tipo_icone == "APROVADO" ? (
-                              <CheckCircleOutlineIcon
-                                color="primary"
-                                sx={{ fontSize: "30px", marginX: "0.5rem" }}
-                              />
-                            ) : row.tipo_icone == "REPROVADO" ? (
-                              <ErrorOutlineOutlinedIcon
-                                color="primary"
-                                sx={{ fontSize: "30px", marginX: "0.5rem" }}
-                              />
-                            ) : row.tipo_icone == "MAIS_INFORMACOES" ? (
-                              <HelpOutlineIcon
-                                color="primary"
-                                sx={{ fontSize: "30px", marginX: "0.5rem" }}
-                              />
-                            ) : (
-                              <ChatBubbleOutlineIcon
-                                color="primary"
-                                sx={{ fontSize: "30px", marginX: "0.5rem" }}
-                              />
-                            )}
+                            <NotificacaoDetermineIcon
+                              tipoIcone={row.tipo_icone}
+                            />
                           </td>
                           <td className="text-left">
                             <Typography fontSize={FontConfig.medium}>
@@ -397,9 +383,15 @@ const Notificacao = () => {
                       ))}
                     </TableBody>
                   </Table>
-                  {pageData?.totalPages >= 1 && (
+                  {totalPaginas >= 1 && (
                     <Box className="flex justify-end">
-                      <Paginacao setPage={setPage} />
+                      <Paginacao
+                        totalPaginas={totalPaginas}
+                        setPage={setPage}
+                        setTamanho={setTamanhoPagina}
+                        tamanhoPagina={tamanhoPagina}
+                        setPaginaAtual={setPaginaAtual}
+                      />
                     </Box>
                   )}
                 </Paper>

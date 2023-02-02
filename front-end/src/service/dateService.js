@@ -1,4 +1,22 @@
 class DateService {
+
+    /**
+     * Chame para criar um objeto com a data de hoje
+     * @returns Data de hoje
+     */
+    getTodaysDate() {
+        return new Date();
+    }
+
+    /**
+     * Retorna um new Date com a data passada por parâmetro
+     * @param {Objeto Date} date 
+     * @returns 
+     */
+    getDateByPreviousDate(date) {
+        return new Date(date);
+    }
+
     /**
      * Retorna data de hoje formatada no padrão MySQL
      * @returns Data no padrão MySQL
