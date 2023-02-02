@@ -5,12 +5,18 @@ import net.weg.wegssm.dto.ChatDTO;
 import net.weg.wegssm.dto.HistoricoDTO;
 import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Historico;
+import net.weg.wegssm.model.entities.Mensagem;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.ChatService;
 import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +33,28 @@ public class ChatController {
 
     private UsuarioService usuarioService;
     private ChatService chatService;
+
+
+    // Integração das mensagens
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+    @MessageMapping("/message")
+    @SendTo("/chat/public")
+    private Mensagem receivePublicMessage(@Payload Mensagem mensagem) {
+        return mensagem;
+    }
+
+
+    // Possivelmente não iremos usar
+
+    @MessageMapping("/private-message")
+    public Mensagem receivePrivateMessage(@Payload Mensagem mensagem) {
+
+        simpMessagingTemplate.convertAndSendToUser(mensagem.getUsuario().getNome(), "/private", mensagem);
+        return mensagem;
+    }
 
     /**
      * Método GET para listar todos os chats
