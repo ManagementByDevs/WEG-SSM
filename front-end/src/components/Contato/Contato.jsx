@@ -8,15 +8,13 @@ const Contato = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  const [corFundoContato, setCorFundoContato] = useState("transparent");
+  const [corFundoContato, setCorFundoContato] = useState();
 
   const corSelecionado = () => {
     props.onClick();
     if (props.usuarioAtual != props.index) {
-      console.log("com cor")
-      setCorFundoContato("visualizado.false");
+      setCorFundoContato("chat.eu");
     } else {
-      console.log("sem cor")
       setCorFundoContato("transparent");
     }
   };
@@ -30,9 +28,9 @@ const Contato = (props) => {
         minWidth: "195px",
         minHeight: "8%",
         cursor: "pointer",
-        backgroundColor:{corFundoContato},
+        backgroundColor:corFundoContato,
         "&:hover": {
-          backgroundColor: "visualizado.false",
+          backgroundColor: "chat.eu",
         },
       }}
       title={props.usuario.demanda}
