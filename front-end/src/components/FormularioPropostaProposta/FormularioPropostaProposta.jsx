@@ -8,6 +8,9 @@ import {
   Paper,
   IconButton,
   Tooltip,
+  MenuItem,
+  TextField,
+  Autocomplete
 } from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -22,6 +25,8 @@ import FontContext from "../../service/FontContext";
 const FormularioPropostaProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
 
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
   const { mode } = useContext(ColorModeContext);
@@ -40,13 +45,17 @@ const FormularioPropostaProposta = (props) => {
 
   const alterarTexto = (e, input) => {
     if (input === "titulo") {
-      props.setDadosDemanda({ titulo: e.target.value, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI });
+      props.setDadosDemanda({ titulo: e.target.value, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
     } else if (input === "problema") {
-      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: e.target.value, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI });
+      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: e.target.value, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
     } else if (input === "proposta") {
-      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: e.target.value, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI });
+      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: e.target.value, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
     } else if (input === "frequencia") {
-      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: e.target.value, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI });
+      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: e.target.value, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+    } else if (input === "tamanho") {
+      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: e.target?.value });
+    } else if (input == "secao") {
+      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: e, tamanho: props.dados.tamanho });
     }
   };
 
@@ -60,7 +69,7 @@ const FormularioPropostaProposta = (props) => {
     for (let file of inputFile.current.files) {
       if (!existsInAnexos(file)) {
         updateAnexosNovos(file);
-        props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: [...props.dados.anexo, file], solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI });
+        props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: [...props.dados.anexo, file], solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
       } else {
         // feedback de anexo já existente
         console.log("já há um anexo com esse nome");
@@ -85,7 +94,7 @@ const FormularioPropostaProposta = (props) => {
     removeAnexosNovos(props.dados.anexo[index]);
     let aux = [...props.dados.anexo];
     aux.splice(index, 1);
-    props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: aux, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI });
+    props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: aux, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
   };
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
@@ -354,6 +363,41 @@ const FormularioPropostaProposta = (props) => {
               }}
               component="input"
               placeholder="Digite a frequência..."
+            />
+          </Box>
+          <Box className="flex justify-evenly" sx={{ marginTop: '15px', marginBottom: '10px' }}>
+            <TextField
+              sx={{ width: "45%" }}
+              select
+              label="Tamanho"
+              value={props.dados.tamanho}
+              onChange={(e) => alterarTexto(e, "tamanho")}
+              variant="standard"
+              fullWidth
+            >
+              <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>{"Muito Pequeno"}</MenuItem>
+              <MenuItem key={"Pequeno"} value={"Pequeno"}>{"Pequeno"}</MenuItem>
+              <MenuItem key={"Médio"} value={"Médio"}>{"Médio"}</MenuItem>
+              <MenuItem key={"Grande"} value={"Grande"}>{"Grande"}</MenuItem>
+              <MenuItem key={"Muito Grande"} value={"Muito Grande"}>{"Muito Grande"}</MenuItem>
+            </TextField>
+
+            <Autocomplete
+              sx={{ width: "45%" }}
+              disablePortal
+              options={secoesTI}
+              value={props.dados.secaoTI}
+              onChange={(event, value) => {
+                alterarTexto(value, "secao")
+              }}
+              getOptionLabel={(option) => {
+                return option || "";
+              }}
+              fullWidth
+              noOptionsText="Nenhuma seção encontrada"
+              renderInput={(params) => (
+                <TextField variant="standard" {...params} label="Seção TI" />
+              )}
             />
           </Box>
           <Box>
