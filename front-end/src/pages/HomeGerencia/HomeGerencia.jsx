@@ -32,11 +32,71 @@ import DepartamentoService from "../../service/departamentoService";
 import Tour from "reactour";
 
 const HomeGerencia = () => {
-  const [isTourOpen, setIsTourOpen] = useState(false);
+  const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
+    useState(false);
+  const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
+  const [isTourPautasOpen, setIsTourPautasOpen] = useState(false);
+  const [isTourAtasOpen, setIsTourAtasOpen] = useState(false);
 
   const stepsDemandas = [
     {
-      selector: "#primeiro",
+      selector: "#primeiroDemandas",
+      content:
+        "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoDemandas",
+      content:
+        "Esse é icone de ordenação, onde poderá ordenar os itens por ordem alfabética, por score ou por data de criação",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiroDemandas",
+      content:
+        "Aqui fica o filtro, podendo filtrar por: Solicitante, Gerente Responsável, Fórum, Departamento, Tamanho e número",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quartoDemandas",
+      content:
+        "Aqui fica o lugar para exportar as demandas em formato de planilha",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quintoDemandas",
+      content: "Aqui pode iniciar o processo de criação de uma nova demanda",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#sextaDemandas",
+      content:
+        "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+  const stepsCriarPropostas = [
+    {
+      selector: "#primeiroCriarPropostas",
       content: "This is my first step",
       style: {
         backgroundColor: "#DCDCDC",
@@ -44,7 +104,7 @@ const HomeGerencia = () => {
       },
     },
     {
-      selector: "#segundo",
+      selector: "#segundoCriarPropostas",
       content: "This is my first step",
       style: {
         backgroundColor: "#DCDCDC",
@@ -52,7 +112,85 @@ const HomeGerencia = () => {
       },
     },
     {
-      selector: "#terceiro",
+      selector: "#terceiroCriarPropostas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+  const stepsPropostas = [
+    {
+      selector: "#primeiroPropostas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPropostas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiroPropostas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+  const stepsPautas = [
+    {
+      selector: "#primeiroPautas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPautas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiroPautas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+  const stepsAtas = [
+    {
+      selector: "#primeiroAtas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoAtas",
+      content: "This is my first step",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiroAtas",
       content: "This is my first step",
       style: {
         backgroundColor: "#DCDCDC",
@@ -533,8 +671,40 @@ const HomeGerencia = () => {
     <FundoComHeader>
       <Tour
         steps={stepsDemandas}
-        isOpen={isTourOpen}
-        onRequestClose={() => setIsTourOpen(false)}
+        isOpen={isTourDemandasOpen}
+        onRequestClose={() => setIsTourDemandasOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+      <Tour
+        steps={stepsCriarPropostas}
+        isOpen={isTourCriarPropostasOpen}
+        onRequestClose={() => setIsTourCriarPropostasOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+      <Tour
+        steps={stepsPropostas}
+        isOpen={isTourPropostasOpen}
+        onRequestClose={() => setIsTourPropostasOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+      <Tour
+        steps={stepsPautas}
+        isOpen={isTourPautasOpen}
+        onRequestClose={() => setIsTourPautasOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+      <Tour
+        steps={stepsAtas}
+        isOpen={isTourAtasOpen}
+        onRequestClose={() => setIsTourAtasOpen(false)}
         accentColor="#00579D"
         rounded={10}
         showCloseButton={false}
@@ -653,7 +823,7 @@ const HomeGerencia = () => {
                 <Box
                   className="flex justify-between items-center border px-3 py-1"
                   sx={{ backgroundColor: "input.main", width: "50%" }}
-                  id="primeiro"
+                  id="primeiroDemandas"
                 >
                   {/* Input de pesquisa */}
                   <Box
@@ -693,6 +863,7 @@ const HomeGerencia = () => {
                     {/* Ícone de ordenação */}
                     <Tooltip title="Ordenação">
                       <SwapVertIcon
+                        id="segundoDemandas"
                         onClick={() => {
                           abrirModalOrdenacao();
                         }}
@@ -720,7 +891,7 @@ const HomeGerencia = () => {
 
                 {/* Botão de filtrar */}
                 <Button
-                  id="segundo"
+                  id="terceiroDemandas"
                   className="flex gap-1"
                   sx={{
                     backgroundColor: "primary.main",
@@ -753,6 +924,7 @@ const HomeGerencia = () => {
 
                 {/* Botão de exportar */}
                 <Button
+                  id="quartoDemandas"
                   className="flex gap-1"
                   sx={{
                     backgroundColor: "primary.main",
@@ -769,6 +941,7 @@ const HomeGerencia = () => {
 
               {/* Botão de criar demanda */}
               <Button
+                id="quintoDemandas"
                 className="gap-2"
                 sx={{
                   backgroundColor: "primary.main",
@@ -790,8 +963,9 @@ const HomeGerencia = () => {
             <Box className="mt-6">
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
-              <Ajuda onClick={() => setIsTourOpen(true)} />
+                <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
                 <Box
+                  id="sextaDemandas"
                   sx={{
                     display: "grid",
                     gap: "1rem",
@@ -815,6 +989,7 @@ const HomeGerencia = () => {
               {isGerente && (
                 <>
                   <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                    <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
                         display: "grid",
@@ -838,6 +1013,7 @@ const HomeGerencia = () => {
                     </Box>
                   </TabPanel>
                   <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                    <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{
                         display: "grid",
@@ -864,6 +1040,7 @@ const HomeGerencia = () => {
                       navigate("/detalhes-pauta");
                     }}
                   >
+                    <Ajuda onClick={() => setIsTourPautasOpen(true)} />
                     <Box
                       sx={{
                         display: "grid",
@@ -884,6 +1061,7 @@ const HomeGerencia = () => {
                       navigate("/detalhes-ata", {});
                     }}
                   >
+                    <Ajuda onClick={() => setIsTourAtasOpen(true)} />
                     <Box
                       sx={{
                         display: "grid",
