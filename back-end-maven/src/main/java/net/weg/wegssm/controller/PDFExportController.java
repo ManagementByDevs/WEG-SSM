@@ -23,7 +23,7 @@ public class PDFExportController {
     public void generatePDFDemanda(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
 
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
@@ -38,7 +38,7 @@ public class PDFExportController {
     public void generatePDFProposta(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
 
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
@@ -53,7 +53,7 @@ public class PDFExportController {
     public void generatePDFPauta(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
 
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
@@ -68,7 +68,7 @@ public class PDFExportController {
     public void generatePDFAta(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
 
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";

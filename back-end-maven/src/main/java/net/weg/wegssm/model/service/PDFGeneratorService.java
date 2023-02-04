@@ -80,6 +80,8 @@ public class PDFGeneratorService {
         Paragraph paragraph6 = new Paragraph("Benefícios: ", fontParagraph2);
         paragraph6.setSpacingBefore(15);
 
+        // Adicionando a logo da weg na página ( arrumar o diretório da imagem )
+
         Image img = Image.getInstance("C:\\Users\\matheus_hohmann\\Documents\\GitHub\\WEG-SSM\\back-end-maven\\src\\main\\java\\net\\weg\\wegssm\\images\\logo-pequeno.png");
 
         int indentation = 0;
@@ -159,6 +161,8 @@ public class PDFGeneratorService {
         document.add(paragraph8);
         document.add(paragraph9);
 
+        // Adicionando o nome dos arquivos
+
 //        for (Anexo anexo : demanda.getAnexo()) {
 //            Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
 //            paragraph10.setIndentationLeft(40);
@@ -166,6 +170,8 @@ public class PDFGeneratorService {
 //
 //            document.add(paragraph10);
 //        }
+
+        // Encerrando o documento
 
         document.close();
     }
