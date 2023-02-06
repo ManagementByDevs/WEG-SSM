@@ -180,7 +180,7 @@ const Chat = () => {
   const [texto, setTexto] = useState();
 
   const save = (e) => {
-    setTexto(e.target.value);
+    setUserData({ ...userData, "message": e.target.value });
   };
 
   const salvarTexto = () => {
@@ -325,15 +325,6 @@ const Chat = () => {
       setUserData({ ...userData, "message": "" });
     }
   };
-
-  const handleUsername = (event) => {
-    const { value } = event.target;
-    setUserData({ ...userData, "username": value });
-  }
-
-  const registerUser = () => {
-    connect();
-  }
 
   return (
     <>

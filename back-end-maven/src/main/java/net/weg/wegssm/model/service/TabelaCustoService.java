@@ -1,0 +1,21 @@
+package net.weg.wegssm.model.service;
+
+import net.weg.wegssm.model.entities.TabelaCusto;
+import net.weg.wegssm.repository.TabelaCustoRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class TabelaCustoService {
+
+    private TabelaCustoRepository tabelaCustoRepository;
+
+    public List<TabelaCusto> findAll() {
+        return tabelaCustoRepository.findAll();
+    }
+
+    public TabelaCusto save(TabelaCusto tabelaCusto) {
+        return tabelaCustoRepository.save(tabelaCusto);
+    }
+}

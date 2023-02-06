@@ -20,6 +20,8 @@ import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import PropostaService from "../../service/propostaService";
+import ForumService from "../../service/forumService";
+import BUService from "../../service/buService";
 
 import FontContext from "../../service/FontContext";
 import beneficioService from "../../service/beneficioService";
@@ -32,6 +34,9 @@ const BarraProgressaoProposta = (props) => {
   const steps = props.steps;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
   var idEscopo = null;
+
+  const [listaForuns, setListaForuns] = useState([]);
+  const [listaBU, setListaBU] = useState([]);
 
   const [dadosDemanda, setDadosDemanda] = useState({
     titulo: "",
@@ -54,9 +59,12 @@ const BarraProgressaoProposta = (props) => {
 
   const [listaBeneficios, setListaBeneficios] = useState([]);
   const [listaBeneficiosExcluidos, setListaBeneficiosExcluidos] = useState([]);
+  var idEscopo = null;
 
   useEffect(() => {
     setDadosDemanda(props.dados);
+    pesquisarBUs();
+    pesquisarForuns();
   }, []);
 
   // UseEffect para formatar os benefícios recebidos do banco para os necessários na edição
@@ -147,6 +155,20 @@ const BarraProgressaoProposta = (props) => {
     setSalvarClick(true);
     setEditar(false);
   };
+
+  // Função para pesquisar os fóruns do banco e salvar na lista para o select
+  const pesquisarForuns = () => {
+    ForumService.getAll().then((response) => {
+      setListaForuns(response);
+    })
+  }
+
+  // Função para pesquisar as BUs do banco e salvar na lista para o select
+  const pesquisarBUs = () => {
+    BUService.getAll().then((response) => {
+      setListaBU(response);
+    })
+  }
 
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
@@ -301,6 +323,9 @@ const BarraProgressaoProposta = (props) => {
           setBeneficios={setListaBeneficios}
           beneficiosExcluidos={listaBeneficiosExcluidos}
           setBeneficiosExcluidos={setListaBeneficiosExcluidos}
+
+          listaForuns={listaForuns}
+          listaBU={listaBU}
         />
       )}
       {activeStep == 1 && (

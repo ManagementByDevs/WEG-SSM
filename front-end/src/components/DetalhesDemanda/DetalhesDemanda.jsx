@@ -363,6 +363,16 @@ const DetalhesDemanda = (props) => {
     }
   }, [demandaEmEdicao]);
 
+  // Const para retornar uma lista das BUs beneficiadas em forma de texto
+  const retornarBUsBeneficiadas = () => {
+    let textoFinal = "";
+    for (const bu of props.dados.busBeneficiadas) {
+      textoFinal += bu.nome + ", ";
+    }
+    textoFinal = textoFinal.substring(0, textoFinal.length - 2);
+    return textoFinal;
+  }
+
   // -----------------------------------------------------------------------------------------------------------------------------------
   // Funções de aceite/recusa do analista/gerente
 
@@ -624,8 +634,8 @@ const DetalhesDemanda = (props) => {
           sx={{ top: "10px", right: "10px" }}
           onClick={editarDemanda}
         >
-          {((props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO") || (props.dados?.analista && props.dados.status == "ASSESSMENT")) &&
+          {props.usuario?.id == props.dados.solicitante?.id &&
+            props.dados.status == "BACKLOG_EDICAO" &&
             !editar ? (
             <ModeEditOutlineOutlinedIcon
               fontSize="large"
@@ -736,6 +746,101 @@ const DetalhesDemanda = (props) => {
                 {props.dados.frequencia}
               </Typography>
             </Box>
+            {props.dados.tamanho && props.dados.secaoTI &&
+              <Box className="flex justify-between items-center">
+                <Box className="flex items-center">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                  >
+                    Tamanho:
+                  </Typography>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    className="text-justify"
+                    color="text.secondary"
+                    sx={{ marginLeft: "10px" }}
+                  >
+                    {props.dados.tamanho}
+                  </Typography>
+                </Box>
+                <Box className="flex items-center">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                  >
+                    Seção de TI:
+                  </Typography>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    className="text-justify"
+                    color="text.secondary"
+                    sx={{ marginLeft: "10px", marginRight: "15px" }}
+                  >
+                    {props.dados.secaoTI}
+                  </Typography>
+                </Box>
+              </Box>
+            }
+            {props.dados.buSolicitante &&
+              <Box className="flex justify-between items-center">
+                <Box className="flex items-center">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                  >
+                    BU Solicitante:
+                  </Typography>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    className="text-justify"
+                    color="text.secondary"
+                    sx={{ marginLeft: "10px" }}
+                  >
+                    {props.dados.buSolicitante.nome}
+                  </Typography>
+                </Box>
+                <Box className="flex items-center">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                  >
+                    BUs Beneficiadas:
+                  </Typography>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    className="text-justify"
+                    color="text.secondary"
+                    sx={{ marginLeft: "10px", marginRight: "15px" }}
+                  >
+                    {retornarBUsBeneficiadas()}
+                  </Typography>
+                </Box>
+              </Box>
+            }
+            {props.dados.forum &&
+              <Box className="flex items-center">
+                <Typography
+                  fontSize={FontConfig.veryBig}
+                  fontWeight="600"
+                  color="text.primary"
+                >
+                  Fórum:
+                </Typography>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  className="text-justify"
+                  color="text.secondary"
+                  sx={{ marginLeft: "10px" }}
+                >
+                  {props.dados.forum.nome}
+                </Typography>
+              </Box>
+            }
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}

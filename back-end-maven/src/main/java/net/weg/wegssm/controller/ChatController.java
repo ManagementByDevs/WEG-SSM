@@ -46,16 +46,6 @@ public class ChatController {
         return mensagem;
     }
 
-
-    // Possivelmente não iremos usar
-
-    @MessageMapping("/private-message")
-    public Mensagem receivePrivateMessage(@Payload Mensagem mensagem) {
-
-        simpMessagingTemplate.convertAndSendToUser(mensagem.getUsuario().getNome(), "/private", mensagem);
-        return mensagem;
-    }
-
     /**
      * Método GET para listar todos os chats
      *

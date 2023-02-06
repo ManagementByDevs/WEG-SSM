@@ -10,7 +10,8 @@ import {
   Tooltip,
   MenuItem,
   TextField,
-  Autocomplete
+  Autocomplete,
+  Checkbox
 } from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -18,9 +19,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import DownloadIcon from "@mui/icons-material/Download";
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from "../../service/beneficioService";
 import FontContext from "../../service/FontContext";
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const FormularioPropostaProposta = (props) => {
   // Context para alterar o tamanho da fonte
@@ -44,6 +51,7 @@ const FormularioPropostaProposta = (props) => {
   // Funções de edição da demanda
 
   const alterarTexto = (e, input) => {
+
     if (input === "titulo") {
       props.setDadosDemanda({ titulo: e.target.value, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
     } else if (input === "problema") {
@@ -56,6 +64,12 @@ const FormularioPropostaProposta = (props) => {
       props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: e.target?.value });
     } else if (input == "secao") {
       props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: e, tamanho: props.dados.tamanho });
+    } else if (input == "buSolicitante") {
+      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: e, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+    } else if (input == "busBeneficiadas") {
+      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: e, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+    } else if (input == "forum") {
+      props.setDadosDemanda({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: e, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
     }
   };
 
@@ -397,6 +411,85 @@ const FormularioPropostaProposta = (props) => {
               noOptionsText="Nenhuma seção encontrada"
               renderInput={(params) => (
                 <TextField variant="standard" {...params} label="Seção TI" />
+              )}
+            />
+          </Box>
+          <Box className="flex justify-evenly" sx={{ marginTop: '15px', marginBottom: '10px' }}>
+            <Autocomplete
+              sx={{ width: "45%" }}
+              disablePortal
+              options={props.listaBU}
+              value={props.dados.buSolicitante}
+              onChange={(event, value) => {
+                alterarTexto(value, "buSolicitante")
+              }}
+              getOptionLabel={(option) => {
+                return option?.nome || "";
+              }}
+              isOptionEqualToValue={(option, value) => {
+                return option?.id == value?.id;
+              }}
+              fullWidth
+              noOptionsText="Nenhuma BU encontrada"
+              renderInput={(params) => (
+                <TextField variant="standard" {...params} label="BU Solicitante" />
+              )}
+            />
+
+            <Autocomplete
+              sx={{ width: "45%" }}
+              multiple
+              value={props.dados.busBeneficiadas}
+              options={props.listaBU}
+              disableCloseOnSelect
+              onChange={(event, newValue) => {
+                alterarTexto(newValue, "busBeneficiadas");
+              }}
+              getOptionLabel={(option) => option.nome}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.nome}
+                </li>
+              )}
+              isOptionEqualToValue={(option, value) => {
+                return option?.id == value?.id;
+              }}
+              noOptionsText="Nenhuma BU encontrada"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="BUs Beneficiadas"
+                  variant="standard"
+                  placeholder="Selecione uma ou mais BUs"
+                />
+              )}
+            />
+          </Box>
+          <Box className="flex" sx={{ marginTop: '15px', marginBottom: '10px' }}>
+            <Autocomplete
+              sx={{ width: "45%", marginLeft: "3%" }}
+              disablePortal
+              options={props.listaForuns}
+              value={props.dados.forum}
+              onChange={(event, value) => {
+                alterarTexto(value, "forum")
+              }}
+              getOptionLabel={(option) => {
+                return option?.nome || "";
+              }}
+              isOptionEqualToValue={(option, value) => {
+                return option?.id == value?.id;
+              }}
+              fullWidth
+              noOptionsText="Nenhum Fórum encontrado"
+              renderInput={(params) => (
+                <TextField variant="standard" {...params} label="Fórum" />
               )}
             />
           </Box>
