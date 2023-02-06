@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import {
   Box,
@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Button,
 } from "@mui/material";
 
 import Demanda from "../Demanda/Demanda";
@@ -15,23 +16,27 @@ import Demanda from "../Demanda/Demanda";
 import DateService from "../../service/dateService";
 
 import FontContext from "../../service/FontContext";
+import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 
 const DemandaModoVisualizacao = ({
   listaDemandas,
   onDemandaClick,
   nextModoVisualizacao,
+  myDemandas,
 }) => {
   if (nextModoVisualizacao == "TABLE")
     return (
       <DemandaGrid
         listaDemandas={listaDemandas}
         onDemandaClick={onDemandaClick}
+        myDemandas={myDemandas}
       />
     );
   return (
     <DemandaTable
       listaDemandas={listaDemandas}
       onDemandaClick={onDemandaClick}
+      myDemandas={myDemandas}
     />
   );
 };
@@ -50,9 +55,14 @@ const DemandaTable = ({
     },
   ],
   onDemandaClick,
+  myDemandas,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+  // useState para abrir o modal de motivo recusa
+  const [abrirModal, setOpenModal] = useState(false);
+  // Guarda a demanda selecionada para abrir o modal de motivo recusa
+  const [demandaSelecionada, setDemandaSelecionada] = useState();
 
   // Função para receber a cor do status da demanda
   function getStatusColor(status) {
@@ -84,21 +94,37 @@ const DemandaTable = ({
     }
   };
 
+  //Abre o modal de motivo recusa
+  const abrirModalMotivoRecusa = (demanda) => {
+    setDemandaSelecionada(demanda);
+    setOpenModal(true);
+  };
+
   return (
     <Paper sx={{ width: "100%" }} square>
+      {/* Abrindo o modal de motivo recusa */}
+      {abrirModal && (
+        <ModalMotivoRecusa
+          open={abrirModal}
+          setOpen={setOpenModal}
+          motivoRecusa={demandaSelecionada?.motivoRecusa}
+        />
+      )}
       <Table className="mb-8" sx={{ width: "100%" }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
-            <th className="text-white p-1 w-1/6">
-              <Typography fontSize={FontConfig.big}>Cód. Sequencial</Typography>
+            <th className="text-white p-2 w-1/10">
+              <Typography fontSize={FontConfig.big}>Código</Typography>
             </th>
-            <th className="text-white">
+            <th className="text-white p-2 w-3/6">
               <Typography fontSize={FontConfig.big}>Título</Typography>
             </th>
-            <th className=" text-white">
-              <Typography fontSize={FontConfig.big}>Status</Typography>
-            </th>
-            <th className=" text-white">
+            {myDemandas && (
+              <th className="text-white p-2 w-1/6">
+                <Typography fontSize={FontConfig.big}>Status</Typography>
+              </th>
+            )}
+            <th className="text-white p-2 w-1/12">
               <Typography fontSize={FontConfig.big}>Data</Typography>
             </th>
           </TableRow>
@@ -106,6 +132,7 @@ const DemandaTable = ({
         <TableBody>
           {listaDemandas.map((row, index) => (
             <TableRow
+              className="cursor-pointer"
               hover
               key={index}
               sx={{
@@ -115,32 +142,50 @@ const DemandaTable = ({
                 onDemandaClick(row);
               }}
             >
-              <td className="text-center p-2">
+              <td className="text-center p-3 w-fit">
                 <Typography fontSize={FontConfig.medium}>{row.id}</Typography>
               </td>
-              <td className="text-center">
+              <td className="text-left p-3">
                 <Typography fontSize={FontConfig.medium}>
                   {row.titulo}
                 </Typography>
               </td>
-              <td className="text-left">
-                <Box className="flex items-center gap-2 text-center">
-                  <Box
-                    sx={{
-                      backgroundColor: getStatusColor(row.status),
-                      width: "12px",
-                      height: "1rem",
-                      borderRadius: "3px",
-                    }}
-                  />
-                  <Typography fontSize={FontConfig.medium}>
-                    {formatarNomeStatus(row.status)}
-                  </Typography>
-                </Box>
-              </td>
-              <td className="text-center">
+              {myDemandas && (
+                <td className="text-left p-3">
+                  <Box className="flex items-center gap-2 text-center">
+                    <Box
+                      sx={{
+                        backgroundColor: getStatusColor(row.status),
+                        width: "12px",
+                        height: "1rem",
+                        borderRadius: "3px",
+                      }}
+                    />
+                    <Box className="w-full flex justify-between items-center">
+                      <Typography fontSize={FontConfig.medium}>
+                        {formatarNomeStatus(row.status)}
+                      </Typography>
+                      {row.status == "CANCELLED" ||
+                      row.status == "BACKLOG_EDICAO" ? (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            abrirModalMotivoRecusa(row);
+                          }}
+                          variant="contained"
+                          disableElevation
+                          size="small"
+                        >
+                          Motivo
+                        </Button>
+                      ) : null}
+                    </Box>
+                  </Box>
+                </td>
+              )}
+              <td className="text-center p-3">
                 <Typography fontSize={FontConfig.default}>
-                  {/* {DateService.getTodaysDateUSFormat(row.data)} */}
+                  {DateService.getTodaysDateUSFormat(row.data)}
                 </Typography>
               </td>
             </TableRow>

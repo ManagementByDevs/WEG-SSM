@@ -38,9 +38,10 @@ class DateService {
     }
 
     getTodaysDateUSFormat(date) {
-        const dd = String(date.getDate()).padStart(2, '0');
-        const mm = String(date.getMonth() + 1).padStart(2, '0');
-        const yyyy = date.getFullYear();
+        const newDate = new Date(date);
+        const dd = String(newDate.getDate()).padStart(2, '0');
+        const mm = String(newDate.getMonth() + 1).padStart(2, '0');
+        const yyyy = newDate.getFullYear();
         return yyyy + '-' + mm + '-' + dd;
     }
 }
