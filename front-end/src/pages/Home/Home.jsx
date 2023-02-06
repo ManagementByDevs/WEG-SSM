@@ -36,6 +36,7 @@ const Home = () => {
   const [paginaAtual, setPaginaAtual] = useState(0);
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
 
+  // Mostra o próximo modo de visualização
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
   // Abrir modal feedback de demanda criada

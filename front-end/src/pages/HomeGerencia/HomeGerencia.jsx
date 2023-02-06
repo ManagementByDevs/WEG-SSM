@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Box, Button, Tab, Tooltip } from "@mui/material";
+import { Box, Button, IconButton, Tab, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -9,12 +9,12 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 
 import FontContext from "../../service/FontContext";
-
-import FontConfig from "../../service/FontConfig";
 
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
@@ -30,6 +30,7 @@ import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
 
 import Tour from "reactour";
+import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaModoVisualizacao/DemandaGerenciaModoVisualizacao";
 
 const HomeGerencia = () => {
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
@@ -266,6 +267,9 @@ const HomeGerencia = () => {
     codigoPPM: null,
     id: null,
   });
+
+  // Mostra o próximo modo de visualização
+  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
   // UseEffect para buscar o usuário assim que entrar na página
   useEffect(() => {
@@ -756,7 +760,7 @@ const HomeGerencia = () => {
           {/* Sistema de abas */}
           <TabContext value={value}>
             <Box
-              className="mb-4"
+              className="relative mb-4"
               sx={{ borderBottom: 1, borderColor: "divider.main" }}
             >
               <TabList
@@ -813,6 +817,29 @@ const HomeGerencia = () => {
                   />
                 )}
               </TabList>
+              <Box className="absolute right-0 top-2">
+                {nextModoVisualizacao == "TABLE" ? (
+                  <Tooltip title="Visualização em tabela">
+                    <IconButton
+                      onClick={() => {
+                        setNextModoVisualizacao("GRID");
+                      }}
+                    >
+                      <ViewListIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Visualização em bloco">
+                    <IconButton
+                      onClick={() => {
+                        setNextModoVisualizacao("TABLE");
+                      }}
+                    >
+                      <ViewModuleIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
             </Box>
 
             {/* Container das ações abaixo das abas (input de pesquisa, filtrar e criar demanda) */}
@@ -964,6 +991,7 @@ const HomeGerencia = () => {
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
                 <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
+                {/* <DemandaGerenciaModoVisualizacao></DemandaGerenciaModoVisualizacao> */}
                 <Box
                   id="sextaDemandas"
                   sx={{

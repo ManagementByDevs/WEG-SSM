@@ -11,6 +11,8 @@ import {
   Button,
 } from "@mui/material";
 
+import "./DemandaModoVisualizacao.css"
+
 import Demanda from "../Demanda/Demanda";
 
 import DateService from "../../service/dateService";
@@ -120,7 +122,7 @@ const DemandaTable = ({
               <Typography fontSize={FontConfig.big}>Título</Typography>
             </th>
             {myDemandas && (
-              <th className="text-white p-2 w-1/6">
+              <th className="text-left text-white p-2 w-1/6">
                 <Typography fontSize={FontConfig.big}>Status</Typography>
               </th>
             )}
@@ -132,7 +134,7 @@ const DemandaTable = ({
         <TableBody>
           {listaDemandas.map((row, index) => (
             <TableRow
-              className="cursor-pointer"
+              className="cursor-pointer tabela-linha-demanda"
               hover
               key={index}
               sx={{
@@ -157,7 +159,7 @@ const DemandaTable = ({
                       sx={{
                         backgroundColor: getStatusColor(row.status),
                         width: "12px",
-                        height: "1rem",
+                        height: "2rem",
                         borderRadius: "3px",
                       }}
                     />
@@ -168,6 +170,7 @@ const DemandaTable = ({
                       {row.status == "CANCELLED" ||
                       row.status == "BACKLOG_EDICAO" ? (
                         <Button
+                          className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
                             e.stopPropagation();
                             abrirModalMotivoRecusa(row);
