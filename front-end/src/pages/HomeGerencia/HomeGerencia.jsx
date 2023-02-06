@@ -991,28 +991,11 @@ const HomeGerencia = () => {
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
                 <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
-                {/* <DemandaGerenciaModoVisualizacao></DemandaGerenciaModoVisualizacao> */}
-                <Box
-                  id="sextaDemandas"
-                  sx={{
-                    display: "grid",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(720px, 1fr))",
-                  }}
-                >
-                  {listaItens?.map((demanda, index) => {
-                    return (
-                      <DemandaGerencia
-                        key={index}
-                        dados={demanda}
-                        tipo="demanda"
-                        onClick={() => {
-                          verDemanda(demanda);
-                        }}
-                      />
-                    );
-                  })}
-                </Box>
+                <DemandaGerenciaModoVisualizacao
+                  listaDemandas={listaItens}
+                  onDemandaClick={verDemanda}
+                  nextModoVisualizacao={nextModoVisualizacao}
+                />
               </TabPanel>
               {isGerente && (
                 <>

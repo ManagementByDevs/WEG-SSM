@@ -12,7 +12,7 @@ import FontContext from "../../service/FontContext";
 const DemandaGerencia = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   // Como usar:
   // Ao chamar o componente, passar duas props:
   // - dados: um objeto com os dados da demanda ou proposta
@@ -42,7 +42,7 @@ const DemandaGerencia = (props) => {
     } else if (props.dados.status == "ASSESSMENT") {
       return "Assessment";
     }
-  }
+  };
 
   return (
     <>
@@ -184,7 +184,8 @@ const DemandaGerencia = (props) => {
                       onClick={(e) => {
                         e.stopPropagation();
                         abrirModalHistorico();
-                      }}>
+                      }}
+                    >
                       <HistoryOutlinedIcon
                         className="delay-120 hover:scale-110 duration-300"
                         sx={{

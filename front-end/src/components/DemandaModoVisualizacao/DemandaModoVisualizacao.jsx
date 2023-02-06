@@ -115,18 +115,18 @@ const DemandaTable = ({
       <Table className="mb-8" sx={{ width: "100%" }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
-            <th className="text-white p-2 w-1/10">
+            <th className="text-white p-3 w-1/10">
               <Typography fontSize={FontConfig.big}>Código</Typography>
             </th>
-            <th className="text-white p-2 w-3/6">
+            <th className="text-left text-white p-3 w-3/6">
               <Typography fontSize={FontConfig.big}>Título</Typography>
             </th>
             {myDemandas && (
-              <th className="text-left text-white p-2 w-1/6">
+              <th className="text-left text-white p-3 w-1/6">
                 <Typography fontSize={FontConfig.big}>Status</Typography>
               </th>
             )}
-            <th className="text-white p-2 w-1/12">
+            <th className="text-white p-3 w-1/12">
               <Typography fontSize={FontConfig.big}>Data</Typography>
             </th>
           </TableRow>
@@ -144,7 +144,7 @@ const DemandaTable = ({
                 onDemandaClick(row);
               }}
             >
-              <td className="text-center p-3 w-fit">
+              <td className="text-center p-3">
                 <Typography fontSize={FontConfig.medium}>{row.id}</Typography>
               </td>
               <td className="text-left p-3">
