@@ -123,9 +123,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || "Real",
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -259,7 +259,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => { });
+      BeneficioService.delete(beneficio.id).then((response) => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -267,20 +267,20 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => { });
+      BeneficioService.delete(beneficio.id).then((response) => {});
     }
     setBeneficiosNovos([]);
   };
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
-    console.log("Aaaaaaaaaaa")
+    console.log("Aaaaaaaaaaa");
     let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
     let contagem = 0;
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => { });
+        BeneficioService.put(beneficio).then((response) => {});
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -295,7 +295,7 @@ const DetalhesDemanda = (props) => {
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
     if (demandaEmEdicao) {
-      console.log('aaaaaaa')
+      console.log("aaaaaaa");
       const demandaAtualizada = {
         id: props.dados.id,
         titulo: tituloDemanda,
@@ -309,7 +309,7 @@ const DetalhesDemanda = (props) => {
         gerente: props.dados.gerente,
         anexo: props.dados.anexo,
         departamento: props.dados?.departamento,
-        analista: props.dados?.analista
+        analista: props.dados?.analista,
       };
 
       const anexosVelhos = [];
@@ -429,7 +429,7 @@ const DetalhesDemanda = (props) => {
       forum: dados.forum,
       analista: props.usuario,
       gerente: props.dados.gerente,
-      departamento: props.dados.departamento
+      departamento: props.dados.departamento,
     };
 
     DemandaService.put(demandaAtualizada, []).then((response) => {
@@ -626,6 +626,7 @@ const DetalhesDemanda = (props) => {
         textoBotao="aceitar"
       />
       <Box
+        id="primeiro"
         className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
         sx={{ width: "55rem" }}
       >
@@ -634,18 +635,26 @@ const DetalhesDemanda = (props) => {
           sx={{ top: "10px", right: "10px" }}
           onClick={editarDemanda}
         >
+<<<<<<< Updated upstream
           {props.usuario?.id == props.dados.solicitante?.id &&
             props.dados.status == "BACKLOG_EDICAO" &&
             !editar ? (
+=======
+          {((props.usuario?.id == props.dados.solicitante?.id &&
+            props.dados.status == "BACKLOG_EDICAO") ||
+            (props.dados?.analista && props.dados.status == "ASSESSMENT")) &&
+          !editar ? (
+>>>>>>> Stashed changes
             <ModeEditOutlineOutlinedIcon
+              id="terceiro"
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"

@@ -25,6 +25,10 @@ import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
 
+import Ajuda from "../../components/Ajuda/Ajuda";
+
+import Tour from "reactour";
+
 const Home = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -262,10 +266,88 @@ const Home = () => {
     }
   };
 
+  // useState para abrir e fechar o tour
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  // Passos do tour
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content:
+        "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content:
+        "Neste ícone você pode ordenar as suas demandas por título (A-Z ou Z-A), Score (Maior ao menor ou Menor ao maior) e pela data (Mais nova à mais velha ou Mais velha à Mais nova).",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: "Neste botão você pode filtrar suas demandas por seus status.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: "Aqui você consegue iniciar a criação de uma nova demanda.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quinto",
+      content:
+        "Nesta área você consegue observar suas demandas e seus status. Você pode clicar em uma demanda para ver mais detalhes.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#sexto",
+      content:
+        "Nesta parte você pode trocar o modo de visualização das suas demandas. Você pode escolher entre visualizar as demandas em forma de lista ou em forma de cards.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#setimo",
+      content:
+        "Aqui consegue observar o motivo pelo qual foi recusado ou o motivo da edição.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+
+  ];
+
   return (
     // Container pai
     <FundoComHeader>
       {/* Div container */}
+      <Tour
+        steps={stepsTour}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+
       <Box
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
@@ -303,7 +385,7 @@ const Home = () => {
                 />
               </TabList>
 
-              <Box className="absolute right-0 top-2">
+              <Box className="absolute right-0 top-2" id="sexto">
                 {nextModoVisualizacao == "TABLE" ? (
                   <Tooltip title="Visualização em tabela">
                     <IconButton
@@ -334,6 +416,7 @@ const Home = () => {
               <Box className="flex gap-4 w-2/4">
                 {/* Input de pesquisa */}
                 <Box
+                  id="primeiro"
                   className="flex justify-between items-center border px-3 py-1"
                   sx={{ backgroundColor: "input.main", width: "50%" }}
                 >
@@ -373,6 +456,7 @@ const Home = () => {
                     {/* Ícone de ordenação */}
                     <Tooltip title="Ordenação">
                       <SwapVertIcon
+                        id="segundo"
                         onClick={abrirModalOrdenacao}
                         className="cursor-pointer"
                         sx={{ color: "text.secondary" }}
@@ -395,7 +479,7 @@ const Home = () => {
                     )}
                   </Box>
                 </Box>
-                <Box className="flex gap-2">
+                <Box id="terceiro" className="flex gap-2">
                   {/* Botão de filtrar */}
                   {value == 1 && (
                     <Button
@@ -427,6 +511,7 @@ const Home = () => {
 
               {/* Botão de criar demanda */}
               <Button
+              id="quarto"
                 className="gap-2"
                 sx={{
                   backgroundColor: "primary.main",
@@ -445,9 +530,10 @@ const Home = () => {
             </Box>
 
             {/* Container para o conteúdo das abas */}
-            <Box className="mt-6">
+            <Box className="mt-6" id="quinto">
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
+              <Ajuda onClick={() => setIsTourOpen(true)} />
                 <DemandaModoVisualizacao
                   listaDemandas={listaDemandas}
                   onDemandaClick={verDemanda}

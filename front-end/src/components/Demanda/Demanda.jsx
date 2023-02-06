@@ -145,6 +145,7 @@ const Demanda = (props) => {
             props.demanda?.solicitante?.id ===
             parseInt(localStorage.getItem("usuarioId")) ? (
             <Button
+            id="setimo"
               onClick={(e) => {
                 e.stopPropagation();
                 abrirModalMotivoRecusa();

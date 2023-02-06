@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 
 import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 
@@ -11,9 +11,10 @@ import FontContext from "../../service/FontContext";
 const Pautas = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   return (
     <Paper
+      onClick={props.onClick}
       className="flex flex-col border-t-4 pt-2 pb-3 px-6"
       sx={{
         "&:hover": {
@@ -50,11 +51,13 @@ const Pautas = (props) => {
             </Typography>
           )}
           {props.tipo === "pauta" && (
-            <Box sx={{marginRight: "-16px"}} className="ml-2">
+            <Box sx={{ marginRight: "-16px" }} className="ml-2">
               <Tooltip title="Deletar">
-                <IconButton onClick={(e) => {
-                  e.stopPropagation();
-                }}>
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
                   <DeleteOutlineOutlinedIcon
                     className="delay-120 hover:scale-110 duration-300 "
                     sx={{

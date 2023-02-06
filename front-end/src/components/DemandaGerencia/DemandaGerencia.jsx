@@ -168,6 +168,7 @@ const DemandaGerencia = (props) => {
                       <Tooltip title="Chat">
                         <IconButton>
                           <ChatOutlinedIcon
+                          id="segundoPropostas"
                             className="delay-120 hover:scale-110 duration-300"
                             sx={{
                               color: "icon.main",
@@ -187,6 +188,7 @@ const DemandaGerencia = (props) => {
                       }}
                     >
                       <HistoryOutlinedIcon
+                        id="setimoDemandas"
                         className="delay-120 hover:scale-110 duration-300"
                         sx={{
                           color: "icon.main",
