@@ -8,6 +8,8 @@ import {
   IconButton,
 } from "@mui/material";
 
+import { useNavigate, useLocation } from "react-router-dom";
+
 import logoWeg from "../../assets/logo-weg.png";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -32,6 +34,10 @@ import SockJS from "sockjs-client";
 var stompClient = null;
 
 const Chat = () => {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -167,7 +173,8 @@ const Chat = () => {
   const [indexUsuario, setIndexUsuario] = useState();
 
   function abrirChat(index) {
-    setIndexUsuario(index);
+    setIndexUsuario(index); 
+    setTab(usuarios[index].nome)
   }
 
   const [texto, setTexto] = useState();
@@ -196,14 +203,23 @@ const Chat = () => {
   };
 
   // Começo da integração do chat
+
   const [privateChats, setPrivateChats] = useState(new Map());
   const [publicChats, setPublicChats] = useState([]);
   const [tab, setTab] = useState("CHATROOM");
 
-  const nomeUsuario = localStorage.getItem("user");
+  let nomeUsuario;  
+
+  nomeUsuario = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    if (location.state?.userChat) {
+        connect();
+    }
+}, [location.state?.userChat]);
 
   const [userData, setUserData] = useState({
-    username: '',
+    username: nomeUsuario?.nome,
     receivername: '',
     connected: false,
     message: ''
