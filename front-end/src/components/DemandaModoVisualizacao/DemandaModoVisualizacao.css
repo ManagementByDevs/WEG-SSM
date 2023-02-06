@@ -1,0 +1,7 @@
+.tabela-linha-demanda-motivo-recusa {
+    display: none !important;
+}
+
+.tabela-linha-demanda:hover .tabela-linha-demanda-motivo-recusa {
+    display: block !important;
+}

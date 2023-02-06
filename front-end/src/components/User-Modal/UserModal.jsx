@@ -393,7 +393,7 @@ const UserModal = (props) => {
             className="gap-2"
             onClick={() => {
               handleClose();
-              navigate("/chat");
+              navigate("/chat", { state: { userChat: true }});
             }}
           >
             {chatIcon == ChatBubbleOutlineOutlinedIcon ? (

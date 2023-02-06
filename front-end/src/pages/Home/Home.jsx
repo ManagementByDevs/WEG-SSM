@@ -2,15 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-import {
-  Button,
-  Tab,
-  Box,
-  Snackbar,
-  Alert,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Button, Tab, Box, Tooltip, IconButton } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -44,6 +36,7 @@ const Home = () => {
   const [paginaAtual, setPaginaAtual] = useState(0);
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
 
+  // Mostra o próximo modo de visualização
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
   // Abrir modal feedback de demanda criada
@@ -291,7 +284,7 @@ const Home = () => {
           {/* Sistema de abas */}
           <TabContext value={value}>
             <Box
-              className="mb-4"
+              className="mb-4 relative"
               sx={{ borderBottom: 1, borderColor: "divider.main" }}
             >
               <TabList
@@ -309,6 +302,30 @@ const Home = () => {
                   value="2"
                 />
               </TabList>
+
+              <Box className="absolute right-0 top-2">
+                {nextModoVisualizacao == "TABLE" ? (
+                  <Tooltip title="Visualização em tabela">
+                    <IconButton
+                      onClick={() => {
+                        setNextModoVisualizacao("GRID");
+                      }}
+                    >
+                      <ViewListIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Visualização em bloco">
+                    <IconButton
+                      onClick={() => {
+                        setNextModoVisualizacao("TABLE");
+                      }}
+                    >
+                      <ViewModuleIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
             </Box>
 
             {/* Container das ações abaixo das abas (input de pesquisa, filtrar e criar demanda) */}
@@ -394,28 +411,6 @@ const Home = () => {
                       Filtrar <FilterAltOutlinedIcon />
                     </Button>
                   )}
-
-                  {nextModoVisualizacao == "TABLE" ? (
-                    <Tooltip title="Visualização em tabela">
-                      <IconButton
-                        onClick={() => {
-                          setNextModoVisualizacao("GRID");
-                        }}
-                      >
-                        <ViewListIcon color="primary" />
-                      </IconButton>
-                    </Tooltip>
-                  ) : (
-                    <Tooltip title="Visualização em bloco">
-                      <IconButton
-                        onClick={() => {
-                          setNextModoVisualizacao("TABLE");
-                        }}
-                      >
-                        <ViewModuleIcon color="primary" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
                 </Box>
                 {/* Modal de filtro */}
                 {abrirFiltro && (
@@ -456,44 +451,17 @@ const Home = () => {
                 <DemandaModoVisualizacao
                   listaDemandas={listaDemandas}
                   onDemandaClick={verDemanda}
+                  myDemandas={true}
                   nextModoVisualizacao={nextModoVisualizacao}
                 />
-                {/* <Box
-                  sx={{
-                    display: "grid",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
-                  }}
-                >
-                  {listaDemandas?.map((e, index) => (
-                    <Demanda
-                      key={index}
-                      demanda={e}
-                      onClick={() => {
-                        verDemanda(e);
-                      }}
-                    />
-                  ))}
-                </Box>
               </TabPanel>
               <TabPanel sx={{ padding: 0 }} value="2">
-                <Box
-                  sx={{
-                    display: "grid",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
-                  }}
-                >
-                  {listaDemandas?.map((e, index) => (
-                    <Demanda
-                      key={index}
-                      demanda={e}
-                      onClick={() => {
-                        verDemanda(e);
-                      }}
-                    />
-                  ))}
-                </Box> */}
+                <DemandaModoVisualizacao
+                  listaDemandas={listaDemandas}
+                  onDemandaClick={verDemanda}
+                  myDemandas={false}
+                  nextModoVisualizacao={nextModoVisualizacao}
+                />
               </TabPanel>
             </Box>
           </TabContext>
