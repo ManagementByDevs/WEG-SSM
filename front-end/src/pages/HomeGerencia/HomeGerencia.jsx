@@ -326,7 +326,7 @@ const HomeGerencia = () => {
       titulo: valorPesquisa,
       solicitante: paramsTemp.solicitante,
       gerente: paramsTemp.gerente,
-      analista: params.analista,
+      analista: JSON.parse(params.analista),
       forum: paramsTemp.forum,
       tamanho: paramsTemp.tamanho,
       status: params.status,

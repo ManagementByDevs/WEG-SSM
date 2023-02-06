@@ -25,10 +25,6 @@ public class CustoService {
         return custoRepository.findById(id);
     }
 
-//    public List<Custo> findByProposta(Proposta proposta){
-//        return custoRepository.findByProposta(proposta);
-//    }
-
     public <S extends Custo> S save(S entity) {
         return custoRepository.save(entity);
     }
@@ -40,5 +36,4 @@ public class CustoService {
     public void deleteById(Long id) {
         custoRepository.deleteById(id);
     }
-
 }

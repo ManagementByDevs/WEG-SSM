@@ -3,6 +3,7 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.CustoDTO;
 import net.weg.wegssm.dto.DemandaDTO;
+import net.weg.wegssm.dto.TabelaCustoDTO;
 import net.weg.wegssm.model.entities.Custo;
 import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Proposta;
@@ -48,20 +49,6 @@ public class CustoController {
         }
 
         return ResponseEntity.status(HttpStatus.FOUND).body(custoService.findById(id).get());
-    }
-
-    /**
-     * Método POST para criar um novo custo
-     *
-     * @param custoDTO
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid CustoDTO custoDTO) {
-        Custo custo = new Custo();
-        BeanUtils.copyProperties(custoDTO, custo);
-
-        return ResponseEntity.status(HttpStatus.OK).body(custoService.save(custo));
     }
 
     /**
