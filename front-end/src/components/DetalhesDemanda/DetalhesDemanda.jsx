@@ -635,16 +635,9 @@ const DetalhesDemanda = (props) => {
           sx={{ top: "10px", right: "10px" }}
           onClick={editarDemanda}
         >
-<<<<<<< Updated upstream
           {props.usuario?.id == props.dados.solicitante?.id &&
             props.dados.status == "BACKLOG_EDICAO" &&
             !editar ? (
-=======
-          {((props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO") ||
-            (props.dados?.analista && props.dados.status == "ASSESSMENT")) &&
-          !editar ? (
->>>>>>> Stashed changes
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"

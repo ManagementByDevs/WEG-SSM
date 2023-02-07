@@ -264,6 +264,7 @@ const Chat = () => {
       case "MESSAGE":
         publicChats.push(payloadData);
         setPublicChats([...publicChats]);
+        console.log("Public chats: ", publicChats);
         break;
     }
   };
