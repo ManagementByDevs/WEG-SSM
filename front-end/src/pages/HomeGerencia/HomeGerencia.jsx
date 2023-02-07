@@ -95,6 +95,14 @@ const HomeGerencia = () => {
       },
     },
     {
+      selector: "#oitavoDemandas",
+      content: "Nesta área você pode visualizar o status da demanda",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
       selector: "#setimoDemandas",
       content:
         "Clicando aqui você pode ver o histórico de alterações da demanda",
@@ -109,6 +117,22 @@ const HomeGerencia = () => {
       selector: "#primeiroCriarPropostas",
       content:
         "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes e/ou criar uma proposta",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoCriarPropostas",
+      content: "Nesta área você pode visualizar o status da demanda",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiroCriarPropostas",
+      content: "Clique aqui para ver o histórico de alterações da demanda",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -148,7 +172,15 @@ const HomeGerencia = () => {
     {
       selector: "#primeiroPautas",
       content:
-        "Nesta parte fica as pautas, podendo clicar em uma pauta para ver mais detalhes. Aqui pode também excluir uma pauta",
+        "Nesta parte fica as pautas, podendo clicar em uma pauta para ver mais detalhes.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPautas",
+      content: "Clicando aqui você pode excluir a pauta",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -954,113 +986,213 @@ const HomeGerencia = () => {
             </Box>
 
             {/* Container para o conteúdo das abas */}
-            <Box className="mt-6">
+            <Box className="mt-6" id="sextoDemandas">
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
                 <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
-                <DemandaGerenciaModoVisualizacao
-                  listaDemandas={listaItens}
-                  onDemandaClick={verDemanda}
-                  nextModoVisualizacao={nextModoVisualizacao}
-                />
+                {isTourDemandasOpen ? (
+                  <DemandaGerencia
+                    key={1}
+                    dados={{
+                      analista: {},
+                      beneficios: [{}],
+                      buSolicitante: {},
+                      busBeneficiados: [{}],
+                      departamento: {},
+                      frequencia: "",
+                      gerente: {},
+                      tamanho: "",
+                      id: 0,
+                      titulo: "Demanda para Tour",
+                      problema: "",
+                      proposta: "",
+                      motivoRecusa: "",
+                      status: "BACKLOG_REVISAO",
+                      data: "",
+                      solicitante: { nome: "Solicitante Tour" },
+                    }}
+                    tipo="demanda"
+                  />
+                ) : (
+                  <DemandaGerenciaModoVisualizacao
+                    listaDemandas={listaItens}
+                    onDemandaClick={verDemanda}
+                    nextModoVisualizacao={nextModoVisualizacao}
+                  />
+                )}
               </TabPanel>
               {isGerente && (
                 <>
                   <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
-                    <Box
-                      id="primeiroCriarPropostas"
-                      sx={{
-                        display: "grid",
-                        gap: "1rem",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(720px, 1fr))",
-                      }}
-                    >
-                      {listaItens?.map((demanda, index) => {
-                        return (
-                          <DemandaGerencia
-                            key={index}
-                            dados={demanda}
-                            tipo="demanda"
-                            onClick={() => {
-                              verDemanda(demanda);
-                            }}
-                          />
-                        );
-                      })}
+                    <Box id="primeiroCriarPropostas">
+                      {isTourCriarPropostasOpen ? (
+                        <DemandaGerencia
+                          key={1}
+                          dados={{
+                            analista: {},
+                            beneficios: [{}],
+                            buSolicitante: {},
+                            busBeneficiados: [{}],
+                            departamento: {},
+                            frequencia: "",
+                            gerente: {},
+                            tamanho: "",
+                            id: 0,
+                            titulo: "Demanda para Tour",
+                            problema: "",
+                            proposta: "",
+                            motivoRecusa: "",
+                            status: "ASSESSMENT",
+                            data: "",
+                            solicitante: { nome: "Solicitante Tour" },
+                          }}
+                          tipo="demanda"
+                        />
+                      ) : (
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gap: "1rem",
+                            gridTemplateColumns:
+                              "repeat(auto-fit, minmax(720px, 1fr))",
+                          }}
+                        >
+                          {listaItens?.map((demanda, index) => {
+                            return (
+                              <DemandaGerencia
+                                key={index}
+                                dados={demanda}
+                                tipo="demanda"
+                                onClick={() => {
+                                  verDemanda(demanda);
+                                }}
+                              />
+                            );
+                          })}
+                        </Box>
+                      )}
                     </Box>
                   </TabPanel>
                   <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
-                    <Box
-                      id="primeiroPropostas"
-                      sx={{
-                        display: "grid",
-                        gap: "1rem",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(720px, 1fr))",
-                      }}
-                    >
-                      {propostas?.map((proposta, index) => {
-                        return (
-                          <DemandaGerencia
-                            key={index}
-                            dados={proposta}
-                            tipo="proposta"
-                          />
-                        );
-                      })}
+                    <Box id="primeiroPropostas">
+                      {isTourPropostasOpen ? (
+                        <DemandaGerencia
+                          key={1}
+                          dados={{
+                            titulo: "Proposta Tour",
+                            status: "ASSERSSMENT",
+                            solicitante: {},
+                            departamento: {},
+                            gerenteResponsavel: {},
+                            ppm: "12353",
+                          }}
+                          tipo="proposta"
+                        />
+                      ) : (
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gap: "1rem",
+                            gridTemplateColumns:
+                              "repeat(auto-fit, minmax(720px, 1fr))",
+                          }}
+                        >
+                          {propostas?.map((proposta, index) => {
+                            return (
+                              <DemandaGerencia
+                                key={index}
+                                dados={proposta}
+                                tipo="proposta"
+                              />
+                            );
+                          })}
+                        </Box>
+                      )}
                     </Box>
                   </TabPanel>
                   <TabPanel sx={{ padding: 0 }} value="4">
                     <Ajuda onClick={() => setIsTourPautasOpen(true)} />
-                    <Box
-                      id="primeiroPautas"
-                      sx={{
-                        display: "grid",
-                        gap: "1rem",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(700px, 1fr))",
-                      }}
-                    >
-                      {pautas?.map((pauta, index) => {
-                        return (
-                          <Pauta
-                            key={index}
-                            dados={pauta}
-                            tipo="pauta"
-                            onClick={() => {
-                              navigate("/detalhes-pauta");
-                            }}
-                          />
-                        );
-                      })}
+                    <Box id="primeiroPautas">
+                      {isTourPautasOpen ? (
+                        <Pauta
+                          key={1}
+                          dados={{
+                            numeroSequencial: "1/2022",
+                            comissao: "Comissão Tour",
+                            analistaResponsavel: "",
+                            data: "01/01/2022",
+                          }}
+                          tipo="pauta"
+                          onClick={() => {
+                            navigate("/detalhes-pauta");
+                          }}
+                        />
+                      ) : (
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gap: "1rem",
+                            gridTemplateColumns:
+                              "repeat(auto-fit, minmax(700px, 1fr))",
+                          }}
+                        >
+                          {pautas?.map((pauta, index) => {
+                            return (
+                              <Pauta
+                                key={index}
+                                dados={pauta}
+                                tipo="pauta"
+                                onClick={() => {
+                                  navigate("/detalhes-pauta");
+                                }}
+                              />
+                            );
+                          })}
+                        </Box>
+                      )}
                     </Box>
                   </TabPanel>
                   <TabPanel sx={{ padding: 0 }} value="5">
                     <Ajuda onClick={() => setIsTourAtasOpen(true)} />
-                    <Box
-                      id="primeiroAtas"
-                      sx={{
-                        display: "grid",
-                        gap: "1rem",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(700px, 1fr))",
-                      }}
-                    >
-                      {atas?.map((ata, index) => {
-                        return (
-                          <Pauta
-                            key={index}
-                            dados={ata}
-                            tipo="ata"
-                            onClick={() => {
-                              navigate("/detalhes-ata", {});
-                            }}
-                          />
-                        );
-                      })}
+                    <Box id="primeiroAtas">
+                      {isTourAtasOpen ? (
+                        <Pauta
+                          key={1}
+                          dados={{
+                            numeroSequencial: "1/2022",
+                            comissao: "Comissão Tour",
+                            analistaResponsavel: "Tour",
+                            data: "01/01/2022",
+                            horaInicio: "10:00",
+                            horaFim: "11:00",
+                          }}
+                          tipo="ata"
+                        />
+                      ) : (
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gap: "1rem",
+                            gridTemplateColumns:
+                              "repeat(auto-fit, minmax(700px, 1fr))",
+                          }}
+                        >
+                          {atas?.map((ata, index) => {
+                            return (
+                              <Pauta
+                                key={index}
+                                dados={ata}
+                                tipo="ata"
+                                onClick={() => {
+                                  navigate("/detalhes-ata", {});
+                                }}
+                              />
+                            );
+                          })}
+                        </Box>
+                      )}
                     </Box>
                   </TabPanel>
                 </>
