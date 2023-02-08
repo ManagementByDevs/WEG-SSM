@@ -1,18 +1,16 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 
 import { Box } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import BarraProgressaoDemanda from "../../components/BarraProgressaoDemanda/BarraProgressaoDemanda";
-import Ajuda from "../../components/Ajuda/Ajuda";
 
 import FontContext from "../../service/FontContext";
 
 import Tour from "reactour";
 
 const CriarDemanda = () => {
-  // const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);

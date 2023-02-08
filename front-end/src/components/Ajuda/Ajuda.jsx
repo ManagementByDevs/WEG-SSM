@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 
-import FontConfig from "../../service/FontConfig";
 import FontContext from "../../service/FontContext";
 
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";

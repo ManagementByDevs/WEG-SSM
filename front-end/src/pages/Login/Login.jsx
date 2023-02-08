@@ -7,14 +7,14 @@ import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
 import LogoWeg from "../../assets/logo-weg.png";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import FontConfig from '../../service/FontConfig';
 
 import UsuarioService from "../../service/usuarioService"
 import Feedback from '../../components/Feedback/Feedback';
 
 import FontContext from "../../service/FontContext";
 
-const Login = (props) => {
+const Login = () => {
+
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -26,18 +26,20 @@ const Login = (props) => {
 
     // Variável usada como valor para os inputs de email e senha, para posterior login
     const [dados, setDados] = useState({ email: "", senha: "" });
-    const [dadosInvalidos, setDadosInvalidos] = useState(false);
-    const [dadosFaltantes, setDadosFaltantes] = useState(false);
 
+    // Variáveis usadas para determinar se os feedback de dados inválidos ou faltantes estão visívies, respectivamente
+    const [dadosInvalidos, setDadosInvalidos] = useState(false);
     const [openFeedbackDadosInvalidos, setOpenFeedbackDadosInvalidos] = useState(true);
+    const [dadosFaltantes, setDadosFaltantes] = useState(false);
     const [openFeedbackDadosFaltantes, setOpenFeedbackDadosFaltantes] = useState(true);
 
-    // Função para mudar a visualização da senha (ver ou não)
+    /** Função para mudar a visualização da senha (visível ou em formato padrão) */
     const mudarVisualizacaoSenha = () => {
         setSenha(!senha);
     }
 
-    // Função usada par atualizar o valor da variável dos inputs após alguma mudança
+    /** Função usada para atualizar o valor da variável dos inputs após alguma mudança, recebendo um número referenciando a variável
+    (1 - Email | 2 - Senha) e o valor do input */
     const atualizarInput = (numero, e) => {
         if (numero == 1) {
             setDados({ ...dados, email: e.target.value })
@@ -46,8 +48,10 @@ const Login = (props) => {
         }
     }
 
-    // Função para fazer login através do botão "Entrar", procurando o usuário no back-end e indo para a página principal caso encontre
-    const login = () => {
+    /** Função para fazer login através do botão "Entrar", procurando o usuário no back-end e indo para a página principal caso encontre 
+     * Caso não encontre ou os inputs não estejam preenchidos, os feedbacks respectivos serão ativados
+    */
+    const fazerLogin = () => {
         if (dados.email && dados.senha) {
             UsuarioService.login(dados.email, dados.senha).then((e) => {
                 if (e != null && e != "") {
@@ -56,29 +60,27 @@ const Login = (props) => {
                     localStorage.setItem('user', JSON.stringify(e));
                     navigate('/');
                 } else {
+                    // Abrir modal de feedback de usuário ou senha inválidos
                     setOpenFeedbackDadosInvalidos(true);
                     setDadosInvalidos(true);
-                    // Abrir modal de feedback de usuário ou senha inválidos
                 }
             });
         } else {
+            // Abrir modal de feedback de dados não preenchidos
             setOpenFeedbackDadosFaltantes(true);
             setDadosFaltantes(true);
-            // Abrir modal de feedback de dados não preenchidos
         }
     }
 
-    // Função para "ouvir" um evento de teclado no input de pesquisa e fazer o login caso seja a tecla "Enter"
+    /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer o login caso seja a tecla "Enter" */
     const eventoTeclado = (e) => {
         if (e.key == "Enter") {
-            login();
+            fazerLogin();
         }
     };
 
     return (
-        // Div Principal com width preenchendo a tela
         <FundoComHeader>
-            {/* Div principal abaixo do Header */}
             <Paper sx={{ height: '100%' }} className='flex justify-center items-center'>
                 {/* Div Principal com as opções do login */}
                 <Paper sx={{ backgroundColor: 'background.default', width: "28%", height: "63%" }} className=' '>
@@ -134,17 +136,19 @@ const Login = (props) => {
                         <div className='w-8/12 flex justify-center'>
 
                             {/* Botão para entrar no sistema */}
-                            <Button onClick={login} variant="contained" size="large" color='primary' className='self-end w-2/6'>
+                            <Button onClick={fazerLogin} variant="contained" size="large" color='primary' className='self-end w-2/6'>
                                 Entrar
                             </Button>
                         </div>
 
+                        {/* Feedback de dados inválidos */}
                         {dadosInvalidos &&
                             <Feedback open={openFeedbackDadosInvalidos} handleClose={() => {
                                 setOpenFeedbackDadosInvalidos(false);
                             }} status={"erro"} mensagem={"Dados inválidos!"} />
                         }
 
+                        {/* Feedback de dados faltantes / não preenchidos */}
                         {dadosFaltantes &&
                             <Feedback open={openFeedbackDadosFaltantes} handleClose={() => {
                                 setOpenFeedbackDadosFaltantes(false);
@@ -157,4 +161,4 @@ const Login = (props) => {
     )
 }
 
-export default Login
+export default Login;

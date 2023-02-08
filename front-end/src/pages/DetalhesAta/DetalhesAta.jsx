@@ -1,12 +1,7 @@
 import { React, useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import {
-    Box,
-    Typography,
-    Button,
-    Divider,
-} from "@mui/material";
+import { Box, Typography, Button, Divider } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
@@ -17,19 +12,17 @@ import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 import Feedback from "../../components/Feedback/Feedback";
 
-import FontConfig from "../../service/FontConfig";
-
 import FontContext from "../../service/FontContext";
 
 const DetalhesAta = (props) => {
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
+    // Navigate e location utilizados para verificar state passado por parametro para determinada verificação
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Varuáveis de estilo para usar no componente 
-
+    // Variáveis de estilo para utilizar no componente 
     const tituloProposta = {
         textDecoration: "underline",
         cursor: "pointer",
@@ -46,8 +39,7 @@ const DetalhesAta = (props) => {
         marginTop: '1%'
     };
 
-    // lista de propostas provisória só para ter a visualização na tela
-
+    // Lista de propostas provisória apenas para visualização na tela
     const listaProposta = [
         {
             titulo: "oiiii",
@@ -99,46 +91,46 @@ const DetalhesAta = (props) => {
         }
     ];
 
-    // useState utilizados no componente
-
+    // Variável de verificação utilizada para mostrar o sumário ou uma proposta
     const [proposta, setProposta] = useState(false);
+
+    // Variável utilizada para mostrar os dados de uma proposta
     const [dadosProposta, setDadosProposta] = useState(listaProposta[0]);
+
+    // Index de uma proposta, utilizado para mostrar os dados de uma porposta específica
     const [indexProposta, setIndexProposta] = useState(-1);
+
+    // Variável utilizada para passar para a próxima proposta
     const [botaoProximo, setBotaoProximo] = useState(true);
-    const [indexTitulo, setIndexTitulo] = useState(0);
-    const [ata, setAta] = useState(false);
+
+    // Variável utilizada para minimizar os botões da página
     const [minimizar, setMinimizar] = useState(false);
 
     // feedback para ata criada com sucesso
-
     const [feedbackAta, setFeedbackAta] = useState(false);
 
-    // useState para a pauta criada
-
-    const [ataCriada, setAtaCriada] = useState(false);
-
     // useEffect usado para feedback
-
     useEffect(() => {
         if (location.state?.feedback) {
             setFeedbackAta(true);
         }
     }, [location.state?.feedback]);
 
-    // funções para visualização das propostas, voltar, próximo...
-
+    // Função para voltar ao sumário da ata
     const voltarSumario = () => {
         setBotaoProximo(true);
         setProposta(false);
         setIndexProposta(-1);
     };
 
+    // Função para selecionar uma proposta do sumário
     const onClickProposta = (index) => {
         setIndexProposta(index);
         setDadosProposta(listaProposta[index])
         setProposta(true)
     }
 
+    // Função para voltar para uma proposta
     const voltar = () => {
         if (indexProposta == 0) {
             setProposta(false);
@@ -149,6 +141,7 @@ const DetalhesAta = (props) => {
         }
     }
 
+    // Função para passar para a próxima proposta
     const proximo = () => {
         if (indexProposta == listaProposta.length - 1) {
             setBotaoProximo(false);
@@ -159,10 +152,12 @@ const DetalhesAta = (props) => {
         }
     }
 
+    // Função de criar ata e enviar feedback
     const criarAta = () => {
         navigate('/', { state: { feedback: true } })
     }
 
+    // Função para minimizar os botões da página
     const minimizarBotoes = () => {
         setMinimizar(!minimizar);
     };
@@ -278,7 +273,7 @@ const DetalhesAta = (props) => {
                         }
                     </Box>
 
-                    {/* botões de navegação entre as propostas da ata */}
+                    {/* Botões de navegação entre as propostas da ata */}
                     <Box className="flex fixed justify-end"
                         sx={{ width: "25rem", bottom: "20px", right: "20px" }}>
                         <Box className="flex justify-around w-full">
@@ -335,6 +330,7 @@ const DetalhesAta = (props) => {
                                 </Box>
                             }
 
+                            {/* Minimizar botões da tela */}
                             {!minimizar ?
                                 <Box>
                                     <Button

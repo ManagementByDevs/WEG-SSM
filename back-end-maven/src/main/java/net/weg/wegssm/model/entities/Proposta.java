@@ -136,6 +136,10 @@ public class Proposta {
     @JoinColumn(name = "id_proposta")
     private List<Anexo> anexo;
 
+    @OneToMany
+    @JoinColumn(name = "proposta_id")
+    private List<Historico> historicoProposta;
+
     /**
      * Função para adicionar anexos em uma proposta
      */
