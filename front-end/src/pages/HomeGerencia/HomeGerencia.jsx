@@ -24,6 +24,8 @@ import Pauta from "../../components/Pauta/Pauta";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
 
+import ChatMinimizado from "../../components/ChatMinimizado/ChatMinimizado";
+
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import ForumService from "../../service/forumService";
@@ -681,6 +683,8 @@ const HomeGerencia = () => {
 
   return (
     <FundoComHeader>
+      {/* <ChatMinimizado /> */}
+      {/* Help Tour's */}
       <Tour
         steps={stepsDemandas}
         isOpen={isTourDemandasOpen}
