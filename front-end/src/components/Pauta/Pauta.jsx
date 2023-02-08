@@ -11,18 +11,16 @@ const Pautas = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Retorna as horas formatada para melhor leitura
+  // Retorna as horas de início e fim formatadas para melhor leitura
   const getHorasFormatado = (dataInicio, dataFim) => {
     let dateInicio = new Date(DateService.getDateByMySQLFormat(dataInicio));
     let dateFim = new Date(DateService.getDateByMySQLFormat(dataFim));
 
-    return `${DateService.getTodaysDateUSFormat(
-      dataInicio
-    )} às ${dateInicio.getHours()}:${
+    return `${dateInicio.getHours()}:${
       dateInicio.getMinutes() < 10
         ? "0" + dateInicio.getMinutes()
         : dateInicio.getMinutes()
-    } - ${dateFim.getHours()}:${
+    } às ${dateFim.getHours()}:${
       dateFim.getMinutes() < 10
         ? "0" + dateFim.getMinutes()
         : dateFim.getMinutes()
@@ -70,7 +68,7 @@ const Pautas = (props) => {
               fontWeight="600"
               sx={{ color: "text.secondary", marginLeft: "5px" }}
             >
-              {/* fazer */}- {props.dados.horaInicio} à {props.dados.horaFim}
+              {getHorasFormatado(props.dados.inicioDataReuniao, props.dados.fimDataReuniao)}
             </Typography>
           )}
           {props.tipo === "pauta" && (
