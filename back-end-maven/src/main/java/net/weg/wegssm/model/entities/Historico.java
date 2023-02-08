@@ -37,14 +37,4 @@ public class Historico {
     @Column
     private Boolean visibilidade;
 
-    // Foreign key
-
-    @ManyToOne
-    @JoinColumn(name = "demanda_id")
-    private Demanda demanda;
-
-    @ManyToOne
-    @JoinColumn(name = "proposta_id")
-    private Proposta proposta;
-
 }
