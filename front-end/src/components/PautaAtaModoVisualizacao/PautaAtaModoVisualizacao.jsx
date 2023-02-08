@@ -177,7 +177,22 @@ const PautaTable = ({
   );
 };
 
-const PautaGrid = ({ listaPautas, onItemClick, isAta }) => {
+const PautaGrid = ({
+  listaPautas = [
+    {
+      id: 0,
+      numeroSequencial: 0,
+      inicioDataReuniao: "",
+      fimDataReuniao: "",
+      comissao: "",
+      propostas: [{}],
+      visibilidade: false,
+      analista: { nome: "" },
+    },
+  ],
+  onItemClick,
+  isAta,
+}) => {
   return (
     <Box
       sx={{

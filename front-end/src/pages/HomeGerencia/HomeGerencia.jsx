@@ -33,6 +33,7 @@ import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
 
 import Tour from "reactour";
+import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 
 const HomeGerencia = () => {
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
