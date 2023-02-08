@@ -27,7 +27,7 @@ const ChatMinimizado = (props) => {
     >
       {/* Container para o cabeçalho do chat */}
       <Box
-        className="w-full h-11 px-4 py-1 items-center flex justify-between"
+        className="w-full h-11 pl-4 pr-2 py-1 items-center flex justify-between"
         sx={{
           backgroundColor: "primary.main",
           borderRadius: "10px 10px 0 0",
@@ -38,9 +38,21 @@ const ChatMinimizado = (props) => {
           NOME DO CHAT
         </Typography>
         <Box>
-          <RemoveOutlinedIcon />
-          <OpenInNewOutlinedIcon />
-          <CloseOutlinedIcon />
+          <Tooltip title="Minimizar">
+            <RemoveOutlinedIcon className="mr-2 cursor-pointer delay-120 hover:scale-110 duration-300" />
+          </Tooltip>
+          <Tooltip title="Tela cheia">
+            <OpenInNewOutlinedIcon
+              className="mr-2 cursor-pointer delay-120 hover:scale-110 duration-300"
+              sx={{ fontSize: "20px" }}
+            />
+          </Tooltip>
+          <Tooltip title="Fechar chat">
+            <CloseOutlinedIcon
+              className="cursor-pointer delay-120 hover:scale-110 duration-300"
+              sx={{ fontSize: "25px" }}
+            />
+          </Tooltip>
         </Box>
       </Box>
       {/* Container para o chat */}
