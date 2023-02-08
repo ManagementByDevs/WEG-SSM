@@ -286,6 +286,15 @@ const Home = () => {
       },
     },
     {
+      selector: "#sexto",
+      content:
+        "Nesta parte você pode trocar o modo de visualização das suas demandas. Você pode escolher entre visualizar as demandas em forma de lista ou em forma de cards.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
       selector: "#quarto",
       content: "Aqui você consegue iniciar a criação de uma nova demanda.",
       style: {
@@ -303,9 +312,9 @@ const Home = () => {
       },
     },
     {
-      selector: "#sexto",
+      selector: "#oitavo",
       content:
-        "Nesta parte você pode trocar o modo de visualização das suas demandas. Você pode escolher entre visualizar as demandas em forma de lista ou em forma de cards.",
+        "Nesta área você consegue visualizar o status atual da demanda.",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -519,12 +528,29 @@ const Home = () => {
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
                 <Ajuda onClick={() => setIsTourOpen(true)} />
-                <DemandaModoVisualizacao
-                  listaDemandas={listaDemandas}
-                  onDemandaClick={verDemanda}
-                  myDemandas={true}
-                  nextModoVisualizacao={nextModoVisualizacao}
-                />
+                <Box>
+                  {isTourOpen ? (
+                    <Demanda
+                      demanda={{
+                        id: 0,
+                        titulo: "Demanda Tour",
+                        problema: "esse é um exemplo de demanda",
+                        proposta: "esse é um exemplo de demanda",
+                        motivoRecusa: "É apenas um exemplo!",
+                        status: "BACKLOG_EDICAO",
+                        data: "10/10/10",
+                        solicitante: {id: 1, nome: "Nome do solicitante"},
+                      }}
+                    />
+                  ) : (
+                    <DemandaModoVisualizacao
+                      listaDemandas={listaDemandas}
+                      onDemandaClick={verDemanda}
+                      myDemandas={true}
+                      nextModoVisualizacao={nextModoVisualizacao}
+                    />
+                  )}
+                </Box>
               </TabPanel>
               <TabPanel sx={{ padding: 0 }} value="2">
                 <DemandaModoVisualizacao

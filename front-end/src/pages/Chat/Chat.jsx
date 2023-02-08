@@ -1,30 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  Box,
-  Avatar,
-  Typography,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Box, Avatar, Typography, Divider, Tooltip, IconButton } from "@mui/material";
 
-import { useNavigate, useLocation } from "react-router-dom";
-
-import logoWeg from "../../assets/logo-weg.png";
+import { useLocation } from "react-router-dom";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import Contato from "../../components/Contato/Contato";
 import Mensagem from "../../components/Mensagem/Mensagem";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
-import FontConfig from "../../service/FontConfig";
-
+import logoWeg from "../../assets/logo-weg.png";
 import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import FontContext from "../../service/FontContext";
 
@@ -34,14 +23,14 @@ import SockJS from "sockjs-client";
 var stompClient = null;
 
 const Chat = () => {
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Location utilizado para conectar o usuário no webSocket 
+  const location = useLocation();
+
   const [pesquisaContato, setpesquisaContato] = useState("");
+
   const [resultadosContato, setresultadosContato] = useState([]);
 
   const onChange = (evt) => {
@@ -173,7 +162,7 @@ const Chat = () => {
   const [indexUsuario, setIndexUsuario] = useState();
 
   function abrirChat(index) {
-    setIndexUsuario(index); 
+    setIndexUsuario(index);
     setTab(usuarios[index].nome)
   }
 
@@ -208,15 +197,15 @@ const Chat = () => {
   const [publicChats, setPublicChats] = useState([]);
   const [tab, setTab] = useState("CHATROOM");
 
-  let nomeUsuario;  
+  let nomeUsuario;
 
   nomeUsuario = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     if (location.state?.userChat) {
-        connect();
+      connect();
     }
-}, [location.state?.userChat]);
+  }, [location.state?.userChat]);
 
   const [userData, setUserData] = useState({
     username: nomeUsuario?.nome,

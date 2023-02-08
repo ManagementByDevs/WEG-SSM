@@ -59,6 +59,7 @@ const Pautas = (props) => {
                   }}
                 >
                   <DeleteOutlineOutlinedIcon
+                  id="segundoPautas"
                     className="delay-120 hover:scale-110 duration-300 "
                     sx={{
                       color: "icon.main",

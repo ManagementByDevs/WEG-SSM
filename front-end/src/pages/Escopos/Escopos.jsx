@@ -128,6 +128,15 @@ const Escopos = () => {
       },
     },
      {
+       selector: "#quarto",
+       content:
+         "Nesta área você consegue visualizar qual a porcentagem preenchida do formulário.",
+       style: {
+         backgroundColor: "#DCDCDC",
+         color: "#000000",
+       },
+     },
+     {
        selector: "#terceiro",
        content:
          "Clicando na lixeira você exclui o escopo.",
@@ -212,7 +221,7 @@ const Escopos = () => {
               }}
             >
               {escopos?.map((escopo, index) => {
-                return <Escopo key={index} escopo={escopo} index={index} onclick={() => { openEscopo(escopo) }} handleDelete={onTrashCanClick} />;
+                return <Escopo key={index} isTourOpen={isTourOpen} escopo={escopo} index={index} onclick={() => { openEscopo(escopo) }} handleDelete={onTrashCanClick} />;
               })}
             </Box>
 

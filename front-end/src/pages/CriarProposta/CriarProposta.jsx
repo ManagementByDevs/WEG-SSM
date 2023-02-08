@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Box } from "@mui/material";
@@ -7,16 +7,14 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import BarraProgressaoProposta from "../../components/BarraProgressaoProposta/BarraProgressaoProposta";
 
-import FontContext from "../../service/FontContext";
-
 const CriarProposta = () => {
-    // Context para alterar o tamanho da fonte
-    const { FontConfig, setFontConfig } = useContext(FontContext);
-
+    // Location utilizado para mandar os dados para a variável "dados"
     const location = useLocation();
 
+    // Variável dados utilizada para armazenar os dados da proposta
     const [dados, setDados] = useState(location.state);
 
+    // UseEffect utilizado para setar os dados na variável assim que haja alguma alteração
     useEffect(() => {
         setDados(location.state);
     }, [])
@@ -27,6 +25,7 @@ const CriarProposta = () => {
                 <Caminho />
                 <Box className='w-full flex justify-center'>
                     <Box className='w-5/6'>
+                        {/* Chamando componente de criação da proposta mandando os dados */}
                         <BarraProgressaoProposta dados={dados} steps={['Proposta', 'Escopo', 'Custos', 'Gerais']} />
                     </Box>
                 </Box>
