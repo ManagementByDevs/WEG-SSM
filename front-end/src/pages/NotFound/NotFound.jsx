@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 
 import { Typography, Box, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import FontConfig from '../../service/FontConfig';
 
 import Error from '../../assets/Error.png';
 
@@ -12,8 +11,10 @@ const NotFound = (props) => {
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
+    // Navigate utilizado para navegar para outra página
     let navigate = useNavigate();
 
+    // Variáveis de estilo utilizadas no componente 
     const containerPagina = {
         with: '100vw',
         height: '100vh',
@@ -37,12 +38,14 @@ const NotFound = (props) => {
         p: 1
     };
 
+    // Função para retornar a home
     const voltarPaginaPrincipal = () => {
         navigate('/')
     };
 
     return (
         <Box sx={containerPagina}>
+            {/* Componente com informações da página */}
             <Box sx={containerNotFound}>
 
                 <img src={Error} />

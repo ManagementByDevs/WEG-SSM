@@ -1,18 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Paper,
-  Checkbox,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Divider, Table, TableBody, TableHead, TableRow, Paper, Checkbox, IconButton, Tooltip } from "@mui/material";
 
 import "./notificacaoStyle.css";
 
@@ -38,19 +25,25 @@ const Notificacao = () => {
 
   // Modal de confirmação de exclusão individual
   const [openModalConfirmDelete, setOpenModalConfirmDelete] = useState(false);
+
   // Modal de confirmação de exclusão múltipla
-  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] =
-    useState(false);
+  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] = useState(false);
+
   // UseState para saber qual notificação deletar ao usar o botão de delete individual
   const [indexDelete, setIndexDelete] = useState(null);
+
   // UseState que têm informações sobre a página atual
   const [page, setPage] = useState("size=20&page=0");
+
   // Pagina atual do componente de paginação
   const [paginaAtual, setPaginaAtual] = useState(0);
+
   // Tamanho da página do componente de paginação
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
+
   // Total de páginas do componente de paginação
   const [totalPaginas, setTotalPaginas] = useState(1);
+
   // UseState para controlar o estado do feedback de lido/não lido
   const [feedback, setFeedback] = useState({
     visibilidade: false,
@@ -58,6 +51,7 @@ const Notificacao = () => {
     mensagem: "sfd",
   });
 
+  // UseEffect utilizado para buscar as notificações do usuário
   useEffect(() => {
     buscarNotificacoes();
   }, [page, paginaAtual, tamanhoPagina]);
@@ -84,7 +78,7 @@ const Notificacao = () => {
     return rows;
   };
 
-  // formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd
+  // Formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd
   const formatDate = (fullDate) => {
     const data = DateService.getDateByPreviousDate(fullDate);
     const dd = String(data.getDate()).padStart(2, "0");
@@ -236,7 +230,7 @@ const Notificacao = () => {
         setOpen={setOpenModalConfirmDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onDeleteClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         textoBotao={"sim"}
       />
 
@@ -245,7 +239,7 @@ const Notificacao = () => {
         setOpen={setOpenModalConfirmMultiDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onMultiDeleteRowClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         textoBotao={"sim"}
       />
 

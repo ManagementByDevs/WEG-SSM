@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
-
 import { Box, IconButton } from "@mui/material";
+
+import { useLocation } from "react-router-dom";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
+import FontContext from "../../service/FontContext";
+import Ajuda from "../../components/Ajuda/Ajuda";
 
 import UsuarioService from "../../service/usuarioService";
-
-import FontContext from "../../service/FontContext";
-
-import Ajuda from "../../components/Ajuda/Ajuda";
 
 import Tour from "reactour";
 
@@ -21,8 +19,10 @@ const DetalhesDemandaPagina = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Location utilizado para pegar os dados da demanda
   const location = useLocation();
 
+  // Variável utilizada para receber os dados de uma demanda
   const [dados, setDados] = useState(location.state);
 
   // Usuário que está logado no sistema
@@ -36,11 +36,13 @@ const DetalhesDemandaPagina = () => {
     departamento: null,
   });
 
+  // UseEffect utilizado para buscar o usuário do sistema e pegar os dados do state
   useEffect(() => {
     setDados(location.state);
     buscarUsuario();
   }, []);
 
+  // Função utilizada para buscar o usuário que está logado no sistema
   const buscarUsuario = () => {
     UsuarioService.getUsuarioById(
       parseInt(localStorage.getItem("usuarioId"))
@@ -49,13 +51,16 @@ const DetalhesDemandaPagina = () => {
     });
   };
 
+  // Função utilizada para alterar dados da demanda
   const updateDemandaProps = (demanda) => {
     setDados(demanda);
     location.state = demanda;
   };
 
+  // Variável utilizada para o tour
   const [isTourOpen, setIsTourOpen] = useState(false);
 
+  // Lista de mensagens utilizadas no tour
   const steps = [
     {
       selector: "#primeiro",
@@ -87,6 +92,7 @@ const DetalhesDemandaPagina = () => {
 
   return (
     <FundoComHeader>
+      {/* Tour ao usuário */}
       <Tour
         steps={steps}
         isOpen={isTourOpen}
@@ -113,6 +119,7 @@ const DetalhesDemandaPagina = () => {
             </IconButton>
           </Box>
         </Box>
+        {/* Mostrar os dados da demanda */}
         <DetalhesDemanda
           dados={dados}
           usuario={usuario}
