@@ -1,23 +1,20 @@
-import React, { useContext } from "react";
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
-
-import FontContext from "../../service/FontContext";
+import { React } from "react";
+import { Box, IconButton, Tooltip } from "@mui/material";
 
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 import { keyframes } from "@emotion/react";
 
-const aparecer = keyframes({
-  from: { width: "1.3rem" },
-  to: { width: "3.2rem" },
-});
+// Função utilizada para aparecer o ícone de ajuda ao passar o mouse
+const aparecer = keyframes({ from: { width: "1.3rem" }, to: { width: "3.2rem" } });
+
+// Função utilizada para desaparecer o ícone de ajuda ao tirar o mouse
 const sumir = keyframes({ from: { width: "3.2rem" }, to: { width: "1.3rem" } });
 
 const Ajuda = (props) => {
-  // Contexto para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   return (
+    // Box com verificação das funções de aparecer e desaparecer do ícone
     <Box
       onClick={props.onClick}
       className="flex absolute items-center "
@@ -36,6 +33,7 @@ const Ajuda = (props) => {
         },
       }}
     >
+      {/* Ícone de ajuda */}
       <Tooltip title="Ajuda" placement="top">
         <IconButton sx={{ color: "text.white" }}>
           <HelpOutlineOutlinedIcon sx={{ fontSize: "30px" }} />

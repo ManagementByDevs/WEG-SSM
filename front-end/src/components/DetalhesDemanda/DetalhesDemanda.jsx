@@ -1,16 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  TextareaAutosize,
-  Paper,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -32,11 +23,15 @@ import NotificacaoService from "../../service/notificacaoService";
 import FontContext from "../../service/FontContext";
 
 const DetalhesDemanda = (props) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Variável hexadecimal para alterar a cor de certos componentes ao mudar o tema da página
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
-  const { mode } = useContext(ColorModeContext);
+
+  // Variável armazenando o tema da página (light / dark)
+  const { temaPagina } = useContext(ColorModeContext);
   const inputFile = useRef(null);
 
   const [tituloDemanda, setTituloDemanda] = useState(props.dados.titulo);
@@ -61,19 +56,20 @@ const DetalhesDemanda = (props) => {
   const [motivoRecusaDemanda, setMotivoRecusaDemanda] = useState("");
   const [modoModalRecusa, setModoModalRecusa] = useState("recusa");
 
-  useEffect(() => {
-    if (mode === "dark") {
-      setCorFundoTextArea("#212121");
-    } else {
-      setCorFundoTextArea("#FFFF");
-    }
-  }, [mode]);
-
   const [editar, setEditar] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
 
   const navigate = useNavigate();
+
+  // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
+  useEffect(() => {
+    if (temaPagina === "dark") {
+      setCorFundoTextArea("#212121");
+    } else {
+      setCorFundoTextArea("#FFFF");
+    }
+  }, [temaPagina]);
 
   useEffect(() => {
     setTituloDemanda(props.dados.titulo);
@@ -123,9 +119,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -259,7 +255,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -267,20 +263,19 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosNovos([]);
   };
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
-    console.log("Aaaaaaaaaaa");
     let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
     let contagem = 0;
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -295,7 +290,6 @@ const DetalhesDemanda = (props) => {
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
     if (demandaEmEdicao) {
-      console.log("aaaaaaa");
       const demandaAtualizada = {
         id: props.dados.id,
         titulo: tituloDemanda,
@@ -483,14 +477,6 @@ const DetalhesDemanda = (props) => {
     }
   };
 
-  const aceitarDemandaGerente = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(
-      (response) => {
-        navegarHome(1);
-      }
-    );
-  };
-
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);
@@ -646,8 +632,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"

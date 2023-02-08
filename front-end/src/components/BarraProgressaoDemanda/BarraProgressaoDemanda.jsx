@@ -1,15 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Button,
-} from "@mui/material";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -26,13 +17,23 @@ const BarraProgressaoDemanda = (props) => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Location utilizado para setar o state utilizado para verificação de lógica
+  const location = useLocation();
+
+  // Navigate utilizado para navegar para outras páginas
+  const navigate = useNavigate();
+
+  // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
-  const [ultimoEscopo, setUltimoEscopo] = useState(null);
 
-  const location = useLocation();
+  // Variável utilizada para abrir o modal de feedback de dados faltantes
+  const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
+
+  // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
+  const [ultimoEscopo, setUltimoEscopo] = useState(null);
 
   // Dados da página inicial da criação de demanda
   const [paginaDados, setPaginaDados] = useState({
@@ -48,9 +49,13 @@ const BarraProgressaoDemanda = (props) => {
   // Lista de anexos definidos na terceira página da criação de demanda
   const [paginaArquivos, setPaginaArquivos] = useState([]);
 
-  const navigate = useNavigate();
+  // Variável utilizada para abrir o modal de confirmação de criação de demanda
+  const [modalConfirmacao, setOpenConfirmacao] = useState(false);
 
-  // Função para criar um escopo ou receber um escopo do banco ao entrar na página
+  // Variável utilizada para abrir o modal de saída de demanda
+  const [modalSairDemanda, setModalSairDemanda] = useState(false);
+
+  // UseEffect utilizado para criar um escopo ou receber um escopo do banco ao entrar na página
   useEffect(() => {
     if (!idEscopo) {
       if (!location.state) {
@@ -85,7 +90,7 @@ const BarraProgressaoDemanda = (props) => {
     }
   }, []);
 
-  // Função para salvar o escopo a cada 5 segundos
+  // UseEffect utilizado para salvar o escopo a cada 5 segundos
   useEffect(() => {
     if (ultimoEscopo) {
       setTimeout(() => {
@@ -141,56 +146,65 @@ const BarraProgressaoDemanda = (props) => {
       EscopoService.salvarDados(ultimoEscopo).then((response) => {
         //Confirmação de salvamento (se sobrar tempo)
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   // Função para atualizar os anexos de um escopo quando um anexo for adicionado / removido
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
       EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
-        (response) => {}
+        (response) => { }
       );
     } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
     }
   };
 
   // Função para excluir o escopo determinado quando a demanda a partir dele for criada
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };
 
+  // Função para pular passos opcionais
   const isStepOptional = (step) => {
     return false;
   };
 
+  // Função para pular passos já realizados
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
 
+  // Função para ir para o próximo passo, que dependendo poderá criar a demanda
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       criarDemanda();
     }
+
     let newSkipped = skipped;
+
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
+
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
   };
 
+  // Função para voltar para o passo anterior
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  // Função para verificação de passos obrigatórios para a criação da demanda
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
       throw new Error("Você não pode pular um passo que não é opcional!");
     }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
     setSkipped((prevSkipped) => {
       const newSkipped = new Set(prevSkipped.values());
       newSkipped.add(activeStep);
@@ -198,35 +212,35 @@ const BarraProgressaoDemanda = (props) => {
     });
   };
 
+  // Função para resetar o stepper
   const handleReset = () => {
     setActiveStep(0);
   };
 
-  const [demandaCriada, setDemandaCriada] = useState(false);
-
+  // Função para criar uma demanda
   const criarDemanda = () => {
     handleClick(true);
   };
 
+  // Função para abrir modal
+  const { open } = state;
+
+  // Função para fechar modal
   const [state, setState] = useState({
     open: false,
   });
 
-  const { open } = state;
-
+  // Função para fechar modal
   const handleClick = (newState) => () => {
     setState({ open: true, ...newState });
   };
 
-  // Modal de confirmação para a criação da demanda
-
-  const [modalConfirmacao, setOpenConfirmacao] = useState(false);
-  const [modalSairDemanda, setModalSairDemanda] = useState(false);
-
+  // Função para abrir o modal de confirmação de criação de demanda
   const abrirModalConfirmacao = () => {
     setOpenConfirmacao(true);
   };
 
+  // Função para abrir o modal de saída de demanda
   const abrirModalSairDemanda = () => {
     setModalSairDemanda(true);
   };
@@ -234,6 +248,7 @@ const BarraProgressaoDemanda = (props) => {
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = (listaBeneficios) => {
     let listaNova = [];
+
     for (let beneficio of listaBeneficios) {
       if (beneficio.visible) {
         listaNova.push({
@@ -245,10 +260,9 @@ const BarraProgressaoDemanda = (props) => {
         });
       }
     }
+
     return listaNova;
   };
-
-  const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
 
   // UseEffect para criar a demanda usando os dados recebidos das páginas
   useEffect(() => {
@@ -282,6 +296,7 @@ const BarraProgressaoDemanda = (props) => {
     }
   }, [open]);
 
+  // Função para direcionar o usuário para a tela de home
   const direcionarHome = (feedbackDemanda) => {
     localStorage.removeItem("tipoFeedback");
 
@@ -290,12 +305,14 @@ const BarraProgressaoDemanda = (props) => {
     navigate("/");
   };
 
+  // HandleClose utilizado para modais
   const handleClose = () => {
     setState({ ...state, open: false });
   };
 
   return (
     <>
+    {/* Stepper utilizado para os passos da criação e a barra de progressão */}
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -351,6 +368,7 @@ const BarraProgressaoDemanda = (props) => {
           </Button>
         )}
 
+        {/* Verificações para mudar texto de botões de acordo com os passos */}
         {activeStep === steps.length - 1 ? (
           <Button
             color="primary"
