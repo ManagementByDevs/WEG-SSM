@@ -222,13 +222,11 @@ const BarraProgressaoDemanda = (props) => {
     handleClick(true);
   };
 
-  // Função para abrir modal
-  const { open } = state;
-
-  // Função para fechar modal
   const [state, setState] = useState({
     open: false,
   });
+
+  const { open } = state;
 
   // Função para fechar modal
   const handleClick = (newState) => () => {
