@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 
@@ -16,10 +8,7 @@ import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCust
 import FormularioGeralProposta from "../FormularioGeralProposta/FormularioGeralProposta";
 import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEscopoProposta";
 
-import DemandaService from "../../service/demandaService";
-import EscopoService from "../../service/escopoService";
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
-import PropostaService from "../../service/propostaService";
 import ForumService from "../../service/forumService";
 import BUService from "../../service/buService";
 
@@ -29,15 +18,23 @@ import beneficioService from "../../service/beneficioService";
 const BarraProgressaoProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
-  const [ultimoEscopo, setUltimoEscopo] = useState(null);
-  var idEscopo = null;
 
+  // Variáveis utilizadas para salvar um escopo de uma demanda
+  var idEscopo = null;
+  const [ultimoEscopo, setUltimoEscopo] = useState(null);
+
+  // Variável utilizada para armazenar a lista de fóruns
   const [listaForuns, setListaForuns] = useState([]);
+
+  // Variável utilizada para armazenar a lista de BUs
   const [listaBU, setListaBU] = useState([]);
 
+  // Variável para armazenar os dados da demanda
   const [dadosDemanda, setDadosDemanda] = useState({
     titulo: "",
     status: null,
@@ -57,10 +54,13 @@ const BarraProgressaoProposta = (props) => {
     tamanho: ""
   });
 
+  // Variável utilizada para armazenar a lista de benefícios
   const [listaBeneficios, setListaBeneficios] = useState([]);
-  const [listaBeneficiosExcluidos, setListaBeneficiosExcluidos] = useState([]);
-  var idEscopo = null;
 
+  // Variável utilizada para armazenar a lista de benefícios excluídos
+  const [listaBeneficiosExcluidos, setListaBeneficiosExcluidos] = useState([]);
+
+  // UseEffect utilizado para pegar os dados da demanda e pegar os fóruns e BUs
   useEffect(() => {
     setDadosDemanda(props.dados);
     pesquisarBUs();
@@ -106,12 +106,12 @@ const BarraProgressaoProposta = (props) => {
     ]
   });
 
-  const navigate = useNavigate();
-
+  // Função para pular passos opcionais
   const isStepOptional = (step) => {
     return false;
   };
 
+  // Função para pular passos já realizados
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
@@ -140,17 +140,23 @@ const BarraProgressaoProposta = (props) => {
     handleClick(true);
   };
 
+  // Função para abrir modal
+  const { open } = state;
+
+  // Função para fechar modal
   const [state, setState] = React.useState({
     open: false,
   });
-  const { open } = state;
 
+  // Função para fechar modal
   const handleClick = (newState) => () => {
     setState({ open: true, ...newState });
   };
 
+  // Variável utilizada para salvar alterações caso o click seja acionado
   const [salvarClick, setSalvarClick] = useState(false);
 
+  // Função para salvar alterações na criação da proposta
   const salvarAlteracoes = () => {
     setSalvarClick(true);
     setEditar(false);
@@ -183,8 +189,10 @@ const BarraProgressaoProposta = (props) => {
     return listaNova;
   };
 
+  // Variável utilizada para realizar edições
   const [editar, setEditar] = useState(false);
 
+  // Variável para guardar os custos 
   const [custos, setCustos] = useState([
     {
       despesas: [
@@ -211,6 +219,7 @@ const BarraProgressaoProposta = (props) => {
 
   const setDespesas = (index) => {
     let custosNovos = [...custos];
+
     custosNovos[index].despesas.push({
       tipoDespesa: "",
       perfilDespesa: "",
@@ -220,6 +229,7 @@ const BarraProgressaoProposta = (props) => {
       total: "",
       visible: true,
     });
+
     setCustos(custosNovos);
   };
 
