@@ -1,0 +1,20 @@
+.tabela-linha-pauta:hover .tabela-linha-pauta-icon {
+    display: block !important;
+}
+
+.tabela-linha-pauta:hover .tabela-linha-pauta-data {
+    display: none !important;
+}
+
+.tabela-linha-pauta:hover .centralizar-onhover{
+    display: flex;
+    justify-content: center;
+}
+
+.tabela-linha-pauta-data {
+    display: block !important;
+}
+
+.tabela-linha-pauta-icon {
+    display: none !important;
+}

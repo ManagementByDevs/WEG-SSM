@@ -17,12 +17,13 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import FontContext from "../../service/FontContext";
 
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
-import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Pauta from "../../components/Pauta/Pauta";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
+import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaModoVisualizacao/DemandaGerenciaModoVisualizacao";
+import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/PautaAtaModoVisualizacao";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -30,7 +31,6 @@ import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
 
 import Tour from "reactour";
-import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaModoVisualizacao/DemandaGerenciaModoVisualizacao";
 
 const HomeGerencia = () => {
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
@@ -506,34 +506,90 @@ const HomeGerencia = () => {
 
   const [propostas, setPropostas] = useState([
     {
+      id: 1,
+      inicioExecucao: "2020-10-10",
+      fimExecucao: "2020-10-10",
+      paybackValor: 1000,
+      paybackTipo: "MENSAL",
+      codigoPPM: "12345",
+      linkJira: "https://jira.com",
+      publicada: true,
+      naoPublicada: false,
+      data: "2020-10-10",
+      parecerComissao: null,
+      parecerInformacao: null,
+      parecerDG: null,
+      visibilidade: true,
       titulo: "Proposta 1",
-      status: "Assessment",
-      solicitante: "Kenzo Sato",
+      status: "ASSESSMENT",
+      solicitante: { nome: "Kenzo Sato" },
       departamento: "TI",
       gerenteResponsavel:
         "Enzo João da Silva Cleitom Sauro Rex Pereira Silvério",
       ppm: "12353",
     },
     {
+      id: 2,
+      inicioExecucao: "2020-10-10",
+      fimExecucao: "2020-10-10",
+      paybackValor: 1000,
+      paybackTipo: "MENSAL",
+      codigoPPM: "25413",
+      linkJira: "https://jira.com",
+      publicada: true,
+      naoPublicada: false,
+      data: "2020-10-10",
+      parecerComissao: null,
+      parecerInformacao: null,
+      parecerDG: null,
+      visibilidade: true,
       titulo: "Proposta 2",
-      status: "Assessment",
-      solicitante: "Kenzo Sato",
+      status: "ASSESSMENT",
+      solicitante: { nome: "Kenzo Sato" },
       departamento: "TI",
       gerenteResponsavel: "João da Silva",
       ppm: "12353",
     },
     {
+      id: 3,
+      inicioExecucao: "2020-10-10",
+      fimExecucao: "2020-10-10",
+      paybackValor: 1000,
+      paybackTipo: "MENSAL",
+      codigoPPM: "78945",
+      linkJira: "https://jira.com",
+      publicada: true,
+      naoPublicada: false,
+      data: "2020-10-10",
+      parecerComissao: null,
+      parecerInformacao: null,
+      parecerDG: null,
+      visibilidade: true,
       titulo: "DemaPropostanda 3",
-      status: "Assessment",
-      solicitante: "Kenzo Sato",
+      status: "ASSESSMENT",
+      solicitante: { nome: "Kenzo Sato" },
       departamento: "TI",
       gerenteResponsavel: "João da Silva",
       ppm: "12353",
     },
     {
+      id: 4,
+      inicioExecucao: "2020-10-10",
+      fimExecucao: "2020-10-10",
+      paybackValor: 1000,
+      paybackTipo: "MENSAL",
+      codigoPPM: "154637",
+      linkJira: "https://jira.com",
+      publicada: true,
+      naoPublicada: false,
+      data: "2020-10-10",
+      parecerComissao: null,
+      parecerInformacao: null,
+      parecerDG: null,
+      visibilidade: true,
       titulo: "Proposta 4",
-      status: "Assessment",
-      solicitante: "Kenzo Sato",
+      status: "ASSESSMENT",
+      solicitante: { nome: "Kenzo Sato" },
       departamento: "TI",
       gerenteResponsavel: "João da Silva",
       ppm: "12353",
@@ -542,29 +598,40 @@ const HomeGerencia = () => {
 
   const [pautas, setPautas] = useState([
     {
+      id: 1,
       numeroSequencial: "1/2022",
       comissao: "Comissão 1",
-      analistaResponsavel: "Kenzo Sato",
-      data: "01/01/2022",
+      analista: { nome: "Kenzo Sato" },
+      inicioDataReuniao: "2022-12-15 19:23:57.443000",
+      fimDataReuniao: "2023-02-07 19:06:26.511000",
+      propostas: [{}],
     },
     {
+      id: 1,
       numeroSequencial: "2/2022",
       comissao: "Comissão 2",
-      analistaResponsavel: "Kenzo S",
-      data: "02/02/2022",
+      analista: { nome: "Kenzo Sato" },
+      inicioDataReuniao: "2022-12-15 19:23:57.443000",
+      fimDataReuniao: "2023-02-07 19:06:26.511000",
+      propostas: [{}],
     },
     {
-      numeroSequencial: "3/2022",
+      id: 1,
+      numeroSequencial: "1/2022",
       comissao: "Comissão 3",
-      analistaResponsavel: "Kenzo S",
-      data: "03/03/2022",
+      analista: { nome: "Kenzo Sato" },
+      inicioDataReuniao: "2022-12-15 19:23:57.443000",
+      fimDataReuniao: "2023-02-07 19:06:26.511000",
+      propostas: [{}],
     },
     {
+      id: 1,
       numeroSequencial: "4/2022",
-      comissao: "Comissão 4",
-      analistaResponsavel:
-        "Kenzo Sato tem nome muito grande mesmo até passa o componente",
-      data: "04/04/2022",
+      comissao: "Comissão 1",
+      analista: { nome: "Kenzo Sato" },
+      inicioDataReuniao: "2022-12-15 19:23:57.443000",
+      fimDataReuniao: "2023-02-07 19:06:26.511000",
+      propostas: [{}],
     },
   ]);
 
@@ -1009,18 +1076,11 @@ const HomeGerencia = () => {
                           "repeat(auto-fit, minmax(720px, 1fr))",
                       }}
                     >
-                      {listaItens?.map((demanda, index) => {
-                        return (
-                          <DemandaGerencia
-                            key={index}
-                            dados={demanda}
-                            tipo="demanda"
-                            onClick={() => {
-                              verDemanda(demanda);
-                            }}
-                          />
-                        );
-                      })}
+                      <DemandaGerenciaModoVisualizacao
+                        listaDemandas={listaItens}
+                        onDemandaClick={verDemanda}
+                        nextModoVisualizacao={nextModoVisualizacao}
+                      />
                     </Box>
                   </TabPanel>
                   <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
@@ -1033,37 +1093,23 @@ const HomeGerencia = () => {
                           "repeat(auto-fit, minmax(720px, 1fr))",
                       }}
                     >
-                      {propostas?.map((proposta, index) => {
-                        return (
-                          <DemandaGerencia
-                            key={index}
-                            dados={proposta}
-                            tipo="proposta"
-                          />
-                        );
-                      })}
+                      <DemandaGerenciaModoVisualizacao
+                        listaDemandas={propostas}
+                        onDemandaClick={verDemanda}
+                        nextModoVisualizacao={nextModoVisualizacao}
+                        isProposta={true}
+                      />
                     </Box>
                   </TabPanel>
-                  <TabPanel
-                    sx={{ padding: 0 }}
-                    value="4"
-                    onClick={() => {
-                      navigate("/detalhes-pauta");
-                    }}
-                  >
+                  <TabPanel sx={{ padding: 0 }} value="4">
                     <Ajuda onClick={() => setIsTourPautasOpen(true)} />
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gap: "1rem",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(700px, 1fr))",
+                    <PautaAtaModoVisualizacao
+                      listaPautas={pautas}
+                      onItemClick={() => {
+                        navigate("/detalhes-pauta");
                       }}
-                    >
-                      {pautas?.map((pauta, index) => {
-                        return <Pauta key={index} dados={pauta} tipo="pauta" />;
-                      })}
-                    </Box>
+                      nextModoVisualizacao={nextModoVisualizacao}
+                    />
                   </TabPanel>
                   <TabPanel
                     sx={{ padding: 0 }}
@@ -1073,18 +1119,14 @@ const HomeGerencia = () => {
                     }}
                   >
                     <Ajuda onClick={() => setIsTourAtasOpen(true)} />
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gap: "1rem",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(700px, 1fr))",
+                    <PautaAtaModoVisualizacao
+                      listaPautas={pautas}
+                      onItemClick={() => {
+                        navigate("/detalhes-pauta");
                       }}
-                    >
-                      {atas?.map((ata, index) => {
-                        return <Pauta key={index} dados={ata} tipo="ata" />;
-                      })}
-                    </Box>
+                      nextModoVisualizacao={nextModoVisualizacao}
+                      isAta={true}
+                    />
                   </TabPanel>
                 </>
               )}

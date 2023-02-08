@@ -2,7 +2,7 @@
     display: block !important;
 }
 
-.visualizacao-tabela-gerencia-historico {
+.visualizacao-tabela-gerencia-icon {
     display: none !important;
 }
 
@@ -10,6 +10,6 @@
     display: none !important;
 }
 
-.tabela-linha-demanda:hover .visualizacao-tabela-gerencia-historico {
+.tabela-linha-demanda:hover .visualizacao-tabela-gerencia-icon {
     display: block !important;
 }

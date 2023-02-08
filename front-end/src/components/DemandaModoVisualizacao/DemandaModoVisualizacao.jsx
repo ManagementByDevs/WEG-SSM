@@ -144,16 +144,16 @@ const DemandaTable = ({
                 onDemandaClick(row);
               }}
             >
-              <td className="text-center p-3">
+              <td className="text-center p-3" title={row.id}>
                 <Typography fontSize={FontConfig.medium}>{row.id}</Typography>
               </td>
-              <td className="text-left p-3">
+              <td className="text-left p-3" title={row.titulo}>
                 <Typography fontSize={FontConfig.medium}>
                   {row.titulo}
                 </Typography>
               </td>
               {myDemandas && (
-                <td className="text-left p-3">
+                <td className="text-left p-3" title={formatarNomeStatus(row.status)}>
                   <Box className="flex items-center gap-2 text-center">
                     <Box
                       sx={{
@@ -186,7 +186,7 @@ const DemandaTable = ({
                   </Box>
                 </td>
               )}
-              <td className="text-center p-3">
+              <td className="text-center p-3" title={DateService.getTodaysDateUSFormat(row.data)}>
                 <Typography fontSize={FontConfig.default}>
                   {DateService.getTodaysDateUSFormat(row.data)}
                 </Typography>

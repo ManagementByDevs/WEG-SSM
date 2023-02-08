@@ -18,6 +18,7 @@ import DemandaGerencia from "../DemandaGerencia/DemandaGerencia";
 import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemanda";
 
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
@@ -26,18 +27,21 @@ const DemandaGerenciaModoVisualizacao = ({
   listaDemandas,
   onDemandaClick,
   nextModoVisualizacao,
+  isProposta = false,
 }) => {
   if (nextModoVisualizacao == "TABLE")
     return (
       <DemandaGrid
         listaDemandas={listaDemandas}
         onDemandaClick={onDemandaClick}
+        isProposta={isProposta}
       />
     );
   return (
     <DemandaTable
       listaDemandas={listaDemandas}
       onDemandaClick={onDemandaClick}
+      isProposta={isProposta}
     />
   );
 };
@@ -64,6 +68,7 @@ const DemandaTable = ({
     },
   ],
   onDemandaClick,
+  isProposta = false,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -90,7 +95,7 @@ const DemandaTable = ({
   const abrirModalHistorico = () => {
     setModalHistorico(true);
   };
-  console.log(":", listaDemandas);
+
   return (
     <>
       {modalHistorico && (
@@ -100,11 +105,13 @@ const DemandaTable = ({
         />
       )}
       <Paper sx={{ width: "100%" }} square>
-        <Table className="mb-8" sx={{ width: "100%" }}>
+        <Table sx={{ width: "100%" }}>
           <TableHead>
             <TableRow sx={{ backgroundColor: "primary.main" }}>
               <th className="text-white p-2 w-1/10">
-                <Typography fontSize={FontConfig.big}>Código</Typography>
+                <Typography fontSize={FontConfig.big}>
+                  {!isProposta ? "Código" : "PPM"}
+                </Typography>
               </th>
               <th className="text-left text-white p-3 w-2/6">
                 <Typography fontSize={FontConfig.big}>Título</Typography>
@@ -141,30 +148,41 @@ const DemandaTable = ({
                   onDemandaClick(row);
                 }}
               >
-                <td className="text-center p-3 w-fit">
-                  <Typography fontSize={FontConfig.medium}>{row.id}</Typography>
+                <td className="text-center p-3" title={row.id}>
+                  <Typography fontSize={FontConfig.medium}>
+                    {!isProposta ? row.id : row.codigoPPM}
+                  </Typography>
                 </td>
-                <td className="text-left p-3">
+                <td className="text-left p-3" title={row.titulo}>
                   <Typography fontSize={FontConfig.medium}>
                     {row.titulo}
                   </Typography>
                 </td>
-                <td className="text-left p-3">
+                <td className="text-left p-3" title={row.solicitante.nome}>
                   <Typography fontSize={FontConfig.medium}>
                     {row.solicitante.nome}
                   </Typography>
                 </td>
-                <td className="text-left p-3">
+                <td
+                  className="text-left p-3"
+                  title={row.departamento ? row.departamento : "Não atribuído"}
+                >
                   <Typography fontSize={FontConfig.medium}>
                     {row.departamento ? row.departamento : "Não atribuído"}
                   </Typography>
                 </td>
-                <td className="text-left p-3">
+                <td
+                  className="text-left p-3"
+                  title={row.gerente?.nome ? row.gerente.nome : "Não atribuído"}
+                >
                   <Typography fontSize={FontConfig.medium}>
                     {row.gerente?.nome ? row.gerente.nome : "Não atribuído"}
                   </Typography>
                 </td>
-                <td className="text-left p-3">
+                <td
+                  className="text-left p-3"
+                  title={formatarNomeStatus(row.status)}
+                >
                   <Box className="flex items-center gap-2 text-center">
                     <Box
                       sx={{
@@ -181,7 +199,10 @@ const DemandaTable = ({
                     </Box>
                   </Box>
                 </td>
-                <td className="h-16 flex justify-center items-center p-3">
+                <td
+                  className="flex justify-center items-center p-3 gap-2"
+                  title={DateService.getTodaysDateUSFormat(row.data)}
+                >
                   <Typography
                     className="visualizacao-tabela-gerencia-data"
                     fontSize={FontConfig.default}
@@ -190,25 +211,39 @@ const DemandaTable = ({
                   </Typography>
                   <Tooltip
                     title="Histórico"
-                    className="visualizacao-tabela-gerencia-historico"
+                    className="visualizacao-tabela-gerencia-icon"
                   >
-                    <IconButton
+                    <HistoryOutlinedIcon
                       size="small"
                       onClick={(e) => {
                         e.stopPropagation();
                         abrirModalHistorico();
                       }}
+                      className="delay-120 hover:scale-110 duration-300"
+                      sx={{
+                        color: "icon.main",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Tooltip>
+                  {isProposta && (
+                    <Tooltip
+                      title="Chat"
+                      className="visualizacao-tabela-gerencia-icon"
                     >
-                      <HistoryOutlinedIcon
-                        size="small"
+                      <ChatOutlinedIcon
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          abrirModalHistorico();
+                        }}
                         className="delay-120 hover:scale-110 duration-300"
                         sx={{
                           color: "icon.main",
                           cursor: "pointer",
                         }}
                       />
-                    </IconButton>
-                  </Tooltip>
+                    </Tooltip>
+                  )}
                 </td>
               </TableRow>
             ))}
@@ -219,7 +254,7 @@ const DemandaTable = ({
   );
 };
 
-const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
+const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
   return (
     <Box
       id="sextaDemandas"
@@ -234,7 +269,7 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
           <DemandaGerencia
             key={index}
             dados={demanda}
-            tipo="demanda"
+            tipo={isProposta ? "proposta" : "demanda"}
             onClick={() => {
               onDemandaClick(demanda);
             }}

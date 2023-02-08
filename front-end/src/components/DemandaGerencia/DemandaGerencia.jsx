@@ -80,7 +80,7 @@ const DemandaGerencia = (props) => {
                   fontWeight="600"
                   sx={{ color: "primary.main" }}
                 >
-                  PPM
+                  PPM {props.dados.codigoPPM}
                 </Typography>
               )}
               {props.dados.titulo}
