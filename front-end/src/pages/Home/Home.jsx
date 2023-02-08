@@ -26,6 +26,7 @@ import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/De
 import Ajuda from "../../components/Ajuda/Ajuda";
 
 import Tour from "reactour";
+import Demanda from "../../components/Demanda/Demanda";
 
 const Home = () => {
   // Context para alterar o tamanho da fonte
