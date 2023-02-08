@@ -37,6 +37,7 @@ const Pautas = (props) => {
 
   return (
     <Paper
+      onClick={props.onClick}
       className="flex flex-col border-t-4 pt-2 pb-3 px-6"
       sx={{
         "&:hover": {
@@ -69,31 +70,7 @@ const Pautas = (props) => {
               fontWeight="600"
               sx={{ color: "text.secondary", marginLeft: "5px" }}
             >
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* fazer */}
-
-
-
-
-
-
-
-
-
-              - {props.dados.horaInicio} à {props.dados.horaFim}
+              {/* fazer */}- {props.dados.horaInicio} à {props.dados.horaFim}
             </Typography>
           )}
           {props.tipo === "pauta" && (
@@ -105,6 +82,7 @@ const Pautas = (props) => {
                   }}
                 >
                   <DeleteOutlineOutlinedIcon
+                    id="segundoPautas"
                     className="delay-120 hover:scale-110 duration-300 "
                     sx={{
                       color: "icon.main",

@@ -1,6 +1,6 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 
-import { Box, Paper, Tooltip, Typography } from "@mui/material";
+import { Box, Paper, Tooltip, Typography, IconButton } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -11,14 +11,16 @@ import FontContext from "../../service/FontContext";
 const Escopo = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   return (
     <Paper
       className="flex flex-col gap-1 border-t-4 pt-2 pb-3 px-6 cursor-pointer"
       sx={{ borderColor: "primary.main" }}
       onClick={(e) => {
-        e.stopPropagation();
-        props.onclick(props.index);
+        if (!props.isTourOpen) {
+          e.stopPropagation();
+          props.onclick(props.index);
+        }
       }}
     >
       {/* Container titulo e progressao */}
@@ -32,7 +34,7 @@ const Escopo = (props) => {
         </Typography>
 
         {/* Progressão do escopo */}
-        <Box className="flex w-1/4 h-full gap-2 items-center">
+        <Box id="quarto" className="flex w-1/4 h-full gap-2 items-center">
           <Box
             className="w-11/12 h-4 flex rounded"
             sx={{ backgroundColor: "divider.main" }}
@@ -63,12 +65,15 @@ const Escopo = (props) => {
         </Box>
         <Tooltip title="Excluir">
           <DeleteIcon
-            className="absolute bottom-0 hover:cursor-pointer"
+            id="terceiro"
+            className="absolute bottom-0 delay-120 hover:scale-110 duration-300"
             sx={{ right: "-10px" }}
             color="primary"
             onClick={(e) => {
-              e.stopPropagation();
-              props.handleDelete(props.index);
+              if (!props.isTourOpen) {
+                e.stopPropagation();
+                props.handleDelete(props.index);
+              }
             }}
           />
         </Tooltip>

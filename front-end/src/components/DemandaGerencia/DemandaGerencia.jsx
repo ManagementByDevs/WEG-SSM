@@ -89,7 +89,11 @@ const DemandaGerencia = (props) => {
 
           {/* Status do componente */}
           <Box className="w-1/4 h-full">
-            <Box className="flex items-center gap-2 justify-end">
+            <Box
+              className="flex items-center justify-end"
+            >
+              <Box id="segundoCriarPropostas">
+              <Box id="oitavoDemandas" className="flex items-center gap-2">
               <Typography fontSize={FontConfig.medium} fontWeight="600">
                 {formatarStatus(props.dados.status)}
               </Typography>
@@ -101,6 +105,8 @@ const DemandaGerencia = (props) => {
                   backgroundColor: getCorStatus(),
                 }}
               ></Box>
+              </Box>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -161,13 +167,14 @@ const DemandaGerencia = (props) => {
               </Box>
               <Box>
                 {/* Icon de histórico  e chat*/}
-                <Box className="flex flex-col">
+                <Box id="terceiroCriarPropostas" className="flex flex-col">
                   {
                     // Se for uma proposta, mostra o icone de chat
                     tipo === "proposta" && (
                       <Tooltip title="Chat">
                         <IconButton>
                           <ChatOutlinedIcon
+                            id="segundoPropostas"
                             className="delay-120 hover:scale-110 duration-300"
                             sx={{
                               color: "icon.main",
@@ -182,11 +189,14 @@ const DemandaGerencia = (props) => {
                   <Tooltip title="Histórico">
                     <IconButton
                       onClick={(e) => {
-                        e.stopPropagation();
-                        abrirModalHistorico();
+                        if(!props.isTourPropostasOpen && !props.isTourDemandasOpen && !props.isTourCriarPropostasOpen) {
+                          e.stopPropagation();
+                          abrirModalHistorico();
+                        }
                       }}
                     >
                       <HistoryOutlinedIcon
+                        id="setimoDemandas"
                         className="delay-120 hover:scale-110 duration-300"
                         sx={{
                           color: "icon.main",

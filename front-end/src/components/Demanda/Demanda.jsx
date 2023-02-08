@@ -101,7 +101,7 @@ const Demanda = (props) => {
           {/* Lógica para mostrar o status da demanda somente caso o usuário seja o dono dela */}
           {parseInt(localStorage.getItem("usuarioId")) ==
             props.demanda?.solicitante?.id && (
-              <Box className={`items-center text-justify flex`}>
+              <Box id="oitavo" className={`items-center text-justify flex`}>
                 <Typography
                   fontSize={FontConfig.default}
                   sx={{ fontWeight: "600" }}
@@ -145,6 +145,7 @@ const Demanda = (props) => {
             props.demanda?.solicitante?.id ===
             parseInt(localStorage.getItem("usuarioId")) ? (
             <Button
+            id="setimo"
               onClick={(e) => {
                 e.stopPropagation();
                 abrirModalMotivoRecusa();

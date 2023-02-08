@@ -1,16 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  TextareaAutosize,
-  Paper,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -32,11 +23,15 @@ import NotificacaoService from "../../service/notificacaoService";
 import FontContext from "../../service/FontContext";
 
 const DetalhesDemanda = (props) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Variável hexadecimal para alterar a cor de certos componentes ao mudar o tema da página
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
-  const { mode } = useContext(ColorModeContext);
+
+  // Variável armazenando o tema da página (light / dark)
+  const { temaPagina } = useContext(ColorModeContext);
   const inputFile = useRef(null);
 
   const [tituloDemanda, setTituloDemanda] = useState(props.dados.titulo);
@@ -61,19 +56,20 @@ const DetalhesDemanda = (props) => {
   const [motivoRecusaDemanda, setMotivoRecusaDemanda] = useState("");
   const [modoModalRecusa, setModoModalRecusa] = useState("recusa");
 
-  useEffect(() => {
-    if (mode === "dark") {
-      setCorFundoTextArea("#212121");
-    } else {
-      setCorFundoTextArea("#FFFF");
-    }
-  }, [mode]);
-
   const [editar, setEditar] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
 
   const navigate = useNavigate();
+
+  // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
+  useEffect(() => {
+    if (temaPagina === "dark") {
+      setCorFundoTextArea("#212121");
+    } else {
+      setCorFundoTextArea("#FFFF");
+    }
+  }, [temaPagina]);
 
   useEffect(() => {
     setTituloDemanda(props.dados.titulo);
@@ -274,7 +270,6 @@ const DetalhesDemanda = (props) => {
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
-    console.log("Aaaaaaaaaaa")
     let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
     let contagem = 0;
 
@@ -295,7 +290,6 @@ const DetalhesDemanda = (props) => {
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
     if (demandaEmEdicao) {
-      console.log('aaaaaaa')
       const demandaAtualizada = {
         id: props.dados.id,
         titulo: tituloDemanda,
@@ -309,7 +303,7 @@ const DetalhesDemanda = (props) => {
         gerente: props.dados.gerente,
         anexo: props.dados.anexo,
         departamento: props.dados?.departamento,
-        analista: props.dados?.analista
+        analista: props.dados?.analista,
       };
 
       const anexosVelhos = [];
@@ -429,7 +423,7 @@ const DetalhesDemanda = (props) => {
       forum: dados.forum,
       analista: props.usuario,
       gerente: props.dados.gerente,
-      departamento: props.dados.departamento
+      departamento: props.dados.departamento,
     };
 
     DemandaService.put(demandaAtualizada, []).then((response) => {
@@ -481,14 +475,6 @@ const DetalhesDemanda = (props) => {
         )
       );
     }
-  };
-
-  const aceitarDemandaGerente = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(
-      (response) => {
-        navegarHome(1);
-      }
-    );
   };
 
   function base64ToArrayBuffer(base64) {
@@ -626,6 +612,7 @@ const DetalhesDemanda = (props) => {
         textoBotao="aceitar"
       />
       <Box
+        id="primeiro"
         className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
         sx={{ width: "55rem" }}
       >
@@ -638,6 +625,7 @@ const DetalhesDemanda = (props) => {
             props.dados.status == "BACKLOG_EDICAO" &&
             !editar ? (
             <ModeEditOutlineOutlinedIcon
+              id="terceiro"
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}

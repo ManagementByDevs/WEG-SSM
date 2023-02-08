@@ -25,6 +25,8 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaModoVisualizacao/DemandaGerenciaModoVisualizacao";
 import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/PautaAtaModoVisualizacao";
 
+import ChatMinimizado from "../../components/ChatMinimizado/ChatMinimizado";
+
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import ForumService from "../../service/forumService";
@@ -78,6 +80,15 @@ const HomeGerencia = () => {
       },
     },
     {
+      selector: "#nonoDemandas",
+      content:
+        "Clicando aqui você pode alterar o modo de visualização para tabela ou cards",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
       selector: "#quintoDemandas",
       content: "Aqui pode iniciar o processo de criação de uma nova demanda",
       style: {
@@ -86,9 +97,26 @@ const HomeGerencia = () => {
       },
     },
     {
-      selector: "#sextaDemandas",
+      selector: "#sextoDemandas",
       content:
         "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#oitavoDemandas",
+      content: "Nesta área você pode visualizar o status da demanda",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#setimoDemandas",
+      content:
+        "Clicando aqui você pode ver o histórico de alterações da demanda",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -98,7 +126,8 @@ const HomeGerencia = () => {
   const stepsCriarPropostas = [
     {
       selector: "#primeiroCriarPropostas",
-      content: "This is my first step",
+      content:
+        "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes e/ou criar uma proposta",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -106,7 +135,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#segundoCriarPropostas",
-      content: "This is my first step",
+      content: "Nesta área você pode visualizar o status da demanda",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -114,7 +143,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#terceiroCriarPropostas",
-      content: "This is my first step",
+      content: "Clique aqui para ver o histórico de alterações da demanda",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -124,7 +153,8 @@ const HomeGerencia = () => {
   const stepsPropostas = [
     {
       selector: "#primeiroPropostas",
-      content: "This is my first step",
+      content:
+        "Nesta parte fica as propostas, podendo clicar em uma proposta para ver mais detalhes.",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -132,15 +162,17 @@ const HomeGerencia = () => {
     },
     {
       selector: "#segundoPropostas",
-      content: "This is my first step",
+      content:
+        "Clicando aqui você pode abrir o chat com o solicitante da demanda",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
       },
     },
     {
-      selector: "#terceiroPropostas",
-      content: "This is my first step",
+      selector: "#setimoDemandas",
+      content:
+        "Clicando aqui você pode ver o histórico de alterações da proposta",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -150,7 +182,8 @@ const HomeGerencia = () => {
   const stepsPautas = [
     {
       selector: "#primeiroPautas",
-      content: "This is my first step",
+      content:
+        "Nesta parte fica as pautas, podendo clicar em uma pauta para ver mais detalhes.",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -158,15 +191,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#segundoPautas",
-      content: "This is my first step",
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiroPautas",
-      content: "This is my first step",
+      content: "Clicando aqui você pode excluir a pauta",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -176,23 +201,8 @@ const HomeGerencia = () => {
   const stepsAtas = [
     {
       selector: "#primeiroAtas",
-      content: "This is my first step",
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoAtas",
-      content: "This is my first step",
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiroAtas",
-      content: "This is my first step",
+      content:
+        "Nesta parte fica as atas, podendo clicar em uma ata para ver mais detalhes",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -740,6 +750,8 @@ const HomeGerencia = () => {
 
   return (
     <FundoComHeader>
+      {/* <ChatMinimizado /> */}
+      {/* Help Tour's */}
       <Tour
         steps={stepsDemandas}
         isOpen={isTourDemandasOpen}
@@ -884,7 +896,7 @@ const HomeGerencia = () => {
                   />
                 )}
               </TabList>
-              <Box className="absolute right-0 top-2">
+              <Box id="nonoDemandas" className="absolute right-0 top-2">
                 {nextModoVisualizacao == "TABLE" ? (
                   <Tooltip title="Visualização em tabela">
                     <IconButton
@@ -1054,15 +1066,41 @@ const HomeGerencia = () => {
             </Box>
 
             {/* Container para o conteúdo das abas */}
-            <Box className="mt-6">
+            <Box className="mt-6" id="sextoDemandas">
               {/* Valores para as abas selecionadas */}
               <TabPanel sx={{ padding: 0 }} value="1">
                 <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
-                <DemandaGerenciaModoVisualizacao
-                  listaDemandas={listaItens}
-                  onDemandaClick={verDemanda}
-                  nextModoVisualizacao={nextModoVisualizacao}
-                />
+                {isTourDemandasOpen ? (
+                  <DemandaGerencia
+                    key={1}
+                    isTourDemandasOpen={isTourDemandasOpen}
+                    dados={{
+                      analista: {},
+                      beneficios: [{}],
+                      buSolicitante: {},
+                      busBeneficiados: [{}],
+                      departamento: {},
+                      frequencia: "",
+                      gerente: {},
+                      tamanho: "",
+                      id: 0,
+                      titulo: "Demanda para Tour",
+                      problema: "",
+                      proposta: "",
+                      motivoRecusa: "",
+                      status: "BACKLOG_REVISAO",
+                      data: "",
+                      solicitante: { nome: "Solicitante Tour" },
+                    }}
+                    tipo="demanda"
+                  />
+                ) : (
+                  <DemandaGerenciaModoVisualizacao
+                    listaDemandas={listaItens}
+                    onDemandaClick={verDemanda}
+                    nextModoVisualizacao={nextModoVisualizacao}
+                  />
+                )}
               </TabPanel>
               {isGerente && (
                 <>
@@ -1111,13 +1149,7 @@ const HomeGerencia = () => {
                       nextModoVisualizacao={nextModoVisualizacao}
                     />
                   </TabPanel>
-                  <TabPanel
-                    sx={{ padding: 0 }}
-                    value="5"
-                    onClick={() => {
-                      navigate("/detalhes-ata", {});
-                    }}
-                  >
+                  <TabPanel sx={{ padding: 0 }} value="5">
                     <Ajuda onClick={() => setIsTourAtasOpen(true)} />
                     <PautaAtaModoVisualizacao
                       listaPautas={pautas}

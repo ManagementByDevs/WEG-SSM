@@ -92,6 +92,10 @@ public class Demanda {
     @JoinColumn(name = "id_demanda")
     private List<Anexo> anexo;
 
+    @OneToMany
+    @JoinColumn(name = "demanda_id")
+    private List<Historico> historicoDemanda;
+
     // Cadastro de anexos
 
     /**

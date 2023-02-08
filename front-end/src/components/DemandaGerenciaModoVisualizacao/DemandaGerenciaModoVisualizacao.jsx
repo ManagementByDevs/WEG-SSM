@@ -257,7 +257,6 @@ const DemandaTable = ({
 const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
   return (
     <Box
-      id="sextaDemandas"
       sx={{
         display: "grid",
         gap: "1rem",

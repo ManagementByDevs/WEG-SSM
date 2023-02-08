@@ -18,6 +18,10 @@ import { useNavigate } from "react-router-dom";
 
 import FontContext from "../../service/FontContext";
 
+import Ajuda from "../../components/Ajuda/Ajuda";
+
+import Tour from "reactour";
+
 const Escopos = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -100,6 +104,49 @@ const Escopos = () => {
     }
   };
 
+   // useState para abrir e fechar o tour
+   const [isTourOpen, setIsTourOpen] = useState(false);
+
+   // Passos do tour
+   const stepsTour = [
+     {
+       selector: "#segundo",
+       content:
+         "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
+       style: {
+         backgroundColor: "#DCDCDC",
+         color: "#000000",
+       },
+     },
+     {
+      selector: "#primeiro",
+      content:
+        "Aqui fica os escopos criados automaticamente, em cada escopo é possível abrir novamente para edição. É criado um escopo para cada projeto que você abre e não finaliza.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+     {
+       selector: "#quarto",
+       content:
+         "Nesta área você consegue visualizar qual a porcentagem preenchida do formulário.",
+       style: {
+         backgroundColor: "#DCDCDC",
+         color: "#000000",
+       },
+     },
+     {
+       selector: "#terceiro",
+       content:
+         "Clicando na lixeira você exclui o escopo.",
+       style: {
+         backgroundColor: "#DCDCDC",
+         color: "#000000",
+       },
+     },
+   ];
+
   return (
     <FundoComHeader>
       {/* Modal de confirmação de exclusão de escopo */}
@@ -113,6 +160,15 @@ const Escopos = () => {
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
       />
+      <Tour
+        steps={stepsTour}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+      <Ajuda onClick={() => setIsTourOpen(true)} />
       <Box className="p-2">
         <Caminho />
         {/* Div pegando width inteira para fazer o espaçamento das bordas */}
@@ -123,6 +179,7 @@ const Escopos = () => {
             <Box className="flex gap-4 w-2/4">
               {/* Input de pesquisa */}
               <Box
+              id="segundo"
                 className="flex justify-between border px-3 py-1"
                 sx={{ backgroundColor: "input.main", width: "50%" }}
               >
@@ -157,13 +214,14 @@ const Escopos = () => {
               </Box>
             </Box>
             <Box
+              id="primeiro"
               className="mt-6 grid gap-4"
               sx={{
                 gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
               }}
             >
               {escopos?.map((escopo, index) => {
-                return <Escopo key={index} escopo={escopo} index={index} onclick={() => { openEscopo(escopo) }} handleDelete={onTrashCanClick} />;
+                return <Escopo key={index} isTourOpen={isTourOpen} escopo={escopo} index={index} onclick={() => { openEscopo(escopo) }} handleDelete={onTrashCanClick} />;
               })}
             </Box>
 
