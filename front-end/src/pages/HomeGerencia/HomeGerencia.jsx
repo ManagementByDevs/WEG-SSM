@@ -78,6 +78,15 @@ const HomeGerencia = () => {
       },
     },
     {
+      selector: "#nonoDemandas",
+      content:
+        "Clicando aqui você pode alterar o modo de visualização para tabela ou cards",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
       selector: "#quintoDemandas",
       content: "Aqui pode iniciar o processo de criação de uma nova demanda",
       style: {
@@ -816,7 +825,7 @@ const HomeGerencia = () => {
                   />
                 )}
               </TabList>
-              <Box className="absolute right-0 top-2">
+              <Box id="nonoDemandas" className="absolute right-0 top-2">
                 {nextModoVisualizacao == "TABLE" ? (
                   <Tooltip title="Visualização em tabela">
                     <IconButton
@@ -993,6 +1002,7 @@ const HomeGerencia = () => {
                 {isTourDemandasOpen ? (
                   <DemandaGerencia
                     key={1}
+                    isTourDemandasOpen={isTourDemandasOpen}
                     dados={{
                       analista: {},
                       beneficios: [{}],
@@ -1029,6 +1039,7 @@ const HomeGerencia = () => {
                       {isTourCriarPropostasOpen ? (
                         <DemandaGerencia
                           key={1}
+                          isTourCriarPropostasOpen={isTourCriarPropostasOpen}
                           dados={{
                             analista: {},
                             beneficios: [{}],
@@ -1080,6 +1091,7 @@ const HomeGerencia = () => {
                       {isTourPropostasOpen ? (
                         <DemandaGerencia
                           key={1}
+                          isTourPropostasOpen={isTourPropostasOpen}
                           dados={{
                             titulo: "Proposta Tour",
                             status: "ASSERSSMENT",

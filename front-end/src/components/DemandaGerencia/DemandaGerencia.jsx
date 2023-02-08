@@ -88,11 +88,12 @@ const DemandaGerencia = (props) => {
           </Box>
 
           {/* Status do componente */}
-          <Box id="segundoCriarPropostas" className="w-1/4 h-full">
+          <Box className="w-1/4 h-full">
             <Box
-              id="oitavoDemandas"
-              className="flex items-center gap-2 justify-end"
+              className="flex items-center justify-end"
             >
+              <Box id="segundoCriarPropostas">
+              <Box id="oitavoDemandas" className="flex items-center gap-2">
               <Typography fontSize={FontConfig.medium} fontWeight="600">
                 {formatarStatus(props.dados.status)}
               </Typography>
@@ -104,6 +105,8 @@ const DemandaGerencia = (props) => {
                   backgroundColor: getCorStatus(),
                 }}
               ></Box>
+              </Box>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -186,8 +189,10 @@ const DemandaGerencia = (props) => {
                   <Tooltip title="Histórico">
                     <IconButton
                       onClick={(e) => {
-                        e.stopPropagation();
-                        abrirModalHistorico();
+                        if(!props.isTourPropostasOpen && !props.isTourDemandasOpen && !props.isTourCriarPropostasOpen) {
+                          e.stopPropagation();
+                          abrirModalHistorico();
+                        }
                       }}
                     >
                       <HistoryOutlinedIcon
