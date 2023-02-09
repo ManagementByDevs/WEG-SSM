@@ -112,7 +112,7 @@ const DemandaTable = ({
           motivoRecusa={demandaSelecionada?.motivoRecusa}
         />
       )}
-      <Table className="mb-8" sx={{ width: "100%" }}>
+      <Table className="mb-8 table-fixed" sx={{ width: "100%" }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-3 w-1/10">
@@ -145,10 +145,10 @@ const DemandaTable = ({
               }}
             >
               <td className="text-center p-3" title={row.id}>
-                <Typography fontSize={FontConfig.medium}>{row.id}</Typography>
+                <Typography className="truncate" fontSize={FontConfig.medium}>{row.id}</Typography>
               </td>
               <td className="text-left p-3" title={row.titulo}>
-                <Typography fontSize={FontConfig.medium}>
+                <Typography className="truncate" fontSize={FontConfig.medium}>
                   {row.titulo}
                 </Typography>
               </td>
@@ -164,7 +164,7 @@ const DemandaTable = ({
                       }}
                     />
                     <Box className="w-full flex justify-between items-center">
-                      <Typography fontSize={FontConfig.medium}>
+                      <Typography className="truncate" fontSize={FontConfig.medium}>
                         {formatarNomeStatus(row.status)}
                       </Typography>
                       {row.status == "CANCELLED" ||
@@ -187,7 +187,7 @@ const DemandaTable = ({
                 </td>
               )}
               <td className="text-center p-3" title={DateService.getTodaysDateUSFormat(row.data)}>
-                <Typography fontSize={FontConfig.default}>
+                <Typography className="truncate" fontSize={FontConfig.default}>
                   {DateService.getTodaysDateUSFormat(row.data)}
                 </Typography>
               </td>

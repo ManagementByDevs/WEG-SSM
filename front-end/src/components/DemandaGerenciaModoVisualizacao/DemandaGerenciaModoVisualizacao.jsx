@@ -84,6 +84,7 @@ const DemandaTable = ({
     }
   };
 
+  // Formata o status da demanda para melhor leitura
   const formatarNomeStatus = (status) => {
     if (status == "BACKLOG_REVISAO") {
       return "Backlog";
@@ -92,6 +93,7 @@ const DemandaTable = ({
     }
   };
 
+  // Abre o histórico da demanda
   const abrirModalHistorico = () => {
     setModalHistorico(true);
   };
@@ -104,7 +106,7 @@ const DemandaTable = ({
           setOpen={setModalHistorico}
         />
       )}
-      <Paper sx={{ width: "100%" }} square>
+      <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
         <Table sx={{ width: "100%" }} className="table-fixed">
           <TableHead sx={{ width: "100%" }}>
             <TableRow
@@ -129,9 +131,7 @@ const DemandaTable = ({
                 <Typography fontSize={FontConfig.big}>Departamento</Typography>
               </th>
               <th className="text-left text-white p-3">
-                <Typography fontSize={FontConfig.big}>
-                  Gerente Resp.
-                </Typography>
+                <Typography fontSize={FontConfig.big}>Gerente Resp.</Typography>
               </th>
               <th className="text-left text-white p-3 ">
                 <Typography fontSize={FontConfig.big}>Status</Typography>

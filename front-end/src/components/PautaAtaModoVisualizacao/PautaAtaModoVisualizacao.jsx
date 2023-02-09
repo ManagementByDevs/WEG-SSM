@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 
 import {
   Box,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -81,7 +80,7 @@ const PautaTable = ({
   };
 
   return (
-    <Paper sx={{ width: "100%" }} square>
+    <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
       <Table sx={{ width: "100%" }} className="table-fixed">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
@@ -94,7 +93,7 @@ const PautaTable = ({
             <th className="text-left text-white p-3 width-3/10">
               <Typography fontSize={FontConfig.big}>Anal. Resp.</Typography>
             </th>
-            <th className="text-right text-white p-3 width-2/10">
+            <th className="text-center text-white p-3 width-2/10">
               <Typography fontSize={FontConfig.big}>Data</Typography>
             </th>
           </TableRow>
@@ -129,7 +128,7 @@ const PautaTable = ({
               </td>
               {!isAta ? (
                 <td
-                  className="flex justify-end text-right p-3"
+                  className="flex justify-center p-3"
                   title={getDataFormatado(
                     row.inicioDataReuniao,
                     row.fimDataReuniao
@@ -144,17 +143,19 @@ const PautaTable = ({
                       row.fimDataReuniao
                     )}
                   </Typography>
-                  <DeleteOutlineOutlinedIcon
-                    className="delay-120 hover:scale-110 duration-300 tabela-linha-pauta-icon"
-                    size="small"
-                    sx={{
-                      color: "icon.main",
-                      cursor: "pointer",
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  />
+                  <Tooltip title="Deletar">
+                    <DeleteOutlineOutlinedIcon
+                      className="delay-120 hover:scale-110 duration-300 tabela-linha-pauta-icon"
+                      size="small"
+                      sx={{
+                        color: "icon.main",
+                        cursor: "pointer",
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    />
+                  </Tooltip>
                 </td>
               ) : (
                 <td
