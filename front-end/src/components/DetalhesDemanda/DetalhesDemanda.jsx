@@ -73,6 +73,9 @@ const DetalhesDemanda = (props) => {
   const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
     useState(false);
 
+  // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
+  const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
+
   const navigate = useNavigate();
 
   // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
@@ -283,6 +286,10 @@ const DetalhesDemanda = (props) => {
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
+    if (!canSave()) {
+      setFeedbackFacaAlteracao(true);
+      return null;
+    }
     let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
     let contagem = 0;
 
@@ -300,8 +307,48 @@ const DetalhesDemanda = (props) => {
     }
   };
 
+  const checkIfBeneficiosChanged = () => {
+    // Se foi Adicionado um novo benefício
+    if (beneficiosNovos.length > 0 || beneficiosExcluidos.length > 0) return true;
+
+    return !beneficios.every((e, index) => {
+      return (
+        e.tipoBeneficio.toLowerCase() ==
+          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+        e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
+        e.moeda.toLowerCase() ==
+          props.dados.beneficios[index].moeda.toLowerCase() &&
+        e.memoriaCalculo.toLowerCase() ==
+          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+      );
+    });
+  };
+
+  // Função que determina se o usuário pode salvar a demanda ou não, se baseando se ele editou alguma coisa
+  const canSave = () => {
+    console.log(
+      checkIfBeneficiosChanged(),
+      tituloDemanda != props.dados.titulo,
+      problema != props.dados.problema,
+      proposta != props.dados.proposta,
+      frequencia != props.dados.frequencia
+    );
+    if (
+      checkIfBeneficiosChanged() ||
+      tituloDemanda != props.dados.titulo ||
+      problema != props.dados.problema ||
+      proposta != props.dados.proposta ||
+      frequencia != props.dados.frequencia
+    ) {
+      console.log("oi?");
+      return true;
+    }
+    return false;
+  };
+
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
+    console.log(beneficios, props.dados.beneficios);
     if (demandaEmEdicao) {
       const demandaAtualizada = {
         id: props.dados.id,
@@ -455,13 +502,11 @@ const DetalhesDemanda = (props) => {
     if (motivoRecusaDemanda != "") {
       setOpenModalRecusa(false);
       if (modoModalRecusa == "devolucao") {
-        DemandaService.putSemAnexos(
-          {
-            ...props.dados,
-            motivoRecusa: motivoRecusaDemanda,
-            status: "BACKLOG_EDICAO",
-          }
-        ).then((response) => {
+        DemandaService.putSemAnexos({
+          ...props.dados,
+          motivoRecusa: motivoRecusaDemanda,
+          status: "BACKLOG_EDICAO",
+        }).then((response) => {
           navegarHome(2);
         });
       } else {
@@ -593,6 +638,12 @@ const DetalhesDemanda = (props) => {
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
+      <Feedback
+        open={feedbackFacaAlteracao}
+        handleClose={() => setFeedbackFacaAlteracao(false)}
+        status={"erro"}
+        mensagem={"Faça alguma alteração para poder salvar!"}
+      />
       <Feedback
         open={feedbackComAnexoMesmoNome}
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}

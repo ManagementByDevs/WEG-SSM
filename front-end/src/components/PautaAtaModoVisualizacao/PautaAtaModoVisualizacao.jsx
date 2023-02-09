@@ -26,6 +26,10 @@ const PautaAtaModoVisualizacao = ({
   nextModoVisualizacao,
   isAta = false,
 }) => {
+  if (listaPautas.length == 0) {
+    return <NadaEncontrado />;
+  }
+
   if (nextModoVisualizacao == "TABLE")
     return (
       <PautaGrid
@@ -215,6 +219,36 @@ const PautaGrid = ({
           />
         );
       })}
+    </Box>
+  );
+};
+
+const NadaEncontrado = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
+      <Typography
+        fontSize={FontConfig.big}
+        sx={{ color: "text.secondary", mb: 1 }}
+      >
+        Nada encontrado
+      </Typography>
+      <Typography
+        fontSize={FontConfig.medium}
+        sx={{ color: "text.secondary", mb: 1 }}
+      >
+        Tente novamente mais tarde
+      </Typography>
     </Box>
   );
 };

@@ -29,6 +29,10 @@ const DemandaGerenciaModoVisualizacao = ({
   nextModoVisualizacao,
   isProposta = false,
 }) => {
+  if (listaDemandas.length == 0) {
+    return <NadaEncontrado />;
+  }
+
   if (nextModoVisualizacao == "TABLE")
     return (
       <DemandaGrid
@@ -72,6 +76,7 @@ const DemandaTable = ({
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
   // Controla o estado do modal de histórico da demanda
   const [modalHistorico, setModalHistorico] = useState(false);
 
@@ -176,10 +181,12 @@ const DemandaTable = ({
                 </td>
                 <td
                   className="text-left p-3 width-1/10"
-                  title={row.departamento ? row.departamento : "Não atribuído"}
+                  title={
+                    row.departamento ? row.departamento.nome : "Não atribuído"
+                  }
                 >
                   <Typography className="truncate" fontSize={FontConfig.medium}>
-                    {row.departamento ? row.departamento : "Não atribuído"}
+                    {row.departamento ? row.departamento.nome : "Não atribuído"}
                   </Typography>
                 </td>
                 <td
@@ -222,7 +229,9 @@ const DemandaTable = ({
                       className="visualizacao-tabela-gerencia-data truncate"
                       fontSize={FontConfig.default}
                     >
-                      {DateService.getTodaysDateUSFormat(row.data)}
+                      {DateService.getTodaysDateUSFormat(
+                        DateService.getDateByMySQLFormat(row.data)
+                      )}
                     </Typography>
                     <Tooltip
                       title="Histórico"
@@ -291,6 +300,36 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
           />
         );
       })}
+    </Box>
+  );
+};
+
+const NadaEncontrado = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
+      <Typography
+        fontSize={FontConfig.big}
+        sx={{ color: "text.secondary", mb: 1 }}
+      >
+        Nada encontrado
+      </Typography>
+      <Typography
+        fontSize={FontConfig.medium}
+        sx={{ color: "text.secondary", mb: 1 }}
+      >
+        Tente novamente mais tarde
+      </Typography>
     </Box>
   );
 };
