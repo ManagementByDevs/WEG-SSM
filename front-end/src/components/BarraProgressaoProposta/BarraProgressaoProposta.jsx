@@ -8,12 +8,12 @@ import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCust
 import FormularioGeralProposta from "../FormularioGeralProposta/FormularioGeralProposta";
 import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEscopoProposta";
 
-import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import ForumService from "../../service/forumService";
 import BUService from "../../service/buService";
 
 import FontContext from "../../service/FontContext";
 import beneficioService from "../../service/beneficioService";
+import propostaService from "../../service/propostaService";
 
 const BarraProgressaoProposta = (props) => {
   // Context para alterar o tamanho da fonte
@@ -193,39 +193,33 @@ const BarraProgressaoProposta = (props) => {
   // Variável para guardar os custos 
   const [custos, setCustos] = useState([
     {
-      despesas: [
+      custos: [
         {
           tipoDespesa: "",
           perfilDespesa: "",
           periodoExecucao: "",
           horas: "",
-          valorHora: "",
-          total: "",
-          visible: true,
-        },
+          valorHora: ""
+        }
       ],
       ccs: [
         {
           codigo: "",
-          porcentagem: "",
-          visible: true,
-        },
-      ],
-      visible: true,
-    },
+          porcentagem: ""
+        }
+      ]
+    }
   ]);
 
   const setDespesas = (index) => {
     let custosNovos = [...custos];
 
-    custosNovos[index].despesas.push({
+    custosNovos[index].custos.push({
       tipoDespesa: "",
       perfilDespesa: "",
       periodoExecucao: "",
       horas: "",
-      valorHora: "",
-      total: "",
-      visible: true,
+      valorHora: ""
     });
 
     setCustos(custosNovos);
@@ -235,18 +229,26 @@ const BarraProgressaoProposta = (props) => {
     let custosNovos = [...custos];
     custosNovos[index].ccs.push({
       codigo: "",
-      porcentagem: "",
-      visible: true,
+      porcentagem: ""
     });
     setCustos(custosNovos);
   }
 
+  /** Função usada para excluir uma tabela de custos, usada como prop do formulário de custos */
+  const deletarTabelaCustos = (index) => {
+    let custosNovos = [...custos];
+    custosNovos.splice(index, 1);
+    setCustos(custosNovos);
+  }
+
+  /** Função usada para excluir uma linha de custo de uma tabela de custos, usada como prop do formulário de custos */
   const deletarLinhaCustos = (index, indexCusto) => {
     let custosNovos = [...custos];
-    custosNovos[indexCusto].despesas.splice(index, 1);
+    custosNovos[indexCusto].custos.splice(index, 1);
     setCustos(custosNovos);
   };
 
+  /** Função usada para excluir uma linha de CC de uma tabela de custos, usada como prop do formulário de custos */
   const deletarLinhaCCs = (index, indexCusto) => {
     let custosNovos = [...custos];
     custosNovos[indexCusto].ccs.splice(index, 1);
@@ -260,40 +262,46 @@ const BarraProgressaoProposta = (props) => {
     }
   }
 
+  const criarProposta = () => {
+    excluirBeneficios();
+
+    const propostaFinal = {
+      demanda: dadosDemanda,
+      titulo: dadosDemanda.titulo,
+      status: "ASSESSMENT_APROVACAO",
+      problema: dadosDemanda.problema,
+      proposta: dadosDemanda.proposta,
+      frequencia: dadosDemanda.frequencia,
+      solicitante: dadosDemanda.solicitante,
+      analista: dadosDemanda.analista,
+      gerente: dadosDemanda.gerente,
+      buSolicitante: dadosDemanda.buSolicitante,
+      busBeneficiadas: dadosDemanda.busBeneficiadas,
+      data: dadosDemanda.data,
+      departamento: dadosDemanda.departamento,
+      forum: dadosDemanda.forum,
+      secaoTI: dadosDemanda.secaoTI,
+      tamanho: dadosDemanda.tamanho,
+      beneficios: formatarBeneficios(listaBeneficios),
+      tabelaCustos: custos,
+      responsaveisNegocio: gerais.responsaveisNegocio,
+      inicioExecucao: gerais.periodoExecucacaoInicio,
+      fimExecucao: gerais.periodoExecucacaoFim,
+      paybackValor: gerais.qtdPaybackSimples,
+      paybackTipo: gerais.unidadePaybackSimples,
+      codigoPPM: gerais.ppm,
+      linkJira: gerais.linkJira
+    }
+
+    propostaService.post(propostaFinal, dadosDemanda.anexo).then((response) => {
+      console.log(response);
+    });
+  }
+
   // UseEffect para criação da proposta
   useEffect(() => {
     if (open) {
-
-      let listaNova = [];
-      for (const responsavel of gerais.responsaveisNegocio) {
-        ResponsavelNegocioService.post(responsavel).then((response) => {
-          listaNova.push(response);
-        })
-      }
-
-      excluirBeneficios();
-
-      const propostaFinal = {
-        demanda: dadosDemanda,
-        titulo: dadosDemanda.titulo,
-        status: "ASSESSMENT_APROVACAO",
-        problema: dadosDemanda.problema,
-        proposta: dadosDemanda.proposta,
-        frequencia: dadosDemanda.frequencia,
-        anexo: dadosDemanda.anexo,
-        solicitante: dadosDemanda.solicitante,
-        analista: dadosDemanda.analista,
-        gerente: dadosDemanda.gerente,
-        buSolicitante: dadosDemanda.buSolicitante,
-        busBeneficiadas: dadosDemanda.busBeneficiadas,
-        data: dadosDemanda.data,
-        departamento: dadosDemanda.departamento,
-        forum: dadosDemanda.forum,
-        secaoTI: dadosDemanda.secaoTI,
-        tamanho: dadosDemanda.tamanho,
-        responsaveisNegocio: listaNova,
-        beneficios: formatarBeneficios(listaBeneficios)
-      }
+      criarProposta();
     }
   }, [open]);
 
@@ -347,6 +355,7 @@ const BarraProgressaoProposta = (props) => {
           setCcs={setCcs}
           deletarLinhaCustos={deletarLinhaCustos}
           deletarLinhaCCs={deletarLinhaCCs}
+          deletarTabelaCustos={deletarTabelaCustos}
         />
       )}
       {activeStep == 3 && (
@@ -372,7 +381,7 @@ const BarraProgressaoProposta = (props) => {
         <Button
           color="primary"
           variant="contained"
-          onClick={handleClick}
+          onClick={criarProposta}
           sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >

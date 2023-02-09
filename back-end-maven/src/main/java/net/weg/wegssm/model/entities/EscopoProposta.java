@@ -1,8 +1,10 @@
 package net.weg.wegssm.model.entities;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -111,4 +113,19 @@ public class EscopoProposta {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_escopo_proposta")
     private List<Anexo> anexo;
+
+    /**
+     * Função para adicionar anexos em um escopo
+     */
+    public void setAnexos(List<MultipartFile> files) {
+        List<Anexo> listaAnexos = new ArrayList<>();
+        try {
+            for (MultipartFile file : files) {
+                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+            }
+            this.anexo = listaAnexos;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

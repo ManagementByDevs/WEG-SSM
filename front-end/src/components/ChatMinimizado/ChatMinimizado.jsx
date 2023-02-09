@@ -91,7 +91,7 @@ const ChatMinimizado = (props) => {
       >
         {/* Nome do chat */}
         <Typography color="#FFF" fontSize={FontConfig.default} fontWeight="600">
-          NOME DO CHAT
+          {usuarios[indexUsuario].nome}
         </Typography>
         {/* Container para os ícones do cabeçalho */}
         <Box>
@@ -118,7 +118,7 @@ const ChatMinimizado = (props) => {
                   setTamanhoChatMinimizado(aparecer);
                   setTimeout(() => {
                     setMinimizarChatMinimizado(false);
-                  }, 750);
+                  }, 780);
                 }}
               />
             </Tooltip>

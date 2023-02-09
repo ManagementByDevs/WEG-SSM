@@ -2,8 +2,7 @@ package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
-import net.weg.wegssm.model.service.PropostaService;
-import net.weg.wegssm.model.service.UsuarioService;
+import net.weg.wegssm.model.service.*;
 import net.weg.wegssm.util.PropostaUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +26,11 @@ public class PropostaController {
 
     private PropostaService propostaService;
     private UsuarioService usuarioService;
+
+    private ResponsavelNegocioService responsavelNegocioService;
+    private TabelaCustoService tabelaCustoService;
+    private CustoService custoService;
+    private CCsService ccsService;
 
     /**
      * Método GET para listar todas as propostas
@@ -3939,6 +3943,20 @@ public class PropostaController {
         proposta.setAnexos(files);
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
+
+        for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
+            responsavelNegocioService.save(responsavelNegocio);
+        }
+
+        for (TabelaCusto tabelaCusto : proposta.getTabelaCustos()) {
+            for (Custo custo : tabelaCusto.getCustos()) {
+                custoService.save(custo);
+            }
+            for (CC cc : tabelaCusto.getCcs()) {
+                ccsService.save(cc);
+            }
+            tabelaCustoService.save(tabelaCusto);
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
     }

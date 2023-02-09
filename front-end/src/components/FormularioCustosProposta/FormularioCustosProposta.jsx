@@ -3,8 +3,6 @@ import { Box, Button, Typography } from "@mui/material";
 
 import Custos from "../Custos/Custos";
 
-import FontConfig from "../../service/FontConfig";
-
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { useEffect } from "react";
 
@@ -13,11 +11,9 @@ import FontContext from "../../service/FontContext";
 const FormularioCustosProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   const deletarCustos = (index) => {
-    let aux = [...props.custos];
-    aux[index].visible = false;
-    props.setCustos(aux);
+    props.deletarTabelaCustos(index);
   };
 
 
@@ -27,8 +23,8 @@ const FormularioCustosProposta = (props) => {
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos.length; i++) {
-      for (let j = 0; j < props.custos[i].despesas.length; j++) {
-        aux += props.custos[i].despesas[j].horas * 1;
+      for (let j = 0; j < props.custos[i].custos.length; j++) {
+        aux += props.custos[i].custos[j].horas * 1;
       }
     }
     setHorasTotais(aux);
@@ -37,8 +33,8 @@ const FormularioCustosProposta = (props) => {
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos.length; i++) {
-      for (let j = 0; j < props.custos[i].despesas.length; j++) {
-        aux += props.custos[i].despesas[j].total * 1;
+      for (let j = 0; j < props.custos[i].custos.length; j++) {
+        aux += props.custos[i].custos[j].total * 1;
       }
     }
     setValorTotal(aux.toFixed(2));
@@ -74,25 +70,21 @@ const FormularioCustosProposta = (props) => {
             props.setCustos([
               ...props.custos,
               {
-                despesas: [
+                custos: [
                   {
                     tipoDespesa: "",
                     perfilDespesa: "",
                     periodoExecucao: "",
                     horas: "",
-                    valorHora: "",
-                    total: "",
-                    visible: true,
+                    valorHora: ""
                   },
                 ],
                 ccs: [
                   {
                     codigo: "",
-                    porcentagem: "",
-                    visible: true,
+                    porcentagem: ""
                   },
                 ],
-                visible: true,
               },
             ]);
           }}
@@ -104,20 +96,18 @@ const FormularioCustosProposta = (props) => {
       <Box>
         {props.custos?.map((custo, index) => {
           return (
-            custo.visible && (
-              <Custos
-                key={index}
-                index={index}
-                dados={custo}
-                deletarCustos={deletarCustos}
-                setDespesas={props.setDespesas}
-                setCcs={props.setCcs}
-                deletarLinhaCustos={props.deletarLinhaCustos}
-                deletarLinhaCCs={props.deletarLinhaCCs}
-                setCustos={props.setCustos}
-                custos={props.custos}
-              />
-            )
+            <Custos
+              key={index}
+              index={index}
+              dados={custo}
+              deletarCustos={deletarCustos}
+              setDespesas={props.setDespesas}
+              setCcs={props.setCcs}
+              deletarLinhaCustos={props.deletarLinhaCustos}
+              deletarLinhaCCs={props.deletarLinhaCCs}
+              setCustos={props.setCustos}
+              custos={props.custos}
+            />
           );
         })}
       </Box>
