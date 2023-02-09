@@ -20,10 +20,10 @@ public class Custo {
     private Long id;
 
     @Column
-    private String tipo;
+    private String tipoDespesa;
 
     @Column
-    private String perfil;
+    private String perfilDespesa;
 
     @Column
     private Long periodoExecucao;

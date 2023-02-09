@@ -11,6 +11,10 @@ public class TabelaCustoService {
 
     private TabelaCustoRepository tabelaCustoRepository;
 
+    public TabelaCustoService(TabelaCustoRepository tabelaCustoRepository) {
+        this.tabelaCustoRepository = tabelaCustoRepository;
+    }
+
     public List<TabelaCusto> findAll() {
         return tabelaCustoRepository.findAll();
     }

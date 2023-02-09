@@ -3537,6 +3537,17 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
+    @PutMapping("/aceite")
+    public ResponseEntity<Object> aceiteDemanda(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("demanda") String demandaJSON) {
+        DemandaUtil demandaUtil = new DemandaUtil();
+        Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
+
+        List<Anexo> anexos = demandaService.findById(demanda.getId()).get().getAnexo();
+        demanda.addAnexos(files, anexos);
+
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
+
     /**
      * Método DELETE para editar uma demanda, editando sua visibilidade para false
      */

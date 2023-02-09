@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import java.util.List;
 public class PropostaDTO {
 
     private Long id;
-    private String escopo;
     private String titulo;
     private Date inicioExecucao;
     private Date fimExecucao;
@@ -23,18 +23,9 @@ public class PropostaDTO {
     private String paybackTipo;
     private Long codigoPPM;
     private String linkJira;
-    private Boolean publicada;
-    private Boolean naoPublicada;
     private Status status;
-    private ParecerGerencia parecerComissao;
-    private String parecerInformacao;
-    private ParecerGerencia parecerDG;
-    private List<Custo> custo;
     private List<ResponsavelNegocio> responsavelNegocio;
     private Demanda demanda;
-    private Pauta pauta;
-    private Ata ata;
-    private List<Anexo> anexo;
 
     private String problema;
     private String proposta;
@@ -43,9 +34,12 @@ public class PropostaDTO {
     private String secaoTI;
     private Bu buSolicitante;
     private List<Bu> busBeneficiadas;
+    private List<Beneficio> beneficios;
     private Usuario solicitante;
     private Usuario gerente;
     private Usuario analista;
     private Forum forum;
     private Departamento departamento;
+    private List<TabelaCusto> tabelaCustos;
+    private List<Anexo> anexo;
 }

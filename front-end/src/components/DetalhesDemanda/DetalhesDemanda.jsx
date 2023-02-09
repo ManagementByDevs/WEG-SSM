@@ -426,7 +426,7 @@ const DetalhesDemanda = (props) => {
       departamento: props.dados.departamento,
     };
 
-    DemandaService.put(demandaAtualizada, []).then((response) => {
+    DemandaService.put(demandaAtualizada, dados.anexos).then((response) => {
       navigate("/");
     });
     NotificacaoService.post(

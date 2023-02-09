@@ -9,6 +9,10 @@ public class CCsService {
 
     private CCsRepository ccsRepository;
 
+    public CCsService(CCsRepository ccsRepository) {
+        this.ccsRepository = ccsRepository;
+    }
+
     public CC save(CC cc) {
         return ccsRepository.save(cc);
     }
