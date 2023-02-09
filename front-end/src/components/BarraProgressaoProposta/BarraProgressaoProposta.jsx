@@ -262,6 +262,53 @@ const BarraProgressaoProposta = (props) => {
     }
   }
 
+  /** Função para formatar a lista de responsáveis do negócio, retirando o atributo "visible" */
+  const formatarResponsaveisNegocio = () => {
+    let listaNova = [];
+    for (const responsavelNegocio of gerais.responsaveisNegocio) {
+      listaNova.push({ nome: responsavelNegocio.nome, area: responsavelNegocio.area });
+    }
+    return listaNova;
+  }
+
+  /** Função para formatar os custos dentro de cadas tabela de custos (retirar o atributo "total") */
+  const formatarCustos = () => {
+    let listaNova = [];
+    for (const tabelaCustos of custos) {
+      let listaCustos = [];
+      for (const custo of tabelaCustos.custos) {
+        listaCustos.push({ tipoDespesa: custo.tipoDespesa, perfilDespesa: custo.perfilDespesa, periodoExecucao: custo.periodoExecucao, horas: custo.horas, valorHora: custo.valorHora })
+      }
+
+      let listaCCs = [...tabelaCustos.ccs];
+      listaNova.push({ custos: listaCustos, ccs: listaCCs });
+    }
+    return listaNova;
+  }
+
+  /** Função para filtrar a lista de anexos totais e retornar somente os anexos já salvos no banco */
+  const pegarAnexosSalvos = () => {
+    let listaNova = [];
+    for (const anexo of dadosDemanda.anexo) {
+      if(anexo.id) {
+        listaNova.push(anexo);
+      }
+    }
+    console.log(listaNova);
+    return listaNova;
+  }
+
+  /** Função para filtrar a lista de anexos totais e retornar somente os anexos não salvos no banco */
+  const pegarAnexosNovos = () => {
+    let listaNova = [];
+    for (const anexo of dadosDemanda.anexo) {
+      if(!anexo.id) {
+        listaNova.push(anexo);
+      }
+    }
+    return listaNova;
+  }
+
   const criarProposta = () => {
     excluirBeneficios();
 
@@ -277,23 +324,23 @@ const BarraProgressaoProposta = (props) => {
       gerente: dadosDemanda.gerente,
       buSolicitante: dadosDemanda.buSolicitante,
       busBeneficiadas: dadosDemanda.busBeneficiadas,
-      data: dadosDemanda.data,
       departamento: dadosDemanda.departamento,
       forum: dadosDemanda.forum,
       secaoTI: dadosDemanda.secaoTI,
       tamanho: dadosDemanda.tamanho,
       beneficios: formatarBeneficios(listaBeneficios),
-      tabelaCustos: custos,
-      responsaveisNegocio: gerais.responsaveisNegocio,
+      tabelaCustos: formatarCustos(),
+      responsavelNegocio: formatarResponsaveisNegocio(),
       inicioExecucao: gerais.periodoExecucacaoInicio,
       fimExecucao: gerais.periodoExecucacaoFim,
       paybackValor: gerais.qtdPaybackSimples,
       paybackTipo: gerais.unidadePaybackSimples,
       codigoPPM: gerais.ppm,
-      linkJira: gerais.linkJira
+      linkJira: gerais.linkJira,
+      anexo: pegarAnexosSalvos()
     }
 
-    propostaService.post(propostaFinal, dadosDemanda.anexo).then((response) => {
+    propostaService.post(propostaFinal, pegarAnexosNovos()).then((response) => {
       console.log(response);
     });
   }

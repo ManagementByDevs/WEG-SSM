@@ -366,7 +366,7 @@ const FormularioGeralProposta = (props) => {
                           fontSize: FontConfig.default,
                         }}
                       >
-                        {anexo.name}
+                        {anexo.name || anexo.nome}
                       </Typography>
                       <IconButton
                         onClick={() =>

@@ -41,16 +41,16 @@ public class Proposta {
     @Column(nullable = false, length = 100)
     private String linkJira;
 
-    @Column(nullable = false)
+    @Column
     private Boolean publicada;
 
-    @Column(nullable = false)
+    @Column
     private Boolean naoPublicada;
 
     @Column(nullable = false)
     private Status status;
 
-    @Column(nullable = false)
+    @Column
     private Date data;
 
     @Column
@@ -88,6 +88,10 @@ public class Proposta {
     private byte[] escopo;
 
     // foreign keys
+
+    @OneToMany
+    @JoinColumn(name = "proposta_id")
+    private List<Beneficio> beneficios = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "bu_solicitante")
@@ -145,6 +149,17 @@ public class Proposta {
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();
+        try {
+            for (MultipartFile file : files) {
+                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+            }
+            this.anexo = listaAnexos;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void addAnexos(List<MultipartFile> files, List<Anexo> listaAnexos) {
         try {
             for (MultipartFile file : files) {
                 listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));

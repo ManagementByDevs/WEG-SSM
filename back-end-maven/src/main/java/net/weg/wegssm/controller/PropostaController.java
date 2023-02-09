@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,8 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/proposta")
-@CrossOrigin(origins = "localhost:3000")
 public class PropostaController {
 
     private PropostaService propostaService;
@@ -3940,7 +3941,7 @@ public class PropostaController {
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
 
-        proposta.setAnexos(files);
+        proposta.addAnexos(files, proposta.getAnexo());
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
 
@@ -3968,6 +3969,20 @@ public class PropostaController {
 
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
+
+        for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
+            responsavelNegocioService.save(responsavelNegocio);
+        }
+
+        for (TabelaCusto tabelaCusto : proposta.getTabelaCustos()) {
+            for (Custo custo : tabelaCusto.getCustos()) {
+                custoService.save(custo);
+            }
+            for (CC cc : tabelaCusto.getCcs()) {
+                ccsService.save(cc);
+            }
+            tabelaCustoService.save(tabelaCusto);
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
     }

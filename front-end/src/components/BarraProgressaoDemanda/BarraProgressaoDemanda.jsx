@@ -210,8 +210,10 @@ const BarraProgressaoDemanda = (props) => {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-    if (escreveu) {
+    if (paginaDados.titulo !== "" && paginaDados.problema !== "" && paginaDados.proposta !== "" && paginaDados.frequencia !== "") {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      setFeedbackDadosFaltantes(true);
     }
     setSkipped(newSkipped);
   };

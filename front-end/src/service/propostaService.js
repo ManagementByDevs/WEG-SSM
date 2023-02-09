@@ -46,7 +46,7 @@ class PropostaService {
         if (arquivos.length > 0) {
             return (await axios.post(`/proposta/`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
         } else {
-            return (await axios.post(`/proposta/sem-arquivos/`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+            return (await axios.post(`/proposta/sem-arquivos/`, form, { headers: { "Content-Type": "multipart/form-data", 'Access-Control-Allow-Origin': '*' } })).data;
         }
     }
 

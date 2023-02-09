@@ -115,6 +115,17 @@ public class Demanda {
         }
     }
 
+    public void addAnexos(List<MultipartFile> files, List<Anexo> listaAnexos) {
+        try {
+            for (MultipartFile file : files) {
+                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+            }
+            this.anexo = listaAnexos;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public void setAnexosWithoutMultiparFile(List<Anexo> files) {
         this.anexo = files;
     }
