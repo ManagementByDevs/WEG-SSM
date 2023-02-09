@@ -82,19 +82,19 @@ const PautaTable = ({
 
   return (
     <Paper sx={{ width: "100%" }} square>
-      <Table sx={{ width: "100%" }}>
+      <Table sx={{ width: "100%" }} className="table-fixed">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
-            <th className="text-white p-2 w-1/10">
-              <Typography fontSize={FontConfig.big}>N. Sequencial</Typography>
+            <th className="text-white p-2 width-75/1000">
+              <Typography fontSize={FontConfig.big}>Num. Seq.</Typography>
             </th>
-            <th className="text-left text-white p-3 w-2/6">
+            <th className="text-left text-white p-3">
               <Typography fontSize={FontConfig.big}>Comissão</Typography>
             </th>
-            <th className="text-left text-white p-3 w-1/6">
+            <th className="text-left text-white p-3 width-3/10">
               <Typography fontSize={FontConfig.big}>Anal. Resp.</Typography>
             </th>
-            <th className="text-right text-white p-3">
+            <th className="text-right text-white p-3 width-2/10">
               <Typography fontSize={FontConfig.big}>Data</Typography>
             </th>
           </TableRow>
@@ -113,17 +113,17 @@ const PautaTable = ({
               }}
             >
               <td className="text-center p-3" title={row.numeroSequencial}>
-                <Typography fontSize={FontConfig.medium}>
+                <Typography className="truncate" fontSize={FontConfig.medium}>
                   {row.numeroSequencial}
                 </Typography>
               </td>
               <td className="text-left p-3" title={row.comissao}>
-                <Typography fontSize={FontConfig.medium}>
+                <Typography className="truncate" fontSize={FontConfig.medium}>
                   {row.comissao}
                 </Typography>
               </td>
               <td className="text-left p-3" title={row.analista.nome}>
-                <Typography fontSize={FontConfig.medium}>
+                <Typography className="truncate" fontSize={FontConfig.medium}>
                   {row.analista.nome}
                 </Typography>
               </td>
@@ -136,7 +136,7 @@ const PautaTable = ({
                   )}
                 >
                   <Typography
-                    className="tabela-linha-pauta-data"
+                    className="tabela-linha-pauta-data truncate"
                     fontSize={FontConfig.medium}
                   >
                     {getDataFormatado(
@@ -146,10 +146,13 @@ const PautaTable = ({
                   </Typography>
                   <DeleteOutlineOutlinedIcon
                     className="delay-120 hover:scale-110 duration-300 tabela-linha-pauta-icon"
+                    size="small"
                     sx={{
                       color: "icon.main",
                       cursor: "pointer",
-                      fontSize: "30px",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
                     }}
                   />
                 </td>
@@ -161,7 +164,7 @@ const PautaTable = ({
                     row.fimDataReuniao
                   )}
                 >
-                  <Typography fontSize={FontConfig.medium}>
+                  <Typography className="truncate" fontSize={FontConfig.medium}>
                     {getDataFormatado(
                       row.inicioDataReuniao,
                       row.fimDataReuniao

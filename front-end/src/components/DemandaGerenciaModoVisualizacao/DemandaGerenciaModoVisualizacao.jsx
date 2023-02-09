@@ -105,37 +105,43 @@ const DemandaTable = ({
         />
       )}
       <Paper sx={{ width: "100%" }} square>
-        <Table sx={{ width: "100%" }}>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "primary.main" }}>
-              <th className="text-white p-2 w-1/10">
+        <Table sx={{ width: "100%" }} className="table-fixed">
+          <TableHead sx={{ width: "100%" }}>
+            <TableRow
+              sx={{
+                backgroundColor: "primary.main",
+                minWidth: "75rem",
+                width: "100%",
+              }}
+            >
+              <th className="text-white p-2 width-75/1000">
                 <Typography fontSize={FontConfig.big}>
                   {!isProposta ? "Código" : "PPM"}
                 </Typography>
               </th>
-              <th className="text-left text-white p-3 w-2/6">
+              <th className="text-left text-white p-3 width-4/10">
                 <Typography fontSize={FontConfig.big}>Título</Typography>
               </th>
-              <th className="text-left text-white p-3 w-1/6">
+              <th className="text-left text-white p-3">
                 <Typography fontSize={FontConfig.big}>Solicitante</Typography>
               </th>
-              <th className="text-left text-white p-3 w-1/10">
+              <th className="text-left text-white p-3">
                 <Typography fontSize={FontConfig.big}>Departamento</Typography>
               </th>
-              <th className="text-left text-white p-3 w-1/6">
+              <th className="text-left text-white p-3">
                 <Typography fontSize={FontConfig.big}>
-                  Gerente Responsável
+                  Gerente Resp.
                 </Typography>
               </th>
-              <th className="text-left text-white p-3 w-1/10">
+              <th className="text-left text-white p-3 ">
                 <Typography fontSize={FontConfig.big}>Status</Typography>
               </th>
-              <th className="text-white p-3 w-1/12">
+              <th className="text-white p-3 width-75/1000">
                 <Typography fontSize={FontConfig.big}>Data</Typography>
               </th>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody sx={{ minWidth: "75rem", width: "100%" }}>
             {listaDemandas.map((row, index) => (
               <TableRow
                 className="cursor-pointer tabela-linha-demanda"
@@ -143,44 +149,49 @@ const DemandaTable = ({
                 key={index}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
+                  minWidth: "75rem",
+                  width: "100%",
                 }}
                 onClick={() => {
                   onDemandaClick(row);
                 }}
               >
-                <td className="text-center p-3" title={row.id}>
-                  <Typography fontSize={FontConfig.medium}>
+                <td className="text-center p-3 width-1/10" title={row.id}>
+                  <Typography className="truncate" fontSize={FontConfig.medium}>
                     {!isProposta ? row.id : row.codigoPPM}
                   </Typography>
                 </td>
-                <td className="text-left p-3" title={row.titulo}>
-                  <Typography fontSize={FontConfig.medium}>
+                <td className="text-left p-3 width-4/10" title={row.titulo}>
+                  <Typography className="truncate" fontSize={FontConfig.medium}>
                     {row.titulo}
                   </Typography>
                 </td>
-                <td className="text-left p-3" title={row.solicitante.nome}>
-                  <Typography fontSize={FontConfig.medium}>
+                <td
+                  className="text-left p-3 width-1/10"
+                  title={row.solicitante.nome}
+                >
+                  <Typography className="truncate" fontSize={FontConfig.medium}>
                     {row.solicitante.nome}
                   </Typography>
                 </td>
                 <td
-                  className="text-left p-3"
+                  className="text-left p-3 width-1/10"
                   title={row.departamento ? row.departamento : "Não atribuído"}
                 >
-                  <Typography fontSize={FontConfig.medium}>
+                  <Typography className="truncate" fontSize={FontConfig.medium}>
                     {row.departamento ? row.departamento : "Não atribuído"}
                   </Typography>
                 </td>
                 <td
-                  className="text-left p-3"
+                  className="text-left p-3 width-1/10"
                   title={row.gerente?.nome ? row.gerente.nome : "Não atribuído"}
                 >
-                  <Typography fontSize={FontConfig.medium}>
+                  <Typography className="truncate" fontSize={FontConfig.medium}>
                     {row.gerente?.nome ? row.gerente.nome : "Não atribuído"}
                   </Typography>
                 </td>
                 <td
-                  className="text-left p-3"
+                  className="text-left p-3 width-1/10"
                   title={formatarNomeStatus(row.status)}
                 >
                   <Box className="flex items-center gap-2 text-center">
@@ -193,45 +204,32 @@ const DemandaTable = ({
                       }}
                     />
                     <Box className="w-full flex justify-between items-center">
-                      <Typography fontSize={FontConfig.medium}>
+                      <Typography
+                        className="truncate"
+                        fontSize={FontConfig.medium}
+                      >
                         {formatarNomeStatus(row.status)}
                       </Typography>
                     </Box>
                   </Box>
                 </td>
                 <td
-                  className="flex justify-center items-center p-3 gap-2"
+                  className="p-3 width-1/10 "
                   title={DateService.getTodaysDateUSFormat(row.data)}
                 >
-                  <Typography
-                    className="visualizacao-tabela-gerencia-data"
-                    fontSize={FontConfig.default}
-                  >
-                    {DateService.getTodaysDateUSFormat(row.data)}
-                  </Typography>
-                  <Tooltip
-                    title="Histórico"
-                    className="visualizacao-tabela-gerencia-icon"
-                  >
-                    <HistoryOutlinedIcon
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        abrirModalHistorico();
-                      }}
-                      className="delay-120 hover:scale-110 duration-300"
-                      sx={{
-                        color: "icon.main",
-                        cursor: "pointer",
-                      }}
-                    />
-                  </Tooltip>
-                  {isProposta && (
+                  <Box className="w-full gap-3 flex justify-center items-center">
+                    <Typography
+                      className="visualizacao-tabela-gerencia-data truncate"
+                      fontSize={FontConfig.default}
+                    >
+                      {DateService.getTodaysDateUSFormat(row.data)}
+                    </Typography>
                     <Tooltip
-                      title="Chat"
+                      title="Histórico"
                       className="visualizacao-tabela-gerencia-icon"
                     >
-                      <ChatOutlinedIcon
+                      <HistoryOutlinedIcon
+                        size="small"
                         onClick={(e) => {
                           e.stopPropagation();
                           abrirModalHistorico();
@@ -243,7 +241,25 @@ const DemandaTable = ({
                         }}
                       />
                     </Tooltip>
-                  )}
+                    {isProposta && (
+                      <Tooltip
+                        title="Chat"
+                        className="visualizacao-tabela-gerencia-icon"
+                      >
+                        <ChatOutlinedIcon
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            abrirModalHistorico();
+                          }}
+                          className="delay-120 hover:scale-110 duration-300"
+                          sx={{
+                            color: "icon.main",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </Tooltip>
+                    )}
+                  </Box>
                 </td>
               </TableRow>
             ))}
