@@ -749,9 +749,14 @@ const HomeGerencia = () => {
     }
   }, [location.state?.feedback]);
 
+  // useState para fechar o chat minimizado
+  const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
+
   return (
     <FundoComHeader>
-      {/* <ChatMinimizado /> */}
+      {!fecharChatMinimizado && (
+        <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado}/>
+      )}
       {/* Help Tour's */}
       <Tour
         steps={stepsDemandas}
