@@ -29,8 +29,8 @@ const Custos = (props) => {
 
   useEffect(() => {
     let aux = 0;
-    for (let i = 0; i < props.custos[props.index].despesas.length; i++) {
-      aux += props.custos[props.index].despesas[i].horas * 1;
+    for (let i = 0; i < props.custos[props.index].custos.length; i++) {
+      aux += props.custos[props.index].custos[i].horas * 1;
     }
     setHorasTotais(aux);
   }, [props.custos]);
@@ -39,8 +39,8 @@ const Custos = (props) => {
 
   useEffect(() => {
     let aux = 0;
-    for (let i = 0; i < props.custos[props.index].despesas.length; i++) {
-      aux += props.custos[props.index].despesas[i].total * 1;
+    for (let i = 0; i < props.custos[props.index].custos.length; i++) {
+      aux += props.custos[props.index].custos[i].total * 1;
     }
     setValorTotal(aux.toFixed(2));
   }, [props.custos]);
@@ -159,19 +159,17 @@ const Custos = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {props.dados.despesas?.map((despesa, index) => {
+                  {props.dados.custos?.map((despesa, index) => {
                     return (
-                      despesa.visible && (
-                        <LinhaTabelaCustos
-                          key={index}
-                          dados={props.dados}
-                          index={index}
-                          deletarLinhaCustos={props.deletarLinhaCustos}
-                          indexCusto={props.index}
-                          setCustos={props.setCustos}
-                          custos={props.custos}
-                        />
-                      )
+                      <LinhaTabelaCustos
+                        key={index}
+                        dados={props.dados}
+                        index={index}
+                        deletarLinhaCustos={props.deletarLinhaCustos}
+                        indexCusto={props.index}
+                        setCustos={props.setCustos}
+                        custos={props.custos}
+                      />
                     );
                   })}
                 </TableBody>
@@ -221,17 +219,15 @@ const Custos = (props) => {
             <TableBody>
               {props.dados.ccs?.map((cc, index) => {
                 return (
-                  cc.visible && (
-                    <LinhaTabelaCCs
-                      key={index}
-                      dados={props.dados}
-                      index={index}
-                      deletarLinhaCCs={props.deletarLinhaCCs}
-                      indexCusto={props.index}
-                      setCustos={props.setCustos}
-                      custos={props.custos}
-                    />
-                  )
+                  <LinhaTabelaCCs
+                    key={index}
+                    dados={props.dados}
+                    index={index}
+                    deletarLinhaCCs={props.deletarLinhaCCs}
+                    indexCusto={props.index}
+                    setCustos={props.setCustos}
+                    custos={props.custos}
+                  />
                 );
               })}
             </TableBody>

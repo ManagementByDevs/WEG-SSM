@@ -30,15 +30,9 @@ const FormularioGeralProposta = (props) => {
   const inputFile = useRef(null);
 
   const deleteResponsavel = (indexResponsavel) => {
-    let aux = props.gerais.responsaveisNegocio.map((responsavel) => {
-      return {
-        nome: responsavel.nome,
-        area: responsavel.area,
-        visible: responsavel.visible,
-      };
-    });
-    aux[indexResponsavel].visible = false;
-    props.setGerais({ ...props.gerais, responsaveisNegocio: [...aux] });
+    let listaNova = [...props.gerais.responsaveisNegocio];
+    listaNova.splice(indexResponsavel, 1);
+    props.setGerais({ ...props.gerais, responsaveisNegocio: [...listaNova] });
   };
 
   // Aciona o input de anexos ao clicar no add anexos

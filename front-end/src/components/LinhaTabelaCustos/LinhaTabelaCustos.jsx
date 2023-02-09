@@ -35,15 +35,15 @@ const LinhaTabelaCustos = (props) => {
 
   useEffect(() => {
     let aux = [...props.custos];
-    aux[props.indexCusto].despesas[props.index].total = (
-      aux[props.indexCusto].despesas[props.index].horas *
+    aux[props.indexCusto].custos[props.index].total = (
+      aux[props.indexCusto].custos[props.index].horas *
       1 *
-      (aux[props.indexCusto].despesas[props.index].valorHora * 1)
+      (aux[props.indexCusto].custos[props.index].valorHora * 1)
     ).toFixed(2);
     props.setCustos(aux);
   }, [
-    props.custos[props.indexCusto].despesas[props.index].horas,
-    props.custos[props.indexCusto].despesas[props.index].valorHora,
+    props.custos[props.indexCusto].custos[props.index].horas,
+    props.custos[props.indexCusto].custos[props.index].valorHora,
   ]);
 
   return (
@@ -57,10 +57,10 @@ const LinhaTabelaCustos = (props) => {
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={props.dados.despesas[props.index].tipoDespesa}
+            value={props.dados.custos[props.index].tipoDespesa}
             onChange={(e) => {
               let aux = [...props.custos];
-              aux[props.indexCusto].despesas[props.index].tipoDespesa =
+              aux[props.indexCusto].custos[props.index].tipoDespesa =
                 e.target.value;
               props.setCustos(aux);
             }}
@@ -80,10 +80,10 @@ const LinhaTabelaCustos = (props) => {
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={props.dados.despesas[props.index].perfilDespesa}
+            value={props.dados.custos[props.index].perfilDespesa}
             onChange={(e) => {
               let aux = [...props.custos];
-              aux[props.indexCusto].despesas[props.index].perfilDespesa =
+              aux[props.indexCusto].custos[props.index].perfilDespesa =
                 e.target.value;
               props.setCustos(aux);
             }}
@@ -106,10 +106,10 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite o período..."
-          value={props.dados.despesas[props.index].periodoExecucao}
+          value={props.dados.custos[props.index].periodoExecucao}
           onChange={(e) => {
             let aux = [...props.custos];
-            aux[props.indexCusto].despesas[props.index].periodoExecucao =
+            aux[props.indexCusto].custos[props.index].periodoExecucao =
               e.target.value;
             props.setCustos(aux);
           }}
@@ -127,10 +127,10 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite as horas..."
-          value={props.dados.despesas[props.index].horas}
+          value={props.dados.custos[props.index].horas}
           onChange={(e) => {
             let aux = [...props.custos];
-            aux[props.indexCusto].despesas[props.index].horas = e.target.value;
+            aux[props.indexCusto].custos[props.index].horas = e.target.value;
             props.setCustos(aux);
           }}
         />
@@ -147,10 +147,10 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite o valor..."
-          value={props.dados.despesas[props.index].valorHora}
+          value={props.dados.custos[props.index].valorHora}
           onChange={(e) => {
             let aux = [...props.custos];
-            aux[props.indexCusto].despesas[props.index].valorHora =
+            aux[props.indexCusto].custos[props.index].valorHora =
               e.target.value;
             props.setCustos(aux);
           }}
@@ -169,7 +169,7 @@ const LinhaTabelaCustos = (props) => {
             />
           </Tooltip>
         </Box>
-        <Box className="flex justify-center mt-5">{props.dados.despesas[props.index].total}</Box>
+        <Box className="flex justify-center mt-5">{props.dados.custos[props.index].total}</Box>
       </td>
     </TableRow>
   );
