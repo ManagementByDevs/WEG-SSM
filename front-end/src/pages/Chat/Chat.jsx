@@ -14,6 +14,7 @@ import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import UsuarioService from "../../service/usuarioService";
 
 import FontContext from "../../service/FontContext";
 
@@ -23,6 +24,7 @@ import SockJS from "sockjs-client";
 var stompClient = null;
 
 const Chat = () => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -201,18 +203,31 @@ const Chat = () => {
 
   nomeUsuario = JSON.parse(localStorage.getItem("user"));
 
-  useEffect(() => {
-    if (location.state?.userChat) {
-      connect();
-    }
-  }, [location.state?.userChat]);
-
   const [userData, setUserData] = useState({
     username: nomeUsuario?.nome,
     receivername: '',
     connected: false,
     message: ''
   });
+
+  // Pegar o usuario 
+  const [usuarioId, setUsuarioId] = useState();
+
+  const buscarUsuario = () => {
+    UsuarioService.getUsuarioById(
+      parseInt(localStorage.getItem("usuarioId"))
+    ).then((e) => {
+      setUsuarioId(e);
+    });
+  };
+
+  useEffect(() => {
+    buscarUsuario();
+  }, [])
+
+  useEffect(() => {
+    connect();
+  }, [usuarioId])
 
   useEffect(() => {
     console.log(userData);
@@ -232,8 +247,10 @@ const Chat = () => {
   };
 
   const userJoin = () => {
+    const usuario = usuarioId;
+
     var chatMessage = {
-      senderName: userData.username,
+      usuario: usuario,
       status: "JOIN"
     };
 
@@ -241,12 +258,15 @@ const Chat = () => {
   };
 
   const onMessageReceived = (payload) => {
+    console.log("Payload bruto: ", payload);
     var payloadData = JSON.parse(payload.body);
+
+    console.log("Aqui vem o payload: ", payloadData);
 
     switch (payloadData.status) {
       case "JOIN":
-        if (!privateChats.get(payloadData.username)) {
-          privateChats.set(payloadData.senderName, []);
+        if (!privateChats.get(payloadData.usuario)) {
+          privateChats.set(payloadData.usuario.nome, []);
           setPrivateChats(new Map(privateChats));
         }
         break;
@@ -259,9 +279,9 @@ const Chat = () => {
   };
 
   const onPrivateMessage = (payload) => {
-    console.log(payload);
-
     var payloadData = JSON.parse(payload.body);
+
+    console.log("Aqui vem o payload 2: ", payloadData);
 
     if (privateChats.get(payload.senderName)) {
       privateChats.get(payloadData.senderName).push(payloadData);
@@ -284,26 +304,44 @@ const Chat = () => {
   };
 
   const sendValue = () => {
+    var dataAtual = new Date();
+
+    const usuario = usuarioId;
+    console.log("Usuario aqui: ", usuario);
+
     if (stompClient) {
       var chatMessage = {
-        senderName: userData.username,
-        message: userData.message,
-        status: "MESSAGE"
+        id: 1,
+        data: dataAtual,
+        visto: true,
+        texto: userData.message,
+        status: "MESSAGE",
+        usuario: usuario,
       };
 
       console.log(chatMessage);
       stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+      console.log("Json: ", JSON.stringify(chatMessage));
       setUserData({ ...userData, "message": "" });
     }
   };
 
   const sendPrivateValue = () => {
+
+    var dataAtual = new Date();
+
+    const usuario = usuarioId;
+    console.log("Usuario aqui: ", usuario);
+
     if (stompClient) {
       var chatMessage = {
-        senderName: userData.username,
-        receiverName: tab,
-        message: userData.message,
-        status: "MESSAGE"
+        id: 1,
+        data: dataAtual,
+        visto: true,
+        texto: userData.message,
+        status: "MESSAGE",
+        usuario: usuario,
+        solicitante: tab
       }
 
       if (userData.username != tab) {
@@ -359,19 +397,33 @@ const Chat = () => {
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                   </Box>
                 </Box>
-                {resultadosContato.map((resultado, index) => {
-                  return (
-                    <Contato
-                      key={index}
-                      onClick={() => {
-                        abrirChat(index);
-                      }}
-                      usuario={resultado}
-                      index={index}
-                      usuarioAtual={indexUsuario}
-                    />
-                  );
-                })}
+                <Box>
+                  <ul>
+                    <li onClick={() => { setTab("CHATROOM") }}>Chatroom</li>
+                    {[...privateChats.keys()].map((name, index) => (
+                      <li onClick={() => { setTab(name) }} key={index}>{name}</li>
+                    ))}
+                  </ul>
+                </Box>
+
+                <Box>
+                  {tab !== "CHATROOM" && <Box>
+                    <ul>
+                      {[...privateChats.get(tab)].map((chat, index) => (
+                        <li key={index}>
+                          {chat.senderName !== userData.username && <div className="avatar">{chat.senderName}</div>}
+                          <div className="message-data">{chat.message}</div>
+                          {chat.senderName === userData.username && <div className="avatar self">{chat.senderName}</div>}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="send-message">
+                      <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
+                      <button type="button" className="send-button" onClick={sendPrivateValue}>send</button>
+                    </div>
+                  </Box>}
+                </Box>
               </Box>
               {indexUsuario == null ? (
                 <Box
@@ -511,3 +563,27 @@ const Chat = () => {
 };
 
 export default Chat;
+
+{/* <>
+{
+  abrirModal && (
+    <ModalConfirmacao open={abrirModal} setOpen={setOpenModal} textoModal={"fecharChat"} onConfirmClick={deletarChat} onCancelClick={fecharModalCancelarChat} textoBotao={"sim"} />
+  )
+}
+<FundoComHeader>
+  <Box>
+    Enviar Mensagem:
+    <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
+    <button type="button" className="send-button" onClick={sendPrivateValue}>send</button>
+  </Box>
+
+  <Box>
+    {[...privateChats.get(tab)].map((chat, index) => (
+      <li key={index}>
+        <div >{chat.usuario.nome}</div>
+        <div >{chat.texto}</div>
+      </li>
+    ))}
+  </Box>
+</FundoComHeader>
+</> */}

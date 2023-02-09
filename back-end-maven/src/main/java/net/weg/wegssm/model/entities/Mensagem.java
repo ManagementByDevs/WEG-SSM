@@ -41,6 +41,10 @@ public class Mensagem {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @ManyToOne
+    @JoinColumn(name = "id_solicitante")
+    private Usuario solicitante;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_mensagem")
     private List<Anexo> anexo;
