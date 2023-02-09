@@ -11,7 +11,7 @@ import {
   Button,
 } from "@mui/material";
 
-import "./DemandaModoVisualizacao.css"
+import "./DemandaModoVisualizacao.css";
 
 import Demanda from "../Demanda/Demanda";
 
@@ -26,6 +26,10 @@ const DemandaModoVisualizacao = ({
   nextModoVisualizacao,
   myDemandas,
 }) => {
+  if (listaDemandas.length == 0) {
+    return <NadaEncontrado />;
+  }
+
   if (nextModoVisualizacao == "TABLE")
     return (
       <DemandaGrid
@@ -145,7 +149,9 @@ const DemandaTable = ({
               }}
             >
               <td className="text-center p-3" title={row.id}>
-                <Typography className="truncate" fontSize={FontConfig.medium}>{row.id}</Typography>
+                <Typography className="truncate" fontSize={FontConfig.medium}>
+                  {row.id}
+                </Typography>
               </td>
               <td className="text-left p-3" title={row.titulo}>
                 <Typography className="truncate" fontSize={FontConfig.medium}>
@@ -153,7 +159,10 @@ const DemandaTable = ({
                 </Typography>
               </td>
               {myDemandas && (
-                <td className="text-left p-3" title={formatarNomeStatus(row.status)}>
+                <td
+                  className="text-left p-3"
+                  title={formatarNomeStatus(row.status)}
+                >
                   <Box className="flex items-center gap-2 text-center">
                     <Box
                       sx={{
@@ -164,7 +173,10 @@ const DemandaTable = ({
                       }}
                     />
                     <Box className="w-full flex justify-between items-center">
-                      <Typography className="truncate" fontSize={FontConfig.medium}>
+                      <Typography
+                        className="truncate"
+                        fontSize={FontConfig.medium}
+                      >
                         {formatarNomeStatus(row.status)}
                       </Typography>
                       {row.status == "CANCELLED" ||
@@ -186,7 +198,10 @@ const DemandaTable = ({
                   </Box>
                 </td>
               )}
-              <td className="text-center p-3" title={DateService.getTodaysDateUSFormat(row.data)}>
+              <td
+                className="text-center p-3"
+                title={DateService.getTodaysDateUSFormat(row.data)}
+              >
                 <Typography className="truncate" fontSize={FontConfig.default}>
                   {DateService.getTodaysDateUSFormat(row.data)}
                 </Typography>
@@ -217,6 +232,36 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
           }}
         />
       ))}
+    </Box>
+  );
+};
+
+const NadaEncontrado = () => {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
+      <Typography
+        fontSize={FontConfig.big}
+        sx={{ color: "text.secondary", mb: 1 }}
+      >
+        Nada encontrado
+      </Typography>
+      <Typography
+        fontSize={FontConfig.medium}
+        sx={{ color: "text.secondary", mb: 1 }}
+      >
+        Tente novamente mais tarde
+      </Typography>
     </Box>
   );
 };
