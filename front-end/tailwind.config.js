@@ -21,6 +21,9 @@ module.exports = {
       },
       minHeight: {
         'header-weg': '4rem'
+      },
+      zIndex: {
+        '100': '100',
       }
     },
   },
