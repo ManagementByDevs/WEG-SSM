@@ -28,6 +28,8 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 import Tour from "reactour";
 import Demanda from "../../components/Demanda/Demanda";
 
+// import TextLinguage from "../../service/TextLinguage/TextLinguage";
+
 const Home = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
