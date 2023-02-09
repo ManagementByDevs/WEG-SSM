@@ -1,7 +1,16 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  TextareaAutosize,
+  Paper,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -13,6 +22,7 @@ import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceitarDemanda";
 import ModalRecusarDemanda from "../ModalRecusarDemanda/ModalRecusarDemanda";
+import Feedback from "../Feedback/Feedback";
 
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from "../../service/beneficioService";
@@ -23,7 +33,6 @@ import NotificacaoService from "../../service/notificacaoService";
 import FontContext from "../../service/FontContext";
 
 const DetalhesDemanda = (props) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -59,6 +68,10 @@ const DetalhesDemanda = (props) => {
   const [editar, setEditar] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
+
+  // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
+    useState(false);
 
   const navigate = useNavigate();
 
@@ -119,9 +132,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || "Real",
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -173,7 +186,7 @@ const DetalhesDemanda = (props) => {
         setAnexos([...anexos, file]);
       } else {
         // feedback de anexo já existente
-        console.log("já há um anexo com esse nome");
+        setFeedbackComAnexoMesmoNome(true);
       }
     }
   };
@@ -255,7 +268,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => { });
+      BeneficioService.delete(beneficio.id).then((response) => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -263,7 +276,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => { });
+      BeneficioService.delete(beneficio.id).then((response) => {});
     }
     setBeneficiosNovos([]);
   };
@@ -275,7 +288,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => { });
+        BeneficioService.put(beneficio).then((response) => {});
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -365,7 +378,7 @@ const DetalhesDemanda = (props) => {
     }
     textoFinal = textoFinal.substring(0, textoFinal.length - 2);
     return textoFinal;
-  }
+  };
 
   // -----------------------------------------------------------------------------------------------------------------------------------
   // Funções de aceite/recusa do analista/gerente
@@ -441,15 +454,13 @@ const DetalhesDemanda = (props) => {
   const confirmRecusaDemanda = () => {
     if (motivoRecusaDemanda != "") {
       setOpenModalRecusa(false);
-
       if (modoModalRecusa == "devolucao") {
-        DemandaService.put(
+        DemandaService.putSemAnexos(
           {
             ...props.dados,
             motivoRecusa: motivoRecusaDemanda,
             status: "BACKLOG_EDICAO",
-          },
-          []
+          }
         ).then((response) => {
           navegarHome(2);
         });
@@ -582,6 +593,12 @@ const DetalhesDemanda = (props) => {
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
+      <Feedback
+        open={feedbackComAnexoMesmoNome}
+        handleClose={() => setFeedbackComAnexoMesmoNome(false)}
+        status={"erro"}
+        mensagem={"Já há um anexo com esse nome!"}
+      />
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
         setOpen={setOpenModalAceitarDemanda}
@@ -622,8 +639,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -632,8 +649,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -734,7 +751,7 @@ const DetalhesDemanda = (props) => {
                 {props.dados.frequencia}
               </Typography>
             </Box>
-            {props.dados.tamanho && props.dados.secaoTI &&
+            {props.dados.tamanho && props.dados.secaoTI && (
               <Box className="flex justify-between items-center">
                 <Box className="flex items-center">
                   <Typography
@@ -771,8 +788,8 @@ const DetalhesDemanda = (props) => {
                   </Typography>
                 </Box>
               </Box>
-            }
-            {props.dados.buSolicitante &&
+            )}
+            {props.dados.buSolicitante && (
               <Box className="flex justify-between items-center">
                 <Box className="flex items-center">
                   <Typography
@@ -809,8 +826,8 @@ const DetalhesDemanda = (props) => {
                   </Typography>
                 </Box>
               </Box>
-            }
-            {props.dados.forum &&
+            )}
+            {props.dados.forum && (
               <Box className="flex items-center">
                 <Typography
                   fontSize={FontConfig.veryBig}
@@ -828,7 +845,7 @@ const DetalhesDemanda = (props) => {
                   {props.dados.forum.nome}
                 </Typography>
               </Box>
-            }
+            )}
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}

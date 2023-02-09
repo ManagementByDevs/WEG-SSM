@@ -73,7 +73,7 @@ const ChatMinimizado = (props) => {
 
   return (
     <Box
-      className="absolute bottom-0 right-24 w-72 h-96"
+      className="absolute bottom-0 right-24 w-72 h-96 z-100"
       sx={{
         backgroundColor: "component.main",
         borderRadius: "10px 10px 0 0",

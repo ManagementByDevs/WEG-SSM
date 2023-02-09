@@ -50,6 +50,8 @@ const BarraProgressaoDemanda = (props) => {
     frequencia: "",
   });
 
+  const [escreveu, setEscreveu] = useState(false);
+
   // Lista de benefícios definidos na segunda página da criação de demanda
   const [paginaBeneficios, setPaginaBeneficios] = useState([]);
 
@@ -66,13 +68,15 @@ const BarraProgressaoDemanda = (props) => {
   useEffect(() => {
     if (!idEscopo) {
       if (!location.state) {
-        idEscopo = 1;
-        EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
-          (response) => {
+        if (escreveu) {
+          idEscopo = 1;
+          EscopoService.postNew(
+            parseInt(localStorage.getItem("usuarioId"))
+          ).then((response) => {
             idEscopo = response.id;
             setUltimoEscopo({ id: idEscopo });
-          }
-        );
+          });
+        }
       } else {
         idEscopo = location.state;
         EscopoService.buscarPorId(location.state).then((response) => {
@@ -95,7 +99,18 @@ const BarraProgressaoDemanda = (props) => {
         });
       }
     }
-  }, []);
+  }, [, escreveu]);
+
+  useEffect(() => {
+    if (
+      paginaDados.frequencia !== "" ||
+      paginaDados.proposta !== "" ||
+      paginaDados.problema !== "" ||
+      paginaDados.titulo !== ""
+    ) {
+      setEscreveu(true);
+    }
+  }, [paginaDados]);
 
   // UseEffect utilizado para salvar o escopo a cada 5 segundos
   useEffect(() => {
@@ -140,28 +155,20 @@ const BarraProgressaoDemanda = (props) => {
 
   // Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página
   const salvarEscopo = (id) => {
-    if (
-      paginaDados.titulo !== "" ||
-      (paginaDados.titulo !== null && paginaDados.problema !== "") ||
-      (paginaDados.problema !== null && paginaDados.proposta !== "") ||
-      (paginaDados.proposta !== null && paginaDados.frequencia !== "") ||
-      paginaDados.frequencia !== null
-    ) {
-      setUltimoEscopo({
-        id: id,
-        titulo: paginaDados.titulo,
-        problema: paginaDados.problema,
-        proposta: paginaDados.proposta,
-        frequencia: paginaDados.frequencia,
-        beneficios: formatarBeneficios(paginaBeneficios),
-      });
+    setUltimoEscopo({
+      id: id,
+      titulo: paginaDados.titulo,
+      problema: paginaDados.problema,
+      proposta: paginaDados.proposta,
+      frequencia: paginaDados.frequencia,
+      beneficios: formatarBeneficios(paginaBeneficios),
+    });
 
-      try {
-        EscopoService.salvarDados(ultimoEscopo).then((response) => {
-          //Confirmação de salvamento (se sobrar tempo)
-        });
-      } catch (error) {}
-    }
+    try {
+      EscopoService.salvarDados(ultimoEscopo).then((response) => {
+        //Confirmação de salvamento (se sobrar tempo)
+      });
+    } catch (error) {}
   };
 
   // Função para atualizar os anexos de um escopo quando um anexo for adicionado / removido
@@ -171,6 +178,7 @@ const BarraProgressaoDemanda = (props) => {
         (response) => {}
       );
     } else {
+      console.log("Removendo anexos: ", ultimoEscopo.id);
       EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
     }
   };
@@ -202,8 +210,11 @@ const BarraProgressaoDemanda = (props) => {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (paginaDados.titulo !== "" && paginaDados.problema !== "" && paginaDados.proposta !== "" && paginaDados.frequencia !== "") {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      setFeedbackDadosFaltantes(true);
+    }
     setSkipped(newSkipped);
   };
 
