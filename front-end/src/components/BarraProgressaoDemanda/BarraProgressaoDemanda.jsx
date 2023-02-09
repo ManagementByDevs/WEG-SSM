@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+  Button,
+} from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -133,36 +140,44 @@ const BarraProgressaoDemanda = (props) => {
 
   // Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página
   const salvarEscopo = (id) => {
-    setUltimoEscopo({
-      id: id,
-      titulo: paginaDados.titulo,
-      problema: paginaDados.problema,
-      proposta: paginaDados.proposta,
-      frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios(paginaBeneficios),
-    });
-
-    try {
-      EscopoService.salvarDados(ultimoEscopo).then((response) => {
-        //Confirmação de salvamento (se sobrar tempo)
+    if (
+      paginaDados.titulo !== "" ||
+      (paginaDados.titulo !== null && paginaDados.problema !== "") ||
+      (paginaDados.problema !== null && paginaDados.proposta !== "") ||
+      (paginaDados.proposta !== null && paginaDados.frequencia !== "") ||
+      paginaDados.frequencia !== null
+    ) {
+      setUltimoEscopo({
+        id: id,
+        titulo: paginaDados.titulo,
+        problema: paginaDados.problema,
+        proposta: paginaDados.proposta,
+        frequencia: paginaDados.frequencia,
+        beneficios: formatarBeneficios(paginaBeneficios),
       });
-    } catch (error) { }
+
+      try {
+        EscopoService.salvarDados(ultimoEscopo).then((response) => {
+          //Confirmação de salvamento (se sobrar tempo)
+        });
+      } catch (error) {}
+    }
   };
 
   // Função para atualizar os anexos de um escopo quando um anexo for adicionado / removido
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
       EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
-        (response) => { }
+        (response) => {}
       );
     } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
     }
   };
 
   // Função para excluir o escopo determinado quando a demanda a partir dele for criada
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
   };
 
   // Função para pular passos opcionais
@@ -310,7 +325,7 @@ const BarraProgressaoDemanda = (props) => {
 
   return (
     <>
-    {/* Stepper utilizado para os passos da criação e a barra de progressão */}
+      {/* Stepper utilizado para os passos da criação e a barra de progressão */}
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
