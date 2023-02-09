@@ -309,7 +309,8 @@ const DetalhesDemanda = (props) => {
 
   const checkIfBeneficiosChanged = () => {
     // Se foi Adicionado um novo benefício
-    if (beneficiosNovos.length > 0 || beneficiosExcluidos.length > 0) return true;
+    if (beneficiosNovos.length > 0 || beneficiosExcluidos.length > 0)
+      return true;
 
     return !beneficios.every((e, index) => {
       return (
@@ -326,13 +327,6 @@ const DetalhesDemanda = (props) => {
 
   // Função que determina se o usuário pode salvar a demanda ou não, se baseando se ele editou alguma coisa
   const canSave = () => {
-    console.log(
-      checkIfBeneficiosChanged(),
-      tituloDemanda != props.dados.titulo,
-      problema != props.dados.problema,
-      proposta != props.dados.proposta,
-      frequencia != props.dados.frequencia
-    );
     if (
       checkIfBeneficiosChanged() ||
       tituloDemanda != props.dados.titulo ||
@@ -340,7 +334,6 @@ const DetalhesDemanda = (props) => {
       proposta != props.dados.proposta ||
       frequencia != props.dados.frequencia
     ) {
-      console.log("oi?");
       return true;
     }
     return false;
@@ -348,7 +341,6 @@ const DetalhesDemanda = (props) => {
 
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
   useEffect(() => {
-    console.log(beneficios, props.dados.beneficios);
     if (demandaEmEdicao) {
       const demandaAtualizada = {
         id: props.dados.id,
