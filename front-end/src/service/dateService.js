@@ -54,7 +54,7 @@ class DateService {
    * @returns 
    */
   getDateByMySQLFormat(dataMysql) {
-    let date = dataMysql.replace(/[-]/g, "/");
+    let date = dataMysql.replace(/[-]/g, "/").replace(/[T]/g, " ");
     date = Date.parse(date);
     return new Date(date);
   }

@@ -1,16 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  TextareaAutosize,
-  Paper,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -36,6 +27,9 @@ const DetalhesDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Navigate utilizado para navegar para outras páginas 
+  const navigate = useNavigate();
+
   // Variável hexadecimal para alterar a cor de certos componentes ao mudar o tema da página
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
 
@@ -43,11 +37,11 @@ const DetalhesDemanda = (props) => {
   const { temaPagina } = useContext(ColorModeContext);
   const inputFile = useRef(null);
 
+  // UseStates para armazenar os dados de demanda
   const [tituloDemanda, setTituloDemanda] = useState(props.dados.titulo);
   const [problema, setProblema] = useState(props.dados.problema);
   const [proposta, setProposta] = useState(props.dados.proposta);
   const [frequencia, setFrequencia] = useState(props.dados.frequencia);
-
   const [beneficios, setBeneficios] = useState(null);
   const [beneficiosNovos, setBeneficiosNovos] = useState([]);
   const [beneficiosExcluidos, setBeneficiosExcluidos] = useState([]);
@@ -62,21 +56,23 @@ const DetalhesDemanda = (props) => {
   // modal para a confirmação da aprovação da demanda
   const [modalAprovarDemanda, setModalAprovarDemanda] = useState(false);
 
+  // UseState para armazenar o motivo da recusa da demanda
   const [motivoRecusaDemanda, setMotivoRecusaDemanda] = useState("");
+
+  // UseState para exibir o modal de recusa da demanda
   const [modoModalRecusa, setModoModalRecusa] = useState("recusa");
 
+  // UseState para permitir edição na demanda
   const [editar, setEditar] = useState(false);
 
+  // UseState para exibir o modal de confirmação de edição da demanda
   const [openModal, setOpenModal] = useState(false);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
-    useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
 
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
-
-  const navigate = useNavigate();
 
   // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
   useEffect(() => {
@@ -87,6 +83,7 @@ const DetalhesDemanda = (props) => {
     }
   }, [temaPagina]);
 
+  // UseEffect para atualizar os dados da demanda quando o componente for montado
   useEffect(() => {
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
@@ -99,12 +96,14 @@ const DetalhesDemanda = (props) => {
   // ----------------------------------------------------------------------------------------------------------------------------
   // Funções de edição da demanda
 
+  // UseEffect para setar a variável "editar" para false quando o usuário sair da página de edição da demanda
   useEffect(() => {
     if (!props.edicao) {
       setEditar(false);
     }
   }, [props.edicao]);
 
+  // Função para editar a demanda
   function editarDemanda() {
     if (editar) {
       setOpenModal(true);
@@ -135,9 +134,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -164,6 +163,7 @@ const DetalhesDemanda = (props) => {
     return listaNova;
   };
 
+  // Função para alterar o texto de algum dos campos da demanda
   const alterarTexto = (e, input) => {
     if (input === "titulo") {
       setTituloDemanda(e.target.value);
@@ -194,6 +194,7 @@ const DetalhesDemanda = (props) => {
     }
   };
 
+  // Função para verificar se um anexo já existe na lista de anexos
   const existsInAnexos = (anexo) => {
     return (
       anexos.filter((anexoItem) => {
@@ -271,7 +272,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -279,7 +280,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => {});
+      BeneficioService.delete(beneficio.id).then((response) => { });
     }
     setBeneficiosNovos([]);
   };
@@ -295,7 +296,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -307,6 +308,7 @@ const DetalhesDemanda = (props) => {
     }
   };
 
+  // Função que verifica se o usuário adicionou algum benefício
   const checkIfBeneficiosChanged = () => {
     // Se foi Adicionado um novo benefício
     if (beneficiosNovos.length > 0 || beneficiosExcluidos.length > 0)
@@ -315,12 +317,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-          props.dados.beneficios[index].moeda.toLowerCase() &&
+        props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -438,10 +440,12 @@ const DetalhesDemanda = (props) => {
     setOpenModalAceitarDemanda(true);
   };
 
+  // Acionado quando o usuário clicar em "Aprovar" na demanda
   const aprovarDemanda = () => {
     setModalAprovarDemanda(true);
   };
 
+  // Função para abrir o modal de recusa
   const abrirRecusaDemanda = (modo) => {
     setModoModalRecusa(modo);
     setOpenModalRecusa(true);
@@ -525,12 +529,14 @@ const DetalhesDemanda = (props) => {
     }
   };
 
+  // Função para transformar uma string em base64 para um ArrayBuffer
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   }
 
+  // Função para baixar um anexo
   const baixarAnexo = (index) => {
     const file = anexos[index];
     let blob;
@@ -608,7 +614,6 @@ const DetalhesDemanda = (props) => {
   };
 
   // Aparecer o feedback sobre a demanda
-
   const navegarHome = (tipoFeedback) => {
     localStorage.removeItem("tipoFeedback");
 
@@ -682,8 +687,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -692,8 +697,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"

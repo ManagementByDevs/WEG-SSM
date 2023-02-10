@@ -9,6 +9,8 @@ const ContainerPauta = (props) => {
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
+    // Variáveis de estilo utilizadas no componente 
+
     const containerGeral = {
         width: '90%',
         height: '5.5rem',
@@ -64,10 +66,10 @@ const ContainerPauta = (props) => {
         textOverflow: "ellipsis",
     };
 
-    // verificações para selecionar apenas uma pauta conforme seu index
-
+    // Variável de estado para verificar se a pauta foi selecionada ou não
     const [pautaSelecionada, setPautaSelecionada] = useState(false);
 
+    // Função para selecionar a pauta clicada
     const selecionarPauta = () => {
         if (props.indexPautaSelecionada == props.index) {
             props.setIndexPautaSelecionada(null);
@@ -76,6 +78,7 @@ const ContainerPauta = (props) => {
         }
     };
 
+    // UseEffect para verificar se a pauta foi selecionada ou não
     useEffect(() => {
         if (props.indexPautaSelecionada == props.index) {
             setPautaSelecionada(!pautaSelecionada)

@@ -19,7 +19,6 @@ import FontContext from "../../service/FontContext";
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
-import Pauta from "../../components/Pauta/Pauta";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaModoVisualizacao/DemandaGerenciaModoVisualizacao";
@@ -237,7 +236,7 @@ const HomeGerencia = () => {
 
   // Valores dos checkboxes no modal de ordenação
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
-  const [ordenacaoScore, setOrdenacaoScore] = useState([false, false]);
+  const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   // Valor do input de pesquisa
@@ -520,15 +519,15 @@ const HomeGerencia = () => {
   const [propostas, setPropostas] = useState([
     {
       id: 1,
-      inicioExecucao: "2020-10-10",
-      fimExecucao: "2020-10-10",
+      inicioExecucao: "2023-01-31T15:39:24.563000",
+      fimExecucao: "2023-01-31T15:39:24.563000",
       paybackValor: 1000,
       paybackTipo: "MENSAL",
       codigoPPM: "12345",
       linkJira: "https://jira.com",
       publicada: true,
       naoPublicada: false,
-      data: "2020-10-10",
+      data: "2023-01-31T15:39:24.563000",
       parecerComissao: null,
       parecerInformacao: null,
       parecerDG: null,
@@ -543,15 +542,15 @@ const HomeGerencia = () => {
     },
     {
       id: 2,
-      inicioExecucao: "2020-10-10",
-      fimExecucao: "2020-10-10",
+      inicioExecucao: "2023-01-31T15:39:24.563000",
+      fimExecucao: "2023-01-31T15:39:24.563000",
       paybackValor: 1000,
       paybackTipo: "MENSAL",
       codigoPPM: "25413",
       linkJira: "https://jira.com",
       publicada: true,
       naoPublicada: false,
-      data: "2020-10-10",
+      data: "2023-01-31T15:39:24.563000",
       parecerComissao: null,
       parecerInformacao: null,
       parecerDG: null,
@@ -565,15 +564,15 @@ const HomeGerencia = () => {
     },
     {
       id: 3,
-      inicioExecucao: "2020-10-10",
-      fimExecucao: "2020-10-10",
+      inicioExecucao: "2023-01-31T15:39:24.563000",
+      fimExecucao: "2023-01-31T15:39:24.563000",
       paybackValor: 1000,
       paybackTipo: "MENSAL",
       codigoPPM: "78945",
       linkJira: "https://jira.com",
       publicada: true,
       naoPublicada: false,
-      data: "2020-10-10",
+      data: "2023-01-31T15:39:24.563000",
       parecerComissao: null,
       parecerInformacao: null,
       parecerDG: null,
@@ -587,15 +586,15 @@ const HomeGerencia = () => {
     },
     {
       id: 4,
-      inicioExecucao: "2020-10-10",
-      fimExecucao: "2020-10-10",
+      inicioExecucao: "2023-01-31T15:39:24.563000",
+      fimExecucao: "2023-01-31T15:39:24.563000",
       paybackValor: 1000,
       paybackTipo: "MENSAL",
       codigoPPM: "154637",
       linkJira: "https://jira.com",
       publicada: true,
       naoPublicada: false,
-      data: "2020-10-10",
+      data: "2023-01-31T15:39:24.563000",
       parecerComissao: null,
       parecerInformacao: null,
       parecerDG: null,
@@ -756,9 +755,9 @@ const HomeGerencia = () => {
 
   return (
     <FundoComHeader>
-      {!fecharChatMinimizado && (
-        <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado} />
-      )}
+      {/* {!fecharChatMinimizado && (
+        <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado}/>
+      )} */}
       {/* Help Tour's */}
       <Tour
         steps={stepsDemandas}
@@ -801,6 +800,7 @@ const HomeGerencia = () => {
         showCloseButton={false}
       />
       {/* Div container */}
+
       <Box
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
@@ -994,39 +994,42 @@ const HomeGerencia = () => {
                         sx={{ color: "text.secondary" }}
                       />
                     </Tooltip>
-
-                    {/* Modal de ordenação */}
-                    {abrirOrdenacao && (
-                      <ModalOrdenacao
-                        open={abrirOrdenacao}
-                        setOpen={setOpenOrdenacao}
-                        tipoComponente="demanda"
-                        ordenacaoTitulo={ordenacaoTitulo}
-                        setOrdenacaoTitulo={setOrdenacaoTitulo}
-                        ordenacaoScore={ordenacaoScore}
-                        setOrdenacaoScore={setOrdenacaoScore}
-                        ordenacaoDate={ordenacaoDate}
-                        setOrdenacaoDate={setOrdenacaoDate}
-                      />
-                    )}
                   </Box>
                 </Box>
 
+                {/* Modal de ordenação */}
+                {abrirOrdenacao && (
+                  <ModalOrdenacao
+                    open={abrirOrdenacao}
+                    setOpen={setOpenOrdenacao}
+                    tipoComponente="demanda"
+                    ordenacaoTitulo={ordenacaoTitulo}
+                    setOrdenacaoTitulo={setOrdenacaoTitulo}
+                    ordenacaoScore={ordenacaoScore}
+                    setOrdenacaoScore={setOrdenacaoScore}
+                    ordenacaoDate={ordenacaoDate}
+                    setOrdenacaoDate={setOrdenacaoDate}
+                    fecharModal={() => setOpenOrdenacao(false)}
+                  />
+                )}
+
                 {/* Botão de filtrar */}
-                <Button
-                  id="terceiroDemandas"
-                  className="flex gap-1"
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "text.white",
-                    fontSize: FontConfig.default,
-                  }}
-                  onClick={abrirModalFiltro}
-                  variant="contained"
-                  disableElevation
-                >
-                  Filtrar <FilterAltOutlinedIcon />
-                </Button>
+                {value < 4 && (
+                  <Button
+                    id="terceiroDemandas"
+                    className="flex gap-1"
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                    }}
+                    onClick={abrirModalFiltro}
+                    variant="contained"
+                    disableElevation
+                  >
+                    Filtrar <FilterAltOutlinedIcon />
+                  </Button>
+                )}
                 {modalFiltro && (
                   <ModalFiltroGerencia
                     open={modalFiltro}

@@ -11,20 +11,17 @@ import TableRow from "@mui/material/TableRow";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-import FontConfig from "../../service/FontConfig";
-
 import FontContext from "../../service/FontContext";
 
 const FormularioAnexosDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-
+  
   const dragArea = useRef(null);
   const inputFile = useRef(null);
+
   const [mapAbleFileList, setMapAbleFileList] = useState([]);
-  const [dragText, setDragText] = useState(
-    "Arraste & Solte para Adicionar um Arquivo"
-  );
+  const [dragText, setDragText] = useState("Arraste & Solte para Adicionar um Arquivo");
 
   const fileClick = () => {
     inputFile.current.click();

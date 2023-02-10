@@ -1,25 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Box, Select, FormControl, InputLabel, MenuItem, Typography } from "@mui/material";
+
 import "./Beneficios.css";
 
-import {
-  Box,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Typography,
-} from "@mui/material";
-import FontConfig from "../../service/FontConfig";
 import InputComLabel from "../InputComLabel/InputComLabel";
-
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-
 import FontContext from "../../service/FontContext";
 
 const Beneficios = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Objeto que armazenas os dados do beneficio
   const [dadosBeneficio, setDadosBeneficio] = useState({
     id: props.dados.id,
     tipoBeneficio: props.dados.tipoBeneficio,
@@ -29,18 +21,24 @@ const Beneficios = (props) => {
     visible: true,
   });
 
+  // Função utilizada para setar o tipo do benefício
   const handleChange = (event) => {
     setDadosBeneficio({ ...dadosBeneficio, tipoBeneficio: event.target.value });
   };
 
+
+  // Função utilizada para setar o valor mensal do benefício
   const handleChangeValor = (event) => {
     setDadosBeneficio({ ...dadosBeneficio, valor_mensal: event.target.value });
   };
 
+  // Função utilizada para setar a moeda do benefício
   const handleChangeMoeda = (event) => {
     setDadosBeneficio({ ...dadosBeneficio, moeda: event.target.value });
   };
 
+
+  // Função utilizada para setar a memória de cálculo do benefício
   const handleChangeMemoriaCalculo = (event) => {
     setDadosBeneficio({
       ...dadosBeneficio,
@@ -48,22 +46,28 @@ const Beneficios = (props) => {
     });
   };
 
+  // UseEffect utilizado para salvar os dados do benefício a cada alteração
   useEffect(() => {
     props.save(dadosBeneficio);
   }, [dadosBeneficio]);
 
+  // Função para salvar o valor mensal do benefício
   function salvarValorMensal(texto) {
     setDadosBeneficio({ ...dadosBeneficio, valor_mensal: texto });
   }
 
+  // Função para salvar a memória de cálculo do benefício
   function salvarMemoriaCalculo(texto) {
     setDadosBeneficio({ ...dadosBeneficio, memoriaCalculo: texto });
   }
 
+  // Função para remover algum benefício
   function removerComponente() {
     props.removerBeneficio(props.index);
   }
 
+
+  // Função para selecionar algum tipo de benefício
   const getSelectedTipo = (tipo) => {
     return tipo === dadosBeneficio.tipoBeneficio;
   };
@@ -110,7 +114,7 @@ const Beneficios = (props) => {
           </FormControl>
         </Box>
         {dadosBeneficio.tipoBeneficio === "Real" ||
-        dadosBeneficio.tipoBeneficio === "Potencial" ? (
+          dadosBeneficio.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -161,8 +165,8 @@ const Beneficios = (props) => {
         ) : null}
       </Box>
       {dadosBeneficio.tipoBeneficio === "Real" ||
-      dadosBeneficio.tipoBeneficio === "Potencial" ||
-      dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
+        dadosBeneficio.tipoBeneficio === "Potencial" ||
+        dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
         <Box className="flex items-end" sx={{ width: "65%" }}>
           <InputComLabel
             saveInputValue={salvarMemoriaCalculo}

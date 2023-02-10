@@ -1,12 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  Tooltip,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Tooltip, Divider, Typography } from "@mui/material";
+
+import Mensagem from "../../components/Mensagem/Mensagem";
 
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
@@ -15,20 +10,21 @@ import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
-import Mensagem from "../../components/Mensagem/Mensagem";
-
 import { keyframes } from "@emotion/react";
 
-import FontConfig from "../../service/FontConfig";
 import FontContext from "../../service/FontContext";
 
 const ChatMinimizado = (props) => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // UseState para controlar o tamanho do chat ( minimizado ou não )
   const [minimizarChatMinimizado, setMinimizarChatMinimizado] = useState(false);
+
+  // UseState para setar o tamanho do chat minimizado
   const [tamanhoChatMinimizado, setTamanhoChatMinimizado] = useState("24rem");
 
+  // Lista contendo exemplos de mensagem no chat
   const [usuarios, setUsuarios] = useState([
     {
       foto: "",
@@ -60,12 +56,16 @@ const ChatMinimizado = (props) => {
     },
   ]);
 
+  // UseState para pegar o index do usuário que está sendo exibido no chat
   const [indexUsuario, setIndexUsuario] = useState(0);
 
+  // Função para minimizar o chat
   const sumir = keyframes({
     from: { height: "24rem" },
     to: { height: "2.88rem" },
   });
+
+  // Função para abrir o chat
   const aparecer = keyframes({
     from: { height: "2.88rem" },
     to: { height: "24rem" },

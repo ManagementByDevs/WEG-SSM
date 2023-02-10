@@ -1,5 +1,13 @@
 import React, { useContext } from "react";
-import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid } from "@mui/material";
+import {
+  Modal,
+  Typography,
+  Box,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Grid,
+} from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
@@ -7,7 +15,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import FontContext from "../../service/FontContext";
 
 const ModalOrdenacao = (props) => {
-  
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -68,44 +75,39 @@ const ModalOrdenacao = (props) => {
       BackdropProps={{ invisible: true }}
     >
       <Fade in={true}>
-        <Box className="absolute flex flex-col items-center justify-evenly"
-          sx={{ top: "34%", left: "34%", transform: "translate(-50%, -50%)", width: 310, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 1.5 }}>
+        <Box
+          className="absolute flex flex-col items-center justify-evenly"
+          sx={{
+            top: "34%",
+            left: "34%",
+            transform: "translate(-50%, -50%)",
+            width: 310,
+            bgcolor: "background.paper",
+            borderRadius: "5px",
+            borderTop: "10px solid #00579D",
+            boxShadow: 24,
+            p: 1.5,
+          }}
+        >
           <CloseIcon
             onClick={props.fecharModal}
-            sx={{ position: "absolute", left: "90%", top: "3%", cursor: "pointer", }}
+            sx={{
+              position: "absolute",
+              left: "90%",
+              top: "3%",
+              cursor: "pointer",
+            }}
           />
-          {/* Checkboxes de título */}
-          <Grid container spacing={0}>
-            <Grid item xs={9.2}>
-              <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
-                <Typography
-                  sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600" }}
-                >
-                  Título:
-                </Typography>
-                <div className="w-full flex justify-between items-center">
-                  <FormControlLabel
-                    checked={props.ordenacaoTitulo[1]}
-                    onChange={mudarCheck2}
-                    control={<Checkbox />}
-                    label="A-Z"
-                  />
-                  <FormControlLabel
-                    checked={props.ordenacaoTitulo[0]}
-                    onChange={mudarCheck1}
-                    control={<Checkbox />}
-                    label="Z-A"
-                  />
-                </div>
-              </FormGroup>
-            </Grid>
-          </Grid>
           {/* Checkboxes de Score */}
           <Grid container spacing={0}>
             <Grid item xs={20}>
               <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
                 <Typography
-                  sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600" }}
+                  sx={{
+                    color: "secundary.main",
+                    fontSize: FontConfig.big,
+                    fontWeight: "600",
+                  }}
                 >
                   Score:
                 </Typography>
@@ -126,12 +128,46 @@ const ModalOrdenacao = (props) => {
               </FormGroup>
             </Grid>
           </Grid>
+          {/* Checkboxes de título */}
+          <Grid container spacing={0}>
+            <Grid item xs={9.2}>
+              <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
+                <Typography
+                  sx={{
+                    color: "secundary.main",
+                    fontSize: FontConfig.big,
+                    fontWeight: "600",
+                  }}
+                >
+                  Título:
+                </Typography>
+                <div className="w-full flex justify-between items-center">
+                  <FormControlLabel
+                    checked={props.ordenacaoTitulo[1]}
+                    onChange={mudarCheck2}
+                    control={<Checkbox />}
+                    label="A-Z"
+                  />
+                  <FormControlLabel
+                    checked={props.ordenacaoTitulo[0]}
+                    onChange={mudarCheck1}
+                    control={<Checkbox />}
+                    label="Z-A"
+                  />
+                </div>
+              </FormGroup>
+            </Grid>
+          </Grid>
           {/* Checkboxes de Data */}
           <Grid container spacing={0}>
             <Grid item xs={11.4}>
               <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
                 <Typography
-                  sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600" }}
+                  sx={{
+                    color: "secundary.main",
+                    fontSize: FontConfig.big,
+                    fontWeight: "600",
+                  }}
                 >
                   Data:
                 </Typography>

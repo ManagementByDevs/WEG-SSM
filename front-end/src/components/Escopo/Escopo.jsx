@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
 
-import { Box, Paper, Tooltip, Typography, IconButton } from "@mui/material";
+import { Box, Paper, Tooltip, Typography } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import FontConfig from "../../service/FontConfig";
 
 import FontContext from "../../service/FontContext";
 

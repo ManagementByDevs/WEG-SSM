@@ -1,15 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, Button } from "@mui/material";
 
 import "./DemandaModoVisualizacao.css";
 
@@ -180,7 +171,7 @@ const DemandaTable = ({
                         {formatarNomeStatus(row.status)}
                       </Typography>
                       {row.status == "CANCELLED" ||
-                      row.status == "BACKLOG_EDICAO" ? (
+                        row.status == "BACKLOG_EDICAO" ? (
                         <Button
                           className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
@@ -214,6 +205,7 @@ const DemandaTable = ({
   );
 };
 
+// Componente para exibir as demanda em forma de grid
 const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
   return (
     <Box
@@ -236,6 +228,7 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
   );
 };
 
+// Componente para exibir nada encontrado
 const NadaEncontrado = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -248,6 +241,7 @@ const NadaEncontrado = () => {
         alignItems: "center",
         flexDirection: "column",
         height: "100%",
+        marginTop: "2rem"
       }}
     >
       <Typography

@@ -1,16 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import {
-  Box,
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import {Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -279,6 +269,7 @@ const DemandaTable = ({
   );
 };
 
+// Componente para exibição de demandas em grid
 const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
   return (
     <Box
@@ -304,6 +295,7 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
   );
 };
 
+// Componente para exibição de nada encontrado
 const NadaEncontrado = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -316,6 +308,7 @@ const NadaEncontrado = () => {
         alignItems: "center",
         flexDirection: "column",
         height: "100%",
+        marginTop: "2rem",
       }}
     >
       <Typography

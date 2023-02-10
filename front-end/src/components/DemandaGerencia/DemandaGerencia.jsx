@@ -20,8 +20,10 @@ const DemandaGerencia = (props) => {
   // Exemplo:
   // <DemandaGerencia dados={demanda} tipo="demanda" />
 
+  // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
 
+  // Função para mudar a cor do status da demanda
   function getCorStatus() {
     if (props.dados.status === "BACKLOG_REVISAO") {
       return "#00579D";
@@ -30,12 +32,15 @@ const DemandaGerencia = (props) => {
     }
   }
 
+  // useState para abrir o modal de histórico
   const [modalHistorico, setModalHistorico] = useState(false);
 
+  // Função para abrir o modal de histórico
   const abrirModalHistorico = () => {
     setModalHistorico(true);
   };
 
+  // Função para formatar o nome do status da demanda/proposta
   const formatarStatus = () => {
     if (props.dados.status == "BACKLOG_REVISAO") {
       return "Backlog";
@@ -93,19 +98,19 @@ const DemandaGerencia = (props) => {
               className="flex items-center justify-end"
             >
               <Box id="segundoCriarPropostas">
-              <Box id="oitavoDemandas" className="flex items-center gap-2">
-              <Typography fontSize={FontConfig.medium} fontWeight="600">
-                {formatarStatus(props.dados.status)}
-              </Typography>
-              <Box
-                className="rounded-full"
-                sx={{
-                  width: "10px",
-                  height: "10px",
-                  backgroundColor: getCorStatus(),
-                }}
-              ></Box>
-              </Box>
+                <Box id="oitavoDemandas" className="flex items-center gap-2">
+                  <Typography fontSize={FontConfig.medium} fontWeight="600">
+                    {formatarStatus(props.dados.status)}
+                  </Typography>
+                  <Box
+                    className="rounded-full"
+                    sx={{
+                      width: "10px",
+                      height: "10px",
+                      backgroundColor: getCorStatus(),
+                    }}
+                  ></Box>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -189,7 +194,7 @@ const DemandaGerencia = (props) => {
                   <Tooltip title="Histórico">
                     <IconButton
                       onClick={(e) => {
-                        if(!props.isTourPropostasOpen && !props.isTourDemandasOpen && !props.isTourCriarPropostasOpen) {
+                        if (!props.isTourPropostasOpen && !props.isTourDemandasOpen && !props.isTourCriarPropostasOpen) {
                           e.stopPropagation();
                           abrirModalHistorico();
                         }

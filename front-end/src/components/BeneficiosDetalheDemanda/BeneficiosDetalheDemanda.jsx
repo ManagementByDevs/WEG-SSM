@@ -1,25 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, TextareaAutosize, FormControl, Select, MenuItem } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  TextareaAutosize,
-  FormControl,
-  Select,
-  MenuItem,
-} from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-
-import FontConfig from "../../service/FontConfig";
-
 import ColorModeContext from "../../service/TemaContext";
 
 import FontContext from "../../service/FontContext";
@@ -27,10 +11,14 @@ import FontContext from "../../service/FontContext";
 const BeneficiosDetalheDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
+  // UseState utilizado para mudar a cor do textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
+
+  // Variável utilizada para o dark mode ( para mudar a cor do textArea )
   const { mode } = useContext(ColorModeContext);
 
+  // UseEffect utilizado para mudar a cor do textArea dependendo do modo ( claro ou escuro )
   useEffect(() => {
     if (mode === "dark") {
       setCorFundoTextArea("#212121");
@@ -39,6 +27,7 @@ const BeneficiosDetalheDemanda = (props) => {
     }
   }, [mode]);
 
+  // Função responsável por estilar as linhas da tabela de benefícios
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -48,6 +37,7 @@ const BeneficiosDetalheDemanda = (props) => {
     },
   }));
 
+  // Função utilizada para deletar um benefício
   const deleteBeneficio = () => {
     props.delete(props.index);
   };
