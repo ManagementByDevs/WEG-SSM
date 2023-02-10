@@ -316,6 +316,7 @@ const NadaEncontrado = () => {
         alignItems: "center",
         flexDirection: "column",
         height: "100%",
+        marginTop: "2rem",
       }}
     >
       <Typography
