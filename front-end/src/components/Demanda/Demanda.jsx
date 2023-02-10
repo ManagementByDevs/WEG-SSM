@@ -2,8 +2,6 @@ import React, { useState, useContext } from "react";
 
 import { Box, Typography, Button, Paper } from "@mui/material";
 
-import FontConfig from "../../service/FontConfig";
-
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 
 import FontContext from "../../service/FontContext";
@@ -11,7 +9,7 @@ import FontContext from "../../service/FontContext";
 const Demanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   // Cor do status da demansa
   let corStatus = getStatusColor();
   let tamanhoHeight = getTamanhoHeight();
@@ -24,7 +22,7 @@ const Demanda = (props) => {
       return "#C4C4C4";
     } else if (props.demanda.status == "BACKLOG_EDICAO") {
       return "#FFD600";
-    } else if(props.demanda.status == "BACKLOG_APROVACAO") {
+    } else if (props.demanda.status == "BACKLOG_APROVACAO") {
       return "#00579D";
     } else if (props.demanda.status == "ASSESSMENT") {
       return "#11B703";
@@ -39,13 +37,14 @@ const Demanda = (props) => {
       return "Aguardando Revisão";
     } else if (props.demanda.status == "BACKLOG_EDICAO") {
       return "Aguardando Edição";
-    } else if(props.demanda.status == "BACKLOG_APROVACAO") {
+    } else if (props.demanda.status == "BACKLOG_APROVACAO") {
       return "Em Aprovação";
     } else if (props.demanda.status == "ASSESSMENT") {
       return "Aprovada";
     }
   };
 
+  // Função para receber o tamanho da demanda
   function getTamanhoHeight() {
     if (
       parseInt(localStorage.getItem("userId")) != props.demanda?.solicitante?.id
@@ -59,6 +58,7 @@ const Demanda = (props) => {
   // useState para abrir o modal de motivo recusa
   const [abrirModal, setOpenModal] = useState(false);
 
+  // Função para abrir o modal de motivo recusa
   const abrirModalMotivoRecusa = () => {
     setOpenModal(true);
   };
@@ -145,7 +145,7 @@ const Demanda = (props) => {
             props.demanda?.solicitante?.id ===
             parseInt(localStorage.getItem("usuarioId")) ? (
             <Button
-            id="setimo"
+              id="setimo"
               onClick={(e) => {
                 e.stopPropagation();
                 abrirModalMotivoRecusa();

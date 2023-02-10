@@ -1,6 +1,5 @@
 import { Box, Typography, Avatar } from "@mui/material";
 import React, { useContext, useState, useEffect } from "react";
-import FontConfig from "../../service/FontConfig";
 
 import FontContext from "../../service/FontContext";
 
@@ -8,10 +7,12 @@ const Contato = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // UseState para saber se o contato foi selecionado ou não
   const [corSelecionado, setCorSelecionado] = useState("transparent");
 
+  // UseEffect para alterar a cor do contato quando ele for selecionado
   useEffect(() => {
-    if(props.usuarioAtual === props.index) {
+    if (props.usuarioAtual === props.index) {
       setCorSelecionado("chat.eu");
     } else {
       setCorSelecionado("transparent");
@@ -35,7 +36,7 @@ const Contato = (props) => {
       title={props.usuario.demanda}
     >
       <Box className="flex justify-content items-center">
-        <Avatar sx={{ width: "3rem", height: "3rem" }} src={props.usuario.foto}/>
+        <Avatar sx={{ width: "3rem", height: "3rem" }} src={props.usuario.foto} />
       </Box>
       <Box className="flex justify-content flex-col" sx={{ width: "70%" }}>
         <Box className="flex justify-between">

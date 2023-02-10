@@ -1,17 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  Tooltip,
-} from "@mui/material";
-
-import FontConfig from "../../service/FontConfig";
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -25,8 +13,10 @@ const Custos = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // UseState para armazenar as horas totais dos custos
   const [horasTotais, setHorasTotais] = useState(0);
 
+  // UseEffect para atualizar as horas totais dos custos
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].custos.length; i++) {
@@ -35,8 +25,10 @@ const Custos = (props) => {
     setHorasTotais(aux);
   }, [props.custos]);
 
+  // UseState para armazenar o valor total dos custos
   const [valorTotal, setValorTotal] = useState(0);
 
+  // UseEffect para atualizar o valor total dos custos
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].custos.length; i++) {
@@ -45,8 +37,10 @@ const Custos = (props) => {
     setValorTotal(aux.toFixed(2));
   }, [props.custos]);
 
+  // UseState para armazenar a porcentagem total dos custos
   const [porcentagemTotal, setPorcentagemTotal] = useState(0);
 
+  // UseEffect para atualizar a porcentagem total dos custos
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].ccs.length; i++) {

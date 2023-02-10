@@ -1,8 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { Typography, Box } from '@mui/material';
-
-import FontConfig from '../../service/FontConfig';
 
 import FontContext from "../../service/FontContext";
 
@@ -11,7 +9,6 @@ const ContainerHistorico = (props) => {
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // variável de estilo para o container do histórico
-
     const styleComponenteHistorico = {
         display: 'flex',
         justifyContent: 'space-between',
@@ -25,8 +22,6 @@ const ContainerHistorico = (props) => {
         p: 2,
         margin: '1%'
     }
-
-    // componente para cada histórico em uma demanda
     
     return (
         <Box sx={styleComponenteHistorico}>
@@ -46,7 +41,6 @@ const ContainerHistorico = (props) => {
             </Typography>
         </Box>
     );
-
 }
 
 export default ContainerHistorico;

@@ -303,29 +303,6 @@ const Chat = () => {
     setUserData({ ...userData, "message": value });
   };
 
-  const sendValue = () => {
-    var dataAtual = new Date();
-
-    const usuario = usuarioId;
-    console.log("Usuario aqui: ", usuario);
-
-    if (stompClient) {
-      var chatMessage = {
-        id: 1,
-        data: dataAtual,
-        visto: true,
-        texto: userData.message,
-        status: "MESSAGE",
-        usuario: usuario,
-      };
-
-      console.log(chatMessage);
-      stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-      console.log("Json: ", JSON.stringify(chatMessage));
-      setUserData({ ...userData, "message": "" });
-    }
-  };
-
   const sendPrivateValue = () => {
 
     var dataAtual = new Date();
