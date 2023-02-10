@@ -14,6 +14,7 @@ import BUService from "../../service/buService";
 import FontContext from "../../service/FontContext";
 import beneficioService from "../../service/beneficioService";
 import propostaService from "../../service/propostaService";
+import DemandaService from "../../service/demandaService";
 
 const BarraProgressaoProposta = (props) => {
   // Context para alterar o tamanho da fonte
@@ -23,6 +24,9 @@ const BarraProgressaoProposta = (props) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const steps = props.steps;
+
+  // Navigate utilizado para navegar para outras páginas
+  const navigate = useNavigate();
 
   // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
@@ -290,11 +294,10 @@ const BarraProgressaoProposta = (props) => {
   const pegarAnexosSalvos = () => {
     let listaNova = [];
     for (const anexo of dadosDemanda.anexo) {
-      if(anexo.id) {
+      if (anexo.id) {
         listaNova.push(anexo);
       }
     }
-    console.log(listaNova);
     return listaNova;
   }
 
@@ -302,18 +305,25 @@ const BarraProgressaoProposta = (props) => {
   const pegarAnexosNovos = () => {
     let listaNova = [];
     for (const anexo of dadosDemanda.anexo) {
-      if(!anexo.id) {
+      if (!anexo.id) {
         listaNova.push(anexo);
       }
     }
     return listaNova;
   }
 
+  /** Função para tirar os anexos não salvos dos dados da demanda para criação de proposta */
+  const retirarAnexosDemanda = () => {
+    let demandaNova = { ...dadosDemanda };
+    demandaNova.anexo = pegarAnexosSalvos();
+    return demandaNova;
+  }
+
   const criarProposta = () => {
     excluirBeneficios();
 
     const propostaFinal = {
-      demanda: dadosDemanda,
+      demanda: retirarAnexosDemanda(),
       titulo: dadosDemanda.titulo,
       status: "ASSESSMENT_APROVACAO",
       problema: dadosDemanda.problema,
@@ -341,7 +351,10 @@ const BarraProgressaoProposta = (props) => {
     }
 
     propostaService.post(propostaFinal, pegarAnexosNovos()).then((response) => {
-      console.log(response);
+      DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then((data) => {
+        localStorage.setItem("tipoFeedback", "5");
+        navigate("/");
+      });
     });
   }
 

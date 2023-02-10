@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class PropostaController {
     private TabelaCustoService tabelaCustoService;
     private CustoService custoService;
     private CCsService ccsService;
+    private AnexoService anexoService;
 
     /**
      * Método GET para listar todas as propostas
@@ -3959,6 +3961,12 @@ public class PropostaController {
             tabelaCustoService.save(tabelaCusto);
         }
 
+        List<Anexo> listaAnexos = new ArrayList<>();
+        for (Anexo anexo : proposta.getAnexo()) {
+            listaAnexos.add(anexoService.save(anexo));
+        }
+        proposta.setAnexo(listaAnexos);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
     }
 
@@ -3983,6 +3991,12 @@ public class PropostaController {
             }
             tabelaCustoService.save(tabelaCusto);
         }
+
+        List<Anexo> listaAnexos = new ArrayList<>();
+        for (Anexo anexo : proposta.getAnexo()) {
+            listaAnexos.add(anexoService.save(anexo));
+        }
+        proposta.setAnexo(listaAnexos);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
     }

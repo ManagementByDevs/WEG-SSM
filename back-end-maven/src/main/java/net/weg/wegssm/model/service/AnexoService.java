@@ -31,4 +31,8 @@ public class AnexoService {
     public void deleteByNome(String nome) {
         anexoRepository.deleteByNome(nome);
     }
+
+    public Anexo save(Anexo anexo) {
+        return anexoRepository.save(anexo);
+    }
 }

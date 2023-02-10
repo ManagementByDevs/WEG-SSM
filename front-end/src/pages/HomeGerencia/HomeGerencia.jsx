@@ -354,9 +354,9 @@ const HomeGerencia = () => {
   // feedbacks para o gerenciamento das demandas por parte do analista
 
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
-    useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
+  const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("tipoFeedback") == "2") {
@@ -365,6 +365,8 @@ const HomeGerencia = () => {
       setFeedbackDemandaDevolvida(true);
     } else if (localStorage.getItem("tipoFeedback") == "4") {
       setFeedbackDemandaRecusada(true);
+    } else if (localStorage.getItem("tipoFeedback") == "5") {
+      setFeedbackPropostaCriada(true);
     }
 
     localStorage.removeItem("tipoFeedback");
@@ -755,7 +757,7 @@ const HomeGerencia = () => {
   return (
     <FundoComHeader>
       {!fecharChatMinimizado && (
-        <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado}/>
+        <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado} />
       )}
       {/* Help Tour's */}
       <Tour
@@ -838,6 +840,15 @@ const HomeGerencia = () => {
           }}
           status={"sucesso"}
           mensagem={"Demanda devolvida com sucesso!"}
+        />
+
+        <Feedback
+          open={feedbackPropostaCriada}
+          handleClose={() => {
+            setFeedbackPropostaCriada(false);
+          }}
+          status={"sucesso"}
+          mensagem={"Proposta criada com sucesso!"}
         />
 
         {/* Div container para o conteúdo da home */}
@@ -1043,7 +1054,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => {}}
+                  onClick={() => { }}
                   variant="contained"
                   disableElevation
                 >
@@ -1110,7 +1121,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1127,7 +1138,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{
