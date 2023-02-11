@@ -40,6 +40,9 @@ public class Usuario {
     @Column(nullable = false)
     private TipoUsuario tipoUsuario;
 
+    @Column(nullable = false, length = 2000)
+    private String preferencias;
+
     // Foreign key
 
     @ManyToOne

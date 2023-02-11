@@ -1,16 +1,17 @@
 import React, { useMemo, useState } from "react";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { CssBaseline } from "@mui/material";
 
 import getDesignTokens from "./TemaConfig";
 import ColorModeContext from "./TemaContext";
 
-const ToggleColorMode = (props) => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+import UsuarioService from "./usuarioService";
 
-  const [mode, setMode] = useState(prefersDarkMode ? "dark" : "light");
+const ToggleColorMode = (props) => {
+  const prefersDarkMode = UsuarioService.getPreferencias().themeMode;
+  
+  const [mode, setMode] = useState(prefersDarkMode == "dark" ? "dark" : "light");
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {

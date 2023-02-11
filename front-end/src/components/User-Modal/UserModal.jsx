@@ -15,7 +15,6 @@ import {
 } from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlined";
@@ -225,10 +224,12 @@ const UserModal = (props) => {
     } else if (fontConfigDefault == "18px") {
       return 2;
     }
-  }
+  };
 
   // UseState para poder visualizar e alterar o value do slider
-  const [valueSlider, setValueSlider] = useState(getValueByContext(FontConfig.default));
+  const [valueSlider, setValueSlider] = useState(
+    getValueByContext(FontConfig.default)
+  );
 
   // Função para mudar o value do slider
   const handleChange = (event, newValue) => {
@@ -296,7 +297,7 @@ const UserModal = (props) => {
           medium: "20px",
           big: "22px",
           veryBig: "24px",
-          smallTitle: "34px", 
+          smallTitle: "34px",
           title: "40px",
         });
         break;
@@ -313,6 +314,21 @@ const UserModal = (props) => {
         });
     }
   }, [valueSlider]);
+
+  /**
+   * Salva as novas preferências do usuário no banco de dados
+   * @param {String} newThemeMode 
+   */
+  const saveNewPreference = (newThemeMode) => {
+    let user = UsuarioService.getUser();
+    let preferencias = UsuarioService.getPreferencias();
+    preferencias.themeMode = newThemeMode;
+    user.preferencias = JSON.stringify(preferencias);
+
+    UsuarioService.updateUser(user.id, user).then((e) => {
+      // UsuarioService.updateUserInLocalStorage();
+    });
+  };
 
   return (
     <>
@@ -393,7 +409,7 @@ const UserModal = (props) => {
             className="gap-2"
             onClick={() => {
               handleClose();
-              navigate("/chat", { state: { userChat: true }});
+              navigate("/chat", { state: { userChat: true } });
             }}
           >
             {chatIcon == ChatBubbleOutlineOutlinedIcon ? (
@@ -406,7 +422,7 @@ const UserModal = (props) => {
               fontSize={FontConfig.medium}
               sx={{ fontWeight: 500 }}
             >
-            Chats
+              Chats
             </Typography>
           </MenuItem>
 
@@ -457,7 +473,6 @@ const UserModal = (props) => {
           </Box>
 
           <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4">
-            {/* <Typography color={'text.primary'} fontSize={FontConfig.medium} sx={{ fontWeight: 500 }}>Tema</Typography> */}
             <Tooltip title="Modo Escuro/Claro">
               <FormControlLabel
                 control={
@@ -465,6 +480,7 @@ const UserModal = (props) => {
                     checked={temaDark}
                     onChange={() => {
                       setTemaDark(!temaDark);
+                      saveNewPreference(!temaDark ? "dark" : "light");
                     }}
                     sx={{ m: 1 }}
                   />
