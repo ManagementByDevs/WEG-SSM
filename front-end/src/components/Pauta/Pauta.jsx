@@ -16,17 +16,16 @@ const Pautas = (props) => {
     let dateInicio = new Date(DateService.getDateByMySQLFormat(dataInicio));
     let dateFim = new Date(DateService.getDateByMySQLFormat(dataFim));
 
-    return `${dateInicio.getHours()}:${
-      dateInicio.getMinutes() < 10
-        ? "0" + dateInicio.getMinutes()
-        : dateInicio.getMinutes()
-    } às ${dateFim.getHours()}:${
-      dateFim.getMinutes() < 10
+    return `${dateInicio.getHours()}:${dateInicio.getMinutes() < 10
+      ? "0" + dateInicio.getMinutes()
+      : dateInicio.getMinutes()
+      } às ${dateFim.getHours()}:${dateFim.getMinutes() < 10
         ? "0" + dateFim.getMinutes()
         : dateFim.getMinutes()
-    }`;
+      }`;
   };
 
+  // Função para formatar a data para melhor leitura
   const getDataFormatada = (dataInicio) => {
     return DateService.getTodaysDateUSFormat(
       DateService.getDateByMySQLFormat(dataInicio)

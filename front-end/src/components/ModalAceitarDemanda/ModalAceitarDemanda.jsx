@@ -1,19 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 
-import {
-  Button,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-  MenuItem,
-  Checkbox,
-  Autocomplete,
-  Box,
-  IconButton,
-} from "@mui/material";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Typography, MenuItem, Checkbox, Autocomplete, Box, IconButton } from "@mui/material";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -21,24 +8,30 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 
 import FontContext from "../../service/FontContext";
-import FontConfig from "../../service/FontConfig";
 import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 
+// Variável para armazenar os ícones do checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
 
 const ModalAceitarDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // UseState para armazenar a lista de BUs
   const [listaBus, setListaBus] = useState([]);
+
+  // Lista de seções de ti
   const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
+
+  // UseState para armazenar a lista de fóruns
   const [listaForum, setListaForum] = useState([]);
 
+  // Variável para armazenar o input de arquivos
   const inputFile = useRef(null);
 
+  // UseStates para armazenar o valor dos campos da demanda
   const [tamanho, setTamanho] = useState("");
   const [buSolicitante, setBuSolicitante] = useState("");
   const [busBeneficiadas, setBusBeneficiadas] = useState([]);
@@ -46,6 +39,7 @@ const ModalAceitarDemanda = (props) => {
   const [anexos, setAnexos] = useState([]);
   const [forum, setForum] = useState("");
 
+  // UseEffect para carregar as listas de BUs e fóruns
   useEffect(() => {
     if (listaBus.length == 0) {
       BuService.getAll().then((response) => {
@@ -60,12 +54,14 @@ const ModalAceitarDemanda = (props) => {
     }
   }, []);
 
+  // Função para selecionar um arquivo
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
       setAnexos([...anexos, file]);
     }
   };
 
+  // Função para adicionar algum arquivo
   const onAddFileButtonClick = () => {
     inputFile.current.click();
   };

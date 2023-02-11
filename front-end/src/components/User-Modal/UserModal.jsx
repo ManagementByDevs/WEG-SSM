@@ -1,21 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import {
-  Menu,
-  MenuItem,
-  Tooltip,
-  IconButton,
-  Avatar,
-  Typography,
-  Box,
-  FormControlLabel,
-  Switch,
-  Slider,
-} from "@mui/material/";
+import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography, Box, FormControlLabel, Switch, Slider } from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlined";
@@ -77,9 +65,11 @@ const UserModal = (props) => {
   // - Mode: modo do tema atual ("light" ou "dark")
   // - toggleColorMode: função para alternar o tema
   const { mode, toggleColorMode } = useContext(ColorModeContext);
+
   // Variável de estado para controlar o tema
   const [temaDark, setTemaDark] = useState(mode === "dark" ? true : false);
 
+  // UseEffect para pegar as informações do usuário logado
   useEffect(() => {
     UsuarioService.getUsuarioById(
       parseInt(localStorage.getItem("usuarioId"))
@@ -88,6 +78,7 @@ const UserModal = (props) => {
     });
   }, []);
 
+  // Navigate para navegar entre as páginas
   const navigate = useNavigate();
 
   // UseState para poder visualizar e alterar o chat icon
@@ -126,6 +117,7 @@ const UserModal = (props) => {
     localStorage.removeItem("user");
   };
 
+  // UseEffect para alternar o tema
   useEffect(() => {
     toggleColorMode();
   }, [temaDark]);
@@ -296,7 +288,7 @@ const UserModal = (props) => {
           medium: "20px",
           big: "22px",
           veryBig: "24px",
-          smallTitle: "34px", 
+          smallTitle: "34px",
           title: "40px",
         });
         break;
@@ -393,7 +385,7 @@ const UserModal = (props) => {
             className="gap-2"
             onClick={() => {
               handleClose();
-              navigate("/chat", { state: { userChat: true }});
+              navigate("/chat", { state: { userChat: true } });
             }}
           >
             {chatIcon == ChatBubbleOutlineOutlinedIcon ? (
@@ -406,7 +398,7 @@ const UserModal = (props) => {
               fontSize={FontConfig.medium}
               sx={{ fontWeight: 500 }}
             >
-            Chats
+              Chats
             </Typography>
           </MenuItem>
 

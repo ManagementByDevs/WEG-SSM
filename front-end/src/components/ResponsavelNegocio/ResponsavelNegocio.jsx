@@ -1,8 +1,6 @@
 import React, {useContext} from "react";
 import { Box, Typography } from "@mui/material";
 
-import FontConfig from "../../service/FontConfig";
-
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import FontContext from "../../service/FontContext";

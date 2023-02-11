@@ -12,13 +12,11 @@ const ModalFiltro = (props) => {
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // props para abrir o modal a partir da página de home
-
     let open = false;
     open = props.open;
     const setOpen = props.setOpen;
 
     // abrir e fechar modal
-
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -27,7 +25,6 @@ const ModalFiltro = (props) => {
     const [check, setCheck] = useState([false, false, false, false, false, false]);
 
     // funções para permitir o check de apenas um checkbox
-
     function mudarCheck1() {
         if (props.listaFiltros[0]) {
             props.setListaFiltros([false, false, false, false, false, false]);

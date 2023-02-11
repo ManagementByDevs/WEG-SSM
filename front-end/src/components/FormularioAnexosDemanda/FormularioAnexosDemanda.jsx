@@ -17,37 +17,47 @@ const FormularioAnexosDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
   
+  // Variáveis para armazenar os arquivos 
   const dragArea = useRef(null);
   const inputFile = useRef(null);
 
+  // UseState para receber os arquivos e mapear na tabela
   const [mapAbleFileList, setMapAbleFileList] = useState([]);
+
+  // UseState para alterar o texto do drag and drop
   const [dragText, setDragText] = useState("Arraste & Solte para Adicionar um Arquivo");
 
+  // Função para abrir o input file
   const fileClick = () => {
     inputFile.current.click();
   };
 
+  // Função para adicionar os arquivos no array
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
       props.setDados([...props.dados, file]);
     }
   };
 
+  // UseEffect para atualizar o array de arquivos
   useEffect(() => {
     setMapAbleFileList(Array.from(props.dados));
     props.salvarEscopo();
   }, [props.dados]);
 
+  // Função para o drag and drop
   const drag = (event) => {
     event.preventDefault();
     setDragText("Solte para Adicionar um Arquivo");
   };
 
+  // Função para alterar o texto do drag and drop
   const onDragLeaveHandle = (event) => {
     event.preventDefault();
     setDragText("Arraste & Solte para Adicionar um Arquivo");
   };
 
+  // Função para adicionar os arquivos no array
   const onDropFile = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -58,6 +68,7 @@ const FormularioAnexosDemanda = (props) => {
     }
   };
 
+  // Função para remover um arquivo do array
   const deleteFile = (desiredIndex) => {
     setMapAbleFileList(
       mapAbleFileList.filter((_, index) => index !== desiredIndex)

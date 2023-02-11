@@ -1,17 +1,9 @@
 import React, { useState, useContext } from "react";
-import {
-  Menu,
-  MenuItem,
-  Tooltip,
-  IconButton,
-  Typography,
-} from "@mui/material/";
+import { Menu, MenuItem, Tooltip, IconButton, Typography } from "@mui/material/";
 
 import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
 import EstadosUnidos from "../../assets/estados-unidos.png";
-
-import FontConfig from "../../service/FontConfig";
 
 import FontContext from "../../service/FontContext";
 

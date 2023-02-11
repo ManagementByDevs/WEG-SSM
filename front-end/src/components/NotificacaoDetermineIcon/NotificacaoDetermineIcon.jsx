@@ -6,6 +6,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 const NotificacaoDetermineIcon = ({ tipoIcone }) => {
+  // Determina o tipo do ícone da notificação
   return tipoIcone == "APROVADO" ? (
     <CheckCircleOutlineIcon
       color="primary"

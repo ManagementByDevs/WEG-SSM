@@ -1,14 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  TableRow,
-  Box,
-  Tooltip,
-  TextField,
-  Input,
-  InputAdornment,
-} from "@mui/material";
-
-import FontConfig from "../../service/FontConfig";
+import { TableRow, Box, Tooltip, Input, InputAdornment } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
@@ -19,10 +10,14 @@ import FontContext from "../../service/FontContext";
 const LinhaTabelaCCs = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
+  // UseState para alterar a cor do fundo textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
+
+  // Variável para alterar o tema
   const { mode } = useContext(ColorModeContext);
 
+  // UseEffect para alterar a cor de fundo do textArea
   useEffect(() => {
     if (mode === "dark") {
       setCorFundoTextArea("#212121");

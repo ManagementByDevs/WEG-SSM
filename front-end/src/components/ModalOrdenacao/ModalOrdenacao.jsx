@@ -1,13 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Modal,
-  Typography,
-  Box,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Grid,
-} from "@mui/material";
+import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
@@ -71,8 +63,6 @@ const ModalOrdenacao = (props) => {
     <Modal
       open={true}
       onClose={props.fecharModal}
-      onBackdropClick={props.fecharModal}
-      BackdropProps={{ invisible: true }}
     >
       <Fade in={true}>
         <Box

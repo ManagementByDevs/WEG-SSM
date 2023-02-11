@@ -3,8 +3,6 @@ import React, { useState, useContext } from "react";
 import { Modal, Typography, Box, Fade, TextareaAutosize, Button } from '@mui/material';
 
 import Backdrop from '@mui/material/Backdrop';
-
-import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 
 import FontContext from "../../service/FontContext";
@@ -14,7 +12,6 @@ const ModalInformarMotivo = (props) => {
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // variáveis de estilo para o modal
-
     const style = {
         position: 'absolute',
         top: '50%',
@@ -44,13 +41,11 @@ const ModalInformarMotivo = (props) => {
     }
 
     // props para abrir o modal através de outra tela
-
     let open = false;
     open = props.open;
     const setOpen = props.setOpen;
 
     // useState para abrir e fechar o modal
-
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -59,10 +54,6 @@ const ModalInformarMotivo = (props) => {
             open={open}
             onClose={handleClose}
             closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-                timeout: 500,
-            }}
         >
             <Fade in={open}>
                 <Box sx={style}>
