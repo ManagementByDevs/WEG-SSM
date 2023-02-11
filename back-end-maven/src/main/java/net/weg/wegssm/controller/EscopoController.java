@@ -63,11 +63,6 @@ public class EscopoController {
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.findById(id).get());
     }
 
-//    @GetMapping("/page")
-//    public ResponseEntity<Page<Escopo>> findPage(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-//
-//    }
-
     /**
      * Método GET para listar um escopo específico através do id do usuário
      */

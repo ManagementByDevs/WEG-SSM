@@ -19,10 +19,10 @@ public class ResponsavelNegocio {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String nome;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String area;
 
 }

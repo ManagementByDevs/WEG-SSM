@@ -129,7 +129,7 @@ public class Proposta {
     private List<TabelaCusto> tabelaCustos;
 
     @OneToMany
-    @JoinColumn(name = "responsavel_negocio_id")
+    @JoinColumn(name = "proposta_id")
     private List<ResponsavelNegocio> responsavelNegocio;
 
     @OneToOne

@@ -14,6 +14,5 @@ public class CustoDTO {
     private Double horas;
     private Double valorHora;
     private String css;
-//    private Proposta proposta;
 
 }

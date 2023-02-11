@@ -80,7 +80,7 @@ const Home = () => {
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
   // Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado
-  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false]);
+  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
 
   // Valores dos checkboxes no modal de ordenação
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
@@ -157,6 +157,8 @@ const Home = () => {
       atualizarFiltro("BACKLOG_REVISAO");
     } else if (listaFiltros[4]) {
       atualizarFiltro("BACKLOG_APROVACAO");
+    } else if (listaFiltros[5]) {
+      atualizarFiltro("ASSESSMENT_APROVACAO");
     } else {
       atualizarFiltro(null);
     }
@@ -542,7 +544,7 @@ const Home = () => {
                         motivoRecusa: "É apenas um exemplo!",
                         status: "BACKLOG_EDICAO",
                         data: "10/10/10",
-                        solicitante: {id: 1, nome: "Nome do solicitante"},
+                        solicitante: { id: 1, nome: "Nome do solicitante" },
                       }}
                     />
                   ) : (

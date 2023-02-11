@@ -24,47 +24,55 @@ const ModalFiltro = (props) => {
 
     // useState para permitir apenas um checkbox selecionado
 
-    const [check, setCheck] = useState([false, false, false, false, false]);
+    const [check, setCheck] = useState([false, false, false, false, false, false]);
 
     // funções para permitir o check de apenas um checkbox
 
     function mudarCheck1() {
         if (props.listaFiltros[0]) {
-            props.setListaFiltros([false, false, false, false, false]);
+            props.setListaFiltros([false, false, false, false, false, false]);
         } else {
-            props.setListaFiltros([true, false, false, false, false]);
+            props.setListaFiltros([true, false, false, false, false, false]);
         }
     }
 
     function mudarCheck2() {
         if (props.listaFiltros[1]) {
-            props.setListaFiltros([false, false, false, false, false]);
+            props.setListaFiltros([false, false, false, false, false, false]);
         } else {
-            props.setListaFiltros([false, true, false, false, false]);
+            props.setListaFiltros([false, true, false, false, false, false]);
         }
     }
 
     function mudarCheck3() {
         if (props.listaFiltros[2]) {
-            props.setListaFiltros([false, false, false, false, false]);
+            props.setListaFiltros([false, false, false, false, false, false]);
         } else {
-            props.setListaFiltros([false, false, true, false, false]);
+            props.setListaFiltros([false, false, true, false, false, false]);
         }
     }
 
     function mudarCheck4() {
         if (props.listaFiltros[3]) {
-            props.setListaFiltros([false, false, false, false, false]);
+            props.setListaFiltros([false, false, false, false, false, false]);
         } else {
-            props.setListaFiltros([false, false, false, true, false]);
+            props.setListaFiltros([false, false, false, true, false, false]);
         }
     }
 
     function mudarCheck5() {
         if (props.listaFiltros[4]) {
-            props.setListaFiltros([false, false, false, false, false]);
+            props.setListaFiltros([false, false, false, false, false, false]);
         } else {
-            props.setListaFiltros([false, false, false, false, true]);
+            props.setListaFiltros([false, false, false, false, true, false]);
+        }
+    }
+
+    function mudarCheck6() {
+        if (props.listaFiltros[5]) {
+            props.setListaFiltros([false, false, false, false, false, false]);
+        } else {
+            props.setListaFiltros([false, false, false, false, false, true]);
         }
     }
 
@@ -91,7 +99,7 @@ const ModalFiltro = (props) => {
 
                 {props.filtroDemanda ?
                     <Box className="absolute flex justify-evenly items-center flex-col"
-                        sx={{ top: '36%', left: '37%', transform: 'translate(-50%, -50%)', width: 310, height: 280, bgcolor: 'background.paper', borderRadius: '5px', borderTop: '10px solid #00579D', boxShadow: 24, p: 2 }}>
+                        sx={{ top: '36%', left: '37%', transform: 'translate(-50%, -50%)', width: 310, height: 320, bgcolor: 'background.paper', borderRadius: '5px', borderTop: '10px solid #00579D', boxShadow: 24, p: 2 }}>
                         <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '90%', top: '3%', cursor: 'pointer' }} />
                         <Grid container spacing={0}>
                             <Grid item xs={9.2}>
@@ -105,6 +113,7 @@ const ModalFiltro = (props) => {
                                         <FormControlLabel checked={props.listaFiltros[2]} onChange={mudarCheck3} control={<Checkbox />} label="Aguardando Edição" />
                                         <FormControlLabel checked={props.listaFiltros[3]} onChange={mudarCheck4} control={<Checkbox />} label="Aguardando Revisão" />
                                         <FormControlLabel checked={props.listaFiltros[4]} onChange={mudarCheck5} control={<Checkbox />} label="Em Aprovação" />
+                                        <FormControlLabel checked={props.listaFiltros[5]} onChange={mudarCheck6} control={<Checkbox />} label="Em Andamento" />
                                     </Box>
                                 </FormGroup>
                             </Grid>

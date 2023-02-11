@@ -33,7 +33,7 @@ public class ResponsavelNegocioController {
     }
 
     /**
-     * Método GET para listar um reponsável de negócio específico através de um id
+     * Método GET para listar um responsável de negócio específico através de um id
      *
      * @param id
      * @return
