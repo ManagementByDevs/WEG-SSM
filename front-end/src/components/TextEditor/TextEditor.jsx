@@ -7,9 +7,11 @@ import FontContext from "../../service/FontContext";
 const TextEditor = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
+  // Variável para o editor
   const editor = useRef(null);
 
+  // Variável que contem as configurações do editor
   const config = {
     readonly: false, // Todas opções encontradas em https://xdsoft.net/jodit/doc/
     height: "700",
@@ -18,6 +20,7 @@ const TextEditor = (props) => {
     allowResizeY: false,
   };
 
+  // Função para atualizar o escopo
   const handleUpdate = (newContent) => {
     props.setEscopo(newContent);
   };

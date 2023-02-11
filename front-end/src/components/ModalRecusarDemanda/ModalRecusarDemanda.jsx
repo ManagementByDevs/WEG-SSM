@@ -12,7 +12,6 @@ const ModalRecusarDemanda = (props) => {
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // Variável de estilo para o modal
-
     const style = {
         position: 'absolute',
         top: '50%',
@@ -31,29 +30,16 @@ const ModalRecusarDemanda = (props) => {
         flexDirection: 'column',
     };
 
-    const styleMensagem = {
-        marginTop: '5%',
-        display: 'flex',
-        textAlign: 'justify',
-        border: '1px solid',
-        borderColor: 'divider.main',
-        borderRadius: '5px',
-        p: 2,
-        width: '100%',
-        height: '100%',
-    }
-
     // props para abrir o modal através de outra tela
-
     let open = false;
     open = props.open;
     const setOpen = props.setOpen;
 
     // useState para abrir e fechar o modal
-
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    // Função para alterar o texto do motivo
     const alterarTexto = (e) => {
         props.setMotivo(e.target.value);
     }
@@ -63,10 +49,6 @@ const ModalRecusarDemanda = (props) => {
             open={open}
             onClose={handleClose}
             closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-                timeout: 500,
-            }}
         >
             <Fade in={open}>
                 <Box sx={style}>

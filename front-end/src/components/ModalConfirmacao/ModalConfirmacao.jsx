@@ -4,7 +4,6 @@ import { Modal, Typography, Box, Button } from "@mui/material";
 
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
-import FontConfig from "../../service/FontConfig";
 
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
@@ -43,8 +42,7 @@ const ModalConfirmacao = (props) => {
     marginTop: "6%",
   };
 
-  // Funções para retornar um tipo de mensagem para o modal e o botão
-
+  // Função para retornar um tipo de mensagem no modal
   const mensagemModal = (tipoMensagem) => {
     switch (tipoMensagem) {
       case "descartarRascunho":
@@ -68,6 +66,7 @@ const ModalConfirmacao = (props) => {
     }
   };
 
+  // Função para retornar um tipo de mensagem no botão
   const mensagemBotao = (mensagemBotao) => {
     switch (mensagemBotao) {
       case "sim":
@@ -81,10 +80,7 @@ const ModalConfirmacao = (props) => {
     }
   };
 
-  // useState para abrir e fechar o modal
-
-  // const [open, setOpen] = useState(props.open);
-
+  // Abrir e fechar o modal
   let open = false;
   open = props.open;
   const setOpen = props.setOpen;
@@ -97,10 +93,6 @@ const ModalConfirmacao = (props) => {
       open={props.open}
       onClose={handleClose}
       closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
     >
       <Fade in={props.open}>
         <Box sx={styleModal}>

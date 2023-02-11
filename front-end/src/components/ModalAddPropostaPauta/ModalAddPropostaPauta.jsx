@@ -1,22 +1,7 @@
 import { React, useState, useEffect, useContext } from 'react';
 
-import {
-    Modal,
-    Fade,
-    Divider,
-    Typography,
-    Box,
-    Button,
-    Checkbox,
-    FormGroup,
-    FormControlLabel,
-    Paper,
-    Select,
-    FormControl,
-    MenuItem
-} from '@mui/material';
+import { Modal, Fade, Divider, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Paper, Select, FormControl, MenuItem } from '@mui/material';
 
-import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 import ContainerPauta from '../ContainerPauta/ContainerPauta';
 
@@ -27,7 +12,6 @@ const ModalAddPropostaPauta = (props) => {
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // variáveis de estilo para os itens do componente 
-
     const cssModal = {
         position: 'absolute',
         top: '50%',
@@ -141,18 +125,15 @@ const ModalAddPropostaPauta = (props) => {
     };
 
     // props para abrir o modal através de outra tela
-
     let open = false;
     open = props.open;
     const setOpen = props.setOpen;
 
     // useState para abrir e fechar o modal
-
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     // veriricação para marcar apenas um check
-
     const [check, setCheck] = useState([false, false]);
 
     function mudarCheck1() {
@@ -171,37 +152,47 @@ const ModalAddPropostaPauta = (props) => {
         }
     }
 
-    // useStates utilizados no componente
-
+    // UseState para habilitar ou desabilitar o botão de adicionar
     const [habilitadoAdd, setHabilitadoAdd] = useState(false);
+
+    // UseState index para selecionar a pauta
     const [indexPautaSelecionada, setIndexPautaSelecionada] = useState(null);
+
+    // UseState para criar uma nova pauta
     const [novaPauta, setnovaPauta] = useState(false);
+
+    // UseState para selecionar a nova pauta criada
     const [novaPautaSelecionada, setnovaPautaSelecionada] = useState(false);
+
+    // UseState para habilitar ou desabilitar o botão de adicionar a nova pauta
     const [botaoNovaPauta, setBotaoNovaPauta] = useState(false);
+
+    // UseState para armazenar a lista de pautas
     const [listaPautas, setListaPautas] = useState([1, 2]);
+
+    // UseState para armazenar a data
     const [inputData, setInputData] = useState("");
+
+    // UseState para armazenar a comissão
     const [comissao, setComissao] = useState("");
 
-    // useEffect para habilitar ou desabilitar o botão de adicionar
+    // Provavelmente não possui uso no componente ( verificar depois )
 
-    useEffect(() => {
+    // useEffect(() => {
 
-    }, [habilitadoAdd])
+    // }, [habilitadoAdd])
 
     // função para adicionar uma nova pauta
-
     const addPauta = () => {
         setnovaPauta(true);
     };
 
     // função para mudar o valor do select na nova pauta criada
-
     const handleChange = (event) => {
         setComissao(event.target.value);
     };
 
     // função para selecionar a nova pauta
-
     const selecionarNovaPauta = () => {
         setnovaPautaSelecionada(!novaPautaSelecionada);
         setBotaoNovaPauta(!botaoNovaPauta);

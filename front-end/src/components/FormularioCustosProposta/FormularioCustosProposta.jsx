@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Button, Typography } from "@mui/material";
 
 import Custos from "../Custos/Custos";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { useEffect } from "react";
 
 import FontContext from "../../service/FontContext";
 
@@ -12,14 +11,16 @@ const FormularioCustosProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Função para deletar custos
   const deletarCustos = (index) => {
     props.deletarTabelaCustos(index);
   };
 
-
+  // UseStates para armazenar as horas e o valor total
   const [horasTotais, setHorasTotais] = useState(0);
   const [valorTotal, setValorTotal] = useState(0);
 
+  // UseEffect para calcular as horas totais
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos.length; i++) {
@@ -30,6 +31,7 @@ const FormularioCustosProposta = (props) => {
     setHorasTotais(aux);
   }, [props.custos]);
 
+  // UseEffect para calcular o valor total
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos.length; i++) {
@@ -39,7 +41,6 @@ const FormularioCustosProposta = (props) => {
     }
     setValorTotal(aux.toFixed(2));
   }, [props.custos]);
-
 
   return (
     <Box className="flex flex-col">

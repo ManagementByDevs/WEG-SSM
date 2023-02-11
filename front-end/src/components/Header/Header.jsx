@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { IconButton, Paper, Tooltip } from "@mui/material/";
+import { Paper, Tooltip } from "@mui/material/";
 import { Link, useLocation } from "react-router-dom";
 
 import IdiomaModal from "../Idioma-Modal/IdiomaModal";

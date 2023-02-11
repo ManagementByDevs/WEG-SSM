@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 
 import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
 
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
-import FontConfig from "../../service/FontConfig";
 import CloseIcon from '@mui/icons-material/Close';
 import UsuarioService from "../../service/usuarioService";
 
@@ -15,7 +14,6 @@ const ModalFiltroGerencia = (props) => {
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // variáveis de estilo para o modal do filtro
-
     const styleModal = {
         position: "absolute",
         top: "50%",
@@ -67,40 +65,44 @@ const ModalFiltroGerencia = (props) => {
     }
 
     // variáveis para abrir o modal através de outra tela
-
     let open = false;
     open = props.open;
     const setOpen = props.setOpen;
 
     // abrir e fechar modal
-
     const handleOpen = () => setOpen(true);
 
     const handleClose = () => {
         setOpen(false);
     }
 
+    // Função para limpar os filtros
     const limparFiltro = () => {
         props.setFiltro({ solicitante: null, forum: "", tamanho: "", gerente: null, departamento: "" });
         handleClose();
     }
 
+    // Função para selecionar o solicitante
     const selecionarSolicitante = (event, value) => {
         props.setFiltro({ solicitante: value, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     }
 
+    // Função para selecionar o fórum
     const selecionarForum = (event) => {
         props.setFiltro({ solicitante: props.filtro.solicitante, forum: event.target.value, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     };
 
+    // Função para selecionar o tamanho
     const selecionarTamanho = (event) => {
         props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: event.target.value, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     };
 
+    // Função para selecionar o gerente
     const selecionarGerente = (event, value) => {
         props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: value, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     };
 
+    // Função para selecionar o departamento
     const selecionarDepartamento = (event) => {
         props.setFiltro({ solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: event.target.value, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM });
     };
@@ -138,10 +140,6 @@ const ModalFiltroGerencia = (props) => {
             open={props.open}
             onClose={handleClose}
             closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-                timeout: 500,
-            }}
         >
             <Fade in={props.open}>
                 <Box sx={styleModal}>

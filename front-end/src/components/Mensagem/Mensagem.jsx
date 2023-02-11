@@ -1,6 +1,5 @@
 import { Box, Typography, Avatar } from "@mui/material";
 import React, { useContext } from "react";
-import FontConfig from "../../service/FontConfig";
 
 import FontContext from "../../service/FontContext";
 

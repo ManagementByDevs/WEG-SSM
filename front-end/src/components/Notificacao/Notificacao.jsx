@@ -21,6 +21,7 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
   const diferencaMeses = dataAtual - dataNotificacao;
   const diferencaDias = diferencaMeses / (1000 * 60 * 60 * 24);
 
+  // Função para marcar a notificação como lida
   const handleClick = () => {
     NotificacaoService.put({
       ...notificacao,
@@ -70,18 +71,18 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
           {diferencaDias < 7 && diferencaDias > 1
             ? `${diferencaDias.toFixed(0) * 1 - 1} dias atrás`
             : diferencaDias < 1 && diferencaDias > 0
-            ? `Hoje`
-            : diferencaDias > 7 && diferencaDias < 14
-            ? "1 semana atrás"
-            : diferencaDias > 14 && diferencaDias < 21
-            ? "2 semanas atrás"
-            : diferencaDias > 21 && diferencaDias < 28
-            ? "3 semanas atrás"
-            : diferencaDias > 28 && diferencaDias < 30
-            ? "4 semanas atrás"
-            : diferencaDias > 31
-            ? "mais de 1 mês atrás"
-            : null}
+              ? `Hoje`
+              : diferencaDias > 7 && diferencaDias < 14
+                ? "1 semana atrás"
+                : diferencaDias > 14 && diferencaDias < 21
+                  ? "2 semanas atrás"
+                  : diferencaDias > 21 && diferencaDias < 28
+                    ? "3 semanas atrás"
+                    : diferencaDias > 28 && diferencaDias < 30
+                      ? "4 semanas atrás"
+                      : diferencaDias > 31
+                        ? "mais de 1 mês atrás"
+                        : null}
         </Typography>
       </Box>
       <MarkEmailReadOutlinedIcon className="notificacao-item-componente-read-icon" />

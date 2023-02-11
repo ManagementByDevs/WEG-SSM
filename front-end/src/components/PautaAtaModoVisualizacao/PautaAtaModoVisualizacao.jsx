@@ -1,15 +1,6 @@
 import React, { useContext } from "react";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 
 import "./PautaAtaModoVisualizacao.css";
 

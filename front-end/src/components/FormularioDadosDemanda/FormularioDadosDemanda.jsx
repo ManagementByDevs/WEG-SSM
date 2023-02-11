@@ -4,8 +4,6 @@ import { Box } from "@mui/material";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
 
-import FontConfig from "../../service/FontConfig";
-
 import FontContext from "../../service/FontContext";
 
 const FormularioDadosDemanda = (props) => {

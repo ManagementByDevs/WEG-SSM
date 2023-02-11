@@ -1,17 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import {
-  TableRow,
-  Box,
-  TextareaAutosize,
-  FormControl,
-  Select,
-  MenuItem,
-  Tooltip,
-  InputLabel,
-} from "@mui/material";
+import { TableRow, Box, TextareaAutosize, FormControl, Select, MenuItem, Tooltip, InputLabel } from "@mui/material";
 
-import FontConfig from "../../service/FontConfig";
 import ColorModeContext from "../../service/TemaContext";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -21,10 +11,15 @@ import FontContext from "../../service/FontContext";
 const LinhaTabelaCustos = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
+  // UseState para alterar a cor do textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
+
+  // Variável para alterar o tema
   const { mode } = useContext(ColorModeContext);
 
+
+  // UseEffect para alterar a cor de fundo do textArea
   useEffect(() => {
     if (mode === "dark") {
       setCorFundoTextArea("#212121");
@@ -33,6 +28,8 @@ const LinhaTabelaCustos = (props) => {
     }
   }, [mode]);
 
+
+  // UseEffect para calcular o total de custo
   useEffect(() => {
     let aux = [...props.custos];
     aux[props.indexCusto].custos[props.index].total = (

@@ -4,7 +4,6 @@ import { Modal, Typography, Box, Divider } from '@mui/material';
 
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
-import FontConfig from '../../service/FontConfig';
 
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -17,7 +16,6 @@ const ModalHistoricoDemanda = (props) => {
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // Variáveis de estilo para o modal
-
     const styleModal = {
         position: 'absolute',
         top: '50%',
@@ -46,13 +44,11 @@ const ModalHistoricoDemanda = (props) => {
     }
 
     // variáveis para abrir o modal a partir de outra tela
-
     let open = false;
     open = props.open;
     const setOpen = props.setOpen;
 
     // useState para abrir e fechar o modal
-
     const handleClose = () => setOpen(false);
 
     return (
@@ -60,10 +56,6 @@ const ModalHistoricoDemanda = (props) => {
             open={open}
             onClose={handleClose}
             closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-                timeout: 500,
-            }}
         >
             <Fade in={open}>
                 <Box sx={styleModal}>

@@ -1,19 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
-import {
-  Box,
-  FormControl,
-  Select,
-  MenuItem,
-  Typography,
-  Divider,
-  IconButton,
-  Paper,
-  Tooltip
-} from "@mui/material";
+import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip } from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
-
-import FontConfig from "../../service/FontConfig";
 
 import ResponsavelNegocio from "../ResponsavelNegocio/ResponsavelNegocio";
 
@@ -26,9 +14,13 @@ const FormularioGeralProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Variável para alterar o tema
   const { mode } = useContext(ColorModeContext);
+
+  // Variável para o input de anexos
   const inputFile = useRef(null);
 
+  // Função para remover um responsável
   const deleteResponsavel = (indexResponsavel) => {
     let listaNova = [...props.gerais.responsaveisNegocio];
     listaNova.splice(indexResponsavel, 1);

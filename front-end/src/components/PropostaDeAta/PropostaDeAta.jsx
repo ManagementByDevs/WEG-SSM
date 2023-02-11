@@ -2,11 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 
 import { Box, Typography, TextareaAutosize } from "@mui/material";
 
-import FontConfig from "../../service/FontConfig";
-
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
-
-import { useLocation } from "react-router-dom";
 
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -19,19 +15,17 @@ const PropostaDeAta = (props) => {
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
     // Variáveis de estilo para usar no componente
-
     const textoConteudo = {
         textAlign: "justify",
         color: "text.secondary",
         marginLeft: "30px"
     };
 
-    // Lógica dos dados da proposta
-
-    const location = useLocation();
-
+    // Variável para armazenar os dados da proposta
     const dados = props.dadosProposta;
 
+
+    // UseEffect para setar os dadpos da proposta
     useEffect(() => {
         setTituloDemanda(dados.titulo);
         setProblema(dados.problema);
@@ -51,8 +45,7 @@ const PropostaDeAta = (props) => {
         setBeneficios(aux);
     }, [dados]);
 
-    // useState utilizado no componente
-
+    // UseStates para armazenar os valores dos campos da proposta
     const [tituloDemanda, setTituloDemanda] = useState(dados.titulo);
     const [problema, setProblema] = useState(dados.problema);
     const [proposta, setProposta] = useState(dados.proposta);
@@ -62,18 +55,15 @@ const PropostaDeAta = (props) => {
 
 
     // função para aparecer a parte da comissão, caso seja uma porposta de uma pauta
-
     useEffect(() => {
         setPropostaDePauta(props.propostaPauta)
     })
 
     // select do parecer da comissao
-
     const [parecer, setParecer] = useState('');
     const [parecerComissao, setParecerComissao] = useState(false);
 
     // useState para a pauta criada
-
     const [parecerDG, setParecerDG] = useState(props.parecerDG);
 
     // mudar o conteúdo do select e 
@@ -289,7 +279,7 @@ const PropostaDeAta = (props) => {
                                 </Select>
                             </FormControl>
                             :
-                            <Box sx={{marginLeft: '2%'}}>
+                            <Box sx={{ marginLeft: '2%' }}>
                                 Aprovado
                             </Box>
                         }
@@ -310,12 +300,12 @@ const PropostaDeAta = (props) => {
                     {!parecerDG ?
                         <></>
                         :
-                        <Box sx={{marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center"}}>
+                        <Box sx={{ marginTop: "2%", display: "flex", flexDirection: "row", alignItems: "center" }}>
                             <Typography
                                 fontSize={FontConfig.veryBig}
                                 fontWeight="600"
                                 color="text.primary">
-                                Parecer DG: 
+                                Parecer DG:
                             </Typography>
 
                             <FormControl sx={{ width: "12rem", marginLeft: "2%" }}>

@@ -11,6 +11,7 @@ import FontContext from "../../service/FontContext";
 import NotificacaoService from "../../service/notificacaoService";
 
 const NotificacaoModal = (props) => {
+  // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
 
   // Context para alterar o tamanho da fonte
@@ -35,7 +36,7 @@ const NotificacaoModal = (props) => {
     setAnchorEl(null);
   };
 
-  //   Contador para ver se tem notificação não lida
+  // Contador para ver se tem notificação não lida
   const [contNaoLidas, setContNaoLidas] = useState(0);
 
   const [notificacoes, setNotificacoes] = useState([
@@ -71,6 +72,7 @@ const NotificacaoModal = (props) => {
     },
   ]);
 
+  // Função para buscar as notificações não lidas do usuário
   const buscarNotificacoes = () => {
     let user = JSON.parse(localStorage.getItem("user"));
     NotificacaoService.getByUserIdAndNotVisualizado(user.id)
@@ -84,10 +86,12 @@ const NotificacaoModal = (props) => {
       });
   };
 
+  // UseEffect para buscar as informações assim que entra na página
   useEffect(() => {
     buscarNotificacoes();
   }, []);
 
+  // Função para quando clicar em uma notificação
   const onNotificationItemClick = () => {
     setFeedback(true);
     buscarNotificacoes();

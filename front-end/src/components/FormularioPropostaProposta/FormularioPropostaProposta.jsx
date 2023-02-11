@@ -1,18 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-
-import {
-  Box,
-  Typography,
-  Divider,
-  TextareaAutosize,
-  Paper,
-  IconButton,
-  Tooltip,
-  MenuItem,
-  TextField,
-  Autocomplete,
-  Checkbox
-} from "@mui/material";
+import { Box, Typography, Divider, TextareaAutosize, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox } from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -33,12 +20,19 @@ const FormularioPropostaProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Variável para adicionar seções de ti
   const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
 
+  // UseState para mudar a cor do textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
+
+  // Variável para alterar o tema
   const { mode } = useContext(ColorModeContext);
+
+  // Variável para armazenar arquivos
   const inputFile = useRef(null);
 
+  // UseEffect para alterar a cor do textArea
   useEffect(() => {
     if (mode === "dark") {
       setCorFundoTextArea("#212121");
@@ -50,6 +44,7 @@ const FormularioPropostaProposta = (props) => {
   // ----------------------------------------------------------------------------------------------------------------------------
   // Funções de edição da demanda
 
+  // Função para alterar o texto de algum campo da proposta
   const alterarTexto = (e, input) => {
 
     if (input === "titulo") {
@@ -91,6 +86,7 @@ const FormularioPropostaProposta = (props) => {
     }
   };
 
+  // Função para verificar se o anexo já existe na lista de anexos
   const existsInAnexos = (anexo) => {
     return (
       props.dados.anexo.filter((anexoItem) => {
@@ -164,12 +160,16 @@ const FormularioPropostaProposta = (props) => {
     props.setBeneficios(aux);
   };
 
+
+  // Função para converter uma string em base64 para um ArrayBuffer
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   }
 
+
+  // Função para baixar um anexo
   const baixarAnexo = (index) => {
     const file = props.dados.anexo[index];
     let blob;
