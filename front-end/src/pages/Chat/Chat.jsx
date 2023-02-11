@@ -31,14 +31,18 @@ const Chat = () => {
   // Location utilizado para conectar o usuário no webSocket 
   const location = useLocation();
 
+  // UseState para pesquisar um contato da lista
   const [pesquisaContato, setpesquisaContato] = useState("");
 
+  // UseState para armazenar os resultados da pesquisa
   const [resultadosContato, setresultadosContato] = useState([]);
 
+  // UseState para armazenar o contato selecionado
   const onChange = (evt) => {
     setpesquisaContato(evt.target.value);
   };
 
+  // UseState para armazenar o contato selecionado
   useEffect(() => {
     const resultados = [];
     usuarios.filter((usuario) => {
@@ -49,6 +53,7 @@ const Chat = () => {
     setresultadosContato(resultados);
   }, [pesquisaContato]);
 
+  // Lista de exemplo com usuários
   const [usuarios, setUsuarios] = useState([
     {
       foto: "",
@@ -195,8 +200,13 @@ const Chat = () => {
 
   // Começo da integração do chat
 
+  // Map para salvar os chats privados
   const [privateChats, setPrivateChats] = useState(new Map());
+
+  // Lista para armazenar os chats públicos
   const [publicChats, setPublicChats] = useState([]);
+
+  // tab para setar o nome do usuário selecionado
   const [tab, setTab] = useState("CHATROOM");
 
   let nomeUsuario;
