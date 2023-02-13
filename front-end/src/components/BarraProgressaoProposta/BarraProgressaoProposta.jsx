@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import FormularioPropostaProposta from "../FormularioPropostaProposta/FormularioPropostaProposta";
 import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCustosProposta";
@@ -21,6 +21,7 @@ import CustosService from "../../service/custosService";
 const BarraProgressaoProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+  const location = useLocation();
 
   // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
   const [activeStep, setActiveStep] = useState(0);
@@ -81,7 +82,7 @@ const BarraProgressaoProposta = (props) => {
     if (!idEscopo) {
       if (!location.state) {
         if (mudancasFeitas) {
-          
+
         }
       }
     }
