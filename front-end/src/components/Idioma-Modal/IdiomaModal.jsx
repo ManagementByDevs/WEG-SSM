@@ -11,9 +11,9 @@ import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
 import EstadosUnidos from "../../assets/estados-unidos.png";
 
-import FontConfig from "../../service/FontConfig";
-
 import FontContext from "../../service/FontContext";
+import UsuarioService from "../../service/usuarioService";
+import { useEffect } from "react";
 
 const IdiomaModal = () => {
   // Context para alterar o tamanho da fonte
@@ -38,6 +38,57 @@ const IdiomaModal = () => {
     setIdioma(src);
     setAnchorEl(null);
   };
+
+  // ********************************************** Preferências **********************************************
+  /**
+   * Pega as preferências do usuário e as aplica no sistema
+   */
+  // const arrangePreferences = () => {
+  //   let theme = UsuarioService.getPreferencias().themeMode;
+  //   let fontSizeDefault = UsuarioService.getPreferencias().fontSizeDefault;
+
+  //   if (theme != mode) {
+  //     setTemaDark(!temaDark);
+  //   }
+
+  //   if (fontSizeDefault != FontConfig.default) {
+  //     setFontConfig(getUserFontSizePreference());
+  //   }
+  // };
+
+  /**
+   * Salva as novas preferências do usuário no banco de dados
+   * @param {String} newPreference
+   */
+  const saveNewPreference = (newPreference) => {
+    let user = UsuarioService.getUser();
+    let preferencias = UsuarioService.getPreferencias();
+
+    switch (newPreference) {
+      case Brasil:
+        newPreference = "pt";
+        break;
+      case China:
+        newPreference = "ch";
+        break;
+      case EstadosUnidos:
+        newPreference = "en";
+        break;
+    }
+    
+    preferencias.lang = newPreference;
+
+    user.preferencias = JSON.stringify(preferencias);
+
+    UsuarioService.updateUser(user.id, user).then((e) => {
+      UsuarioService.updateUserInLocalStorage();
+    });
+  };
+
+  useEffect(() => {
+    saveNewPreference();
+  }, [idioma]);
+  // ********************************************** Fim Preferências **********************************************
 
   return (
     // Div container do idioma

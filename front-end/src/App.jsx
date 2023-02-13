@@ -37,6 +37,16 @@ const App = () => {
     smallTitle: "30px",
     title: "36px",
   });
+
+  // const getUserFontSizePreference = () => {
+  //   let fontDefaultSize = UsuarioService.getPreferencias().fontSizeDefault;
+
+  //   switch (fontDefaultSize) {
+  //     case "14px" {
+
+  //     }
+  //   }
+  // }
   
   const fontSize = useMemo(
     () => ({

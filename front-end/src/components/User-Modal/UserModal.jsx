@@ -72,20 +72,170 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const UserModal = (props) => {
-  // Desestruturação de objeto em duas variáveis:
-  // - Mode: modo do tema atual ("light" ou "dark")
-  // - toggleColorMode: função para alternar o tema
-  const { mode, toggleColorMode } = useContext(ColorModeContext);
-  // Variável de estado para controlar o tema
-  const [temaDark, setTemaDark] = useState(mode === "dark" ? true : false);
-
+  // UseEffect para pegar o usuário e arrumar as preferências dele ao carregar a tela
   useEffect(() => {
     UsuarioService.getUsuarioById(
       parseInt(localStorage.getItem("usuarioId"))
     ).then((e) => {
       setUsuario(e);
+      arrangePreferences();
     });
   }, []);
+
+  //useContext para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // ********************************************** Preferências **********************************************
+
+  // Desestruturação de objeto em duas variáveis:
+  // - Mode: modo do tema atual ("light" ou "dark")
+  // - toggleColorMode: função para alternar o tema
+  const { mode, toggleColorMode } = useContext(ColorModeContext);
+
+  // Variável de estado para controlar o tema
+  const [temaDark, setTemaDark] = useState(mode == "dark" ? true : false);
+
+  /**
+   * Pega as preferências do usuário e as aplica no sistema
+   */
+  const arrangePreferences = () => {
+    let theme = UsuarioService.getPreferencias().themeMode;
+    let fontSizeDefault = UsuarioService.getPreferencias().fontSizeDefault;
+
+    if (theme != mode) {
+      setTemaDark(!temaDark);
+    }
+
+    if (fontSizeDefault != FontConfig.default) {
+      setFontConfig(getUserFontSizePreference());
+    }
+  };
+
+  /**
+   * Salva as novas preferências do usuário no banco de dados
+   * @param {"themeMode" | "fontSizeDefault"} preference
+   * @param {String} newPreference
+   */
+  const saveNewPreference = (preference, newPreference) => {
+    let user = UsuarioService.getUser();
+    let preferencias = UsuarioService.getPreferencias();
+
+    switch (preference) {
+      case "themeMode":
+        preferencias.themeMode = newPreference;
+        break;
+      case "fontSizeDefault":
+        preferencias.fontSizeDefault = newPreference;
+        break;
+    }
+
+    user.preferencias = JSON.stringify(preferencias);
+
+    UsuarioService.updateUser(user.id, user).then((e) => {
+      UsuarioService.updateUserInLocalStorage();
+    });
+  };
+
+  /**
+   * Retorna o objeto de FontConfig que condiz com o valor de fontSizeDefault do usuário salvo nas preferências do usuário
+   * @returns {{verySmall: "", small: "", default: "", medium: "", big: "", veryBig: "", smallTitle: "", title: ""} | {verySmall: "10px", small: "12px", default: "14px", medium: "16px", big: "18px", veryBig: "20px", smallTitle: "30px", title: "36px"}}
+   */
+  const getUserFontSizePreference = () => {
+    let fontDefaultSize = UsuarioService.getPreferencias().fontSizeDefault;
+    
+    if (!fontDefaultSize) {
+      return {
+        verySmall: "10px",
+        small: "12px",
+        default: "14px",
+        medium: "16px",
+        big: "18px",
+        veryBig: "20px",
+        smallTitle: "30px",
+        title: "36px",
+      };
+    }
+
+    switch (fontDefaultSize) {
+      case "10px":
+        return {
+          verySmall: "6px",
+          small: "8px",
+          default: "10px",
+          medium: "12px",
+          big: "14px",
+          veryBig: "16px",
+          smallTitle: "26px",
+          title: "32px",
+        };
+      case "12px":
+        return {
+          verySmall: "8px",
+          small: "10px",
+          default: "12px",
+          medium: "14px",
+          big: "16px",
+          veryBig: "18px",
+          smallTitle: "28px",
+          title: "34px",
+        };
+      case "14px":
+        return {
+          verySmall: "10px",
+          small: "12px",
+          default: "14px",
+          medium: "16px",
+          big: "18px",
+          veryBig: "20px",
+          smallTitle: "30px",
+          title: "36px",
+        };
+      case "16px":
+        return {
+          verySmall: "12px",
+          small: "14px",
+          default: "16px",
+          medium: "18px",
+          big: "20px",
+          veryBig: "22px",
+          smallTitle: "32px",
+          title: "38px",
+        };
+      case "18px":
+        return {
+          verySmall: "14px",
+          small: "16px",
+          default: "18px",
+          medium: "20px",
+          big: "22px",
+          veryBig: "24px",
+          smallTitle: "34px",
+          title: "40px",
+        };
+      default:
+        return {
+          verySmall: "10px",
+          small: "12px",
+          default: "14px",
+          medium: "16px",
+          big: "18px",
+          veryBig: "20px",
+          smallTitle: "30px",
+          title: "36px",
+        };
+    }
+  };
+
+  // UseEffect para alternar o tema quando o usuário clicar no botão de alternar o tema
+  useEffect(() => {
+    toggleColorMode();
+  }, [temaDark]);
+
+  // UseEffect para salvar a nova preferência de fonte do usuário no banco de dados
+  useEffect(() => {
+    saveNewPreference("fontSizeDefault", FontConfig.default);
+  }, [FontConfig]);
+  // ********************************************** Fim Preferências **********************************************
 
   const navigate = useNavigate();
 
@@ -124,10 +274,6 @@ const UserModal = (props) => {
     localStorage.removeItem("usuarioId");
     localStorage.removeItem("user");
   };
-
-  useEffect(() => {
-    toggleColorMode();
-  }, [temaDark]);
 
   // Personalizar o slider da fonte
   const SliderMark = styled(Slider)(({ theme }) => ({
@@ -208,9 +354,6 @@ const UserModal = (props) => {
     }
   };
 
-  //useContext para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
-
   // Função para pegar o valor do fontConfig já salvo anteriormente
   const getValueByContext = (fontConfigDefault) => {
     if (fontConfigDefault == "10px") {
@@ -228,7 +371,7 @@ const UserModal = (props) => {
 
   // UseState para poder visualizar e alterar o value do slider
   const [valueSlider, setValueSlider] = useState(
-    getValueByContext(FontConfig.default)
+    getValueByContext(UsuarioService.getPreferencias().fontSizeDefault)
   );
 
   // Função para mudar o value do slider
@@ -314,21 +457,6 @@ const UserModal = (props) => {
         });
     }
   }, [valueSlider]);
-
-  /**
-   * Salva as novas preferências do usuário no banco de dados
-   * @param {String} newThemeMode 
-   */
-  const saveNewPreference = (newThemeMode) => {
-    let user = UsuarioService.getUser();
-    let preferencias = UsuarioService.getPreferencias();
-    preferencias.themeMode = newThemeMode;
-    user.preferencias = JSON.stringify(preferencias);
-
-    UsuarioService.updateUser(user.id, user).then((e) => {
-      // UsuarioService.updateUserInLocalStorage();
-    });
-  };
 
   return (
     <>
@@ -433,7 +561,7 @@ const UserModal = (props) => {
               sx={{ width: "85%" }}
             >
               {/* Letra A pequena, para diminuir a fonto */}
-              <Tooltip title="Diminui fonte">
+              <Tooltip title="Diminuir fonte">
                 <IconButton onClick={diminuirValue} size="small">
                   <Typography
                     fontSize={FontConfig.default}
@@ -459,7 +587,7 @@ const UserModal = (props) => {
                 />
               </Box>
               {/* Letra A grande, para aumentar a fonte */}
-              <Tooltip title="Diminui fonte">
+              <Tooltip title="Aumentar fonte">
                 <IconButton onClick={aumentarValue} size="small">
                   <Typography
                     fontSize={FontConfig.veryBig}
@@ -473,14 +601,17 @@ const UserModal = (props) => {
           </Box>
 
           <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4">
-            <Tooltip title="Modo Escuro/Claro">
+            <Tooltip title="Modo Claro/Escuro">
               <FormControlLabel
                 control={
                   <MaterialUISwitch
                     checked={temaDark}
                     onChange={() => {
                       setTemaDark(!temaDark);
-                      saveNewPreference(!temaDark ? "dark" : "light");
+                      saveNewPreference(
+                        "themeMode",
+                        !temaDark ? "dark" : "light"
+                      );
                     }}
                     sx={{ m: 1 }}
                   />

@@ -1,5 +1,9 @@
 import axios from "./api";
 
+import React, { useContext } from "react";
+import { Outlet } from "react-router-dom";
+import ColorModeContext from "./TemaContext";
+
 const usuario = "/usuario";
 
 class UsuarioService {
@@ -40,8 +44,8 @@ class UsuarioService {
   }
 
   /**
-   * Pega as preferências do usuário logado
-   * @returns {Object} Preferências do usuário
+   * Pega as preferências do usuário logado ou retorna as preferências padrão se não estiver logado
+   * @returns {{themeMode: "dark" | "light", fontSizeDefault: "14px" | "12px" | "16px" | "18px", itemsVisualizationMode: "grid" | "table", lang: "pt" | "en" | "ch",}} Preferências do usuário
    */
   getPreferencias() {
     let user = JSON.parse(localStorage.getItem("user"));
@@ -59,7 +63,8 @@ class UsuarioService {
         lang: "pt",
       };
     }
-    return JSON.parse(preferencias.slice(1, preferencias.length - 1));
+
+    return JSON.parse(preferencias);
   }
 
   /**
@@ -70,12 +75,15 @@ class UsuarioService {
     return JSON.parse(localStorage.getItem("user"));
   }
 
-  //   updateUserInLocalStorage() {
-  //     let user = this.getUser();
-  //     this.getUsuarioById(user.id).then((response) => {
-  //       localStorage.setItem("user", JSON.stringify(response));
-  //     });
-  //   }
+  /**
+   * Atualiza o usuário logado no localStorages
+   */
+  updateUserInLocalStorage() {
+    let user = this.getUser();
+    this.getUsuarioById(user.id).then((response) => {
+      localStorage.setItem("user", JSON.stringify(response));
+    });
+  }
 }
 
 export default new UsuarioService();
