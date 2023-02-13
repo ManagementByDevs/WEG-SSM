@@ -1,13 +1,24 @@
-import React, { useState, useContext } from "react";
-import { Menu, MenuItem, Tooltip, IconButton, Typography } from "@mui/material/";
+import React, { useState, useContext, useEffect } from "react";
+import {
+  Menu,
+  MenuItem,
+  Tooltip,
+  IconButton,
+  Typography,
+} from "@mui/material/";
 
 import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
 import EstadosUnidos from "../../assets/estados-unidos.png";
 
 import FontContext from "../../service/FontContext";
+import UsuarioService from "../../service/usuarioService";
 
 const IdiomaModal = () => {
+  useEffect(() => {
+    arrangePreferences();
+  }, []);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -30,6 +41,54 @@ const IdiomaModal = () => {
     setIdioma(src);
     setAnchorEl(null);
   };
+
+  // ********************************************** Preferências **********************************************
+  /**
+   * Pega as preferências do usuário e as aplica no sistema
+   */
+  const arrangePreferences = () => {
+    let lang = UsuarioService.getPreferencias().lang;
+
+    if (lang == "pt" && idioma != Brasil) setIdioma(Brasil);
+    else if (lang == "ch" && idioma != China) setIdioma(China);
+    else if (lang == "en" && idioma != EstadosUnidos) setIdioma(EstadosUnidos);
+  };
+
+  /**
+   * Salva as novas preferências do usuário no banco de dados
+   */
+  const saveNewPreference = () => {
+    let user = UsuarioService.getUser();
+
+    if (!user) return;
+
+    let preferencias = UsuarioService.getPreferencias();
+
+    switch (idioma) {
+      case Brasil:
+        preferencias.lang = "pt";
+        break;
+      case China:
+        preferencias.lang = "ch";
+        break;
+      case EstadosUnidos:
+        preferencias.lang = "en";
+        break;
+      default:
+        preferencias.lang = "en";
+    }
+
+    user.preferencias = JSON.stringify(preferencias);
+
+    UsuarioService.updateUser(user.id, user).then((e) => {
+      UsuarioService.updateUserInLocalStorage();
+    });
+  };
+
+  useEffect(() => {
+    saveNewPreference();
+  }, [idioma]);
+  // ********************************************** Fim Preferências **********************************************
 
   return (
     // Div container do idioma

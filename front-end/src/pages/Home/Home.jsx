@@ -15,10 +15,12 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
 
 import FontContext from "../../service/FontContext";
+
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
+
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
@@ -103,6 +105,7 @@ const Home = () => {
   useEffect(() => {
     ativarFeedback();
     buscarUsuario();
+    arrangePreferences();
   }, []);
 
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros e ordenação) forem modificados
@@ -171,7 +174,7 @@ const Home = () => {
       localStorage.removeItem("tipoFeedback");
       setFeedbackDemandaCriada(true);
     }
-  }
+  };
 
   /** Função para buscar o usuário logado no sistema pelo localStorage assim que ele entrar na página */
   const buscarUsuario = () => {
@@ -215,7 +218,11 @@ const Home = () => {
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });
     } else {
-      setParams({ ...params, solicitante: null, departamento: usuario?.departamento, });
+      setParams({
+        ...params,
+        solicitante: null,
+        departamento: usuario?.departamento,
+      });
     }
   };
 
@@ -318,8 +325,7 @@ const Home = () => {
     },
     {
       selector: "#oitavo",
-      content:
-        "Nesta área você consegue visualizar o status atual da demanda.",
+      content: "Nesta área você consegue visualizar o status atual da demanda.",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -335,6 +341,43 @@ const Home = () => {
       },
     },
   ];
+
+  // ********************************************** Preferências **********************************************
+  /**
+   * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
+   */
+  const arrangePreferences = () => {
+    let itemsVisualizationMode =
+      UsuarioService.getPreferencias().itemsVisualizationMode.toUpperCase();
+
+    // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+    if (itemsVisualizationMode == nextModoVisualizacao) {
+      setNextModoVisualizacao("GRID");
+    }
+  };
+
+  /**
+   * Função que salva a nova preferência do usuário
+   */
+  const saveNewPreference = () => {
+    let user = UsuarioService.getUser();
+    let preferencias = UsuarioService.getPreferencias();
+
+    preferencias.itemsVisualizationMode =
+      nextModoVisualizacao == "TABLE" ? "grid" : "table";
+
+    user.preferencias = JSON.stringify(preferencias);
+
+    UsuarioService.updateUser(user.id, user).then((e) => {
+      UsuarioService.updateUserInLocalStorage();
+    });
+  };
+
+  // UseEffect para salvar as novas preferências do usuário
+  useEffect(() => {
+    saveNewPreference();
+  }, [nextModoVisualizacao]);
+  // ********************************************** Fim Preferências **********************************************
 
   return (
     <FundoComHeader>
@@ -467,7 +510,9 @@ const Home = () => {
                     {/* Modal de ordenação */}
                     {abrirOrdenacao && (
                       <ModalOrdenacao
-                        fecharModal={() => { setOpenOrdenacao(false) }}
+                        fecharModal={() => {
+                          setOpenOrdenacao(false);
+                        }}
                         ordenacaoTitulo={ordenacaoTitulo}
                         setOrdenacaoTitulo={setOrdenacaoTitulo}
                         ordenacaoScore={ordenacaoScore}

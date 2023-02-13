@@ -103,19 +103,27 @@ public class UsuarioController {
      * @param usuarioDTO ( Novos dados do usuário = req.body )
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid UsuarioDTO usuarioDTO) {
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody UsuarioDTO usuarioDTO) {
         Optional<Usuario> usuarioOptional = usuarioService.findById(id);
 
         if (usuarioOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar um usuário com este id.");
         }
 
-        if (usuarioService.existsByEmail(usuarioDTO.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("O email já está em uso.");
-        }
-
         Usuario usuario = usuarioOptional.get();
         BeanUtils.copyProperties(usuarioDTO, usuario, "id");
+
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
+    }
+
+    @PutMapping("{id}/preferencias/{preferencias}")
+    public ResponseEntity<Object> updatePreferencias(@PathVariable(value = "id") Long id, @PathVariable(value = "preferencias") String preferencias) {
+        if (!usuarioService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar um usuário com este id.");
+        }
+
+        Usuario usuario = usuarioService.findById(id).get();
+        usuario.setPreferencias(preferencias);
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }

@@ -30,6 +30,7 @@ import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
+import ColorModeContext from "../../service/TemaContext";
 
 import Tour from "reactour";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
@@ -210,6 +211,9 @@ const HomeGerencia = () => {
     },
   ];
 
+  // Context para alterar o tema do sistema
+  const { mode, toggleColorMode } = useContext(ColorModeContext);
+
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -281,10 +285,20 @@ const HomeGerencia = () => {
   // Mostra o próximo modo de visualização
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
+  const handleOnVisualizationModeClick = () => {
+    setNextModoVisualizacao((prevMode) => {
+      if (prevMode === "GRID") {
+        return "TABLE";
+      }
+      return "GRID";
+    });
+  };
+
   // UseEffect para buscar o usuário assim que entrar na página
   useEffect(() => {
     buscarUsuario();
     buscarFiltros();
+    arrangePreferences();
   }, []);
 
   // UseEffect para redefinir os parâmteros quando a ordenação for modificada
@@ -753,6 +767,43 @@ const HomeGerencia = () => {
   // useState para fechar o chat minimizado
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
+  // ********************************************** Preferências **********************************************
+  /**
+   * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
+   */
+  const arrangePreferences = () => {
+    let itemsVisualizationMode =
+      UsuarioService.getPreferencias().itemsVisualizationMode.toUpperCase();
+
+    // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+    if (itemsVisualizationMode == nextModoVisualizacao) {
+      setNextModoVisualizacao("GRID");
+    }
+  };
+
+  /**
+   * Função que salva a nova preferência do usuário
+   */
+  const saveNewPreference = () => {
+    let user = UsuarioService.getUser();
+    let preferencias = UsuarioService.getPreferencias();
+
+    preferencias.itemsVisualizationMode =
+      nextModoVisualizacao == "TABLE" ? "grid" : "table";
+
+    user.preferencias = JSON.stringify(preferencias);
+
+    UsuarioService.updateUser(user.id, user).then((e) => {
+      UsuarioService.updateUserInLocalStorage();
+    });
+  };
+
+  // UseEffect para salvar as novas preferências do usuário
+  useEffect(() => {
+    saveNewPreference();
+  }, [nextModoVisualizacao]);
+  // ********************************************** Fim Preferências **********************************************
+
   return (
     <FundoComHeader>
       {/* {!fecharChatMinimizado && (
@@ -918,7 +969,8 @@ const HomeGerencia = () => {
                   <Tooltip title="Visualização em tabela">
                     <IconButton
                       onClick={() => {
-                        setNextModoVisualizacao("GRID");
+                        handleOnVisualizationModeClick();
+                        // setNextModoVisualizacao("GRID");
                       }}
                     >
                       <ViewListIcon color="primary" />
@@ -928,7 +980,8 @@ const HomeGerencia = () => {
                   <Tooltip title="Visualização em bloco">
                     <IconButton
                       onClick={() => {
-                        setNextModoVisualizacao("TABLE");
+                        handleOnVisualizationModeClick();
+                        // setNextModoVisualizacao("TABLE");
                       }}
                     >
                       <ViewModuleIcon color="primary" />
