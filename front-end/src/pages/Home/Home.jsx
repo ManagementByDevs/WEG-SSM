@@ -310,7 +310,7 @@ const Home = () => {
     {
       selector: "#quinto",
       content:
-        "Nesta área você consegue observar suas demandas e seus status. Você pode clicar em uma demanda para ver mais detalhes.",
+        "Nesta área você consegue observar suas demandas. Você pode clicar em uma demanda para ver mais detalhes.",
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",

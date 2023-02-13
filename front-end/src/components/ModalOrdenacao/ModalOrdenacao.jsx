@@ -1,5 +1,13 @@
 import React, { useContext } from "react";
-import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid } from "@mui/material";
+import {
+  Modal,
+  Typography,
+  Box,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Grid,
+} from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
@@ -60,10 +68,7 @@ const ModalOrdenacao = (props) => {
   }
 
   return (
-    <Modal
-      open={true}
-      onClose={props.fecharModal}
-    >
+    <Modal open={true} onClose={props.fecharModal}>
       <Fade in={true}>
         <Box
           className="absolute flex flex-col items-center justify-evenly"
