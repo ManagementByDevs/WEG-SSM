@@ -54,7 +54,7 @@ const LinhaTabelaCustos = (props) => {
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={props.dados.custos[props.index].tipoDespesa}
+            value={props.dados.custos[props.index].tipoDespesa || ""}
             onChange={(e) => {
               let aux = [...props.custos];
               aux[props.indexCusto].custos[props.index].tipoDespesa =
@@ -77,7 +77,7 @@ const LinhaTabelaCustos = (props) => {
           <Select
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
-            value={props.dados.custos[props.index].perfilDespesa}
+            value={props.dados.custos[props.index].perfilDespesa || ""}
             onChange={(e) => {
               let aux = [...props.custos];
               aux[props.indexCusto].custos[props.index].perfilDespesa =
@@ -103,7 +103,7 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite o período..."
-          value={props.dados.custos[props.index].periodoExecucao}
+          value={props.dados.custos[props.index].periodoExecucao || ""}
           onChange={(e) => {
             let aux = [...props.custos];
             aux[props.indexCusto].custos[props.index].periodoExecucao =
@@ -124,7 +124,7 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite as horas..."
-          value={props.dados.custos[props.index].horas}
+          value={props.dados.custos[props.index].horas || ""}
           onChange={(e) => {
             let aux = [...props.custos];
             aux[props.indexCusto].custos[props.index].horas = e.target.value;
@@ -144,7 +144,7 @@ const LinhaTabelaCustos = (props) => {
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
           placeholder="Digite o valor..."
-          value={props.dados.custos[props.index].valorHora}
+          value={props.dados.custos[props.index].valorHora || ""}
           onChange={(e) => {
             let aux = [...props.custos];
             aux[props.indexCusto].custos[props.index].valorHora =
@@ -161,12 +161,12 @@ const LinhaTabelaCustos = (props) => {
               className="mt-1 delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main", cursor: "pointer" }}
               onClick={() =>
-                props.deletarLinhaCustos(props.index, props.indexCusto)
+                props.deletarLinhaCustos(props.dados.custos[props.index].id, props.index)
               }
             />
           </Tooltip>
         </Box>
-        <Box className="flex justify-center mt-5">{props.dados.custos[props.index].total}</Box>
+        <Box className="flex justify-center mt-5">{props.dados.custos[props.index].total || ""}</Box>
       </td>
     </TableRow>
   );

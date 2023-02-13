@@ -23,4 +23,12 @@ public class EscopoPropostaService {
     public EscopoProposta save(EscopoProposta escopoProposta) {
         return escopoPropostaRepository.save(escopoProposta);
     }
+
+    public Boolean existsById(Long id) {
+        return escopoPropostaRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
+        escopoPropostaRepository.deleteById(id);
+    }
 }

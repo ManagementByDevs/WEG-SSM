@@ -7,13 +7,42 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 
 import FontContext from "../../service/FontContext";
 
+import CustosService from "../../service/custosService";
+
 const FormularioCustosProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Função para deletar custos
-  const deletarCustos = (index) => {
-    props.deletarTabelaCustos(index);
+  /** Função usada para excluir uma tabela de custos */
+  const deletarTabelaCustos = (index) => {
+    CustosService.deleteTabela(props.custos[index].id).then((response) => {
+      let custosNovos = [...props.custos];
+      custosNovos.splice(index, 1);
+      props.setCustos(custosNovos);
+    });
+  }
+
+  /** Função para criar uma tabela de custos no banco de dados e adicionar na lista */
+  const criarTabelaCusto = () => {
+    CustosService.postTabela({
+      custos: [
+        {
+          tipoDespesa: "",
+          perfilDespesa: "",
+          periodoExecucao: "",
+          horas: "",
+          valorHora: ""
+        },
+      ],
+      ccs: [
+        {
+          codigo: "",
+          porcentagem: ""
+        },
+      ],
+    }).then((response) => {
+      props.setCustos([...props.custos, response]);
+    });
   };
 
   // UseStates para armazenar as horas e o valor total
@@ -67,28 +96,7 @@ const FormularioCustosProposta = (props) => {
           }}
           variant="contained"
           disableElevation
-          onClick={() => {
-            props.setCustos([
-              ...props.custos,
-              {
-                custos: [
-                  {
-                    tipoDespesa: "",
-                    perfilDespesa: "",
-                    periodoExecucao: "",
-                    horas: "",
-                    valorHora: ""
-                  },
-                ],
-                ccs: [
-                  {
-                    codigo: "",
-                    porcentagem: ""
-                  },
-                ],
-              },
-            ]);
-          }}
+          onClick={criarTabelaCusto}
         >
           Adicionar Custos
           <AddCircleOutlineOutlinedIcon className="ml-2" />
@@ -101,11 +109,6 @@ const FormularioCustosProposta = (props) => {
               key={index}
               index={index}
               dados={custo}
-              deletarCustos={deletarCustos}
-              setDespesas={props.setDespesas}
-              setCcs={props.setCcs}
-              deletarLinhaCustos={props.deletarLinhaCustos}
-              deletarLinhaCCs={props.deletarLinhaCCs}
               setCustos={props.setCustos}
               custos={props.custos}
             />

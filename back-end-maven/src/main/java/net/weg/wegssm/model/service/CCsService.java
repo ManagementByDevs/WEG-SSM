@@ -16,4 +16,12 @@ public class CCsService {
     public CC save(CC cc) {
         return ccsRepository.save(cc);
     }
+
+    public Boolean existsById(Long id) {
+        return ccsRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
+        ccsRepository.deleteById(id);
+    }
 }

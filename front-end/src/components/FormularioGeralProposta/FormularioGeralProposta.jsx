@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef } from "react";
 import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip } from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
@@ -10,6 +10,8 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import FontContext from "../../service/FontContext";
 
+import ResponsavelNegocioService from "../../service/responsavelNegocioService";
+
 const FormularioGeralProposta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -20,11 +22,30 @@ const FormularioGeralProposta = (props) => {
   // Variável para o input de anexos
   const inputFile = useRef(null);
 
+  /** Função para criar um responsável no banco e receber o id para adicionar na lista */
+  const adicionarResponsavel = () => {
+    ResponsavelNegocioService.post({ nome: "", area: "" }).then((response) => {
+      props.setGerais({
+        ...props.gerais,
+        responsaveisNegocio: [
+          ...props.gerais.responsaveisNegocio,
+          {
+            id: response.id,
+            nome: "",
+            area: "",
+          },
+        ],
+      });
+    })
+  }
+
   // Função para remover um responsável
   const deleteResponsavel = (indexResponsavel) => {
-    let listaNova = [...props.gerais.responsaveisNegocio];
-    listaNova.splice(indexResponsavel, 1);
-    props.setGerais({ ...props.gerais, responsaveisNegocio: [...listaNova] });
+    ResponsavelNegocioService.delete(props.gerais.responsaveisNegocio[indexResponsavel].id).then((response) => {
+      let listaNova = [...props.gerais.responsaveisNegocio];
+      listaNova.splice(indexResponsavel, 1);
+      props.setGerais({ ...props.gerais, responsaveisNegocio: [...listaNova] });
+    })
   };
 
   // Aciona o input de anexos ao clicar no add anexos
@@ -274,41 +295,27 @@ const FormularioGeralProposta = (props) => {
               <AddCircleOutlineOutlinedIcon
                 className="delay-120 hover:scale-110 duration-300"
                 sx={{ color: "primary.main", cursor: "pointer" }}
-                onClick={() => {
-                  props.setGerais({
-                    ...props.gerais,
-                    responsaveisNegocio: [
-                      ...props.gerais.responsaveisNegocio,
-                      {
-                        nome: "",
-                        area: "",
-                        visible: true,
-                      },
-                    ],
-                  });
-                }}
+                onClick={() => { adicionarResponsavel() }}
               />
             </Tooltip>
           </Box>
           {props.gerais.responsaveisNegocio?.map((item, index) => {
-            if (item.visible) {
-              return (
-                <ResponsavelNegocio
-                  dados={item}
-                  setDados={(event) => {
-                    let aux = [...props.gerais.responsaveisNegocio];
-                    aux[index] = event;
-                    props.setGerais({
-                      ...props.gerais,
-                      responsaveisNegocio: [...aux],
-                    });
-                  }}
-                  index={index}
-                  deleteResponsavel={deleteResponsavel}
-                  key={index}
-                />
-              );
-            }
+            return (
+              <ResponsavelNegocio
+                dados={item}
+                setDados={(event) => {
+                  let aux = [...props.gerais.responsaveisNegocio];
+                  aux[index] = event;
+                  props.setGerais({
+                    ...props.gerais,
+                    responsaveisNegocio: [...aux],
+                  });
+                }}
+                index={index}
+                deleteResponsavel={deleteResponsavel}
+                key={index}
+              />
+            );
           })}
         </Box>
         <Divider />

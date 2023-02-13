@@ -36,7 +36,7 @@ const LinhaTabelaCCs = (props) => {
               className="mt-1 delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main", cursor: "pointer" }}
               onClick={() =>
-                props.deletarLinhaCCs(props.index, props.indexCusto)
+                props.deletarLinhaCCs(props.dados.ccs[props.index].id, props.index)
               }
             />
           </Tooltip>
@@ -56,7 +56,7 @@ const LinhaTabelaCCs = (props) => {
               backgroundColor: corFundoTextArea,
               paddingLeft: "10px",
             }}
-            value={props.dados.ccs[props.index].codigo}
+            value={props.dados.ccs[props.index].codigo || ""}
             onChange={(e) => {
               let aux = [...props.custos];
               aux[props.indexCusto].ccs[props.index].codigo = e.target.value;
@@ -78,7 +78,7 @@ const LinhaTabelaCCs = (props) => {
               backgroundColor: corFundoTextArea,
               padding: "0 10px",
             }}
-            value={props.dados.ccs[props.index].porcentagem}
+            value={props.dados.ccs[props.index].porcentagem || ""}
             onChange={(e) => {
               let aux = [...props.custos];
               aux[props.indexCusto].ccs[props.index].porcentagem =

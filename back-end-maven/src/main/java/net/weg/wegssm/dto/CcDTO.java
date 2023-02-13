@@ -4,9 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ResponsavelNegocioDTO {
+public class CcDTO {
 
-    private String nome;
-    private String area;
-
+    private Integer codigo;
+    private Double porcentagem;
 }

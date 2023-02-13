@@ -99,7 +99,7 @@ const BarraProgressaoDemanda = (props) => {
         });
       }
     }
-  }, [, escreveu]);
+  }, [escreveu]);
 
   useEffect(() => {
     if (

@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/weg_ssm/tabela-custo")
-@CrossOrigin(origins = "localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TabelaCustoController {
 
     private TabelaCustoService tabelaCustoService;
@@ -45,5 +45,28 @@ public class TabelaCustoController {
         TabelaCusto tabelaCusto = new TabelaCusto();
         BeanUtils.copyProperties(tabelaCustoDTO, tabelaCusto);
         return ResponseEntity.status(HttpStatus.OK).body(tabelaCustoService.save(tabelaCusto));
+    }
+
+    @PutMapping
+    public ResponseEntity<TabelaCusto> update(@RequestBody TabelaCusto tabelaCusto) {
+        for (Custo custo : tabelaCusto.getCustos()) {
+            custoService.save(custo);
+        }
+
+        for (CC cc : tabelaCusto.getCcs()) {
+            ccsService.save(cc);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(tabelaCustoService.save(tabelaCusto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
+        if (!tabelaCustoService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma tabela de custos com este id.");
+        }
+        tabelaCustoService.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Tabela de custos deletada com sucesso.");
     }
 }

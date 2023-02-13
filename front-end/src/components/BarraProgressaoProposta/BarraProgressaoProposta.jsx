@@ -15,6 +15,8 @@ import FontContext from "../../service/FontContext";
 import beneficioService from "../../service/beneficioService";
 import propostaService from "../../service/propostaService";
 import DemandaService from "../../service/demandaService";
+import ResponsavelNegocioService from "../../service/responsavelNegocioService";
+import CustosService from "../../service/custosService";
 
 const BarraProgressaoProposta = (props) => {
   // Context para alterar o tamanho da fonte
@@ -31,6 +33,9 @@ const BarraProgressaoProposta = (props) => {
   // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
+  const [mudancasFeitas, setMudancasFeitas] = useState(false);
+
+  let variaveisIniciais = false;
 
   // Variável utilizada para armazenar a lista de fóruns
   const [listaForuns, setListaForuns] = useState([]);
@@ -69,7 +74,18 @@ const BarraProgressaoProposta = (props) => {
     setDadosDemanda(props.dados);
     pesquisarBUs();
     pesquisarForuns();
+    criarDadosIniciais();
   }, []);
+
+  useEffect(() => {
+    if (!idEscopo) {
+      if (!location.state) {
+        if (mudancasFeitas) {
+          
+        }
+      }
+    }
+  }, [mudancasFeitas]);
 
   // UseEffect para formatar os benefícios recebidos do banco para os necessários na edição
   useEffect(() => {
@@ -101,13 +117,7 @@ const BarraProgressaoProposta = (props) => {
     unidadePaybackSimples: "",
     ppm: "",
     linkJira: "",
-    responsaveisNegocio: [
-      {
-        nome: "",
-        area: "",
-        visible: true,
-      },
-    ]
+    responsaveisNegocio: []
   });
 
   // Função para pular passos opcionais
@@ -119,6 +129,37 @@ const BarraProgressaoProposta = (props) => {
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
+
+  /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
+  const criarDadosIniciais = () => {
+    if (!variaveisIniciais) {
+      variaveisIniciais = true;
+
+      if (gerais.responsaveisNegocio.length == 0) {
+        ResponsavelNegocioService.post({ nome: "", area: "" }).then((response) => {
+          setGerais({ ...gerais, responsaveisNegocio: [...gerais.responsaveisNegocio, response] });
+        });
+      }
+
+      if (custos.length == 0) {
+        CustosService.postTabela({
+          custos: [{
+            tipoDespesa: "",
+            perfilDespesa: "",
+            periodoExecucao: "",
+            horas: "",
+            valorHora: ""
+          }],
+          ccs: [{
+            codigo: "",
+            porcentagem: ""
+          }]
+        }).then((response) => {
+          setCustos([...custos, response]);
+        })
+      }
+    }
+  }
 
   // Função para passar para próxima página
   const handleNext = () => {
@@ -195,69 +236,7 @@ const BarraProgressaoProposta = (props) => {
   const [editar, setEditar] = useState(false);
 
   // Variável para guardar os custos 
-  const [custos, setCustos] = useState([
-    {
-      custos: [
-        {
-          tipoDespesa: "",
-          perfilDespesa: "",
-          periodoExecucao: "",
-          horas: "",
-          valorHora: ""
-        }
-      ],
-      ccs: [
-        {
-          codigo: "",
-          porcentagem: ""
-        }
-      ]
-    }
-  ]);
-
-  const setDespesas = (index) => {
-    let custosNovos = [...custos];
-
-    custosNovos[index].custos.push({
-      tipoDespesa: "",
-      perfilDespesa: "",
-      periodoExecucao: "",
-      horas: "",
-      valorHora: ""
-    });
-
-    setCustos(custosNovos);
-  };
-
-  const setCcs = (index) => {
-    let custosNovos = [...custos];
-    custosNovos[index].ccs.push({
-      codigo: "",
-      porcentagem: ""
-    });
-    setCustos(custosNovos);
-  }
-
-  /** Função usada para excluir uma tabela de custos, usada como prop do formulário de custos */
-  const deletarTabelaCustos = (index) => {
-    let custosNovos = [...custos];
-    custosNovos.splice(index, 1);
-    setCustos(custosNovos);
-  }
-
-  /** Função usada para excluir uma linha de custo de uma tabela de custos, usada como prop do formulário de custos */
-  const deletarLinhaCustos = (index, indexCusto) => {
-    let custosNovos = [...custos];
-    custosNovos[indexCusto].custos.splice(index, 1);
-    setCustos(custosNovos);
-  };
-
-  /** Função usada para excluir uma linha de CC de uma tabela de custos, usada como prop do formulário de custos */
-  const deletarLinhaCCs = (index, indexCusto) => {
-    let custosNovos = [...custos];
-    custosNovos[indexCusto].ccs.splice(index, 1);
-    setCustos(custosNovos);
-  };
+  const [custos, setCustos] = useState([]);
 
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
@@ -411,11 +390,6 @@ const BarraProgressaoProposta = (props) => {
         <FormularioCustosProposta
           custos={custos}
           setCustos={setCustos}
-          setDespesas={setDespesas}
-          setCcs={setCcs}
-          deletarLinhaCustos={deletarLinhaCustos}
-          deletarLinhaCCs={deletarLinhaCCs}
-          deletarTabelaCustos={deletarTabelaCustos}
         />
       )}
       {activeStep == 3 && (

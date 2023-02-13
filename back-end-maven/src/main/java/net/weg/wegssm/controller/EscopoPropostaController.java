@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @AllArgsConstructor
@@ -49,11 +50,13 @@ public class EscopoPropostaController {
     }
 
     @PostMapping
-    public ResponseEntity<EscopoProposta> save(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("escopo-proposta") String escopoPropostaJSON) {
+    public ResponseEntity<EscopoProposta> save(@RequestParam(value = "anexos", required = false) List<MultipartFile> files, @RequestParam("escopo-proposta") String escopoPropostaJSON) {
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
 
-        escopoProposta.setAnexos(files);
+        if(files != null) {
+            escopoProposta.setAnexos(files);
+        }
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
         }
@@ -69,5 +72,41 @@ public class EscopoPropostaController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
+    }
+
+    @PutMapping
+    public ResponseEntity<EscopoProposta> update(@RequestParam(value = "anexos", required = false) List<MultipartFile> files, @RequestParam("escopo-proposta") String escopoPropostaJSON) {
+        EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
+        EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
+
+        if(files != null) {
+            escopoProposta.setAnexos(files);
+        }
+        for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
+            responsavelNegocioService.save(responsavelNegocio);
+        }
+
+        for (TabelaCusto tabelaCusto : escopoProposta.getTabelaCustos()) {
+            for (Custo custo : tabelaCusto.getCustos()) {
+                custoService.save(custo);
+            }
+            for (CC cc : tabelaCusto.getCcs()) {
+                ccsService.save(cc);
+            }
+            tabelaCustoService.save(tabelaCusto);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
+        if (!escopoPropostaService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
+        }
+        escopoPropostaService.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Escopo deletado com sucesso.");
     }
 }

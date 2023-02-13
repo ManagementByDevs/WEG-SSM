@@ -17,7 +17,7 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/responsavel_negocio")
-@CrossOrigin(origins = "localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ResponsavelNegocioController {
 
     private ResponsavelNegocioService responsavelNegocioService;
@@ -58,6 +58,11 @@ public class ResponsavelNegocioController {
         ResponsavelNegocio responsavelNegocio = new ResponsavelNegocio();
         BeanUtils.copyProperties(responsavelNegocioDTO, responsavelNegocio);
 
+        return ResponseEntity.status(HttpStatus.OK).body(responsavelNegocioService.save(responsavelNegocio));
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody ResponsavelNegocio responsavelNegocio) {
         return ResponseEntity.status(HttpStatus.OK).body(responsavelNegocioService.save(responsavelNegocio));
     }
 

@@ -8,6 +8,7 @@ import LinhaTabelaCustos from "../LinhaTabelaCustos/LinhaTabelaCustos";
 import LinhaTabelaCCs from "../LinhaTabelaCCs/LinhaTabelaCCs";
 
 import FontContext from "../../service/FontContext";
+import CustosService from "../../service/custosService";
 
 const Custos = (props) => {
   // Context para alterar o tamanho da fonte
@@ -48,6 +49,40 @@ const Custos = (props) => {
     }
     setPorcentagemTotal(aux);
   }, [props.custos]);
+
+  /** Função para criar um custo no banco de dados e adicioná-lo como uma linha na tabela */
+  const adicionarLinhaCustos = () => {
+    CustosService.postCusto({ tipoDespesa: "", perfilDespesa: "", periodoExecucao: "", horas: "", valorHora: "" }).then((response) => {
+      let custosNovos = [...props.custos];
+      custosNovos[props.index].custos.push(response);
+      props.setCustos(custosNovos);
+    });
+  }
+
+  /** Função usada para excluir uma linha de custo da tabela de custos */
+  const deletarLinhaCustos = (custoId, indexCusto) => {
+    CustosService.deleteCusto(custoId).then((response) => {
+      let custosNovos = [...props.custos];
+      custosNovos[props.index].custos.splice(indexCusto, 1);
+      props.setCustos(custosNovos);
+    })
+  };
+
+  const adicionarLinhaCC = () => {
+    CustosService.postCC({ codigo: 0, porcentagem: 0 }).then((response) => {
+      let custosNovos = [...props.custos];
+      custosNovos[props.index].ccs.push(response);
+      props.setCustos(custosNovos);
+    });
+  }
+
+  const deletarLinhaCC = (ccId, indexCC) => {
+    CustosService.deleteCC(ccId).then((response) => {
+      let custosNovos = [...props.custos];
+      custosNovos[props.index].ccs.splice(indexCC, 1);
+      props.setCustos(custosNovos);
+    })
+  }
 
   return (
     <Box className="flex w-full mt-5">
@@ -159,7 +194,7 @@ const Custos = (props) => {
                         key={index}
                         dados={props.dados}
                         index={index}
-                        deletarLinhaCustos={props.deletarLinhaCustos}
+                        deletarLinhaCustos={deletarLinhaCustos}
                         indexCusto={props.index}
                         setCustos={props.setCustos}
                         custos={props.custos}
@@ -185,7 +220,7 @@ const Custos = (props) => {
                   fontSize="medium"
                   className="mr-3 delay-120 hover:scale-110 duration-300"
                   sx={{ color: "icon.main", cursor: "pointer" }}
-                  onClick={() => props.setDespesas(props.index)}
+                  onClick={adicionarLinhaCustos}
                 />
               </Tooltip>
             </Box>
@@ -217,7 +252,7 @@ const Custos = (props) => {
                     key={index}
                     dados={props.dados}
                     index={index}
-                    deletarLinhaCCs={props.deletarLinhaCCs}
+                    deletarLinhaCCs={deletarLinhaCC}
                     indexCusto={props.index}
                     setCustos={props.setCustos}
                     custos={props.custos}
@@ -237,7 +272,7 @@ const Custos = (props) => {
               fontSize="medium"
               className="mr-3 delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main", cursor: "pointer" }}
-              onClick={() => props.setCcs(props.index)}
+              onClick={adicionarLinhaCC}
             />
           </Tooltip>
         </Box>

@@ -22,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/weg_ssm/custo")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CustoController {
 
     private CustoService custoService;
@@ -51,6 +52,14 @@ public class CustoController {
         return ResponseEntity.status(HttpStatus.FOUND).body(custoService.findById(id).get());
     }
 
+    @PostMapping
+    public ResponseEntity<Custo> save(@RequestBody @Valid CustoDTO custoDTO) {
+        Custo custo = new Custo();
+        BeanUtils.copyProperties(custoDTO, custo);
+        return ResponseEntity.status(HttpStatus.OK).body(custoService.save(custo));
+    }
+
+
     /**
      * Método DELETE para excluir um custo através de um id
      *
@@ -65,7 +74,6 @@ public class CustoController {
         }
 
         custoService.deleteById(id);
-
         return ResponseEntity.status(HttpStatus.OK).body("Custo deletado com sucesso.");
     }
 

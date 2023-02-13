@@ -22,4 +22,12 @@ public class TabelaCustoService {
     public TabelaCusto save(TabelaCusto tabelaCusto) {
         return tabelaCustoRepository.save(tabelaCusto);
     }
+
+    public Boolean existsById(Long id) {
+        return tabelaCustoRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
+        tabelaCustoRepository.deleteById(id);
+    }
 }
