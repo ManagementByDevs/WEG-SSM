@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Menu,
   MenuItem,
@@ -13,9 +13,12 @@ import EstadosUnidos from "../../assets/estados-unidos.png";
 
 import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
-import { useEffect } from "react";
 
 const IdiomaModal = () => {
+  useEffect(() => {
+    arrangePreferences();
+  }, []);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -43,40 +46,37 @@ const IdiomaModal = () => {
   /**
    * Pega as preferências do usuário e as aplica no sistema
    */
-  // const arrangePreferences = () => {
-  //   let theme = UsuarioService.getPreferencias().themeMode;
-  //   let fontSizeDefault = UsuarioService.getPreferencias().fontSizeDefault;
+  const arrangePreferences = () => {
+    let lang = UsuarioService.getPreferencias().lang;
 
-  //   if (theme != mode) {
-  //     setTemaDark(!temaDark);
-  //   }
-
-  //   if (fontSizeDefault != FontConfig.default) {
-  //     setFontConfig(getUserFontSizePreference());
-  //   }
-  // };
+    if (lang == "pt" && idioma != Brasil) setIdioma(Brasil);
+    else if (lang == "ch" && idioma != China) setIdioma(China);
+    else if (lang == "en" && idioma != EstadosUnidos) setIdioma(EstadosUnidos);
+  };
 
   /**
    * Salva as novas preferências do usuário no banco de dados
-   * @param {String} newPreference
    */
-  const saveNewPreference = (newPreference) => {
+  const saveNewPreference = () => {
     let user = UsuarioService.getUser();
+
+    if (!user) return;
+
     let preferencias = UsuarioService.getPreferencias();
 
-    switch (newPreference) {
+    switch (idioma) {
       case Brasil:
-        newPreference = "pt";
+        preferencias.lang = "pt";
         break;
       case China:
-        newPreference = "ch";
+        preferencias.lang = "ch";
         break;
       case EstadosUnidos:
-        newPreference = "en";
+        preferencias.lang = "en";
         break;
+      default:
+        preferencias.lang = "en";
     }
-    
-    preferencias.lang = newPreference;
 
     user.preferencias = JSON.stringify(preferencias);
 
