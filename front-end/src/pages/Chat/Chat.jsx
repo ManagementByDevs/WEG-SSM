@@ -209,6 +209,13 @@ const Chat = () => {
   // tab para setar o nome do usuário selecionado
   const [tab, setTab] = useState("CHATROOM");
 
+  const [solicitanteTab, setSolicitanteTab] = useState();
+
+  const [listaNomes, setListaNomes] = useState([]);
+
+  // Pegar o usuario 
+  const [usuarioId, setUsuarioId] = useState();
+
   let nomeUsuario;
 
   nomeUsuario = JSON.parse(localStorage.getItem("user"));
@@ -220,9 +227,6 @@ const Chat = () => {
     message: ''
   });
 
-  // Pegar o usuario 
-  const [usuarioId, setUsuarioId] = useState();
-
   const buscarUsuario = () => {
     UsuarioService.getUsuarioById(
       parseInt(localStorage.getItem("usuarioId"))
@@ -230,6 +234,22 @@ const Chat = () => {
       setUsuarioId(e);
     });
   };
+
+  const buscarSolicitante = () => {
+    UsuarioService.getUsuarioById(
+      parseInt(tab)
+    ).then((e) => {
+      setSolicitanteTab(e);
+    });
+  };
+
+  const buscarNomeLista = (id) => {
+    for (let usuario of listaNomes) {
+      if (usuario.id === id) {
+        return usuario.nome;
+      }
+    }
+  }
 
   useEffect(() => {
     buscarUsuario();
@@ -242,6 +262,10 @@ const Chat = () => {
   useEffect(() => {
     console.log(userData);
   }, [userData]);
+
+  useEffect(() => {
+    buscarSolicitante();
+  }, [tab])
 
   const connect = () => {
     let Sock = new SockJS('http://localhost:8080/ws');
@@ -268,39 +292,45 @@ const Chat = () => {
   };
 
   const onMessageReceived = (payload) => {
-    console.log("Payload bruto: ", payload);
     var payloadData = JSON.parse(payload.body);
 
     console.log("Aqui vem o payload: ", payloadData);
 
     switch (payloadData.status) {
       case "JOIN":
-        if (!privateChats.get(payloadData.usuario)) {
-          privateChats.set(payloadData.usuario.nome, []);
+        if (!privateChats.get(payloadData.usuario.nome)) {
+          console.log("seila: ", payloadData.usuario.nome);
+          privateChats.set(payloadData.usuario.id, []);
+          listaNomes.push({ nome: payloadData.usuario.nome, id: payloadData.usuario.id });
           setPrivateChats(new Map(privateChats));
         }
         break;
       case "MESSAGE":
         publicChats.push(payloadData);
         setPublicChats([...publicChats]);
-        console.log("Public chats: ", publicChats);
+        console.log("Public chatssssss: ", publicChats);
         break;
     }
   };
 
   const onPrivateMessage = (payload) => {
+
     var payloadData = JSON.parse(payload.body);
 
     console.log("Aqui vem o payload 2: ", payloadData);
+    console.log("Private chatss: ", privateChats);
 
-    if (privateChats.get(payload.senderName)) {
-      privateChats.get(payloadData.senderName).push(payloadData);
+    if (privateChats.get(payloadData.usuario.nome)) {
+      privateChats.get(payloadData.usuario.id).push(payloadData);
       setPrivateChats(new Map(privateChats));
+      console.log("Private chats 1: ", privateChats)
     } else {
       let list = [];
       list.push(payloadData);
-      privateChats.set(payloadData.senderName, list);
+      privateChats.set(payloadData.usuario.id, list);
+      listaNomes.push({ nome: payloadData.usuario.nome, id: payloadData.usuario.id });
       setPrivateChats(new Map(privateChats));
+      console.log("Private chats 2: ", privateChats)
     }
   };
 
@@ -314,11 +344,9 @@ const Chat = () => {
   };
 
   const sendPrivateValue = () => {
-
     var dataAtual = new Date();
 
     const usuario = usuarioId;
-    console.log("Usuario aqui: ", usuario);
 
     if (stompClient) {
       var chatMessage = {
@@ -328,15 +356,15 @@ const Chat = () => {
         texto: userData.message,
         status: "MESSAGE",
         usuario: usuario,
-        solicitante: tab
+        solicitante: solicitanteTab
       }
 
-      if (userData.username != tab) {
+      if (userData.username != solicitanteTab.nome) {
         privateChats.get(tab).push(chatMessage);
         setPrivateChats(new Map(privateChats));
       }
 
-      stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+      stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, "message": "" });
     }
   };
@@ -387,20 +415,18 @@ const Chat = () => {
                 <Box>
                   <ul>
                     <li onClick={() => { setTab("CHATROOM") }}>Chatroom</li>
-                    {[...privateChats.keys()].map((name, index) => (
-                      <li onClick={() => { setTab(name) }} key={index}>{name}</li>
+                    {[...privateChats.keys()].map((id, index) => (
+                      <li onClick={() => { setTab(id) }} key={index}>{buscarNomeLista(id)}</li>
                     ))}
                   </ul>
-                </Box>
 
-                <Box>
                   {tab !== "CHATROOM" && <Box>
                     <ul>
                       {[...privateChats.get(tab)].map((chat, index) => (
                         <li key={index}>
-                          {chat.senderName !== userData.username && <div className="avatar">{chat.senderName}</div>}
-                          <div className="message-data">{chat.message}</div>
-                          {chat.senderName === userData.username && <div className="avatar self">{chat.senderName}</div>}
+                          {chat.usuario.nome !== userData.username && <div className="avatar">Usuario: {chat.usuario.nome}</div>}
+                          <div className="message-data">Mensagem: {chat.texto}</div>
+                          {chat.usuario.nome === userData.username && <div className="avatar self">Usuario: {chat.usuario.nome}</div>}
                         </li>
                       ))}
                     </ul>

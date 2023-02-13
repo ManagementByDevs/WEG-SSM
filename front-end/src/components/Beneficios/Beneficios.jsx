@@ -149,10 +149,10 @@ const Beneficios = (props) => {
                     onChange={handleChangeMoeda}
                   >
                     <MenuItem value={"Real"}>
-                      <Typography fontSize={FontConfig.medium}>BR</Typography>
+                      <Typography fontSize={FontConfig.medium}>BRL</Typography>
                     </MenuItem>
                     <MenuItem value={"Dolar"}>
-                      <Typography fontSize={FontConfig.medium}>UR</Typography>
+                      <Typography fontSize={FontConfig.medium}>URD</Typography>
                     </MenuItem>
                     <MenuItem value={"Euro"}>
                       <Typography fontSize={FontConfig.medium}>EUR</Typography>
