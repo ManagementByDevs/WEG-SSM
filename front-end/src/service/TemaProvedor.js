@@ -9,7 +9,8 @@ import ColorModeContext from "./TemaContext";
 import UsuarioService from "./usuarioService";
 
 const ToggleColorMode = (props) => {
-  const prefersDarkMode = UsuarioService.getPreferencias().themeMode;
+  const prefersDarkMode = true;
+  // UsuarioService.getPreferencias().themeMode;
   
   const [mode, setMode] = useState(prefersDarkMode == "dark" ? "dark" : "light");
   const colorMode = useMemo(
