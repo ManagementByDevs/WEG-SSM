@@ -1,9 +1,5 @@
 import axios from "./api";
 
-import React, { useContext } from "react";
-import { Outlet } from "react-router-dom";
-import ColorModeContext from "./TemaContext";
-
 const usuario = "/usuario";
 
 class UsuarioService {
