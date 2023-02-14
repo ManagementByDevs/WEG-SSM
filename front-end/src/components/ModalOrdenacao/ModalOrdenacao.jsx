@@ -1,15 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Modal,
-  Typography,
-  Box,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Grid,
-} from "@mui/material";
-
-import Fade from "@mui/material/Fade";
+import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 import FontContext from "../../service/FontContext";
@@ -18,53 +8,34 @@ const ModalOrdenacao = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Funções para controlar os checkboxes de ordenação
+  /** Função para mudar o valor do checkbox de ordenação por score "Menor Score" */
   function mudarCheck1() {
-    if (props.ordenacaoTitulo[0]) {
-      props.setOrdenacaoTitulo([false, false]);
-    } else {
-      props.setOrdenacaoTitulo([true, false]);
-    }
+    props.setOrdenacaoScore([!props.ordenacaoScore[0], false]);
   }
 
+  /** Função para mudar o valor do checkbox de ordenação por score "Maior Score" */
   function mudarCheck2() {
-    if (props.ordenacaoTitulo[1]) {
-      props.setOrdenacaoTitulo([false, false]);
-    } else {
-      props.setOrdenacaoTitulo([false, true]);
-    }
+    props.setOrdenacaoScore([false, !props.ordenacaoScore[1]]);
   }
 
+  /** Função para mudar o valor do checkbox de ordenação por título "Z-A" */
   function mudarCheck3() {
-    if (props.ordenacaoScore[0]) {
-      props.setOrdenacaoScore([false, false]);
-    } else {
-      props.setOrdenacaoScore([true, false]);
-    }
+    props.setOrdenacaoTitulo([!props.ordenacaoTitulo[0], false]);
   }
 
+  /** Função para mudar o valor do checkbox de ordenação por título "A-Z" */
   function mudarCheck4() {
-    if (props.ordenacaoScore[1]) {
-      props.setOrdenacaoScore([false, false]);
-    } else {
-      props.setOrdenacaoScore([false, true]);
-    }
+    props.setOrdenacaoTitulo([false, !props.ordenacaoTitulo[1]]);
   }
 
+  /** Função para mudar o valor do checkbox de ordenação por data "Mais Velha" */
   function mudarCheck5() {
-    if (props.ordenacaoDate[0]) {
-      props.setOrdenacaoDate([false, false]);
-    } else {
-      props.setOrdenacaoDate([true, false]);
-    }
+    props.setOrdenacaoDate([!props.setOrdenacaoDate[0], false]);
   }
 
+  /** Função para mudar o valor do checkbox de ordenação por data "Mais Nova" */
   function mudarCheck6() {
-    if (props.ordenacaoDate[1]) {
-      props.setOrdenacaoDate([false, false]);
-    } else {
-      props.setOrdenacaoDate([false, true]);
-    }
+    props.setOrdenacaoDate([false, !props.setOrdenacaoDate[1]]);
   }
 
   return (
@@ -86,36 +57,27 @@ const ModalOrdenacao = (props) => {
         >
           <CloseIcon
             onClick={props.fecharModal}
-            sx={{
-              position: "absolute",
-              left: "90%",
-              top: "3%",
-              cursor: "pointer",
-            }}
+            sx={{ position: "absolute", left: "90%", top: "3%", cursor: "pointer", }}
           />
           {/* Checkboxes de Score */}
           <Grid container spacing={0}>
             <Grid item xs={20}>
               <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
                 <Typography
-                  sx={{
-                    color: "secundary.main",
-                    fontSize: FontConfig.big,
-                    fontWeight: "600",
-                  }}
+                  sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600", }}
                 >
                   Score:
                 </Typography>
                 <div className="w-full flex justify-between items-center">
                   <FormControlLabel
                     checked={props.ordenacaoScore[1]}
-                    onChange={mudarCheck4}
+                    onChange={mudarCheck2}
                     control={<Checkbox />}
                     label="Maior Score"
                   />
                   <FormControlLabel
                     checked={props.ordenacaoScore[0]}
-                    onChange={mudarCheck3}
+                    onChange={mudarCheck1}
                     control={<Checkbox />}
                     label="Menor Score"
                   />
@@ -128,24 +90,20 @@ const ModalOrdenacao = (props) => {
             <Grid item xs={9.2}>
               <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
                 <Typography
-                  sx={{
-                    color: "secundary.main",
-                    fontSize: FontConfig.big,
-                    fontWeight: "600",
-                  }}
+                  sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600", }}
                 >
                   Título:
                 </Typography>
                 <div className="w-full flex justify-between items-center">
                   <FormControlLabel
                     checked={props.ordenacaoTitulo[1]}
-                    onChange={mudarCheck2}
+                    onChange={mudarCheck4}
                     control={<Checkbox />}
                     label="A-Z"
                   />
                   <FormControlLabel
                     checked={props.ordenacaoTitulo[0]}
-                    onChange={mudarCheck1}
+                    onChange={mudarCheck3}
                     control={<Checkbox />}
                     label="Z-A"
                   />
@@ -158,11 +116,7 @@ const ModalOrdenacao = (props) => {
             <Grid item xs={11.4}>
               <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
                 <Typography
-                  sx={{
-                    color: "secundary.main",
-                    fontSize: FontConfig.big,
-                    fontWeight: "600",
-                  }}
+                  sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600", }}
                 >
                   Data:
                 </Typography>

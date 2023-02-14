@@ -13,6 +13,7 @@ import Feedback from '../../components/Feedback/Feedback';
 
 import FontContext from "../../service/FontContext";
 
+/** Página de login, para que o usuário tenha acesso ao restante do sistema */
 const Login = () => {
 
     // Context para alterar o tamanho da fonte

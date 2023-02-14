@@ -17,6 +17,7 @@ const DemandaModoVisualizacao = ({
   nextModoVisualizacao,
   myDemandas,
 }) => {
+
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
   }
@@ -102,7 +103,7 @@ const DemandaTable = ({
       {/* Abrindo o modal de motivo recusa */}
       {abrirModal && (
         <ModalMotivoRecusa
-          open={abrirModal}
+          open={true}
           setOpen={setOpenModal}
           motivoRecusa={demandaSelecionada?.motivoRecusa}
         />

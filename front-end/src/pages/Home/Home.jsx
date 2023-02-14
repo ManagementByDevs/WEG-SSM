@@ -32,6 +32,7 @@ import Demanda from "../../components/Demanda/Demanda";
 
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
 
+/** Página principal do solicitante */
 const Home = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -85,21 +86,21 @@ const Home = () => {
   const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
 
   // Valores dos checkboxes no modal de ordenação
+  const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
-  const [ordenacaoScore, setOrdenacaoScore] = useState([false, false]);
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [valorAba, setValorAba] = useState("1");
 
-  // Valor do input de pesquisa
+  // Valor do input de pesquisa por título da demanda
   const [valorPesquisa, setValorPesquisa] = useState("");
 
   // Variável para determinar se o modal de ordenação está aberto
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
 
   // Variável para determinar se o modal de filtragem está aberto
-  const [abrirFiltro, setOpenFiltro] = useState(false);
+  const [filtroAberto, setFiltroAberto] = useState(false);
 
   // UseEffect para buscar o usuário e ativar possíveis filtros assim que entrar na página
   useEffect(() => {
@@ -215,14 +216,12 @@ const Home = () => {
   /** Função para pesquisar novas demandas quando a aba for modificada */
   const atualizarAba = (event, newValue) => {
     setValorAba(newValue);
+
+    // Ao trocar a aba, a forma de pesquisar demandas irá mudar (usuário / departamento)
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });
     } else {
-      setParams({
-        ...params,
-        solicitante: null,
-        departamento: usuario?.departamento,
-      });
+      setParams({ ...params, solicitante: null, departamento: usuario?.departamento, });
     }
   };
 
@@ -233,7 +232,7 @@ const Home = () => {
 
   /** Função para abrir o modal de filtragem */
   const abrirModalFiltro = () => {
-    setOpenFiltro(true);
+    setFiltroAberto(true);
   };
 
   /** Função para ir para a tela de detalhes de uma demanda selecionada */
@@ -541,12 +540,11 @@ const Home = () => {
                   )}
                 </Box>
                 {/* Modal de filtro */}
-                {abrirFiltro && (
+                {filtroAberto && (
                   <ModalFiltro
-                    setParams={atualizarFiltro}
-                    open={abrirFiltro}
-                    setOpen={setOpenFiltro}
-                    filtroDemanda={true}
+                    fecharModal={() => {
+                      setFiltroAberto(false);
+                    }}
                     listaFiltros={listaFiltros}
                     setListaFiltros={setListaFiltros}
                   />

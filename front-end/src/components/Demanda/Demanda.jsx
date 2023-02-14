@@ -1,21 +1,31 @@
 import React, { useState, useContext } from "react";
-
 import { Box, Typography, Button, Paper } from "@mui/material";
 
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
-
 import FontContext from "../../service/FontContext";
 
+/** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
+ * Também possui a função de redirecionar a outra página com detalhes da demanda.
+ */
 const Demanda = (props) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Cor do status da demansa
-  let corStatus = getStatusColor();
-  let tamanhoHeight = getTamanhoHeight();
+  // UseState determinando o estado do modal de motivo recusa
+  const [modalMotivoRecusa, setModalMotivoRecusa] = useState(false);
 
-  // Função para receber a cor do status da demanda
-  function getStatusColor() {
+  /** Função para receber a altura da div principal da demanda (é maior caso o solicitante seja o usuário logado) */
+  const retornaAlturaDemanda = () => {
+    if (parseInt(localStorage.getItem("userId")) != props.demanda?.solicitante?.id) {
+      return "8rem";
+    } else {
+      return "10rem";
+    }
+  }
+
+  /** Função para receber a cor do status da demanda de acordo com o status */
+  const getStatusColor = () => {
     if (props.demanda.status == "CANCELLED") {
       return "#DA0303";
     } else if (props.demanda.status == "BACKLOG_REVISAO") {
@@ -31,7 +41,7 @@ const Demanda = (props) => {
     }
   }
 
-  // Função para formatar o nome do status da demanda
+  /** Função para formatar o nome do status da demanda para o solicitante */
   const formatarNomeStatus = () => {
     if (props.demanda.status == "CANCELLED") {
       return "Reprovada";
@@ -48,45 +58,24 @@ const Demanda = (props) => {
     }
   };
 
-  // Função para receber o tamanho da demanda
-  function getTamanhoHeight() {
-    if (
-      parseInt(localStorage.getItem("userId")) != props.demanda?.solicitante?.id
-    ) {
-      return "8rem";
-    } else {
-      return "10rem";
-    }
-  }
-
-  // useState para abrir o modal de motivo recusa
-  const [abrirModal, setOpenModal] = useState(false);
-
-  // Função para abrir o modal de motivo recusa
-  const abrirModalMotivoRecusa = () => {
-    setOpenModal(true);
-  };
-
   return (
     <>
-      {/* Abrindo o modal de motivo recusa */}
-      {abrirModal && (
+      {/* Modal de motivo recusa */}
+      {modalMotivoRecusa && (
         <ModalMotivoRecusa
-          open={abrirModal}
-          setOpen={setOpenModal}
+          open={true}
+          setOpen={setModalMotivoRecusa}
           motivoRecusa={props.demanda?.motivoRecusa}
         />
       )}
       <Paper
         onClick={props.onClick}
         sx={{
-          "&:hover": {
-            backgroundColor: "hover.main",
-          },
+          "&:hover": { backgroundColor: "hover.main", },
           borderColor: "primary.main",
           minWidth: "550px",
           maxWidth: "100%",
-          minHeight: tamanhoHeight,
+          minHeight: retornaAlturaDemanda(),
           maxHeight: "12rem",
           cursor: "pointer",
         }}
@@ -114,7 +103,7 @@ const Demanda = (props) => {
                 </Typography>
                 <Box
                   sx={{
-                    backgroundColor: corStatus,
+                    backgroundColor: getStatusColor(),
                     width: "12px",
                     height: "12px",
                     borderRadius: "10px",
@@ -136,8 +125,7 @@ const Demanda = (props) => {
         </Typography>
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
-          {parseInt(localStorage.getItem("usuarioId")) !=
-            props.demanda?.solicitante?.id ? (
+          {parseInt(localStorage.getItem("usuarioId")) != props.demanda?.solicitante?.id ? (
             <Typography
               fontSize={FontConfig.default}
               sx={{ fontWeight: "600", cursor: "default" }}
@@ -146,13 +134,12 @@ const Demanda = (props) => {
               {props.demanda.solicitante?.nome}
             </Typography>
           ) : (props.demanda?.status == "CANCELLED" || props.demanda?.status == "BACKLOG_EDICAO") &&
-            props.demanda?.solicitante?.id ===
-            parseInt(localStorage.getItem("usuarioId")) ? (
+            props.demanda?.solicitante?.id === parseInt(localStorage.getItem("usuarioId")) ? (
             <Button
               id="setimo"
               onClick={(e) => {
                 e.stopPropagation();
-                abrirModalMotivoRecusa();
+                setModalMotivoRecusa(true);
               }}
               variant="contained"
             >

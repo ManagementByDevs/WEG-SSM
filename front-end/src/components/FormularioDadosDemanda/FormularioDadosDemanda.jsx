@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
-
+import React, { useContext } from "react";
 import { Box } from "@mui/material";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
-
 import FontContext from "../../service/FontContext";
 
+/** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -13,22 +12,22 @@ const FormularioDadosDemanda = (props) => {
   // Todas as funções de salvamento modificam diretamente as variáveis do componente "BarraProgressãoDemanda" (paginaDados)
   // através do "props"
 
-  // Função para salvar o título da demanda
+  /** Função para salvar o título da demanda */
   const salvarTitulo = (texto) => {
     props.setDados({ ...props.dados, titulo: texto });
   };
 
-  // Função para salvar o problema da demanda
+  /** Função para salvar o problema da demanda */
   const salvarProblema = (texto) => {
     props.setDados({ ...props.dados, problema: texto });
   };
 
-  // Função para salvar a proposta da demanda
+  /** Função para salvar a proposta da demanda */
   const salvarProposta = (texto) => {
     props.setDados({ ...props.dados, proposta: texto });
   };
 
-  // Função para salvar a frequência da demanda
+  /** Função para salvar a frequência da demanda */
   const salvarFrequencia = (texto) => {
     props.setDados({ ...props.dados, frequencia: texto });
   };
@@ -43,6 +42,7 @@ const FormularioDadosDemanda = (props) => {
           className="w-3/4 flex flex-col justify-evenly"
           sx={{ height: "85%" }}
         >
+          {/* Input de título */}
           <InputComLabel
             texto={props.dados.titulo}
             saveInputValue={salvarTitulo}
@@ -51,6 +51,7 @@ const FormularioDadosDemanda = (props) => {
             placeholder="Digite o título..."
             fontConfig={FontConfig.default}
           />
+          {/* Input de problema */}
           <InputComLabel
             texto={props.dados.problema}
             saveInputValue={salvarProblema}
@@ -60,6 +61,7 @@ const FormularioDadosDemanda = (props) => {
             fontConfig={FontConfig.default}
             rows="5"
           />
+          {/* Input de proposta */}
           <InputComLabel
             texto={props.dados.proposta}
             saveInputValue={salvarProposta}
@@ -69,8 +71,8 @@ const FormularioDadosDemanda = (props) => {
             fontConfig={FontConfig.default}
             rows="8"
           />
-          {/* <ModalConfirmacao titulo="sair"/> */}
           <Box sx={{ width: "40%" }}>
+            {/* Input de frequência */}
             <InputComLabel
               texto={props.dados.frequencia}
               saveInputValue={salvarFrequencia}

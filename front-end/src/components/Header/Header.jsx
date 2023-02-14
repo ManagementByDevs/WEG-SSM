@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Paper, Tooltip } from "@mui/material/";
 import { Link, useLocation } from "react-router-dom";
 
@@ -9,11 +9,8 @@ import NotificacaoModal from "../Notificacao-Modal/NotificacaoModal";
 import LogoBranca from "../../assets/LogoBranca.png";
 import Grid from "../../assets/GridSemFundo.png";
 
-import FontContext from "../../service/FontContext";
-
-const Header = (props) => {
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+/** Header padrão usado no topo de todas as páginas do sistema */
+const Header = () => {
   
   // Variável para pegar informações da URL
   const location = useLocation();

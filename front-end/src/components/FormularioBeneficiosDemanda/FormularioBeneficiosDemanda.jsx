@@ -10,11 +10,12 @@ import BeneficioService from "../../service/beneficioService";
 
 import FontContext from "../../service/FontContext";
 
+/** Segunda etapa da criação de demanda, usando uma lista de benefícios dos props */
 const FormularioBeneficiosDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Lista de benefícios adicionadas
+  // Lista de benefícios adicionados
   const [beneficios, setBeneficios] = useState([]);
 
   // UseEffect para pegar os benefícios já adicionados na demanda na troca de página
@@ -22,7 +23,7 @@ const FormularioBeneficiosDemanda = (props) => {
     setBeneficios(props.dados);
   }, []);
 
-  // Adiciona um benefício na lista de benefícios
+  /** Adiciona um benefício na lista de benefícios, já criando ele no banco de dados para receber um id */
   function adicionarBeneficio() {
     BeneficioService.post({
       tipoBeneficio: "",
@@ -44,7 +45,7 @@ const FormularioBeneficiosDemanda = (props) => {
     });
   }
 
-  // Função genérica para salvar os dados de um benefício
+  /** Função para salvar os dados de um benefício quando editado */
   function salvarDados(dados) {
     setBeneficios(
       beneficios.map((beneficio) => {
@@ -56,7 +57,7 @@ const FormularioBeneficiosDemanda = (props) => {
     );
   }
 
-  // Função que irá setar a visibildade de um benefício para false, sendo o benefício excluído da lista savedBeneficios
+  /** Função que irá setar a visibildade de um benefício para false, considerando o benefício como excluído */
   function removerBeneficio(desiredIndex) {
     setBeneficios(
       beneficios.map((beneficio, index) => {
@@ -80,6 +81,7 @@ const FormularioBeneficiosDemanda = (props) => {
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
       <Box className="w-3/4 flex flex-col" sx={{ height: "85%" }}>
         <Box>
+          {/* Botão para adicionar novo benefício */}
           <Button
             className="rounded flex justify-evenly"
             color="primary"
@@ -100,6 +102,7 @@ const FormularioBeneficiosDemanda = (props) => {
             minHeight: "35rem",
           }}
         >
+          {/* Lista de benefícios */}
           {beneficios?.map((beneficio, index) => {
             if (beneficio.visible) {
               return (

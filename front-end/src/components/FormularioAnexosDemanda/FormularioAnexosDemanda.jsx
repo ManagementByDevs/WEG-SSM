@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-
 import { Box, Button, Typography, IconButton } from "@mui/material";
 
 import Table from "@mui/material/Table";
@@ -13,6 +12,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import FontContext from "../../service/FontContext";
 
+/** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);

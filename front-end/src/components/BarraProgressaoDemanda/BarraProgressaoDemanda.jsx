@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -20,6 +13,9 @@ import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
 import FontContext from "../../service/FontContext";
 
+/** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
+ * salvando a demanda e escopos no banco de dados
+ */
 const BarraProgressaoDemanda = (props) => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -31,9 +27,8 @@ const BarraProgressaoDemanda = (props) => {
   const navigate = useNavigate();
 
   // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
-  const [activeStep, setActiveStep] = useState(0);
-  const [skipped, setSkipped] = useState(new Set());
-  const steps = props.steps;
+  const [etapaAtiva, setEtapaAtiva] = useState(0);
+  const steps = ["Dados", "Benefícios", "Anexos"];
 
   // Variável utilizada para abrir o modal de feedback de dados faltantes
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
@@ -42,15 +37,10 @@ const BarraProgressaoDemanda = (props) => {
   var idEscopo = null;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
 
-  // Dados da página inicial da criação de demanda
-  const [paginaDados, setPaginaDados] = useState({
-    titulo: "",
-    problema: "",
-    proposta: "",
-    frequencia: "",
-  });
-
   const [escreveu, setEscreveu] = useState(false);
+
+  // Dados da página inicial da criação de demanda
+  const [paginaDados, setPaginaDados] = useState({ titulo: "", problema: "", proposta: "", frequencia: "", });
 
   // Lista de benefícios definidos na segunda página da criação de demanda
   const [paginaBeneficios, setPaginaBeneficios] = useState([]);
@@ -60,9 +50,6 @@ const BarraProgressaoDemanda = (props) => {
 
   // Variável utilizada para abrir o modal de confirmação de criação de demanda
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
-
-  // Variável utilizada para abrir o modal de saída de demanda
-  const [modalSairDemanda, setModalSairDemanda] = useState(false);
 
   // UseEffect utilizado para criar um escopo ou receber um escopo do banco ao entrar na página
   useEffect(() => {
@@ -121,7 +108,7 @@ const BarraProgressaoDemanda = (props) => {
     }
   }, [ultimoEscopo]);
 
-  // Função para formatar os benefícios recebidos no banco para a lista da página de edição
+  /** Função para formatar os benefícios recebidos no banco para a lista da página de edição */
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
@@ -130,6 +117,7 @@ const BarraProgressaoDemanda = (props) => {
         beneficio.tipoBeneficio
           .substring(1, beneficio.tipoBeneficio.length)
           .toLowerCase();
+
       listaNova.push({
         id: beneficio.id,
         tipoBeneficio: tipoNovo,
@@ -142,7 +130,7 @@ const BarraProgressaoDemanda = (props) => {
     setPaginaBeneficios(listaNova);
   };
 
-  // Função para formatar os arquivos recebidos no banco para a lista da página de edição
+  /** Função para formatar os arquivos recebidos no banco para a lista da página de edição */
   const receberArquivos = (arquivos) => {
     let listaArquivos = [];
     for (let arquivo of arquivos) {
@@ -153,7 +141,7 @@ const BarraProgressaoDemanda = (props) => {
     setPaginaArquivos(listaArquivos);
   };
 
-  // Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página
+  /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = (id) => {
     setUltimoEscopo({
       id: id,
@@ -168,111 +156,61 @@ const BarraProgressaoDemanda = (props) => {
       EscopoService.salvarDados(ultimoEscopo).then((response) => {
         //Confirmação de salvamento (se sobrar tempo)
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
-  // Função para atualizar os anexos de um escopo quando um anexo for adicionado / removido
+  /** Função para atualizar os anexos de um escopo quando um anexo for adicionado/removido */
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
-      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
-        (response) => {}
-      );
+      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then((response) => { });
     } else {
-      console.log("Removendo anexos: ", ultimoEscopo.id);
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
     }
   };
 
-  // Função para excluir o escopo determinado quando a demanda a partir dele for criada
-  const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+  /** Função para voltar para a etapa anterior na criação da demanda */
+  const voltarEtapa = () => {
+    setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
   };
 
-  // Função para pular passos opcionais
-  const isStepOptional = (step) => {
-    return false;
-  };
-
-  // Função para pular passos já realizados
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-
-  // Função para ir para o próximo passo, que dependendo poderá criar a demanda
-  const handleNext = () => {
-    if (activeStep === steps.length - 1) {
-      criarDemanda();
-    }
-
-    let newSkipped = skipped;
-
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
+  /** Função para ir para a próxima etapa da demanda */
+  const proximaEtapa = () => {
     if (paginaDados.titulo !== "" && paginaDados.problema !== "" && paginaDados.proposta !== "" && paginaDados.frequencia !== "") {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
     } else {
       setFeedbackDadosFaltantes(true);
     }
-    setSkipped(newSkipped);
   };
 
-  // Função para voltar para o passo anterior
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  // Função para verificação de passos obrigatórios para a criação da demanda
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      throw new Error("Você não pode pular um passo que não é opcional!");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
-
-  // Função para resetar o stepper
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  // Função para criar uma demanda
-  const criarDemanda = () => {
-    handleClick(true);
-  };
-
-  const [state, setState] = useState({
-    open: false,
-  });
-
-  const { open } = state;
-
-  // Função para fechar modal
-  const handleClick = (newState) => () => {
-    setState({ open: true, ...newState });
-  };
-
-  // Função para abrir o modal de confirmação de criação de demanda
+  /** Função para abrir o modal de confirmação de criação de demanda */
   const abrirModalConfirmacao = () => {
     setOpenConfirmacao(true);
   };
 
-  // Função para abrir o modal de saída de demanda
-  const abrirModalSairDemanda = () => {
-    setModalSairDemanda(true);
-  };
+  /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
+  const criarDemanda = () => {
+    let demandaFinal = {
+      titulo: paginaDados.titulo,
+      problema: paginaDados.problema,
+      proposta: paginaDados.proposta,
+      frequencia: paginaDados.frequencia,
+      beneficios: formatarBeneficios(paginaBeneficios),
+      status: "BACKLOG_REVISAO",
+    };
 
-  // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
+    DemandaService.post(
+      demandaFinal,
+      paginaArquivos,
+      parseInt(localStorage.getItem("usuarioId"))
+    ).then((e) => {
+      direcionarHome();
+      excluirEscopo();
+    });
+  }
+
+  /** Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda */
   const formatarBeneficios = (listaBeneficios) => {
     let listaNova = [];
-
     for (let beneficio of listaBeneficios) {
       if (beneficio.visible) {
         listaNova.push({
@@ -284,116 +222,60 @@ const BarraProgressaoDemanda = (props) => {
         });
       }
     }
-
     return listaNova;
   };
 
-  // UseEffect para criar a demanda usando os dados recebidos das páginas
-  useEffect(() => {
-    if (open) {
-      if (
-        paginaDados.titulo != "" &&
-        paginaDados.problema &&
-        paginaDados.proposta &&
-        paginaDados.frequencia
-      ) {
-        let demandaFinal = {
-          titulo: paginaDados.titulo,
-          problema: paginaDados.problema,
-          proposta: paginaDados.proposta,
-          frequencia: paginaDados.frequencia,
-          beneficios: formatarBeneficios(paginaBeneficios),
-          status: "BACKLOG_REVISAO",
-        };
-
-        DemandaService.post(
-          demandaFinal,
-          paginaArquivos,
-          parseInt(localStorage.getItem("usuarioId"))
-        ).then((e) => {
-          direcionarHome(true);
-          excluirEscopo();
-        });
-      } else {
-        setFeedbackDadosFaltantes(true);
-      }
-    }
-  }, [open]);
-
-  // Função para direcionar o usuário para a tela de home
-  const direcionarHome = (feedbackDemanda) => {
-    localStorage.removeItem("tipoFeedback");
-
-    localStorage.setItem("tipoFeedback", "1");
-
-    navigate("/");
+  /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
+  const excluirEscopo = () => {
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };
 
-  // HandleClose utilizado para modais
-  const handleClose = () => {
-    setState({ ...state, open: false });
+  /** Função para direcionar o usuário para a tela de home após terminar a criação de demanda */
+  const direcionarHome = () => {
+    localStorage.setItem("tipoFeedback", "1");
+    navigate("/");
   };
 
   return (
     <>
       {/* Stepper utilizado para os passos da criação e a barra de progressão */}
-      <Stepper activeStep={activeStep}>
+      <Stepper activeStep={etapaAtiva}>
         {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            );
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
           return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>
+            <Step key={label}>
+              <StepLabel>
                 <Typography fontSize={FontConfig.default}>{label}</Typography>
               </StepLabel>
             </Step>
           );
         })}
       </Stepper>
-      {activeStep == 0 && (
+      {etapaAtiva == 0 && (
         <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
       )}
-      {activeStep == 1 && (
-        <FormularioBeneficiosDemanda
-          dados={paginaBeneficios}
-          setDados={setPaginaBeneficios}
-        />
+      {etapaAtiva == 1 && (
+        <FormularioBeneficiosDemanda dados={paginaBeneficios} setDados={setPaginaBeneficios} />
       )}
-      {activeStep == 2 && (
-        <FormularioAnexosDemanda
-          salvarEscopo={salvarAnexosEscopo}
-          dados={paginaArquivos}
-          setDados={setPaginaArquivos}
-        />
+      {etapaAtiva == 2 && (
+        <FormularioAnexosDemanda salvarEscopo={salvarAnexosEscopo} dados={paginaArquivos} setDados={setPaginaArquivos} />
       )}
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+
+        {/* Botão de voltar à etapa anterior da criação */}
         <Button
           variant="outlined"
           color="tertiary"
-          disabled={activeStep === 0}
-          onClick={handleBack}
+          disabled={etapaAtiva === 0}
+          onClick={voltarEtapa}
           sx={{ mr: 1 }}
           disableElevation
         >
           <Typography fontSize={FontConfig.default}>Voltar</Typography>
         </Button>
         <Box sx={{ flex: "1 1 auto" }} />
-        {isStepOptional(activeStep) && (
-          <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-            <Typography fontSize={FontConfig.default}>Pular</Typography>
-          </Button>
-        )}
 
-        {/* Verificações para mudar texto de botões de acordo com os passos */}
-        {activeStep === steps.length - 1 ? (
+        {/* Verificações para mudar texto do botão de Próximo/Criar de acordo com o passo atual */}
+        {etapaAtiva === steps.length - 1 ? (
           <Button
             color="primary"
             variant="contained"
@@ -406,28 +288,21 @@ const BarraProgressaoDemanda = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={handleNext}
+            onClick={proximaEtapa}
             disableElevation
           >
             <Typography fontSize={FontConfig.default}>Próximo</Typography>
           </Button>
         )}
+
+        {/* Modal de confirmação de criar demanda */}
         {modalConfirmacao && (
           <ModalConfirmacao
-            open={modalConfirmacao}
+            open={true}
             setOpen={setOpenConfirmacao}
             textoModal={"enviarDemanda"}
             textoBotao={"enviar"}
-            onConfirmClick={handleClick()}
-          />
-        )}
-        {modalSairDemanda && (
-          <ModalConfirmacao
-            open={modalSairDemanda}
-            setOpen={setModalSairDemanda}
-            textoModal={"sairCriacao"}
-            textoBotao={"sim"}
-            onConfirmClick={handleClick()}
+            onConfirmClick={criarDemanda}
           />
         )}
       </Box>

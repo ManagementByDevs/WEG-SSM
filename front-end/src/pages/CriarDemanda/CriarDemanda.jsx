@@ -1,19 +1,12 @@
-import React, { useContext } from "react";
-
+import React from "react";
 import { Box } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import BarraProgressaoDemanda from "../../components/BarraProgressaoDemanda/BarraProgressaoDemanda";
 
-import FontContext from "../../service/FontContext";
-
-import Tour from "reactour";
-
+/** Componente de página para a criação de demanda, chamando a barra de progressão para as etapas de criação */
 const CriarDemanda = () => {
-
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   return (
     <FundoComHeader>
@@ -21,7 +14,8 @@ const CriarDemanda = () => {
         <Caminho feedback={true} />
         <Box className="w-full flex justify-center">
           <Box className="w-5/6">
-            <BarraProgressaoDemanda steps={["Dados", "Benefícios", "Anexos"]} />
+            {/* Chamada do componente principal para criação da demanda */}
+            <BarraProgressaoDemanda />
           </Box>
         </Box>
       </Box>

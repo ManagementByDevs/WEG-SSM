@@ -55,7 +55,7 @@ class UsuarioService {
       preferencias = user.preferencias;
     }
 
-    if (preferencias == "") {
+    if (!preferencias) {
       return {
         themeMode: "light",
         fontSizeDefault: "14px",

@@ -1,26 +1,15 @@
-import React, {useContext} from "react";
+import React from "react";
 import { Snackbar, Alert } from "@mui/material";
 
-import FontContext from "../../service/FontContext";
-
+/** Feedback padrão para avisos do sistema sobre processos concluídos / problemas no sistema */
 const Feedback = (props) => {
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   // Como chamar:
   // <Feedback open={true} handleClose={funcao para deixar o open false} status={"o status que quer: sucesso, erro, aviso, info"} mensagem={"mensagem que quer que apareça"}/>
 
-  // Variáveis de estilo para o componente (para definir a posição)
+  // Variáveis de estilo para o componente (definir a posição)
   const vertical = "top";
   const horizontal = "right";
-
-  // Váriável que contém uma mensagem para o feedback
-  const mensagem = getMensagem();
-
-  // Função para retornar uma mensagem para o feedback
-  function getMensagem() {
-    return props.mensagem;
-  }
 
   return (
     <Snackbar
@@ -35,7 +24,7 @@ const Feedback = (props) => {
           severity="success"
           sx={{ width: "100%" }}
         >
-          {mensagem}
+          {props.mensagem}
         </Alert>
       ) : props.status === "erro" ? (
         <Alert
@@ -43,7 +32,7 @@ const Feedback = (props) => {
           severity="error"
           sx={{ width: "100%" }}
         >
-          {mensagem}
+          {props.mensagem}
         </Alert>
       ) : props.status === "aviso" ? (
         <Alert
@@ -51,7 +40,7 @@ const Feedback = (props) => {
           severity="warning"
           sx={{ width: "100%" }}
         >
-          {mensagem}
+          {props.mensagem}
         </Alert>
       ) : props.status === "info" ? (
         <Alert
@@ -59,7 +48,7 @@ const Feedback = (props) => {
           severity="info"
           sx={{ width: "100%" }}
         >
-          {mensagem}
+          {props.mensagem}
         </Alert>
       ) : null}
     </Snackbar>
