@@ -775,7 +775,8 @@ const HomeGerencia = () => {
     let itemsVisualizationMode =
       UsuarioService.getPreferencias().itemsVisualizationMode.toUpperCase();
 
-    // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+    // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o
+    // próximo modo para o qual será trocado a visualização
     if (itemsVisualizationMode == nextModoVisualizacao) {
       setNextModoVisualizacao("GRID");
     }
