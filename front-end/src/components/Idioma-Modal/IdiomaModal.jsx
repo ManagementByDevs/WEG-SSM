@@ -12,7 +12,9 @@ import China from "../../assets/china.png";
 import EstadosUnidos from "../../assets/estados-unidos.png";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 import UsuarioService from "../../service/usuarioService";
+import TextLanguage from "../../service/TextLanguage";
 
 const IdiomaModal = () => {
   useEffect(() => {
@@ -21,6 +23,9 @@ const IdiomaModal = () => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // Context que contém os textos do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
 
   // UseState para poder visualizar e alterar a imagem da linguagem selecionada (Valor padrão é Brasil)
   const [idioma, setIdioma] = useState(Brasil);
@@ -42,6 +47,13 @@ const IdiomaModal = () => {
     setAnchorEl(null);
   };
 
+  const toggleLanguage = () => {
+    console.log("passou", idioma);
+    if (idioma == Brasil) setTexts(TextLanguage("pt"));
+    else if (idioma == EstadosUnidos) setTexts(TextLanguage("en"));
+    else if (idioma == China) setTexts(TextLanguage("ch"));
+  };
+
   // ********************************************** Preferências **********************************************
   /**
    * Pega as preferências do usuário e as aplica no sistema
@@ -59,6 +71,8 @@ const IdiomaModal = () => {
    */
   const saveNewPreference = () => {
     let user = UsuarioService.getUser();
+
+    toggleLanguage();
 
     if (!user) return;
 

@@ -1,5 +1,5 @@
-const TextLinguage = (linguagem) => {
-    linguagem == "pt" ? {
+const TextLanguage = (linguagem) => {
+    return linguagem == "pt" ? {
         barraProgressaoDemanda: {
             erroPularPasso: "Você não pode pular um passo que não é opcional!",
             botaoVoltar: "Voltar",
@@ -458,4 +458,4 @@ const TextLinguage = (linguagem) => {
     } : null;
 }
 
-export default TextLinguage;
+export default TextLanguage;

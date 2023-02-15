@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography, Box, FormControlLabel, Switch, Slider } from "@mui/material/";
+import {
+  Menu,
+  MenuItem,
+  Tooltip,
+  IconButton,
+  Avatar,
+  Typography,
+  Box,
+  FormControlLabel,
+  Switch,
+  Slider,
+} from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
@@ -10,6 +21,7 @@ import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlin
 
 import FontContext from "../../service/FontContext";
 import ColorModeContext from "../../service/TemaContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 import UsuarioService from "../../service/usuarioService";
 
@@ -74,6 +86,9 @@ const UserModal = (props) => {
   //useContext para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // useContext que contém os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   // ********************************************** Preferências **********************************************
 
   // Desestruturação de objeto em duas variáveis:
@@ -131,7 +146,7 @@ const UserModal = (props) => {
    */
   const getUserFontSizePreference = () => {
     let fontDefaultSize = UsuarioService.getPreferencias().fontSizeDefault;
-    
+
     if (!fontDefaultSize) {
       return {
         verySmall: "10px",
