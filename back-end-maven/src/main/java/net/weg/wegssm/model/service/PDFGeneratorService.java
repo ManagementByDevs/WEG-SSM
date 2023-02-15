@@ -81,7 +81,7 @@ public class PDFGeneratorService {
 
         // Adicionando a logo da weg na página ( arrumar o diretório da imagem )
 
-        Image img = Image.getInstance("C:\\Users\\felipe_mielke-vieira\\Documents\\GitHub\\WEG-SSM\\back-end-maven\\src\\main\\java\\net\\weg\\wegssm\\images\\logo-pequeno.png");
+        Image img = Image.getInstance("https://logospng.org/download/weg/logo-weg-2048.png");
 
         int indentation = 0;
         float scale = ((document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin() - indentation) / img.getWidth()) * 20;
@@ -139,6 +139,10 @@ public class PDFGeneratorService {
             table.addCell(String.valueOf(beneficio.getMemoriaCalculo()));
 
             document.add(table);
+        }
+
+        if(!demanda.getForum().equals("")){
+            // Colocar aqui os novos campos da demanda
         }
 
         Paragraph paragraph7 = new Paragraph("Frequência de Uso: ", fontParagraph2);
