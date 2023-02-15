@@ -65,7 +65,7 @@ class DemandaService {
         if (arquivos.length > 0) {
             return (await axios.put(`/demanda/aceite`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
         } else {
-            return (await axios.put(`/demanda/aceite/sem-arquivos`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+            return (await axios.put(`/demanda/manter-arquivos-velhos`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
         }
     }
 

@@ -34,7 +34,6 @@ const BarraProgressaoProposta = (props) => {
   // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
-  const [mudancasFeitas, setMudancasFeitas] = useState(false);
 
   let variaveisIniciais = false;
 
@@ -70,42 +69,8 @@ const BarraProgressaoProposta = (props) => {
   // Variável utilizada para armazenar a lista de benefícios excluídos
   const [listaBeneficiosExcluidos, setListaBeneficiosExcluidos] = useState([]);
 
-  // UseEffect utilizado para pegar os dados da demanda e pegar os fóruns e BUs
-  useEffect(() => {
-    setDadosDemanda(props.dados);
-    pesquisarBUs();
-    pesquisarForuns();
-    criarDadosIniciais();
-  }, []);
-
-  useEffect(() => {
-    if (!idEscopo) {
-      if (!location.state) {
-        if (mudancasFeitas) {
-
-        }
-      }
-    }
-  }, [mudancasFeitas]);
-
-  // UseEffect para formatar os benefícios recebidos do banco para os necessários na edição
-  useEffect(() => {
-    const aux = dadosDemanda?.beneficios?.map((beneficio) => {
-      return {
-        id: beneficio.id,
-        tipoBeneficio:
-          beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || "Real",
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true,
-      };
-    });
-    setListaBeneficios(aux);
-  }, [dadosDemanda]);
+  // Variável para guardar os custos 
+  const [custos, setCustos] = useState([]);
 
   // UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML)
   const [escopo, setEscopo] = useState("");
@@ -120,6 +85,26 @@ const BarraProgressaoProposta = (props) => {
     linkJira: "",
     responsaveisNegocio: []
   });
+
+  // UseEffect utilizado para pegar os dados da demanda e pegar os fóruns e BUs
+  useEffect(() => {
+    setDadosDemanda(props.dados);
+    pesquisarBUs();
+    pesquisarForuns();
+    criarDadosIniciais();
+  }, []);
+
+  useEffect(() => {
+    receberBeneficios();
+  }, [dadosDemanda]);
+
+  useEffect(() => {
+    if (!idEscopo) {
+      if (!location.state) {
+        idEscopo = 1;
+      }
+    }
+  }, [dadosDemanda, gerais, custos, listaBeneficios]);
 
   // Função para pular passos opcionais
   const isStepOptional = (step) => {
@@ -162,6 +147,24 @@ const BarraProgressaoProposta = (props) => {
     }
   }
 
+  const receberBeneficios = () => {
+    const aux = dadosDemanda?.beneficios?.map((beneficio) => {
+      return {
+        id: beneficio.id,
+        tipoBeneficio:
+          beneficio.tipoBeneficio?.charAt(0) +
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: true,
+      };
+    });
+    setListaBeneficios(aux);
+  }
+
   // Função para passar para próxima página
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
@@ -200,12 +203,6 @@ const BarraProgressaoProposta = (props) => {
   // Variável utilizada para salvar alterações caso o click seja acionado
   const [salvarClick, setSalvarClick] = useState(false);
 
-  // Função para salvar alterações na criação da proposta
-  const salvarAlteracoes = () => {
-    setSalvarClick(true);
-    setEditar(false);
-  };
-
   // Função para pesquisar os fóruns do banco e salvar na lista para o select
   const pesquisarForuns = () => {
     ForumService.getAll().then((response) => {
@@ -235,9 +232,6 @@ const BarraProgressaoProposta = (props) => {
 
   // Variável utilizada para realizar edições
   const [editar, setEditar] = useState(false);
-
-  // Variável para guardar os custos 
-  const [custos, setCustos] = useState([]);
 
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {

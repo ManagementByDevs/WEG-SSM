@@ -12,6 +12,7 @@ import FontContext from "../../service/FontContext";
 import Ajuda from "../../components/Ajuda/Ajuda";
 
 import UsuarioService from "../../service/usuarioService";
+import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
 
@@ -90,6 +91,17 @@ const DetalhesDemandaPagina = () => {
     },
   ];
 
+  const baixarDemanda = () => {
+    ExportPdfService.exportDemanda(dados.id).then((response) => {
+      let blob = new Blob([response], { type: 'application/pdf' });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement('a');
+      link.href = url;
+      link.download = 'pdf_demanda.pdf';
+      link.click();
+    })
+  }
+
   return (
     <FundoComHeader>
       {/* Tour ao usuário */}
@@ -109,7 +121,9 @@ const DetalhesDemandaPagina = () => {
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
           >
-            <IconButton>
+            <IconButton
+              onClick={baixarDemanda}
+            >
               <SaveAltOutlinedIcon
                 id="segundo"
                 fontSize="large"

@@ -7,6 +7,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 import net.weg.wegssm.model.entities.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -23,9 +24,7 @@ public class PDFGeneratorService {
 
     private static DemandaService demandaService;
 
-    public void exportDemanda(HttpServletResponse response) throws IOException {
-
-        Demanda demanda = new Demanda();
+    public Document exportDemanda(HttpServletResponse response, Demanda demanda) throws IOException {
 
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -82,7 +81,7 @@ public class PDFGeneratorService {
 
         // Adicionando a logo da weg na página ( arrumar o diretório da imagem )
 
-        Image img = Image.getInstance("C:\\Users\\matheus_hohmann\\Documents\\GitHub\\WEG-SSM\\back-end-maven\\src\\main\\java\\net\\weg\\wegssm\\images\\logo-pequeno.png");
+        Image img = Image.getInstance("C:\\Users\\felipe_mielke-vieira\\Documents\\GitHub\\WEG-SSM\\back-end-maven\\src\\main\\java\\net\\weg\\wegssm\\images\\logo-pequeno.png");
 
         int indentation = 0;
         float scale = ((document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin() - indentation) / img.getWidth()) * 20;
@@ -163,17 +162,18 @@ public class PDFGeneratorService {
 
         // Adicionando o nome dos arquivos
 
-//        for (Anexo anexo : demanda.getAnexo()) {
-//            Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
-//            paragraph10.setIndentationLeft(40);
-//            paragraph10.setSpacingBefore(5);
-//
-//            document.add(paragraph10);
-//        }
+        for (Anexo anexo : demanda.getAnexo()) {
+            Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
+            paragraph10.setIndentationLeft(40);
+            paragraph10.setSpacingBefore(5);
+
+            document.add(paragraph10);
+        }
 
         // Encerrando o documento
 
         document.close();
+        return document;
     }
 
     public void exportProposta(HttpServletResponse response) throws IOException {
