@@ -47,8 +47,10 @@ const IdiomaModal = () => {
     setAnchorEl(null);
   };
 
+  /**
+   * Altera o idioma do sistema de acordo com o idioma selecionado
+   */
   const toggleLanguage = () => {
-    console.log("passou", idioma);
     if (idioma == Brasil) setTexts(TextLanguage("pt"));
     else if (idioma == EstadosUnidos) setTexts(TextLanguage("en"));
     else if (idioma == China) setTexts(TextLanguage("ch"));
@@ -99,6 +101,7 @@ const IdiomaModal = () => {
     });
   };
 
+  // Toda vez que o idioma for mudado, será salvado a nova preferência do usuário
   useEffect(() => {
     saveNewPreference();
   }, [idioma]);
