@@ -172,17 +172,21 @@ public class PDFGeneratorService {
             paragraph13.add(chunkSecao);
             paragraph13.add(chunkValorSecao);
 
-//            Chunk chunkBuSolicitante = new Chunk("BU Solicitante: ", fontParagraph2);
-//            Chunk chunkValorBuSolicitante = new Chunk(demanda.getBuSolicitante(), fontParagraph3);
-//            Paragraph paragraph14 = new Paragraph();
-//            paragraph14.add(chunkBuSolicitante);
-//            paragraph14.add(chunkValorBuSolicitante);
-//
-//            Chunk chunkBuBeneficiadas = new Chunk("BUs Beneficiadas: ", fontParagraph2);
-//            Chunk chunkValorBuBeneficiadas = new Chunk(demanda.getBusBeneficiadas(), fontParagraph3);
-//            Paragraph paragraph15 = new Paragraph();
-//            paragraph15.add(chunkBuBeneficiadas);
-//            paragraph15.add(chunkValorBuBeneficiadas);
+            Chunk chunkBuSolicitante = new Chunk("BU Solicitante: ", fontParagraph2);
+            Chunk chunkValorBuSolicitante = new Chunk(demanda.getBuSolicitante().getNome(), fontParagraph3);
+            Paragraph paragraph14 = new Paragraph();
+            paragraph14.add(chunkBuSolicitante);
+            paragraph14.add(chunkValorBuSolicitante);
+
+            Chunk chunkBuBeneficiadas = new Chunk("BUs Beneficiadas: ", fontParagraph2);
+            Paragraph paragraph15 = new Paragraph();
+            paragraph15.add(chunkBuBeneficiadas);
+
+
+            for(Bu bu: demanda.getBusBeneficiadas()){
+                Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNome() + " ", fontParagraph3);
+                paragraph15.add(chunkValorBuBeneficiadas);
+            }
 
             PdfPTable table2 = new PdfPTable(2);
             table2.setWidthPercentage(100);
@@ -203,15 +207,15 @@ public class PDFGeneratorService {
             table3.setWidthPercentage(100);
             table3.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-//            PdfPCell cell3 = new PdfPCell(paragraph14);
-//            cell3.setBorder(Rectangle.NO_BORDER);
-//
-//            PdfPCell cell4 = new PdfPCell(paragraph15);
-//            cell4.setBorder(Rectangle.NO_BORDER);
-//            cell4.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//
-//            table3.addCell(cell3);
-//            table3.addCell(cell4);
+            PdfPCell cell3 = new PdfPCell(paragraph14);
+            cell3.setBorder(Rectangle.NO_BORDER);
+
+            PdfPCell cell4 = new PdfPCell(paragraph15);
+            cell4.setBorder(Rectangle.NO_BORDER);
+            cell4.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+            table3.addCell(cell3);
+            table3.addCell(cell4);
             table3.setSpacingBefore(15);
 
             document.add(table2);
