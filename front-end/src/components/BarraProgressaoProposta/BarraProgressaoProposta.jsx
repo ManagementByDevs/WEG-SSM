@@ -17,6 +17,7 @@ import propostaService from "../../service/propostaService";
 import DemandaService from "../../service/demandaService";
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import CustosService from "../../service/custosService";
+import EscopoPropostaService from "../../service/escopoPropostaService";
 
 const BarraProgressaoProposta = (props) => {
   // Context para alterar o tamanho da fonte
@@ -86,6 +87,8 @@ const BarraProgressaoProposta = (props) => {
     responsaveisNegocio: []
   });
 
+  const [mudancasFeitas, setMudancasFeitas] = useState(false);
+
   // UseEffect utilizado para pegar os dados da demanda e pegar os fóruns e BUs
   useEffect(() => {
     setDadosDemanda(props.dados);
@@ -100,11 +103,48 @@ const BarraProgressaoProposta = (props) => {
 
   useEffect(() => {
     if (!idEscopo) {
-      if (!location.state) {
-        idEscopo = 1;
+      if (!location.state.tabelaCustos) {
+        if (mudancasFeitas) {
+          idEscopo = 1;
+          let escopo = retornaObjetoProposta();
+          delete escopo.status;
+          EscopoPropostaService.post(escopo).then((response) => {
+            idEscopo = response.id;
+            setUltimoEscopo(response);
+          });
+        }
       }
     }
+  }, [mudancasFeitas]);
+
+  useEffect(() => {
+    if (listaBeneficios && dadosDemanda && gerais && custos) {
+      setTimeout(() => {
+        setMudancasFeitas(true);
+      }, 1000)
+    }
   }, [dadosDemanda, gerais, custos, listaBeneficios]);
+
+  // UseEffect utilizado para salvar o escopo a cada 5 segundos
+  useEffect(() => {
+    if (ultimoEscopo) {
+      setTimeout(() => {
+        salvarEscopo();
+      }, 5000);
+    }
+  }, [ultimoEscopo]);
+
+  /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
+  const salvarEscopo = () => {
+    try {
+      let escopo = retornaObjetoProposta();
+      delete escopo.status;
+      escopo.id = ultimoEscopo.id;
+      EscopoPropostaService.salvarDados(escopo).then((response) => {
+        setUltimoEscopo(response);
+      });
+    } catch (error) { }
+  };
 
   // Função para pular passos opcionais
   const isStepOptional = (step) => {
@@ -221,10 +261,12 @@ const BarraProgressaoProposta = (props) => {
   const formatarBeneficios = () => {
     let listaNova = [];
     for (let beneficio of listaBeneficios) {
-      delete beneficio.visible;
       listaNova.push({
-        ...beneficio,
+        id: beneficio.id,
         tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo
       });
     }
     return listaNova;
@@ -293,10 +335,8 @@ const BarraProgressaoProposta = (props) => {
     return demandaNova;
   }
 
-  const criarProposta = () => {
-    excluirBeneficios();
-
-    const propostaFinal = {
+  const retornaObjetoProposta = () => {
+    const objeto = {
       demanda: retirarAnexosDemanda(),
       titulo: dadosDemanda.titulo,
       status: "ASSESSMENT_APROVACAO",
@@ -324,7 +364,13 @@ const BarraProgressaoProposta = (props) => {
       anexo: pegarAnexosSalvos()
     }
 
-    propostaService.post(propostaFinal, pegarAnexosNovos()).then((response) => {
+    return objeto;
+  }
+
+  const criarProposta = () => {
+    excluirBeneficios();
+
+    propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then((response) => {
       DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then((data) => {
         localStorage.setItem("tipoFeedback", "5");
         navigate("/");

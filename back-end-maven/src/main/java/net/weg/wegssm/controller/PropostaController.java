@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
 import net.weg.wegssm.util.PropostaUtil;
+import net.weg.wegssm.util.UsuarioUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -61,8 +62,8 @@ public class PropostaController {
      * @param codigoPPM    - Código PPM da proposta
      * @param pageable     - Objeto que contém as informações da páginação
      * @param titulo       - Título da proposta (usado na barra de pesquisa)
-     * @param solicitante  - Solicitante da proposta (usado no modal de filtro)
-     * @param gerente      - Gerente da proposta (usado no modal de filtro)
+     * @param solicitanteJson  - Solicitante da proposta (usado no modal de filtro)
+     * @param gerenteJson      - Gerente da proposta (usado no modal de filtro)
      * @param forum        - Fórum da proposta (usado no modal de filtro)
      * @param departamento - Departamento da proposta (usado no modal de filtro)
      * @param tamanho      - Tamanho da proposta (usado no modal de filtro)
@@ -74,15 +75,19 @@ public class PropostaController {
             @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(required = false) Long codigoPPM,
             @RequestParam(required = false) String titulo,
-            @RequestParam(required = false) Usuario solicitante,
-            @RequestParam(required = false) Usuario gerente,
+            @RequestParam(required = false) String solicitanteJson,
+            @RequestParam(required = false) String gerenteJson,
             @RequestParam(required = false) Forum forum,
             @RequestParam(required = false) Departamento departamento,
             @RequestParam(required = false) String tamanho,
-            @RequestParam(required = false) Usuario analista,
+            @RequestParam(required = false) String analistaJson,
             @RequestParam(required = false) Long id,
             @RequestParam Status status
     ) {
+        Usuario solicitante = new UsuarioUtil().convertJsonToModel(solicitanteJson);
+        Usuario gerente = new UsuarioUtil().convertJsonToModel(gerenteJson);
+        Usuario analista = new UsuarioUtil().convertJsonToModel(analistaJson);
+
         if (analista != null) {
             if(codigoPPM != null) {
                 if(status != null) {

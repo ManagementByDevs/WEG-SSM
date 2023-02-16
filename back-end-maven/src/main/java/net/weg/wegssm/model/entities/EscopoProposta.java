@@ -67,6 +67,10 @@ public class EscopoProposta {
 
 //    Foreign Keys
 
+    @OneToMany
+    @JoinColumn(name = "escopo_proposta_id")
+    private List<Beneficio> beneficios = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "bu_solicitante")
     private Bu buSolicitante;
@@ -119,6 +123,17 @@ public class EscopoProposta {
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();
+        try {
+            for (MultipartFile file : files) {
+                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+            }
+            this.anexo = listaAnexos;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void addAnexos(List<MultipartFile> files, List<Anexo> listaAnexos) {
         try {
             for (MultipartFile file : files) {
                 listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
