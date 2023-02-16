@@ -12,6 +12,10 @@ public class EscopoPropostaService {
 
     private EscopoPropostaRepository escopoPropostaRepository;
 
+    public EscopoPropostaService(EscopoPropostaRepository escopoPropostaRepository) {
+        this.escopoPropostaRepository = escopoPropostaRepository;
+    }
+
     public Page<EscopoProposta> findByUsuario(Usuario usuario, Pageable pageable) {
         return escopoPropostaRepository.findBySolicitante(usuario, pageable);
     }

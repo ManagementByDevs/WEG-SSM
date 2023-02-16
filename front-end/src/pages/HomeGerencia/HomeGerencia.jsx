@@ -30,8 +30,9 @@ import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
-import ColorModeContext from "../../service/TemaContext";
+import PropostaService from "../../service/propostaService";
 
+import ColorModeContext from "../../service/TemaContext";
 import Tour from "reactour";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 
@@ -266,6 +267,7 @@ const HomeGerencia = () => {
     tipoUsuario: "",
     visibilidade: 1,
     departamento: null,
+    preferencias: null
   });
 
   // Parâmetros para pesquisa das demandas (filtros)
@@ -354,7 +356,7 @@ const HomeGerencia = () => {
       titulo: valorPesquisa,
       solicitante: paramsTemp.solicitante,
       gerente: paramsTemp.gerente,
-      analista: JSON.parse(params.analista),
+      analista: params.analista,
       forum: paramsTemp.forum,
       tamanho: paramsTemp.tamanho,
       status: params.status,
@@ -400,7 +402,7 @@ const HomeGerencia = () => {
             ...params,
             gerente: null,
             status: "BACKLOG_REVISAO",
-            analista: null,
+            analista: null
           });
         }
         setModoFiltro("demanda");
@@ -410,11 +412,17 @@ const HomeGerencia = () => {
           ...params,
           gerente: null,
           status: "ASSESSMENT",
-          analista: usuario,
+          analista: usuario
         });
         setModoFiltro("demanda");
         break;
       case "3":
+        setParams({
+          ...params,
+          gerente: null,
+          analista: usuario,
+          status: "ASSESSMENT_APROVACAO"
+        })
         setModoFiltro("proposta");
         break;
       case "4":
@@ -493,11 +501,12 @@ const HomeGerencia = () => {
     UsuarioService.getUsuarioById(
       parseInt(localStorage.getItem("usuarioId"))
     ).then((e) => {
-      setUsuario(e);
+      setUsuario({ id: e.id, email: e.email, nome: e.nome, senha: e.senha, tipoUsuario: e.tipoUsuario, departamento: e.departamento, visibilidade: e.visibilidade, preferencias: JSON.parse(e.preferencias) });
     });
   };
 
   const buscarItens = () => {
+    console.log(params);
     switch (value) {
       case "1":
         if (params.status != null || params.gerente != null) {
@@ -522,6 +531,15 @@ const HomeGerencia = () => {
         }
         break;
       case "3":
+        if (params.status != null && params.analista != null) {
+          PropostaService.getPage(
+            params,
+            ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+          ).then((response) => {
+            setListaItens([...response.content]);
+            setTotalPaginas(response.totalPages);
+          });
+        }
         break;
       case "4":
         break;
@@ -1206,7 +1224,7 @@ const HomeGerencia = () => {
                       }}
                     >
                       <DemandaGerenciaModoVisualizacao
-                        listaDemandas={propostas}
+                        listaDemandas={listaItens}
                         onDemandaClick={verDemanda}
                         nextModoVisualizacao={nextModoVisualizacao}
                         isProposta={true}

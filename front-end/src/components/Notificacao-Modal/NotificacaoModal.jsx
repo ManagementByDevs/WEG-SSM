@@ -79,7 +79,6 @@ const NotificacaoModal = (props) => {
       .then((response) => {
         setNotificacoes(response.content);
         setContNaoLidas(response.totalElements);
-        console.log(response);
       })
       .catch((error) => {
         console.log(error);

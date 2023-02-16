@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class EscopoPropostaController {
     private TabelaCustoService tabelaCustoService;
     private CustoService custoService;
     private CCsService ccsService;
+    private AnexoService anexoService;
 
     /**
      * Método GET para listar um escopo específico através do id do usuário
@@ -50,13 +53,11 @@ public class EscopoPropostaController {
     }
 
     @PostMapping
-    public ResponseEntity<EscopoProposta> save(@RequestParam(value = "anexos", required = false) List<MultipartFile> files, @RequestParam("escopo-proposta") String escopoPropostaJSON) {
+    public ResponseEntity<EscopoProposta> save(@RequestParam("escopo-proposta") String escopoPropostaJSON) {
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
+        escopoProposta.setUltimaModificacao(new Date());
 
-        if(files != null) {
-            escopoProposta.setAnexos(files);
-        }
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
         }
@@ -71,17 +72,21 @@ public class EscopoPropostaController {
             tabelaCustoService.save(tabelaCusto);
         }
 
+        List<Anexo> listaAnexos = new ArrayList<>();
+        for (Anexo anexo : escopoProposta.getAnexo()) {
+            listaAnexos.add(anexoService.save(anexo));
+        }
+        escopoProposta.setAnexo(listaAnexos);
+
         return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
     }
 
     @PutMapping
-    public ResponseEntity<EscopoProposta> update(@RequestParam(value = "anexos", required = false) List<MultipartFile> files, @RequestParam("escopo-proposta") String escopoPropostaJSON) {
+    public ResponseEntity<EscopoProposta> update(@RequestParam("escopo-proposta") String escopoPropostaJSON) {
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
+        escopoProposta.setUltimaModificacao(new Date());
 
-        if(files != null) {
-            escopoProposta.setAnexos(files);
-        }
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
         }

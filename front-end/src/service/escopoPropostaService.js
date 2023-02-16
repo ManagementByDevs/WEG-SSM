@@ -11,11 +11,17 @@ class EscopoPropostaService {
     }
 
     async post(escopoProposta) {
-        return (await axios.post(`/escopo-proposta`, escopoProposta, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        let form = new FormData();
+        form.append("escopo-proposta", JSON.stringify(escopoProposta));
+
+        return (await axios.post(`/escopo-proposta`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
     }
 
     async salvarDados(escopoProposta) {
-        return (await axios.put(`/escopo-proposta`, escopoProposta, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        let form = new FormData();
+        form.append("escopo-proposta", JSON.stringify(escopoProposta));
+
+        return (await axios.put(`/escopo-proposta`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
     }
 
     async excluirEscopo(idEscopoProposta) {
