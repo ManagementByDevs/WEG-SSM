@@ -81,7 +81,7 @@ public class PDFGeneratorService {
 
         // Adicionando a logo da weg na página ( arrumar o diretório da imagem )
 
-        Image img = Image.getInstance("C:\\Users\\felipe_mielke-vieira\\Documents\\GitHub\\WEG-SSM\\back-end-maven\\src\\main\\java\\net\\weg\\wegssm\\images\\logo-pequeno.png");
+        Image img = Image.getInstance("https://logospng.org/download/weg/logo-weg-2048.png");
 
         int indentation = 0;
         float scale = ((document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin() - indentation) / img.getWidth()) * 20;
@@ -158,6 +158,70 @@ public class PDFGeneratorService {
 
         document.add(paragraph7);
         document.add(paragraph8);
+
+        if(demanda.getTamanho() != null){
+            Chunk chunkTamanho = new Chunk("Tamanho: ", fontParagraph2);
+            Chunk chunkValorTamanho = new Chunk(demanda.getTamanho(), fontParagraph3);
+            Paragraph paragraph12 = new Paragraph();
+            paragraph12.add(chunkTamanho);
+            paragraph12.add(chunkValorTamanho);
+
+            Chunk chunkSecao = new Chunk("Seção de TI: ", fontParagraph2);
+            Chunk chunkValorSecao = new Chunk(demanda.getSecaoTI(), fontParagraph3);
+            Paragraph paragraph13 = new Paragraph();
+            paragraph13.add(chunkSecao);
+            paragraph13.add(chunkValorSecao);
+
+            Chunk chunkBuSolicitante = new Chunk("BU Solicitante: ", fontParagraph2);
+            Chunk chunkValorBuSolicitante = new Chunk(demanda.getBuSolicitante().getNome(), fontParagraph3);
+            Paragraph paragraph14 = new Paragraph();
+            paragraph14.add(chunkBuSolicitante);
+            paragraph14.add(chunkValorBuSolicitante);
+
+            Chunk chunkBuBeneficiadas = new Chunk("BUs Beneficiadas: ", fontParagraph2);
+            Paragraph paragraph15 = new Paragraph();
+            paragraph15.add(chunkBuBeneficiadas);
+
+
+            for(Bu bu: demanda.getBusBeneficiadas()){
+                Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNome() + " ", fontParagraph3);
+                paragraph15.add(chunkValorBuBeneficiadas);
+            }
+
+            PdfPTable table2 = new PdfPTable(2);
+            table2.setWidthPercentage(100);
+            table2.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+
+            PdfPCell cell1 = new PdfPCell(paragraph12);
+            cell1.setBorder(Rectangle.NO_BORDER);
+
+            PdfPCell cell2 = new PdfPCell(paragraph13);
+            cell2.setBorder(Rectangle.NO_BORDER);
+            cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+            table2.addCell(cell1);
+            table2.addCell(cell2);
+            table2.setSpacingBefore(15);
+
+            PdfPTable table3 = new PdfPTable(2);
+            table3.setWidthPercentage(100);
+            table3.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+
+            PdfPCell cell3 = new PdfPCell(paragraph14);
+            cell3.setBorder(Rectangle.NO_BORDER);
+
+            PdfPCell cell4 = new PdfPCell(paragraph15);
+            cell4.setBorder(Rectangle.NO_BORDER);
+            cell4.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+            table3.addCell(cell3);
+            table3.addCell(cell4);
+            table3.setSpacingBefore(15);
+
+            document.add(table2);
+            document.add(table3);
+        }
+
         document.add(paragraph9);
 
         // Adicionando o nome dos arquivos

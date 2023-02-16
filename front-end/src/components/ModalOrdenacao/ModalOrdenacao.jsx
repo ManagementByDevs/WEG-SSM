@@ -125,13 +125,13 @@ const ModalOrdenacao = (props) => {
                     checked={props.ordenacaoDate[1]}
                     onChange={mudarCheck6}
                     control={<Checkbox />}
-                    label="Mais Nova"
+                    label="Mais recente"
                   />
                   <FormControlLabel
                     checked={props.ordenacaoDate[0]}
                     onChange={mudarCheck5}
                     control={<Checkbox />}
-                    label="Mais Velha"
+                    label="Mais antiga"
                   />
                 </div>
               </FormGroup>

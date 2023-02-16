@@ -16,8 +16,8 @@ import FontContext from "../../service/FontContext";
 const FormularioAnexosDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
-  // Variáveis para armazenar os arquivos 
+
+  // Variáveis para armazenar os arquivos
   const dragArea = useRef(null);
   const inputFile = useRef(null);
 
@@ -25,7 +25,9 @@ const FormularioAnexosDemanda = (props) => {
   const [mapAbleFileList, setMapAbleFileList] = useState([]);
 
   // UseState para alterar o texto do drag and drop
-  const [dragText, setDragText] = useState("Arraste & Solte para Adicionar um Arquivo");
+  const [dragText, setDragText] = useState(
+    "Arraste & Solte para Adicionar um Arquivo"
+  );
 
   // Função para abrir o input file
   const fileClick = () => {
@@ -34,9 +36,7 @@ const FormularioAnexosDemanda = (props) => {
 
   // Função para adicionar os arquivos no array
   const onFilesSelect = () => {
-    for (let file of inputFile.current.files) {
-      props.setDados([...props.dados, file]);
-    }
+    props.setDados([...props.dados, ...inputFile.current.files]);
   };
 
   // UseEffect para atualizar o array de arquivos
@@ -63,9 +63,7 @@ const FormularioAnexosDemanda = (props) => {
     event.stopPropagation();
     let files = event.dataTransfer.files;
     let fileArrayAux = Array.from(files);
-    for (let file of fileArrayAux) {
-      props.setDados([...props.dados, file]);
-    }
+    props.setDados([...props.dados, ...fileArrayAux]);
   };
 
   // Função para remover um arquivo do array

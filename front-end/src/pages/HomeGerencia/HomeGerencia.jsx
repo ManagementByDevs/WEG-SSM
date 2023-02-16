@@ -32,6 +32,8 @@ import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
 import PropostaService from "../../service/propostaService";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
+
 import ColorModeContext from "../../service/TemaContext";
 import Tour from "reactour";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
@@ -218,6 +220,9 @@ const HomeGerencia = () => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Context que contém os textos do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
 
@@ -369,7 +374,8 @@ const HomeGerencia = () => {
   // feedbacks para o gerenciamento das demandas por parte do analista
 
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
+    useState(false);
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
   const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
 
@@ -1129,7 +1135,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => { }}
+                  onClick={() => {}}
                   variant="contained"
                   disableElevation
                 >
@@ -1196,7 +1202,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1213,7 +1219,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{
