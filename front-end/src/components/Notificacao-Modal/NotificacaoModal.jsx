@@ -39,38 +39,7 @@ const NotificacaoModal = (props) => {
   // Contador para ver se tem notificação não lida
   const [contNaoLidas, setContNaoLidas] = useState(0);
 
-  const [notificacoes, setNotificacoes] = useState([
-    {
-      tipo: "Aviso",
-      notificacao: "Essa é o titulo da notificação",
-      data: "01/25/2023",
-      lida: false,
-    },
-    {
-      tipo: "Aviso",
-      notificacao: "notificação Essa titulo é o  da ",
-      data: "01/16/2023",
-      lida: false,
-    },
-    {
-      tipo: "Aviso",
-      notificacao: "titulo Essa é o notificação da ",
-      data: "01/25/2023",
-      lida: false,
-    },
-    {
-      tipo: "Aviso",
-      notificacao: "titulo Essa é o notificação da ",
-      data: "01/25/2023",
-      lida: false,
-    },
-    {
-      tipo: "Aviso",
-      notificacao: "titulo Essa é o notificação da ",
-      data: "01/25/2023",
-      lida: false,
-    },
-  ]);
+  const [notificacoes, setNotificacoes] = useState([]);
 
   // Função para buscar as notificações não lidas do usuário
   const buscarNotificacoes = () => {

@@ -68,7 +68,7 @@ const ModalRecusarDemanda = (props) => {
                             alterarTexto(e, "problema");
                         }}
                         className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-                        placeholder="Motivo da recusa..."
+                        placeholder="Informe o motivo..."
                     />
                     <Box className="flex justify-end" sx={{ width: "90%" }}>
                         <Button
