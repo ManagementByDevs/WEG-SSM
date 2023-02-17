@@ -16,17 +16,21 @@ class PropostaService {
     }
 
     async getPage(params, page) {
+        
+        if (params.departamento != null) {
+            params.departamento = JSON.stringify(params.departamento);
+        }
+        if (params.forum != null) {
+            params.forum = JSON.stringify(params.forum);
+        }
         if (params.gerente != null) {
-            params.gerenteJson = JSON.stringify(params.gerente);
-            delete params.gerente;
+            params.gerente = JSON.stringify(params.gerente);
         }
         if (params.solicitante != null) {
-            params.solicitanteJson = JSON.stringify(params.solicitante);
-            delete params.solicitante;
+            params.solicitante = JSON.stringify(params.solicitante);
         }
         if (params.analista != null) {
-            params.analistaJson = JSON.stringify(params.analista);
-            delete params.analista;
+            params.analista = JSON.stringify(params.analista);
         }
 
         return (await axios.get(proposta + `/page?${page}`, { params: params, headers: { "Content-Type": "multipart/form-data" } })).data;
