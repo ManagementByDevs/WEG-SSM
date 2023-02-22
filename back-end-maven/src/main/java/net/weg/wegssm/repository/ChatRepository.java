@@ -11,10 +11,10 @@ import java.util.Optional;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-    List<Chat> findByUsuario(Usuario usuario);
+//    List<Chat> findByUsuario(Usuario usuario);
 
-    Boolean existsByUsuario(Usuario usuario);
+//    Boolean existsByUsuario(Usuario usuario);
 
-    List<Chat> findBySolicitante(Usuario user);
+//    List<Chat> findBySolicitante(Usuario user);
 
 }

@@ -3,6 +3,8 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
+import net.weg.wegssm.util.DepartamentoUtil;
+import net.weg.wegssm.util.ForumUtil;
 import net.weg.wegssm.util.PropostaUtil;
 import net.weg.wegssm.util.UsuarioUtil;
 import org.springframework.data.domain.Page;
@@ -75,18 +77,20 @@ public class PropostaController {
             @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(required = false) Long codigoPPM,
             @RequestParam(required = false) String titulo,
-            @RequestParam(required = false) String solicitanteJson,
-            @RequestParam(required = false) String gerenteJson,
-            @RequestParam(required = false) Forum forum,
-            @RequestParam(required = false) Departamento departamento,
+            @RequestParam(value = "solicitante", required = false) String solicitanteJson,
+            @RequestParam(value = "gerente", required = false) String gerenteJson,
+            @RequestParam(value = "forum", required = false) String forumJson,
+            @RequestParam(value = "departamento", required = false) String departamentoJson,
             @RequestParam(required = false) String tamanho,
-            @RequestParam(required = false) String analistaJson,
+            @RequestParam(value = "analista", required = false) String analistaJson,
             @RequestParam(required = false) Long id,
             @RequestParam Status status
     ) {
         Usuario solicitante = new UsuarioUtil().convertJsonToModel(solicitanteJson);
         Usuario gerente = new UsuarioUtil().convertJsonToModel(gerenteJson);
         Usuario analista = new UsuarioUtil().convertJsonToModel(analistaJson);
+        Forum forum = new ForumUtil().convertJsonToModel(forumJson);
+        Departamento departamento = new DepartamentoUtil().convertJsonToModel(departamentoJson);
 
         if (analista != null) {
             if(codigoPPM != null) {

@@ -3,6 +3,7 @@ package net.weg.wegssm.model.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "chat")
@@ -24,12 +25,15 @@ public class Chat {
 
     // Foreign keys
 
-    @ManyToOne
-    @JoinColumn(name = "id_solicitante")
-    private Usuario solicitante;
+    @OneToOne
+    @JoinColumn(name = "id_demanda", nullable = false)
+    private Demanda idDemanda;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_chat",
+            joinColumns = @JoinColumn(name = "chat_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private List<Usuario> usuariosChat;
 
 }
