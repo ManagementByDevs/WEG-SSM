@@ -66,8 +66,8 @@ public class PropostaController {
      * @param titulo       - Título da proposta (usado na barra de pesquisa)
      * @param solicitanteJson  - Solicitante da proposta (usado no modal de filtro)
      * @param gerenteJson      - Gerente da proposta (usado no modal de filtro)
-     * @param forum        - Fórum da proposta (usado no modal de filtro)
-     * @param departamento - Departamento da proposta (usado no modal de filtro)
+     * @param forumJson        - Fórum da proposta (usado no modal de filtro)
+     * @param departamentoJson - Departamento da proposta (usado no modal de filtro)
      * @param tamanho      - Tamanho da proposta (usado no modal de filtro)
      * @param status       - Status da proposta (usado sempre quando é feita a busca)
      * @return - Retorna uma página com as propostas encontradas

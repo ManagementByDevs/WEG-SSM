@@ -483,7 +483,7 @@ const DetalhesDemanda = (props) => {
     };
 
     DemandaService.put(demandaAtualizada, dados.anexos).then((response) => {
-      navigate("/");
+      navegarHome(1);
     });
     NotificacaoService.post(
       NotificacaoService.createNotificationObject(

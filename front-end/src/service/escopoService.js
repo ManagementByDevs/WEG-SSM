@@ -19,7 +19,12 @@ class EscopoService {
     }
 
     async salvarDados(escopo) {
-        return (await axios.put(`/escopo/dados`, escopo, { headers: { "Content-Type": "application/json" } })).data;
+        try {
+            const data = await axios.put(`/escopo/dados`, escopo, { headers: { "Content-Type": "application/json" } });
+            return data.data;
+        } catch (error) {
+            throw error;
+        }
     }
 
     async salvarAnexosEscopo(idEscopo, anexos) {
