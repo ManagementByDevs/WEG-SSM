@@ -412,31 +412,19 @@ const Chat = () => {
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                   </Box>
                 </Box>
-                <Box>
-                  <ul>
-                    <li onClick={() => { setTab("CHATROOM") }}>Chatroom</li>
-                    {[...privateChats.keys()].map((id, index) => (
-                      <li onClick={() => { setTab(id) }} key={index}>{buscarNomeLista(id)}</li>
-                    ))}
-                  </ul>
-
-                  {tab !== "CHATROOM" && <Box>
-                    <ul>
-                      {[...privateChats.get(tab)].map((chat, index) => (
-                        <li key={index}>
-                          {chat.usuario.nome !== userData.username && <div className="avatar">Usuario: {chat.usuario.nome}</div>}
-                          <div className="message-data">Mensagem: {chat.texto}</div>
-                          {chat.usuario.nome === userData.username && <div className="avatar self">Usuario: {chat.usuario.nome}</div>}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="send-message">
-                      <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
-                      <button type="button" className="send-button" onClick={sendPrivateValue}>send</button>
-                    </div>
-                  </Box>}
-                </Box>
+                {resultadosContato.map((resultado, index) => {
+                  return (
+                    <Contato
+                      key={index}
+                      onClick={() => {
+                        abrirChat(index);
+                      }}
+                      usuario={resultado}
+                      index={index}
+                      usuarioAtual={indexUsuario}
+                    />
+                  );
+                })}
               </Box>
               {indexUsuario == null ? (
                 <Box
@@ -577,6 +565,8 @@ const Chat = () => {
 
 export default Chat;
 
+// Parte do websocket
+
 {/* <>
 {
   abrirModal && (
@@ -600,3 +590,29 @@ export default Chat;
   </Box>
 </FundoComHeader>
 </> */}
+
+{/* <Box>
+  <ul>
+    <li onClick={() => { setTab("CHATROOM") }}>Chatroom</li>
+    {[...privateChats.keys()].map((id, index) => (
+      <li onClick={() => { setTab(id) }} key={index}>{buscarNomeLista(id)}</li>
+    ))}
+  </ul>
+
+  {tab !== "CHATROOM" && <Box>
+    <ul>
+      {[...privateChats.get(tab)].map((chat, index) => (
+        <li key={index}>
+          {chat.usuario.nome !== userData.username && <div className="avatar">Usuario: {chat.usuario.nome}</div>}
+          <div className="message-data">Mensagem: {chat.texto}</div>
+          {chat.usuario.nome === userData.username && <div className="avatar self">Usuario: {chat.usuario.nome}</div>}
+        </li>
+      ))}
+    </ul>
+
+    <div className="send-message">
+      <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
+      <button type="button" className="send-button" onClick={sendPrivateValue}>send</button>
+    </div>
+  </Box>}
+</Box> */}

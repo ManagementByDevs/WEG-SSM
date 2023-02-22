@@ -182,7 +182,6 @@ public class PDFGeneratorService {
             Paragraph paragraph15 = new Paragraph();
             paragraph15.add(chunkBuBeneficiadas);
 
-
             for(Bu bu: demanda.getBusBeneficiadas()){
                 Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNome() + " ", fontParagraph3);
                 paragraph15.add(chunkValorBuBeneficiadas);
