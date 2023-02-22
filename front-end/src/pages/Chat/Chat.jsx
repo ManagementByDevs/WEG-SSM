@@ -1,5 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Box, Avatar, Typography, Divider, Tooltip, IconButton } from "@mui/material";
+import {
+  Box,
+  Avatar,
+  Typography,
+  Divider,
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+  FormControlLabel,
+} from "@mui/material";
 
 import { useLocation } from "react-router-dom";
 
@@ -10,10 +20,14 @@ import Mensagem from "../../components/Mensagem/Mensagem";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import logoWeg from "../../assets/logo-weg.png";
+import CommentsDisabledOutlinedIcon from '@mui/icons-material/CommentsDisabledOutlined';
 import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
+
 import UsuarioService from "../../service/usuarioService";
 
 import FontContext from "../../service/FontContext";
@@ -24,11 +38,10 @@ import SockJS from "sockjs-client";
 var stompClient = null;
 
 const Chat = () => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Location utilizado para conectar o usuário no webSocket 
+  // Location utilizado para conectar o usuário no webSocket
   const location = useLocation();
 
   // UseState para pesquisar um contato da lista
@@ -170,13 +183,13 @@ const Chat = () => {
 
   function abrirChat(index) {
     setIndexUsuario(index);
-    setTab(usuarios[index].nome)
+    setTab(usuarios[index].nome);
   }
 
   const [texto, setTexto] = useState();
 
   const save = (e) => {
-    setUserData({ ...userData, "message": e.target.value });
+    setUserData({ ...userData, message: e.target.value });
   };
 
   const salvarTexto = () => {
@@ -213,7 +226,7 @@ const Chat = () => {
 
   const [listaNomes, setListaNomes] = useState([]);
 
-  // Pegar o usuario 
+  // Pegar o usuario
   const [usuarioId, setUsuarioId] = useState();
 
   let nomeUsuario;
@@ -222,9 +235,9 @@ const Chat = () => {
 
   const [userData, setUserData] = useState({
     username: nomeUsuario?.nome,
-    receivername: '',
+    receivername: "",
     connected: false,
-    message: ''
+    message: "",
   });
 
   const buscarUsuario = () => {
@@ -236,9 +249,7 @@ const Chat = () => {
   };
 
   const buscarSolicitante = () => {
-    UsuarioService.getUsuarioById(
-      parseInt(tab)
-    ).then((e) => {
+    UsuarioService.getUsuarioById(parseInt(tab)).then((e) => {
       setSolicitanteTab(e);
     });
   };
@@ -249,15 +260,15 @@ const Chat = () => {
         return usuario.nome;
       }
     }
-  }
+  };
 
   useEffect(() => {
     buscarUsuario();
-  }, [])
+  }, []);
 
   useEffect(() => {
     connect();
-  }, [usuarioId])
+  }, [usuarioId]);
 
   useEffect(() => {
     console.log(userData);
@@ -265,18 +276,21 @@ const Chat = () => {
 
   useEffect(() => {
     buscarSolicitante();
-  }, [tab])
+  }, [tab]);
 
   const connect = () => {
-    let Sock = new SockJS('http://localhost:8080/ws');
+    let Sock = new SockJS("http://localhost:8080/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   };
 
   const onConnected = () => {
-    setUserData({ ...userData, "connected": true });
-    stompClient.subscribe('/chat/public', onMessageReceived);
-    stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessage);
+    setUserData({ ...userData, connected: true });
+    stompClient.subscribe("/chat/public", onMessageReceived);
+    stompClient.subscribe(
+      "/user/" + userData.username + "/private",
+      onPrivateMessage
+    );
     userJoin();
   };
 
@@ -285,7 +299,7 @@ const Chat = () => {
 
     var chatMessage = {
       usuario: usuario,
-      status: "JOIN"
+      status: "JOIN",
     };
 
     stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
@@ -301,7 +315,10 @@ const Chat = () => {
         if (!privateChats.get(payloadData.usuario.nome)) {
           console.log("seila: ", payloadData.usuario.nome);
           privateChats.set(payloadData.usuario.id, []);
-          listaNomes.push({ nome: payloadData.usuario.nome, id: payloadData.usuario.id });
+          listaNomes.push({
+            nome: payloadData.usuario.nome,
+            id: payloadData.usuario.id,
+          });
           setPrivateChats(new Map(privateChats));
         }
         break;
@@ -314,7 +331,6 @@ const Chat = () => {
   };
 
   const onPrivateMessage = (payload) => {
-
     var payloadData = JSON.parse(payload.body);
 
     console.log("Aqui vem o payload 2: ", payloadData);
@@ -323,14 +339,17 @@ const Chat = () => {
     if (privateChats.get(payloadData.usuario.nome)) {
       privateChats.get(payloadData.usuario.id).push(payloadData);
       setPrivateChats(new Map(privateChats));
-      console.log("Private chats 1: ", privateChats)
+      console.log("Private chats 1: ", privateChats);
     } else {
       let list = [];
       list.push(payloadData);
       privateChats.set(payloadData.usuario.id, list);
-      listaNomes.push({ nome: payloadData.usuario.nome, id: payloadData.usuario.id });
+      listaNomes.push({
+        nome: payloadData.usuario.nome,
+        id: payloadData.usuario.id,
+      });
       setPrivateChats(new Map(privateChats));
-      console.log("Private chats 2: ", privateChats)
+      console.log("Private chats 2: ", privateChats);
     }
   };
 
@@ -340,7 +359,7 @@ const Chat = () => {
 
   const handleMessage = (event) => {
     const { value } = event.target;
-    setUserData({ ...userData, "message": value });
+    setUserData({ ...userData, message: value });
   };
 
   const sendPrivateValue = () => {
@@ -356,8 +375,8 @@ const Chat = () => {
         texto: userData.message,
         status: "MESSAGE",
         usuario: usuario,
-        solicitante: solicitanteTab
-      }
+        solicitante: solicitanteTab,
+      };
 
       if (userData.username != solicitanteTab.nome) {
         privateChats.get(tab).push(chatMessage);
@@ -365,17 +384,38 @@ const Chat = () => {
       }
 
       stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
-      setUserData({ ...userData, "message": "" });
+      setUserData({ ...userData, message: "" });
     }
+  };
+
+  // UseState para poder visualizar e alterar a visibilidade do menu
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  // Variável que é usada para saber se o menu está aberto ou não
+  const open = Boolean(anchorEl);
+
+  // Função para abrir o menu
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  // Função para fechar o menu
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
     <>
-      {
-        abrirModal && (
-          <ModalConfirmacao open={abrirModal} setOpen={setOpenModal} textoModal={"fecharChat"} onConfirmClick={deletarChat} onCancelClick={fecharModalCancelarChat} textoBotao={"sim"} />
-        )
-      }
+      {abrirModal && (
+        <ModalConfirmacao
+          open={abrirModal}
+          setOpen={setOpenModal}
+          textoModal={"fecharChat"}
+          onConfirmClick={deletarChat}
+          onCancelClick={fecharModalCancelarChat}
+          textoBotao={"sim"}
+        />
+      )}
       <FundoComHeader>
         <Box className="p-2">
           <Caminho />
@@ -472,17 +512,76 @@ const Chat = () => {
                       </Box>
                     </Box>
                     <Box className="mr-5">
-                      <Tooltip title="Encerrar chat">
-                        <IconButton onClick={abrirModalCancelarChat}>
-                          <CommentsDisabledIcon
-                            sx={{
-                              fontSize: "30px",
-                              color: "#FFFF",
-                              cursor: "pointer",
-                            }}
-                          />
+                      {/* Botão para abrir o menu */}
+                      <Tooltip title="Opções">
+                        <IconButton
+                          onClick={handleClick}
+                          size="small"
+                          aria-controls={open ? "account-menu" : undefined}
+                          aria-haspopup="true"
+                          aria-expanded={open ? "true" : undefined}
+                        >
+                          <MoreVertOutlinedIcon />
                         </IconButton>
                       </Tooltip>
+
+                      {/* Menu (modal) */}
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        <Box className="w-52">
+                          {/* Itens do menu */}
+                          <MenuItem
+                            className="gap-2"
+                            onClick={() => {
+                              handleClose();
+                            }}
+                          >
+                            <OpenInNewOutlinedIcon />
+                            <Typography
+                              color={"text.primary"}
+                              fontSize={FontConfig.medium}
+                              sx={{ fontWeight: 500 }}
+                            >
+                              Abrir Pop-Up
+                            </Typography>
+                          </MenuItem>
+
+                          {/* Divisão de um item clicável e outro no modal */}
+                          <div className="w-full flex justify-center">
+                            <hr className="w-10/12 my-1.5" />
+                          </div>
+
+                          <MenuItem
+                            className="gap-2"
+                            onClick={() => {
+                              handleClose();
+                              abrirModalCancelarChat();
+                            }}
+                          >
+                            <CommentsDisabledOutlinedIcon
+                              sx={{
+                                fontSize: "25px",
+                                color: "#FFFF",
+                                cursor: "pointer",
+                              }}
+                            />
+                            <Typography
+                              color={"text.primary"}
+                              fontSize={FontConfig.medium}
+                              sx={{ fontWeight: 500 }}
+                            >
+                              Encerrar Chat
+                            </Typography>
+                          </MenuItem>
+                        </Box>
+                      </Menu>
                     </Box>
                   </Box>
                   <Box
@@ -567,7 +666,8 @@ export default Chat;
 
 // Parte do websocket
 
-{/* <>
+{
+  /* <>
 {
   abrirModal && (
     <ModalConfirmacao open={abrirModal} setOpen={setOpenModal} textoModal={"fecharChat"} onConfirmClick={deletarChat} onCancelClick={fecharModalCancelarChat} textoBotao={"sim"} />
@@ -589,9 +689,11 @@ export default Chat;
     ))}
   </Box>
 </FundoComHeader>
-</> */}
+</> */
+}
 
-{/* <Box>
+{
+  /* <Box>
   <ul>
     <li onClick={() => { setTab("CHATROOM") }}>Chatroom</li>
     {[...privateChats.keys()].map((id, index) => (
@@ -615,4 +717,5 @@ export default Chat;
       <button type="button" className="send-button" onClick={sendPrivateValue}>send</button>
     </div>
   </Box>}
-</Box> */}
+</Box> */
+}
