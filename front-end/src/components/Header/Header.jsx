@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Paper, Tooltip } from "@mui/material/";
 import { Link, useLocation } from "react-router-dom";
 
@@ -6,12 +6,17 @@ import IdiomaModal from "../Idioma-Modal/IdiomaModal";
 import UserModal from "../User-Modal/UserModal";
 import NotificacaoModal from "../Notificacao-Modal/NotificacaoModal";
 
+import ChatContext from "../../service/ChatContext";
+
 import LogoBranca from "../../assets/LogoBranca.png";
 import Grid from "../../assets/GridSemFundo.png";
+import ChatMinimizado from "../ChatMinimizado/ChatMinimizado";
 
 /** Header padrão usado no topo de todas as páginas do sistema */
 const Header = () => {
   
+  const { visibilidade,usuarioId } = useContext(ChatContext);
+
   // Variável para pegar informações da URL
   const location = useLocation();
 
@@ -25,6 +30,11 @@ const Header = () => {
       className={`flex justify-between items-center h-header-weg min-h-header-weg`}
       square
     >
+      {/* Aparecer o chat em qualquer lugar */}
+      {visibilidade && (
+        <ChatMinimizado usuarioId={usuarioId} />
+      )}
+      
       {/* Link para página inicial */}
       <Link to={"/"}>
         {/* Title */}

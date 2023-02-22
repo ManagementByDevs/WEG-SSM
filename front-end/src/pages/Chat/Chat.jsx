@@ -20,8 +20,7 @@ import Mensagem from "../../components/Mensagem/Mensagem";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import logoWeg from "../../assets/logo-weg.png";
-import CommentsDisabledOutlinedIcon from '@mui/icons-material/CommentsDisabledOutlined';
-import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
+import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
@@ -31,6 +30,7 @@ import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import UsuarioService from "../../service/usuarioService";
 
 import FontContext from "../../service/FontContext";
+import ChatContext from "../../service/ChatContext";
 
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
@@ -38,6 +38,8 @@ import SockJS from "sockjs-client";
 var stompClient = null;
 
 const Chat = () => {
+  const { setVisibilidade, visibilidade } = useContext(ChatContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -404,6 +406,8 @@ const Chat = () => {
     setAnchorEl(null);
   };
 
+  const [chatMinizado, setChatMinizado] = useState(false);
+
   return (
     <>
       {abrirModal && (
@@ -466,19 +470,29 @@ const Chat = () => {
                   );
                 })}
               </Box>
-              {indexUsuario == null ? (
+              {indexUsuario == null || visibilidade ? (
                 <Box
                   className="flex flex-col items-center justify-center rounded border"
                   sx={{ width: "75%", height: "95%", cursor: "default" }}
                 >
                   <img src={logoWeg} alt="chat" />
-                  <Typography
-                    fontSize={FontConfig.title}
-                    color={"text.secondary"}
-                    sx={{ fontWeight: "600" }}
-                  >
-                    Selecione alguma conversa
-                  </Typography>
+                  {indexUsuario == null ? (
+                    <Typography
+                      fontSize={FontConfig.title}
+                      color={"text.secondary"}
+                      sx={{ fontWeight: "600" }}
+                    >
+                      Selecione alguma conversa
+                    </Typography>
+                  ) : (
+                    <Typography
+                      fontSize={FontConfig.title}
+                      color={"text.secondary"}
+                      sx={{ fontWeight: "600" }}
+                    >
+                      Mini chat aberto
+                    </Typography>
+                  )}
                 </Box>
               ) : (
                 <Box
@@ -541,6 +555,7 @@ const Chat = () => {
                             className="gap-2"
                             onClick={() => {
                               handleClose();
+                              setVisibilidade(true);
                             }}
                           >
                             <OpenInNewOutlinedIcon />
