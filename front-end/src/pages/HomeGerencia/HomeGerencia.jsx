@@ -272,7 +272,7 @@ const HomeGerencia = () => {
     tipoUsuario: "",
     visibilidade: 1,
     departamento: null,
-    preferencias: null
+    preferencias: null,
   });
 
   // Parâmetros para pesquisa das demandas (filtros)
@@ -408,7 +408,7 @@ const HomeGerencia = () => {
             ...params,
             gerente: null,
             status: "BACKLOG_REVISAO",
-            analista: null
+            analista: null,
           });
         }
         setModoFiltro("demanda");
@@ -418,7 +418,7 @@ const HomeGerencia = () => {
           ...params,
           gerente: null,
           status: "ASSESSMENT",
-          analista: usuario
+          analista: usuario,
         });
         setModoFiltro("demanda");
         break;
@@ -427,8 +427,8 @@ const HomeGerencia = () => {
           ...params,
           gerente: null,
           analista: usuario,
-          status: "ASSESSMENT_APROVACAO"
-        })
+          status: "ASSESSMENT_APROVACAO",
+        });
         setModoFiltro("proposta");
         break;
       case "4":
@@ -507,7 +507,16 @@ const HomeGerencia = () => {
     UsuarioService.getUsuarioById(
       parseInt(localStorage.getItem("usuarioId"))
     ).then((e) => {
-      setUsuario({ id: e.id, email: e.email, nome: e.nome, senha: e.senha, tipoUsuario: e.tipoUsuario, departamento: e.departamento, visibilidade: e.visibilidade, preferencias: JSON.parse(e.preferencias) });
+      setUsuario({
+        id: e.id,
+        email: e.email,
+        nome: e.nome,
+        senha: e.senha,
+        tipoUsuario: e.tipoUsuario,
+        departamento: e.departamento,
+        visibilidade: e.visibilidade,
+        preferencias: JSON.parse(e.preferencias),
+      });
     });
   };
 
@@ -645,6 +654,11 @@ const HomeGerencia = () => {
     } else {
       navigate("/detalhes-demanda", { state: demanda });
     }
+  };
+
+  // Função para ir na tela de detalhes da proposta, salvando a proposta no localStorage
+  const verProposta = (proposta) => {
+    navigate("/detalhes-proposta", { state: proposta });
   };
 
   const isGerente = !(
@@ -1138,7 +1152,7 @@ const HomeGerencia = () => {
                     >
                       <DemandaGerenciaModoVisualizacao
                         listaDemandas={listaItens}
-                        onDemandaClick={verDemanda}
+                        onDemandaClick={verProposta}
                         nextModoVisualizacao={nextModoVisualizacao}
                         isProposta={true}
                       />

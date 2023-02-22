@@ -26,21 +26,21 @@ public class ChatService {
         return chatRepository.findById(id);
     }
 
-    public List<Chat> findByUsuario(Usuario usuario) {
-        return chatRepository.findByUsuario(usuario);
-    }
-
-    public List<Chat> findBySolicitante(Usuario user) {
-        return chatRepository.findBySolicitante(user);
-    }
+//    public List<Chat> findByUsuario(Usuario usuario) {
+//        return chatRepository.findByUsuario(usuario);
+//    }
+//
+//    public List<Chat> findBySolicitante(Usuario user) {
+//        return chatRepository.findBySolicitante(user);
+//    }
 
     public Boolean existsById(Long id) {
         return chatRepository.existsById(id);
     }
 
-    public Boolean existsByUsuario(Usuario usuario) {
-        return chatRepository.existsByUsuario(usuario);
-    }
+//    public Boolean existsByUsuario(Usuario usuario) {
+//        return chatRepository.existsByUsuario(usuario);
+//    }
 
     public <S extends Chat> S save(S entity) {
         return chatRepository.save(entity);

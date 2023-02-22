@@ -577,6 +577,21 @@ const TextLanguage = (linguagem) => {
             deletar: "Deletar",
             naoHaNotificacoes: "Não há notificações",
         },
+
+
+
+
+
+
+
+
+
+
+
+
+        detalhesProposta: {
+            ppm: "PPM"
+        }
     } : linguagem == "en" ? {
         barraProgressaoDemanda: {
             erroPularPasso: "You cannot skip a step that is not optional!",

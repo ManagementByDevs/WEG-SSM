@@ -1,16 +1,25 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
+import net.weg.wegssm.dto.MensagemDTO;
+import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Mensagem;
+import net.weg.wegssm.model.service.ChatService;
 import net.weg.wegssm.model.service.MensagemService;
 import net.weg.wegssm.util.MensagemUtil;
+import org.apache.coyote.Response;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -18,6 +27,29 @@ import java.util.List;
 public class MensagemController {
 
     private MensagemService mensagemService;
+    private ChatService chatService;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+    @MessageMapping("/weg_ssm/mensagem")
+    public ResponseEntity<Object> receiveMessage(@RequestBody MensagemDTO mensagemDTO){
+        Mensagem mensagem = new Mensagem();
+        BeanUtils.copyProperties(mensagemDTO, mensagem);
+
+        Chat chat = chatService.findById(mensagemDTO.getChat().getId()).get();
+
+        simpMessagingTemplate.convertAndSendToUser(chat.getIdDemanda().getId().toString(), mensagem.getIdChat().getId().toString(), mensagem);
+
+        try {
+            mensagemService.save(mensagem);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("A mensagem não foi salva!");
+        }
+
+        return ResponseEntity.ok().body("Mensagem enviada!");
+    }
+
 
     /**
      * Método GET para buscar todas as mensagens
