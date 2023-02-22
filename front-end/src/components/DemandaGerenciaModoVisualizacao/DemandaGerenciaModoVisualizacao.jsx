@@ -1,6 +1,15 @@
 import React, { useContext, useState } from "react";
 
-import {Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -74,7 +83,7 @@ const DemandaTable = ({
   const getStatusColor = (status) => {
     if (status === "BACKLOG_REVISAO") {
       return "#00579D";
-    } else if (status === "ASSESSMENT") {
+    } else if (status.startsWith("ASSESSMENT")) {
       return "#8862A2";
     }
   };
@@ -83,7 +92,7 @@ const DemandaTable = ({
   const formatarNomeStatus = (status) => {
     if (status == "BACKLOG_REVISAO") {
       return "Backlog";
-    } else if (status == "ASSESSMENT") {
+    } else if (status.startsWith("ASSESSMENT")) {
       return "Assessment";
     }
   };

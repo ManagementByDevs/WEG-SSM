@@ -27,7 +27,7 @@ const DemandaGerencia = (props) => {
   function getCorStatus() {
     if (props.dados.status === "BACKLOG_REVISAO") {
       return "#00579D";
-    } else if (props.dados.status === "ASSESSMENT") {
+    } else if (props.dados.status.startsWith("ASSESSMENT")) {
       return "#8862A2";
     }
   }
@@ -44,7 +44,7 @@ const DemandaGerencia = (props) => {
   const formatarStatus = () => {
     if (props.dados.status == "BACKLOG_REVISAO") {
       return "Backlog";
-    } else if (props.dados.status == "ASSESSMENT") {
+    } else if (props.dados.status.startsWith("ASSESSMENT")) {
       return "Assessment";
     }
   };

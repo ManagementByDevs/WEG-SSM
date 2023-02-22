@@ -21,6 +21,7 @@ import DetalhesPauta from "./pages/DetalhesPauta/DetalhesPauta";
 import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 import NotFound from "./pages/NotFound/NotFound";
+import DetalhesPropostaPagina from "./pages/DetalhesPropostaPagina/DetalhesPropostaPagina";
 
 import ToggleColorMode from "./service/TemaProvedor";
 import TextLanguage from "./service/TextLanguage";
@@ -41,7 +42,7 @@ const App = () => {
   });
 
   const [Texts, setTexts] = useState(TextLanguage("pt"));
-  
+
   const fontSize = useMemo(
     () => ({
       FontConfig,
@@ -97,6 +98,17 @@ const App = () => {
                     redirectPath="/"
                   >
                     <CriarProposta />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/detalhes-proposta"
+                element={
+                  <ProtectedRoute
+                    tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                    redirectPath="/"
+                  >
+                    <DetalhesPropostaPagina />
                   </ProtectedRoute>
                 }
               />

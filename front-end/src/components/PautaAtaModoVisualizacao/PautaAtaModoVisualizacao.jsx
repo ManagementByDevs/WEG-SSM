@@ -163,7 +163,7 @@ const PautaTable = ({
                 </td>
               ) : (
                 <td
-                  className="flex justify-end text-right p-3"
+                  className="flex justify-center text-right p-3"
                   title={getDataFormatado(
                     row.inicioDataReuniao,
                     row.fimDataReuniao
