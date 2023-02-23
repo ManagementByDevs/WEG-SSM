@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Box, Button, IconButton, Tooltip, Divider, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import Mensagem from "../../components/Mensagem/Mensagem";
 
@@ -10,11 +11,20 @@ import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
+import ChatContext from "../../service/ChatContext";
+
 import { keyframes } from "@emotion/react";
 
 import FontContext from "../../service/FontContext";
 
 const ChatMinimizado = (props) => {
+
+  // Navigate utilizado para nevegar para uma outra página
+  const navigate = useNavigate();
+
+  // Contexto para controlar a visibilidade do chat
+  const { visibilidade, setVisibilidade, usuarioId } = useContext(ChatContext);
+
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -128,6 +138,10 @@ const ChatMinimizado = (props) => {
             <OpenInNewOutlinedIcon
               className="mr-2 cursor-pointer delay-120 hover:scale-110 duration-300"
               sx={{ fontSize: "20px", color: "#FFF" }}
+              onClick={() => {
+                setVisibilidade(false);
+                navigate("/chat");
+              }}
             />
           </Tooltip>
           {/* Icone para fechar o chat */}
@@ -136,7 +150,7 @@ const ChatMinimizado = (props) => {
               className="cursor-pointer delay-120 hover:scale-110 duration-300"
               sx={{ fontSize: "25px", color: "#FFF" }}
               onClick={() => {
-                props.setFecharChatMinimizado(true);
+                setVisibilidade(false);
               }}
             />
           </Tooltip>

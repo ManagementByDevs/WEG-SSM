@@ -61,8 +61,25 @@ const DetalhesDemandaPagina = () => {
   // Variável utilizada para o tour
   const [isTourOpen, setIsTourOpen] = useState(false);
 
+  useEffect(() => {
+    if (dados.status === "BACKLOG_EDICAO") {
+      setSteps([
+        ...steps,
+        {
+          selector: "#terceiro",
+          content:
+            "Clicando neste lápis, você consegue estar editando as informações.",
+          style: {
+            backgroundColor: "#DCDCDC",
+            color: "#000000",
+          },
+        },
+      ]);
+    }
+  }, []);
+
   // Lista de mensagens utilizadas no tour
-  const steps = [
+  const [steps, setSteps] = useState([
     {
       selector: "#primeiro",
       content:
@@ -80,27 +97,18 @@ const DetalhesDemandaPagina = () => {
         color: "#000000",
       },
     },
-    {
-      selector: "#terceiro",
-      content:
-        "Clicando neste lápis, você consegue estar editando as informações.",
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
+  ]);
 
   const baixarDemanda = () => {
     ExportPdfService.exportDemanda(dados.id).then((response) => {
-      let blob = new Blob([response], { type: 'application/pdf' });
+      let blob = new Blob([response], { type: "application/pdf" });
       let url = URL.createObjectURL(blob);
-      let link = document.createElement('a');
+      let link = document.createElement("a");
       link.href = url;
-      link.download = 'pdf_demanda.pdf';
+      link.download = "pdf_demanda.pdf";
       link.click();
-    })
-  }
+    });
+  };
 
   return (
     <FundoComHeader>
@@ -121,9 +129,7 @@ const DetalhesDemandaPagina = () => {
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
           >
-            <IconButton
-              onClick={baixarDemanda}
-            >
+            <IconButton onClick={baixarDemanda}>
               <SaveAltOutlinedIcon
                 id="segundo"
                 fontSize="large"

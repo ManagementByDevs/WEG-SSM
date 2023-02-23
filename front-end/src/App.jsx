@@ -28,6 +28,7 @@ import TextLanguage from "./service/TextLanguage";
 
 import FontContext from "./service/FontContext";
 import TextLanguageContext from "./service/TextLanguageContext";
+import ChatContext from "./service/ChatContext";
 
 const App = () => {
   const [FontConfig, setFontConfig] = useState({
@@ -59,6 +60,17 @@ const App = () => {
     [Texts]
   );
 
+  const [chatMinimizado, setChatMinimizado] = useState(false);
+
+  const miniChat = useMemo(
+    () => ({
+      usuarioId: 0,
+      visibilidade: chatMinimizado,
+      setVisibilidade: setChatMinimizado,
+    }),
+    [chatMinimizado]
+  );
+
   /*
   Tipos possíveis de usuários:
   [SOLICITANTE, ANALISTA, GERENTE, GETOR]
@@ -67,75 +79,77 @@ const App = () => {
     <ToggleColorMode>
       <FontContext.Provider value={fontSize}>
         <TextLanguageContext.Provider value={textLanguage}>
-          <Router>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/criar-demanda" element={<CriarDemanda />} />
-                <Route path="/notificacao" element={<Notificacao />} />
-                <Route path="/chat" element={<Chat />} />
+          <ChatContext.Provider value={miniChat}>
+            <Router>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/criar-demanda" element={<CriarDemanda />} />
+                  <Route path="/notificacao" element={<Notificacao />} />
+                  <Route path="/chat" element={<Chat />} />
+                  <Route
+                    path="/detalhes-demanda"
+                    element={<DetalhesDemandaPagina />}
+                  />
+                  <Route path="/editar-escopo" element={<EditarEscopo />} />
+                  <Route path="escopos" element={<Escopos />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
                 <Route
-                  path="/detalhes-demanda"
-                  element={<DetalhesDemandaPagina />}
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <DetermineHomeUser />
+                    </ProtectedRoute>
+                  }
                 />
-                <Route path="/editar-escopo" element={<EditarEscopo />} />
-                <Route path="escopos" element={<Escopos />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <DetermineHomeUser />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/criar-proposta"
-                element={
-                  <ProtectedRoute
-                    tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                    redirectPath="/"
-                  >
-                    <CriarProposta />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/detalhes-proposta"
-                element={
-                  <ProtectedRoute
-                    tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                    redirectPath="/"
-                  >
-                    <DetalhesPropostaPagina />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="detalhes-ata"
-                element={
-                  <ProtectedRoute
-                    tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                    redirectPath="/"
-                  >
-                    <DetalhesAta />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="detalhes-pauta"
-                element={
-                  <ProtectedRoute
-                    tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                    redirectPath="/"
-                  >
-                    <DetalhesPauta />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </Router>
+                <Route
+                  path="/criar-proposta"
+                  element={
+                    <ProtectedRoute
+                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                      redirectPath="/"
+                    >
+                      <CriarProposta />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/detalhes-proposta"
+                  element={
+                    <ProtectedRoute
+                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                      redirectPath="/"
+                    >
+                      <DetalhesPropostaPagina />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="detalhes-ata"
+                  element={
+                    <ProtectedRoute
+                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                      redirectPath="/"
+                    >
+                      <DetalhesAta />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="detalhes-pauta"
+                  element={
+                    <ProtectedRoute
+                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                      redirectPath="/"
+                    >
+                      <DetalhesPauta />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </Router>
+          </ChatContext.Provider>
         </TextLanguageContext.Provider>
       </FontContext.Provider>
     </ToggleColorMode>

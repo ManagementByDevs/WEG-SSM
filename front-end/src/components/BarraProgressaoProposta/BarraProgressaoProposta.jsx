@@ -372,8 +372,10 @@ const BarraProgressaoProposta = (props) => {
 
     propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then((response) => {
       DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then((data) => {
-        localStorage.setItem("tipoFeedback", "5");
-        navigate("/");
+        EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then((resposta) => {
+          localStorage.setItem("tipoFeedback", "5");
+          navigate("/");
+        })
       });
     });
   }

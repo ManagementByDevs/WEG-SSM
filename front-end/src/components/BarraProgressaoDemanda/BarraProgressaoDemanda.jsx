@@ -103,7 +103,9 @@ const BarraProgressaoDemanda = (props) => {
   useEffect(() => {
     if (ultimoEscopo) {
       setTimeout(() => {
-        salvarEscopo(ultimoEscopo.id);
+        if(ultimoEscopo.id) {
+          salvarEscopo(ultimoEscopo.id);
+        }
       }, 5000);
     }
   }, [ultimoEscopo]);
@@ -143,17 +145,18 @@ const BarraProgressaoDemanda = (props) => {
 
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = (id) => {
-    setUltimoEscopo({
+    const escopo = {
       id: id,
       titulo: paginaDados.titulo,
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
       beneficios: formatarBeneficios(paginaBeneficios),
-    });
+    }
 
     try {
-      EscopoService.salvarDados(ultimoEscopo).then((response) => {
+      EscopoService.salvarDados(escopo).then((response) => {
+        setUltimoEscopo(escopo);
         //Confirmação de salvamento (se sobrar tempo)
       });
     } catch (error) { }
