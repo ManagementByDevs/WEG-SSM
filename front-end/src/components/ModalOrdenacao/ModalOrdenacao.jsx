@@ -39,7 +39,7 @@ const ModalOrdenacao = (props) => {
   }
 
   return (
-    <Modal open={true} onClose={props.fecharModal}>
+    <Modal open={true} onClose={props.fecharModal} BackdropProps={{ invisible: true }}>
       <Fade in={true}>
         <Box
           className="absolute flex flex-col items-center justify-evenly"
