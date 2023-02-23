@@ -473,6 +473,7 @@ const Home = () => {
                       color: "text.primary",
                       fontSize: FontConfig.medium,
                     }}
+                    contentEditable
                     placeholder="Pesquisar por título..."
                     onKeyDown={(e) => {
                       eventoTeclado(e);

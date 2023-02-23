@@ -38,6 +38,9 @@ public class PropostaController {
     private CCsService ccsService;
     private AnexoService anexoService;
 
+    private BeneficioService beneficioService;
+    private DemandaService demandaService;
+
     /**
      * Método GET para listar todas as propostas
      */
@@ -3956,6 +3959,18 @@ public class PropostaController {
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
 
+        for (Beneficio beneficio : proposta.getBeneficios()) {
+            beneficioService.save(beneficio);
+        }
+
+        Demanda demanda = proposta.getDemanda();
+        List<Anexo> listaAnexosDemanda = new ArrayList<>();
+        for (Anexo anexo : demanda.getAnexo()) {
+            listaAnexosDemanda.add(anexoService.save(anexo));
+        }
+        demanda.setAnexosWithoutMultiparFile(listaAnexosDemanda);
+        demandaService.save(proposta.getDemanda());
+
         for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
         }
@@ -3986,6 +4001,18 @@ public class PropostaController {
 
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
+
+        for (Beneficio beneficio : proposta.getBeneficios()) {
+            beneficioService.save(beneficio);
+        }
+
+        Demanda demanda = proposta.getDemanda();
+        List<Anexo> listaAnexosDemanda = new ArrayList<>();
+        for (Anexo anexo : demanda.getAnexo()) {
+            listaAnexosDemanda.add(anexoService.save(anexo));
+        }
+        demanda.setAnexosWithoutMultiparFile(listaAnexosDemanda);
+        demandaService.save(proposta.getDemanda());
 
         for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);

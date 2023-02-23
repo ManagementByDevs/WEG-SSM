@@ -56,9 +56,7 @@ const ModalAceitarDemanda = (props) => {
 
   // Função para selecionar um arquivo
   const onFilesSelect = () => {
-    for (let file of inputFile.current.files) {
-      setAnexos([...anexos, file]);
-    }
+    setAnexos([...anexos, ...inputFile.current.files]);
   };
 
   // Função para adicionar algum arquivo

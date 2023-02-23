@@ -64,6 +64,7 @@ const DemandaTable = ({
 
   // Função para receber a cor do status da demanda
   function getStatusColor(status) {
+    console.log(status)
     if (status == "CANCELLED") {
       return "#DA0303";
     } else if (status == "BACKLOG_REVISAO") {
@@ -72,8 +73,10 @@ const DemandaTable = ({
       return "#FFD600";
     } else if (status == "BACKLOG_APROVACAO") {
       return "#00579D";
-    } else if (status == "ASSESSMENT") {
+    } else if (status == "ASSESSMENT" ) {
       return "#11B703";
+    } else if (status == "ASSESSMENT_APROVACAO") {
+      return "#F7DC6F";
     }
   }
 
@@ -89,6 +92,8 @@ const DemandaTable = ({
       return "Em Aprovação";
     } else if (status == "ASSESSMENT") {
       return "Aprovada";
+    } else if (status == "ASSESSMENT_APROVACAO") {
+      return "Em andamento";
     }
   };
 

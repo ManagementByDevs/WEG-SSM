@@ -46,6 +46,7 @@ const BarraProgressaoProposta = (props) => {
 
   // Variável para armazenar os dados da demanda
   const [dadosDemanda, setDadosDemanda] = useState({
+    id: 0,
     titulo: "",
     status: null,
     problema: "",
@@ -363,13 +364,14 @@ const BarraProgressaoProposta = (props) => {
       linkJira: gerais.linkJira,
       anexo: pegarAnexosSalvos()
     }
-
+    
     return objeto;
   }
 
   const criarProposta = () => {
     excluirBeneficios();
 
+    console.log(retornaObjetoProposta());
     propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then((response) => {
       DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then((data) => {
         EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then((resposta) => {
