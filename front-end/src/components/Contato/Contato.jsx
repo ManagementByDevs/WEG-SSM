@@ -21,6 +21,7 @@ const Contato = (props) => {
 
   return (
     <Box
+      id="segundo"
       onClick={props.onClick}
       className="flex justify-evenly items-center rounded-lg border delay-120 hover:scale-105 duration-300"
       sx={{
@@ -36,7 +37,10 @@ const Contato = (props) => {
       title={props.usuario.demanda}
     >
       <Box className="flex justify-content items-center">
-        <Avatar sx={{ width: "3rem", height: "3rem" }} src={props.usuario.foto} />
+        <Avatar
+          sx={{ width: "3rem", height: "3rem" }}
+          src={props.usuario.foto}
+        />
       </Box>
       <Box className="flex justify-content flex-col" sx={{ width: "70%" }}>
         <Box className="flex justify-between">

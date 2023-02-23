@@ -13,6 +13,8 @@ const sumir = keyframes({ from: { width: "3.2rem" }, to: { width: "1.3rem" } });
 
 const Ajuda = (props) => {
 
+  // <Ajuda onClick={() => setIsTourOpen(true)} /> PARA CHAMAR O BOTÃO DE AJUDA
+
   return (
     // Box com verificação das funções de aparecer e desaparecer do ícone
     <Box

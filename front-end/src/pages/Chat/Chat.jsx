@@ -18,6 +18,7 @@ import Caminho from "../../components/Caminho/Caminho";
 import Contato from "../../components/Contato/Contato";
 import Mensagem from "../../components/Mensagem/Mensagem";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import Ajuda from "../../components/Ajuda/Ajuda";
 
 import logoWeg from "../../assets/logo-weg.png";
 import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
@@ -34,6 +35,8 @@ import ChatContext from "../../service/ChatContext";
 
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
+
+import Tour from "reactour";
 
 var stompClient = null;
 
@@ -406,10 +409,60 @@ const Chat = () => {
     setAnchorEl(null);
   };
 
-  const [chatMinizado, setChatMinizado] = useState(false);
+  // useState para abrir e fechar o tour
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  // Passos do tour
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content:
+        "Neste input você pode pesquisar pelos chats por nome do usuário e pelo número sequêncial da demanda.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content:
+        "Aqui fica os chats abertos, tendo o nome do usuário, o número sequêncial da demanda e de qual demanda pertence.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content:
+        "Neste botão pode escolher entre minimizar o chat ou encerrar a conversa (fechando o chat).",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content:
+        "Aqui pode escrever o que deseja enviar, podendo também anexar algum arquivo.",
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
   return (
     <>
+      <Ajuda onClick={() => setIsTourOpen(true)} />
+      <Tour
+        steps={stepsTour}
+        isOpen={isTourOpen}
+        onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
       {abrirModal && (
         <ModalConfirmacao
           open={abrirModal}
@@ -433,6 +486,7 @@ const Chat = () => {
                 sx={{ width: "20%", height: "95%" }}
               >
                 <Box
+                  id="primeiro"
                   className="flex border px-3 py-1 m-4 rounded-lg"
                   sx={{
                     backgroundColor: "input.main",
@@ -456,21 +510,60 @@ const Chat = () => {
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                   </Box>
                 </Box>
-                {resultadosContato.map((resultado, index) => {
-                  return (
-                    <Contato
-                      key={index}
-                      onClick={() => {
-                        abrirChat(index);
-                      }}
-                      usuario={resultado}
-                      index={index}
-                      usuarioAtual={indexUsuario}
-                    />
-                  );
-                })}
+                {isTourOpen ? (
+                  <Contato
+                    key={0}
+                    onClick={() => {
+                      abrirChat(0);
+                    }}
+                    usuario={{
+                      foto: "",
+                      nome: "Tour",
+                      cargo: "Gerente",
+                      demanda: "Mostrar no tour",
+                      codigoDemanda: "#1",
+                      mensagens: [
+                        {
+                          texto: "Olá, tudo bem?",
+                          data: "10/10/2021",
+                          hora: "10:00",
+                          remetente: "Tour",
+                        },
+                        {
+                          texto:
+                            "Tudo sim, e você? Estou aqui para te mostrar como funciona o chat.",
+                          data: "10/10/2021",
+                          hora: "10:01",
+                          remetente: "Eu",
+                        },
+                        {
+                          texto: "Bem também, obrigado.",
+                          data: "10/10/2021",
+                          hora: "10:02",
+                          remetente: "Tour",
+                        },
+                      ],
+                    }}
+                    index={0}
+                    usuarioAtual={0}
+                  />
+                ) : (
+                  resultadosContato.map((resultado, index) => {
+                    return (
+                      <Contato
+                        key={index}
+                        onClick={() => {
+                          abrirChat(index);
+                        }}
+                        usuario={resultado}
+                        index={index}
+                        usuarioAtual={indexUsuario}
+                      />
+                    );
+                  })
+                )}
               </Box>
-              {indexUsuario == null || visibilidade ? (
+              {indexUsuario == null || (visibilidade && usuarioId) ? (
                 <Box
                   className="flex flex-col items-center justify-center rounded border"
                   sx={{ width: "75%", height: "95%", cursor: "default" }}
@@ -493,6 +586,166 @@ const Chat = () => {
                       Mini chat aberto
                     </Typography>
                   )}
+                </Box>
+              ) : isTourOpen ? (
+                <Box
+                  className="flex flex-col items-center justify-between rounded border"
+                  sx={{ width: "75%", height: "95%" }}
+                >
+                  <Box
+                    className="flex justify-between items-center w-full rounded-t"
+                    sx={{ backgroundColor: "primary.main", height: "10%" }}
+                  >
+                    <Box className="flex items-center">
+                      <Avatar
+                        className="ml-7"
+                        sx={{ width: "3.5rem", height: "3.5rem" }}
+                        src={usuarios[indexUsuario].foto}
+                      />
+                      <Box
+                        className="flex flex-col ml-3"
+                        sx={{ cursor: "default", color: "#FFFF" }}
+                      >
+                        <Typography
+                          className="ml-2"
+                          fontSize={FontConfig.veryBig}
+                          fontWeight="600"
+                        >
+                          Tour
+                        </Typography>
+                        <Typography fontSize={FontConfig.small}>
+                          {usuarios[indexUsuario].cargo}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box className="mr-5">
+                      {/* Botão para abrir o menu */}
+                      <Tooltip title="Opções">
+                        <IconButton
+                          id="terceiro"
+                          onClick={handleClick}
+                          size="small"
+                          aria-controls={open ? "account-menu" : undefined}
+                          aria-haspopup="true"
+                          aria-expanded={open ? "true" : undefined}
+                        >
+                          <MoreVertOutlinedIcon />
+                        </IconButton>
+                      </Tooltip>
+
+                      {/* Menu (modal) */}
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        <Box className="w-52">
+                          {/* Itens do menu */}
+                          <MenuItem
+                            className="gap-2"
+                            onClick={() => {
+                              handleClose();
+                              setVisibilidade(true);
+                            }}
+                          >
+                            <OpenInNewOutlinedIcon />
+                            <Typography
+                              color={"text.primary"}
+                              fontSize={FontConfig.medium}
+                              sx={{ fontWeight: 500 }}
+                            >
+                              Abrir Pop-Up
+                            </Typography>
+                          </MenuItem>
+
+                          {/* Divisão de um item clicável e outro no modal */}
+                          <div className="w-full flex justify-center">
+                            <hr className="w-10/12 my-1.5" />
+                          </div>
+
+                          <MenuItem
+                            className="gap-2"
+                            onClick={() => {
+                              handleClose();
+                              abrirModalCancelarChat();
+                            }}
+                          >
+                            <CommentsDisabledOutlinedIcon
+                              sx={{
+                                fontSize: "25px",
+                                color: "#FFFF",
+                                cursor: "pointer",
+                              }}
+                            />
+                            <Typography
+                              color={"text.primary"}
+                              fontSize={FontConfig.medium}
+                              sx={{ fontWeight: 500 }}
+                            >
+                              Encerrar Chat
+                            </Typography>
+                          </MenuItem>
+                        </Box>
+                      </Menu>
+                    </Box>
+                  </Box>
+                  <Box
+                    id="quarto"
+                    className="flex border px-3 py-1 m-4 rounded items-center"
+                    sx={{
+                      backgroundColor: "input.main",
+                      width: "90%",
+                      height: "6.5%",
+                    }}
+                  >
+                    <Box
+                      onChange={(e) => {
+                        save(e);
+                      }}
+                      className="w-full"
+                      component="input"
+                      sx={{
+                        backgroundColor: "input.main",
+                        outline: "none",
+                        color: "text.primary",
+                        fontSize: FontConfig.medium,
+                      }}
+                      placeholder="Escreva sua mensagem..."
+                    />
+                    <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
+                      <Tooltip title="Enviar Anexo">
+                        <IconButton>
+                          <AttachFileOutlinedIcon
+                            sx={{ color: "primary.main", cursor: "pointer" }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                    <Divider
+                      orientation="vertical"
+                      sx={{
+                        borderColor: "primary.main",
+                        margin: "0 10px 0 10px",
+                      }}
+                    />
+                    <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
+                      <Tooltip title="Enviar mensagem">
+                        <IconButton
+                          onClick={() => {
+                            salvarTexto();
+                          }}
+                        >
+                          <SendOutlinedIcon
+                            sx={{ color: "primary.main", cursor: "pointer" }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
                 </Box>
               ) : (
                 <Box
