@@ -1,5 +1,6 @@
 const TextLanguage = (linguagem) => {
     return linguagem == "pt" ? {
+        linguagem: "pt",
         barraProgressaoDemanda: {
             erroPularPasso: "Você não pode pular um passo que não é opcional!",
             botaoVoltar: "Voltar",
@@ -590,9 +591,30 @@ const TextLanguage = (linguagem) => {
 
 
         detalhesProposta: {
-            ppm: "PPM"
+            ppm: "PPM",
+            solicitante: "Solicitante",
+            objetivo: "Objetivo",
+            proposta: "Proposta",
+            problema: "Problema",
+            escopoDaProposta: "Escopo da Proposta",
+            periodoDeExecucao: "Período de Execução",
+            payback: "Payback",
+            reponsaveisPeloNegocio: "Responsáveis pelo Negócio",
+            ate: "até",
+            tabelaDeCustos: "Tabela de Custos",
+            tipoDaDespesa: "Tipo da Despesa",
+            perfilDaDespesa: "Perfil da Despesa",
+            periodoDeExecucaoTabela: "Período de Execução (meses)",
+            horas: "Horas",
+            valorHora: "Valor Hora",
+            total: "Total",
+            ccs: "CCs",
+            porcentagem: "Porcentagem",
+            anexos: "Anexos",
+            download: "Baixar",
         }
     } : linguagem == "en" ? {
+        linguagem: "en",
         barraProgressaoDemanda: {
             erroPularPasso: "You cannot skip a step that is not optional!",
             botaoVoltar: "Back",
@@ -1177,6 +1199,7 @@ const TextLanguage = (linguagem) => {
 
 
     } : linguagem == "ch" ? {
+        linguagem: "ch",
        
     } : null;
 }

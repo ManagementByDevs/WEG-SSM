@@ -14,7 +14,6 @@ const DetalhesPropostaPagina = () => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
 
-  console.log(location.state);
   return (
     <FundoComHeader>
       <Box className="p-2">
