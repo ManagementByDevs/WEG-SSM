@@ -87,20 +87,16 @@ const Custos = (props) => {
   return (
     <Box className="flex w-full mt-5">
       <Box className="flex items-top mr-2">
-        {props.index > 0 ? (
-          <Box className="h-full flex items-center">
-            <Tooltip title="Excluir tabela de custos">
-              <DeleteOutlineOutlinedIcon
-                fontSize="large"
-                className="mr-2 delay-120 hover:scale-110 duration-300"
-                sx={{ color: "icon.main", cursor: "pointer" }}
-                onClick={() => props.deletarCustos(props.index)}
-              />
-            </Tooltip>
-          </Box>
-        ) : (
-          <Box className="flex mr-2 p-4"></Box>
-        )}
+        <Box className="h-full flex items-center">
+          <Tooltip title="Excluir tabela de custos">
+            <DeleteOutlineOutlinedIcon
+              fontSize="large"
+              className="mr-2 delay-120 hover:scale-110 duration-300"
+              sx={{ color: "icon.main", cursor: "pointer" }}
+              onClick={() => {props.deletarCustos(props.index)}}
+            />
+          </Tooltip>
+        </Box>
         <Box>
           <Paper className="w-full mr-3 pb-1">
             <TableContainer component={Paper}>

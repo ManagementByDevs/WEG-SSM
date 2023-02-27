@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import {
   Box,
   Divider,
   IconButton,
+  MenuItem,
   Paper,
   Table,
   TableBody,
   TableHead,
   TableRow,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -42,7 +44,7 @@ const DetalhesProposta = ({
     departamento: 0,
     escopo: 0,
     fimExecucao: "",
-    forum: 0,
+    forum: { id: 0, nome: "", visibilidade: true },
     frequencia: "",
     gerente: 0,
     historicoProposta: [],
@@ -83,8 +85,14 @@ const DetalhesProposta = ({
     visibilidade: true,
   },
 }) => {
+  // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // UseState do parecer da comissão
+  const [parecerComissao, setParecerComissao] = useState("");
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -116,7 +124,7 @@ const DetalhesProposta = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
-  console.log(proposta.tabelaCustos)
+  console.log(proposta);
 
   return (
     <Box className="mt-10 flex justify-center">
@@ -126,13 +134,25 @@ const DetalhesProposta = ({
       >
         {/* Box header */}
         <Box className="w-full flex justify-between">
-          <Typography
-            color="primary"
-            fontWeight="bold"
-            fontSize={FontConfig.big}
-          >
-            {texts.detalhesProposta.ppm} {proposta.codigoPPM}
-          </Typography>
+          <Box className="flex gap-4">
+            <Typography
+              color="primary"
+              fontWeight="bold"
+              fontSize={FontConfig.big}
+            >
+              {texts.detalhesProposta.ppm} {proposta.codigoPPM}
+            </Typography>
+            <Typography
+              color="primary"
+              fontWeight="bold"
+              fontSize={FontConfig.big}
+            >
+              {texts.detalhesProposta.data}{" "}
+              {DateService.getTodaysDateUSFormat(
+                DateService.getDateByMySQLFormat(proposta.data)
+              )}
+            </Typography>
+          </Box>
           <Box className="w-16">
             <img src={LogoWEG} alt="Logo WEG" />
           </Box>
@@ -151,7 +171,7 @@ const DetalhesProposta = ({
           {/* Box Informações gerais */}
           <Box>
             {/* Solicitante */}
-            <Box className="flex mt-4">
+            <Box className="flex mt-2">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.solicitante}:&nbsp;
               </Typography>
@@ -161,24 +181,58 @@ const DetalhesProposta = ({
               </Typography>
             </Box>
 
-            {/* Proposta / Objetivo */}
+            {/* Bu solicitante */}
             <Box className="flex mt-2">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
-                {texts.detalhesProposta.proposta}:&nbsp;
+                {texts.detalhesProposta.buSolicitante}:&nbsp;
               </Typography>
               <Typography fontSize={FontConfig.medium}>
-                {proposta.proposta}
+                {proposta.buSolicitante.nome} - {proposta.buSolicitante.id}
               </Typography>
             </Box>
 
-            {/* Problema / Situação atual */}
+            {/* Gerente */}
             <Box className="flex mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.gerente}:&nbsp;
+              </Typography>
+              <Typography fontSize={FontConfig.medium}>
+                {proposta.gerente.nome} - {proposta.gerente.departamento.nome}
+              </Typography>
+            </Box>
+
+            {/* Fórum */}
+            <Box className="flex mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.forum}:&nbsp;
+              </Typography>
+              <Typography fontSize={FontConfig.medium}>
+                {proposta.forum.nome}
+              </Typography>
+            </Box>
+
+            {/* Proposta / Objetivo */}
+            <Box className="mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.proposta}:&nbsp;
+              </Typography>
+              <Box className="mx-4">
+                <Typography fontSize={FontConfig.medium}>
+                  {proposta.proposta}
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* Problema / Situação atual */}
+            <Box className="mt-2">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.problema}:&nbsp;
               </Typography>
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.problema}
-              </Typography>
+              <Box className="mx-4">
+                <Typography fontSize={FontConfig.medium}>
+                  {proposta.problema}
+                </Typography>
+              </Box>
             </Box>
 
             {/* Escopo da proposta */}
@@ -186,26 +240,48 @@ const DetalhesProposta = ({
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.escopoDaProposta}:&nbsp;
               </Typography>
-              <Box className="ml-4">
+              <Box className="mx-4">
                 <Typography fontSize={FontConfig.medium}>
                   {proposta.escopo}
                 </Typography>
               </Box>
             </Box>
 
+            {/* Frequência */}
+            <Box className="flex mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.frequencia}:&nbsp;
+              </Typography>
+              <Typography fontSize={FontConfig.medium}>
+                {proposta.frequencia}
+              </Typography>
+            </Box>
+
+            {/* Tamanho */}
+            <Box className="flex mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.tamanho}:&nbsp;
+              </Typography>
+              <Typography fontSize={FontConfig.medium}>
+                {proposta.tamanho}
+              </Typography>
+            </Box>
+
             {/* {proposta.anexo}
-            
             {proposta.beneficios}
             {proposta.busBeneficiadas}
-            {proposta.forum}
+            {proposta.buSolicitante}
             {proposta.frequencia}
-            {proposta.gerente}
             {proposta.linkJira}
+            {proposta.tamanho}
+            {proposta.data} 
+            {proposta.gerente}
+            {proposta.forum}
+
             {proposta.parecerComissao}
             {proposta.parecerDG}
             {proposta.parecerInformacao}
-            {proposta.tamanho}
-            {proposta.data} */}
+            */}
 
             {/* Resto das informações */}
 
@@ -254,10 +330,60 @@ const DetalhesProposta = ({
                   //     ],
                   //   },
                   // ]
-                  proposta.tabelaCustos
-                    .map((tabela, index) => {
-                      return <TabelaCustos key={index} dados={tabela} />;
+                  proposta.tabelaCustos.map((tabela, index) => {
+                    return <TabelaCustos key={index} dados={tabela} />;
+                  })
+                }
+              </Box>
+            </Box>
+
+            {/* Benefícios */}
+            <Box className="mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.beneficios}:&nbsp;
+              </Typography>
+              <Box className="mx-4">
+                {proposta.beneficios.length > 0 ? (
+                  proposta.beneficios.map((beneficio, index) => {
+                    return <Beneficio key={index} beneficio={beneficio} />;
+                  })
+                ) : (
+                  <Typography
+                    className="text-center"
+                    fontSize={FontConfig.medium}
+                    color="text.secondary"
+                  >
+                    {texts.detalhesProposta.semBeneficios}
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+
+            {/* Bus beneficiadas */}
+            <Box className="mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.busBeneficiadas}:&nbsp;
+              </Typography>
+              <Box className="mx-8">
+                {proposta.busBeneficiadas.length > 0 ? (
+                  <ol className="list-disc">
+                    {proposta.busBeneficiadas.map((bu, index) => {
+                      return (
+                        <li key={index}>
+                          {bu.nome} - {bu.id}
+                        </li>
+                      );
                     })}
+                  </ol>
+                ) : (
+                  <Typography
+                    className="text-center"
+                    fontSize={FontConfig.medium}
+                    color="text.secondary"
+                  >
+                    {texts.detalhesProposta.semBuBeneficiada}
+                  </Typography>
+                )}
               </Box>
             </Box>
 
@@ -267,12 +393,8 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.anexos}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                {[
-                  { id: 0, nome: "Anexo 1", tipo: "png" },
-                  { id: 0, nome: "Anexo 2", tipo: "png" },
-                ]
-                  // proposta.anexo
-                  .map((anexo, index) => {
+                {proposta.anexo.length > 0 ? (
+                  proposta.anexo.map((anexo, index) => {
                     return (
                       <Paper
                         key={index}
@@ -291,8 +413,27 @@ const DetalhesProposta = ({
                         </Tooltip>
                       </Paper>
                     );
-                  })}
+                  })
+                ) : (
+                  <Typography
+                    className="text-center"
+                    fontSize={FontConfig.medium}
+                    color="text.secondary"
+                  >
+                    {texts.detalhesProposta.semAnexos}
+                  </Typography>
+                )}
               </Box>
+            </Box>
+
+            {/* Link do Jira */}
+            <Box className="flex mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.linkJira}:&nbsp;
+              </Typography>
+              <Typography fontSize={FontConfig.medium}>
+                {proposta.linkJira}
+              </Typography>
             </Box>
 
             {/* Período de execução */}
@@ -317,9 +458,50 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.payback}:&nbsp;
               </Typography>
               <Typography fontSize={FontConfig.default}>
-                {proposta.paybackValor} {proposta.paybackTipo}
+                {proposta.paybackValor} {proposta.paybackTipo.toLowerCase()}
               </Typography>
             </Box>
+
+            {/* Pareceres */}
+            <Box className="mt-6">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.pareceres}:&nbsp;
+              </Typography>
+              <Box className="items-center mx-4">
+                <Typography>{proposta.forum.nome}: &nbsp;</Typography>
+                <TextField
+                  select
+                  label={texts.detalhesProposta.parecer}
+                  value={parecerComissao}
+                  onChange={(event) => setParecerComissao(event.target.value)}
+                  variant="standard"
+                >
+                  <MenuItem key={"Aprovado"} value={"APROVADO"}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesProposta.aprovado}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesProposta.reprovado}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesProposta.devolvido}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesProposta.businessCase}
+                    </Typography>
+                  </MenuItem>
+                </TextField>
+              </Box>
+            </Box>
+
+            {/* Pareceres */}
+            {proposta.status == "?" ? <></> : null}
 
             {/* Responsáveis do negócio */}
             <Box className="mt-4 text-center">
@@ -479,10 +661,12 @@ const CustosRow = ({
         break;
     }
 
-    return valor ? valor.toLocaleString(local, {
-      style: "currency",
-      currency: tipoMoeda,
-    }) : 0.0
+    return valor
+      ? valor.toLocaleString(local, {
+          style: "currency",
+          currency: tipoMoeda,
+        })
+      : 0.0;
   };
 
   return (
@@ -516,6 +700,97 @@ const CustosRow = ({
         </Typography>
       </td>
     </TableRow>
+  );
+};
+
+const Beneficio = ({
+  beneficio = {
+    id: 0,
+    tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
+    valor_mensal: 0,
+    moeda: "",
+    memoriaCalculo: "",
+  },
+}) => {
+  // Context para obter as configurações de fonte do sistema
+  const { FontConfig } = useContext(FontContext);
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+  return (
+    <Paper
+      className="flex justify-between items-center mt-2 border-t-4"
+      sx={{ borderTopColor: "primary.main" }}
+      square
+    >
+      {/*  */}
+      <Table>
+        <TableBody>
+          <TableRow>
+            <th className="p-1">
+              <Typography
+                color="primary"
+                fontWeight="bold"
+                fontSize={FontConfig.medium}
+              >
+                {texts.detalhesProposta.tipoBeneficio}
+              </Typography>
+            </th>
+            <th className="p-1">
+              <Typography
+                color="primary"
+                fontWeight="bold"
+                fontSize={FontConfig.medium}
+              >
+                {texts.detalhesProposta.valorMensal}
+              </Typography>
+            </th>
+            <th className="p-1">
+              <Typography
+                color="primary"
+                fontWeight="bold"
+                fontSize={FontConfig.medium}
+              >
+                {texts.detalhesProposta.moeda}
+              </Typography>
+            </th>
+            <th className="p-1">
+              <Typography
+                color="primary"
+                fontWeight="bold"
+                fontSize={FontConfig.medium}
+              >
+                {texts.detalhesProposta.memoriaCalculo}
+              </Typography>
+            </th>
+          </TableRow>
+        </TableBody>
+        <TableBody className="border-t">
+          <TableRow>
+            <td className="text-center p-1">
+              <Typography fontSize={FontConfig.default}>
+                {beneficio.tipoBeneficio[0].toUpperCase() +
+                  beneficio.tipoBeneficio.substring(1).toLowerCase()}
+              </Typography>
+            </td>
+            <td className="text-center p-1">
+              <Typography fontSize={FontConfig.default}>
+                {beneficio.valor_mensal}
+              </Typography>
+            </td>
+            <td className="text-center p-1">
+              <Typography fontSize={FontConfig.default}>
+                {beneficio.moeda}
+              </Typography>
+            </td>
+            <td className="text-center p-1">
+              <Typography fontSize={FontConfig.default}>
+                {beneficio.memoriaCalculo}
+              </Typography>
+            </td>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </Paper>
   );
 };
 

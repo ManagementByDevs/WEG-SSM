@@ -10,6 +10,10 @@ class EscopoPropostaService {
         return (await axios.get(`/escopo-proposta/titulo/${usuarioId}/${titulo}/?${ordenacao}`, { headers: { "Content-Type": "application/json" } })).data;
     }
 
+    async buscarPorDemanda(demandaId) {
+        return (await axios.get(`/escopo-proposta/demanda/${demandaId}`, { headers: { "Content-Type": "application/json" } })).data;
+    }
+
     async post(escopoProposta) {
         let form = new FormData();
         form.append("escopo-proposta", JSON.stringify(escopoProposta));

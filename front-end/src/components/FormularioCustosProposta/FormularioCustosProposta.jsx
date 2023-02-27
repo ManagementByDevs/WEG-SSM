@@ -111,6 +111,7 @@ const FormularioCustosProposta = (props) => {
               dados={custo}
               setCustos={props.setCustos}
               custos={props.custos}
+              deletarCustos={deletarTabelaCustos}
             />
           );
         })}

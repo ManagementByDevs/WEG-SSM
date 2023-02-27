@@ -30,12 +30,12 @@ const ModalOrdenacao = (props) => {
 
   /** Função para mudar o valor do checkbox de ordenação por data "Mais Velha" */
   function mudarCheck5() {
-    props.setOrdenacaoDate([!props.setOrdenacaoDate[0], false]);
+    props.setOrdenacaoDate([!props.ordenacaoDate[0], false]);
   }
 
   /** Função para mudar o valor do checkbox de ordenação por data "Mais Nova" */
   function mudarCheck6() {
-    props.setOrdenacaoDate([false, !props.setOrdenacaoDate[1]]);
+    props.setOrdenacaoDate([false, !props.ordenacaoDate[1]]);
   }
 
   return (

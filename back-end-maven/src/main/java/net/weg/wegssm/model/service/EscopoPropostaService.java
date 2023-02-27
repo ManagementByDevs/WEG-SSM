@@ -1,11 +1,14 @@
 package net.weg.wegssm.model.service;
 
+import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.EscopoProposta;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.EscopoPropostaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EscopoPropostaService {
@@ -34,5 +37,9 @@ public class EscopoPropostaService {
 
     public void deleteById(Long id) {
         escopoPropostaRepository.deleteById(id);
+    }
+
+    public List<EscopoProposta> findByDemanda(Demanda demanda) {
+        return escopoPropostaRepository.findByDemanda(demanda);
     }
 }

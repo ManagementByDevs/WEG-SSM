@@ -5,6 +5,8 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
+import net.weg.wegssm.dto.CustoDTO;
+import net.weg.wegssm.dto.TabelaCustoDTO;
 import net.weg.wegssm.model.entities.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,15 +47,12 @@ public class PDFGeneratorService {
         img.scalePercent(scale);
         img.setAbsolutePosition(460, 740);
 
-        // Criando a formatação da página pdf
+        // Criando as fontes da página
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
         fontTitle.setColor(Color.decode("#00579D"));
         fontTitle.setStyle(Font.BOLD);
-
-        Paragraph paragraph = new Paragraph(demanda.getTitulo(), fontTitle);
-        paragraph.setSpacingBefore(15);
 
         Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph.setSize(18);
@@ -68,6 +67,11 @@ public class PDFGeneratorService {
 
         Font fontParagraph4 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph4.setSize(12);
+
+        // Criando a formatação da página pdf
+
+        Paragraph paragraph = new Paragraph(demanda.getTitulo(), fontTitle);
+        paragraph.setSpacingBefore(15);
 
         Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
         paragraph2.setSpacingBefore(20);
@@ -159,7 +163,7 @@ public class PDFGeneratorService {
         document.add(paragraph7);
         document.add(paragraph8);
 
-        if(demanda.getTamanho() != null){
+        if (demanda.getTamanho() != null) {
             Chunk chunkTamanho = new Chunk("Tamanho: ", fontParagraph2);
             Chunk chunkValorTamanho = new Chunk(demanda.getTamanho(), fontParagraph3);
             Paragraph paragraph12 = new Paragraph();
@@ -182,7 +186,7 @@ public class PDFGeneratorService {
             Paragraph paragraph15 = new Paragraph();
             paragraph15.add(chunkBuBeneficiadas);
 
-            for(Bu bu: demanda.getBusBeneficiadas()){
+            for (Bu bu : demanda.getBusBeneficiadas()) {
                 Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNome() + " ", fontParagraph3);
                 paragraph15.add(chunkValorBuBeneficiadas);
             }
@@ -236,17 +240,43 @@ public class PDFGeneratorService {
         // Encerrando o documento
 
         document.close();
+
         return document;
     }
 
     public void exportProposta(HttpServletResponse response) throws IOException {
 
+        Long execucao = null;
         Demanda demanda = new Demanda();
         Proposta proposta = new Proposta();
         Beneficio beneficio1 = new Beneficio();
         Beneficio beneficio2 = new Beneficio();
         Beneficio beneficio3 = new Beneficio();
+        CC cc = new CC();
+        Custo custo = new Custo();
+        TabelaCusto tabelaCusto = new TabelaCusto();
+        List<TabelaCusto> listaTabelaCusto = new ArrayList<>();
         List<Beneficio> listaBeneficios = new ArrayList<>();
+        List<Custo> listaCustos = new ArrayList<>();
+        List<CC> listaCC = new ArrayList<>();
+
+        cc.setCodigo(1);
+        cc.setPorcentagem(12.5);
+        listaCC.add(cc);
+
+        custo.setHoras(12.5);
+        custo.setPerfilDespesa("Perfil D");
+        custo.setPeriodoExecucao(execucao);
+        custo.setTipoDespesa("Tipo D");
+        custo.setValorHora(150.5);
+        listaCustos.add(custo);
+
+        tabelaCusto.setCustos(listaCustos);
+        tabelaCusto.setCcs(listaCC);
+
+        listaTabelaCusto.add(tabelaCusto);
+
+        proposta.setTabelaCustos(listaTabelaCusto);
 
         TipoBeneficio tipoBeneficio1 = TipoBeneficio.QUALITATIVO;
         TipoBeneficio tipoBeneficio2 = TipoBeneficio.POTENCIAL;
@@ -311,15 +341,12 @@ public class PDFGeneratorService {
         img.scalePercent(scale);
         img.setAbsolutePosition(460, 740);
 
-        // Criando a formatação da página pdf
+        // Criando as fontes da página
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
         fontTitle.setColor(Color.decode("#00579D"));
         fontTitle.setStyle(Font.BOLD);
-
-        Paragraph paragraph = new Paragraph(proposta.getDemanda().getTitulo(), fontTitle);
-        paragraph.setSpacingBefore(20);
 
         Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph.setSize(18);
@@ -335,8 +362,21 @@ public class PDFGeneratorService {
         Font fontParagraph4 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph4.setSize(12);
 
+        Font fontParagraph5 = FontFactory.getFont(FontFactory.HELVETICA);
+        fontParagraph5.setSize(15);
+        fontParagraph5.setColor(Color.decode("#00579D"));
+        fontParagraph5.setStyle(Font.BOLD);
+
+        // Criando a formatação da página pdf
+
         Paragraph paragraph23 = new Paragraph("Data de emissão: " + currentDateTime, fontParagraph4);
         paragraph23.setSpacingBefore(20);
+
+        Paragraph paragraph25 = new Paragraph("PPM " + String.valueOf(proposta.getCodigoPPM()), fontParagraph5);
+        paragraph25.setSpacingBefore(20);
+
+        Paragraph paragraph = new Paragraph(proposta.getDemanda().getTitulo(), fontTitle);
+        paragraph.setSpacingBefore(15);
 
         Chunk chunkSolicitante = new Chunk("Solicitante: ", fontParagraph2);
         Chunk chunkValorSolicitante = new Chunk(String.valueOf(proposta.getSolicitante()), fontParagraph3);
@@ -345,8 +385,11 @@ public class PDFGeneratorService {
         paragraph11.add(chunkValorSolicitante);
         paragraph11.setSpacingBefore(15);
 
-        Paragraph paragraph13 = new Paragraph("Responsável Negócio: ", fontParagraph2);
-        paragraph13.setSpacingBefore(15);
+        Paragraph paragraph4 = new Paragraph("Proposta: ", fontParagraph2);
+        paragraph4.setSpacingBefore(15);
+
+        Paragraph paragraph5 = new Paragraph(proposta.getDemanda().getProposta(), fontParagraph3);
+        paragraph5.setSpacingBefore(3);
 
         Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
         paragraph2.setSpacingBefore(15);
@@ -354,38 +397,29 @@ public class PDFGeneratorService {
         Paragraph paragraph3 = new Paragraph(proposta.getDemanda().getProblema(), fontParagraph3);
         paragraph3.setSpacingBefore(3);
 
-        Paragraph paragraph4 = new Paragraph("Proposta: ", fontParagraph2);
-        paragraph4.setSpacingBefore(15);
+        Paragraph paragraph26 = new Paragraph("Escopo da Proposta: ", fontParagraph2);
+        paragraph26.setSpacingBefore(15);
 
-        Paragraph paragraph5 = new Paragraph(proposta.getDemanda().getProposta(), fontParagraph3);
-        paragraph5.setSpacingBefore(3);
+        Paragraph paragraph27 = new Paragraph(String.valueOf(proposta.getEscopo()), fontParagraph3);
+        paragraph27.setSpacingBefore(3);
 
-        Paragraph paragraph6 = new Paragraph("Benefícios: ", fontParagraph2);
-        paragraph6.setSpacingBefore(15);
+        Paragraph paragraph28 = new Paragraph("Tabela de Custos: ", fontParagraph2);
+        paragraph28.setSpacingBefore(15);
 
         document.add(img);
         document.add(paragraph23);
+        document.add(paragraph25);
         document.add(paragraph);
         document.add(paragraph11);
-        document.add(paragraph13);
-
-        for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
-            Paragraph p = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontParagraph3);
-            p.setIndentationLeft(40);
-            p.setSpacingBefore(5);
-
-            document.add(p);
-        }
-
-        document.add(paragraph2);
-        document.add(paragraph3);
         document.add(paragraph4);
         document.add(paragraph5);
-        document.add(paragraph6);
+        document.add(paragraph2);
+        document.add(paragraph3);
+        document.add(paragraph26);
+        document.add(paragraph27);
+        document.add(paragraph28);
 
-        // Criando tabela para os centros de custo
-
-        for (Beneficio beneficio : proposta.getDemanda().getBeneficios()) {
+        for (TabelaCusto tableCusto : proposta.getTabelaCustos()) {
             PdfPTable table = new PdfPTable(4);
 
             table.setWidthPercentage(100);
@@ -409,22 +443,126 @@ public class PDFGeneratorService {
             font.setStyle(Font.BOLD);
             font.setSize(12);
 
-            cell.setPhrase(new Phrase("Tipo", font));
+            cell.setPhrase(new Phrase("Tipo da Despesa", font));
             table.addCell(cell);
-            cell.setPhrase(new Phrase("Valor Mensal", font));
+            cell.setPhrase(new Phrase("Perfil da Despesa", font));
             table.addCell(cell);
-            cell.setPhrase(new Phrase("Moeda", font));
+            cell.setPhrase(new Phrase("Período de Execução (meses)", font));
             table.addCell(cell);
-            cell.setPhrase(new Phrase("Memória de Cálculo", font));
+            cell.setPhrase(new Phrase("Horas", font));
             table.addCell(cell);
 
-            table.addCell(String.valueOf(beneficio.getTipoBeneficio()));
-            table.addCell(String.valueOf(beneficio.getValor_mensal()));
-            table.addCell(String.valueOf(beneficio.getMoeda()));
-            table.addCell(String.valueOf(beneficio.getMemoriaCalculo()));
+            for (Custo custos : tableCusto.getCustos()) {
+                table.addCell(custos.getTipoDespesa());
+                table.addCell(custos.getPerfilDespesa());
+                table.addCell(String.valueOf(custos.getPeriodoExecucao()));
+                table.addCell(String.valueOf(custos.getHoras()));
+                table.addCell(String.valueOf(custos.getValorHora()));
+            }
+
+            PdfPTable table2 = new PdfPTable(2);
+
+            table2.setWidthPercentage(100);
+            table2.setWidths(new int[]{3, 3});
+            table2.setSpacingBefore(15);
+
+            table2.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+            table2.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            table2.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell cell2 = new PdfPCell();
+            cell2.setBackgroundColor(Color.decode("#00579D"));
+            cell2.setPadding(5);
+            cell2.setBorder(0);
+
+            cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell2.setVerticalAlignment(Element.ALIGN_CENTER);
+
+            cell2.setPhrase(new Phrase("Valor Hora", font));
+            table2.addCell(cell2);
+            cell2.setPhrase(new Phrase("Total", font));
+            table2.addCell(cell2);
+
+            table2.addCell("10");
+            table2.addCell("100");
+
+            PdfPTable table3 = new PdfPTable(2);
+
+            table3.setWidthPercentage(100);
+            table3.setWidths(new int[]{3, 3});
+            table3.setSpacingBefore(20);
+
+            table3.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+            table3.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            table3.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell cell3 = new PdfPCell();
+            cell3.setBackgroundColor(Color.decode("#00579D"));
+            cell3.setPadding(5);
+            cell3.setBorder(0);
+
+            cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell3.setVerticalAlignment(Element.ALIGN_CENTER);
+
+            cell3.setPhrase(new Phrase("CCs", font));
+            table3.addCell(cell3);
+            cell3.setPhrase(new Phrase("Porcentagem", font));
+            table3.addCell(cell3);
+
+            table3.addCell("Cc");
+            table3.addCell("50%");
 
             document.add(table);
+            document.add(table2);
+            document.add(table3);
         }
+
+        Paragraph paragraph9 = new Paragraph("Anexos: ", fontParagraph2);
+        paragraph9.setAlignment(Paragraph.ANCHOR);
+        paragraph9.setSpacingBefore(15);
+
+        // Criando tabela para os benefícios
+
+//        for (Beneficio beneficio : proposta.getDemanda().getBeneficios()) {
+//            PdfPTable table = new PdfPTable(4);
+//
+//            table.setWidthPercentage(100);
+//            table.setWidths(new int[]{3, 3, 3, 3});
+//            table.setSpacingBefore(15);
+//
+//            table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+//            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+//            table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
+//
+//            PdfPCell cell = new PdfPCell();
+//            cell.setBackgroundColor(Color.decode("#00579D"));
+//            cell.setPadding(5);
+//            cell.setBorder(0);
+//
+//            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            cell.setVerticalAlignment(Element.ALIGN_CENTER);
+//
+//            Font font = FontFactory.getFont(FontFactory.HELVETICA);
+//            font.setColor(CMYKColor.WHITE);
+//            font.setStyle(Font.BOLD);
+//            font.setSize(12);
+//
+//            cell.setPhrase(new Phrase("Tipo", font));
+//            table.addCell(cell);
+//            cell.setPhrase(new Phrase("Valor Mensal", font));
+//            table.addCell(cell);
+//            cell.setPhrase(new Phrase("Moeda", font));
+//            table.addCell(cell);
+//            cell.setPhrase(new Phrase("Memória de Cálculo", font));
+//            table.addCell(cell);
+//
+//            table.addCell(String.valueOf(beneficio.getTipoBeneficio()));
+//            table.addCell(String.valueOf(beneficio.getValor_mensal()));
+//            table.addCell(String.valueOf(beneficio.getMoeda()));
+//            table.addCell(String.valueOf(beneficio.getMemoriaCalculo()));
+//
+//            document.add(table);
+//        }
 
         Chunk chunkFrequencia = new Chunk("Frequência de Uso: ", fontParagraph2);
         Chunk chunkValorFrequencia = new Chunk(proposta.getDemanda().getFrequencia(), fontParagraph3);
@@ -433,13 +571,6 @@ public class PDFGeneratorService {
         paragraph7.add(chunkValorFrequencia);
         paragraph7.setSpacingBefore(15);
 
-        Paragraph paragraph15 = new Paragraph("Custos: ", fontParagraph2);
-        paragraph15.setSpacingBefore(15);
-
-        Paragraph paragraph16 = new Paragraph(String.valueOf(proposta.getTabelaCustos()), fontParagraph3);
-        paragraph16.setIndentationLeft(40);
-        paragraph16.setSpacingBefore(5);
-
         Chunk chunkExecucao = new Chunk("Período de Execução: ", fontParagraph2);
         Chunk chunkValorExecucao = new Chunk(String.valueOf(proposta.getInicioExecucao()) + " à " + String.valueOf(proposta.getFimExecucao()), fontParagraph3);
         Paragraph paragraph17 = new Paragraph();
@@ -447,7 +578,7 @@ public class PDFGeneratorService {
         paragraph17.add(chunkValorExecucao);
         paragraph17.setSpacingBefore(15);
 
-        Chunk chunkPayback = new Chunk("Payback Simples: ", fontParagraph2);
+        Chunk chunkPayback = new Chunk("Payback: ", fontParagraph2);
         Chunk chunkValorPayback = new Chunk(String.valueOf(proposta.getPaybackValor()) + " " + String.valueOf(proposta.getPaybackTipo()), fontParagraph3);
         Paragraph paragraph19 = new Paragraph();
         paragraph19.add(chunkPayback);
@@ -461,27 +592,33 @@ public class PDFGeneratorService {
         paragraph21.add(chunkValorLink);
         paragraph21.setSpacingBefore(15);
 
-        Paragraph paragraph9 = new Paragraph("Anexos: ", fontParagraph2);
-        paragraph9.setAlignment(Paragraph.ANCHOR);
-        paragraph9.setSpacingBefore(15);
-
         // Adicionando tudo na página pdf
 
-        document.add(paragraph7);
-        document.add(paragraph15);
-        document.add(paragraph16);
-        document.add(paragraph17);
-        document.add(paragraph19);
-        document.add(paragraph21);
         document.add(paragraph9);
 
-//        for(Anexo anexo : proposta.getDemanda().getAnexo()){
+        //        for(Anexo anexo : proposta.getDemanda().getAnexo()){
 //            Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
 //            paragraph10.setIndentationLeft(40);
 //            paragraph10.setSpacingBefore(5);
 //
 //            document.add(paragraph10);
 //        }
+
+        document.add(paragraph17);
+        document.add(paragraph19);
+
+        for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
+            Paragraph p = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontParagraph3);
+            p.setAlignment(Element.ALIGN_CENTER);
+            p.setSpacingBefore(5);
+
+            document.add(p);
+        }
+
+        Paragraph paragraph30 = new Paragraph("Responsáveis pelo Negócio", fontParagraph2);
+        paragraph30.setAlignment(Element.ALIGN_CENTER);
+
+        document.add(paragraph30);
 
         document.close();
     }
@@ -511,7 +648,7 @@ public class PDFGeneratorService {
         img.scalePercent(scale);
         img.setAbsolutePosition(460, 740);
 
-        // Formatação do modelo
+        // Criação das fontes da página
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
@@ -535,6 +672,8 @@ public class PDFGeneratorService {
         Font fontParagraph5 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph5.setSize(13);
         fontParagraph5.setStyle(Font.BOLD);
+
+        // Formatação da página pdf
 
         Paragraph paragraph = new Paragraph("Data de emissão: " + currentDateTime, fontParagraph4);
         paragraph.setSpacingBefore(20);
