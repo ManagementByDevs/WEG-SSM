@@ -47,15 +47,12 @@ public class PDFGeneratorService {
         img.scalePercent(scale);
         img.setAbsolutePosition(460, 740);
 
-        // Criando a formatação da página pdf
+        // Criando as fontes da página
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
         fontTitle.setColor(Color.decode("#00579D"));
         fontTitle.setStyle(Font.BOLD);
-
-        Paragraph paragraph = new Paragraph(demanda.getTitulo(), fontTitle);
-        paragraph.setSpacingBefore(15);
 
         Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph.setSize(18);
@@ -70,6 +67,11 @@ public class PDFGeneratorService {
 
         Font fontParagraph4 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph4.setSize(12);
+
+        // Criando a formatação da página pdf
+
+        Paragraph paragraph = new Paragraph(demanda.getTitulo(), fontTitle);
+        paragraph.setSpacingBefore(15);
 
         Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
         paragraph2.setSpacingBefore(20);
@@ -238,13 +240,13 @@ public class PDFGeneratorService {
         // Encerrando o documento
 
         document.close();
+
         return document;
     }
 
     public void exportProposta(HttpServletResponse response) throws IOException {
 
         Long execucao = null;
-
         Demanda demanda = new Demanda();
         Proposta proposta = new Proposta();
         Beneficio beneficio1 = new Beneficio();
@@ -260,7 +262,6 @@ public class PDFGeneratorService {
 
         cc.setCodigo(1);
         cc.setPorcentagem(12.5);
-
         listaCC.add(cc);
 
         custo.setHoras(12.5);
@@ -268,7 +269,6 @@ public class PDFGeneratorService {
         custo.setPeriodoExecucao(execucao);
         custo.setTipoDespesa("Tipo D");
         custo.setValorHora(150.5);
-
         listaCustos.add(custo);
 
         tabelaCusto.setCustos(listaCustos);
@@ -318,7 +318,6 @@ public class PDFGeneratorService {
         demanda.setProblema("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum");
         demanda.setBeneficios(listaBeneficios);
 
-
         proposta.setDemanda(demanda);
 
         // Formatação da data para quando baixar o documento pdf
@@ -342,7 +341,7 @@ public class PDFGeneratorService {
         img.scalePercent(scale);
         img.setAbsolutePosition(460, 740);
 
-        // Criando a formatação da página pdf
+        // Criando as fontes da página
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
@@ -368,14 +367,16 @@ public class PDFGeneratorService {
         fontParagraph5.setColor(Color.decode("#00579D"));
         fontParagraph5.setStyle(Font.BOLD);
 
-        Paragraph paragraph = new Paragraph(proposta.getDemanda().getTitulo(), fontTitle);
-        paragraph.setSpacingBefore(15);
+        // Criando a formatação da página pdf
+
+        Paragraph paragraph23 = new Paragraph("Data de emissão: " + currentDateTime, fontParagraph4);
+        paragraph23.setSpacingBefore(20);
 
         Paragraph paragraph25 = new Paragraph("PPM " + String.valueOf(proposta.getCodigoPPM()), fontParagraph5);
         paragraph25.setSpacingBefore(20);
 
-        Paragraph paragraph23 = new Paragraph("Data de emissão: " + currentDateTime, fontParagraph4);
-        paragraph23.setSpacingBefore(20);
+        Paragraph paragraph = new Paragraph(proposta.getDemanda().getTitulo(), fontTitle);
+        paragraph.setSpacingBefore(15);
 
         Chunk chunkSolicitante = new Chunk("Solicitante: ", fontParagraph2);
         Chunk chunkValorSolicitante = new Chunk(String.valueOf(proposta.getSolicitante()), fontParagraph3);
@@ -384,23 +385,17 @@ public class PDFGeneratorService {
         paragraph11.add(chunkValorSolicitante);
         paragraph11.setSpacingBefore(15);
 
-        Paragraph paragraph13 = new Paragraph("Responsável Negócio: ", fontParagraph2);
-        paragraph13.setSpacingBefore(15);
-
-        Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
-        paragraph2.setSpacingBefore(15);
-
-        Paragraph paragraph3 = new Paragraph(proposta.getDemanda().getProblema(), fontParagraph3);
-        paragraph3.setSpacingBefore(3);
-
         Paragraph paragraph4 = new Paragraph("Proposta: ", fontParagraph2);
         paragraph4.setSpacingBefore(15);
 
         Paragraph paragraph5 = new Paragraph(proposta.getDemanda().getProposta(), fontParagraph3);
         paragraph5.setSpacingBefore(3);
 
-        Paragraph paragraph6 = new Paragraph("Benefícios: ", fontParagraph2);
-        paragraph6.setSpacingBefore(15);
+        Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
+        paragraph2.setSpacingBefore(15);
+
+        Paragraph paragraph3 = new Paragraph(proposta.getDemanda().getProblema(), fontParagraph3);
+        paragraph3.setSpacingBefore(3);
 
         Paragraph paragraph26 = new Paragraph("Escopo da Proposta: ", fontParagraph2);
         paragraph26.setSpacingBefore(15);
@@ -653,7 +648,7 @@ public class PDFGeneratorService {
         img.scalePercent(scale);
         img.setAbsolutePosition(460, 740);
 
-        // Formatação do modelo
+        // Criação das fontes da página
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
@@ -677,6 +672,8 @@ public class PDFGeneratorService {
         Font fontParagraph5 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph5.setSize(13);
         fontParagraph5.setStyle(Font.BOLD);
+
+        // Formatação da página pdf
 
         Paragraph paragraph = new Paragraph("Data de emissão: " + currentDateTime, fontParagraph4);
         paragraph.setSpacingBefore(20);
