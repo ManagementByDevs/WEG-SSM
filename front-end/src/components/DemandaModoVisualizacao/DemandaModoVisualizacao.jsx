@@ -64,7 +64,6 @@ const DemandaTable = ({
 
   // Função para receber a cor do status da demanda
   function getStatusColor(status) {
-    console.log(status)
     if (status == "CANCELLED") {
       return "#DA0303";
     } else if (status == "BACKLOG_REVISAO") {

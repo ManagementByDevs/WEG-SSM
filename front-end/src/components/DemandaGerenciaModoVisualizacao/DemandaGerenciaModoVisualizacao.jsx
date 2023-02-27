@@ -21,6 +21,7 @@ import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const DemandaGerenciaModoVisualizacao = ({
   listaDemandas,
@@ -309,6 +310,9 @@ const NadaEncontrado = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   return (
     <Box
       sx={{
@@ -324,13 +328,13 @@ const NadaEncontrado = () => {
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        Nada encontrado
+        {texts.demandaGerenciaModoVisualização.nadaEncontrado}
       </Typography>
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        Tente novamente mais tarde
+        {texts.demandaGerenciaModoVisualização.tenteNovamenteMaisTarde}
       </Typography>
     </Box>
   );
