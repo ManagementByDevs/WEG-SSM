@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import {
   Box,
   Divider,
   IconButton,
+  MenuItem,
   Paper,
   Table,
   TableBody,
   TableHead,
   TableRow,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -88,6 +90,9 @@ const DetalhesProposta = ({
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // UseState do parecer da comissão
+  const [parecerComissao, setParecerComissao] = useState("");
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -271,8 +276,8 @@ const DetalhesProposta = ({
             {proposta.tamanho}
             {proposta.data} 
             {proposta.gerente}
-
             {proposta.forum}
+
             {proposta.parecerComissao}
             {proposta.parecerDG}
             {proposta.parecerInformacao}
@@ -364,7 +369,7 @@ const DetalhesProposta = ({
                   <ol className="list-disc">
                     {proposta.busBeneficiadas.map((bu, index) => {
                       return (
-                        <li>
+                        <li key={index}>
                           {bu.nome} - {bu.id}
                         </li>
                       );
@@ -458,18 +463,45 @@ const DetalhesProposta = ({
             </Box>
 
             {/* Pareceres */}
-            {proposta.parecerComissao ? (
-              <Box className="mt-6">
-                <Typography fontSize={FontConfig.medium} fontWeight="bold">
-                  {texts.detalhesProposta.pareceres}:&nbsp;
-                </Typography>
-                <Box className="mx-4">
-                  <Typography fontSize={FontConfig.medium}>
-                    {proposta.paybackValor} {proposta.paybackTipo.toLowerCase()}
-                  </Typography>
-                </Box>
+            <Box className="mt-6">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.pareceres}:&nbsp;
+              </Typography>
+              <Box className="items-center mx-4">
+                <Typography>{proposta.forum.nome}: &nbsp;</Typography>
+                <TextField
+                  select
+                  label={texts.detalhesProposta.parecer}
+                  value={parecerComissao}
+                  onChange={(event) => setParecerComissao(event.target.value)}
+                  variant="standard"
+                >
+                  <MenuItem key={"Aprovado"} value={"APROVADO"}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesProposta.aprovado}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesProposta.reprovado}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesProposta.devolvido}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesProposta.businessCase}
+                    </Typography>
+                  </MenuItem>
+                </TextField>
               </Box>
-            ) : null}
+            </Box>
+
+            {/* Pareceres */}
+            {proposta.status == "?" ? <></> : null}
 
             {/* Responsáveis do negócio */}
             <Box className="mt-4 text-center">
