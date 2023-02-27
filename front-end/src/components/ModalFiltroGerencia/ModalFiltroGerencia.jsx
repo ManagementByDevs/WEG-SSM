@@ -1,19 +1,6 @@
 import React, { useContext } from "react";
+import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
 
-import {
-  Modal,
-  Typography,
-  Box,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
-
-import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
 import UsuarioService from "../../service/usuarioService";
@@ -21,82 +8,14 @@ import UsuarioService from "../../service/usuarioService";
 import FontContext from "../../service/FontContext";
 
 const ModalFiltroGerencia = (props) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // variáveis de estilo para o modal do filtro
-  const styleModal = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 580,
-    height: 400,
-    bgcolor: "background.paper",
-    borderRadius: "5px",
-    borderTop: "10px solid #00579D",
-    boxShadow: 24,
-    p: 4,
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: "column",
-  };
-
-  const styleFiltros = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "100%",
-  };
-
-  const styleFiltroDireita = {
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: "column",
-    height: "100%",
-    width: "50%",
-  };
-
-  const styleFiltroEsquerda = {
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: "column",
-    height: "100%",
-    width: "50%",
-  };
-
-  const styleInputFiltro = {
-    display: "flex",
-    alignItems: "center",
-    width: "92%",
-  };
-
-  // variáveis para abrir o modal através de outra tela
-  let open = false;
-  open = props.open;
-  const setOpen = props.setOpen;
-
-  // abrir e fechar modal
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  // Função para limpar os filtros
+  /** Função para limpar os filtros ativos e fechar o modal */
   const limparFiltro = () => {
-    props.setFiltro({
-      solicitante: null,
-      forum: "",
-      tamanho: "",
-      gerente: null,
-      departamento: "",
-    });
-    handleClose();
+    props.setFiltro({ solicitante: null, forum: "", tamanho: "", gerente: null, departamento: "", analista: null });
+    props.fecharModal();
   };
 
   // Função para selecionar o solicitante
@@ -109,6 +28,7 @@ const ModalFiltroGerencia = (props) => {
       departamento: props.filtro.departamento,
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista
     });
   };
 
@@ -122,6 +42,7 @@ const ModalFiltroGerencia = (props) => {
       departamento: props.filtro.departamento,
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista
     });
   };
 
@@ -135,6 +56,7 @@ const ModalFiltroGerencia = (props) => {
       departamento: props.filtro.departamento,
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista
     });
   };
 
@@ -145,6 +67,21 @@ const ModalFiltroGerencia = (props) => {
       forum: props.filtro.forum,
       tamanho: props.filtro.tamanho,
       gerente: value,
+      departamento: props.filtro.departamento,
+      id: props.filtro.id,
+      codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista
+    });
+  };
+
+  // Função para selecionar o analista
+  const selecionarAnalista = (event, value) => {
+    props.setFiltro({
+      solicitante: props.filtro.solicitante,
+      forum: props.filtro.forum,
+      tamanho: props.filtro.tamanho,
+      gerente: props.filtro.gerente,
+      analista: value,
       departamento: props.filtro.departamento,
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
@@ -161,6 +98,7 @@ const ModalFiltroGerencia = (props) => {
       departamento: event.target.value,
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista
     });
   };
 
@@ -188,38 +126,27 @@ const ModalFiltroGerencia = (props) => {
     }
   };
 
-  // Função para salvar o número sequencial digitado no input
-  const salvarNumero = (event) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      departamento: props.filtro.departamento,
-      id: event?.target?.value || null,
-      codigoPPM: props.filtro.codigoPPM,
-    });
-  };
-
-  // Função para salvar o número PPM digitado no input
-  const salvarPPM = (event) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: event?.target?.value || null,
-    });
-  };
+  /** Pesquisa de analistas feita quando algum input é digitado */
+  const pesquisarAnalistas = (event) => {
+    if (event?.target.value?.length > 0) {
+      UsuarioService.getUsuarioByNomeAndTipo(
+        event.target.value,
+        "ANALISTA"
+      ).then((response) => {
+        props.setListaAnalistas(response);
+      })
+    }
+  }
 
   return (
-    <Modal open={props.open} onClose={handleClose} closeAfterTransition>
-      <Fade in={props.open}>
-        <Box sx={styleModal}>
+    <Modal open={true} onClose={props.fecharModal} closeAfterTransition>
+      <Fade in={true}>
+        <Box
+          className="absolute flex justify-evenly items-center flex-col"
+          sx={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 580, height: 400, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}
+        >
           <CloseIcon
-            onClick={handleClose}
+            onClick={props.fecharModal}
             sx={{
               position: "absolute",
               left: "93%",
@@ -234,8 +161,8 @@ const ModalFiltroGerencia = (props) => {
           >
             Filtros
           </Typography>
-          <Box sx={styleFiltros}>
-            <Box sx={styleFiltroEsquerda}>
+          <Box className="flex justify-center items-center w-full h-full">
+            <Box className="flex flex-col justify-evenly items-center h-full w-1/2">
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -297,7 +224,7 @@ const ModalFiltroGerencia = (props) => {
                 </Select>
               </FormControl>
             </Box>
-            <Box sx={styleFiltroDireita}>
+            <Box className="flex flex-col justify-evenly items-center h-full w-1/2">
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -341,42 +268,26 @@ const ModalFiltroGerencia = (props) => {
                   })}
                 </Select>
               </FormControl>
-              <Box sx={styleInputFiltro}>
-                {props.modo == "demanda" && (
-                  <input
-                    onChange={(e) => {
-                      salvarNumero(e);
-                    }}
-                    style={{
-                      width: "7rem",
-                      height: "2.938rem",
-                      textAlign: "center",
-                      border: "solid 1px #c4c4c4",
-                      color: "primary.main",
-                      borderRadius: "5px",
-                      background: "transparent",
-                    }}
-                    placeholder="Número"
-                  ></input>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={props.listaAnalistas}
+                noOptionsText={"Sem Resultados"}
+                sx={{ width: 240 }}
+                value={props.filtro.analista}
+                onInputChange={(e) => {
+                  pesquisarAnalistas(e);
+                }}
+                onChange={(e, value) => {
+                  selecionarAnalista(e, value);
+                }}
+                getOptionLabel={(option) => {
+                  return option?.nome || "";
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Analista Responsável" />
                 )}
-                {props.modo == "proposta" && (
-                  <input
-                    onChange={(e) => {
-                      salvarPPM(e);
-                    }}
-                    style={{
-                      width: "7rem",
-                      height: "2.938rem",
-                      textAlign: "center",
-                      border: "solid 1px #c4c4c4",
-                      color: "primary.main",
-                      borderRadius: "5px",
-                      background: "transparent",
-                    }}
-                    placeholder="PPM"
-                  ></input>
-                )}
-              </Box>
+              />
             </Box>
           </Box>
           <Button

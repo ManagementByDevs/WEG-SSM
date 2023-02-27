@@ -95,7 +95,7 @@ const FormularioGeralProposta = (props) => {
                   component="input"
                   type="date"
                   placeholder="Digite o código..."
-                  value={props.gerais.periodoExecucacaoInicio}
+                  value={props.gerais.periodoExecucacaoInicio || ""}
                   onChange={(e) =>
                     props.setGerais({
                       ...props.gerais,
@@ -122,7 +122,7 @@ const FormularioGeralProposta = (props) => {
                   component="input"
                   type="date"
                   placeholder="Digite o código..."
-                  value={props.gerais.periodoExecucacaoFim}
+                  value={props.gerais.periodoExecucacaoFim || ""}
                   onChange={(e) =>
                     props.setGerais({
                       ...props.gerais,
@@ -161,7 +161,7 @@ const FormularioGeralProposta = (props) => {
                 }}
                 component="input"
                 placeholder="Qtd"
-                value={props.gerais.qtdPaybackSimples}
+                value={props.gerais.qtdPaybackSimples || ""}
                 onChange={(e) =>
                   props.setGerais({
                     ...props.gerais,
@@ -176,7 +176,7 @@ const FormularioGeralProposta = (props) => {
                 <Select
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
-                  value={props.gerais.unidadePaybackSimples}
+                  value={props.gerais.unidadePaybackSimples || ""}
                   onChange={(e) =>
                     props.setGerais({
                       ...props.gerais,
@@ -219,7 +219,7 @@ const FormularioGeralProposta = (props) => {
                 }}
                 component="input"
                 placeholder="Digite o código..."
-                value={props.gerais.ppm}
+                value={props.gerais.ppm || ""}
                 onChange={(e) =>
                   props.setGerais({
                     ...props.gerais,
@@ -258,7 +258,7 @@ const FormularioGeralProposta = (props) => {
               }}
               component="input"
               placeholder="Insira o link do jira..."
-              value={props.gerais.linkJira}
+              value={props.gerais.linkJira || ""}
               onChange={(e) =>
                 props.setGerais({
                   ...props.gerais,

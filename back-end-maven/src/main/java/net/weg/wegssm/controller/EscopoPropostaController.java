@@ -27,6 +27,7 @@ public class EscopoPropostaController {
 
     private EscopoPropostaService escopoPropostaService;
     private UsuarioService usuarioService;
+    private DemandaService demandaService;
 
     private ResponsavelNegocioService responsavelNegocioService;
     private TabelaCustoService tabelaCustoService;
@@ -50,6 +51,13 @@ public class EscopoPropostaController {
                                                                @PathVariable(value = "titulo") String titulo) {
         Usuario usuario = usuarioService.findById(idUsuario).get();
         return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.findByUsuarioAndTitulo(usuario, titulo, pageable));
+    }
+
+    @GetMapping("/demanda/{idDemanda}")
+    public ResponseEntity<List<EscopoProposta>> findByDemanda(@PathVariable(value = "idDemanda") Long idDemanda) {
+        Demanda demanda = demandaService.findById(idDemanda).get();
+
+        return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.findByDemanda(demanda));
     }
 
     @PostMapping

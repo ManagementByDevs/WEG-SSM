@@ -20,8 +20,7 @@ import CustosService from "../../service/custosService";
 import EscopoPropostaService from "../../service/escopoPropostaService";
 
 const BarraProgressaoProposta = (props) => {
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+
   const location = useLocation();
 
   // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
@@ -95,7 +94,6 @@ const BarraProgressaoProposta = (props) => {
     setDadosDemanda(props.dados);
     pesquisarBUs();
     pesquisarForuns();
-    criarDadosIniciais();
   }, []);
 
   useEffect(() => {
@@ -107,11 +105,21 @@ const BarraProgressaoProposta = (props) => {
       if (!location.state.tabelaCustos) {
         if (mudancasFeitas) {
           idEscopo = 1;
-          let escopo = retornaObjetoProposta();
-          delete escopo.status;
-          EscopoPropostaService.post(escopo).then((response) => {
-            idEscopo = response.id;
-            setUltimoEscopo(response);
+
+          EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then((data) => {
+            if (data.length == 0) {
+              let escopo = retornaObjetoProposta();
+              delete escopo.status;
+              EscopoPropostaService.post(escopo).then((response) => {
+                idEscopo = response.id;
+                setUltimoEscopo(response);
+                criarDadosIniciais();
+              });
+            } else {
+              idEscopo = data[0].id;
+              setUltimoEscopo(data[0]);
+              carregarEscopoSalvo(data[0]);
+            }
           });
         }
       }
@@ -134,6 +142,41 @@ const BarraProgressaoProposta = (props) => {
       }, 5000);
     }
   }, [ultimoEscopo]);
+
+  const carregarEscopoSalvo = (escopo) => {
+    setDadosDemanda({
+      id: escopo.demanda.id,
+      titulo: escopo.titulo,
+      status: null,
+      problema: escopo.problema,
+      proposta: escopo.proposta,
+      frequencia: escopo.frequencia,
+      anexo: escopo.anexo,
+      solicitante: escopo.solicitante,
+      analista: escopo.analista,
+      gerente: escopo.gerente,
+      buSolicitante: escopo.buSolicitante,
+      busBeneficiadas: escopo.busBeneficiadas,
+      data: escopo.data,
+      departamento: escopo.departamento,
+      forum: escopo.forum,
+      secaoTI: escopo.secaoTI,
+      tamanho: escopo.tamanho
+    });
+
+    setGerais({
+      periodoExecucacaoInicio: new Date(escopo.inicioExecucao).toISOString().slice(0, 10),
+      periodoExecucacaoFim: new Date(escopo.fimExecucao).toISOString().slice(0, 10),
+      qtdPaybackSimples: escopo.paybackValor,
+      unidadePaybackSimples: escopo.paybackTipo,
+      ppm: escopo.codigoPPM,
+      linkJira: escopo.linkJira,
+      responsaveisNegocio: escopo.responsavelNegocio
+    });
+
+    setListaBeneficios(escopo.beneficios);
+    setCustos(escopo.tabelaCustos);
+  }
 
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = () => {
@@ -260,17 +303,21 @@ const BarraProgressaoProposta = (props) => {
 
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
-    let listaNova = [];
-    for (let beneficio of listaBeneficios) {
-      listaNova.push({
-        id: beneficio.id,
-        tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo
-      });
+    try {
+      let listaNova = [];
+      for (let beneficio of listaBeneficios) {
+        listaNova.push({
+          id: beneficio.id,
+          tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
+          valor_mensal: beneficio.valor_mensal,
+          moeda: beneficio.moeda,
+          memoriaCalculo: beneficio.memoriaCalculo
+        });
+      }
+      return listaNova;
+    } catch (error) {
+      return [];
     }
-    return listaNova;
   };
 
   // Variável utilizada para realizar edições
@@ -364,7 +411,7 @@ const BarraProgressaoProposta = (props) => {
       linkJira: gerais.linkJira,
       anexo: pegarAnexosSalvos()
     }
-    
+
     return objeto;
   }
 

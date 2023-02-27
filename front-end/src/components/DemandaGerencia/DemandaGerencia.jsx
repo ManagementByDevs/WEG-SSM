@@ -153,22 +153,41 @@ const DemandaGerencia = (props) => {
             </Box>
             {/* Infos gerente responsável e icons */}
             <Box className="flex items-end justify-end w-full">
-              <Box className="flex" sx={{ width: "24rem" }}>
-                <Typography fontSize={FontConfig.default} fontWeight="600">
-                  Gerente responsável:
-                </Typography>
-                <Typography
-                  className="overflow-hidden truncate"
-                  fontSize={FontConfig.default}
-                  fontWeight="600"
-                  sx={{
-                    color: "text.secondary",
-                    marginLeft: "5px",
-                    width: "50%",
-                  }}
-                >
-                  {props.dados.gerente?.nome || "Não Atribuído"}
-                </Typography>
+              <Box className="flex flex-col" sx={{ width: "24rem", height: "100%" }}>
+                <Box className="flex" sx={{ width: "24rem" }}>
+                  <Typography fontSize={FontConfig.default} fontWeight="600">
+                    Analista responsável:
+                  </Typography>
+                  <Typography
+                    className="overflow-hidden truncate"
+                    fontSize={FontConfig.default}
+                    fontWeight="600"
+                    sx={{
+                      color: "text.secondary",
+                      marginLeft: "5px",
+                      width: "50%",
+                    }}
+                  >
+                    {props.dados.analista?.nome || "Não Atribuído"}
+                  </Typography>
+                </Box>
+                <Box className="flex" sx={{ width: "24rem" }}>
+                  <Typography fontSize={FontConfig.default} fontWeight="600">
+                    Gerente responsável:
+                  </Typography>
+                  <Typography
+                    className="overflow-hidden truncate"
+                    fontSize={FontConfig.default}
+                    fontWeight="600"
+                    sx={{
+                      color: "text.secondary",
+                      marginLeft: "5px",
+                      width: "50%",
+                    }}
+                  >
+                    {props.dados.gerente?.nome || "Não Atribuído"}
+                  </Typography>
+                </Box>
               </Box>
               <Box>
                 {/* Icon de histórico  e chat*/}
