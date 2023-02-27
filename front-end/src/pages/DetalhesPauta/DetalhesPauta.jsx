@@ -1,10 +1,18 @@
 import { useState, React, useContext } from "react";
-import { Box, Typography, Button, Divider } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -200,11 +208,13 @@ const DetalhesPauta = (props) => {
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
           >
-            <SaveAltOutlinedIcon
-              fontSize="large"
-              className="delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main" }}
-            />
+            <Tooltip title="Baixar PDF">
+              <SaveAltOutlinedIcon
+                fontSize="large"
+                className="delay-120 hover:scale-110 duration-300"
+                sx={{ color: "icon.main" }}
+              />
+            </Tooltip>
           </Box>
         </Box>
         {/* Corpo da pauta */}
@@ -328,84 +338,87 @@ const DetalhesPauta = (props) => {
           className="flex fixed justify-end items-center"
           sx={{ width: "30rem", bottom: "20px", right: "20px" }}
         >
-          {minimizar && (
-            <Button
-              sx={{
-                marginRight: "1rem",
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-                maxHeight: "2.5rem",
-              }}
-              variant="contained"
-              onClick={feedbackAta}
-            >
-              <Typography>Criar Ata</Typography>
-            </Button>
-          )}
-          <Box className="flex justify-end">
-            <Box
-              className={`w-full ${display} items-center mr-1`}
-              sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
-            >
-              <Box className="flex justify-around w-full">
-                <Button
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "text.white",
-                    fontSize: FontConfig.default,
-                    maxHeight: "2.5rem",
-                  }}
-                  variant="contained"
-                  onClick={() => voltar()}
-                >
-                  Voltar
-                </Button>
-                <Button
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "text.white",
-                    fontSize: FontConfig.default,
-                    maxHeight: "2.5rem",
-                  }}
-                  variant="contained"
-                  onClick={voltarSumario}
-                >
-                  <OtherHousesIcon></OtherHousesIcon>
-                </Button>
-                <Button
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "text.white",
-                    fontSize: FontConfig.default,
-                    maxHeight: "2.5rem",
-                  }}
-                  variant="contained"
-                  onClick={proximo}
-                >
-                  <Typography>Próximo</Typography>
-                </Button>
+          <Box className="flex justify-center">
+            <Box className="flex justify-end">
+              <Box
+                className={`w-full ${display} items-center mr-1`}
+                sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
+              >
+                <Box className="flex justify-around w-full">
+                  <Button
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                      maxHeight: "2.5rem",
+                    }}
+                    variant="contained"
+                    onClick={() => voltar()}
+                  >
+                    Voltar
+                  </Button>
+                  <Button
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                      maxHeight: "2.5rem",
+                    }}
+                    variant="contained"
+                    onClick={voltarSumario}
+                  >
+                    <OtherHousesIcon></OtherHousesIcon>
+                  </Button>
+                  <Button
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                      maxHeight: "2.5rem",
+                    }}
+                    variant="contained"
+                    onClick={proximo}
+                  >
+                    <Typography>Próximo</Typography>
+                  </Button>
+                </Box>
               </Box>
+              <Tooltip title="Navegação">
+                <Box
+                  className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
+                  sx={{
+                    backgroundColor: "primary.main",
+                    color: "text.white",
+                    fontSize: FontConfig.default,
+                  }}
+                  onClick={() => {
+                    animarBotoes();
+                    setMinimizar(!minimizar);
+                  }}
+                >
+                  <DensitySmallIcon
+                    sx={{
+                      rotate: "90deg",
+                      animation: `${girarIcon} 1.2s forwards`,
+                    }}
+                  ></DensitySmallIcon>
+                </Box>
+              </Tooltip>
             </Box>
-            <Box
-              className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
-              sx={{
-                backgroundColor: "primary.main",
-                color: "text.white",
-                fontSize: FontConfig.default,
-              }}
-              onClick={() => {
-                animarBotoes();
-                setMinimizar(!minimizar);
-              }}
-            >
-              <DensitySmallIcon
+            <Tooltip title="Criar Ata">
+              <Box
+                onClick={feedbackAta}
+                className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                 sx={{
-                  rotate: "90deg",
-                  animation: `${girarIcon} 1.2s forwards`,
+                  backgroundColor: "primary.main",
+                  fontSize: FontConfig.default,
+                  marginLeft: "1rem",
+                  color: "icon.main",
                 }}
-              ></DensitySmallIcon>
-            </Box>
+              >
+                <PostAddOutlinedIcon fontSize="large" />
+              </Box>
+            </Tooltip>
           </Box>
         </Box>
       </Box>
