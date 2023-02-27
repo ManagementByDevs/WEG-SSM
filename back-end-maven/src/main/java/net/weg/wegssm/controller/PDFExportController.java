@@ -19,8 +19,8 @@ import java.util.Date;
 
 @AllArgsConstructor
 @Controller
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/weg_ssm")
+//@CrossOrigin(origins = "http://localhost:3000")
+//@RequestMapping("/weg_ssm")
 public class PDFExportController {
 
     private final PDFGeneratorService pdfGeneratorService;
