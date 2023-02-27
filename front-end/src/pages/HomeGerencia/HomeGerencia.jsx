@@ -235,6 +235,7 @@ const HomeGerencia = () => {
   // Listas usadas para os inputs de solicitante e gerente no modal de filtro
   const [listaSolicitantes, setListaSolicitantes] = useState([]);
   const [listaGerentes, setListaGerentes] = useState([]);
+  const [listaAnalistas, setListaAnalistas] = useState([]);
 
   // String para ordenação das demandas
   const [totalPaginas, setTotalPaginas] = useState(1);
@@ -261,6 +262,7 @@ const HomeGerencia = () => {
     departamento: "",
     id: null,
     codigoPPM: null,
+    analista: null
   });
   const [modoFiltro, setModoFiltro] = useState("demanda");
 
@@ -333,6 +335,7 @@ const HomeGerencia = () => {
       departamento: null,
       codigoPPM: null,
       id: null,
+      analista: null
     };
 
     if (filtrosAtuais.solicitante != "") {
@@ -356,12 +359,15 @@ const HomeGerencia = () => {
     if (filtrosAtuais.id != "") {
       paramsTemp.id = filtrosAtuais.id;
     }
+    if (filtrosAtuais.analista != "") {
+      paramsTemp.analista = filtrosAtuais.analista;
+    }
 
     setParams({
       titulo: valorPesquisa,
       solicitante: paramsTemp.solicitante,
       gerente: paramsTemp.gerente,
-      analista: JSON.parse(params.analista),
+      analista: paramsTemp.analista,
       forum: paramsTemp.forum,
       tamanho: paramsTemp.tamanho,
       status: params.status,
@@ -401,14 +407,12 @@ const HomeGerencia = () => {
             ...params,
             gerente: usuario,
             status: "BACKLOG_APROVACAO",
-            analista: null,
           });
         } else {
           setParams({
             ...params,
             gerente: null,
             status: "BACKLOG_REVISAO",
-            analista: null,
           });
         }
         setModoFiltro("demanda");
@@ -418,7 +422,6 @@ const HomeGerencia = () => {
           ...params,
           gerente: null,
           status: "ASSESSMENT",
-          analista: usuario,
         });
         setModoFiltro("demanda");
         break;
@@ -426,7 +429,6 @@ const HomeGerencia = () => {
         setParams({
           ...params,
           gerente: null,
-          analista: usuario,
           status: "ASSESSMENT_APROVACAO",
         });
         setModoFiltro("proposta");
@@ -446,6 +448,10 @@ const HomeGerencia = () => {
       setParams({ ...params, gerente: usuario, status: "BACKLOG_APROVACAO" });
     } else {
       setParams({ ...params, status: "BACKLOG_REVISAO" });
+    }
+
+    if (listaAnalistas.length == 0 && usuario.tipoUsuario == "ANALISTA") {
+      listaAnalistas.push(usuario);
     }
   }, [usuario]);
 
@@ -534,7 +540,7 @@ const HomeGerencia = () => {
         }
         break;
       case "2":
-        if (params.status != null && params.analista != null) {
+        if (params.status != null) {
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -545,7 +551,7 @@ const HomeGerencia = () => {
         }
         break;
       case "3":
-        if (params.status != null && params.analista != null) {
+        if (params.status != null) {
           PropostaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -641,10 +647,10 @@ const HomeGerencia = () => {
     setValue(newValue);
   };
 
-  const [modalFiltro, setOpenModal] = useState(false);
+  const [modalFiltro, setModalFiltro] = useState(false);
 
   const abrirModalFiltro = () => {
-    setOpenModal(true);
+    setModalFiltro(true);
   };
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
@@ -679,16 +685,21 @@ const HomeGerencia = () => {
 
   // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
   const pesquisaTitulo = () => {
-    setParams({
-      titulo: valorPesquisa,
-      solicitante: JSON.parse(params.solicitante),
-      gerente: JSON.parse(params.gerente),
-      analista: JSON.parse(params.analista),
-      forum: JSON.parse(params.forum),
-      tamanho: params.tamanho,
-      status: params.status,
-      departamento: JSON.parse(params.departamento),
-    });
+    if (!parseInt(valorPesquisa)) {
+      setParams({
+        titulo: valorPesquisa, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento), codigoPPM: null, id: null,
+      });
+    } else {
+      if (value < 3) {
+        setParams({
+          titulo: params.titulo, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento), codigoPPM: params.codigoPPM, id: valorPesquisa,
+        });
+      } else {
+        setParams({
+          titulo: params.titulo, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento), codigoPPM: valorPesquisa, id: params.id,
+        });
+      }
+    }
   };
 
   const abrirModalOrdenacao = () => {
@@ -1031,8 +1042,7 @@ const HomeGerencia = () => {
                 )}
                 {modalFiltro && (
                   <ModalFiltroGerencia
-                    open={modalFiltro}
-                    setOpen={setOpenModal}
+                    fecharModal={() => { setModalFiltro(false) }}
                     filtro={filtrosAtuais}
                     setFiltro={setFiltrosAtuais}
                     modo={modoFiltro}
@@ -1042,6 +1052,8 @@ const HomeGerencia = () => {
                     setListaSolicitantes={setListaSolicitantes}
                     listaGerentes={listaGerentes}
                     setListaGerentes={setListaGerentes}
+                    listaAnalistas={listaAnalistas}
+                    setListaAnalistas={setListaAnalistas}
                     buscarPorNumero={buscarPorNumero}
                     buscarPorPPM={buscarPorPPM}
                   />
@@ -1056,7 +1068,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => {}}
+                  onClick={() => { }}
                   variant="contained"
                   disableElevation
                 >
@@ -1123,7 +1135,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1140,7 +1152,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{

@@ -46,52 +46,48 @@ const LinhaTabelaCustos = (props) => {
   return (
     <TableRow className="border-b">
       <td align="center" className="pt-5 pb-5">
-        <FormControl
-          variant="standard"
-          sx={{ marginRight: "10px", minWidth: 130, marginTop: "0.8rem" }}
-        >
-          <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
-          <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
-            value={props.dados.custos[props.index].tipoDespesa || ""}
-            onChange={(e) => {
-              let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].tipoDespesa =
-                e.target.value;
-              props.setCustos(aux);
-            }}
-          >
-            <MenuItem value={"1"}>Tipo 1</MenuItem>
-            <MenuItem value={"2"}>Tipo 2</MenuItem>
-            <MenuItem value={"3"}>Tipo 3</MenuItem>
-          </Select>
-        </FormControl>
+        <TextareaAutosize
+          style={{
+            width: "80%",
+            resize: "none",
+            textAlign: "center",
+            backgroundColor: corFundoTextArea,
+            marginTop: "0.8rem",
+          }}
+          fontSize={FontConfig.medium}
+          className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+          placeholder="Digite o tipo..."
+          value={props.dados.custos[props.index].tipoDespesa || ""}
+          onChange={(e) => {
+            let aux = [...props.custos];
+            aux[props.indexCusto].custos[props.index].tipoDespesa =
+              e.target.value;
+            props.setCustos(aux);
+          }}
+        />
       </td>
       <td align="center" className="pt-5 pb-5">
-        <FormControl
-          variant="standard"
-          sx={{ marginRight: "10px", minWidth: 130, marginTop: "0.8rem" }}
-        >
-          <InputLabel id="demo-simple-select-label">Perfil</InputLabel>
-          <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
-            value={props.dados.custos[props.index].perfilDespesa || ""}
-            onChange={(e) => {
-              let aux = [...props.custos];
+      <TextareaAutosize
+          style={{
+            width: "80%",
+            resize: "none",
+            textAlign: "center",
+            backgroundColor: corFundoTextArea,
+            marginTop: "0.8rem",
+          }}
+          fontSize={FontConfig.medium}
+          className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+          placeholder="Digite o perfil..."
+          value={props.dados.custos[props.index].perfilDespesa || ""}
+          onChange={(e) => {
+            let aux = [...props.custos];
               aux[props.indexCusto].custos[props.index].perfilDespesa =
                 e.target.value;
               props.setCustos(aux);
-            }}
-          >
-            <MenuItem value={"1"}>Perfil 1</MenuItem>
-            <MenuItem value={"2"}>Perfil 2</MenuItem>
-            <MenuItem value={"3"}>Perfil 3</MenuItem>
-          </Select>
-        </FormControl>
+          }}
+        />
       </td>
-      <td align="center" className="pt-8 pb-5">
+      <td align="center" className="pt-5 pb-5">
         <TextareaAutosize
           style={{
             width: "95%",
@@ -112,7 +108,7 @@ const LinhaTabelaCustos = (props) => {
           }}
         />
       </td>
-      <td align="center" className="pt-8 pb-5">
+      <td align="center" className="pt-5 pb-5">
         <TextareaAutosize
           style={{
             width: "90%",
@@ -132,7 +128,7 @@ const LinhaTabelaCustos = (props) => {
           }}
         />
       </td>
-      <td align="center" className="pt-8 pb-5">
+      <td align="center" className="pt-5 pb-5">
         <TextareaAutosize
           style={{
             width: "95%",
