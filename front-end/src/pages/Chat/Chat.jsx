@@ -625,12 +625,12 @@ const Chat = () => {
                           id="terceiro"
                           onClick={handleClick}
                           size="small"
-                        
+
                           aria-controls={open ? "account-menu" : undefined}
                           aria-haspopup="true"
                           aria-expanded={open ? "true" : undefined}
                         >
-                          <MoreVertOutlinedIcon sx={{color:"white"}} />
+                          <MoreVertOutlinedIcon sx={{ color: "white" }} />
                         </IconButton>
                       </Tooltip>
 
@@ -789,7 +789,7 @@ const Chat = () => {
                           aria-haspopup="true"
                           aria-expanded={open ? "true" : undefined}
                         >
-                          <MoreVertOutlinedIcon sx={{color:"white"}}/>
+                          <MoreVertOutlinedIcon sx={{ color: "white" }} />
                         </IconButton>
                       </Tooltip>
 
