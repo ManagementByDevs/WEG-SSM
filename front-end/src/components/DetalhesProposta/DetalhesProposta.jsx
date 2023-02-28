@@ -126,6 +126,10 @@ const DetalhesProposta = ({
 
   console.log(proposta);
 
+  React.useEffect(() => {
+    console.log(parecerComissao);
+  }, [parecerComissao]);
+
   return (
     <Box className="mt-10 flex justify-center">
       <Box
@@ -467,36 +471,41 @@ const DetalhesProposta = ({
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.pareceres}:&nbsp;
               </Typography>
-              <Box className="items-center mx-4">
-                <Typography>{proposta.forum.nome}: &nbsp;</Typography>
-                <TextField
-                  select
-                  label={texts.detalhesProposta.parecer}
-                  value={parecerComissao}
-                  onChange={(event) => setParecerComissao(event.target.value)}
-                  variant="standard"
-                >
-                  <MenuItem key={"Aprovado"} value={"APROVADO"}>
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesProposta.aprovado}
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={"Reprovado"} value={"REPROVADO"}>
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesProposta.reprovado}
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesProposta.devolvido}
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesProposta.businessCase}
-                    </Typography>
-                  </MenuItem>
-                </TextField>
+              <Box className="mx-4 mt-2">
+                <Box className="flex">
+                  <Box className="flex items-center mt-4">
+                    <Typography>{proposta.forum.nome}: &nbsp;</Typography>
+                  </Box>
+                  <TextField
+                    select
+                    label={texts.detalhesProposta.parecer}
+                    value={parecerComissao}
+                    onChange={(event) => setParecerComissao(event.target.value)}
+                    variant="standard"
+                    sx={{ width: "10rem", marginLeft: "0.5rem" }}
+                  >
+                    <MenuItem key={"Aprovado"} value={"APROVADO"}>
+                      <Typography fontSize={FontConfig.medium}>
+                        {texts.detalhesProposta.aprovado}
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+                      <Typography fontSize={FontConfig.medium}>
+                        {texts.detalhesProposta.reprovado}
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+                      <Typography fontSize={FontConfig.medium}>
+                        {texts.detalhesProposta.devolvido}
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+                      <Typography fontSize={FontConfig.medium}>
+                        {texts.detalhesProposta.businessCase}
+                      </Typography>
+                    </MenuItem>
+                  </TextField>
+                </Box>
               </Box>
             </Box>
 
