@@ -14,50 +14,48 @@ import FontContext from "../../service/FontContext";
 
 /** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
+  // props.dados => Lista de arquivos recebidos
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Variáveis para armazenar os arquivos
-  const dragArea = useRef(null);
-  const inputFile = useRef(null);
+  /** Variável usada para referência da área de "soltar" arquivos */
+  const areaArquivos = useRef(null);
 
-  // UseState para receber os arquivos e mapear na tabela
-  const [mapAbleFileList, setMapAbleFileList] = useState([]);
+  /** Variável usada para referência do input do tipo "file" para selecionar os arquivos */
+  const inputArquivos = useRef(null);
 
-  // UseState para alterar o texto do drag and drop
-  const [dragText, setDragText] = useState(
-    "Arraste & Solte para Adicionar um Arquivo"
-  );
+  /** Variável usada como texto da caixa de seleção de arquivos, modificado ao arrastar arquivos na caixa */
+  const [textoCaixa, setTextoCaixa] = useState("Arraste & Solte para Adicionar um Arquivo");
 
-  // Função para abrir o input file
-  const fileClick = () => {
-    inputFile.current.click();
-  };
-
-  // Função para adicionar os arquivos no array
-  const onFilesSelect = () => {
-    props.setDados([...props.dados, ...inputFile.current.files]);
-  };
-
-  // UseEffect para atualizar o array de arquivos
+  // UseEffect para salvar o escopo da demanda atual quando algum arquivo for adicionado / removido
   useEffect(() => {
-    setMapAbleFileList(Array.from(props.dados));
     props.salvarEscopo();
   }, [props.dados]);
 
-  // Função para o drag and drop
-  const drag = (event) => {
-    event.preventDefault();
-    setDragText("Solte para Adicionar um Arquivo");
+  /** Função para acionar o input de arquivos */
+  const clickInputArquivos = () => {
+    inputArquivos.current.click();
   };
 
-  // Função para alterar o texto do drag and drop
-  const onDragLeaveHandle = (event) => {
-    event.preventDefault();
-    setDragText("Arraste & Solte para Adicionar um Arquivo");
+  /** Função para adicionar os arquivos no array após seleção pelo input */
+  const salvarArquivos = () => {
+    props.setDados([...props.dados, ...inputArquivos.current.files]);
   };
 
-  // Função para adicionar os arquivos no array
+  /** Função para mudar o "textoCaixa" quando o usuário arrastar um arquivo para a caixa de seleção */
+  const textoSoltarArquivo = (event) => {
+    event.preventDefault();
+    setTextoCaixa("Solte para Adicionar um Arquivo");
+  };
+
+  /** Função para mudar o "textoCaixa" quando o usuário arrastar um arquivo para fora da caixa de seleção */
+  const textoArrastarArquivo = (event) => {
+    event.preventDefault();
+    setTextoCaixa("Arraste & Solte para Adicionar um Arquivo");
+  };
+
+  /** Função para salvar os arquivos que forem arrastados para a caixa de seleção */
   const onDropFile = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -66,65 +64,60 @@ const FormularioAnexosDemanda = (props) => {
     props.setDados([...props.dados, ...fileArrayAux]);
   };
 
-  // Função para remover um arquivo do array
+  /** Função para excluir um arquivo do array */
   const deleteFile = (desiredIndex) => {
-    setMapAbleFileList(
-      mapAbleFileList.filter((_, index) => index !== desiredIndex)
-    );
     props.setDados(props.dados.filter((_, index) => index !== desiredIndex));
   };
 
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
+
+      {/* Caixa de seleção */}
       <Box
-        ref={dragArea}
-        onDragOver={drag}
-        onDragLeave={onDragLeaveHandle}
+        ref={areaArquivos}
+        onDragOver={textoSoltarArquivo}
+        onDragLeave={textoArrastarArquivo}
         onDrop={onDropFile}
         className="flex justify-center items-center flex-col rounded border-2"
         sx={{ width: "85%", height: "85%" }}
       >
         <input
-          onChange={onFilesSelect}
-          ref={inputFile}
+          onChange={salvarArquivos}
+          ref={inputArquivos}
           type="file"
           multiple
           hidden
         />
         {props.dados?.length === 0 ? (
+
+          // Texto de arrastar arquivos caso não possua nenhum arquivo na lista
           <>
             <Typography
               fontSize={FontConfig.veryBig}
               color="text.secondary"
-              sx={{
-                fontWeight: "600",
-                cursor: "default",
-                marginBottom: "1rem",
-              }}
+              sx={{ fontWeight: "600", cursor: "default", marginBottom: "1rem", }}
             >
-              {dragText}
+              {textoCaixa}
             </Typography>
             <Typography
               fontSize={FontConfig.veryBig}
               color="text.secondary"
-              sx={{
-                fontWeight: "600",
-                cursor: "default",
-                marginBottom: "1rem",
-              }}
+              sx={{ fontWeight: "600", cursor: "default", marginBottom: "1rem", }}
             >
               OU
             </Typography>
-            <Button onClick={fileClick} variant="contained" disableElevation>
+            <Button onClick={clickInputArquivos} variant="contained" disableElevation>
               <Typography fontSize={FontConfig.medium}>
                 Pesquisar Arquivos
               </Typography>
             </Button>
           </>
         ) : (
+
+          // Tabela de arquivos da lista
           <Box className="w-full h-full px-2 py-4 relative">
             <Box className="absolute bottom-2 right-2">
-              <IconButton onClick={fileClick} aria-label="adicionar">
+              <IconButton onClick={clickInputArquivos} aria-label="adicionar">
                 <AddCircleIcon color="primary" fontSize="large" />
               </IconButton>
             </Box>
@@ -162,7 +155,9 @@ const FormularioAnexosDemanda = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {mapAbleFileList?.map((file, index) => {
+
+                  {/* Lista de arquivos */}
+                  {props.dados?.map((file, index) => {
                     return (
                       <TableRow key={index} className="border-b">
                         <td className="text-center">

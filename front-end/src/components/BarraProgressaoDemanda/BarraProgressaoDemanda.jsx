@@ -16,7 +16,7 @@ import FontContext from "../../service/FontContext";
 /** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
  * salvando a demanda e escopos no banco de dados
  */
-const BarraProgressaoDemanda = (props) => {
+const BarraProgressaoDemanda = () => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 

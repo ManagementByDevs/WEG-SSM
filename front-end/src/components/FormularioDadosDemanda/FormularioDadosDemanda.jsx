@@ -42,6 +42,7 @@ const FormularioDadosDemanda = (props) => {
           className="w-3/4 flex flex-col justify-evenly"
           sx={{ height: "85%" }}
         >
+
           {/* Input de título */}
           <InputComLabel
             texto={props.dados.titulo}
@@ -51,6 +52,7 @@ const FormularioDadosDemanda = (props) => {
             placeholder="Digite o título..."
             fontConfig={FontConfig.default}
           />
+
           {/* Input de problema */}
           <InputComLabel
             texto={props.dados.problema}
@@ -61,6 +63,7 @@ const FormularioDadosDemanda = (props) => {
             fontConfig={FontConfig.default}
             rows="5"
           />
+
           {/* Input de proposta */}
           <InputComLabel
             texto={props.dados.proposta}
@@ -71,6 +74,7 @@ const FormularioDadosDemanda = (props) => {
             fontConfig={FontConfig.default}
             rows="8"
           />
+          
           <Box sx={{ width: "40%" }}>
             {/* Input de frequência */}
             <InputComLabel

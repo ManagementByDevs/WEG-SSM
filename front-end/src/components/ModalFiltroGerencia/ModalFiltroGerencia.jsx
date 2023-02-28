@@ -7,6 +7,7 @@ import UsuarioService from "../../service/usuarioService";
 
 import FontContext from "../../service/FontContext";
 
+/** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
 
   // Context para alterar o tamanho da fonte
@@ -18,109 +19,19 @@ const ModalFiltroGerencia = (props) => {
     props.fecharModal();
   };
 
-  // Função para selecionar o solicitante
-  const selecionarSolicitante = (event, value) => {
-    props.setFiltro({
-      solicitante: value,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista
-    });
-  };
-
-  // Função para selecionar o fórum
-  const selecionarForum = (event) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: event.target.value,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista
-    });
-  };
-
-  // Função para selecionar o tamanho
-  const selecionarTamanho = (event) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: event.target.value,
-      gerente: props.filtro.gerente,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista
-    });
-  };
-
-  // Função para selecionar o gerente
-  const selecionarGerente = (event, value) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: value,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista
-    });
-  };
-
-  // Função para selecionar o analista
-  const selecionarAnalista = (event, value) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      analista: value,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-    });
-  };
-
-  // Função para selecionar o departamento
-  const selecionarDepartamento = (event) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      departamento: event.target.value,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista
-    });
-  };
-
-  // Pesquisa de solicitantes feita quando algum input é digitado
+  /** Pesquisa de solicitantes feita quando algum input é digitado */
   const pesquisarSolicitantes = (event) => {
     if (event?.target.value?.length > 0) {
-      UsuarioService.getUsuarioByNomeAndTipo(
-        event.target.value,
-        "SOLICITANTE"
-      ).then((response) => {
+      UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "SOLICITANTE").then((response) => {
         props.setListaSolicitantes(response);
       });
     }
   };
 
-  // Pesquisa de gerentes feita quando algum input é digitado
+  /** Pesquisa de gerentes feita quando algum input é digitado */
   const pesquisarGerentes = (event) => {
     if (event?.target.value?.length > 0) {
-      UsuarioService.getUsuarioByNomeAndTipo(
-        event.target.value,
-        "GERENTE"
-      ).then((response) => {
+      UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "GERENTE").then((response) => {
         props.setListaGerentes(response);
       });
     }
@@ -129,14 +40,53 @@ const ModalFiltroGerencia = (props) => {
   /** Pesquisa de analistas feita quando algum input é digitado */
   const pesquisarAnalistas = (event) => {
     if (event?.target.value?.length > 0) {
-      UsuarioService.getUsuarioByNomeAndTipo(
-        event.target.value,
-        "ANALISTA"
-      ).then((response) => {
+      UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "ANALISTA").then((response) => {
         props.setListaAnalistas(response);
-      })
+      });
     }
   }
+
+  /** Função para atualizar os filtros quando um solicitante for selecionado */
+  const selecionarSolicitante = (event, value) => {
+    props.setFiltro({
+      solicitante: value, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+    });
+  };
+
+  /** Função para atualizar os filtros quando um forum for selecionado */
+  const selecionarForum = (event) => {
+    props.setFiltro({
+      solicitante: props.filtro.solicitante, forum: event.target.value, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+    });
+  };
+
+  /** Função para atualizar os filtros quando um tamanho for selecionado */
+  const selecionarTamanho = (event) => {
+    props.setFiltro({
+      solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: event.target.value, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+    });
+  };
+
+  /** Função para atualizar os filtros quando um gerente for selecionado */
+  const selecionarGerente = (event, value) => {
+    props.setFiltro({
+      solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: value, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+    });
+  };
+
+  /** Função para atualizar os filtros quando um departamento for selecionado */
+  const selecionarDepartamento = (event) => {
+    props.setFiltro({
+      solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: event.target.value, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+    });
+  };
+
+  /** Função para atualizar os filtros quando um analista for selecionado */
+  const selecionarAnalista = (event, value) => {
+    props.setFiltro({
+      solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, analista: value, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM,
+    });
+  };
 
   return (
     <Modal open={true} onClose={props.fecharModal} closeAfterTransition>
@@ -163,6 +113,8 @@ const ModalFiltroGerencia = (props) => {
           </Typography>
           <Box className="flex justify-center items-center w-full h-full">
             <Box className="flex flex-col justify-evenly items-center h-full w-1/2">
+
+              {/* Select de solicitante */}
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -183,6 +135,8 @@ const ModalFiltroGerencia = (props) => {
                   <TextField {...params} label="Solicitante" />
                 )}
               />
+
+              {/* Select de fórum */}
               <FormControl sx={{ width: "15rem" }}>
                 <InputLabel id="demo-simple-select-label">Fórum</InputLabel>
                 <Select
@@ -204,6 +158,8 @@ const ModalFiltroGerencia = (props) => {
                   })}
                 </Select>
               </FormControl>
+
+              {/* Select de tamanho */}
               <FormControl sx={{ width: "15rem" }}>
                 <InputLabel id="demo-simple-select-label">Tamanho</InputLabel>
                 <Select
@@ -225,6 +181,8 @@ const ModalFiltroGerencia = (props) => {
               </FormControl>
             </Box>
             <Box className="flex flex-col justify-evenly items-center h-full w-1/2">
+
+              {/* Select de gerente */}
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -245,6 +203,8 @@ const ModalFiltroGerencia = (props) => {
                   <TextField {...params} label="Gerente Responsável" />
                 )}
               />
+
+              {/* Select de departamento */}
               <FormControl sx={{ width: "15rem" }}>
                 <InputLabel id="demo-simple-select-label">
                   Departamento
@@ -268,6 +228,8 @@ const ModalFiltroGerencia = (props) => {
                   })}
                 </Select>
               </FormControl>
+
+              {/* Select de analista */}
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -290,6 +252,8 @@ const ModalFiltroGerencia = (props) => {
               />
             </Box>
           </Box>
+
+          {/* Botão de limpar filtros */}
           <Button
             onClick={limparFiltro}
             variant="contained"
