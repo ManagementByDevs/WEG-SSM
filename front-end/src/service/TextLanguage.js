@@ -577,6 +577,9 @@ const TextLanguage = (linguagem) => {
             deletar: "Deletar",
             naoHaNotificacoes: "Não há notificações",
         },
+        detalhesPropostaPagina: {
+            adicionarAPauta: "Adicionar à Pauta",
+        },
         detalhesProposta: {
             ppm: "PPM",
             solicitante: "Solicitante",
@@ -624,6 +627,8 @@ const TextLanguage = (linguagem) => {
             maisInformacoes: "Mais Informações...",
             comissao: "Comissão",
             direcaoGeral: "Direção Geral",
+            semInformacoesAdicionais: "Sem informações adicionais",
+            semParecer: "Sem parecer",
         }
 
     } : linguagem == "en" ? {
