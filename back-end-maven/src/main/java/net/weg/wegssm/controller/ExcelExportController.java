@@ -6,13 +6,18 @@ import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.TipoBeneficio;
 import net.weg.wegssm.model.service.DemandaService;
 import net.weg.wegssm.model.service.ExcelGeneratorService;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,6 +30,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/weg_ssm")
 public class ExcelExportController {
 
     private static DemandaService demandaService;
@@ -69,11 +76,19 @@ public class ExcelExportController {
         demandas.add(d2);
 
         // Cria um workbook do Excel e uma planilha
+
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Demandas");
 
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        style.setFont(font);
+        style.setAlignment(HorizontalAlignment.CENTER);
+
         // Cria uma linha de cabeçalho para a planilha
         XSSFRow headerRow = sheet.createRow(0);
+
         headerRow.createCell(0).setCellValue("ID");
         headerRow.createCell(1).setCellValue("Título");
         headerRow.createCell(2).setCellValue("Problema");
@@ -87,7 +102,19 @@ public class ExcelExportController {
         headerRow.createCell(10).setCellValue("Fórum");
         headerRow.createCell(11).setCellValue("Anexos");
 
-        // Popula a planilha com os dados das demandas
+        headerRow.getCell(0).setCellStyle(style);
+        headerRow.getCell(1).setCellStyle(style);
+        headerRow.getCell(2).setCellStyle(style);
+        headerRow.getCell(3).setCellStyle(style);
+        headerRow.getCell(4).setCellStyle(style);
+        headerRow.getCell(5).setCellStyle(style);
+        headerRow.getCell(6).setCellStyle(style);
+        headerRow.getCell(7).setCellStyle(style);
+        headerRow.getCell(8).setCellStyle(style);
+        headerRow.getCell(9).setCellStyle(style);
+        headerRow.getCell(10).setCellStyle(style);
+        headerRow.getCell(11).setCellStyle(style);
+
         int rowNum = 1;
         for (Demanda demanda : demandas) {
             XSSFRow row = sheet.createRow(rowNum++);
@@ -108,9 +135,20 @@ public class ExcelExportController {
             row.createCell(6).setCellValue(demanda.getTamanho());
             row.createCell(7).setCellValue(demanda.getSecaoTI());
 
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+            sheet.autoSizeColumn(3);
+            sheet.autoSizeColumn(4);
+            sheet.autoSizeColumn(5);
+            sheet.autoSizeColumn(6);
+            sheet.autoSizeColumn(7);
+            sheet.autoSizeColumn(8);
+            sheet.autoSizeColumn(9);
+            sheet.autoSizeColumn(10);
+            sheet.autoSizeColumn(11);
+
             rowNum = rowIndex;
         }
-
 
         // Define os headers para o response
         response.setHeader("Content-Disposition", "attachment; filename=demandas.xlsx");
@@ -122,5 +160,14 @@ public class ExcelExportController {
         workbook.close();
         outputStream.close();
     }
+
+    @GetMapping("/excel/propostas")
+    public void exportPropostasToExcel(HttpServletResponse response) throws IOException { }
+
+    @GetMapping("/excel/pautas")
+    public void exportPautasToExcel(HttpServletResponse response) throws IOException { }
+
+    @GetMapping("/excel/atas")
+    public void exportAtasToExcel(HttpServletResponse response) throws IOException { }
 
 }
