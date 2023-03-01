@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/DetalhesProposta/DetalhesProposta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/DetalhesProposta/DetalhesProposta.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +24,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2EgIHhbFsrdm6bj3rPsNTtRvN5J" />
   <component name="ProjectViewState">
@@ -98,6 +102,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 
 import {
   Box,
@@ -24,68 +24,68 @@ import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
-const DetalhesProposta = ({
-  proposta = {
-    analista: {},
-    anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
-    beneficios: [
-      {
-        id: 0,
-        tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
-        valor_mensal: 0,
-        moeda: "",
-        memoriaCalculo: "",
-      },
-    ],
-    buSolicitante: { id: 0, nome: "" },
-    busBeneficiadas: [{ id: 0, nome: "" }],
-    codigoPPM: 0,
-    data: "",
-    demanda: 0,
-    departamento: 0,
-    escopo: 0,
-    fimExecucao: "",
-    forum: { id: 0, nome: "", visibilidade: true },
-    frequencia: "",
-    gerente: 0,
-    historicoProposta: [],
-    id: 0,
-    inicioExecucao: "",
-    linkJira: "",
-    naoPublicada: true,
-    parecerComissao: 0,
-    parecerDG: 0,
-    parecerInformacao: "",
-    paybackTipo: "",
-    paybackValor: 0,
-    problema: "",
-    proposta: "",
-    publicada: false,
-    responsavelNegocio: [],
-    secaoTI: "",
-    solicitante: {},
-    status: "",
-    tabelaCustos: [
-      {
-        id: 0,
-        custos: [
-          {
-            id: 0,
-            tipoDespesa: "",
-            perfilDespesa: "",
-            periodoExecucao: 0,
-            horas: 0,
-            valorHora: 0,
-          },
-        ],
-        ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
-      },
-    ],
-    tamanho: "",
-    titulo: "",
-    visibilidade: true,
-  },
-}) => {
+const propostaExample = {
+  analista: {},
+  anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
+  beneficios: [
+    {
+      id: 0,
+      tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
+      valor_mensal: 0,
+      moeda: "",
+      memoriaCalculo: "",
+    },
+  ],
+  buSolicitante: { id: 0, nome: "" },
+  busBeneficiadas: [{ id: 0, nome: "" }],
+  codigoPPM: 0,
+  data: "",
+  demanda: 0,
+  departamento: 0,
+  escopo: 0,
+  fimExecucao: "",
+  forum: { id: 0, nome: "", visibilidade: true },
+  frequencia: "",
+  gerente: 0,
+  historicoProposta: [],
+  id: 0,
+  inicioExecucao: "",
+  linkJira: "",
+  naoPublicada: true,
+  parecerComissao: "",
+  parecerDG: "",
+  parecerInformacao: "",
+  paybackTipo: "",
+  paybackValor: 0,
+  problema: "",
+  proposta: "",
+  publicada: false,
+  responsavelNegocio: [],
+  secaoTI: "",
+  solicitante: {},
+  status: "",
+  tabelaCustos: [
+    {
+      id: 0,
+      custos: [
+        {
+          id: 0,
+          tipoDespesa: "",
+          perfilDespesa: "",
+          periodoExecucao: 0,
+          horas: 0,
+          valorHora: 0,
+        },
+      ],
+      ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
+    },
+  ],
+  tamanho: "",
+  titulo: "",
+  visibilidade: true,
+};
+
+const DetalhesProposta = ({ proposta = propostaExample }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -356,7 +356,7 @@ const DetalhesProposta = ({
               </Box>
             </Box>
 
-            {/* Bus beneficiadas */}
+            {/* BUs beneficiadas */}
             <Box className="mt-2">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.busBeneficiadas}:&nbsp;
@@ -477,113 +477,40 @@ const DetalhesProposta = ({
               </Typography>
             </Box>
 
-            <Divider />
-
-            {/* Pareceres */}
-            <Box className="mt-3">
-              <Typography fontSize={FontConfig.big} fontWeight="bold">
-                {texts.detalhesProposta.pareceres}:&nbsp;
-              </Typography>
-              <Box className="mx-4">
-                {/* Parecer da Comissão */}
-                <Box>
-                  <Box className="flex">
-                    <Box className="flex items-center mt-4">
-                      <Typography>
-                        {texts.detalhesProposta.comissao} {proposta.forum.nome}:
-                        &nbsp;
-                      </Typography>
-                    </Box>
-                    <TextField
-                      select
-                      label={texts.detalhesProposta.parecer}
-                      value={parecerComissao}
-                      onChange={(event) =>
-                        setParecerComissao(event.target.value)
+            {!(proposta.status == "ASSESSMENT_APROVACAO") && (
+              <>
+                <Divider />
+                {/* Pareceres */}
+                <Box className="mt-3">
+                  <Typography fontSize={FontConfig.big} fontWeight="bold">
+                    {texts.detalhesProposta.pareceres}:&nbsp;
+                  </Typography>
+                  <Box className="mx-4">
+                    {/* Parecer da Comissão */}
+                    <ParecerComissao
+                      parecerComissao={parecerComissao}
+                      parecerComissaoInformacoes={parecerComissaoInformacoes}
+                      proposta={proposta}
+                      setParecerComissao={setParecerComissao}
+                      setParecerComissaoInformacoes={
+                        setParecerComissaoInformacoes
                       }
-                      variant="standard"
-                      sx={{ width: "10rem", marginLeft: "0.5rem" }}
-                    >
-                      <MenuItem key={"Aprovado"} value={"APROVADO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.aprovado}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Reprovado"} value={"REPROVADO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.reprovado}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.devolvido}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.businessCase}
-                        </Typography>
-                      </MenuItem>
-                    </TextField>
-                  </Box>
-                  <Box className="mt-4">
-                    <CaixaTextoQuill
-                      texto={parecerComissaoInformacoes}
-                      setTexto={setParecerComissaoInformacoes}
                     />
+
+                    {/* Parecer da Diretoria */}
+                    {["ASSESSMENT_DG", "DONE"].includes(proposta.status) && (
+                      <ParecerDG
+                        proposta={proposta}
+                        parecerDG={parecerDG}
+                        setParecerDG={setParecerDG}
+                        parecerDGInformacoes={parecerDGInformacoes}
+                        setParecerDGInformacoes={setParecerDGInformacoes}
+                      />
+                    )}
                   </Box>
                 </Box>
-
-                {/* Parecer da Diretoria */}
-                <Box className="mt-2">
-                  <Box className="flex">
-                    <Box className="flex items-center mt-4">
-                      <Typography>
-                        {texts.detalhesProposta.direcaoGeral}: &nbsp;
-                      </Typography>
-                    </Box>
-                    <TextField
-                      select
-                      label={texts.detalhesProposta.parecer}
-                      value={parecerDG}
-                      onChange={(event) => setParecerDG(event.target.value)}
-                      variant="standard"
-                      sx={{ width: "10rem", marginLeft: "0.5rem" }}
-                    >
-                      <MenuItem key={"Aprovado"} value={"APROVADO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.aprovado}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Reprovado"} value={"REPROVADO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.reprovado}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.devolvido}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.businessCase}
-                        </Typography>
-                      </MenuItem>
-                    </TextField>
-                  </Box>
-                  <Box className="mt-4">
-                    <CaixaTextoQuill
-                      texto={parecerDGInformacoes}
-                      setTexto={setParecerDGInformacoes}
-                    />
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-
-            {/* Pareceres */}
-            {proposta.status == "?" ? <></> : null}
+              </>
+            )}
           </Box>
         </Box>
       </Box>
@@ -859,6 +786,236 @@ const Beneficio = ({
         </TableBody>
       </Table>
     </Paper>
+  );
+};
+
+const ParecerComissao = ({
+  proposta = propostaExample,
+  parecerComissao = "",
+  setParecerComissao = () => {},
+  parecerComissaoInformacoes = "",
+  setParecerComissaoInformacoes = () => {},
+}) => {
+  if (proposta.status == "ASSESSMENT_APROVACAO")
+    return (
+      <ParecerComissaoInsertText
+        proposta={proposta}
+        parecerComissao={parecerComissao}
+        setParecerComissao={setParecerComissao}
+        parecerComissaoInformacoes={parecerComissaoInformacoes}
+        setParecerComissaoInformacoes={setParecerComissaoInformacoes}
+      />
+    );
+  return <ParecerComissaoOnlyRead proposta={proposta} />;
+};
+
+const ParecerDG = ({
+  proposta = propostaExample,
+  parecerDG = "",
+  setParecerDG = () => {},
+  parecerDGInformacoes = "",
+  setParecerDGInformacoes = () => {},
+}) => {
+  if (proposta.status == "ASSESSMENT_APROVACAO")
+    return (
+      <ParecerDGInsertText
+        proposta={proposta}
+        parecerDG={parecerDG}
+        setParecerDG={setParecerDG}
+        parecerDGInformacoes={parecerDGInformacoes}
+        setParecerDGInformacoes={setParecerDGInformacoes}
+      />
+    );
+  return <ParecerDGOnlyRead proposta={proposta} />;
+};
+
+const ParecerComissaoInsertText = ({
+  proposta = propostaExample,
+  parecerComissao = "",
+  setParecerComissao = () => {},
+  parecerComissaoInformacoes = "",
+  setParecerComissaoInformacoes = () => {},
+}) => {
+  const { FontConfig } = useContext(FontContext);
+  const { texts } = useContext(TextLanguageContext);
+
+  return (
+    <Box>
+      <Box className="flex">
+        <Box className="flex items-center mt-4">
+          <Typography fontSize={FontConfig.medium}>
+            {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
+          </Typography>
+        </Box>
+        <TextField
+          select
+          label={texts.detalhesProposta.parecer}
+          value={parecerComissao}
+          onChange={(event) => setParecerComissao(event.target.value)}
+          variant="standard"
+          sx={{ width: "10rem", marginLeft: "0.5rem" }}
+        >
+          <MenuItem key={"Aprovado"} value={"APROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.aprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.reprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.devolvido}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.businessCase}
+            </Typography>
+          </MenuItem>
+        </TextField>
+      </Box>
+      <Box className="mt-4">
+        <CaixaTextoQuill
+          texto={parecerComissaoInformacoes}
+          setTexto={setParecerComissaoInformacoes}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
+  const { FontConfig } = useContext(FontContext);
+  const { texts } = useContext(TextLanguageContext);
+
+  const parecerComissaoInformacoesBox = useRef(null);
+
+  useEffect(() => {
+    if (parecerComissaoInformacoesBox.current) {
+      parecerComissaoInformacoesBox.current.innerHTML =
+        proposta.parecerInformacao
+          ? proposta.parecerInformacao
+          : texts.detalhesProposta.semInformacoesAdicionais;
+    }
+  }, []);
+
+  const getParecerComissaoFomartted = (parecer) => {
+    return parecer
+      ? parecer.toUpperCase() + parecer.substring(1).toLowerCase()
+      : texts.detalhesProposta.semParecer;
+  };
+
+  return (
+    <Box>
+      <Box className="flex">
+        <Box className="flex items-center mt-4">
+          <Typography fontSize={FontConfig.medium}>
+            {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
+          </Typography>
+          <Typography fontSize={FontConfig.medium} fontWeight="bold">
+            {getParecerComissaoFomartted(proposta.parecerInformacao)}
+          </Typography>
+        </Box>
+      </Box>
+      {/* Comporta o texto do parecer da comissão */}
+      <Box ref={parecerComissaoInformacoesBox} className="mt-2 mx-4" />
+    </Box>
+  );
+};
+
+const ParecerDGInsertText = ({
+  parecerDG = "",
+  setParecerDG = () => {},
+  parecerDGInformacoes = "",
+  setParecerDGInformacoes = () => {},
+}) => {
+  const { FontConfig } = useContext(FontContext);
+  const { texts } = useContext(TextLanguageContext);
+
+  return (
+    <Box className="mt-4">
+      <Box className="flex">
+        <Box className="flex items-center mt-4">
+          <Typography>{texts.detalhesProposta.direcaoGeral}: &nbsp;</Typography>
+        </Box>
+        <TextField
+          select
+          label={texts.detalhesProposta.parecer}
+          value={parecerDG}
+          onChange={(event) => setParecerDG(event.target.value)}
+          variant="standard"
+          sx={{ width: "10rem", marginLeft: "0.5rem" }}
+        >
+          <MenuItem key={"Aprovado"} value={"APROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.aprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.reprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.devolvido}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.businessCase}
+            </Typography>
+          </MenuItem>
+        </TextField>
+      </Box>
+      <Box className="mt-4">
+        <CaixaTextoQuill
+          texto={parecerDGInformacoes}
+          setTexto={setParecerDGInformacoes}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
+  const { FontConfig } = useContext(FontContext);
+  const { texts } = useContext(TextLanguageContext);
+
+  const parecerDGInformacoesBox = useRef(null);
+
+  useEffect(() => {
+    if (parecerDGInformacoesBox.current) {
+      parecerDGInformacoesBox.current.innerHTML = proposta.parecerDGInformacao
+        ? proposta.parecerDGInformacao
+        : texts.detalhesProposta.semInformacoesAdicionais;
+    }
+  }, []);
+
+  const getParecerDGFomartted = (parecer) => {
+    return parecer
+      ? parecer.toUpperCase() + parecer.substring(1).toLowerCase()
+      : texts.detalhesProposta.semParecer;
+  };
+
+  return (
+    <Box>
+      <Box className="flex">
+        <Box className="flex items-center mt-4">
+          <Typography fontSize={FontConfig.medium}>
+            {texts.detalhesProposta.direcaoGeral}:&nbsp;
+          </Typography>
+          <Typography fontSize={FontConfig.medium} fontWeight="bold">
+            {getParecerDGFomartted(proposta.parecerDGInformacao)}
+          </Typography>
+        </Box>
+      </Box>
+      {/* Comporta o texto do parecer da comissão */}
+      <Box ref={parecerDGInformacoesBox} className="mt-2 mx-4" />
+    </Box>
   );
 };
 
