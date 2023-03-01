@@ -6,8 +6,12 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const Caminho = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -28,7 +32,7 @@ const Caminho = (props) => {
 
   return (
     <Box className="flex items-center gap-x-1" color="link.main">
-      <Tooltip title="Home">
+      <Tooltip title={texts.caminho.home}>
         <HomeOutlinedIcon
           className="cursor-pointer"
           sx={{ fontSize: "32px" }}

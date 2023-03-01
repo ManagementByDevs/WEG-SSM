@@ -8,8 +8,12 @@ import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemanda";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const DemandaGerencia = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -43,9 +47,9 @@ const DemandaGerencia = (props) => {
   // Função para formatar o nome do status da demanda/proposta
   const formatarStatus = () => {
     if (props.dados.status == "BACKLOG_REVISAO") {
-      return "Backlog";
+      return texts.demandaGerencia.backlog;
     } else if (props.dados.status.startsWith("ASSESSMENT")) {
-      return "Assessment";
+      return texts.demandaGerencia.assessment;
     }
   };
 
@@ -85,7 +89,7 @@ const DemandaGerencia = (props) => {
                   fontWeight="600"
                   sx={{ color: "primary.main" }}
                 >
-                  PPM {props.dados.codigoPPM}
+                  {texts.demandaGerencia.ppm} {props.dados.codigoPPM}
                 </Typography>
               )}
               {props.dados.titulo}
@@ -94,9 +98,7 @@ const DemandaGerencia = (props) => {
 
           {/* Status do componente */}
           <Box className="w-1/4 h-full">
-            <Box
-              className="flex items-center justify-end"
-            >
+            <Box className="flex items-center justify-end">
               <Box id="segundoCriarPropostas">
                 <Box id="oitavoDemandas" className="flex items-center gap-2">
                   <Typography fontSize={FontConfig.medium} fontWeight="600">
@@ -124,7 +126,7 @@ const DemandaGerencia = (props) => {
               {/* Solicitante */}
               <Box className="flex">
                 <Typography fontSize={FontConfig.default} fontWeight="600">
-                  Solicitante:
+                  {texts.demandaGerencia.solicitante}:
                 </Typography>
                 <Typography
                   className="w-11/12 overflow-hidden text-ellipsis whitespace-nowrap"
@@ -139,7 +141,7 @@ const DemandaGerencia = (props) => {
               {/* Departamento */}
               <Box className="flex">
                 <Typography fontSize={FontConfig.default} fontWeight="600">
-                  Departamento:
+                  {texts.demandaGerencia.departamento}:
                 </Typography>
                 <Typography
                   className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap"
@@ -147,16 +149,20 @@ const DemandaGerencia = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginLeft: "5px" }}
                 >
-                  {props.dados.departamento?.nome || "Não Atribuído"}
+                  {props.dados.departamento?.nome ||
+                    texts.demandaGerencia.naoAtribuido}
                 </Typography>
               </Box>
             </Box>
             {/* Infos gerente responsável e icons */}
             <Box className="flex items-end justify-end w-full">
-              <Box className="flex flex-col" sx={{ width: "24rem", height: "100%" }}>
+              <Box
+                className="flex flex-col"
+                sx={{ width: "24rem", height: "100%" }}
+              >
                 <Box className="flex" sx={{ width: "24rem" }}>
                   <Typography fontSize={FontConfig.default} fontWeight="600">
-                    Analista responsável:
+                    {texts.demandaGerencia.analistaResponsavel}:
                   </Typography>
                   <Typography
                     className="overflow-hidden truncate"
@@ -168,12 +174,13 @@ const DemandaGerencia = (props) => {
                       width: "50%",
                     }}
                   >
-                    {props.dados.analista?.nome || "Não Atribuído"}
+                    {props.dados.analista?.nome ||
+                      texts.demandaGerencia.naoAtribuido}
                   </Typography>
                 </Box>
                 <Box className="flex" sx={{ width: "24rem" }}>
                   <Typography fontSize={FontConfig.default} fontWeight="600">
-                    Gerente responsável:
+                    {texts.demandaGerencia.gerenteResponsavel}:
                   </Typography>
                   <Typography
                     className="overflow-hidden truncate"
@@ -185,7 +192,8 @@ const DemandaGerencia = (props) => {
                       width: "50%",
                     }}
                   >
-                    {props.dados.gerente?.nome || "Não Atribuído"}
+                    {props.dados.gerente?.nome ||
+                      texts.demandaGerencia.naoAtribuido}
                   </Typography>
                 </Box>
               </Box>
@@ -195,7 +203,7 @@ const DemandaGerencia = (props) => {
                   {
                     // Se for uma proposta, mostra o icone de chat
                     tipo === "proposta" && (
-                      <Tooltip title="Chat">
+                      <Tooltip title={texts.demandaGerencia.chat}>
                         <IconButton>
                           <ChatOutlinedIcon
                             id="segundoPropostas"
@@ -210,10 +218,14 @@ const DemandaGerencia = (props) => {
                       </Tooltip>
                     )
                   }
-                  <Tooltip title="Histórico">
+                  <Tooltip title={texts.demandaGerencia.historico}>
                     <IconButton
                       onClick={(e) => {
-                        if (!props.isTourPropostasOpen && !props.isTourDemandasOpen && !props.isTourCriarPropostasOpen) {
+                        if (
+                          !props.isTourPropostasOpen &&
+                          !props.isTourDemandasOpen &&
+                          !props.isTourCriarPropostasOpen
+                        ) {
                           e.stopPropagation();
                           abrirModalHistorico();
                         }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
 
 import { useNavigate, useLocation } from "react-router-dom";
@@ -18,7 +18,11 @@ import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import CustosService from "../../service/custosService";
 import EscopoPropostaService from "../../service/escopoPropostaService";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
+
 const BarraProgressaoProposta = (props) => {
+  // Contexto para trocar a linguagem
+  const {texts} = useContext(TextLanguageContext);
 
   const location = useLocation();
 
@@ -446,7 +450,7 @@ const BarraProgressaoProposta = (props) => {
         sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
         disableElevation
       >
-        Voltar
+        {texts.barraProgressaoProposta.voltar}
       </Button>
       <Box sx={{ flex: "1 1 auto" }} />
       {activeStep === etapasProposta.length - 1 ? (
@@ -457,7 +461,7 @@ const BarraProgressaoProposta = (props) => {
           sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >
-          Criar
+          {texts.barraProgressaoProposta.criar}
         </Button>
       ) : (
         <Button
@@ -467,7 +471,7 @@ const BarraProgressaoProposta = (props) => {
           sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >
-          Próximo
+          {texts.barraProgressaoProposta.proximo}
         </Button>
       )}
     </>

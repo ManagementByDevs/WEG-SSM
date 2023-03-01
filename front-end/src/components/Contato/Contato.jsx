@@ -2,8 +2,12 @@ import { Box, Typography, Avatar } from "@mui/material";
 import React, { useContext, useState, useEffect } from "react";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const Contato = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -61,7 +65,7 @@ const Contato = (props) => {
           className="overflow-hidden truncate"
           sx={{ width: "100%" }}
         >
-          Demanda: {props.usuario.demanda}
+          {texts.contato.demanda}: {props.usuario.demanda}
         </Typography>
       </Box>
     </Box>

@@ -8,6 +8,7 @@ import Demanda from "../Demanda/Demanda";
 
 import DateService from "../../service/dateService";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 
@@ -38,6 +39,9 @@ const DemandaModoVisualizacao = ({
     />
   );
 };
+
+// Contexto para trocar a linguagem
+const { texts } = useContext(TextLanguageContext);
 
 const DemandaTable = ({
   listaDemandas = [
@@ -82,17 +86,17 @@ const DemandaTable = ({
   // Função para formatar o nome do status da demanda
   const formatarNomeStatus = (status) => {
     if (status == "CANCELLED") {
-      return "Reprovada";
+      return texts.demandaModoVisualizacao.status.reprovada;
     } else if (status == "BACKLOG_REVISAO") {
-      return "Aguardando Revisão";
+      return texts.demandaModoVisualizacao.status.aguardandoRevisao;
     } else if (status == "BACKLOG_EDICAO") {
-      return "Aguardando Edição";
+      return texts.demandaModoVisualizacao.status.aguardandoEdicao;
     } else if (status == "BACKLOG_APROVACAO") {
-      return "Em Aprovação";
+      return texts.demandaModoVisualizacao.status.emAprovacao;
     } else if (status == "ASSESSMENT") {
-      return "Aprovada";
+      return texts.demandaModoVisualizacao.status.aprovada;
     } else if (status == "ASSESSMENT_APROVACAO") {
-      return "Em andamento";
+      return texts.demandaModoVisualizacao.status.emAndamento;
     }
   };
 
@@ -116,18 +120,18 @@ const DemandaTable = ({
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-3 w-1/10">
-              <Typography fontSize={FontConfig.big}>Código</Typography>
+              <Typography fontSize={FontConfig.big}>{texts.demandaModoVisualizacao.codigo}</Typography>
             </th>
             <th className="text-left text-white p-3 w-3/6">
-              <Typography fontSize={FontConfig.big}>Título</Typography>
+              <Typography fontSize={FontConfig.big}>{texts.demandaModoVisualizacao.titulo}</Typography>
             </th>
             {myDemandas && (
               <th className="text-left text-white p-3 w-1/6">
-                <Typography fontSize={FontConfig.big}>Status</Typography>
+                <Typography fontSize={FontConfig.big}>{texts.demandaModoVisualizacao.status}</Typography>
               </th>
             )}
             <th className="text-white p-3 w-1/12">
-              <Typography fontSize={FontConfig.big}>Data</Typography>
+              <Typography fontSize={FontConfig.big}>{texts.demandaModoVisualizacao.data}</Typography>
             </th>
           </TableRow>
         </TableHead>

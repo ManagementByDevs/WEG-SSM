@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Select, FormControl, InputLabel, MenuItem, Typography } from "@mui/material";
+import {
+  Box,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 
 import "./Beneficios.css";
 
@@ -7,7 +14,12 @@ import InputComLabel from "../InputComLabel/InputComLabel";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import FontContext from "../../service/FontContext";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
+
 const Beneficios = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -26,7 +38,6 @@ const Beneficios = (props) => {
     setDadosBeneficio({ ...dadosBeneficio, tipoBeneficio: event.target.value });
   };
 
-
   // Função utilizada para setar o valor mensal do benefício
   const handleChangeValor = (event) => {
     setDadosBeneficio({ ...dadosBeneficio, valor_mensal: event.target.value });
@@ -36,7 +47,6 @@ const Beneficios = (props) => {
   const handleChangeMoeda = (event) => {
     setDadosBeneficio({ ...dadosBeneficio, moeda: event.target.value });
   };
-
 
   // Função utilizada para setar a memória de cálculo do benefício
   const handleChangeMemoriaCalculo = (event) => {
@@ -66,7 +76,6 @@ const Beneficios = (props) => {
     props.removerBeneficio(props.index);
   }
 
-
   // Função para selecionar algum tipo de benefício
   const getSelectedTipo = (tipo) => {
     return tipo === dadosBeneficio.tipoBeneficio;
@@ -89,7 +98,9 @@ const Beneficios = (props) => {
               id="demo-simple-select-label"
               sx={{ margin: "-2px 0 0 0" }}
             >
-              <Typography fontSize={FontConfig.medium}>Benefícios</Typography>
+              <Typography fontSize={FontConfig.medium}>
+                {texts.beneficios.beneficios}
+              </Typography>
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -100,21 +111,25 @@ const Beneficios = (props) => {
               defaultValue={dadosBeneficio.tipoBeneficio}
             >
               <MenuItem value={"Real"}>
-                <Typography fontSize={FontConfig.medium}> Real </Typography>
+                <Typography fontSize={FontConfig.medium}>
+                  {texts.beneficios.real}
+                </Typography>
               </MenuItem>
               <MenuItem value={"Potencial"}>
-                <Typography fontSize={FontConfig.medium}>Potencial</Typography>
+                <Typography fontSize={FontConfig.medium}>
+                  {texts.beneficios.potencial}
+                </Typography>
               </MenuItem>
               <MenuItem value={"Qualitativo"}>
                 <Typography fontSize={FontConfig.medium}>
-                  Qualitativo
+                  {texts.beneficios.qualitativo}
                 </Typography>
               </MenuItem>
             </Select>
           </FormControl>
         </Box>
         {dadosBeneficio.tipoBeneficio === "Real" ||
-          dadosBeneficio.tipoBeneficio === "Potencial" ? (
+        dadosBeneficio.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -125,7 +140,7 @@ const Beneficios = (props) => {
                   <InputComLabel
                     saveInputValue={salvarValorMensal}
                     component="input"
-                    label="Valor Mensal:"
+                    label={texts.beneficios.valorMensal}
                     placeholder="Ex: 1000,00"
                     fontConfig={FontConfig.default}
                     texto={dadosBeneficio.valor_mensal}
@@ -140,7 +155,7 @@ const Beneficios = (props) => {
                     id="demo-simple-select-label"
                     sx={{ margin: "-10px 0 0 -5px" }}
                   >
-                    <Typography fontSize={FontConfig.default}>Moeda</Typography>
+                    <Typography fontSize={FontConfig.default}>{texts.beneficios.moeda}</Typography>
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-filled-label"
@@ -152,7 +167,7 @@ const Beneficios = (props) => {
                       <Typography fontSize={FontConfig.medium}>BRL</Typography>
                     </MenuItem>
                     <MenuItem value={"Dolar"}>
-                      <Typography fontSize={FontConfig.medium}>URD</Typography>
+                      <Typography fontSize={FontConfig.medium}>USD</Typography>
                     </MenuItem>
                     <MenuItem value={"Euro"}>
                       <Typography fontSize={FontConfig.medium}>EUR</Typography>
@@ -165,14 +180,14 @@ const Beneficios = (props) => {
         ) : null}
       </Box>
       {dadosBeneficio.tipoBeneficio === "Real" ||
-        dadosBeneficio.tipoBeneficio === "Potencial" ||
-        dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
+      dadosBeneficio.tipoBeneficio === "Potencial" ||
+      dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
         <Box className="flex items-end" sx={{ width: "65%" }}>
           <InputComLabel
             saveInputValue={salvarMemoriaCalculo}
             component="textarea"
-            label="Memória de cálculo:"
-            placeholder="Digite a memória de cálculo..."
+            label={texts.beneficios.memoriaCalculo}
+            placeholder={texts.beneficios.digiteMemoriaCalculo}
             fontConfig={FontConfig.default}
             rows="4"
             sx={{ width: "100%" }}

@@ -1,5 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Box, Button, IconButton, Tooltip, Divider, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Tooltip,
+  Divider,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import Mensagem from "../../components/Mensagem/Mensagem";
@@ -16,8 +23,11 @@ import ChatContext from "../../service/ChatContext";
 import { keyframes } from "@emotion/react";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const ChatMinimizado = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
 
   // Navigate utilizado para nevegar para uma outra página
   const navigate = useNavigate();
@@ -108,7 +118,7 @@ const ChatMinimizado = (props) => {
           {/* Icone para minimizar ou maximizar o chat */}
           {!minimizarChatMinimizado ? (
             // Icone para minimizar o chat
-            <Tooltip title="Minimizar">
+            <Tooltip title={texts.chatMinimizado.minimizar}>
               <RemoveOutlinedIcon
                 className="mr-2 cursor-pointer delay-120 hover:scale-110 duration-300"
                 sx={{ color: "#FFF" }}
@@ -120,7 +130,7 @@ const ChatMinimizado = (props) => {
             </Tooltip>
           ) : (
             // Icone para maximizar o chat
-            <Tooltip title="Maximizar">
+            <Tooltip title={texts.chatMinimizado.maximazar}>
               <AddOutlinedIcon
                 className="mr-2 cursor-pointer delay-120 hover:scale-110 duration-300"
                 sx={{ color: "#FFF" }}
@@ -134,7 +144,7 @@ const ChatMinimizado = (props) => {
             </Tooltip>
           )}
           {/* Icone para fazer dar tela cheia */}
-          <Tooltip title="Tela cheia">
+          <Tooltip title={texts.chatMinimizado.telaCheia}>
             <OpenInNewOutlinedIcon
               className="mr-2 cursor-pointer delay-120 hover:scale-110 duration-300"
               sx={{ fontSize: "20px", color: "#FFF" }}
@@ -145,7 +155,7 @@ const ChatMinimizado = (props) => {
             />
           </Tooltip>
           {/* Icone para fechar o chat */}
-          <Tooltip title="Fechar chat">
+          <Tooltip title={texts.chatMinimizado.fecharChat}>
             <CloseOutlinedIcon
               className="cursor-pointer delay-120 hover:scale-110 duration-300"
               sx={{ fontSize: "25px", color: "#FFF" }}
@@ -188,14 +198,14 @@ const ChatMinimizado = (props) => {
                   color: "text.primary",
                   fontSize: FontConfig.default,
                 }}
-                placeholder="Escreva sua mensagem..."
+                placeholder={texts.chatMinimizado.escrevaSuaMensagem}
               />
 
               {/* Container para os ícones */}
               <Box className="flex">
                 {/* Ícone de Anexo */}
                 <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                  <Tooltip title="Enviar Anexo">
+                  <Tooltip title={texts.chatMinimizado.enviarAnexo}>
                     <AttachFileOutlinedIcon
                       sx={{
                         color: "primary.main",
@@ -214,7 +224,7 @@ const ChatMinimizado = (props) => {
                 />
                 {/* Ícone de Enviar */}
                 <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                  <Tooltip title="Enviar mensagem">
+                  <Tooltip title={texts.chatMinimizado.enviarMensagem}>
                     <SendOutlinedIcon
                       sx={{
                         color: "primary.main",

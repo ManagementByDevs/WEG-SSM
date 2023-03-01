@@ -50,6 +50,9 @@ const DemandaGerenciaModoVisualizacao = ({
   );
 };
 
+// Contexto para trocar a linguagem
+const { texts } = useContext(TextLanguageContext);
+
 const DemandaTable = ({
   listaDemandas = [
     {
@@ -92,9 +95,9 @@ const DemandaTable = ({
   // Formata o status da demanda para melhor leitura
   const formatarNomeStatus = (status) => {
     if (status == "BACKLOG_REVISAO") {
-      return "Backlog";
+      return texts.demandaGerenciaModoVisualizacao.backlog;
     } else if (status.startsWith("ASSESSMENT")) {
-      return "Assessment";
+      return texts.demandaGerenciaModoVisualizacao.assessment;
     }
   };
 
@@ -123,26 +126,40 @@ const DemandaTable = ({
             >
               <th className="text-white p-2 width-75/1000">
                 <Typography fontSize={FontConfig.big}>
-                  {!isProposta ? "Código" : "PPM"}
+                  {!isProposta
+                    ? texts.demandaGerenciaModoVisualizacao.codigo
+                    : "PPM"}
                 </Typography>
               </th>
               <th className="text-left text-white p-3 width-4/10">
-                <Typography fontSize={FontConfig.big}>Título</Typography>
+                <Typography fontSize={FontConfig.big}>
+                  {texts.demandaGerenciaModoVisualizacao.titulo}
+                </Typography>
               </th>
               <th className="text-left text-white p-3">
-                <Typography fontSize={FontConfig.big}>Solicitante</Typography>
+                <Typography fontSize={FontConfig.big}>
+                  {texts.demandaGerenciaModoVisualizacao.solicitante}
+                </Typography>
               </th>
               <th className="text-left text-white p-3">
-                <Typography fontSize={FontConfig.big}>Departamento</Typography>
+                <Typography fontSize={FontConfig.big}>
+                  {texts.demandaGerenciaModoVisualizacao.departamento}
+                </Typography>
               </th>
               <th className="text-left text-white p-3">
-                <Typography fontSize={FontConfig.big}>Gerente Resp.</Typography>
+                <Typography fontSize={FontConfig.big}>
+                  {texts.demandaGerenciaModoVisualizacao.gerenteResponsavel}
+                </Typography>
               </th>
               <th className="text-left text-white p-3 ">
-                <Typography fontSize={FontConfig.big}>Status</Typography>
+                <Typography fontSize={FontConfig.big}>
+                  {texts.demandaGerenciaModoVisualizacao.status}
+                </Typography>
               </th>
               <th className="text-white p-3 width-75/1000">
-                <Typography fontSize={FontConfig.big}>Data</Typography>
+                <Typography fontSize={FontConfig.big}>
+                  {texts.demandaGerenciaModoVisualizacao.data}
+                </Typography>
               </th>
             </TableRow>
           </TableHead>
@@ -182,19 +199,29 @@ const DemandaTable = ({
                 <td
                   className="text-left p-3 width-1/10"
                   title={
-                    row.departamento ? row.departamento.nome : "Não atribuído"
+                    row.departamento
+                      ? row.departamento.nome
+                      : texts.demandaGerenciaModoVisualizacao.naoAtribuido
                   }
                 >
                   <Typography className="truncate" fontSize={FontConfig.medium}>
-                    {row.departamento ? row.departamento.nome : "Não atribuído"}
+                    {row.departamento
+                      ? row.departamento.nome
+                      : texts.demandaGerenciaModoVisualizacao.naoAtribuido}
                   </Typography>
                 </td>
                 <td
                   className="text-left p-3 width-1/10"
-                  title={row.gerente?.nome ? row.gerente.nome : "Não atribuído"}
+                  title={
+                    row.gerente?.nome
+                      ? row.gerente.nome
+                      : texts.demandaGerenciaModoVisualizacao.naoAtribuido
+                  }
                 >
                   <Typography className="truncate" fontSize={FontConfig.medium}>
-                    {row.gerente?.nome ? row.gerente.nome : "Não atribuído"}
+                    {row.gerente?.nome
+                      ? row.gerente.nome
+                      : texts.demandaGerenciaModoVisualizacao.naoAtribuido}
                   </Typography>
                 </td>
                 <td
@@ -234,7 +261,7 @@ const DemandaTable = ({
                       )}
                     </Typography>
                     <Tooltip
-                      title="Histórico"
+                      title={texts.demandaGerenciaModoVisualizacao.historico}
                       className="visualizacao-tabela-gerencia-icon"
                     >
                       <HistoryOutlinedIcon
@@ -252,7 +279,7 @@ const DemandaTable = ({
                     </Tooltip>
                     {isProposta && (
                       <Tooltip
-                        title="Chat"
+                        title={texts.demandaGerenciaModoVisualizacao.chat}
                         className="visualizacao-tabela-gerencia-icon"
                       >
                         <ChatOutlinedIcon
@@ -328,13 +355,13 @@ const NadaEncontrado = () => {
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        {texts.demandaGerenciaModoVisualização.nadaEncontrado}
+        {texts.demandaGerenciaModoVisualizacao.nadaEncontrado}
       </Typography>
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        {texts.demandaGerenciaModoVisualização.tenteNovamenteMaisTarde}
+        {texts.demandaGerenciaModoVisualizacao.tenteNovamenteMaisTarde}
       </Typography>
     </Box>
   );

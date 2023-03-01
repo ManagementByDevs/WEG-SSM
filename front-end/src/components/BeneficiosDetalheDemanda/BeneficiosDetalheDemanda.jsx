@@ -1,14 +1,31 @@
 import React, { useState, useContext, useEffect } from "react";
-import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, TextareaAutosize, FormControl, Select, MenuItem } from "@mui/material";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  Typography,
+  Box,
+  TextareaAutosize,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@mui/material";
 
 import { styled } from "@mui/material/styles";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ColorModeContext from "../../service/TemaContext";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const BeneficiosDetalheDemanda = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -65,9 +82,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
-                    >
-                      Tipo
-                    </Typography>
+                    >{texts.BeneficiosDetalheDemanda.tipo}</Typography>
                   </th>
                   <th
                     align="center"
@@ -79,7 +94,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontWeight="800"
                       color="text.white"
                     >
-                      Valor Mensal
+                     {texts.BeneficiosDetalheDemanda.valorMensal}
                     </Typography>
                   </th>
                   <th
@@ -92,7 +107,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontWeight="800"
                       color="text.white"
                     >
-                      Moeda
+                      {texts.BeneficiosDetalheDemanda.moeda}
                     </Typography>
                   </th>
                   <th
@@ -105,7 +120,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontWeight="800"
                       color="text.white"
                     >
-                      Memória de Cálculo
+                      {texts.BeneficiosDetalheDemanda.memoriaCalculo}
                     </Typography>
                   </th>
                 </TableRow>
@@ -123,25 +138,31 @@ const BeneficiosDetalheDemanda = (props) => {
                         value={props.beneficio.tipoBeneficio}
                         onChange={(e) => {
                           props.setBeneficio(
-                            { ...props.beneficio, tipoBeneficio: e.target.value },
+                            {
+                              ...props.beneficio,
+                              tipoBeneficio: e.target.value,
+                            },
                             props.index
                           );
                         }}
                       >
-                        <MenuItem value={"Real"}>Real</MenuItem>
-                        <MenuItem value={"Potencial"}>Potencial</MenuItem>
-                        <MenuItem value={"Qualitativo"}>Qualitativo</MenuItem>
+                        <MenuItem value={"Real"}>{texts.BeneficiosDetalheDemanda.real}</MenuItem>
+                        <MenuItem value={"Potencial"}>{texts.BeneficiosDetalheDemanda.potencial}</MenuItem>
+                        <MenuItem value={"Qualitativo"}>{texts.BeneficiosDetalheDemanda.qualitativo}</MenuItem>
                       </Select>
                     </FormControl>
                   </td>
                   <td align="center">
-                    {props.beneficio.tipoBeneficio != "Qualitativo" &&
+                    {props.beneficio.tipoBeneficio != "Qualitativo" && (
                       <Box
                         value={props.beneficio.valor_mensal || ""}
                         fontSize={FontConfig.medium}
                         onChange={(e) => {
                           props.setBeneficio(
-                            { ...props.beneficio, valor_mensal: e.target.value },
+                            {
+                              ...props.beneficio,
+                              valor_mensal: e.target.value,
+                            },
                             props.index
                           );
                         }}
@@ -153,12 +174,12 @@ const BeneficiosDetalheDemanda = (props) => {
                           backgroundColor: "background.default",
                         }}
                         component="input"
-                        placeholder="Digite o valor mensal..."
+                        placeholder={texts.BeneficiosDetalheDemanda.digiteValorMensal}
                       />
-                    }
+                    )}
                   </td>
                   <td align="center">
-                    {props.beneficio.tipoBeneficio != "Qualitativo" &&
+                    {props.beneficio.tipoBeneficio != "Qualitativo" && (
                       <FormControl
                         variant="standard"
                         sx={{ marginRight: "10px", minWidth: 90 }}
@@ -179,7 +200,7 @@ const BeneficiosDetalheDemanda = (props) => {
                           <MenuItem value={"Euro"}>EUR</MenuItem>
                         </Select>
                       </FormControl>
-                    }
+                    )}
                   </td>
                   <td
                     align="center"
@@ -204,7 +225,7 @@ const BeneficiosDetalheDemanda = (props) => {
                         );
                       }}
                       className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                      placeholder="Digite a memória de cálculo..."
+                      placeholder={texts.BeneficiosDetalheDemanda.digiteMemoriaCalculo}
                     />
                   </td>
                 </TableRow>
@@ -223,7 +244,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontWeight="800"
                     color="text.white"
                   >
-                    Tipo
+                    {texts.BeneficiosDetalheDemanda.tipo}
                   </Typography>
                 </th>
                 <th align="center" className="p-4 w-0" style={{ width: "15%" }}>
@@ -232,7 +253,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontWeight="800"
                     color="text.white"
                   >
-                    Valor Mensal
+                    {texts.BeneficiosDetalheDemanda.valorMensal}
                   </Typography>
                 </th>
                 <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
@@ -241,7 +262,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontWeight="800"
                     color="text.white"
                   >
-                    Moeda
+                    {texts.BeneficiosDetalheDemanda.moeda}
                   </Typography>
                 </th>
                 <th align="center" className="p-4 w-0" style={{ width: "30%" }}>
@@ -250,7 +271,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontWeight="800"
                     color="text.white"
                   >
-                    Memória de Cálculo
+                    {texts.BeneficiosDetalheDemanda.memoriaCalculo}
                   </Typography>
                 </th>
               </TableRow>

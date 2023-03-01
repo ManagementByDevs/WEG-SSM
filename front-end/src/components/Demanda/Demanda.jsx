@@ -3,11 +3,14 @@ import { Box, Typography, Button, Paper } from "@mui/material";
 
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -44,17 +47,17 @@ const Demanda = (props) => {
   /** Função para formatar o nome do status da demanda para o solicitante */
   const formatarNomeStatus = () => {
     if (props.demanda.status == "CANCELLED") {
-      return "Reprovada";
+      return texts.demanda.status.reprovada;
     } else if (props.demanda.status == "BACKLOG_REVISAO") {
-      return "Aguardando Revisão";
+      return texts.demanda.status.aguardandoRevisao;
     } else if (props.demanda.status == "BACKLOG_EDICAO") {
-      return "Aguardando Edição";
+      return texts.demanda.status.aguardandoEdicao;
     } else if (props.demanda.status == "BACKLOG_APROVACAO") {
-      return "Em Aprovação";
+      return texts.demanda.status.emAprovacao;
     } else if (props.demanda.status == "ASSESSMENT") {
-      return "Aprovada";
+      return texts.demanda.status.aprovada;
     } else if (props.demanda.status == "ASSESSMENT_APROVACAO") {
-      return "Em Andamento";
+      return texts.demanda.status.emAndamento;
     }
   };
 
@@ -143,7 +146,7 @@ const Demanda = (props) => {
               }}
               variant="contained"
             >
-              Motivo
+              {texts.demanda.motivo}
             </Button>
           ) : null}
         </Box>

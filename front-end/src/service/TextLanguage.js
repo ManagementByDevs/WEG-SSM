@@ -5,12 +5,17 @@ const TextLanguage = (linguagem) => {
             ajuda: "Ajuda",
         },
         barraProgressaoDemanda: {
-            erroPularPasso: "Você não pode pular um passo que não é opcional!",
-            botaoVoltar: "Voltar",
-            botaoPular: "Pular",
-            botaoCriar: "Criar",
-            botaoProximo: "Próximo",
-            mensagemFeedback: "Preencha todos os campos obrigatórios!"
+            steps: {
+                dados: "Dados",
+                beneficios: "Benefícios",
+                anexos: "Anexos"
+              },
+              erroPularPasso: "Você não pode pular um passo que não é opcional!",
+              botaoVoltar: "Voltar",
+              botaoPular: "Pular",
+              botaoCriar: "Criar",
+              botaoProximo: "Próximo",
+              mensagemFeedback: "Preencha todos os campos obrigatórios!"
         },
         barraProgressaoProposta: {
             botaoVoltar: "Voltar",
@@ -23,13 +28,9 @@ const TextLanguage = (linguagem) => {
             potencial: "Potencial",
             qualitativo: "Qualitativo",
             valorMensal: "Valor Mensal",
+            exemploValorMensal: "Ex: 1000,00",
             moeda: "Moeda",
-            tiposDeMoeda: {
-                real: "BRL",
-                dolar: "USD",
-                euro: "EUR",
-            },
-            memoriaCalcula: "Memória de cálculo",
+            memoriaCalculo: "Memória de cálculo",
             digiteMemoriaCalculo: "Digite a memória de cálculo...",
         },
         BeneficiosDetalheDemanda: {
@@ -40,16 +41,11 @@ const TextLanguage = (linguagem) => {
             real: "Real",
             potencial: "Potencial",
             qualitativo: "Qualitativo",
-            digiteValorPensal: "Digite o valor mensal...",
-            tiposDeMoeda: {
-                real: "BRL",
-                dolar: "USD",
-                euro: "EUR",
-            },
+            digiteValorMensal: "Digite o valor mensal...",
             digiteMemoriaCalculo: "Digite a memória de cálculo...",
         },
         caminho: {
-            home: "Home",
+            home: "Home", 
         },
         chatMinimizado: {
             minimizar: "Minimizar",
@@ -74,7 +70,9 @@ const TextLanguage = (linguagem) => {
             horas: "Horas",
             valorHora: "Valor Hora",
             total: "Total",
+            h: "h",
             moeda: "R$",
+            adicionarNovaLinha: "Adicionar nova linha",
             ccs: "CCs",
         },
         demanda: {
@@ -94,11 +92,16 @@ const TextLanguage = (linguagem) => {
             ppm: "PPM",
             solicitante: "Solicitante",
             departamento: "Departamento",
+            naoAtribuido: "Não Atribuído",
+            analistaResponsavel: "Analista Responsável",
             gerenteResponsavel: "Gerente Responsável",
+            chat: "Chat",
+            historico: "Histórico",
         },
-        demandaGerenciaModoVisualização: {
+        demandaGerenciaModoVisualizacao: {
             backlog: "Backlog",
             assessment: "Assessment",
+            codigo: "Código",
             titulo: "Título",
             solicitante: "Solicitante",
             departamento: "Departamento",
@@ -108,6 +111,7 @@ const TextLanguage = (linguagem) => {
             naoAtribuido: "Não atribuído",
             historico: "Histórico",
             chat: "Chat",
+            proposta: "proposta",
             nadaEncontrado: "Nada encontrado",
             tenteNovamenteMaisTarde: "Tente novamente mais tarde",
         },
@@ -118,6 +122,7 @@ const TextLanguage = (linguagem) => {
                 aguardandoEdicao: "Aguardando Edição",
                 emAprovacao: "Em Aprovação",
                 aprovada: "Aprovada",
+                emAndamento: "Em Andamento",
             },
             codigo: "Código",
             titulo: "Titulo",
@@ -637,6 +642,11 @@ const TextLanguage = (linguagem) => {
             ajuda: "Help",
         },
         barraProgressaoDemanda: {
+            steps: {
+                dados: "Data",
+                beneficios: "Benefits",
+                anexos: "Attachments",
+              },
             erroPularPasso: "You cannot skip a step that is not optional!",
             botaoVoltar: "Back",
             botaoPular: "Skip",
@@ -655,13 +665,9 @@ const TextLanguage = (linguagem) => {
             potencial: "Potential",
             qualitativo: "Qualitative",
             valorMensal: "Monthly Value",
+            exemploValorMensal: "E.g: 1000,00",
             moeda: "Currency",
-            tiposDeMoeda: {
-                real: "BRL",
-                dolar: "USD",
-                euro: "EUR",
-            },
-            memoriaCalcula: "Calculation memory",
+            memoriaCalculo: "Calculation memory",
             digiteMemoriaCalculo: "Enter the calculation memory...",
         },
         BeneficiosDetalheDemanda: {
@@ -672,12 +678,7 @@ const TextLanguage = (linguagem) => {
             real: "Real",
             potencial: "Potential",
             qualitativo: "Qualitative",
-            digiteValorPensal: "Enter the monthly value...",
-            tiposDeMoeda: {
-                real: "BRL",
-                dolar: "USD",
-                euro: "EUR",
-            },
+            digiteValorMensal: "Enter the monthly value...",
             digiteMemoriaCalculo: "Enter the calculation memory...",
         },
         caminho: {
@@ -707,6 +708,7 @@ const TextLanguage = (linguagem) => {
             valorHora: "Hour Value",
             total: "Total",
             moeda: "R$",
+            adicionarNovaLinha: "Add new line",
             ccs: "CCs",
         },
         demanda: {
@@ -726,11 +728,16 @@ const TextLanguage = (linguagem) => {
             ppm: "PPM",
             solicitante: "Requester",
             departamento: "Department",
+            naoAtribuido: "Not assigned",
+            analistaResponsavel: "Responsible Analyst",
             gerenteResponsavel: "Responsible Manager",
+            chat: "Chat",
+            historico: "History",
         },
-        demandaGerenciaModoVisualização: {
+        demandaGerenciaModoVisualizacao: {
             backlog: "Backlog",
             assessment: "Assessment",
+            codigo: "Code",
             titulo: "Title",
             solicitante: "Requester",
             departamento: "Department",
@@ -750,6 +757,7 @@ const TextLanguage = (linguagem) => {
                 aguardandoEdicao: "Awaiting Edition",
                 emAprovacao: "In Approval",
                 aprovada: "Approved",
+                emAndamento: "In Progress",
             },
             codigo: "Code",
             titulo: "Title",

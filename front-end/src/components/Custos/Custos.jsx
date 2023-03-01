@@ -1,5 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
-import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip } from "@mui/material";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  Typography,
+  Box,
+  Tooltip,
+} from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -9,8 +19,12 @@ import LinhaTabelaCCs from "../LinhaTabelaCCs/LinhaTabelaCCs";
 
 import FontContext from "../../service/FontContext";
 import CustosService from "../../service/custosService";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const Custos = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -52,12 +66,18 @@ const Custos = (props) => {
 
   /** Função para criar um custo no banco de dados e adicioná-lo como uma linha na tabela */
   const adicionarLinhaCustos = () => {
-    CustosService.postCusto({ tipoDespesa: "", perfilDespesa: "", periodoExecucao: "", horas: "", valorHora: "" }).then((response) => {
+    CustosService.postCusto({
+      tipoDespesa: "",
+      perfilDespesa: "",
+      periodoExecucao: "",
+      horas: "",
+      valorHora: "",
+    }).then((response) => {
       let custosNovos = [...props.custos];
       custosNovos[props.index].custos.push(response);
       props.setCustos(custosNovos);
     });
-  }
+  };
 
   /** Função usada para excluir uma linha de custo da tabela de custos */
   const deletarLinhaCustos = (custoId, indexCusto) => {
@@ -65,7 +85,7 @@ const Custos = (props) => {
       let custosNovos = [...props.custos];
       custosNovos[props.index].custos.splice(indexCusto, 1);
       props.setCustos(custosNovos);
-    })
+    });
   };
 
   const adicionarLinhaCC = () => {
@@ -74,26 +94,28 @@ const Custos = (props) => {
       custosNovos[props.index].ccs.push(response);
       props.setCustos(custosNovos);
     });
-  }
+  };
 
   const deletarLinhaCC = (ccId, indexCC) => {
     CustosService.deleteCC(ccId).then((response) => {
       let custosNovos = [...props.custos];
       custosNovos[props.index].ccs.splice(indexCC, 1);
       props.setCustos(custosNovos);
-    })
-  }
+    });
+  };
 
   return (
     <Box className="flex w-full mt-5">
       <Box className="flex items-top mr-2">
         <Box className="h-full flex items-center">
-          <Tooltip title="Excluir tabela de custos">
+          <Tooltip title={texts.custos.excluirTabelaDeCustos}>
             <DeleteOutlineOutlinedIcon
               fontSize="large"
               className="mr-2 delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main", cursor: "pointer" }}
-              onClick={() => {props.deletarCustos(props.index)}}
+              onClick={() => {
+                props.deletarCustos(props.index);
+              }}
             />
           </Tooltip>
         </Box>
@@ -113,7 +135,7 @@ const Custos = (props) => {
                         fontWeight="800"
                         color="text.white"
                       >
-                        Tipo da Despesa
+                        {texts.custos.tipoDaDespesa}
                       </Typography>
                     </th>
                     <th
@@ -126,7 +148,7 @@ const Custos = (props) => {
                         fontWeight="800"
                         color="text.white"
                       >
-                        Perfil da Despesa
+                        {texts.custos.perfilDaDespesa}
                       </Typography>
                     </th>
                     <th
@@ -139,7 +161,7 @@ const Custos = (props) => {
                         fontWeight="800"
                         color="text.white"
                       >
-                        Período de Execução (Meses)
+                        {texts.custos.periodoDeExecucao}
                       </Typography>
                     </th>
                     <th
@@ -152,7 +174,7 @@ const Custos = (props) => {
                         fontWeight="800"
                         color="text.white"
                       >
-                        Horas
+                        {texts.custos.horas}
                       </Typography>
                     </th>
                     <th
@@ -165,7 +187,7 @@ const Custos = (props) => {
                         fontWeight="800"
                         color="text.white"
                       >
-                        Valor Hora
+                        {texts.custos.valorHora}
                       </Typography>
                     </th>
                     <th
@@ -178,7 +200,7 @@ const Custos = (props) => {
                         fontWeight="800"
                         color="text.white"
                       >
-                        Total
+                        {texts.custos.total}
                       </Typography>
                     </th>
                   </TableRow>
@@ -202,16 +224,34 @@ const Custos = (props) => {
             </TableContainer>
             <Box className="w-full flex justify-between items-center m-2">
               <Box className="flex w-full">
-                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>Total: </Typography>
-                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
-                  {horasTotais}h
+                <Typography
+                  fontSize={FontConfig.medium}
+                  sx={{ marginRight: "8px" }}
+                >
+                  {texts.custos.total}:{" "}
                 </Typography>
-                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>-</Typography>
-                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
-                  R${valorTotal}
+                <Typography
+                  fontSize={FontConfig.medium}
+                  sx={{ marginRight: "15px" }}
+                >
+                  {horasTotais}
+                  {texts.custos.h}
+                </Typography>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  sx={{ marginRight: "15px" }}
+                >
+                  -
+                </Typography>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  sx={{ marginRight: "8px" }}
+                >
+                  {texts.custos.moeda}
+                  {valorTotal}
                 </Typography>
               </Box>
-              <Tooltip title="Adicionar nova linha">
+              <Tooltip title={texts.custos.adicionarNovaLinha}>
                 <AddCircleOutlineOutlinedIcon
                   fontSize="medium"
                   className="mr-3 delay-120 hover:scale-110 duration-300"
@@ -236,7 +276,7 @@ const Custos = (props) => {
                     fontWeight="800"
                     color="text.white"
                   >
-                    CCs
+                    {texts.custos.ccs}
                   </Typography>
                 </th>
               </TableRow>
@@ -260,10 +300,17 @@ const Custos = (props) => {
         </TableContainer>
         <Box className="w-full flex justify-between items-center m-2">
           <Box className="flex">
-            <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>Total:</Typography>
-            <Typography fontSize={FontConfig.medium}>{porcentagemTotal}% </Typography>
+            <Typography
+              fontSize={FontConfig.medium}
+              sx={{ marginRight: "8px" }}
+            >
+              {texts.custos.total}:
+            </Typography>
+            <Typography fontSize={FontConfig.medium}>
+              {porcentagemTotal}%{" "}
+            </Typography>
           </Box>
-          <Tooltip title="Adicionar nova linha">
+          <Tooltip title={texts.custos.adicionarNovaLinha}>
             <AddCircleOutlineOutlinedIcon
               fontSize="medium"
               className="mr-3 delay-120 hover:scale-110 duration-300"
