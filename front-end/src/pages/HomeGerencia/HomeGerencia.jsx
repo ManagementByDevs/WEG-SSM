@@ -31,6 +31,7 @@ import DemandaService from "../../service/demandaService";
 import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
 import PropostaService from "../../service/propostaService";
+import ExportExcelService from "../../service/exportExcelService";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 
@@ -723,6 +724,13 @@ const HomeGerencia = () => {
   // useState para fechar o chat minimizado
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
+  
+  // Função para exportar para excel
+
+  const exportarExcel = () => {
+    ExportExcelService.exportExcel();
+  }
+
   // ********************************************** Preferências **********************************************
   /**
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
@@ -1068,7 +1076,7 @@ const HomeGerencia = () => {
                     color: "text.white",
                     fontSize: FontConfig.default,
                   }}
-                  onClick={() => { }}
+                  onClick={exportarExcel}
                   variant="contained"
                   disableElevation
                 >

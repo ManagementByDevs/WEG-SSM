@@ -22,6 +22,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 const DetalhesProposta = ({
   proposta = {
@@ -94,6 +95,16 @@ const DetalhesProposta = ({
   // UseState do parecer da comissão
   const [parecerComissao, setParecerComissao] = useState("");
 
+  // UseState do parecer da comissão
+  const [parecerDG, setParecerDG] = useState("");
+
+  // UseState para as informações do parecer da comissão
+  const [parecerComissaoInformacoes, setParecerComissaoInformacoes] =
+    useState("");
+
+  // UseState para as informações do parecer da comissão
+  const [parecerDGInformacoes, setParecerDGInformacoes] = useState("");
+
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
     const file = anexo;
@@ -123,8 +134,6 @@ const DetalhesProposta = ({
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
-
-  console.log(proposta);
 
   return (
     <Box className="mt-10 flex justify-center">
@@ -201,14 +210,30 @@ const DetalhesProposta = ({
               </Typography>
             </Box>
 
-            {/* Fórum */}
-            <Box className="flex mt-2">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
-                {texts.detalhesProposta.forum}:&nbsp;
-              </Typography>
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.forum.nome}
-              </Typography>
+            {/* Fórum e Tamanho*/}
+            <Box className="flex w-full justify-between mt-2">
+              {/* Fórum */}
+              <Box>
+                <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                  {texts.detalhesProposta.forum}:&nbsp;
+                </Typography>
+                <Box className="ml-4">
+                  <Typography fontSize={FontConfig.medium}>
+                    {proposta.forum.nome}
+                  </Typography>
+                </Box>
+              </Box>
+              {/* Tamanho */}
+              <Box>
+                <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                  {texts.detalhesProposta.tamanho}:&nbsp;
+                </Typography>
+                <Box className="ml-4">
+                  <Typography fontSize={FontConfig.medium}>
+                    {proposta.tamanho}
+                  </Typography>
+                </Box>
+              </Box>
             </Box>
 
             {/* Proposta / Objetivo */}
@@ -256,34 +281,6 @@ const DetalhesProposta = ({
                 {proposta.frequencia}
               </Typography>
             </Box>
-
-            {/* Tamanho */}
-            <Box className="flex mt-2">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
-                {texts.detalhesProposta.tamanho}:&nbsp;
-              </Typography>
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.tamanho}
-              </Typography>
-            </Box>
-
-            {/* {proposta.anexo}
-            {proposta.beneficios}
-            {proposta.busBeneficiadas}
-            {proposta.buSolicitante}
-            {proposta.frequencia}
-            {proposta.linkJira}
-            {proposta.tamanho}
-            {proposta.data} 
-            {proposta.gerente}
-            {proposta.forum}
-
-            {proposta.parecerComissao}
-            {proposta.parecerDG}
-            {proposta.parecerInformacao}
-            */}
-
-            {/* Resto das informações */}
 
             {/* Tabela de custos */}
             <Box className="mt-2">
@@ -387,8 +384,48 @@ const DetalhesProposta = ({
               </Box>
             </Box>
 
+            {/* Link do Jira */}
+            <Box className="flex mt-2">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.linkJira}:&nbsp;
+              </Typography>
+              <Typography fontSize={FontConfig.medium}>
+                {proposta.linkJira}
+              </Typography>
+            </Box>
+
+            {/* Período de execução e Payback */}
+            <Box className="flex justify-between mt-2">
+              <Box>
+                <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                  {texts.detalhesProposta.periodoDeExecucao}:&nbsp;
+                </Typography>
+                <Box className="ml-4">
+                  <Typography fontSize={FontConfig.medium}>
+                    {DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.inicioExecucao)
+                    )}{" "}
+                    {texts.detalhesProposta.ate}{" "}
+                    {DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                    )}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box>
+                <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                  {texts.detalhesProposta.payback}:&nbsp;
+                </Typography>
+                <Box className="ml-4">
+                  <Typography fontSize={FontConfig.medium}>
+                    {proposta.paybackValor} {proposta.paybackTipo.toLowerCase()}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+
             {/* Anexos */}
-            <Box className="mt-2">
+            <Box className="mt-2 ">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.anexos}:&nbsp;
               </Typography>
@@ -426,85 +463,8 @@ const DetalhesProposta = ({
               </Box>
             </Box>
 
-            {/* Link do Jira */}
-            <Box className="flex mt-2">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
-                {texts.detalhesProposta.linkJira}:&nbsp;
-              </Typography>
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.linkJira}
-              </Typography>
-            </Box>
-
-            {/* Período de execução */}
-            <Box className="flex mt-2">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
-                {texts.detalhesProposta.periodoDeExecucao}:&nbsp;
-              </Typography>
-              <Typography fontSize={FontConfig.medium}>
-                {DateService.getTodaysDateUSFormat(
-                  DateService.getDateByMySQLFormat(proposta.inicioExecucao)
-                )}{" "}
-                {texts.detalhesProposta.ate}{" "}
-                {DateService.getTodaysDateUSFormat(
-                  DateService.getDateByMySQLFormat(proposta.fimExecucao)
-                )}
-              </Typography>
-            </Box>
-
-            {/* Payback */}
-            <Box className="flex mt-2">
-              <Typography fontSize={FontConfig.default} fontWeight="bold">
-                {texts.detalhesProposta.payback}:&nbsp;
-              </Typography>
-              <Typography fontSize={FontConfig.default}>
-                {proposta.paybackValor} {proposta.paybackTipo.toLowerCase()}
-              </Typography>
-            </Box>
-
-            {/* Pareceres */}
-            <Box className="mt-6">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
-                {texts.detalhesProposta.pareceres}:&nbsp;
-              </Typography>
-              <Box className="items-center mx-4">
-                <Typography>{proposta.forum.nome}: &nbsp;</Typography>
-                <TextField
-                  select
-                  label={texts.detalhesProposta.parecer}
-                  value={parecerComissao}
-                  onChange={(event) => setParecerComissao(event.target.value)}
-                  variant="standard"
-                >
-                  <MenuItem key={"Aprovado"} value={"APROVADO"}>
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesProposta.aprovado}
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={"Reprovado"} value={"REPROVADO"}>
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesProposta.reprovado}
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesProposta.devolvido}
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesProposta.businessCase}
-                    </Typography>
-                  </MenuItem>
-                </TextField>
-              </Box>
-            </Box>
-
-            {/* Pareceres */}
-            {proposta.status == "?" ? <></> : null}
-
             {/* Responsáveis do negócio */}
-            <Box className="mt-4 text-center">
+            <Box className="mt-4 mb-4 text-center">
               {proposta.responsavelNegocio.map((responsavel, index) => {
                 return (
                   <Typography key={index} fontSize={FontConfig.medium}>
@@ -516,6 +476,114 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.reponsaveisPeloNegocio}
               </Typography>
             </Box>
+
+            <Divider />
+
+            {/* Pareceres */}
+            <Box className="mt-3">
+              <Typography fontSize={FontConfig.big} fontWeight="bold">
+                {texts.detalhesProposta.pareceres}:&nbsp;
+              </Typography>
+              <Box className="mx-4">
+                {/* Parecer da Comissão */}
+                <Box>
+                  <Box className="flex">
+                    <Box className="flex items-center mt-4">
+                      <Typography>
+                        {texts.detalhesProposta.comissao} {proposta.forum.nome}:
+                        &nbsp;
+                      </Typography>
+                    </Box>
+                    <TextField
+                      select
+                      label={texts.detalhesProposta.parecer}
+                      value={parecerComissao}
+                      onChange={(event) =>
+                        setParecerComissao(event.target.value)
+                      }
+                      variant="standard"
+                      sx={{ width: "10rem", marginLeft: "0.5rem" }}
+                    >
+                      <MenuItem key={"Aprovado"} value={"APROVADO"}>
+                        <Typography fontSize={FontConfig.medium}>
+                          {texts.detalhesProposta.aprovado}
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+                        <Typography fontSize={FontConfig.medium}>
+                          {texts.detalhesProposta.reprovado}
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+                        <Typography fontSize={FontConfig.medium}>
+                          {texts.detalhesProposta.devolvido}
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+                        <Typography fontSize={FontConfig.medium}>
+                          {texts.detalhesProposta.businessCase}
+                        </Typography>
+                      </MenuItem>
+                    </TextField>
+                  </Box>
+                  <Box className="mt-4">
+                    <CaixaTextoQuill
+                      texto={parecerComissaoInformacoes}
+                      setTexto={setParecerComissaoInformacoes}
+                    />
+                  </Box>
+                </Box>
+
+                {/* Parecer da Diretoria */}
+                <Box className="mt-2">
+                  <Box className="flex">
+                    <Box className="flex items-center mt-4">
+                      <Typography>
+                        {texts.detalhesProposta.direcaoGeral}: &nbsp;
+                      </Typography>
+                    </Box>
+                    <TextField
+                      select
+                      label={texts.detalhesProposta.parecer}
+                      value={parecerDG}
+                      onChange={(event) => setParecerDG(event.target.value)}
+                      variant="standard"
+                      sx={{ width: "10rem", marginLeft: "0.5rem" }}
+                    >
+                      <MenuItem key={"Aprovado"} value={"APROVADO"}>
+                        <Typography fontSize={FontConfig.medium}>
+                          {texts.detalhesProposta.aprovado}
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+                        <Typography fontSize={FontConfig.medium}>
+                          {texts.detalhesProposta.reprovado}
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+                        <Typography fontSize={FontConfig.medium}>
+                          {texts.detalhesProposta.devolvido}
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+                        <Typography fontSize={FontConfig.medium}>
+                          {texts.detalhesProposta.businessCase}
+                        </Typography>
+                      </MenuItem>
+                    </TextField>
+                  </Box>
+                  <Box className="mt-4">
+                    <CaixaTextoQuill
+                      texto={parecerDGInformacoes}
+                      setTexto={setParecerDGInformacoes}
+                    />
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Pareceres */}
+            {proposta.status == "?" ? <></> : null}
           </Box>
         </Box>
       </Box>
