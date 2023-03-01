@@ -30,8 +30,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
-//@CrossOrigin(origins = "http://localhost:3000")
-//@RequestMapping("/weg_ssm")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/weg_ssm")
 public class ExcelExportController {
 
     private static DemandaService demandaService;
@@ -79,6 +79,9 @@ public class ExcelExportController {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Demandas");
+
+        response.setHeader("Content-Disposition", "attachment; filename=demandas.xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
@@ -150,10 +153,6 @@ public class ExcelExportController {
             rowNum = rowIndex;
         }
 
-        // Define os headers para o response
-        response.setHeader("Content-Disposition", "attachment; filename=demandas.xlsx");
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
         // Escreve o workbook no response
         OutputStream outputStream = response.getOutputStream();
         workbook.write(outputStream);
@@ -162,12 +161,15 @@ public class ExcelExportController {
     }
 
     @GetMapping("/excel/propostas")
-    public void exportPropostasToExcel(HttpServletResponse response) throws IOException { }
+    public void exportPropostasToExcel(HttpServletResponse response) throws IOException {
+    }
 
     @GetMapping("/excel/pautas")
-    public void exportPautasToExcel(HttpServletResponse response) throws IOException { }
+    public void exportPautasToExcel(HttpServletResponse response) throws IOException {
+    }
 
     @GetMapping("/excel/atas")
-    public void exportAtasToExcel(HttpServletResponse response) throws IOException { }
+    public void exportAtasToExcel(HttpServletResponse response) throws IOException {
+    }
 
 }
