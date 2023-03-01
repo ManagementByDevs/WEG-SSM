@@ -75,14 +75,9 @@ public class HistoricoController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid HistoricoDTO historicoDto) {
-        if (!usuarioService.existsById(historicoDto.getAutor().getId())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
-        }
+    public ResponseEntity<Object> save(@RequestParam HistoricoDTO historicoDto) {
         Historico historico = new Historico();
-        historico.setVisibilidade(true);
         BeanUtils.copyProperties(historicoDto, historico);
-
         return ResponseEntity.status(HttpStatus.OK).body(historicoService.save(historico));
     }
 
@@ -100,7 +95,6 @@ public class HistoricoController {
         }
 
         Historico historico = historicoService.findById(id).get();
-        historico.setVisibilidade(false);
         historicoService.save(historico);
 
         return ResponseEntity.status(HttpStatus.OK).body(historico);

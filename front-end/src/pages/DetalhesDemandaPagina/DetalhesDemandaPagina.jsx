@@ -8,7 +8,6 @@ import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
-import FontContext from "../../service/FontContext";
 import Ajuda from "../../components/Ajuda/Ajuda";
 
 import UsuarioService from "../../service/usuarioService";
@@ -17,8 +16,6 @@ import ExportPdfService from "../../service/exportPdfService";
 import Tour from "reactour";
 
 const DetalhesDemandaPagina = () => {
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();

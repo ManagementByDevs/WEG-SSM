@@ -9,6 +9,8 @@ import Feedback from "../Feedback/Feedback";
 
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
+import ExportPdfService from "../../service/exportPdfService";
+
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
 import FontContext from "../../service/FontContext";
@@ -201,6 +203,9 @@ const BarraProgressaoDemanda = () => {
       status: "BACKLOG_REVISAO",
     };
 
+    ExportPdfService.exportEscopo(demandaFinal).then((e) => {
+
+    });
     DemandaService.post(
       demandaFinal,
       paginaArquivos,
