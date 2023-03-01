@@ -34,7 +34,4 @@ public class Historico {
     @Column(nullable = false , length = 45)
     private String acaoRealizada;
 
-    @Column
-    private Boolean visibilidade;
-
 }

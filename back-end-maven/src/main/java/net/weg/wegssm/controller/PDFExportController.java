@@ -27,6 +27,28 @@ public class PDFExportController {
 
     private DemandaService demandaService;
 
+    @GetMapping("/pdf/escopo")
+    public void generatePDFEscopo(@RequestBody Demanda demanda, HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=pdf_demanda_" + currentDateTime + ".pdf";
+
+        response.setHeader(headerKey, headerValue);
+
+        Document document = this.pdfGeneratorService.exportDemanda(response, demanda);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, baos);
+        baos.flush();
+        byte[] pdfData = baos.toByteArray();
+        baos.close();
+        response.getOutputStream().write(pdfData);
+        response.getOutputStream().flush();
+    }
+
     @GetMapping("/pdf/demanda/{id}")
     public void generatePDFDemanda(@PathVariable(value = "id") Long demandaId, HttpServletResponse response) throws IOException {
         Demanda demanda = demandaService.findById(demandaId).get();

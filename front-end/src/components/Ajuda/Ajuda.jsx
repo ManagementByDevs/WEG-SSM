@@ -1,9 +1,12 @@
-import { React } from "react";
+import { React, useContext } from "react";
 import { Box, IconButton, Tooltip } from "@mui/material";
 
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
+
 import { keyframes } from "@emotion/react";
+
 
 // Função utilizada para aparecer o ícone de ajuda ao passar o mouse
 const aparecer = keyframes({ from: { width: "1.3rem" }, to: { width: "3.2rem" } });
@@ -12,6 +15,8 @@ const aparecer = keyframes({ from: { width: "1.3rem" }, to: { width: "3.2rem" } 
 const sumir = keyframes({ from: { width: "3.2rem" }, to: { width: "1.3rem" } });
 
 const Ajuda = (props) => {
+
+  const {texts} = useContext(TextLanguageContext);
 
   // <Ajuda onClick={() => setIsTourOpen(true)} /> PARA CHAMAR O BOTÃO DE AJUDA
 
@@ -36,7 +41,7 @@ const Ajuda = (props) => {
       }}
     >
       {/* Ícone de ajuda */}
-      <Tooltip title="Ajuda" placement="top">
+      <Tooltip title={texts.ajuda.ajuda} placement="top">
         <IconButton sx={{ color: "text.white" }}>
           <HelpOutlineOutlinedIcon sx={{ fontSize: "30px" }} />
         </IconButton>

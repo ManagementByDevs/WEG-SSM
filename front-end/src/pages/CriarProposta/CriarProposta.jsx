@@ -26,7 +26,7 @@ const CriarProposta = () => {
                 <Box className='w-full flex justify-center'>
                     <Box className='w-5/6'>
                         {/* Chamando componente de criação da proposta mandando os dados */}
-                        <BarraProgressaoProposta dados={dados} steps={['Proposta', 'Escopo', 'Custos', 'Gerais']} />
+                        <BarraProgressaoProposta dados={dados} />
                     </Box>
                 </Box>
             </Box>

@@ -9,14 +9,21 @@ import Feedback from "../Feedback/Feedback";
 
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
+import ExportPdfService from "../../service/exportPdfService";
+
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
  * salvando a demanda e escopos no banco de dados
  */
 const BarraProgressaoDemanda = () => {
+
+  // Contexto para alterar o idioma
+  const {texts} = useContext(TextLanguageContext);
+
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -28,7 +35,7 @@ const BarraProgressaoDemanda = () => {
 
   // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
   const [etapaAtiva, setEtapaAtiva] = useState(0);
-  const steps = ["Dados", "Benefícios", "Anexos"];
+  const steps = [`${texts.barraProgressaoDemanda.steps.dados}`, `${texts.barraProgressaoDemanda.steps.beneficios}`, `${texts.barraProgressaoDemanda.steps.anexos}`];
 
   // Variável utilizada para abrir o modal de feedback de dados faltantes
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
@@ -201,6 +208,9 @@ const BarraProgressaoDemanda = () => {
       status: "BACKLOG_REVISAO",
     };
 
+    ExportPdfService.exportEscopo(demandaFinal).then((e) => {
+
+    });
     DemandaService.post(
       demandaFinal,
       paginaArquivos,
@@ -273,7 +283,7 @@ const BarraProgressaoDemanda = () => {
           sx={{ mr: 1 }}
           disableElevation
         >
-          <Typography fontSize={FontConfig.default}>Voltar</Typography>
+          <Typography fontSize={FontConfig.default}>{texts.barraProgressaoDemanda.botaoVoltar}</Typography>
         </Button>
         <Box sx={{ flex: "1 1 auto" }} />
 
@@ -285,7 +295,7 @@ const BarraProgressaoDemanda = () => {
             onClick={abrirModalConfirmacao}
             disableElevation
           >
-            <Typography fontSize={FontConfig.default}>Criar</Typography>
+            <Typography fontSize={FontConfig.default}>{texts.barraProgressaoDemanda.botaoCriar}</Typography>
           </Button>
         ) : (
           <Button
@@ -294,7 +304,7 @@ const BarraProgressaoDemanda = () => {
             onClick={proximaEtapa}
             disableElevation
           >
-            <Typography fontSize={FontConfig.default}>Próximo</Typography>
+            <Typography fontSize={FontConfig.default}>{texts.barraProgressaoDemanda.botaoProximo}</Typography>
           </Button>
         )}
 
@@ -317,7 +327,7 @@ const BarraProgressaoDemanda = () => {
           setFeedbackDadosFaltantes(false);
         }}
         status={"erro"}
-        mensagem={"Preencha todos os campos obrigatórios!"}
+        mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
       />
     </>
   );
