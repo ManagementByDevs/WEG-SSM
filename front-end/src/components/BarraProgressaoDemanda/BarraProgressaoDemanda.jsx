@@ -10,6 +10,7 @@ import Feedback from "../Feedback/Feedback";
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
 import ExportPdfService from "../../service/exportPdfService";
+import HistoricoService from "../../service/historicoService";
 
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
@@ -22,7 +23,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 const BarraProgressaoDemanda = () => {
 
   // Contexto para alterar o idioma
-  const {texts} = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -35,7 +36,6 @@ const BarraProgressaoDemanda = () => {
 
   // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
   const [etapaAtiva, setEtapaAtiva] = useState(0);
-  const steps = [`${texts.barraProgressaoDemanda.steps.dados}`, `${texts.barraProgressaoDemanda.steps.beneficios}`, `${texts.barraProgressaoDemanda.steps.anexos}`];
 
   // Variável utilizada para abrir o modal de feedback de dados faltantes
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
@@ -57,6 +57,8 @@ const BarraProgressaoDemanda = () => {
 
   // Variável utilizada para abrir o modal de confirmação de criação de demanda
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
+
+  const steps = [`${texts.barraProgressaoDemanda.steps.dados}`, `${texts.barraProgressaoDemanda.steps.beneficios}`, `${texts.barraProgressaoDemanda.steps.anexos}`];
 
   // UseEffect utilizado para criar um escopo ou receber um escopo do banco ao entrar na página
   useEffect(() => {
@@ -110,7 +112,7 @@ const BarraProgressaoDemanda = () => {
   useEffect(() => {
     if (ultimoEscopo) {
       setTimeout(() => {
-        if(ultimoEscopo.id) {
+        if (ultimoEscopo.id) {
           salvarEscopo(ultimoEscopo.id);
         }
       }, 5000);
@@ -209,16 +211,19 @@ const BarraProgressaoDemanda = () => {
     };
 
     ExportPdfService.exportEscopo(demandaFinal).then((e) => {
-
+      const documentoHistorico = { nome: paginaDados.titulo + " - " + new Date().toISOString().slice(0, 10), tipo: "application/pdf", dados: e };
+      HistoricoService.post(parseInt(localStorage.getItem("usuarioId")), { data: new Date(), acaoRealizada: "Demanda Criada", documentoHistorico: documentoHistorico }).then((response) => {
+        console.log(response);
+      });
     });
-    DemandaService.post(
-      demandaFinal,
-      paginaArquivos,
-      parseInt(localStorage.getItem("usuarioId"))
-    ).then((e) => {
-      direcionarHome();
-      excluirEscopo();
-    });
+    // DemandaService.post(
+    //   demandaFinal,
+    //   paginaArquivos,
+    //   parseInt(localStorage.getItem("usuarioId"))
+    // ).then((e) => {
+    //   direcionarHome();
+    //   excluirEscopo();
+    // });
   }
 
   /** Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda */

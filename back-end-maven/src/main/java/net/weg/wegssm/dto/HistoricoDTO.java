@@ -14,5 +14,6 @@ public class HistoricoDTO {
 
     private Date data;
     private String acaoRealizada;
+    private DocumentoHistorico documentoHistorico;
 
 }

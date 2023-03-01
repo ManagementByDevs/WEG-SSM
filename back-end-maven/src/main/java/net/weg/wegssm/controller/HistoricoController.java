@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.HistoricoDTO;
 import net.weg.wegssm.model.entities.Historico;
 import net.weg.wegssm.model.entities.Usuario;
+import net.weg.wegssm.model.service.DocumentoHistoricoService;
 import net.weg.wegssm.model.service.HistoricoService;
 import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
@@ -18,11 +19,12 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/wegg_ssm/historico")
+@RequestMapping("/weg_ssm/historico")
 public class HistoricoController {
 
     private HistoricoService historicoService;
     private UsuarioService usuarioService;
+    private DocumentoHistoricoService documentoHistoricoService;
 
     /**
      * Método GET para listar todos os históricos
@@ -74,10 +76,15 @@ public class HistoricoController {
      * @param historicoDto ( Objeto a ser cadastrado = req.body )
      * @return
      */
-    @PostMapping
-    public ResponseEntity<Object> save(@RequestParam HistoricoDTO historicoDto) {
+    @PostMapping("/{idUsuario}")
+    public ResponseEntity<Object> save(@PathVariable(value = "idUsuario") Long idUsuario, @RequestBody HistoricoDTO historicoDto) {
+        Usuario usuario = usuarioService.findById(idUsuario).get();
+
         Historico historico = new Historico();
         BeanUtils.copyProperties(historicoDto, historico);
+        historico.setDocumento(historicoDto.getDocumentoHistorico());
+        historico.setAutor(usuario);
+
         return ResponseEntity.status(HttpStatus.OK).body(historicoService.save(historico));
     }
 
