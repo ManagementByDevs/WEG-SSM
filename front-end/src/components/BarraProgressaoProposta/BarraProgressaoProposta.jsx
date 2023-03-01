@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -11,7 +11,6 @@ import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEsco
 import ForumService from "../../service/forumService";
 import BUService from "../../service/buService";
 
-import FontContext from "../../service/FontContext";
 import beneficioService from "../../service/beneficioService";
 import propostaService from "../../service/propostaService";
 import DemandaService from "../../service/demandaService";
@@ -25,8 +24,9 @@ const BarraProgressaoProposta = (props) => {
 
   // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
   const [activeStep, setActiveStep] = useState(0);
-  const [skipped, setSkipped] = useState(new Set());
-  const steps = props.steps;
+
+  /** Lista de etapas usadas na criação de proposta */
+  const etapasProposta = ['Proposta', 'Escopo', 'Custos', 'Gerais'];
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
@@ -190,16 +190,6 @@ const BarraProgressaoProposta = (props) => {
     } catch (error) { }
   };
 
-  // Função para pular passos opcionais
-  const isStepOptional = (step) => {
-    return false;
-  };
-
-  // Função para pular passos já realizados
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
-
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
   const criarDadosIniciais = () => {
     if (!variaveisIniciais) {
@@ -250,38 +240,13 @@ const BarraProgressaoProposta = (props) => {
   }
 
   // Função para passar para próxima página
-  const handleNext = () => {
-    if (activeStep === steps.length - 1) {
-      criarDemanda();
-    }
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
+  const proximaEtapa = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
   };
 
   // Função para voltar para página anterior
-  const handleBack = () => {
+  const voltarEtapa = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  // Função para criar a demanda
-  const criarDemanda = () => {
-    handleClick(true);
-  };
-
-  const [state, setState] = React.useState({
-    open: false,
-  });
-
-  const { open } = state;
-
-  // Função para fechar modal
-  const handleClick = (newState) => () => {
-    setState({ open: true, ...newState });
   };
 
   // Variável utilizada para salvar alterações caso o click seja acionado
@@ -358,9 +323,7 @@ const BarraProgressaoProposta = (props) => {
   const pegarAnexosSalvos = () => {
     let listaNova = [];
     for (const anexo of dadosDemanda.anexo) {
-      if (anexo.id) {
-        listaNova.push(anexo);
-      }
+      if (anexo.id) { listaNova.push(anexo); }
     }
     return listaNova;
   }
@@ -369,9 +332,7 @@ const BarraProgressaoProposta = (props) => {
   const pegarAnexosNovos = () => {
     let listaNova = [];
     for (const anexo of dadosDemanda.anexo) {
-      if (!anexo.id) {
-        listaNova.push(anexo);
-      }
+      if (!anexo.id) listaNova.push(anexo);
     }
     return listaNova;
   }
@@ -383,6 +344,7 @@ const BarraProgressaoProposta = (props) => {
     return demandaNova;
   }
 
+  /** Função para montar um objeto de proposta para salvamento de escopos e propostas */
   const retornaObjetoProposta = () => {
     const objeto = {
       demanda: retirarAnexosDemanda(),
@@ -411,17 +373,16 @@ const BarraProgressaoProposta = (props) => {
       linkJira: gerais.linkJira,
       anexo: pegarAnexosSalvos()
     }
-
     return objeto;
   }
 
+  /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = () => {
     excluirBeneficios();
 
-    console.log(retornaObjetoProposta());
-    propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then((response) => {
-      DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then((data) => {
-        EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then((resposta) => {
+    propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then(() => {
+      DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
+        EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
           localStorage.setItem("tipoFeedback", "5");
           navigate("/");
         })
@@ -429,27 +390,12 @@ const BarraProgressaoProposta = (props) => {
     });
   }
 
-  // UseEffect para criação da proposta
-  useEffect(() => {
-    if (open) {
-      criarProposta();
-    }
-  }, [open]);
-
   return (
     <>
       <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
+        {etapasProposta.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            );
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -496,14 +442,14 @@ const BarraProgressaoProposta = (props) => {
         variant="outlined"
         color="tertiary"
         disabled={activeStep === 0}
-        onClick={handleBack}
+        onClick={voltarEtapa}
         sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
         disableElevation
       >
         Voltar
       </Button>
       <Box sx={{ flex: "1 1 auto" }} />
-      {activeStep === steps.length - 1 ? (
+      {activeStep === etapasProposta.length - 1 ? (
         <Button
           color="primary"
           variant="contained"
@@ -517,7 +463,7 @@ const BarraProgressaoProposta = (props) => {
         <Button
           color="primary"
           variant="contained"
-          onClick={handleNext}
+          onClick={proximaEtapa}
           sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >

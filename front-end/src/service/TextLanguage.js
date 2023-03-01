@@ -621,6 +621,9 @@ const TextLanguage = (linguagem) => {
             devolvido: "Devolvido",
             businessCase: "Business Case",
             parecer: "Parecer",
+            maisInformacoes: "Mais Informações...",
+            comissao: "Comissão",
+            direcaoGeral: "Direção Geral",
         }
 
     } : linguagem == "en" ? {

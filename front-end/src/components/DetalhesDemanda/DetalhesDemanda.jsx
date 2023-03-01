@@ -47,7 +47,7 @@ const DetalhesDemanda = (props) => {
   const [beneficiosExcluidos, setBeneficiosExcluidos] = useState([]);
 
   const [demandaEmEdicao, setDemandaEmEdicao] = useState(false);
-  const [anexos, setAnexos] = useState(props.dados.anexo);
+  const [anexosDemanda, setAnexosDemanda] = useState(props.dados.anexo);
 
   // UseState do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
@@ -69,19 +69,14 @@ const DetalhesDemanda = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
-    useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
 
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
 
   // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
   useEffect(() => {
-    if (temaPagina === "dark") {
-      setCorFundoTextArea("#212121");
-    } else {
-      setCorFundoTextArea("#FFFF");
-    }
+    temaPagina === "dark" ? setCorFundoTextArea("#212121") : setCorFundoTextArea("#FFFFFF");
   }, [temaPagina]);
 
   // UseEffect para atualizar os dados da demanda quando o componente for montado
@@ -91,7 +86,7 @@ const DetalhesDemanda = (props) => {
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
-    setAnexos(props.dados.anexo);
+    setAnexosDemanda(props.dados.anexo);
   }, [props.dados]);
 
   // ----------------------------------------------------------------------------------------------------------------------------
@@ -99,9 +94,7 @@ const DetalhesDemanda = (props) => {
 
   // UseEffect para setar a variável "editar" para false quando o usuário sair da página de edição da demanda
   useEffect(() => {
-    if (!props.edicao) {
-      setEditar(false);
-    }
+    if (!props.edicao) setEditar(false);
   }, [props.edicao]);
 
   // Função para editar a demanda
@@ -125,7 +118,7 @@ const DetalhesDemanda = (props) => {
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
-    setAnexos(props.dados.anexo);
+    setAnexosDemanda(props.dados.anexo);
   }
 
   // Função para formatar os benefícios recebidos do banco para a lista de benefícios na página
@@ -187,7 +180,7 @@ const DetalhesDemanda = (props) => {
     for (let file of inputFile.current.files) {
       if (!existsInAnexos(file)) {
         updateAnexosNovos(file);
-        setAnexos([...anexos, file]);
+        setAnexosDemanda([...anexosDemanda, file]);
       } else {
         // feedback de anexo já existente
         setFeedbackComAnexoMesmoNome(true);
@@ -198,7 +191,7 @@ const DetalhesDemanda = (props) => {
   // Função para verificar se um anexo já existe na lista de anexos
   const existsInAnexos = (anexo) => {
     return (
-      anexos.filter((anexoItem) => {
+      anexosDemanda.filter((anexoItem) => {
         return (
           anexoItem.nome == anexo.name ||
           (anexo.id && anexoItem.nome == anexo.nome)
@@ -210,10 +203,10 @@ const DetalhesDemanda = (props) => {
   // Função para remover um anexo da lista de anexos
   const removerAnexo = (index) => {
     updateAnexosRemovidos(index);
-    removeAnexosNovos(anexos[index]);
-    let aux = [...anexos];
+    removeAnexosNovos(anexosDemanda[index]);
+    let aux = [...anexosDemanda];
     aux.splice(index, 1);
-    setAnexos(aux);
+    setAnexosDemanda(aux);
   };
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
@@ -273,7 +266,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then((response) => { });
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -281,17 +274,18 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then((response) => { });
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosNovos([]);
   };
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
-    if (!canSave()) {
+    if (!podeSalvar()) {
       setFeedbackFacaAlteracao(true);
       return null;
     }
+
     let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
     let contagem = 0;
 
@@ -312,8 +306,7 @@ const DetalhesDemanda = (props) => {
   // Função que verifica se o usuário adicionou algum benefício
   const checkIfBeneficiosChanged = () => {
     // Se foi Adicionado um novo benefício
-    if (beneficiosNovos.length > 0 || beneficiosExcluidos.length > 0)
-      return true;
+    if (beneficiosNovos.length > 0 || beneficiosExcluidos.length > 0) return true;
 
     return !beneficios.every((e, index) => {
       return (
@@ -328,18 +321,9 @@ const DetalhesDemanda = (props) => {
     });
   };
 
-  // Função que determina se o usuário pode salvar a demanda ou não, se baseando se ele editou alguma coisa
-  const canSave = () => {
-    if (
-      checkIfBeneficiosChanged() ||
-      tituloDemanda != props.dados.titulo ||
-      problema != props.dados.problema ||
-      proposta != props.dados.proposta ||
-      frequencia != props.dados.frequencia
-    ) {
-      return true;
-    }
-    return false;
+  /** Função que determina se o usuário pode salvar a demanda ou não, se baseando se ele editou alguma coisa */
+  const podeSalvar = () => {
+    return checkIfBeneficiosChanged() || tituloDemanda != props.dados.titulo || problema != props.dados.problema || proposta != props.dados.proposta || frequencia != props.dados.frequencia;
   };
 
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
@@ -362,7 +346,7 @@ const DetalhesDemanda = (props) => {
       };
 
       const anexosVelhos = [];
-      for (let anexo of anexos) {
+      for (let anexo of anexosDemanda) {
         if (anexo.id) {
           anexosVelhos.push(
             new File([converterBase64(anexo.dados)], anexo.nome, {
@@ -377,7 +361,7 @@ const DetalhesDemanda = (props) => {
           ...anexosVelhos,
           ...novosAnexos,
         ]).then((response) => {
-          for (let anexo of anexos) {
+          for (let anexo of anexosDemanda) {
             AnexoService.deleteById(anexo.id);
           }
           // atualizar demanda salva no location
@@ -452,13 +436,9 @@ const DetalhesDemanda = (props) => {
     setOpenModalRecusa(true);
   };
 
-  // Devolver a demanda para o analista
+  /** Função para aceitar a demanda como gerente, enviando-a para a criação de proposta */
   const aprovarDemandaGerencia = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(
-      (response) => {
-        navegarHome(1);
-      }
-    );
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(() => { navegarHome(1); });
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -480,14 +460,14 @@ const DetalhesDemanda = (props) => {
       forum: dados.forum,
       analista: props.usuario,
       gerente: props.dados.gerente,
-      departamento: props.dados.departamento,
+      departamento: props.dados.departamento
     };
 
     DemandaService.put(demandaAtualizada, dados.anexos).then(() => { navegarHome(1); });
     NotificacaoService.post(NotificacaoService.createNotificationObject(NotificacaoService.aprovado, props.dados));
   };
 
-  // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
+  /** Função acionada quando o analista recusa uma demanda, tanto devolução quanto reprovação */
   const confirmRecusaDemanda = () => {
     if (!motivoRecusaDemanda) return;
     setOpenModalRecusa(false);
@@ -500,35 +480,27 @@ const DetalhesDemanda = (props) => {
     });
   };
 
-  // Função para transformar uma string em base64 para um ArrayBuffer
+  /** Função para transformar uma string em base64 para um ArrayBuffer, usada para baixar anexos */
   function converterBase64(base64) {
-    const binaryString = window.atob(base64);
-    const bytes = new Uint8Array(binaryString.length);
-    return bytes.map((byte, i) => binaryString.charCodeAt(i));
+    const textoBinario = window.atob(base64);
+    const bytes = new Uint8Array(textoBinario.length);
+    return bytes.map((byte, i) => textoBinario.charCodeAt(i));
   }
 
-  // Função para baixar um anexo
+  /** Função usada para baixar um anexo */
   const baixarAnexo = (index) => {
-    const file = anexos[index];
-    let blob;
-    let fileName;
-
-    if (anexos[index] instanceof File) {
-      blob = file;
-      fileName = file.name;
-    } else {
-      blob = new Blob([converterBase64(file.dados)]);
-      fileName = `${file.nome}`;
-    }
+    const arquivo = anexosDemanda[index];
+    let blob = arquivo instanceof File ? arquivo : new Blob([converterBase64(arquivo.dados)]);
+    let nomeArquivo = arquivo instanceof File ? arquivo.name : `${arquivo.nome}`;
 
     if (navigator.msSaveBlob) {
-      navigator.msSaveBlob(blob, fileName);
+      navigator.msSaveBlob(blob, nomeArquivo);
     } else {
       const link = document.createElement("a");
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", fileName);
+        link.setAttribute("download", nomeArquivo);
         link.style.visibility = "hidden";
         document.body.appendChild(link);
         link.click();
@@ -538,70 +510,50 @@ const DetalhesDemanda = (props) => {
     }
   };
 
-  // Lógica para anexos ------------------------------------------------------
-  // Novos anexos que serão adicionados na demanda
+  /** Novos anexos que serão adicionados na edição da demanda */
   const [novosAnexos, setNovosAnexos] = useState([]);
 
-  // Anexos que já estavam na demanda e que serão removidos
+  /** Anexos que já estavam na demanda e que serão removidos na edição da demanda */
   const [anexosRemovidos, setAnexosRemovidos] = useState([]);
 
-  // Irá atualizar a lista para que contenha os anexos que foram removidos da demanda e que já estavam salvos no banco de dados
+  /** Irá atualizar a lista para que contenha os anexos que foram removidos da demanda e que já estavam salvos no banco de dados */
   const updateAnexosRemovidos = (indexAnexo) => {
-    let anexo = anexos[indexAnexo];
-
-    setAnexosRemovidos([
-      ...anexosRemovidos,
-      ...anexos.filter(
-        // anexo.id - se tiver, quer dizer que é um anexo que já estava na demanda (salvo no banco de dados)
-        (anexoItem) => anexo.id && anexoItem.id == anexo.id
-      ),
-    ]);
-  };
-  //lembrar de resetar essas variáveis depois de salvar e/ou sair
-
-  // Irá atualizar a lista para que contenha os anexos que foram adicionados na demanda (somente novos anexos)
-  const updateAnexosNovos = (anexo) => {
-    if (!existsInArray(novosAnexos, anexo)) {
-      setNovosAnexos([...novosAnexos, anexo]);
-    }
+    const anexo = anexosDemanda[indexAnexo];
+    const anexosFiltrados = anexosDemanda.filter((anexoItem) => anexo.id && anexoItem.id == anexo.id);
+    setAnexosRemovidos([...anexosRemovidos, ...anexosFiltrados]);
   };
 
-  // Função que verifica se um determinado anexo já existe na lista provida
+  /** Função que verifica se um determinado anexo já existe na lista provida */
   const existsInArray = (array, anexo) => {
-    return (
-      array.filter((anexoItem) => {
-        return anexoItem.name == anexo.name;
-      }).length > 0
-    );
+    return array.some(anexoItem => anexoItem.name === anexo.name)
   };
 
-  // Função que remove um anexo da lista anexosNovos caso o usuário o remova, só é removido anexos que não estavam salvos no banco de dados
+  /** Irá atualizar a lista para que contenha os anexos que foram adicionados na demanda (somente novos anexos) */
+  const updateAnexosNovos = (anexo) => {
+    if (existsInArray(novosAnexos, anexo)) return;
+    setNovosAnexos([...novosAnexos, anexo]);
+  };
+
+  /** Função que remove um anexo da lista anexosNovos caso o usuário o remova, 
+  só é removido anexos que não estavam salvos no banco de dados */
   const removeAnexosNovos = (anexo) => {
-    setNovosAnexos(
-      novosAnexos.filter((anexoItem) => {
-        return anexoItem.name != anexo.name && !anexoItem.id;
-      })
-    );
+    setNovosAnexos(novosAnexos.filter((anexoItem) => { return anexoItem.name != anexo.name && !anexoItem.id; }));
   };
 
-  // Aparecer o feedback sobre a demanda
+  /** Função usada para navegar à home salvando um valor de feedback no localStorage */
   const navegarHome = (tipoFeedback) => {
-    localStorage.removeItem("tipoFeedback");
-
     switch (tipoFeedback) {
       case 1:
         localStorage.setItem("tipoFeedback", "2");
-        navigate("/");
         break;
       case 2:
         localStorage.setItem("tipoFeedback", "3");
-        navigate("/");
         break;
       case 3:
         localStorage.setItem("tipoFeedback", "4");
-        navigate("/");
         break;
     }
+    navigate("/");
   };
 
   return (
@@ -1021,9 +973,9 @@ const DetalhesDemanda = (props) => {
                   hidden
                 />
               </Box>
-              {anexos.length > 0 ? (
+              {anexosDemanda.length > 0 ? (
                 <Box className="flex flex-col gap-2">
-                  {anexos?.map((anexo, index) => (
+                  {anexosDemanda?.map((anexo, index) => (
                     <Paper
                       key={index}
                       className="flex justify-between items-center"
