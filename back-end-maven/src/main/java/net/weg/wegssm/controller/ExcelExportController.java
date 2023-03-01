@@ -30,8 +30,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/weg_ssm")
+//@CrossOrigin(origins = "http://localhost:3000")
+//@RequestMapping("/weg_ssm")
 public class ExcelExportController {
 
     private static DemandaService demandaService;
