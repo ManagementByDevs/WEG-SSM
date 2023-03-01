@@ -485,54 +485,16 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.pareceres}:&nbsp;
               </Typography>
               <Box className="mx-4">
+                {/* {proposta.status == "ASSESSMENT_APROVACAO" ? ( */}
                 {/* Parecer da Comissão */}
-                <Box>
-                  <Box className="flex">
-                    <Box className="flex items-center mt-4">
-                      <Typography>
-                        {texts.detalhesProposta.comissao} {proposta.forum.nome}:
-                        &nbsp;
-                      </Typography>
-                    </Box>
-                    <TextField
-                      select
-                      label={texts.detalhesProposta.parecer}
-                      value={parecerComissao}
-                      onChange={(event) =>
-                        setParecerComissao(event.target.value)
-                      }
-                      variant="standard"
-                      sx={{ width: "10rem", marginLeft: "0.5rem" }}
-                    >
-                      <MenuItem key={"Aprovado"} value={"APROVADO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.aprovado}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Reprovado"} value={"REPROVADO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.reprovado}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.devolvido}
-                        </Typography>
-                      </MenuItem>
-                      <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
-                        <Typography fontSize={FontConfig.medium}>
-                          {texts.detalhesProposta.businessCase}
-                        </Typography>
-                      </MenuItem>
-                    </TextField>
-                  </Box>
-                  <Box className="mt-4">
-                    <CaixaTextoQuill
-                      texto={parecerComissaoInformacoes}
-                      setTexto={setParecerComissaoInformacoes}
-                    />
-                  </Box>
-                </Box>
+                <PareceresComissao
+                  parecerComissao={parecerComissao}
+                  parecerComissaoInformacoes={parecerComissaoInformacoes}
+                  proposta={proposta}
+                  setParecerComissao={setParecerComissao}
+                  setParecerComissaoInformacoes={setParecerComissaoInformacoes}
+                />
+                <ParecerDG />
 
                 {/* Parecer da Diretoria */}
                 <Box className="mt-2">
@@ -860,6 +822,68 @@ const Beneficio = ({
       </Table>
     </Paper>
   );
+};
+
+const PareceresComissao = ({
+  proposta,
+  parecerComissao,
+  setParecerComissao,
+  parecerComissaoInformacoes,
+  setParecerComissaoInformacoes,
+}) => {
+  const { FontConfig } = useContext(FontContext);
+  const { texts } = useContext(TextLanguageContext);
+
+  return (
+    <Box>
+      <Box className="flex">
+        <Box className="flex items-center mt-4">
+          <Typography>
+            {texts.detalhesProposta.comissao} {proposta.forum.nome}: &nbsp;
+          </Typography>
+        </Box>
+        <TextField
+          select
+          label={texts.detalhesProposta.parecer}
+          value={parecerComissao}
+          onChange={(event) => setParecerComissao(event.target.value)}
+          variant="standard"
+          sx={{ width: "10rem", marginLeft: "0.5rem" }}
+        >
+          <MenuItem key={"Aprovado"} value={"APROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.aprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Reprovado"} value={"REPROVADO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.reprovado}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.devolvido}
+            </Typography>
+          </MenuItem>
+          <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.businessCase}
+            </Typography>
+          </MenuItem>
+        </TextField>
+      </Box>
+      <Box className="mt-4">
+        <CaixaTextoQuill
+          texto={parecerComissaoInformacoes}
+          setTexto={setParecerComissaoInformacoes}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+const ParecerDG = () => {
+  return <></>;
 };
 
 export default DetalhesProposta;
