@@ -413,7 +413,7 @@ const DetalhesPauta = (props) => {
                   backgroundColor: "primary.main",
                   fontSize: FontConfig.default,
                   marginLeft: "1rem",
-                  color: "icon.main",
+                  color: "#FFFF",
                 }}
               >
                 <PostAddOutlinedIcon fontSize="large" />
