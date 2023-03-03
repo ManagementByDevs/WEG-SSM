@@ -1,6 +1,15 @@
 import React, { useContext, useState } from "react";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Typography,
+  Button,
+} from "@mui/material";
 
 import "./DemandaModoVisualizacao.css";
 
@@ -18,7 +27,6 @@ const DemandaModoVisualizacao = ({
   nextModoVisualizacao,
   myDemandas,
 }) => {
-
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
   }
@@ -40,9 +48,6 @@ const DemandaModoVisualizacao = ({
   );
 };
 
-// Contexto para trocar a linguagem
-const { texts } = useContext(TextLanguageContext);
-
 const DemandaTable = ({
   listaDemandas = [
     {
@@ -63,6 +68,8 @@ const DemandaTable = ({
   const { FontConfig, setFontConfig } = useContext(FontContext);
   // useState para abrir o modal de motivo recusa
   const [abrirModal, setOpenModal] = useState(false);
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
   // Guarda a demanda selecionada para abrir o modal de motivo recusa
   const [demandaSelecionada, setDemandaSelecionada] = useState();
 
@@ -76,7 +83,7 @@ const DemandaTable = ({
       return "#FFD600";
     } else if (status == "BACKLOG_APROVACAO") {
       return "#00579D";
-    } else if (status == "ASSESSMENT" ) {
+    } else if (status == "ASSESSMENT") {
       return "#11B703";
     } else if (status == "ASSESSMENT_APROVACAO") {
       return "#F7DC6F";
@@ -120,18 +127,26 @@ const DemandaTable = ({
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-3 w-1/10">
-              <Typography fontSize={FontConfig.big}>{texts.demandaModoVisualizacao.codigo}</Typography>
+              <Typography fontSize={FontConfig.big}>
+                {texts.demandaModoVisualizacao.codigo}
+              </Typography>
             </th>
             <th className="text-left text-white p-3 w-3/6">
-              <Typography fontSize={FontConfig.big}>{texts.demandaModoVisualizacao.titulo}</Typography>
+              <Typography fontSize={FontConfig.big}>
+                {texts.demandaModoVisualizacao.titulo}
+              </Typography>
             </th>
             {myDemandas && (
               <th className="text-left text-white p-3 w-1/6">
-                <Typography fontSize={FontConfig.big}>{texts.demandaModoVisualizacao.status}</Typography>
+                <Typography fontSize={FontConfig.big}>
+                  {texts.demandaModoVisualizacao.status}
+                </Typography>
               </th>
             )}
             <th className="text-white p-3 w-1/12">
-              <Typography fontSize={FontConfig.big}>{texts.demandaModoVisualizacao.data}</Typography>
+              <Typography fontSize={FontConfig.big}>
+                {texts.demandaModoVisualizacao.data}
+              </Typography>
             </th>
           </TableRow>
         </TableHead>
@@ -180,7 +195,7 @@ const DemandaTable = ({
                         {formatarNomeStatus(row.status)}
                       </Typography>
                       {row.status == "CANCELLED" ||
-                        row.status == "BACKLOG_EDICAO" ? (
+                      row.status == "BACKLOG_EDICAO" ? (
                         <Button
                           className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
@@ -250,7 +265,7 @@ const NadaEncontrado = () => {
         alignItems: "center",
         flexDirection: "column",
         height: "100%",
-        marginTop: "2rem"
+        marginTop: "2rem",
       }}
     >
       <Typography

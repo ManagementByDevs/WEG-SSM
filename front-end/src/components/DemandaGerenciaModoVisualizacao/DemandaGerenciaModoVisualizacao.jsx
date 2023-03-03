@@ -50,9 +50,6 @@ const DemandaGerenciaModoVisualizacao = ({
   );
 };
 
-// Contexto para trocar a linguagem
-const { texts } = useContext(TextLanguageContext);
-
 const DemandaTable = ({
   listaDemandas = [
     {
@@ -82,6 +79,9 @@ const DemandaTable = ({
 
   // Controla o estado do modal de histórico da demanda
   const [modalHistorico, setModalHistorico] = useState(false);
+
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
 
   // Função para receber a cor do status da demanda
   const getStatusColor = (status) => {
