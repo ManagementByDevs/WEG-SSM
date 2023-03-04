@@ -28,6 +28,8 @@ public class PDFGeneratorService {
 
     public Document exportDemanda(HttpServletResponse response, Demanda demanda) throws IOException {
 
+        // Formatação da data para o documento pdf
+
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 
@@ -158,13 +160,6 @@ public class PDFGeneratorService {
         paragraph9.setAlignment(Paragraph.ANCHOR);
         paragraph9.setSpacingBefore(15);
 
-        Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
-        Chunk chunkValorForum = new Chunk(demanda.getForum().getNome(), fontParagraph3);
-        Paragraph paragraph16 = new Paragraph();
-        paragraph16.setSpacingBefore(15);
-        paragraph16.add(chunkForum);
-        paragraph16.add(chunkValorForum);
-
         // Adicionando tudo na página pdf
 
         document.add(paragraph7);
@@ -198,6 +193,13 @@ public class PDFGeneratorService {
                 paragraph15.add(chunkValorBuBeneficiadas);
             }
 
+            Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
+            Chunk chunkValorForum = new Chunk(demanda.getForum().getNome(), fontParagraph3);
+            Paragraph paragraph16 = new Paragraph();
+            paragraph16.setSpacingBefore(15);
+            paragraph16.add(chunkForum);
+            paragraph16.add(chunkValorForum);
+
             PdfPTable table2 = new PdfPTable(2);
             table2.setWidthPercentage(100);
             table2.getDefaultCell().setBorder(Rectangle.NO_BORDER);
@@ -230,9 +232,9 @@ public class PDFGeneratorService {
 
             document.add(table2);
             document.add(table3);
+            document.add(paragraph16);
         }
 
-        document.add(paragraph16);
         document.add(paragraph9);
 
         // Adicionando o nome dos arquivos
@@ -252,88 +254,9 @@ public class PDFGeneratorService {
         return document;
     }
 
-    public void exportProposta(HttpServletResponse response) throws IOException {
+    public Document exportProposta(HttpServletResponse response, Proposta proposta) throws IOException {
 
-        Long execucao = null;
-        Demanda demanda = new Demanda();
-        Proposta proposta = new Proposta();
-        Beneficio beneficio1 = new Beneficio();
-        Beneficio beneficio2 = new Beneficio();
-        Beneficio beneficio3 = new Beneficio();
-        CC cc = new CC();
-        Custo custo = new Custo();
-        TabelaCusto tabelaCusto = new TabelaCusto();
-        List<TabelaCusto> listaTabelaCusto = new ArrayList<>();
-        List<Beneficio> listaBeneficios = new ArrayList<>();
-        List<Custo> listaCustos = new ArrayList<>();
-        List<CC> listaCC = new ArrayList<>();
-        Forum forumNome = new Forum();
-
-        forumNome.setNome("Forum 01");
-
-        proposta.setForum(forumNome);
-        proposta.setTamanho("Grande");
-        proposta.setFrequencia("Muito Alta");
-
-        cc.setCodigo(1);
-        cc.setPorcentagem(12.5);
-        listaCC.add(cc);
-
-        custo.setHoras(12.5);
-        custo.setPerfilDespesa("Perfil D");
-        custo.setPeriodoExecucao(execucao);
-        custo.setTipoDespesa("Tipo D");
-        custo.setValorHora(150.5);
-        listaCustos.add(custo);
-
-        tabelaCusto.setCustos(listaCustos);
-        tabelaCusto.setCcs(listaCC);
-
-        listaTabelaCusto.add(tabelaCusto);
-
-        proposta.setTabelaCustos(listaTabelaCusto);
-
-        TipoBeneficio tipoBeneficio1 = TipoBeneficio.QUALITATIVO;
-        TipoBeneficio tipoBeneficio2 = TipoBeneficio.POTENCIAL;
-        TipoBeneficio tipoBeneficio3 = TipoBeneficio.REAL;
-
-        ResponsavelNegocio responsavelNegocio = new ResponsavelNegocio();
-        responsavelNegocio.setArea("TI");
-        responsavelNegocio.setNome("Matheus");
-
-        List<ResponsavelNegocio> listaResponsavelNgc = new ArrayList<>();
-
-        listaResponsavelNgc.add(responsavelNegocio);
-
-        proposta.setResponsavelNegocio(listaResponsavelNgc);
-        proposta.setLinkJira("https://link.com.br");
-
-        beneficio1.setTipoBeneficio(tipoBeneficio1);
-        beneficio1.setMoeda("BR");
-        beneficio1.setMemoriaCalculo("Memória de cálculo");
-        beneficio1.setValor_mensal(2.00);
-
-        beneficio2.setTipoBeneficio(tipoBeneficio2);
-        beneficio2.setMoeda("BR");
-        beneficio2.setMemoriaCalculo("Memória de cálculo 2");
-        beneficio2.setValor_mensal(4.00);
-
-        beneficio3.setTipoBeneficio(tipoBeneficio3);
-        beneficio3.setMoeda("BR");
-        beneficio3.setMemoriaCalculo("Memória de cálculo 3");
-        beneficio3.setValor_mensal(6.00);
-
-        listaBeneficios.add(beneficio1);
-        listaBeneficios.add(beneficio2);
-        listaBeneficios.add(beneficio3);
-
-        demanda.setFrequencia("Muito Alta");
-        demanda.setProposta("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ");
-        demanda.setTitulo("A Falha na Procura de Demandas");
-        demanda.setProblema("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum");
-        demanda.setBeneficios(listaBeneficios);
-
-        proposta.setDemanda(demanda);
+        Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
 
         // Formatação da data para quando baixar o documento pdf
 
@@ -632,10 +555,10 @@ public class PDFGeneratorService {
         paragraph36.add(chunkBuBeneficiadas);
         paragraph36.setSpacingBefore(15);
 
-//        for (Bu bu : demanda.getBusBeneficiadas()) {
-//            Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNome() + " ", fontParagraph3);
-//            paragraph36.add(chunkValorBuBeneficiadas);
-//        }
+        for (Bu bu : demanda.getBusBeneficiadas()) {
+            Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNome() + " ", fontParagraph3);
+            paragraph36.add(chunkValorBuBeneficiadas);
+        }
 
         Chunk chunkLink = new Chunk("Link Jira: ", fontParagraph2);
         Chunk chunkValorLink = new Chunk(proposta.getLinkJira(), fontParagraph3);
@@ -662,10 +585,10 @@ public class PDFGeneratorService {
         table5.setWidthPercentage(100);
         table5.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
-        PdfPCell cell6 = new PdfPCell(paragraph32);
+        PdfPCell cell6 = new PdfPCell(paragraph17);
         cell6.setBorder(Rectangle.NO_BORDER);
 
-        PdfPCell cell7 = new PdfPCell(paragraph33);
+        PdfPCell cell7 = new PdfPCell(paragraph19);
         cell7.setBorder(Rectangle.NO_BORDER);
         cell7.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
@@ -679,17 +602,16 @@ public class PDFGeneratorService {
 
         document.add(paragraph36);
         document.add(paragraph21);
-        document.add(paragraph17);
-        document.add(paragraph19);
+        document.add(table5);
         document.add(paragraph9);
 
-//        for (Anexo anexo : proposta.getDemanda().getAnexo()) {
-//            Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
-//            paragraph10.setIndentationLeft(40);
-//            paragraph10.setSpacingBefore(5);
-//
-//            document.add(paragraph10);
-//        }
+        for (Anexo anexo : proposta.getDemanda().getAnexo()) {
+            Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
+            paragraph10.setIndentationLeft(40);
+            paragraph10.setSpacingBefore(5);
+
+            document.add(paragraph10);
+        }
 
         for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
             Paragraph p = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontParagraph3);
@@ -704,7 +626,11 @@ public class PDFGeneratorService {
 
         document.add(paragraph30);
 
+        // Encerrando o documento
+
         document.close();
+
+        return document;
     }
 
     public void exportPauta(HttpServletResponse response) throws IOException {

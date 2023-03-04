@@ -4,8 +4,10 @@ import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.Demanda;
+import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.service.DemandaService;
 import net.weg.wegssm.model.service.PDFGeneratorService;
+import net.weg.wegssm.model.service.PropostaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,7 @@ public class PDFExportController {
     private final PDFGeneratorService pdfGeneratorService;
 
     private DemandaService demandaService;
+    private PropostaService propostaService;
 
     @GetMapping("/pdf/escopo")
     public void generatePDFEscopo(@RequestBody Demanda demanda, HttpServletResponse response) throws IOException {
@@ -72,8 +75,9 @@ public class PDFExportController {
         response.getOutputStream().flush();
     }
 
-    @GetMapping("/pdf/proposta")
-    public void generatePDFProposta(HttpServletResponse response) throws IOException {
+    @GetMapping("/pdf/proposta/{id}")
+    public void generatePDFProposta(@PathVariable(value = "id") Long propostaId, HttpServletResponse response) throws IOException {
+        Proposta proposta = propostaService.findById(propostaId).get();
         response.setContentType("application/pdf");
 
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
@@ -84,7 +88,14 @@ public class PDFExportController {
 
         response.setHeader(headerKey, headerValue);
 
-        this.pdfGeneratorService.exportProposta(response);
+        Document document = this.pdfGeneratorService.exportProposta(response, proposta);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, baos);
+        baos.flush();
+        byte[] pdfData = baos.toByteArray();
+        baos.close();
+        response.getOutputStream().write(pdfData);
+        response.getOutputStream().flush();
     }
 
     @GetMapping("/pdf/pauta")
