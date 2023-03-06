@@ -58,13 +58,12 @@ const DetalhesPropostaPagina = () => {
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
           >
-            <IconButton>
+            <IconButton onClick={baixarProposta}>
               <SaveAltOutlinedIcon
                 id="segundo"
                 fontSize="large"
                 className="delay-120 hover:scale-110 duration-600"
                 sx={{ color: "icon.main" }}
-                onClick={baixarProposta}
               />
             </IconButton>
           </Box>
