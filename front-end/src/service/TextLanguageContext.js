@@ -393,6 +393,7 @@ const TextLanguageContext = createContext({
       numeroSequencial: "Num. Seq.",
       comissao: "Comissão",
       analistaResponsavel: "Anal. Resp.",
+      deletar: "Deletar",
       data: "Data",
       nadaEncontrados: "Nada encontrado",
       tenteNovamenteMaisTarde: "Tente novamente mais tarde",
