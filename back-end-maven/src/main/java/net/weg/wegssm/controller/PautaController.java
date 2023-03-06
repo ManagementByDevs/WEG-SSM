@@ -25,6 +25,7 @@ import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/pauta")
 public class PautaController {
     private PautaService pautaService;
@@ -150,7 +151,8 @@ public class PautaController {
      * @param pautaDto ( Novos dados da pauta = req.body )
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid PautaDTO pautaDto) {
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody PautaDTO pautaDto) {
+        System.out.println("pauta dto\n\n\n\n\n\n" + pautaDto.toString());
         Optional<Pauta> pautaOptinal = pautaService.findById(id);
 
         if (pautaOptinal.isEmpty()) {

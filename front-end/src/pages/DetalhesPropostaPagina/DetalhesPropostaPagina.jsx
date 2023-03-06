@@ -50,6 +50,7 @@ const DetalhesPropostaPagina = () => {
       <ModalAddPropostaPauta
         open={openModalAddPropostaPauta}
         setOpen={setOpenModalAddPropostaPauta}
+        proposta={location.state}
       />
       <Box className="relative p-2">
         <Box className="flex w-full relative">

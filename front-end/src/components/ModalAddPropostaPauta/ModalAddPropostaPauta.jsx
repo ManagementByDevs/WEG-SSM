@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   Modal,
@@ -21,6 +21,8 @@ import ContainerPauta from "../ContainerPauta/ContainerPauta";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import TemaContext from "../../service/TemaContext";
+import PautaService from "../../service/pautaService";
 
 const ModalAddPropostaPauta = (props) => {
   // Context para alterar o tamanho da fonte
@@ -28,6 +30,9 @@ const ModalAddPropostaPauta = (props) => {
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Contexet para verificar o tema atual
+  const { mode } = useContext(TemaContext);
 
   // variáveis de estilo para os itens do componente
   const cssModal = {
@@ -95,23 +100,6 @@ const ModalAddPropostaPauta = (props) => {
     cursor: "pointer",
   };
 
-  const containerSelecionado = {
-    width: "90%",
-    height: "5.5rem",
-    border: "1px solid",
-    borderLeft: "solid 6px",
-    borderColor: "primary.main",
-    borderRadius: "5px",
-    p: 4,
-    margin: "1%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    cursor: "pointer",
-    backgroundColor: "rgba(196, 196, 196, 0.7)",
-  };
-
   const parteCima = {
     width: "100%",
     display: "flex",
@@ -142,6 +130,7 @@ const ModalAddPropostaPauta = (props) => {
     filter: "white",
   };
 
+  // Exemplo de um objeto proposta
   const propostaExample = {
     analista: {},
     anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
@@ -202,6 +191,12 @@ const ModalAddPropostaPauta = (props) => {
     titulo: "",
     visibilidade: true,
   };
+
+  useEffect(() => {
+    PautaService.get().then((res) => {
+      setListaPautas(res);
+    });
+  }, []);
 
   // props para abrir o modal através de outra tela
   let open = false;
@@ -286,6 +281,25 @@ const ModalAddPropostaPauta = (props) => {
     setBotaoNovaPauta(!botaoNovaPauta);
   };
 
+  // Função para retornar a cor do background do componente de pauta corretamente
+  const getBackgroundColor = () => {
+    if (!novaPautaSelecionada) {
+      return mode == "dark" ? "#22252C" : "#FFFFFF";
+    } else {
+      return mode == "dark" ? "#2E2E2E" : "#E4E4E4";
+    }
+  };
+
+  // Função para adicionar a proposta na pauta selecionada
+  const addPropostaInPauta = () => {
+    let pauta = listaPautas[indexPautaSelecionada];
+    pauta.propostas.push(props.proposta);
+    PautaService.put(pauta).then((res) => {
+      console.log("res: ", res);
+    });
+    handleClose();
+  };
+
   return (
     <Modal open={open} onClose={handleClose} closeAfterTransition>
       <Fade in={open}>
@@ -306,14 +320,15 @@ const ModalAddPropostaPauta = (props) => {
               top: "3%",
               cursor: "pointer",
             }}
-          ></CloseIcon>
+          />
 
           <Box sx={listaPropostas}>
             {/* Exibe as pautas do sistema */}
-            {listaPautas.map((proposta, index) => {
+            {listaPautas.map((pauta, index) => {
               return (
                 <ContainerPauta
                   key={index}
+                  pauta={pauta}
                   setIndexPautaSelecionada={setIndexPautaSelecionada}
                   index={index}
                   indexPautaSelecionada={indexPautaSelecionada}
@@ -326,9 +341,7 @@ const ModalAddPropostaPauta = (props) => {
               <Paper
                 sx={{
                   ...containerGeral,
-                  backgroundColor: !novaPautaSelecionada
-                    ? "background.default"
-                    : "visualizao.false",
+                  backgroundColor: getBackgroundColor(),
                 }}
                 onClick={selecionarNovaPauta}
               >
@@ -336,7 +349,7 @@ const ModalAddPropostaPauta = (props) => {
                   <Typography fontSize={FontConfig.medium}>
                     {texts.modalAddPropostaPauta.propostas}:
                   </Typography>
-                  <input style={data} type="date"></input>
+                  <input style={data} type="date" />
                 </Box>
 
                 <Box sx={parteBaixo}>
@@ -409,7 +422,7 @@ const ModalAddPropostaPauta = (props) => {
                 sx={botaoCriar}
                 disableElevation
                 onClick={addPauta}
-                disabled={novaPauta != false}
+                disabled={novaPauta}
               >
                 <Typography fontSize={FontConfig.default}>
                   {texts.modalAddPropostaPauta.novaPauta}
@@ -422,7 +435,7 @@ const ModalAddPropostaPauta = (props) => {
                   indexPautaSelecionada == null && botaoNovaPauta == false
                 }
                 variant="contained"
-                onClick={handleClose}
+                onClick={addPropostaInPauta}
               >
                 {texts.modalAddPropostaPauta.adicionar}
               </Button>
