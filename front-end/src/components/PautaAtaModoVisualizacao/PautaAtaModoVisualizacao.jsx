@@ -72,15 +72,13 @@ const PautaTable = ({
 
     return `${DateService.getTodaysDateUSFormat(
       dataInicio
-    )} às ${dateInicio.getHours()}:${
-      dateInicio.getMinutes() < 10
+    )} às ${dateInicio.getHours()}:${dateInicio.getMinutes() < 10
         ? "0" + dateInicio.getMinutes()
         : dateInicio.getMinutes()
-    } - ${dateFim.getHours()}:${
-      dateFim.getMinutes() < 10
+      } - ${dateFim.getHours()}:${dateFim.getMinutes() < 10
         ? "0" + dateFim.getMinutes()
         : dateFim.getMinutes()
-    }`;
+      }`;
   };
 
   return (
