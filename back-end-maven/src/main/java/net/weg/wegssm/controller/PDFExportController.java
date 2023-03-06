@@ -88,6 +88,8 @@ public class PDFExportController {
 
         response.setHeader(headerKey, headerValue);
 
+        System.out.println("Ainda nao deu erro");
+
         Document document = this.pdfGeneratorService.exportProposta(response, proposta);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter.getInstance(document, baos);
