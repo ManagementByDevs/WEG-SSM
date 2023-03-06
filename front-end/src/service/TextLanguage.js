@@ -634,6 +634,16 @@ const TextLanguage = (linguagem) => {
             direcaoGeral: "Direção Geral",
             semInformacoesAdicionais: "Sem informações adicionais",
             semParecer: "Sem parecer",
+        },
+        modalAddPropostaPauta: {
+            selecioneAPauta: "Selecione a pauta",
+            propostas: "Propostas",
+            comissao: "Comissão",
+            adicionarComoProposta: "Adicionar como proposta",
+            publicada: "Publicada",
+            naoPublicada: "Não publicada",
+            novaPauta: "Nova Pauta",
+            adicionar: "Adicionar",
         }
 
     } : linguagem == "en" ? {

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { useLocation } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import { Box, IconButton, Button, Tooltip } from "@mui/material";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
+import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalAddPropostaPauta";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
@@ -24,8 +25,19 @@ const DetalhesPropostaPagina = () => {
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  const [openModalAddPropostaPauta, setOpenModalAddPropostaPauta] =
+    useState(true);
+
+  const adicionarAPauta = () => {
+    setOpenModalAddPropostaPauta(true);
+  };
+
   return (
     <FundoComHeader>
+      <ModalAddPropostaPauta
+        open={openModalAddPropostaPauta}
+        setOpen={setOpenModalAddPropostaPauta}
+      />
       <Box className="relative p-2">
         <Box className="flex w-full relative">
           <Caminho />
@@ -47,7 +59,11 @@ const DetalhesPropostaPagina = () => {
       </Box>
       <Box className="absolute bottom-4 right-6  p-1">
         <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>
-          <Button variant="contained" sx={{ borderRadius: "9999px" }}>
+          <Button
+            variant="contained"
+            sx={{ borderRadius: "9999px" }}
+            onClick={adicionarAPauta}
+          >
             <BookmarkAddIcon sx={{ fontSize: "28px", color: "text.white" }} />
           </Button>
         </Tooltip>

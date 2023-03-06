@@ -288,49 +288,9 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                 {texts.detalhesProposta.tabelaDeCustos}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                {
-                  // [
-                  //   {
-                  //     id: 0,
-                  //     custos: [
-                  //       {
-                  //         id: 1,
-                  //         tipoDespesa: "Tipo 1",
-                  //         perfilDespesa: "Perfil",
-                  //         periodoExecucao: 12,
-                  //         horas: 12,
-                  //         valorHora: 59.0,
-                  //       },
-                  //     ],
-                  //     ccs: [
-                  //       { id: 0, codigo: 21312321321, porcentegem: 0.0 },
-                  //       { id: 0, codigo: 0, porcentegem: 0.0 },
-                  //       { id: 0, codigo: 0, porcentegem: 0.0 },
-                  //     ],
-                  //   },
-                  //   {
-                  //     id: 0,
-                  //     custos: [
-                  //       {
-                  //         id: 1,
-                  //         tipoDespesa: "Tipo 1",
-                  //         perfilDespesa: "Perfil",
-                  //         periodoExecucao: 12,
-                  //         horas: 12,
-                  //         valorHora: 59.0,
-                  //       },
-                  //     ],
-                  //     ccs: [
-                  //       { id: 0, codigo: 21312321321, porcentegem: 0.0 },
-                  //       { id: 0, codigo: 0, porcentegem: 0.0 },
-                  //       { id: 0, codigo: 0, porcentegem: 0.0 },
-                  //     ],
-                  //   },
-                  // ]
-                  proposta.tabelaCustos.map((tabela, index) => {
-                    return <TabelaCustos key={index} dados={tabela} />;
-                  })
-                }
+                {proposta.tabelaCustos.map((tabela, index) => {
+                  return <TabelaCustos key={index} dados={tabela} />;
+                })}
               </Box>
             </Box>
 

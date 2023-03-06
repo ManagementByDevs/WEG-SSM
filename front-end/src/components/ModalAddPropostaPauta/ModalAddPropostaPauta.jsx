@@ -20,10 +20,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import ContainerPauta from "../ContainerPauta/ContainerPauta";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const ModalAddPropostaPauta = (props) => {
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
 
   // variáveis de estilo para os itens do componente
   const cssModal = {
@@ -138,6 +142,67 @@ const ModalAddPropostaPauta = (props) => {
     filter: "white",
   };
 
+  const propostaExample = {
+    analista: {},
+    anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
+    beneficios: [
+      {
+        id: 0,
+        tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
+        valor_mensal: 0,
+        moeda: "",
+        memoriaCalculo: "",
+      },
+    ],
+    buSolicitante: { id: 0, nome: "" },
+    busBeneficiadas: [{ id: 0, nome: "" }],
+    codigoPPM: 0,
+    data: "",
+    demanda: 0,
+    departamento: 0,
+    escopo: 0,
+    fimExecucao: "",
+    forum: { id: 0, nome: "", visibilidade: true },
+    frequencia: "",
+    gerente: 0,
+    historicoProposta: [],
+    id: 0,
+    inicioExecucao: "",
+    linkJira: "",
+    naoPublicada: true,
+    parecerComissao: "",
+    parecerDG: "",
+    parecerInformacao: "",
+    paybackTipo: "",
+    paybackValor: 0,
+    problema: "",
+    proposta: "",
+    publicada: false,
+    responsavelNegocio: [],
+    secaoTI: "",
+    solicitante: {},
+    status: "",
+    tabelaCustos: [
+      {
+        id: 0,
+        custos: [
+          {
+            id: 0,
+            tipoDespesa: "",
+            perfilDespesa: "",
+            periodoExecucao: 0,
+            horas: 0,
+            valorHora: 0,
+          },
+        ],
+        ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
+      },
+    ],
+    tamanho: "",
+    titulo: "",
+    visibilidade: true,
+  };
+
   // props para abrir o modal através de outra tela
   let open = false;
   open = props.open;
@@ -182,7 +247,16 @@ const ModalAddPropostaPauta = (props) => {
   const [botaoNovaPauta, setBotaoNovaPauta] = useState(false);
 
   // UseState para armazenar a lista de pautas
-  const [listaPautas, setListaPautas] = useState([1, 2]);
+  const [listaPautas, setListaPautas] = useState([
+    {
+      id: 0,
+      numeroSequencial: 0,
+      inicioDataReuniao: "",
+      fimDataReuniao: "",
+      comissao: "",
+      propostas: [propostaExample],
+    },
+  ]);
 
   // UseState para armazenar a data
   const [inputData, setInputData] = useState("");
@@ -222,7 +296,7 @@ const ModalAddPropostaPauta = (props) => {
             fontSize={FontConfig.smallTitle}
             color={"primary.main"}
           >
-            Selecione a Pauta
+            {texts.modalAddPropostaPauta.selecioneAPauta}
           </Typography>
           <CloseIcon
             onClick={handleClose}
@@ -249,57 +323,39 @@ const ModalAddPropostaPauta = (props) => {
 
             {/* Nova pauta criada */}
             {novaPauta && (
-              <>
-                {/* Verificar se a nova pauta foi selecionada */}
-                {!novaPautaSelecionada ? (
-                  <Paper sx={containerGeral} onClick={selecionarNovaPauta}>
-                    <Box sx={parteCima}>
-                      <Typography>Propostas:</Typography>
-                      <input style={data} type="date"></input>
-                    </Box>
+              <Paper
+                sx={{
+                  ...containerGeral,
+                  backgroundColor: !novaPautaSelecionada
+                    ? "background.default"
+                    : "visualizao.false",
+                }}
+                onClick={selecionarNovaPauta}
+              >
+                <Box sx={parteCima}>
+                  <Typography fontSize={FontConfig.medium}>
+                    {texts.modalAddPropostaPauta.propostas}:
+                  </Typography>
+                  <input style={data} type="date"></input>
+                </Box>
 
-                    <Box sx={parteBaixo}>
-                      <FormControl sx={selectComissao} size="small">
-                        <Select
-                          value={comissao}
-                          onChange={handleChange}
-                          displayEmpty
-                          inputProps={{ "aria-label": "Without label" }}
-                        >
-                          <MenuItem value="">Comissão</MenuItem>
-                          <MenuItem value={1}>Exemplo 01</MenuItem>
-                          <MenuItem value={2}>Exemplo 02</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </Paper>
-                ) : (
-                  <Paper
-                    sx={containerSelecionado}
-                    onClick={selecionarNovaPauta}
-                  >
-                    <Box sx={parteCima}>
-                      <Typography>Propostas:</Typography>
-                      <input style={data} type="date"></input>
-                    </Box>
-
-                    <Box sx={parteBaixo}>
-                      <FormControl sx={selectComissao} size="small">
-                        <Select
-                          value={comissao}
-                          onChange={handleChange}
-                          displayEmpty
-                          inputProps={{ "aria-label": "Without label" }}
-                        >
-                          <MenuItem value="">Comissão</MenuItem>
-                          <MenuItem value={1}>Exemplo 01</MenuItem>
-                          <MenuItem value={2}>Exemplo 02</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </Paper>
-                )}
-              </>
+                <Box sx={parteBaixo}>
+                  <FormControl sx={selectComissao} size="small">
+                    <Select
+                      value={comissao}
+                      onChange={handleChange}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                    >
+                      <MenuItem value="">
+                        {texts.modalAddPropostaPauta.comissao}
+                      </MenuItem>
+                      <MenuItem value={1}>Exemplo 01</MenuItem>
+                      <MenuItem value={2}>Exemplo 02</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Paper>
             )}
           </Box>
 
@@ -315,7 +371,7 @@ const ModalAddPropostaPauta = (props) => {
               fontSize={FontConfig.veryBig}
               color={"primary.main"}
             >
-              Adicionar Como Proposta
+              {texts.modalAddPropostaPauta.adicionarComoProposta}
             </Typography>
             <Box>
               <FormGroup>
@@ -330,13 +386,13 @@ const ModalAddPropostaPauta = (props) => {
                     checked={check[0]}
                     onChange={mudarCheck1}
                     control={<Checkbox />}
-                    label="Publicada"
+                    label={texts.modalAddPropostaPauta.publicada}
                   />
                   <FormControlLabel
                     checked={check[1]}
                     onChange={mudarCheck2}
                     control={<Checkbox />}
-                    label="Não publicada"
+                    label={texts.modalAddPropostaPauta.naoPublicada}
                   />
                 </Box>
               </FormGroup>
@@ -355,7 +411,9 @@ const ModalAddPropostaPauta = (props) => {
                 onClick={addPauta}
                 disabled={novaPauta != false}
               >
-                Criar Pauta
+                <Typography fontSize={FontConfig.default}>
+                  {texts.modalAddPropostaPauta.novaPauta}
+                </Typography>
               </Button>
               <Button
                 sx={botaoDesabilitado}
@@ -366,7 +424,7 @@ const ModalAddPropostaPauta = (props) => {
                 variant="contained"
                 onClick={handleClose}
               >
-                Adicionar
+                {texts.modalAddPropostaPauta.adicionar}
               </Button>
             </Box>
           </Box>
