@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   Modal,
@@ -14,16 +14,26 @@ import {
   Select,
   FormControl,
   MenuItem,
+  TextField,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ContainerPauta from "../ContainerPauta/ContainerPauta";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
+import TemaContext from "../../service/TemaContext";
+import PautaService from "../../service/pautaService";
 
 const ModalAddPropostaPauta = (props) => {
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
+  // Contexet para verificar o tema atual
+  const { mode } = useContext(TemaContext);
 
   // variáveis de estilo para os itens do componente
   const cssModal = {
@@ -91,23 +101,6 @@ const ModalAddPropostaPauta = (props) => {
     cursor: "pointer",
   };
 
-  const containerSelecionado = {
-    width: "90%",
-    height: "5.5rem",
-    border: "1px solid",
-    borderLeft: "solid 6px",
-    borderColor: "primary.main",
-    borderRadius: "5px",
-    p: 4,
-    margin: "1%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    cursor: "pointer",
-    backgroundColor: "rgba(196, 196, 196, 0.7)",
-  };
-
   const parteCima = {
     width: "100%",
     display: "flex",
@@ -137,6 +130,74 @@ const ModalAddPropostaPauta = (props) => {
     background: "transparent",
     filter: "white",
   };
+
+  // Exemplo de um objeto proposta
+  const propostaExample = {
+    analista: {},
+    anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
+    beneficios: [
+      {
+        id: 0,
+        tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
+        valor_mensal: 0,
+        moeda: "",
+        memoriaCalculo: "",
+      },
+    ],
+    buSolicitante: { id: 0, nome: "" },
+    busBeneficiadas: [{ id: 0, nome: "" }],
+    codigoPPM: 0,
+    data: "",
+    demanda: 0,
+    departamento: 0,
+    escopo: 0,
+    fimExecucao: "",
+    forum: { id: 0, nome: "", visibilidade: true },
+    frequencia: "",
+    gerente: 0,
+    historicoProposta: [],
+    id: 0,
+    inicioExecucao: "",
+    linkJira: "",
+    naoPublicada: true,
+    parecerComissao: "",
+    parecerDG: "",
+    parecerInformacao: "",
+    paybackTipo: "",
+    paybackValor: 0,
+    problema: "",
+    proposta: "",
+    publicada: false,
+    responsavelNegocio: [],
+    secaoTI: "",
+    solicitante: {},
+    status: "",
+    tabelaCustos: [
+      {
+        id: 0,
+        custos: [
+          {
+            id: 0,
+            tipoDespesa: "",
+            perfilDespesa: "",
+            periodoExecucao: 0,
+            horas: 0,
+            valorHora: 0,
+          },
+        ],
+        ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
+      },
+    ],
+    tamanho: "",
+    titulo: "",
+    visibilidade: true,
+  };
+
+  useEffect(() => {
+    PautaService.get().then((res) => {
+      setListaPautas(res);
+    });
+  }, []);
 
   // props para abrir o modal através de outra tela
   let open = false;
@@ -182,7 +243,16 @@ const ModalAddPropostaPauta = (props) => {
   const [botaoNovaPauta, setBotaoNovaPauta] = useState(false);
 
   // UseState para armazenar a lista de pautas
-  const [listaPautas, setListaPautas] = useState([1, 2]);
+  const [listaPautas, setListaPautas] = useState([
+    {
+      id: 0,
+      numeroSequencial: 0,
+      inicioDataReuniao: "",
+      fimDataReuniao: "",
+      comissao: "",
+      propostas: [propostaExample],
+    },
+  ]);
 
   // UseState para armazenar a data
   const [inputData, setInputData] = useState("");
@@ -208,9 +278,53 @@ const ModalAddPropostaPauta = (props) => {
 
   // função para selecionar a nova pauta
   const selecionarNovaPauta = () => {
+    // Deseleciona a nova pauta
+    if (!novaPautaSelecionada) {
+      setIndexPautaSelecionada(null);
+    }
+
     setnovaPautaSelecionada(!novaPautaSelecionada);
     setBotaoNovaPauta(!botaoNovaPauta);
   };
+
+  // Função para retornar a cor do background do componente de pauta corretamente
+  const getBackgroundColor = () => {
+    if (!novaPautaSelecionada) {
+      return mode == "dark" ? "#22252C" : "#FFFFFF";
+    } else {
+      return mode == "dark" ? "#2E2E2E" : "#E4E4E4";
+    }
+  };
+
+  // Função para adicionar a proposta na pauta selecionada
+  const addPropostaInPauta = () => {
+    let pauta;
+    if (novaPautaSelecionada) {
+      if (!isAllFieldsFilled()) {
+        console.log("preencha todos os campos para performar essa ação");
+        return;
+      }
+      pauta = {};
+    } else {
+      pauta = listaPautas[indexPautaSelecionada];
+      pauta.propostas.push(props.proposta);
+      PautaService.put(pauta).then((res) => {
+        console.log("res: ", res);
+      });
+    }
+    handleClose();
+  };
+
+  const isAllFieldsFilled = () => {
+    return inputData != "" && comissao != "";
+  };
+
+  // UseEffect para deselecionar a nova pauta quando selecionar outra pauta
+  useEffect(() => {
+    if (indexPautaSelecionada != null) {
+      setnovaPautaSelecionada(false);
+    }
+  }, [indexPautaSelecionada]);
 
   return (
     <Modal open={open} onClose={handleClose} closeAfterTransition>
@@ -222,7 +336,7 @@ const ModalAddPropostaPauta = (props) => {
             fontSize={FontConfig.smallTitle}
             color={"primary.main"}
           >
-            Selecione a Pauta
+            {texts.modalAddPropostaPauta.selecioneAPauta}
           </Typography>
           <CloseIcon
             onClick={handleClose}
@@ -232,14 +346,15 @@ const ModalAddPropostaPauta = (props) => {
               top: "3%",
               cursor: "pointer",
             }}
-          ></CloseIcon>
+          />
 
           <Box sx={listaPropostas}>
             {/* Exibe as pautas do sistema */}
-            {listaPautas.map((proposta, index) => {
+            {listaPautas.map((pauta, index) => {
               return (
                 <ContainerPauta
                   key={index}
+                  pauta={pauta}
                   setIndexPautaSelecionada={setIndexPautaSelecionada}
                   index={index}
                   indexPautaSelecionada={indexPautaSelecionada}
@@ -249,57 +364,38 @@ const ModalAddPropostaPauta = (props) => {
 
             {/* Nova pauta criada */}
             {novaPauta && (
-              <>
-                {/* Verificar se a nova pauta foi selecionada */}
-                {!novaPautaSelecionada ? (
-                  <Paper sx={containerGeral} onClick={selecionarNovaPauta}>
-                    <Box sx={parteCima}>
-                      <Typography>Propostas:</Typography>
-                      <input style={data} type="date"></input>
-                    </Box>
+              <Paper
+                sx={{
+                  ...containerGeral,
+                  backgroundColor: getBackgroundColor(),
+                }}
+                onClick={selecionarNovaPauta}
+              >
+                <Box sx={parteCima}>
+                  <Typography fontSize={FontConfig.medium}>
+                    {texts.modalAddPropostaPauta.propostas}:
+                  </Typography>
+                  <input style={data} type="date" />
+                </Box>
 
-                    <Box sx={parteBaixo}>
-                      <FormControl sx={selectComissao} size="small">
-                        <Select
-                          value={comissao}
-                          onChange={handleChange}
-                          displayEmpty
-                          inputProps={{ "aria-label": "Without label" }}
-                        >
-                          <MenuItem value="">Comissão</MenuItem>
-                          <MenuItem value={1}>Exemplo 01</MenuItem>
-                          <MenuItem value={2}>Exemplo 02</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </Paper>
-                ) : (
-                  <Paper
-                    sx={containerSelecionado}
-                    onClick={selecionarNovaPauta}
-                  >
-                    <Box sx={parteCima}>
-                      <Typography>Propostas:</Typography>
-                      <input style={data} type="date"></input>
-                    </Box>
-
-                    <Box sx={parteBaixo}>
-                      <FormControl sx={selectComissao} size="small">
-                        <Select
-                          value={comissao}
-                          onChange={handleChange}
-                          displayEmpty
-                          inputProps={{ "aria-label": "Without label" }}
-                        >
-                          <MenuItem value="">Comissão</MenuItem>
-                          <MenuItem value={1}>Exemplo 01</MenuItem>
-                          <MenuItem value={2}>Exemplo 02</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </Paper>
-                )}
-              </>
+                <Box sx={parteBaixo}>
+                  <FormControl sx={selectComissao} size="small">
+                    <Select
+                      value={comissao}
+                      onChange={handleChange}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      placeholder="teste"
+                    >
+                      <MenuItem value="" disabled>
+                        {texts.modalAddPropostaPauta.comissao}
+                      </MenuItem>
+                      <MenuItem value={1}>Exemplo 01</MenuItem>
+                      <MenuItem value={2}>Exemplo 02</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Paper>
             )}
           </Box>
 
@@ -315,7 +411,7 @@ const ModalAddPropostaPauta = (props) => {
               fontSize={FontConfig.veryBig}
               color={"primary.main"}
             >
-              Adicionar Como Proposta
+              {texts.modalAddPropostaPauta.adicionarComoProposta}
             </Typography>
             <Box>
               <FormGroup>
@@ -330,13 +426,13 @@ const ModalAddPropostaPauta = (props) => {
                     checked={check[0]}
                     onChange={mudarCheck1}
                     control={<Checkbox />}
-                    label="Publicada"
+                    label={texts.modalAddPropostaPauta.publicada}
                   />
                   <FormControlLabel
                     checked={check[1]}
                     onChange={mudarCheck2}
                     control={<Checkbox />}
-                    label="Não publicada"
+                    label={texts.modalAddPropostaPauta.naoPublicada}
                   />
                 </Box>
               </FormGroup>
@@ -353,20 +449,22 @@ const ModalAddPropostaPauta = (props) => {
                 sx={botaoCriar}
                 disableElevation
                 onClick={addPauta}
-                disabled={novaPauta != false}
+                disabled={novaPauta}
               >
-                Criar Pauta
+                <Typography fontSize={FontConfig.default}>
+                  {texts.modalAddPropostaPauta.novaPauta}
+                </Typography>
               </Button>
               <Button
                 sx={botaoDesabilitado}
                 disableElevation
                 disabled={
-                  indexPautaSelecionada == null && botaoNovaPauta == false
+                  indexPautaSelecionada == null && !novaPautaSelecionada
                 }
                 variant="contained"
-                onClick={handleClose}
+                onClick={addPropostaInPauta}
               >
-                Adicionar
+                {texts.modalAddPropostaPauta.adicionar}
               </Button>
             </Box>
           </Box>

@@ -14,39 +14,15 @@ const NotFound = (props) => {
     // Navigate utilizado para navegar para outra página
     let navigate = useNavigate();
 
-    // Variáveis de estilo utilizadas no componente 
-    const containerPagina = {
-        with: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    };
-
-    const containerNotFound = {
-        display: 'flex',
-        height: '50%',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        flexDirection: 'column',
-    };
-
-    const botaoVoltar = {
-        width: '8rem',
-        fontSize: FontConfig.big,
-        borderRadius: '10px',
-        p: 1
-    };
-
     // Função para retornar a home
     const voltarPaginaPrincipal = () => {
         navigate('/')
     };
 
     return (
-        <Box sx={containerPagina}>
+        <Box className='flex justify-center items-center w-screen h-screen'>
             {/* Componente com informações da página */}
-            <Box sx={containerNotFound}>
+            <Box className='flex justify-evenly flex-col items-center h-1/2'>
 
                 <img src={Error} />
 
@@ -62,7 +38,7 @@ const NotFound = (props) => {
                     Por favor, volte para a página principal.
                 </Typography>
 
-                <Button sx={botaoVoltar} onClick={voltarPaginaPrincipal} variant="contained">
+                <Button className='w-32 rounded-sm p-1' fontSize={FontConfig.big} onClick={voltarPaginaPrincipal} variant="contained">
                     Voltar
                 </Button>
             </Box>

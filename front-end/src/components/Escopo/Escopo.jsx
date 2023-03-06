@@ -5,8 +5,12 @@ import { Box, Paper, Tooltip, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const Escopo = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -61,7 +65,7 @@ const Escopo = (props) => {
             {props.escopo.proposta}
           </Typography>
         </Box>
-        <Tooltip title="Excluir">
+        <Tooltip title={texts.escopo.titleExcluir}>
           <DeleteIcon
             id="terceiro"
             className="absolute bottom-0 delay-120 hover:scale-110 duration-300"

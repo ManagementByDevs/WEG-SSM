@@ -5,6 +5,8 @@ import { Typography, Paper } from "@mui/material";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import DateService from "../../service/dateService";
+import TemaContext from "../../service/TemaContext";
 
 const ContainerPauta = (props) => {
   // Contexto para trocar a linguagem
@@ -13,8 +15,10 @@ const ContainerPauta = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Variáveis de estilo utilizadas no componente
+  // Contexet para verificar o tema atual
+  const { mode } = useContext(TemaContext);
 
+  // Variáveis de estilo utilizadas no componente
   const containerGeral = {
     width: "90%",
     height: "5.5rem",
@@ -29,23 +33,6 @@ const ContainerPauta = (props) => {
     alignItems: "center",
     flexDirection: "column",
     cursor: "pointer",
-  };
-
-  const containerSelecionado = {
-    width: "90%",
-    height: "5.5rem",
-    border: "1px solid",
-    borderLeft: "solid 6px",
-    borderColor: "primary.main",
-    borderRadius: "5px",
-    p: 4,
-    margin: "1%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    cursor: "pointer",
-    backgroundColor: "rgba(196, 196, 196, 0.7)",
   };
 
   const parteCima = {
@@ -91,48 +78,48 @@ const ContainerPauta = (props) => {
     }
   }, [props.indexPautaSelecionada]);
 
-  return (
-    <>
-      {/* Verificação para ver se a pauta foi selecionada ou não */}
-      {!pautaSelecionada ? (
-        <Paper sx={containerGeral} onClick={selecionarPauta}>
-          <Box sx={parteCima}>
-            <Typography>{texts.containerPauta.propostas}:</Typography>
-            <Typography>
-              {/* props.dataAta */}
-              01/2022
-            </Typography>
-          </Box>
+  const getFormattedDate = (dateInMySQL) => {
+    let date = DateService.getDateByMySQLFormat(dateInMySQL);
 
-          <Box sx={parteBaixo}>
-            <Typography sx={tituloProposta}>
-              Titulo da primeira proposta
-            </Typography>
-            <Typography sx={tituloProposta}>
-              Titulo da segunda proposta
-            </Typography>
-          </Box>
-        </Paper>
-      ) : (
-        <Paper sx={containerSelecionado} onClick={selecionarPauta}>
-          <Box sx={parteCima}>
-            <Typography>{texts.containerPauta.propostas}:</Typography>
-            <Typography>
-              {/* props.dataAta */}
-              01/2022
-            </Typography>
-          </Box>
-          <Box sx={parteBaixo}>
-            <Typography sx={tituloProposta}>
-              Titulo da primeira proposta
-            </Typography>
-            <Typography sx={tituloProposta}>
-              Titulo da segunda proposta
-            </Typography>
-          </Box>
-        </Paper>
-      )}
-    </>
+    return (
+      date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+    );
+  };
+
+  // Função para retornar a cor do background do componente de pauta corretamente
+  const getBackgroundColor = () => {
+    if (!pautaSelecionada) {
+      return mode == "dark" ? "#22252C" : "#FFFFFF";
+    } else {
+      return mode == "dark" ? "#2E2E2E" : "#E4E4E4";
+    }
+  };
+
+  console.log(props.pauta);
+
+  return (
+    <Paper
+      sx={{
+        ...containerGeral,
+        backgroundColor: getBackgroundColor(),
+      }}
+      onClick={selecionarPauta}
+    >
+      <Box sx={parteCima}>
+        <Typography fontSize={FontConfig.medium}>
+          {texts.containerPauta.propostas}:
+        </Typography>
+        <Typography fontSize={FontConfig.medium}>
+          {props.pauta.numeroSequencial} -&nbsp;
+          {getFormattedDate(props.pauta.inicioDataReuniao)}
+        </Typography>
+      </Box>
+
+      <Box sx={parteBaixo}>
+        <Typography fontSize={FontConfig.medium} sx={tituloProposta}>{props.pauta.propostas[0] ? props.pauta.propostas[0].titulo : ""}</Typography>
+        <Typography sx={tituloProposta}>{props.pauta.propostas[1] ? props.pauta.propostas[0].titulo : ""}</Typography>
+      </Box>
+    </Paper>
   );
 };
 

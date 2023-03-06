@@ -1,7 +1,16 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  TextareaAutosize,
+  Paper,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -15,6 +24,7 @@ import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceit
 import ModalRecusarDemanda from "../ModalRecusarDemanda/ModalRecusarDemanda";
 import Feedback from "../Feedback/Feedback";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from "../../service/beneficioService";
 import DemandaService from "../../service/demandaService";
@@ -25,6 +35,9 @@ import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
 
 const DetalhesDemanda = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -70,14 +83,17 @@ const DetalhesDemanda = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
+    useState(false);
 
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
 
   // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
   useEffect(() => {
-    temaPagina === "dark" ? setCorFundoTextArea("#212121") : setCorFundoTextArea("#FFFFFF");
+    temaPagina === "dark"
+      ? setCorFundoTextArea("#212121")
+      : setCorFundoTextArea("#FFFFFF");
   }, [temaPagina]);
 
   // UseEffect para atualizar os dados da demanda quando o componente for montado
@@ -131,7 +147,7 @@ const DetalhesDemanda = (props) => {
           beneficio.tipoBeneficio?.charAt(0) +
           beneficio.tipoBeneficio
             ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || "Real",
+            ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -307,7 +323,8 @@ const DetalhesDemanda = (props) => {
   // Função que verifica se o usuário adicionou algum benefício
   const checkIfBeneficiosChanged = () => {
     // Se foi Adicionado um novo benefício
-    if (beneficiosNovos.length > 0 || beneficiosExcluidos.length > 0) return true;
+    if (beneficiosNovos.length > 0 || beneficiosExcluidos.length > 0)
+      return true;
 
     return !beneficios.every((e, index) => {
       return (
@@ -324,7 +341,13 @@ const DetalhesDemanda = (props) => {
 
   /** Função que determina se o usuário pode salvar a demanda ou não, se baseando se ele editou alguma coisa */
   const podeSalvar = () => {
-    return checkIfBeneficiosChanged() || tituloDemanda != props.dados.titulo || problema != props.dados.problema || proposta != props.dados.proposta || frequencia != props.dados.frequencia;
+    return (
+      checkIfBeneficiosChanged() ||
+      tituloDemanda != props.dados.titulo ||
+      problema != props.dados.problema ||
+      proposta != props.dados.proposta ||
+      frequencia != props.dados.frequencia
+    );
   };
 
   // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
@@ -509,8 +532,12 @@ const DetalhesDemanda = (props) => {
   /** Função usada para baixar um anexo */
   const baixarAnexo = (index) => {
     const arquivo = anexosDemanda[index];
-    let blob = arquivo instanceof File ? arquivo : new Blob([converterBase64(arquivo.dados)]);
-    let nomeArquivo = arquivo instanceof File ? arquivo.name : `${arquivo.nome}`;
+    let blob =
+      arquivo instanceof File
+        ? arquivo
+        : new Blob([converterBase64(arquivo.dados)]);
+    let nomeArquivo =
+      arquivo instanceof File ? arquivo.name : `${arquivo.nome}`;
 
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, nomeArquivo);
@@ -538,13 +565,15 @@ const DetalhesDemanda = (props) => {
   /** Irá atualizar a lista para que contenha os anexos que foram removidos da demanda e que já estavam salvos no banco de dados */
   const updateAnexosRemovidos = (indexAnexo) => {
     const anexo = anexosDemanda[indexAnexo];
-    const anexosFiltrados = anexosDemanda.filter((anexoItem) => anexo.id && anexoItem.id == anexo.id);
+    const anexosFiltrados = anexosDemanda.filter(
+      (anexoItem) => anexo.id && anexoItem.id == anexo.id
+    );
     setAnexosRemovidos([...anexosRemovidos, ...anexosFiltrados]);
   };
 
   /** Função que verifica se um determinado anexo já existe na lista provida */
   const existsInArray = (array, anexo) => {
-    return array.some(anexoItem => anexoItem.name === anexo.name)
+    return array.some((anexoItem) => anexoItem.name === anexo.name);
   };
 
   /** Irá atualizar a lista para que contenha os anexos que foram adicionados na demanda (somente novos anexos) */
@@ -556,7 +585,11 @@ const DetalhesDemanda = (props) => {
   /** Função que remove um anexo da lista anexosNovos caso o usuário o remova, 
   só é removido anexos que não estavam salvos no banco de dados */
   const removeAnexosNovos = (anexo) => {
-    setNovosAnexos(novosAnexos.filter((anexoItem) => { return anexoItem.name != anexo.name && !anexoItem.id; }));
+    setNovosAnexos(
+      novosAnexos.filter((anexoItem) => {
+        return anexoItem.name != anexo.name && !anexoItem.id;
+      })
+    );
   };
 
   /** Função usada para navegar à home salvando um valor de feedback no localStorage */
@@ -581,13 +614,13 @@ const DetalhesDemanda = (props) => {
         open={feedbackFacaAlteracao}
         handleClose={() => setFeedbackFacaAlteracao(false)}
         status={"erro"}
-        mensagem={"Faça alguma alteração para poder salvar!"}
+        mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}
         status={"erro"}
-        mensagem={"Já há um anexo com esse nome!"}
+        mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
       />
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
@@ -653,7 +686,12 @@ const DetalhesDemanda = (props) => {
             <Box className="flex justify-center">
               <Typography
                 fontSize={FontConfig.title}
-                sx={{ fontWeight: "600", cursor: "default", inlineSize: "800px", overflowWrap: "break-word" }}
+                sx={{
+                  fontWeight: "600",
+                  cursor: "default",
+                  inlineSize: "800px",
+                  overflowWrap: "break-word",
+                }}
                 color="primary.main"
               >
                 {props.dados.titulo}
@@ -666,7 +704,7 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Problema:
+                {texts.DetalhesDemanda.problema}:
               </Typography>
               <Typography
                 fontSize={FontConfig.medium}
@@ -683,7 +721,7 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Proposta:
+                {texts.DetalhesDemanda.proposta}:
               </Typography>
               <Typography
                 fontSize={FontConfig.medium}
@@ -701,7 +739,7 @@ const DetalhesDemanda = (props) => {
                   fontWeight="600"
                   color="text.primary"
                 >
-                  Beneficios:
+                  {texts.DetalhesDemanda.beneficios}:
                 </Typography>
               </Box>
               <Box className="mt-2 flex flex-col gap-5">
@@ -725,7 +763,7 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Frequência de uso:
+                {texts.DetalhesDemanda.frequenciaDeUso}:
               </Typography>
               <Typography
                 fontSize={FontConfig.medium}
@@ -744,7 +782,7 @@ const DetalhesDemanda = (props) => {
                     fontWeight="600"
                     color="text.primary"
                   >
-                    Tamanho:
+                    {texts.DetalhesDemanda.tamanho}:
                   </Typography>
                   <Typography
                     fontSize={FontConfig.medium}
@@ -761,7 +799,7 @@ const DetalhesDemanda = (props) => {
                     fontWeight="600"
                     color="text.primary"
                   >
-                    Seção de TI:
+                    {texts.DetalhesDemanda.secaoDeTi}:
                   </Typography>
                   <Typography
                     fontSize={FontConfig.medium}
@@ -782,7 +820,7 @@ const DetalhesDemanda = (props) => {
                     fontWeight="600"
                     color="text.primary"
                   >
-                    BU Solicitante:
+                    {texts.DetalhesDemanda.buSolicitante}:
                   </Typography>
                   <Typography
                     fontSize={FontConfig.medium}
@@ -799,7 +837,7 @@ const DetalhesDemanda = (props) => {
                     fontWeight="600"
                     color="text.primary"
                   >
-                    BUs Beneficiadas:
+                    {texts.DetalhesDemanda.busBeneficiadas}:
                   </Typography>
                   <Typography
                     fontSize={FontConfig.medium}
@@ -819,7 +857,7 @@ const DetalhesDemanda = (props) => {
                   fontWeight="600"
                   color="text.primary"
                 >
-                  Fórum:
+                  {texts.DetalhesDemanda.forum}:
                 </Typography>
                 <Typography
                   fontSize={FontConfig.medium}
@@ -837,7 +875,7 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Anexos:
+                {texts.DetalhesDemanda.anexos}:
               </Typography>
               {props.dados.anexo != null && props.dados.anexo.length > 0 ? (
                 <Box className="flex flex-col gap-2">
@@ -845,15 +883,28 @@ const DetalhesDemanda = (props) => {
                     <Paper
                       key={index}
                       className="flex justify-between items-center"
-                      sx={{ borderLeftWidth: "4px", borderLeftColor: "primary.main", borderLeftStyle: "solid", backgroundColor: "background.default", padding: "0.2rem 1rem", }}
+                      sx={{
+                        borderLeftWidth: "4px",
+                        borderLeftColor: "primary.main",
+                        borderLeftStyle: "solid",
+                        backgroundColor: "background.default",
+                        padding: "0.2rem 1rem",
+                      }}
                       elevation={0}
                     >
-                      <Typography sx={{ color: "text.primary", fontSize: FontConfig.default, }}>
+                      <Typography
+                        sx={{
+                          color: "text.primary",
+                          fontSize: FontConfig.default,
+                        }}
+                      >
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
-                      <Tooltip title="Baixar">
+                      <Tooltip title={texts.DetalhesDemanda.baixar}>
                         <IconButton
-                          onClick={() => { baixarAnexo(index) }}
+                          onClick={() => {
+                            baixarAnexo(index);
+                          }}
                         >
                           <DownloadIcon sx={{ color: "text.primary" }} />
                         </IconButton>
@@ -866,7 +917,7 @@ const DetalhesDemanda = (props) => {
                   textAlign="center"
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
                 >
-                  Nenhum anexo adicionado
+                  {texts.DetalhesDemanda.nenhumAnexoAdicionado}
                 </Typography>
               )}
             </Box>
@@ -876,13 +927,20 @@ const DetalhesDemanda = (props) => {
             <Box className="flex justify-center">
               <Box
                 value={tituloDemanda}
-                onChange={(e) => { alterarTexto(e, "titulo"); }}
+                onChange={(e) => {
+                  alterarTexto(e, "titulo");
+                }}
                 fontSize={FontConfig.title}
                 color="primary.main"
                 className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                sx={{ width: "100%;", height: "54px", backgroundColor: "background.default", fontWeight: "600", }}
+                sx={{
+                  width: "100%;",
+                  height: "54px",
+                  backgroundColor: "background.default",
+                  fontWeight: "600",
+                }}
                 component="input"
-                placeholder="Digite o título da demanda..."
+                placeholder={texts.DetalhesDemanda.digiteTituloDaDemanda}
               />
             </Box>
             <Divider />
@@ -892,15 +950,22 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Problema:
+                {texts.DetalhesDemanda.problema}:
               </Typography>
               <TextareaAutosize
-                style={{ width: 775, marginLeft: "26px", resize: "none", backgroundColor: corFundoTextArea, }}
+                style={{
+                  width: 775,
+                  marginLeft: "26px",
+                  resize: "none",
+                  backgroundColor: corFundoTextArea,
+                }}
                 value={problema}
                 fontSize={FontConfig.medium}
-                onChange={(e) => { alterarTexto(e, "problema"); }}
+                onChange={(e) => {
+                  alterarTexto(e, "problema");
+                }}
                 className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-                placeholder="Digite o problema..."
+                placeholder={texts.DetalhesDemanda.digiteProblema}
               />
             </Box>
             <Box>
@@ -909,15 +974,22 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Proposta:
+                {texts.DetalhesDemanda.proposta}:
               </Typography>
               <TextareaAutosize
-                style={{ width: 775, marginLeft: "26px", resize: "none", backgroundColor: corFundoTextArea, }}
+                style={{
+                  width: 775,
+                  marginLeft: "26px",
+                  resize: "none",
+                  backgroundColor: corFundoTextArea,
+                }}
                 value={proposta}
                 fontSize={FontConfig.medium}
-                onChange={(e) => { alterarTexto(e, "proposta"); }}
+                onChange={(e) => {
+                  alterarTexto(e, "proposta");
+                }}
                 className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-                placeholder="Digite a proposta..."
+                placeholder={texts.DetalhesDemanda.digiteProposta}
               />
             </Box>
             <Box>
@@ -927,11 +999,13 @@ const DetalhesDemanda = (props) => {
                   fontWeight="600"
                   color="text.primary"
                 >
-                  Beneficios:
+                  {texts.DetalhesDemanda.beneficios}:
                 </Typography>
                 <AddCircleOutlineOutlinedIcon
                   className="delay-120 hover:scale-110 duration-300 ml-1"
-                  onClick={() => { adicionarBeneficio(); }}
+                  onClick={() => {
+                    adicionarBeneficio();
+                  }}
                   sx={{ color: "primary.main", cursor: "pointer" }}
                 />
               </Box>
@@ -958,16 +1032,22 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Frequência de uso:
+                {texts.DetalhesDemanda.frequenciaDeUso}:
               </Typography>
               <Box
                 value={frequencia}
-                onChange={(e) => { alterarTexto(e, "frequencia"); }}
+                onChange={(e) => {
+                  alterarTexto(e, "frequencia");
+                }}
                 fontSize={FontConfig.medium}
                 className="outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                sx={{ width: "90%;", backgroundColor: corFundoTextArea, marginLeft: "30px", }}
+                sx={{
+                  width: "90%;",
+                  backgroundColor: corFundoTextArea,
+                  marginLeft: "30px",
+                }}
                 component="input"
-                placeholder="Digite a frequência..."
+                placeholder={texts.DetalhesDemanda.digiteFrequenciaDeUso}
               />
             </Box>
             <Box>
@@ -977,7 +1057,7 @@ const DetalhesDemanda = (props) => {
                   fontWeight="600"
                   color="text.primary"
                 >
-                  Anexos:
+                  {texts.DetalhesDemanda.anexos}:
                 </Typography>
                 <AddCircleOutlineOutlinedIcon
                   className="delay-120 hover:scale-110 duration-300 ml-1"
@@ -998,25 +1078,38 @@ const DetalhesDemanda = (props) => {
                     <Paper
                       key={index}
                       className="flex justify-between items-center"
-                      sx={{ borderLeftWidth: "4px", borderLeftColor: "primary.main", borderLeftStyle: "solid", backgroundColor: "background.default", padding: "0.2rem 1rem", }}
+                      sx={{
+                        borderLeftWidth: "4px",
+                        borderLeftColor: "primary.main",
+                        borderLeftStyle: "solid",
+                        backgroundColor: "background.default",
+                        padding: "0.2rem 1rem",
+                      }}
                       elevation={0}
                     >
                       <Typography
-                        sx={{ color: "text.primary", fontSize: FontConfig.default, }}
+                        sx={{
+                          color: "text.primary",
+                          fontSize: FontConfig.default,
+                        }}
                       >
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
                       <Box className="flex gap-2">
-                        <Tooltip title="Baixar">
+                        <Tooltip title={texts.DetalhesDemanda.baixar}>
                           <IconButton
-                            onClick={() => { baixarAnexo(index) }}
+                            onClick={() => {
+                              baixarAnexo(index);
+                            }}
                           >
                             <DownloadIcon sx={{ color: "text.primary" }} />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Remover">
+                        <Tooltip title={texts.DetalhesDemanda.remover}>
                           <IconButton
-                            onClick={() => { removerAnexo(index) }}
+                            onClick={() => {
+                              removerAnexo(index);
+                            }}
                           >
                             <CloseIcon sx={{ color: "text.primary" }} />
                           </IconButton>
@@ -1030,7 +1123,7 @@ const DetalhesDemanda = (props) => {
                   textAlign="center"
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
                 >
-                  Nenhum anexo adicionado
+                  {texts.DetalhesDemanda.nenhumAnexoAdicionado}
                 </Typography>
               )}
             </Box>
@@ -1047,26 +1140,42 @@ const DetalhesDemanda = (props) => {
           !editar && (
             <Box className="flex justify-around w-full">
               <Button
-                sx={{ backgroundColor: "primary.main", color: "text.white", fontSize: FontConfig.default }}
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
                 variant="contained"
-                onClick={() => { abrirRecusaDemanda("recusa") }}
+                onClick={() => {
+                  abrirRecusaDemanda("recusa");
+                }}
               >
-                Recusar
+                {texts.DetalhesDemanda.botaoRecusar}
               </Button>
 
               <Button
-                sx={{ backgroundColor: "primary.main", color: "text.white", fontSize: FontConfig.default, }}
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
                 variant="contained"
-                onClick={() => { abrirRecusaDemanda("devolucao") }}
+                onClick={() => {
+                  abrirRecusaDemanda("devolucao");
+                }}
               >
-                Devolver
+                {texts.DetalhesDemanda.botaoDevolver}
               </Button>
               <Button
-                sx={{ backgroundColor: "primary.main", color: "text.white", fontSize: FontConfig.default }}
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
                 variant="contained"
                 onClick={aceitarDemanda}
               >
-                Aceitar
+                {texts.DetalhesDemanda.botaoAceitar}
               </Button>
             </Box>
           )}
@@ -1077,29 +1186,45 @@ const DetalhesDemanda = (props) => {
           !editar && (
             <Box className="flex justify-around w-full">
               <Button
-                sx={{ backgroundColor: "primary.main", color: "text.white", fontSize: FontConfig.default }}
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
                 variant="contained"
-                onClick={() => { abrirRecusaDemanda("recusa"); }}
+                onClick={() => {
+                  abrirRecusaDemanda("recusa");
+                }}
               >
-                Recusar
+                {texts.DetalhesDemanda.botaoRecusar}
               </Button>
               <Button
-                sx={{ backgroundColor: "primary.main", color: "text.white", fontSize: FontConfig.default, }}
+                sx={{
+                  backgroundColor: "primary.main",
+                  color: "text.white",
+                  fontSize: FontConfig.default,
+                }}
                 variant="contained"
                 onClick={aprovarDemanda}
               >
-                Aceitar
+                {texts.DetalhesDemanda.botaoAceitar}
               </Button>
             </Box>
           )}
 
         {editar && props.salvar && (
           <Button
-            sx={{ backgroundColor: "primary.main", color: "text.white", fontSize: FontConfig.default, }}
+            sx={{
+              backgroundColor: "primary.main",
+              color: "text.white",
+              fontSize: FontConfig.default,
+            }}
             variant="contained"
-            onClick={() => { salvarEdicao(); }}
+            onClick={() => {
+              salvarEdicao();
+            }}
           >
-            Salvar
+            {texts.DetalhesDemanda.botaoSalvar}
           </Button>
         )}
       </Box>
