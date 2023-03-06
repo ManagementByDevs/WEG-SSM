@@ -211,7 +211,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Fórum e Tamanho*/}
-            <Box className="flex w-full justify-between mt-2">
+            <Box className="flex w-full justify-between mt-4">
               {/* Fórum */}
               <Box>
                 <Typography fontSize={FontConfig.medium} fontWeight="bold">
