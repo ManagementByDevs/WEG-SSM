@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
 import { FormControl, MenuItem, Select, Pagination, Box, Typography, } from "@mui/material";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const Paginacao = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -21,7 +24,7 @@ const Paginacao = (props) => {
   return (
     <Box className="flex items-end" sx={{ marginBottom: "30px" }}>
       <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
-        Itens por página:
+        {texts.paginacao.itensPorPagina}:
       </Typography>
       <FormControl
         variant="standard"

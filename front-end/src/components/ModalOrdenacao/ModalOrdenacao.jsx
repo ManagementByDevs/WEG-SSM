@@ -2,9 +2,13 @@ import React, { useContext } from "react";
 import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const ModalOrdenacao = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -66,20 +70,20 @@ const ModalOrdenacao = (props) => {
                 <Typography
                   sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600", }}
                 >
-                  Score:
+                  {texts.modalOrdenacao.score}:
                 </Typography>
                 <div className="w-full flex justify-between items-center">
                   <FormControlLabel
                     checked={props.ordenacaoScore[1]}
                     onChange={mudarCheck2}
                     control={<Checkbox />}
-                    label="Maior Score"
+                    label={texts.modalOrdenacao.maiorScore}
                   />
                   <FormControlLabel
                     checked={props.ordenacaoScore[0]}
                     onChange={mudarCheck1}
                     control={<Checkbox />}
-                    label="Menor Score"
+                    label={texts.modalOrdenacao.menorScore}
                   />
                 </div>
               </FormGroup>
@@ -92,20 +96,20 @@ const ModalOrdenacao = (props) => {
                 <Typography
                   sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600", }}
                 >
-                  Título:
+                  {texts.modalOrdenacao.titulo}:
                 </Typography>
                 <div className="w-full flex justify-between items-center">
                   <FormControlLabel
                     checked={props.ordenacaoTitulo[1]}
                     onChange={mudarCheck4}
                     control={<Checkbox />}
-                    label="A-Z"
+                    label={texts.modalOrdenacao.az}
                   />
                   <FormControlLabel
                     checked={props.ordenacaoTitulo[0]}
                     onChange={mudarCheck3}
                     control={<Checkbox />}
-                    label="Z-A"
+                    label={texts.modalOrdenacao.za}
                   />
                 </div>
               </FormGroup>
@@ -118,20 +122,20 @@ const ModalOrdenacao = (props) => {
                 <Typography
                   sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600", }}
                 >
-                  Data:
+                  {texts.modalOrdenacao.data}:
                 </Typography>
                 <div className="w-full flex justify-between items-center">
                   <FormControlLabel
                     checked={props.ordenacaoDate[1]}
                     onChange={mudarCheck6}
                     control={<Checkbox />}
-                    label="Mais recente"
+                    label={texts.modalOrdenacao.maisRecente}
                   />
                   <FormControlLabel
                     checked={props.ordenacaoDate[0]}
                     onChange={mudarCheck5}
                     control={<Checkbox />}
-                    label="Mais antiga"
+                    label={texts.modalOrdenacao.maisAntiga}
                   />
                 </div>
               </FormGroup>

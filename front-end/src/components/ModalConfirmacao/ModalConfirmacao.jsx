@@ -8,8 +8,12 @@ import Fade from "@mui/material/Fade";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const ModalConfirmacao = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -46,23 +50,23 @@ const ModalConfirmacao = (props) => {
   const mensagemModal = (tipoMensagem) => {
     switch (tipoMensagem) {
       case "descartarRascunho":
-        return "Deseja descartar o escopo?";
+        return texts.modalConfirmacao.mensagensModal.descartarRascunho;
       case "sairCriacao":
-        return "Deseja sair da criação da demanda?";
+        return texts.modalConfirmacao.mensagensModal.sairCriacao;
       case "enviarDemanda":
-        return "Deseja criar a demanda?";
+        return texts.modalConfirmacao.mensagensModal.enviarDemanda;
       case "sairSemSalvar":
-        return "Deseja sair sem salvar?";
+        return texts.modalConfirmacao.mensagensModal.sairSemSalvar;
       case "descartarProposta":
-        return "Deseja descartar a proposta?";
+        return texts.modalConfirmacao.mensagensModal.descartarProposta;
       case "cancelarEdicao":
-        return "Deseja descartar as alterações?";
+        return texts.modalConfirmacao.mensagensModal.cancelarEdicao;
       case "aceitarDemanda":
-        return "Deseja aceitar a demanda?";
+        return texts.modalConfirmacao.mensagensModal.aceitarDemanda;
       case "confirmarExclusao":
-        return "Tem certeza que deseja excluir?";
+        return texts.modalConfirmacao.mensagensModal.confirmarExclusao;
       case "fecharChat":
-        return "Deseja realmente fechar este chat?";
+        return texts.modalConfirmacao.mensagensModal.fecharChat;
     }
   };
 
@@ -70,13 +74,13 @@ const ModalConfirmacao = (props) => {
   const mensagemBotao = (mensagemBotao) => {
     switch (mensagemBotao) {
       case "sim":
-        return "Sim";
+        return texts.modalConfirmacao.mensagensBotao.sim;
       case "enviar":
-        return "Enviar";
+        return texts.modalConfirmacao.mensagensBotao.enviar;
       case "criar":
-        return "Criar";
+        return texts.modalConfirmacao.mensagensBotao.criar;
       case "aceitar":
-        return "Aceitar";
+        return texts.modalConfirmacao.mensagensBotao.aceitar;
     }
   };
 
@@ -117,7 +121,7 @@ const ModalConfirmacao = (props) => {
                 fontSize: FontConfig.big,
               }}
             >
-              Cancelar
+              {texts.modalConfirmacao.cancelar}
             </Button>
             <Button
               onClick={() => {

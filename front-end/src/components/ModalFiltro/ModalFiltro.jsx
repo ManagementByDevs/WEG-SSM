@@ -3,8 +3,12 @@ import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid, Fa
 
 import CloseIcon from "@mui/icons-material/Close";
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const ModalFiltro = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -67,7 +71,7 @@ const ModalFiltro = (props) => {
                 <Typography
                   sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600", }}
                 >
-                  Status:
+                  {texts.modalFiltro.status}:
                 </Typography>
                 {/* Checkboxes com os filtros */}
                 <Box className="w-full flex justify-between flex-col m-0">
@@ -75,37 +79,37 @@ const ModalFiltro = (props) => {
                     checked={props.listaFiltros[0]}
                     onChange={mudarCheck1}
                     control={<Checkbox />}
-                    label="Aprovada"
+                    label={texts.modalFiltro.labels.aprovada}
                   />
                   <FormControlLabel
                     checked={props.listaFiltros[1]}
                     onChange={mudarCheck2}
                     control={<Checkbox />}
-                    label="Reprovada"
+                    label={texts.modalFiltro.labels.reprovada}
                   />
                   <FormControlLabel
                     checked={props.listaFiltros[2]}
                     onChange={mudarCheck3}
                     control={<Checkbox />}
-                    label="Aguardando Edição"
+                    label={texts.modalFiltro.labels.aguardandoEdicao}
                   />
                   <FormControlLabel
                     checked={props.listaFiltros[3]}
                     onChange={mudarCheck4}
                     control={<Checkbox />}
-                    label="Aguardando Revisão"
+                    label={texts.modalFiltro.labels.aguardandoRevisao}
                   />
                   <FormControlLabel
                     checked={props.listaFiltros[4]}
                     onChange={mudarCheck5}
                     control={<Checkbox />}
-                    label="Em Aprovação"
+                    label={texts.modalFiltro.labels.emAprovacao}
                   />
                   <FormControlLabel
                     checked={props.listaFiltros[5]}
                     onChange={mudarCheck6}
                     control={<Checkbox />}
-                    label="Em Andamento"
+                    label={texts.modalFiltro.labels.emAndamento}
                   />
                 </Box>
               </FormGroup>

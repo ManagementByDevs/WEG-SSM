@@ -7,10 +7,14 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Notificacao from "../Notificacao/Notificacao";
 import Feedback from "../Feedback/Feedback";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import NotificacaoService from "../../service/notificacaoService";
 
 const NotificacaoModal = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
 
@@ -73,10 +77,10 @@ const NotificacaoModal = (props) => {
           setFeedback(false);
         }}
         status={"info"}
-        mensagem={"Notificação lida com sucesso!"}
+        mensagem={texts.notificacaoModal.notificacaoLidaComSucesso}
       />
       {/* Title  */}
-      <Tooltip title="Notificações">
+      <Tooltip title={texts.notificacaoModal.notificacoes}>
         <IconButton size="small" aria-haspopup="true" onClick={handleClick}>
           {/* Manter a bolinha e o icon de notificacao juntos */}
           <Box className="relative">
@@ -143,7 +147,7 @@ const NotificacaoModal = (props) => {
                     fontWeight: 600,
                   }}
                 >
-                  Nenhuma notificação encontrada!
+                  {texts.notificacaoModal.nenhumaNotificaçaoEncontrada}
                 </Typography>
               </Box>
             )}
@@ -166,8 +170,8 @@ const NotificacaoModal = (props) => {
               }}
             >
               {contNaoLidas > 0
-                ? "Ver Tudo (" + contNaoLidas + ")"
-                : "Ver notificações"}
+                ? texts.notificacaoModal.verTudo + "(" + contNaoLidas + ")"
+                : texts.notificacaoModal.verNotificacoes}
             </Typography>
           </Box>
         </Box>

@@ -7,11 +7,15 @@ import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined
 
 import NotificacaoDetermineIcon from "../NotificacaoDetermineIcon/NotificacaoDetermineIcon";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import NotificacaoService from "../../service/notificacaoService";
 
 const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -69,19 +73,19 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
           sx={{ fontWeight: 600 }}
         >
           {diferencaDias < 7 && diferencaDias > 1
-            ? `${diferencaDias.toFixed(0) * 1 - 1} dias atrás`
+            ? `${diferencaDias.toFixed(0) * 1 - 1} ${texts.notificacao.diasAtras}`
             : diferencaDias < 1 && diferencaDias > 0
-              ? `Hoje`
+              ? texts.notificacao.hoje
               : diferencaDias > 7 && diferencaDias < 14
-                ? "1 semana atrás"
+                ? texts.notificacao.umaSemanaAtras
                 : diferencaDias > 14 && diferencaDias < 21
-                  ? "2 semanas atrás"
+                  ? texts.notificacao.duasSemanasAtras
                   : diferencaDias > 21 && diferencaDias < 28
-                    ? "3 semanas atrás"
+                    ? texts.notificacao.tresSemanasAtras
                     : diferencaDias > 28 && diferencaDias < 30
-                      ? "4 semanas atrás"
+                      ? texts.notificacao.quatroSemanasAtras
                       : diferencaDias > 31
-                        ? "mais de 1 mês atrás"
+                        ? texts.notificacao.maisDeUmMesAtras
                         : null}
         </Typography>
       </Box>

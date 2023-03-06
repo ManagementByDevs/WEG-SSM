@@ -5,9 +5,13 @@ import { Modal, Typography, Box, Fade, TextareaAutosize, Backdrop, Button } from
 import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const ModalRecusarDemanda = (props) => {
+    // Context para alterar a linguagem do sistema
+    const { texts, setTexts } = useContext(TextLanguageContext);
+
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -54,7 +58,7 @@ const ModalRecusarDemanda = (props) => {
                 <Box sx={style}>
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} />
                     <Typography fontSize={FontConfig.veryBig}>
-                        Motivo da Recusa
+                        {texts.modalRecusarDemanda.motivoDaRecusa}
                     </Typography>
                     <TextareaAutosize
                         style={{
@@ -68,7 +72,7 @@ const ModalRecusarDemanda = (props) => {
                             alterarTexto(e, "problema");
                         }}
                         className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-                        placeholder="Informe o motivo..."
+                        placeholder={texts.modalRecusarDemanda.informeMotivo}
                     />
                     <Box className="flex justify-end" sx={{ width: "90%" }}>
                         <Button
@@ -80,7 +84,7 @@ const ModalRecusarDemanda = (props) => {
                             variant="contained"
                             onClick={props.confirmRecusarDemanda}
                         > 
-                            Enviar
+                            {texts.modalRecusarDemanda.enviar}
                         </Button>
                     </Box>
                 </Box>

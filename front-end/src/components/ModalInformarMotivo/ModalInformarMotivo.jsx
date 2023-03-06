@@ -12,9 +12,13 @@ import {
 import Backdrop from "@mui/material/Backdrop";
 import CloseIcon from "@mui/icons-material/Close";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const ModalInformarMotivo = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -74,12 +78,12 @@ const ModalInformarMotivo = (props) => {
             color={"primary.main"}
             fontSize={FontConfig.smallTitle}
           >
-            Informar Motivo
+            {texts.modalInformarMotivo.informarMotivo}
           </Typography>
           <Box sx={styleMensagem}>
             {/* text area para informar o motivo */}
             <TextareaAutosize
-              placeholder="Informe o motivo..."
+              placeholder={texts.modalInformarMotivo.informeMotivo}
               style={{
                 width: "100%",
                 height: "100%",
@@ -103,7 +107,7 @@ const ModalInformarMotivo = (props) => {
               fontSize: FontConfig.normal,
             }}
           >
-            Confirmar
+            {texts.modalInformarMotivo.confirmar}
           </Button>
         </Box>
       </Fade>

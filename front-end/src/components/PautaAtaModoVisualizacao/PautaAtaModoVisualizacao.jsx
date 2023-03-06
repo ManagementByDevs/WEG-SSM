@@ -17,6 +17,7 @@ import Pautas from "../Pauta/Pauta";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 
@@ -63,6 +64,9 @@ const PautaTable = ({
   onItemClick,
   isAta,
 }) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Retorna data formatada para melhor leitura
@@ -72,7 +76,7 @@ const PautaTable = ({
 
     return `${DateService.getTodaysDateUSFormat(
       dataInicio
-    )} às ${dateInicio.getHours()}:${dateInicio.getMinutes() < 10
+    )} ${texts.pautaAtaModoVisualizacao.as} ${dateInicio.getHours()}:${dateInicio.getMinutes() < 10
         ? "0" + dateInicio.getMinutes()
         : dateInicio.getMinutes()
       } - ${dateFim.getHours()}:${dateFim.getMinutes() < 10

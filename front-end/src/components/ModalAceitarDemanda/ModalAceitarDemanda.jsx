@@ -7,6 +7,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
@@ -16,6 +17,9 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const ModalAceitarDemanda = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -81,27 +85,27 @@ const ModalAceitarDemanda = (props) => {
         fontWeight="bold"
         className="border-t-8 border-solid text-center"
       >
-        Informações
+        {texts.modalAceitarDemanda.informacoes}
       </DialogTitle>
       <DialogContent className="flex flex-col gap-4" sx={{ width: 500 }}>
         <TextField
           select
-          label="Tamanho"
+          label={texts.modalAceitarDemanda.tamanho}
           value={tamanho}
           onChange={(event) => setTamanho(event.target.value)}
           variant="standard"
           fullWidth
         >
-          <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>{"Muito Pequeno"}</MenuItem>
-          <MenuItem key={"Pequeno"} value={"Pequeno"}>{"Pequeno"}</MenuItem>
-          <MenuItem key={"Médio"} value={"Médio"}>{"Médio"}</MenuItem>
-          <MenuItem key={"Grande"} value={"Grande"}>{"Grande"}</MenuItem>
-          <MenuItem key={"Muito Grande"} value={"Muito Grande"}>{"Muito Grande"}</MenuItem>
+          <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>{texts.modalAceitarDemanda.muitoPequeno}</MenuItem>
+          <MenuItem key={"Pequeno"} value={"Pequeno"}>{texts.modalAceitarDemanda.pequeno}</MenuItem>
+          <MenuItem key={"Médio"} value={"Médio"}>{texts.modalAceitarDemanda.medio}</MenuItem>
+          <MenuItem key={"Grande"} value={"Grande"}>{texts.modalAceitarDemanda.grande}</MenuItem>
+          <MenuItem key={"Muito Grande"} value={"Muito Grande"}>{texts.modalAceitarDemanda.muitoGrande}</MenuItem>
         </TextField>
 
         <TextField
           select
-          label="BU Solicitante"
+          label={texts.modalAceitarDemanda.buSolicitante}
           value={buSolicitante}
           onChange={(event) => setBuSolicitante(event.target.value)}
           variant="standard"
@@ -113,7 +117,7 @@ const ModalAceitarDemanda = (props) => {
             </MenuItem>
           ))}
           {listaBus.length == 0 ? (
-            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>Nenhuma BU encontrada</Typography>
+            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>{texts.modalAceitarDemanda.nenhumaBuEncontrada}</Typography>
           ) : null}
         </TextField>
 
@@ -136,14 +140,14 @@ const ModalAceitarDemanda = (props) => {
               {option.nome}
             </li>
           )}
-          noOptionsText="Nenhuma BU encontrada"
+          noOptionsText={texts.modalAceitarDemanda.nenhumaBuEncontrada}
           fullWidth
           renderInput={(params) => (
             <TextField
               {...params}
-              label="BUs Beneficiadas"
+              label={texts.modalAceitarDemanda.busBeneficiadas}
               variant="standard"
-              placeholder="Selecione uma ou mais BUs"
+              placeholder={texts.modalAceitarDemanda.selecioneUmaOuMaisBus}
             />
           )}
         />
@@ -155,15 +159,15 @@ const ModalAceitarDemanda = (props) => {
             setSecaoTI(newValue);
           }}
           fullWidth
-          noOptionsText="Nenhuma seção encontrada"
+          noOptionsText={texts.modalAceitarDemanda.nenhumaSecaoEncontrada}
           renderInput={(params) => (
-            <TextField variant="standard" {...params} label="Seção TI" />
+            <TextField variant="standard" {...params} label={texts.modalAceitarDemanda.secaoTi} />
           )}
         />
 
         <TextField
           select
-          label="Fórum"
+          label={texts.modalAceitarDemanda.forum}
           value={forum}
           onChange={(event) => setForum(event.target.value)}
           variant="standard"
@@ -175,13 +179,13 @@ const ModalAceitarDemanda = (props) => {
             </MenuItem>
           ))}
           {listaForum.length == 0 ? (
-            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>Nenhum fórum encontrado</Typography>
+            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>{texts.modalAceitarDemanda.nenhumForumEncontrado}</Typography>
           ) : null}
         </TextField>
 
         <Box className="flex w-full justify-between items-center">
           <Typography sx={{ color: "text.primary", fontSize: FontConfig.big }}>
-            Anexos
+            {texts.modalAceitarDemanda.anexos}
           </Typography>
           <IconButton onClick={onAddFileButtonClick}>
             <AddIcon />
@@ -219,12 +223,12 @@ const ModalAceitarDemanda = (props) => {
             textAlign="center"
             sx={{ color: "text.primary", fontSize: FontConfig.default }}
           >
-            Nenhum anexo adicionado
+            {texts.modalAceitarDemanda.nenhumAnexoAdicionado}
           </Typography>
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose}>Cancelar</Button>
+        <Button onClick={props.handleClose}>{texts.modalAceitarDemanda.cancelar}</Button>
         <Button
           variant="contained"
           disableElevation
@@ -240,7 +244,7 @@ const ModalAceitarDemanda = (props) => {
             props.handleClose();
           }}
         >
-          Aceitar
+          {texts.modalAceitarDemanda.aceitar}
         </Button>
       </DialogActions>
     </Dialog>

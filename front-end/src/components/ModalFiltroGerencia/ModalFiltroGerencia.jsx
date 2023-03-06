@@ -1,28 +1,52 @@
 import React, { useContext } from "react";
-import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
+import {
+  Modal,
+  Typography,
+  Box,
+  Button,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+  Autocomplete,
+  TextField,
+} from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
 import UsuarioService from "../../service/usuarioService";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   /** Função para limpar os filtros ativos e fechar o modal */
   const limparFiltro = () => {
-    props.setFiltro({ solicitante: null, forum: "", tamanho: "", gerente: null, departamento: "", analista: null });
+    props.setFiltro({
+      solicitante: null,
+      forum: "",
+      tamanho: "",
+      gerente: null,
+      departamento: "",
+      analista: null,
+    });
     props.fecharModal();
   };
 
   /** Pesquisa de solicitantes feita quando algum input é digitado */
   const pesquisarSolicitantes = (event) => {
     if (event?.target.value?.length > 0) {
-      UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "SOLICITANTE").then((response) => {
+      UsuarioService.getUsuarioByNomeAndTipo(
+        event.target.value,
+        "SOLICITANTE"
+      ).then((response) => {
         props.setListaSolicitantes(response);
       });
     }
@@ -31,7 +55,10 @@ const ModalFiltroGerencia = (props) => {
   /** Pesquisa de gerentes feita quando algum input é digitado */
   const pesquisarGerentes = (event) => {
     if (event?.target.value?.length > 0) {
-      UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "GERENTE").then((response) => {
+      UsuarioService.getUsuarioByNomeAndTipo(
+        event.target.value,
+        "GERENTE"
+      ).then((response) => {
         props.setListaGerentes(response);
       });
     }
@@ -40,51 +67,96 @@ const ModalFiltroGerencia = (props) => {
   /** Pesquisa de analistas feita quando algum input é digitado */
   const pesquisarAnalistas = (event) => {
     if (event?.target.value?.length > 0) {
-      UsuarioService.getUsuarioByNomeAndTipo(event.target.value, "ANALISTA").then((response) => {
+      UsuarioService.getUsuarioByNomeAndTipo(
+        event.target.value,
+        "ANALISTA"
+      ).then((response) => {
         props.setListaAnalistas(response);
       });
     }
-  }
+  };
 
   /** Função para atualizar os filtros quando um solicitante for selecionado */
   const selecionarSolicitante = (event, value) => {
     props.setFiltro({
-      solicitante: value, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+      solicitante: value,
+      forum: props.filtro.forum,
+      tamanho: props.filtro.tamanho,
+      gerente: props.filtro.gerente,
+      departamento: props.filtro.departamento,
+      id: props.filtro.id,
+      codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista,
     });
   };
 
   /** Função para atualizar os filtros quando um forum for selecionado */
   const selecionarForum = (event) => {
     props.setFiltro({
-      solicitante: props.filtro.solicitante, forum: event.target.value, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+      solicitante: props.filtro.solicitante,
+      forum: event.target.value,
+      tamanho: props.filtro.tamanho,
+      gerente: props.filtro.gerente,
+      departamento: props.filtro.departamento,
+      id: props.filtro.id,
+      codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista,
     });
   };
 
   /** Função para atualizar os filtros quando um tamanho for selecionado */
   const selecionarTamanho = (event) => {
     props.setFiltro({
-      solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: event.target.value, gerente: props.filtro.gerente, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+      solicitante: props.filtro.solicitante,
+      forum: props.filtro.forum,
+      tamanho: event.target.value,
+      gerente: props.filtro.gerente,
+      departamento: props.filtro.departamento,
+      id: props.filtro.id,
+      codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista,
     });
   };
 
   /** Função para atualizar os filtros quando um gerente for selecionado */
   const selecionarGerente = (event, value) => {
     props.setFiltro({
-      solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: value, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+      solicitante: props.filtro.solicitante,
+      forum: props.filtro.forum,
+      tamanho: props.filtro.tamanho,
+      gerente: value,
+      departamento: props.filtro.departamento,
+      id: props.filtro.id,
+      codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista,
     });
   };
 
   /** Função para atualizar os filtros quando um departamento for selecionado */
   const selecionarDepartamento = (event) => {
     props.setFiltro({
-      solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, departamento: event.target.value, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM, analista: props.filtro.analista
+      solicitante: props.filtro.solicitante,
+      forum: props.filtro.forum,
+      tamanho: props.filtro.tamanho,
+      gerente: props.filtro.gerente,
+      departamento: event.target.value,
+      id: props.filtro.id,
+      codigoPPM: props.filtro.codigoPPM,
+      analista: props.filtro.analista,
     });
   };
 
   /** Função para atualizar os filtros quando um analista for selecionado */
   const selecionarAnalista = (event, value) => {
     props.setFiltro({
-      solicitante: props.filtro.solicitante, forum: props.filtro.forum, tamanho: props.filtro.tamanho, gerente: props.filtro.gerente, analista: value, departamento: props.filtro.departamento, id: props.filtro.id, codigoPPM: props.filtro.codigoPPM,
+      solicitante: props.filtro.solicitante,
+      forum: props.filtro.forum,
+      tamanho: props.filtro.tamanho,
+      gerente: props.filtro.gerente,
+      analista: value,
+      departamento: props.filtro.departamento,
+      id: props.filtro.id,
+      codigoPPM: props.filtro.codigoPPM,
     });
   };
 
@@ -93,7 +165,18 @@ const ModalFiltroGerencia = (props) => {
       <Fade in={true}>
         <Box
           className="absolute flex justify-evenly items-center flex-col"
-          sx={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 580, height: 400, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}
+          sx={{
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 580,
+            height: 400,
+            bgcolor: "background.paper",
+            borderRadius: "5px",
+            borderTop: "10px solid #00579D",
+            boxShadow: 24,
+            p: 4,
+          }}
         >
           <CloseIcon
             onClick={props.fecharModal}
@@ -109,17 +192,16 @@ const ModalFiltroGerencia = (props) => {
             color={"primary.main"}
             fontSize={FontConfig.smallTitle}
           >
-            Filtros
+            {texts.modalFiltroGerencia.filtros}
           </Typography>
           <Box className="flex justify-center items-center w-full h-full">
             <Box className="flex flex-col justify-evenly items-center h-full w-1/2">
-
               {/* Select de solicitante */}
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={props.listaSolicitantes}
-                noOptionsText={"Sem Resultados"}
+                noOptionsText={texts.modalFiltroGerencia.semResultados}
                 sx={{ width: 240 }}
                 value={props.filtro.solicitante}
                 onInputChange={(e) => {
@@ -132,22 +214,22 @@ const ModalFiltroGerencia = (props) => {
                   return option?.nome || "";
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Solicitante" />
+                  <TextField {...params} label={texts.modalFiltroGerencia.labelSolicitante} />
                 )}
               />
 
               {/* Select de fórum */}
               <FormControl sx={{ width: "15rem" }}>
-                <InputLabel id="demo-simple-select-label">Fórum</InputLabel>
+                <InputLabel id="demo-simple-select-label">{texts.modalFiltroGerencia.forum}</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={props.filtro.forum}
-                  label="Fórum"
+                  label={texts.modalFiltroGerencia.forum}
                   onChange={selecionarForum}
                 >
                   <MenuItem selected value={""}>
-                    Selecionar
+                    {texts.modalFiltroGerencia.selecionar}
                   </MenuItem>
                   {props.listaForuns.map((forum) => {
                     return (
@@ -161,33 +243,32 @@ const ModalFiltroGerencia = (props) => {
 
               {/* Select de tamanho */}
               <FormControl sx={{ width: "15rem" }}>
-                <InputLabel id="demo-simple-select-label">Tamanho</InputLabel>
+                <InputLabel id="demo-simple-select-label">{texts.modalFiltroGerencia.tamanho}</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={props.filtro.tamanho}
-                  label="Tamanho"
+                  label={texts.modalFiltroGerencia.tamanho}
                   onChange={selecionarTamanho}
                 >
                   <MenuItem selected value={""}>
-                    Selecionar
+                    {texts.modalFiltroGerencia.selecionar}
                   </MenuItem>
-                  <MenuItem value={"Muito Pequeno"}>Muito Pequeno</MenuItem>
-                  <MenuItem value={"Pequeno"}>Pequeno</MenuItem>
-                  <MenuItem value={"Médio"}>Médio</MenuItem>
-                  <MenuItem value={"Grande"}>Grande</MenuItem>
-                  <MenuItem value={"Muito Grande"}>Muito Grande</MenuItem>
+                  <MenuItem value={"Muito Pequeno"}>{texts.modalFiltroGerencia.muitoPequeno}</MenuItem>
+                  <MenuItem value={"Pequeno"}>{texts.modalFiltroGerencia.pequeno}</MenuItem>
+                  <MenuItem value={"Médio"}>{texts.modalAceitarDemanda.pequeno}</MenuItem>
+                  <MenuItem value={"Grande"}>{texts.modalAceitarDemanda.grande}</MenuItem>
+                  <MenuItem value={"Muito Grande"}>{texts.modalAceitarDemanda.muitoGrande}</MenuItem>
                 </Select>
               </FormControl>
             </Box>
             <Box className="flex flex-col justify-evenly items-center h-full w-1/2">
-
               {/* Select de gerente */}
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={props.listaGerentes}
-                noOptionsText={"Sem Resultados"}
+                noOptionsText={texts.modalFiltroGerencia.semResultados}
                 sx={{ width: 240 }}
                 value={props.filtro.gerente}
                 onInputChange={(e) => {
@@ -200,14 +281,14 @@ const ModalFiltroGerencia = (props) => {
                   return option?.nome || "";
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Gerente Responsável" />
+                  <TextField {...params} label={texts.modalFiltroGerencia.gerenteResponsavel} />
                 )}
               />
 
               {/* Select de departamento */}
               <FormControl sx={{ width: "15rem" }}>
                 <InputLabel id="demo-simple-select-label">
-                  Departamento
+                  {texts.modalFiltroGerencia.departamento}
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -217,7 +298,7 @@ const ModalFiltroGerencia = (props) => {
                   onChange={selecionarDepartamento}
                 >
                   <MenuItem selected value={""}>
-                    Selecionar
+                    {texts.modalFiltroGerencia.selecionar}
                   </MenuItem>
                   {props.listaDepartamentos.map((departamento) => {
                     return (
@@ -234,7 +315,7 @@ const ModalFiltroGerencia = (props) => {
                 disablePortal
                 id="combo-box-demo"
                 options={props.listaAnalistas}
-                noOptionsText={"Sem Resultados"}
+                noOptionsText={texts.modalFiltroGerencia.semResultados}
                 sx={{ width: 240 }}
                 value={props.filtro.analista}
                 onInputChange={(e) => {
@@ -247,7 +328,7 @@ const ModalFiltroGerencia = (props) => {
                   return option?.nome || "";
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Analista Responsável" />
+                  <TextField {...params} label={texts.modalFiltroGerencia.analistaResponsavel} />
                 )}
               />
             </Box>
@@ -266,7 +347,7 @@ const ModalFiltroGerencia = (props) => {
               fontSize: FontConfig.normal,
             }}
           >
-            Limpar Filtros
+            {texts.modalFiltroGerencia.limparFilros}
           </Button>
         </Box>
       </Fade>

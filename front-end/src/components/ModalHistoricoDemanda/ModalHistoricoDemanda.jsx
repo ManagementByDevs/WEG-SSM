@@ -10,8 +10,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import ContainerHistorico from "../ContainerHistorico/ContainerHistorico";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const ModalHistoricoDemanda = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -69,7 +73,7 @@ const ModalHistoricoDemanda = (props) => {
             color={"primary.main"}
             fontSize={FontConfig.smallTitle}
           >
-            Histórico
+            {texts.modalHistoricoDemanda.historico}
           </Typography>
           <Divider sx={{ width: "60%", borderColor: "tertiary.main" }} />
           <Box sx={styleContainerHistorico}>

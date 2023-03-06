@@ -4,10 +4,14 @@ import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 
 const Pautas = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -16,13 +20,15 @@ const Pautas = (props) => {
     let dateInicio = new Date(DateService.getDateByMySQLFormat(dataInicio));
     let dateFim = new Date(DateService.getDateByMySQLFormat(dataFim));
 
-    return `${dateInicio.getHours()}:${dateInicio.getMinutes() < 10
-      ? "0" + dateInicio.getMinutes()
-      : dateInicio.getMinutes()
-      } às ${dateFim.getHours()}:${dateFim.getMinutes() < 10
+    return `${dateInicio.getHours()}:${
+      dateInicio.getMinutes() < 10
+        ? "0" + dateInicio.getMinutes()
+        : dateInicio.getMinutes()
+    } às ${dateFim.getHours()}:${
+      dateFim.getMinutes() < 10
         ? "0" + dateFim.getMinutes()
         : dateFim.getMinutes()
-      }`;
+    }`;
   };
 
   // Função para formatar a data para melhor leitura
@@ -67,12 +73,15 @@ const Pautas = (props) => {
               fontWeight="600"
               sx={{ color: "text.secondary", marginLeft: "5px" }}
             >
-              {getHorasFormatado(props.dados.inicioDataReuniao, props.dados.fimDataReuniao)}
+              {getHorasFormatado(
+                props.dados.inicioDataReuniao,
+                props.dados.fimDataReuniao
+              )}
             </Typography>
           )}
           {props.tipo === "pauta" && (
             <Box sx={{ marginRight: "-16px" }} className="ml-2">
-              <Tooltip title="Deletar">
+              <Tooltip title={texts.pauta.deletar}>
                 <IconButton
                   onClick={(e) => {
                     e.stopPropagation();
@@ -95,7 +104,7 @@ const Pautas = (props) => {
       </Box>
       <Box className="flex items-center mt-3">
         <Typography fontSize={FontConfig.medium} fontWeight="600">
-          Comissão:
+          {texts.pauta.comissao}:
         </Typography>
         <Typography
           className="overflow-hidden text-ellipsis whitespace-nowrap"
@@ -108,7 +117,7 @@ const Pautas = (props) => {
       </Box>
       <Box className="flex items-center">
         <Typography fontSize={FontConfig.medium} fontWeight="600">
-          Analista Responsável:
+          {texts.pauta.analistaResponsavel}:
         </Typography>
         <Typography
           className="overflow-hidden text-ellipsis whitespace-nowrap"
