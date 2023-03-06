@@ -8,10 +8,14 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import Beneficios from "../Beneficios/Beneficios";
 import BeneficioService from "../../service/beneficioService";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 /** Segunda etapa da criação de demanda, usando uma lista de benefícios dos props */
 const FormularioBeneficiosDemanda = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -73,7 +77,7 @@ const FormularioBeneficiosDemanda = (props) => {
             disableElevation
             onClick={adicionarBeneficio}
           >
-            <Typography fontSize={FontConfig.default}>Adicionar</Typography>
+            <Typography fontSize={FontConfig.default}>{texts.formularioBeneficiosDemanda.adicionar}</Typography>
             <AddOutlinedIcon />
           </Button>
         </Box>

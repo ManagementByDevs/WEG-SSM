@@ -1,5 +1,15 @@
 import React, { useContext, useRef } from "react";
-import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  Typography,
+  Divider,
+  IconButton,
+  Paper,
+  Tooltip,
+} from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
 
@@ -9,10 +19,14 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import CloseIcon from "@mui/icons-material/Close";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 
 const FormularioGeralProposta = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -36,16 +50,18 @@ const FormularioGeralProposta = (props) => {
           },
         ],
       });
-    })
-  }
+    });
+  };
 
   // Função para remover um responsável
   const deleteResponsavel = (indexResponsavel) => {
-    ResponsavelNegocioService.delete(props.gerais.responsaveisNegocio[indexResponsavel].id).then((response) => {
+    ResponsavelNegocioService.delete(
+      props.gerais.responsaveisNegocio[indexResponsavel].id
+    ).then((response) => {
       let listaNova = [...props.gerais.responsaveisNegocio];
       listaNova.splice(indexResponsavel, 1);
       props.setGerais({ ...props.gerais, responsaveisNegocio: [...listaNova] });
-    })
+    });
   };
 
   // Aciona o input de anexos ao clicar no add anexos
@@ -56,7 +72,25 @@ const FormularioGeralProposta = (props) => {
   // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
-      props.setDados({ titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: [...props.dados.anexo, file], solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+      props.setDados({
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: [...props.dados.anexo, file],
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: props.dados.secaoTI,
+        tamanho: props.dados.tamanho,
+      });
     }
   };
 
@@ -67,7 +101,7 @@ const FormularioGeralProposta = (props) => {
           <Box>
             <Box className="flex mb-2">
               <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
-                Período de execução:
+                {texts.formularioGeralProposta.periodoExecucacao}:
               </Typography>
               <Typography
                 sx={{
@@ -94,7 +128,7 @@ const FormularioGeralProposta = (props) => {
                   }}
                   component="input"
                   type="date"
-                  placeholder="Digite o código..."
+                  placeholder={texts.formularioGeralProposta.digiteCodigo}
                   value={props.gerais.periodoExecucacaoInicio || ""}
                   onChange={(e) =>
                     props.setGerais({
@@ -105,7 +139,7 @@ const FormularioGeralProposta = (props) => {
                 />
               </Box>
               <Box>
-                <Typography sx={{ fontSize: FontConfig.big }}>à</Typography>
+                <Typography sx={{ fontSize: FontConfig.big }}>{texts.formularioGeralProposta.a}</Typography>
               </Box>
               <Box className="ml-5">
                 <Box
@@ -121,7 +155,7 @@ const FormularioGeralProposta = (props) => {
                   }}
                   component="input"
                   type="date"
-                  placeholder="Digite o código..."
+                  placeholder={texts.formularioGeralProposta.digiteCodigo}
                   value={props.gerais.periodoExecucacaoFim || ""}
                   onChange={(e) =>
                     props.setGerais({
@@ -136,7 +170,7 @@ const FormularioGeralProposta = (props) => {
           <Box>
             <Box className="flex mb-2">
               <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
-                Payback simples:
+                {texts.formularioGeralProposta.paybackSimples}:
               </Typography>
               <Typography
                 sx={{
@@ -160,7 +194,7 @@ const FormularioGeralProposta = (props) => {
                   borderLeftColor: "primary.main",
                 }}
                 component="input"
-                placeholder="Qtd"
+                placeholder={texts.formularioGeralProposta.quantidade}
                 value={props.gerais.qtdPaybackSimples || ""}
                 onChange={(e) =>
                   props.setGerais({
@@ -184,9 +218,9 @@ const FormularioGeralProposta = (props) => {
                     })
                   }
                 >
-                  <MenuItem value={"DIAS"}>Dias</MenuItem>
-                  <MenuItem value={"SEMANAS"}>Semanas</MenuItem>
-                  <MenuItem value={"MESES"}>Meses</MenuItem>
+                  <MenuItem value={"DIAS"}>{texts.formularioGeralProposta.dias}</MenuItem>
+                  <MenuItem value={"SEMANAS"}>{texts.formularioGeralProposta.semanas}</MenuItem>
+                  <MenuItem value={"MESES"}>{texts.formularioGeralProposta.meses}</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -194,7 +228,7 @@ const FormularioGeralProposta = (props) => {
           <Box>
             <Box className="flex mb-2">
               <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
-                Código PPM:
+                {texts.formularioGeralProposta.codigoPpm}:
               </Typography>
               <Typography
                 sx={{
@@ -218,7 +252,7 @@ const FormularioGeralProposta = (props) => {
                   borderLeftColor: "primary.main",
                 }}
                 component="input"
-                placeholder="Digite o código..."
+                placeholder={texts.formularioGeralProposta.digiteCodigo}
                 value={props.gerais.ppm || ""}
                 onChange={(e) =>
                   props.setGerais({
@@ -233,7 +267,7 @@ const FormularioGeralProposta = (props) => {
         <Box className="flex flex-col mb-8" sx={{ marginLeft: "6.1rem" }}>
           <Box className="flex mb-2">
             <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
-              Link do jira:
+              {texts.formularioGeralProposta.linkDoJira}:
             </Typography>
             <Typography
               sx={{
@@ -257,7 +291,7 @@ const FormularioGeralProposta = (props) => {
                 borderLeftColor: "primary.main",
               }}
               component="input"
-              placeholder="Insira o link do jira..."
+              placeholder={texts.formularioGeralProposta.insiraLinkDoJira}
               value={props.gerais.linkJira || ""}
               onChange={(e) =>
                 props.setGerais({
@@ -279,7 +313,7 @@ const FormularioGeralProposta = (props) => {
                 color: "primary.main",
               }}
             >
-              Responsável/Responsáveis:
+              {texts.formularioGeralProposta.responsavelResponsaveis}:
             </Typography>
             <Typography
               sx={{
@@ -291,11 +325,13 @@ const FormularioGeralProposta = (props) => {
             >
               *
             </Typography>
-            <Tooltip title="Adicionar um novo responsável">
+            <Tooltip title={texts.formularioGeralProposta.titleAdicionarNovoResponsavel}>
               <AddCircleOutlineOutlinedIcon
                 className="delay-120 hover:scale-110 duration-300"
                 sx={{ color: "primary.main", cursor: "pointer" }}
-                onClick={() => { adicionarResponsavel() }}
+                onClick={() => {
+                  adicionarResponsavel();
+                }}
               />
             </Tooltip>
           </Box>
@@ -329,8 +365,8 @@ const FormularioGeralProposta = (props) => {
                   marginRight: "5px",
                 }}
               >
-                Anexos:
-                <Tooltip title="Adicionar um novo anexo">
+                {texts.formularioGeralProposta.anexos}:
+                <Tooltip title={texts.formularioGeralProposta.adicionarNovoAnexo}>
                   <AddCircleOutlineOutlinedIcon
                     className="ml-1 delay-120 hover:scale-110 duration-300"
                     sx={{ color: "icon.main", cursor: "pointer" }}
@@ -370,9 +406,25 @@ const FormularioGeralProposta = (props) => {
                       <IconButton
                         onClick={() =>
                           props.setDados({
-                            titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo.filter(
+                            titulo: props.dados.titulo,
+                            status: props.dados.status,
+                            problema: props.dados.problema,
+                            proposta: props.dados.proposta,
+                            beneficios: props.dados.beneficios,
+                            frequencia: props.dados.frequencia,
+                            anexo: props.dados.anexo.filter(
                               (anexo, i) => i !== index
-                            ), solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho
+                            ),
+                            solicitante: props.dados.solicitante,
+                            analista: props.dados.analista,
+                            gerente: props.dados.gerente,
+                            buSolicitante: props.dados.buSolicitante,
+                            busBeneficiadas: props.dados.busBeneficiadas,
+                            data: props.dados.data,
+                            departamento: props.dados.departamento,
+                            forum: props.dados.forum,
+                            secaoTI: props.dados.secaoTI,
+                            tamanho: props.dados.tamanho,
                           })
                         }
                       >
@@ -386,7 +438,7 @@ const FormularioGeralProposta = (props) => {
                   textAlign="center"
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
                 >
-                  Nenhum anexo adicionado
+                  {texts.formularioGeralProposta.nenhumAnexoAdicionado}
                 </Typography>
               )}
             </Box>

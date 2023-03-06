@@ -6,8 +6,13 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import ColorModeContext from "../../service/TemaContext";
 
 import FontContext from "../../service/FontContext";
+import TextLanguage from "../../service/TextLanguage";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const LinhaTabelaCCs = (props) => {
+  // Context que contém os textos do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -30,7 +35,7 @@ const LinhaTabelaCCs = (props) => {
     <TableRow className="border-b">
       <td align="center" className="pb-5 relative">
         <Box className="flex w-full justify-end absolute" sx={{ width: "98%" }}>
-          <Tooltip title="Excluir linha">
+          <Tooltip title={texts.LinhaTabelaCCs.titleExcluirLinha}>
             <DeleteOutlineOutlinedIcon
               fontSize="medium"
               className="mt-1 delay-120 hover:scale-110 duration-300"
@@ -48,7 +53,7 @@ const LinhaTabelaCCs = (props) => {
           <Input
             className="border rounded drop-shadow-sm outline-none"
             fontSize={FontConfig.medium}
-            placeholder="Digite o código..."
+            placeholder={texts.LinhaTabelaCCs.digiteCodigo}
             size="small"
             style={{
               width: "70%",

@@ -11,9 +11,13 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // props.dados => Lista de arquivos recebidos
 
   // Context para alterar o tamanho da fonte
@@ -26,7 +30,9 @@ const FormularioAnexosDemanda = (props) => {
   const inputArquivos = useRef(null);
 
   /** Variável usada como texto da caixa de seleção de arquivos, modificado ao arrastar arquivos na caixa */
-  const [textoCaixa, setTextoCaixa] = useState("Arraste & Solte para Adicionar um Arquivo");
+  const [textoCaixa, setTextoCaixa] = useState(
+    texts.formularioAnexosDemanda.arrasteSolteParaAdicionarUmArquivo
+  );
 
   // UseEffect para salvar o escopo da demanda atual quando algum arquivo for adicionado / removido
   useEffect(() => {
@@ -46,13 +52,13 @@ const FormularioAnexosDemanda = (props) => {
   /** Função para mudar o "textoCaixa" quando o usuário arrastar um arquivo para a caixa de seleção */
   const textoSoltarArquivo = (event) => {
     event.preventDefault();
-    setTextoCaixa("Solte para Adicionar um Arquivo");
+    setTextoCaixa(texts.formularioAnexosDemanda.solteParaAdicionarArquivo);
   };
 
   /** Função para mudar o "textoCaixa" quando o usuário arrastar um arquivo para fora da caixa de seleção */
   const textoArrastarArquivo = (event) => {
     event.preventDefault();
-    setTextoCaixa("Arraste & Solte para Adicionar um Arquivo");
+    setTextoCaixa(texts.formularioAnexosDemanda.arrasteSolteParaAdicionarUmArquivo);
   };
 
   /** Função para salvar os arquivos que forem arrastados para a caixa de seleção */
@@ -71,7 +77,6 @@ const FormularioAnexosDemanda = (props) => {
 
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
-
       {/* Caixa de seleção */}
       <Box
         ref={areaArquivos}
@@ -89,35 +94,45 @@ const FormularioAnexosDemanda = (props) => {
           hidden
         />
         {props.dados?.length === 0 ? (
-
           // Texto de arrastar arquivos caso não possua nenhum arquivo na lista
           <>
             <Typography
               fontSize={FontConfig.veryBig}
               color="text.secondary"
-              sx={{ fontWeight: "600", cursor: "default", marginBottom: "1rem", }}
+              sx={{
+                fontWeight: "600",
+                cursor: "default",
+                marginBottom: "1rem",
+              }}
             >
               {textoCaixa}
             </Typography>
             <Typography
               fontSize={FontConfig.veryBig}
               color="text.secondary"
-              sx={{ fontWeight: "600", cursor: "default", marginBottom: "1rem", }}
+              sx={{
+                fontWeight: "600",
+                cursor: "default",
+                marginBottom: "1rem",
+              }}
             >
-              OU
+              {texts.formularioAnexosDemanda.ou}
             </Typography>
-            <Button onClick={clickInputArquivos} variant="contained" disableElevation>
+            <Button
+              onClick={clickInputArquivos}
+              variant="contained"
+              disableElevation
+            >
               <Typography fontSize={FontConfig.medium}>
-                Pesquisar Arquivos
+                {texts.formularioAnexosDemanda.pesquisarArquivos}
               </Typography>
             </Button>
           </>
         ) : (
-
           // Tabela de arquivos da lista
           <Box className="w-full h-full px-2 py-4 relative">
             <Box className="absolute bottom-2 right-2">
-              <IconButton onClick={clickInputArquivos} aria-label="adicionar">
+              <IconButton onClick={clickInputArquivos}>
                 <AddCircleIcon color="primary" fontSize="large" />
               </IconButton>
             </Box>
@@ -131,7 +146,7 @@ const FormularioAnexosDemanda = (props) => {
                         color="text.primary"
                         sx={{ fontWeight: "700", cursor: "default" }}
                       >
-                        Nome
+                        {texts.formularioAnexosDemanda.nome}
                       </Typography>
                     </th>
                     <th>
@@ -140,7 +155,7 @@ const FormularioAnexosDemanda = (props) => {
                         color="text.primary"
                         sx={{ fontWeight: "700", cursor: "default" }}
                       >
-                        Tipo
+                        {texts.formularioAnexosDemanda.tipo}
                       </Typography>
                     </th>
                     <th>
@@ -149,13 +164,12 @@ const FormularioAnexosDemanda = (props) => {
                         color="text.primary"
                         sx={{ fontWeight: "700", cursor: "default" }}
                       >
-                        Remover
+                        {texts.formularioAnexosDemanda.remover}
                       </Typography>
                     </th>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-
                   {/* Lista de arquivos */}
                   {props.dados?.map((file, index) => {
                     return (

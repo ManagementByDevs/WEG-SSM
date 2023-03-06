@@ -195,7 +195,7 @@ const DemandaTable = ({
                         {formatarNomeStatus(row.status)}
                       </Typography>
                       {row.status == "CANCELLED" ||
-                      row.status == "BACKLOG_EDICAO" ? (
+                        row.status == "BACKLOG_EDICAO" ? (
                         <Button
                           className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
@@ -206,7 +206,7 @@ const DemandaTable = ({
                           disableElevation
                           size="small"
                         >
-                          Motivo
+                          {texts.demandaModoVisualizacao.motivo}
                         </Button>
                       ) : null}
                     </Box>
@@ -254,6 +254,9 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
 
 // Componente para exibir nada encontrado
 const NadaEncontrado = () => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+  
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -272,13 +275,13 @@ const NadaEncontrado = () => {
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        Nada encontrado
+        {texts.demandaModoVisualizacao.nadaEncontrado}
       </Typography>
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        Tente novamente mais tarde
+        {texts.demandaModoVisualizacao.tenteNovamenteMaisTarde}
       </Typography>
     </Box>
   );

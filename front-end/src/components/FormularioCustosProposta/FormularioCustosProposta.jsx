@@ -5,11 +5,15 @@ import Custos from "../Custos/Custos";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 import CustosService from "../../service/custosService";
 
 const FormularioCustosProposta = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -76,16 +80,16 @@ const FormularioCustosProposta = (props) => {
       <Box className="flex w-full justify-between mt-10 items-end">
         <Box className="flex ml-10">
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
-            Total:
+            {texts.formularioCustosProposta.total}:
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
-            {horasTotais}h
+            {horasTotais}{texts.formularioCustosProposta.horas}
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
             -
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
-            R${valorTotal}
+           {texts.formularioCustosProposta.moeda}{valorTotal}
           </Typography>
         </Box>
         <Button
@@ -98,7 +102,7 @@ const FormularioCustosProposta = (props) => {
           disableElevation
           onClick={criarTabelaCusto}
         >
-          Adicionar Custos
+          {texts.formularioCustosProposta.adicionarCustos}
           <AddCircleOutlineOutlinedIcon className="ml-2" />
         </Button>
       </Box>
