@@ -180,7 +180,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
           {/* Box Informações gerais */}
           <Box>
             {/* Solicitante */}
-            <Box className="flex mt-2">
+            <Box className="flex mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.solicitante}:&nbsp;
               </Typography>
@@ -191,7 +191,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Bu solicitante */}
-            <Box className="flex mt-2">
+            <Box className="flex mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.buSolicitante}:&nbsp;
               </Typography>
@@ -201,7 +201,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Gerente */}
-            <Box className="flex mt-2">
+            <Box className="flex mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.gerente}:&nbsp;
               </Typography>
@@ -237,7 +237,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Proposta / Objetivo */}
-            <Box className="mt-2">
+            <Box className="mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.proposta}:&nbsp;
               </Typography>
@@ -249,7 +249,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Problema / Situação atual */}
-            <Box className="mt-2">
+            <Box className="mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.problema}:&nbsp;
               </Typography>
@@ -261,7 +261,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Escopo da proposta */}
-            <Box className="mt-2">
+            <Box className="mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.escopoDaProposta}:&nbsp;
               </Typography>
@@ -273,7 +273,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Frequência */}
-            <Box className="flex mt-2">
+            <Box className="flex mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.frequencia}:&nbsp;
               </Typography>
@@ -283,7 +283,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Tabela de custos */}
-            <Box className="mt-2">
+            <Box className="mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.tabelaDeCustos}:&nbsp;
               </Typography>
@@ -295,7 +295,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Benefícios */}
-            <Box className="mt-2">
+            <Box className="mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.beneficios}:&nbsp;
               </Typography>
@@ -317,7 +317,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* BUs beneficiadas */}
-            <Box className="mt-2">
+            <Box className="mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.busBeneficiadas}:&nbsp;
               </Typography>
@@ -345,7 +345,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Link do Jira */}
-            <Box className="flex mt-2">
+            <Box className="flex mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.linkJira}:&nbsp;
               </Typography>
@@ -355,7 +355,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Período de execução e Payback */}
-            <Box className="flex justify-between mt-2">
+            <Box className="flex justify-between mt-4">
               <Box>
                 <Typography fontSize={FontConfig.medium} fontWeight="bold">
                   {texts.detalhesProposta.periodoDeExecucao}:&nbsp;
@@ -385,7 +385,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Anexos */}
-            <Box className="mt-2 ">
+            <Box className="mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.anexos}:&nbsp;
               </Typography>
@@ -424,7 +424,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             </Box>
 
             {/* Responsáveis do negócio */}
-            <Box className="mt-4 mb-4 text-center">
+            <Box className="mt-6 mb-4 text-center">
               {proposta.responsavelNegocio.map((responsavel, index) => {
                 return (
                   <Typography key={index} fontSize={FontConfig.medium}>
