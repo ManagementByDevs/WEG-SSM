@@ -9,13 +9,13 @@ const TextLanguage = (linguagem) => {
                 dados: "Dados",
                 beneficios: "Benefícios",
                 anexos: "Anexos"
-              },
-              erroPularPasso: "Você não pode pular um passo que não é opcional!",
-              botaoVoltar: "Voltar",
-              botaoPular: "Pular",
-              botaoCriar: "Criar",
-              botaoProximo: "Próximo",
-              mensagemFeedback: "Preencha todos os campos obrigatórios!"
+            },
+            erroPularPasso: "Você não pode pular um passo que não é opcional!",
+            botaoVoltar: "Voltar",
+            botaoPular: "Pular",
+            botaoCriar: "Criar",
+            botaoProximo: "Próximo",
+            mensagemFeedback: "Preencha todos os campos obrigatórios!"
         },
         barraProgressaoProposta: {
             botaoVoltar: "Voltar",
@@ -45,7 +45,7 @@ const TextLanguage = (linguagem) => {
             digiteMemoriaCalculo: "Digite a memória de cálculo...",
         },
         caminho: {
-            home: "Home", 
+            home: "Home",
         },
         chatMinimizado: {
             minimizar: "Minimizar",
@@ -133,6 +133,7 @@ const TextLanguage = (linguagem) => {
             tenteNovamenteMaisTarde: "Tente novamente mais tarde",
         },
         DetalhesDemanda: {
+            real: "Real",
             facaAlgumaAlteracaoParaPoderSalvar: "Faça alguma alteração para poder salvar!",
             jaHaUmAnexoComEsseNome: "Já há um anexo com esse nome!",
             problema: "Problema",
@@ -149,6 +150,7 @@ const TextLanguage = (linguagem) => {
             digiteTituloDaDemanda: "Digite o título da demanda...",
             digiteProblema: "Digite o problema...",
             digiteProposta: "Digite a proposta...",
+            digiteFrequenciaDeUso: "Digite a frequência de uso...",
             baixar: "Baixar",
             remover: "Remover",
             botaoRecusar: "Recusar",
@@ -173,22 +175,24 @@ const TextLanguage = (linguagem) => {
         },
         formularioCustosProposta: {
             total: "Total",
+            horas: "h",
             moeda: "R$",
             adicionarCustos: "Adicionar Custos",
         },
         formularioDadosDemanda: {
-            titulo: "Título",
+            titulo: "Título:",
             digiteTitulo: "Digite o título...",
-            problema: "Problema",
+            problema: "Problema:",
             digiteProblema: "Digite o problema...",
-            proposta: "Proposta",
+            proposta: "Proposta:",
             digiteProposta: "Digite a proposta...",
-            frequenciaDeUso: "Frequencia de uso",
+            frequenciaDeUso: "Frequencia de uso:",
             digiteFrequenciaDeUso: "Digite a frequencia de uso...",
         },
         formularioGeralProposta: {
             periodoDeExecucao: "Período de execução",
             digiteCodigo: "Digite o código...",
+            a: "à",
             paybackSimples: "Payback simples",
             quantidade: "Qtd",
             dias: "Dias",
@@ -213,6 +217,11 @@ const TextLanguage = (linguagem) => {
             frequenciaDeUso: "Frequência de uso",
             digiteFrequencia: "Digite a frequência...",
             labelTamanho: "Tamanho",
+            muitoPequeno: "Muito Pequeno",
+            pequeno: "Pequeno",
+            medio: "Médio",
+            grande: "Grande",
+            muitoGrande: "Muito Grande",
             nenhumaSecaoEncontrada: "Nenhuma seção encontrada",
             labelSecaoTi: "Seção TI",
             nenhumaBuEncontrada: "Nenhuma BU encontrada",
@@ -237,6 +246,8 @@ const TextLanguage = (linguagem) => {
             digiteCodigo: "Digite o código...",
         },
         linhaTabelaCustos: {
+            digiteTipo: "Digite o tipo...",
+            digitePerfil: "Digite o perfil...",
             tipo: "Tipo",
             tipo1: "Tipo 1",
             tipo2: "Tipo 2",
@@ -656,7 +667,7 @@ const TextLanguage = (linguagem) => {
                 dados: "Data",
                 beneficios: "Benefits",
                 anexos: "Attachments",
-              },
+            },
             erroPularPasso: "You cannot skip a step that is not optional!",
             botaoVoltar: "Back",
             botaoPular: "Skip",
@@ -794,6 +805,7 @@ const TextLanguage = (linguagem) => {
             digiteTituloDaDemanda: "Enter the title of the demand...",
             digiteProblema: "Enter the problem...",
             digiteProposta: "Enter the proposal...",
+            digiteFrequenciaDeUso: "Enter the frequency of use...",
             baixar: "Download",
             remover: "Remove",
             botaoRecusar: "Reject",
@@ -818,22 +830,24 @@ const TextLanguage = (linguagem) => {
         },
         formularioCustosProposta: {
             total: "Total",
+            horas: "h",
             moeda: "$",
             adicionarCustos: "Add Costs",
         },
         formularioDadosDemanda: {
-            titulo: "Title",
+            titulo: "Title:",
             digiteTitulo: "Enter the title...",
-            problema: "Problem",
+            problema: "Problem:",
             digiteProblema: "Enter the problem...",
-            proposta: "Proposal",
+            proposta: "Proposal:",
             digiteProposta: "Enter the proposal...",
-            frequenciaDeUso: "Frequency of Use",
+            frequenciaDeUso: "Frequency of Use:",
             digiteFrequenciaDeUso: "Enter the frequency of use...",
         },
         formularioGeralProposta: {
             periodoDeExecucao: "Execution Period",
             digiteCodigo: "Enter the code...",
+            a: "to",
             paybackSimples: "Simple Payback",
             quantidade: "Qty",
             dias: "Days",
@@ -858,6 +872,11 @@ const TextLanguage = (linguagem) => {
             frequenciaDeUso: "Frequency of Use",
             digiteFrequencia: "Enter the frequency...",
             labelTamanho: "Size",
+            muitoPequeno: "Very Small",
+            pequeno: "Small",
+            medio: "Medium",
+            grande: "Large",
+            muitoGrande: "Very Large",
             nenhumaSecaoEncontrada: "No section found",
             labelSecaoTi: "IT Section",
             nenhumaBuEncontrada: "No BU found",
@@ -882,6 +901,8 @@ const TextLanguage = (linguagem) => {
             digiteCodigo: "Enter the code...",
         },
         linhaTabelaCustos: {
+            digiteTipo: "Enter the type...",
+            digitePerfil: "Enter the profile...",
             tipo: "Type",
             tipo1: "Type 1",
             tipo2: "Type 2",
@@ -1005,7 +1026,7 @@ const TextLanguage = (linguagem) => {
             tresSemanasAtras: "3 weeks ago",
             quatroSemanasAtras: "4 weeks ago",
             umMesAtras: "1 month ago",
-        }, 
+        },
         notificacaoModal: {
             notificacaoLidaComSucesso: "Notification read successfully!",
             notificacoes: "Notifications",
@@ -1273,7 +1294,7 @@ const TextLanguage = (linguagem) => {
         },
     } : linguagem == "ch" ? {
         linguagem: "ch",
-       
+
     } : null;
 }
 

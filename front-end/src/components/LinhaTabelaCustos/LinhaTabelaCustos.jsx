@@ -7,8 +7,12 @@ import ColorModeContext from "../../service/TemaContext";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import FontContext from "../../service/FontContext";
+import TextLanguage from "../../service/TextLanguage";
 
 const LinhaTabelaCustos = (props) => {
+  // Context que contém os textos do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -56,7 +60,7 @@ const LinhaTabelaCustos = (props) => {
           }}
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          placeholder="Digite o tipo..."
+          placeholder={texts.linhaTabelaCustos.digiteTipo}
           value={props.dados.custos[props.index].tipoDespesa || ""}
           onChange={(e) => {
             let aux = [...props.custos];
@@ -77,7 +81,7 @@ const LinhaTabelaCustos = (props) => {
           }}
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          placeholder="Digite o perfil..."
+          placeholder={texts.linhaTabelaCustos.digitePerfil}
           value={props.dados.custos[props.index].perfilDespesa || ""}
           onChange={(e) => {
             let aux = [...props.custos];
@@ -98,7 +102,7 @@ const LinhaTabelaCustos = (props) => {
           }}
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          placeholder="Digite o período..."
+          placeholder={texts.linhaTabelaCustos.digitePeriodo}
           value={props.dados.custos[props.index].periodoExecucao || ""}
           onChange={(e) => {
             let aux = [...props.custos];
@@ -119,7 +123,7 @@ const LinhaTabelaCustos = (props) => {
           }}
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          placeholder="Digite as horas..."
+          placeholder={texts.linhaTabelaCustos.digiteHoras}
           value={props.dados.custos[props.index].horas || ""}
           onChange={(e) => {
             let aux = [...props.custos];
@@ -139,7 +143,7 @@ const LinhaTabelaCustos = (props) => {
           }}
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          placeholder="Digite o valor..."
+          placeholder={texts.linhaTabelaCustos.digiteValor}
           value={props.dados.custos[props.index].valorHora || ""}
           onChange={(e) => {
             let aux = [...props.custos];
@@ -151,7 +155,7 @@ const LinhaTabelaCustos = (props) => {
       </td>
       <td className="relative">
         <Box className="flex w-full justify-end absolute" sx={{ width: "98%", top: 0 }}>
-          <Tooltip title="Excluir linha">
+          <Tooltip title={texts.linhaTabelaCustos.titleExcluirLinha}>
             <DeleteOutlineOutlinedIcon
               fontSize="medium"
               className="mt-1 delay-120 hover:scale-110 duration-300"

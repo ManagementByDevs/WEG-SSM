@@ -3,9 +3,13 @@ import { Box } from "@mui/material";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -48,8 +52,8 @@ const FormularioDadosDemanda = (props) => {
             texto={props.dados.titulo}
             saveInputValue={salvarTitulo}
             component="input"
-            label="Titulo:"
-            placeholder="Digite o título..."
+            label={texts.formularioDadosDemanda.titulo}
+            placeholder={texts.formularioDadosDemanda.digiteTitulo}
             fontConfig={FontConfig.default}
           />
 
@@ -58,8 +62,8 @@ const FormularioDadosDemanda = (props) => {
             texto={props.dados.problema}
             saveInputValue={salvarProblema}
             component="textarea"
-            label="Problema:"
-            placeholder="Digite o problema..."
+            label={texts.formularioDadosDemanda.problema}
+            placeholder={texts.formularioDadosDemanda.digiteProblema}
             fontConfig={FontConfig.default}
             rows="5"
           />
@@ -69,8 +73,8 @@ const FormularioDadosDemanda = (props) => {
             texto={props.dados.proposta}
             saveInputValue={salvarProposta}
             component="textarea"
-            label="Proposta:"
-            placeholder="Digite a proposta..."
+            label={texts.formularioDadosDemanda.proposta}
+            placeholder={texts.formularioDadosDemanda.digiteProposta}
             fontConfig={FontConfig.default}
             rows="8"
           />
@@ -81,8 +85,8 @@ const FormularioDadosDemanda = (props) => {
               texto={props.dados.frequencia}
               saveInputValue={salvarFrequencia}
               component="input"
-              label="Frequência de uso:"
-              placeholder="Digite a frequência..."
+              label={texts.formularioDadosDemanda.frequenciaDeUso}
+              placeholder={texts.formularioDadosDemanda.digiteFrequenciaDeUso}
               fontConfig={FontConfig.default}
             />
           </Box>

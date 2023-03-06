@@ -1,5 +1,17 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Box, Typography, Divider, TextareaAutosize, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  TextareaAutosize,
+  Paper,
+  IconButton,
+  Tooltip,
+  MenuItem,
+  TextField,
+  Autocomplete,
+  Checkbox,
+} from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,11 +24,15 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from "../../service/beneficioService";
 import FontContext from "../../service/FontContext";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const FormularioPropostaProposta = (props) => {
+  // Contexto para trocar a linguagem
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -46,25 +62,195 @@ const FormularioPropostaProposta = (props) => {
 
   // Função para alterar o texto de algum campo da proposta
   const alterarTexto = (e, input) => {
-
     if (input === "titulo") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: e.target.value, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: e.target.value,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: props.dados.secaoTI,
+        tamanho: props.dados.tamanho,
+      });
     } else if (input === "problema") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: e.target.value, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: e.target.value,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: props.dados.secaoTI,
+        tamanho: props.dados.tamanho,
+      });
     } else if (input === "proposta") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: e.target.value, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: e.target.value,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: props.dados.secaoTI,
+        tamanho: props.dados.tamanho,
+      });
     } else if (input === "frequencia") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: e.target.value, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: e.target.value,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: props.dados.secaoTI,
+        tamanho: props.dados.tamanho,
+      });
     } else if (input === "tamanho") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: e.target?.value });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: props.dados.secaoTI,
+        tamanho: e.target?.value,
+      });
     } else if (input == "secao") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: e, tamanho: props.dados.tamanho });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: e,
+        tamanho: props.dados.tamanho,
+      });
     } else if (input == "buSolicitante") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: e, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: e,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: props.dados.secaoTI,
+        tamanho: props.dados.tamanho,
+      });
     } else if (input == "busBeneficiadas") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: e, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: e,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: props.dados.forum,
+        secaoTI: props.dados.secaoTI,
+        tamanho: props.dados.tamanho,
+      });
     } else if (input == "forum") {
-      props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: props.dados.anexo, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: e, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+      props.setDadosDemanda({
+        id: props.dados.id,
+        titulo: props.dados.titulo,
+        status: props.dados.status,
+        problema: props.dados.problema,
+        proposta: props.dados.proposta,
+        beneficios: props.dados.beneficios,
+        frequencia: props.dados.frequencia,
+        anexo: props.dados.anexo,
+        solicitante: props.dados.solicitante,
+        analista: props.dados.analista,
+        gerente: props.dados.gerente,
+        buSolicitante: props.dados.buSolicitante,
+        busBeneficiadas: props.dados.busBeneficiadas,
+        data: props.dados.data,
+        departamento: props.dados.departamento,
+        forum: e,
+        secaoTI: props.dados.secaoTI,
+        tamanho: props.dados.tamanho,
+      });
     }
   };
 
@@ -78,7 +264,26 @@ const FormularioPropostaProposta = (props) => {
     for (let file of inputFile.current.files) {
       if (!existsInAnexos(file)) {
         updateAnexosNovos(file);
-        props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: [...props.dados.anexo, file], solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+        props.setDadosDemanda({
+          id: props.dados.id,
+          titulo: props.dados.titulo,
+          status: props.dados.status,
+          problema: props.dados.problema,
+          proposta: props.dados.proposta,
+          beneficios: props.dados.beneficios,
+          frequencia: props.dados.frequencia,
+          anexo: [...props.dados.anexo, file],
+          solicitante: props.dados.solicitante,
+          analista: props.dados.analista,
+          gerente: props.dados.gerente,
+          buSolicitante: props.dados.buSolicitante,
+          busBeneficiadas: props.dados.busBeneficiadas,
+          data: props.dados.data,
+          departamento: props.dados.departamento,
+          forum: props.dados.forum,
+          secaoTI: props.dados.secaoTI,
+          tamanho: props.dados.tamanho,
+        });
       } else {
         // feedback de anexo já existente
         console.log("já há um anexo com esse nome");
@@ -104,7 +309,26 @@ const FormularioPropostaProposta = (props) => {
     removeAnexosNovos(props.dados.anexo[index]);
     let aux = [...props.dados.anexo];
     aux.splice(index, 1);
-    props.setDadosDemanda({ id: props.dados.id, titulo: props.dados.titulo, status: props.dados.status, problema: props.dados.problema, proposta: props.dados.proposta, beneficios: props.dados.beneficios, frequencia: props.dados.frequencia, anexo: aux, solicitante: props.dados.solicitante, analista: props.dados.analista, gerente: props.dados.gerente, buSolicitante: props.dados.buSolicitante, busBeneficiadas: props.dados.busBeneficiadas, data: props.dados.data, departamento: props.dados.departamento, forum: props.dados.forum, secaoTI: props.dados.secaoTI, tamanho: props.dados.tamanho });
+    props.setDadosDemanda({
+      id: props.dados.id,
+      titulo: props.dados.titulo,
+      status: props.dados.status,
+      problema: props.dados.problema,
+      proposta: props.dados.proposta,
+      beneficios: props.dados.beneficios,
+      frequencia: props.dados.frequencia,
+      anexo: aux,
+      solicitante: props.dados.solicitante,
+      analista: props.dados.analista,
+      gerente: props.dados.gerente,
+      buSolicitante: props.dados.buSolicitante,
+      busBeneficiadas: props.dados.busBeneficiadas,
+      data: props.dados.data,
+      departamento: props.dados.departamento,
+      forum: props.dados.forum,
+      secaoTI: props.dados.secaoTI,
+      tamanho: props.dados.tamanho,
+    });
   };
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
@@ -156,10 +380,12 @@ const FormularioPropostaProposta = (props) => {
       };
     });
     aux[indexBeneficio].visible = false;
-    props.setBeneficiosExcluidos([...props.beneficiosExcluidos, aux[indexBeneficio]]);
+    props.setBeneficiosExcluidos([
+      ...props.beneficiosExcluidos,
+      aux[indexBeneficio],
+    ]);
     props.setBeneficios(aux);
   };
-
 
   // Função para converter uma string em base64 para um ArrayBuffer
   function base64ToArrayBuffer(base64) {
@@ -167,7 +393,6 @@ const FormularioPropostaProposta = (props) => {
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   }
-
 
   // Função para baixar um anexo
   const baixarAnexo = (index) => {
@@ -269,7 +494,7 @@ const FormularioPropostaProposta = (props) => {
                 fontWeight: "600",
               }}
               component="input"
-              placeholder="Digite o título da demanda..."
+              placeholder={texts.formularioPropostaProposta.digiteTituloDaDemanda}
             />
           </Box>
           <Divider />
@@ -279,7 +504,7 @@ const FormularioPropostaProposta = (props) => {
               fontWeight="600"
               color="text.primary"
             >
-              Problema:
+              {texts.formularioPropostaProposta.problema}:
             </Typography>
             <TextareaAutosize
               style={{
@@ -294,7 +519,7 @@ const FormularioPropostaProposta = (props) => {
                 alterarTexto(e, "problema");
               }}
               className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-              placeholder="Digite o problema..."
+              placeholder={texts.formularioPropostaProposta.digiteProblema}
             />
           </Box>
           <Box>
@@ -303,7 +528,7 @@ const FormularioPropostaProposta = (props) => {
               fontWeight="600"
               color="text.primary"
             >
-              Proposta:
+              {texts.formularioPropostaProposta.proposta}:
             </Typography>
             <TextareaAutosize
               style={{
@@ -318,7 +543,7 @@ const FormularioPropostaProposta = (props) => {
                 alterarTexto(e, "proposta");
               }}
               className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-              placeholder="Digite a proposta..."
+              placeholder={texts.formularioPropostaProposta.digiteProposta}
             />
           </Box>
           <Box>
@@ -328,7 +553,7 @@ const FormularioPropostaProposta = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Beneficios:
+                {texts.formularioPropostaProposta.beneficios}:
               </Typography>
               <AddCircleOutlineOutlinedIcon
                 className="delay-120 hover:scale-110 duration-300 ml-1"
@@ -361,7 +586,7 @@ const FormularioPropostaProposta = (props) => {
               fontWeight="600"
               color="text.primary"
             >
-              Frequência de uso:
+              {texts.formularioPropostaProposta.frequenciaDeUso}:
             </Typography>
             <Box
               value={props.dados.frequencia}
@@ -376,24 +601,37 @@ const FormularioPropostaProposta = (props) => {
                 marginLeft: "30px",
               }}
               component="input"
-              placeholder="Digite a frequência..."
+              placeholder={texts.formularioPropostaProposta.digiteFrequencia}
             />
           </Box>
-          <Box className="flex justify-evenly" sx={{ marginTop: '15px', marginBottom: '10px' }}>
+          <Box
+            className="flex justify-evenly"
+            sx={{ marginTop: "15px", marginBottom: "10px" }}
+          >
             <TextField
               sx={{ width: "45%" }}
               select
-              label="Tamanho"
+              label={texts.formularioPropostaProposta.labelTamanho}
               value={props.dados.tamanho}
               onChange={(e) => alterarTexto(e, "tamanho")}
               variant="standard"
               fullWidth
             >
-              <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>{"Muito Pequeno"}</MenuItem>
-              <MenuItem key={"Pequeno"} value={"Pequeno"}>{"Pequeno"}</MenuItem>
-              <MenuItem key={"Médio"} value={"Médio"}>{"Médio"}</MenuItem>
-              <MenuItem key={"Grande"} value={"Grande"}>{"Grande"}</MenuItem>
-              <MenuItem key={"Muito Grande"} value={"Muito Grande"}>{"Muito Grande"}</MenuItem>
+              <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>
+                {texts.formularioPropostaProposta.muitoPequeno}
+              </MenuItem>
+              <MenuItem key={"Pequeno"} value={"Pequeno"}>
+                {texts.formularioPropostaProposta.pequeno}
+              </MenuItem>
+              <MenuItem key={"Médio"} value={"Médio"}>
+                {texts.formularioPropostaProposta.medio}
+              </MenuItem>
+              <MenuItem key={"Grande"} value={"Grande"}>
+                {texts.formularioPropostaProposta.grande}
+              </MenuItem>
+              <MenuItem key={"Muito Grande"} value={"Muito Grande"}>
+                {texts.formularioPropostaProposta.muitoGrande}
+              </MenuItem>
             </TextField>
 
             <Autocomplete
@@ -402,26 +640,29 @@ const FormularioPropostaProposta = (props) => {
               options={secoesTI}
               value={props.dados.secaoTI}
               onChange={(event, value) => {
-                alterarTexto(value, "secao")
+                alterarTexto(value, "secao");
               }}
               getOptionLabel={(option) => {
                 return option || "";
               }}
               fullWidth
-              noOptionsText="Nenhuma seção encontrada"
+              noOptionsText={texts.formularioPropostaProposta.nenhumaSecaoEncontrada}
               renderInput={(params) => (
-                <TextField variant="standard" {...params} label="Seção TI" />
+                <TextField variant="standard" {...params} label={texts.formularioPropostaProposta.labelSecaoTi} />
               )}
             />
           </Box>
-          <Box className="flex justify-evenly" sx={{ marginTop: '15px', marginBottom: '10px' }}>
+          <Box
+            className="flex justify-evenly"
+            sx={{ marginTop: "15px", marginBottom: "10px" }}
+          >
             <Autocomplete
               sx={{ width: "45%" }}
               disablePortal
               options={props.listaBU}
               value={props.dados.buSolicitante}
               onChange={(event, value) => {
-                alterarTexto(value, "buSolicitante")
+                alterarTexto(value, "buSolicitante");
               }}
               getOptionLabel={(option) => {
                 return option?.nome || "";
@@ -430,9 +671,13 @@ const FormularioPropostaProposta = (props) => {
                 return option?.id == value?.id;
               }}
               fullWidth
-              noOptionsText="Nenhuma BU encontrada"
+              noOptionsText={texts.formularioPropostaProposta.nenhumaBuEncontrada}
               renderInput={(params) => (
-                <TextField variant="standard" {...params} label="BU Solicitante" />
+                <TextField
+                  variant="standard"
+                  {...params}
+                  label={texts.formularioPropostaProposta.buSolicitante}
+                />
               )}
             />
 
@@ -460,25 +705,28 @@ const FormularioPropostaProposta = (props) => {
               isOptionEqualToValue={(option, value) => {
                 return option?.id == value?.id;
               }}
-              noOptionsText="Nenhuma BU encontrada"
+              noOptionsText={texts.formularioPropostaProposta.nenhumaBuEncontrada}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="BUs Beneficiadas"
+                  label={texts.formularioPropostaProposta.labelBusBeneficiadas}
                   variant="standard"
-                  placeholder="Selecione uma ou mais BUs"
+                  placeholder={texts.formularioPropostaProposta.selecioneUmaOuMaisBus}
                 />
               )}
             />
           </Box>
-          <Box className="flex" sx={{ marginTop: '15px', marginBottom: '10px' }}>
+          <Box
+            className="flex"
+            sx={{ marginTop: "15px", marginBottom: "10px" }}
+          >
             <Autocomplete
               sx={{ width: "45%", marginLeft: "3%" }}
               disablePortal
               options={props.listaForuns}
               value={props.dados.forum}
               onChange={(event, value) => {
-                alterarTexto(value, "forum")
+                alterarTexto(value, "forum");
               }}
               getOptionLabel={(option) => {
                 return option?.nome || "";
@@ -487,9 +735,9 @@ const FormularioPropostaProposta = (props) => {
                 return option?.id == value?.id;
               }}
               fullWidth
-              noOptionsText="Nenhum Fórum encontrado"
+              noOptionsText={texts.formularioPropostaProposta.nenhumForumEncontrado}
               renderInput={(params) => (
-                <TextField variant="standard" {...params} label="Fórum" />
+                <TextField variant="standard" {...params} label={texts.formularioPropostaProposta.labelForum} />
               )}
             />
           </Box>
@@ -500,7 +748,7 @@ const FormularioPropostaProposta = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Anexos:
+                {texts.formularioPropostaProposta.anexos}:
               </Typography>
               <AddCircleOutlineOutlinedIcon
                 className="delay-120 hover:scale-110 duration-300 ml-1"
@@ -539,7 +787,7 @@ const FormularioPropostaProposta = (props) => {
                       {anexo.nome ? anexo.nome : anexo.name}
                     </Typography>
                     <Box className="flex gap-2">
-                      <Tooltip title="Baixar">
+                      <Tooltip title={texts.formularioPropostaProposta.titleBaixar}>
                         <IconButton
                           onClick={() => {
                             baixarAnexo(index);
@@ -548,7 +796,7 @@ const FormularioPropostaProposta = (props) => {
                           <DownloadIcon sx={{ color: "text.primary" }} />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Remover">
+                      <Tooltip title={texts.formularioPropostaProposta.titleRemover}>
                         <IconButton
                           onClick={() => {
                             removerAnexo(index);
@@ -566,7 +814,7 @@ const FormularioPropostaProposta = (props) => {
                 textAlign="center"
                 sx={{ color: "text.primary", fontSize: FontConfig.default }}
               >
-                Nenhum anexo adicionado
+                {texts.formularioPropostaProposta.nenhumAnexo}
               </Typography>
             )}
           </Box>
