@@ -5,9 +5,11 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
+import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.CustoDTO;
 import net.weg.wegssm.dto.TabelaCustoDTO;
 import net.weg.wegssm.model.entities.*;
+import net.weg.wegssm.repository.DemandaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,6 +27,10 @@ import java.util.List;
 public class PDFGeneratorService {
 
     private static DemandaService demandaService;
+
+    public PDFGeneratorService(DemandaService demandaService) {
+        this.demandaService = demandaService;
+    }
 
     public Document exportDemanda(HttpServletResponse response, Demanda demanda) throws IOException {
 
@@ -321,14 +327,14 @@ public class PDFGeneratorService {
         paragraph.setSpacingBefore(15);
 
         Chunk chunkSolicitante = new Chunk("Solicitante: ", fontParagraph2);
-        Chunk chunkValorSolicitante = new Chunk(String.valueOf(proposta.getSolicitante()), fontParagraph3);
+        Chunk chunkValorSolicitante = new Chunk(String.valueOf(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome()), fontParagraph3);
         Paragraph paragraph11 = new Paragraph();
         paragraph11.add(chunkSolicitante);
         paragraph11.add(chunkValorSolicitante);
         paragraph11.setSpacingBefore(15);
 
         Chunk chunkGerente = new Chunk("Gerente: ", fontParagraph2);
-        Chunk chunkValorGerente = new Chunk(String.valueOf(proposta.getGerente()), fontParagraph3);
+        Chunk chunkValorGerente = new Chunk(String.valueOf(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome()), fontParagraph3);
         Paragraph paragraph31 = new Paragraph();
         paragraph31.add(chunkGerente);
         paragraph31.add(chunkValorGerente);
@@ -881,68 +887,6 @@ public class PDFGeneratorService {
     public void exportAta(HttpServletResponse response) throws IOException {
 
         Ata ata = new Ata();
-
-        List<Proposta> listaPropostas = new ArrayList<>();
-
-        Demanda demanda = new Demanda();
-        Beneficio beneficio1 = new Beneficio();
-        Beneficio beneficio2 = new Beneficio();
-        Beneficio beneficio3 = new Beneficio();
-        List<Beneficio> listaBeneficios = new ArrayList<>();
-
-        TipoBeneficio tipoBeneficio1 = TipoBeneficio.QUALITATIVO;
-        TipoBeneficio tipoBeneficio2 = TipoBeneficio.POTENCIAL;
-        TipoBeneficio tipoBeneficio3 = TipoBeneficio.REAL;
-
-        ResponsavelNegocio responsavelNegocio = new ResponsavelNegocio();
-        responsavelNegocio.setArea("TI");
-        responsavelNegocio.setNome("Matheus");
-
-        List<ResponsavelNegocio> listaResponsavelNgc = new ArrayList<>();
-
-        listaResponsavelNgc.add(responsavelNegocio);
-
-        Proposta proposta1 = new Proposta();
-        Proposta proposta2 = new Proposta();
-
-        proposta2.setDemanda(demanda);
-        proposta1.setDemanda(demanda);
-
-        proposta1.setResponsavelNegocio(listaResponsavelNgc);
-        proposta1.setLinkJira("https://link.com.br");
-
-        proposta2.setResponsavelNegocio(listaResponsavelNgc);
-        proposta2.setLinkJira("https://link.com.br");
-
-        beneficio1.setTipoBeneficio(tipoBeneficio1);
-        beneficio1.setMoeda("BR");
-        beneficio1.setMemoriaCalculo("Memória de cálculo");
-        beneficio1.setValor_mensal(2.00);
-
-        beneficio2.setTipoBeneficio(tipoBeneficio2);
-        beneficio2.setMoeda("BR");
-        beneficio2.setMemoriaCalculo("Memória de cálculo 2");
-        beneficio2.setValor_mensal(4.00);
-
-        beneficio3.setTipoBeneficio(tipoBeneficio3);
-        beneficio3.setMoeda("BR");
-        beneficio3.setMemoriaCalculo("Memória de cálculo 3");
-        beneficio3.setValor_mensal(6.00);
-
-        listaBeneficios.add(beneficio1);
-        listaBeneficios.add(beneficio2);
-        listaBeneficios.add(beneficio3);
-
-        demanda.setFrequencia("Muito Alta");
-        demanda.setProposta("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ");
-        demanda.setTitulo("A Falha na Procura de Demandas");
-        demanda.setProblema("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum");
-        demanda.setBeneficios(listaBeneficios);
-
-        listaPropostas.add(proposta1);
-        listaPropostas.add(proposta2);
-
-        ata.setPropostas(listaPropostas);
 
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
