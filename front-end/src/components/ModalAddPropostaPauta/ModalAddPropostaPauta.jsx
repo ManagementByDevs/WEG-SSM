@@ -14,6 +14,7 @@ import {
   Select,
   FormControl,
   MenuItem,
+  TextField,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -277,6 +278,11 @@ const ModalAddPropostaPauta = (props) => {
 
   // função para selecionar a nova pauta
   const selecionarNovaPauta = () => {
+    // Deseleciona a nova pauta
+    if (!novaPautaSelecionada) {
+      setIndexPautaSelecionada(null);
+    }
+
     setnovaPautaSelecionada(!novaPautaSelecionada);
     setBotaoNovaPauta(!botaoNovaPauta);
   };
@@ -292,13 +298,33 @@ const ModalAddPropostaPauta = (props) => {
 
   // Função para adicionar a proposta na pauta selecionada
   const addPropostaInPauta = () => {
-    let pauta = listaPautas[indexPautaSelecionada];
-    pauta.propostas.push(props.proposta);
-    PautaService.put(pauta).then((res) => {
-      console.log("res: ", res);
-    });
+    let pauta;
+    if (novaPautaSelecionada) {
+      if (!isAllFieldsFilled()) {
+        console.log("preencha todos os campos para performar essa ação");
+        return;
+      }
+      pauta = {};
+    } else {
+      pauta = listaPautas[indexPautaSelecionada];
+      pauta.propostas.push(props.proposta);
+      PautaService.put(pauta).then((res) => {
+        console.log("res: ", res);
+      });
+    }
     handleClose();
   };
+
+  const isAllFieldsFilled = () => {
+    return inputData != "" && comissao != "";
+  };
+
+  // UseEffect para deselecionar a nova pauta quando selecionar outra pauta
+  useEffect(() => {
+    if (indexPautaSelecionada != null) {
+      setnovaPautaSelecionada(false);
+    }
+  }, [indexPautaSelecionada]);
 
   return (
     <Modal open={open} onClose={handleClose} closeAfterTransition>
@@ -359,8 +385,9 @@ const ModalAddPropostaPauta = (props) => {
                       onChange={handleChange}
                       displayEmpty
                       inputProps={{ "aria-label": "Without label" }}
+                      placeholder="teste"
                     >
-                      <MenuItem value="">
+                      <MenuItem value="" disabled>
                         {texts.modalAddPropostaPauta.comissao}
                       </MenuItem>
                       <MenuItem value={1}>Exemplo 01</MenuItem>
@@ -432,7 +459,7 @@ const ModalAddPropostaPauta = (props) => {
                 sx={botaoDesabilitado}
                 disableElevation
                 disabled={
-                  indexPautaSelecionada == null && botaoNovaPauta == false
+                  indexPautaSelecionada == null && !novaPautaSelecionada
                 }
                 variant="contained"
                 onClick={addPropostaInPauta}

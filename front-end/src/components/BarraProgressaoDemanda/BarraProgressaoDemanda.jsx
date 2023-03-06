@@ -10,7 +10,6 @@ import Feedback from "../Feedback/Feedback";
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
 import ExportPdfService from "../../service/exportPdfService";
-import HistoricoService from "../../service/historicoService";
 
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
@@ -210,20 +209,16 @@ const BarraProgressaoDemanda = () => {
       status: "BACKLOG_REVISAO",
     };
 
-    ExportPdfService.exportEscopo(demandaFinal).then((e) => {
-      const documentoHistorico = { nome: paginaDados.titulo + " - " + new Date().toISOString().slice(0, 10), tipo: "application/pdf", dados: e };
-      HistoricoService.post(parseInt(localStorage.getItem("usuarioId")), { data: new Date(), acaoRealizada: "Demanda Criada", documentoHistorico: documentoHistorico }).then((response) => {
-        console.log(response);
+    DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
+      ExportPdfService.exportDemanda(e.id).then((file) => {
+
+        let arquivo = new Blob([file], { type: "application/pdf" });
+        DemandaService.addHistorico(e.id, "Demanda Criada", arquivo, parseInt(localStorage.getItem("usuarioId"))).then((response) => {
+          direcionarHome();
+          excluirEscopo();
+        })
       });
     });
-    // DemandaService.post(
-    //   demandaFinal,
-    //   paginaArquivos,
-    //   parseInt(localStorage.getItem("usuarioId"))
-    // ).then((e) => {
-    //   direcionarHome();
-    //   excluirEscopo();
-    // });
   }
 
   /** Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda */

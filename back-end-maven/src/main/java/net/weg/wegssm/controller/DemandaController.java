@@ -8,6 +8,7 @@ import net.weg.wegssm.util.DemandaUtil;
 import net.weg.wegssm.util.DepartamentoUtil;
 import net.weg.wegssm.util.ForumUtil;
 import net.weg.wegssm.util.UsuarioUtil;
+import org.apache.coyote.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,9 @@ public class DemandaController {
     private UsuarioService usuarioService;
     private BeneficioService beneficioService;
     private PropostaService propostaService;
+
+    private DocumentoHistoricoService documentoHistoricoService;
+    private HistoricoService historicoService;
 
     /**
      * Método GET para buscar todas as demandas
@@ -3544,6 +3548,31 @@ public class DemandaController {
 
         List<Anexo> anexos = demandaService.findById(demanda.getId()).get().getAnexo();
         demanda.addAnexos(files, anexos);
+
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
+
+    @PutMapping("/add-historico/{idDemanda}")
+    public ResponseEntity<Demanda> addHistorico(@PathVariable(value = "idDemanda") Long idDemanda,
+                                               @RequestParam("usuarioId") Long usuarioId,
+                                               @RequestParam("acao") String acao,
+                                               @RequestParam("documento") MultipartFile documento) {
+        Usuario usuario = usuarioService.findById(usuarioId).get();
+        Demanda demanda = demandaService.findById(idDemanda).get();
+
+        Historico historico = new Historico();
+        historico.setAutor(usuario);
+        historico.setData(new Date());
+        historico.setAcaoRealizada(acao);
+
+        List<Historico> listaHistorico = demanda.getHistoricoDemanda();
+        historico.setDocumentoMultipart(documento);
+
+        DocumentoHistorico documentoHistorico = historico.getDocumento();
+        documentoHistorico.setNome(demanda.getTitulo() + " - Versão " + (listaHistorico.size() + 1));
+        historico.setDocumento(documentoHistoricoService.save(documentoHistorico));
+
+        listaHistorico.add(historicoService.save(historico));
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }

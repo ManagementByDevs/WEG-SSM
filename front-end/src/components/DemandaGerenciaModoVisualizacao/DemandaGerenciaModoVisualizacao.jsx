@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import {
   Box,
@@ -69,16 +69,21 @@ const DemandaTable = ({
       status: "",
       data: "",
       solicitante: {},
+      historicoDemanda: []
     },
   ],
   onDemandaClick,
   isProposta = false,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Controla o estado do modal de histórico da demanda
   const [modalHistorico, setModalHistorico] = useState(false);
+
+  /** Variável usada para determinar o histórico a ser usado no modal */
+  const [historicoSelecionado, setHistoricoSelecionado] = useState(null);
 
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
@@ -112,6 +117,7 @@ const DemandaTable = ({
         <ModalHistoricoDemanda
           open={modalHistorico}
           setOpen={setModalHistorico}
+          historico={historicoSelecionado}
         />
       )}
       <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
@@ -268,6 +274,7 @@ const DemandaTable = ({
                         size="small"
                         onClick={(e) => {
                           e.stopPropagation();
+                          setHistoricoSelecionado(row.historicoDemanda);
                           abrirModalHistorico();
                         }}
                         className="delay-120 hover:scale-110 duration-300"
@@ -285,6 +292,7 @@ const DemandaTable = ({
                         <ChatOutlinedIcon
                           onClick={(e) => {
                             e.stopPropagation();
+                            setHistoricoSelecionado(row.historicoDemanda);
                             abrirModalHistorico();
                           }}
                           className="delay-120 hover:scale-110 duration-300"

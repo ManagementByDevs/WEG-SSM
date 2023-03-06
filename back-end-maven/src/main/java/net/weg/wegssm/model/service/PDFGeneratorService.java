@@ -242,6 +242,16 @@ public class PDFGeneratorService {
             document.add(paragraph16);
         }
 
+        if(demanda.getForum() != null) {
+            Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
+            Chunk chunkValorForum = new Chunk(demanda.getForum().getNome(), fontParagraph3);
+            Paragraph paragraph16 = new Paragraph();
+            paragraph16.setSpacingBefore(15);
+            paragraph16.add(chunkForum);
+            paragraph16.add(chunkValorForum);
+            document.add(paragraph16);
+        }
+        
         document.add(paragraph9);
 
         // Adicionando o nome dos arquivos
