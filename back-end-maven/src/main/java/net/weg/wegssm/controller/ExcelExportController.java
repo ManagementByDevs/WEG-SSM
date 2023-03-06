@@ -6,6 +6,7 @@ import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.TipoBeneficio;
 import net.weg.wegssm.model.service.DemandaService;
 import net.weg.wegssm.model.service.ExcelGeneratorService;
+import net.weg.wegssm.util.DemandaUtil;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -15,9 +16,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -36,46 +36,21 @@ public class ExcelExportController {
 
     private static DemandaService demandaService;
 
-    @GetMapping("/excel/demandas")
-    public void exportDemandasToExcel(HttpServletResponse response) throws IOException {
+    @PostMapping("/excel/demandas")
+    public void exportDemandasToExcel(HttpServletResponse response, @RequestParam("demandas") List<String> listaDemandas) throws IOException {
 
-        List<Demanda> demandas = new ArrayList<>();
-        List<Beneficio> listaBeneficios = new ArrayList<>();
+        DemandaUtil demandaUtil = new DemandaUtil();
+        ArrayList<Demanda> listDemandas = new ArrayList<>();
 
-        Beneficio b1 = new Beneficio();
-        Beneficio b2 = new Beneficio();
-        Beneficio b3 = new Beneficio();
-
-        b1.setTipoBeneficio(TipoBeneficio.POTENCIAL);
-        b2.setTipoBeneficio(TipoBeneficio.QUALITATIVO);
-        b3.setTipoBeneficio(TipoBeneficio.REAL);
-        b1.setMoeda("Dolar");
-        b2.setMoeda("Real");
-        b3.setMoeda("Dolar");
-
-        listaBeneficios.add(b1);
-        listaBeneficios.add(b2);
-        listaBeneficios.add(b3);
-
-        Demanda d1 = new Demanda();
-        Demanda d2 = new Demanda();
-
-        d1.setTitulo("Falta de Água");
-        d1.setProblema("Problema 1");
-        d1.setProposta("Proposta 1");
-        d1.setFrequencia("Frequencia 1");
-        d1.setBeneficios(listaBeneficios);
-
-        d2.setTitulo("Falta de Sal");
-        d2.setProblema("Problema 2");
-        d2.setProposta("Proposta 2");
-        d2.setFrequencia("Frequencia 2");
-        d2.setBeneficios(listaBeneficios);
-
-        demandas.add(d1);
-        demandas.add(d2);
+        for (int i = 0; i < listaDemandas.size(); i++) {
+            String demandaJSON = listaDemandas.get(i);
+            Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
+            listDemandas.add(demanda);
+        }
 
         // Cria um workbook do Excel e uma planilha
+
+        System.out.println("Pegou a lista: " + listDemandas);
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Demandas");
@@ -119,7 +94,7 @@ public class ExcelExportController {
         headerRow.getCell(11).setCellStyle(style);
 
         int rowNum = 1;
-        for (Demanda demanda : demandas) {
+        for (Demanda demanda : listDemandas) {
             XSSFRow row = sheet.createRow(rowNum++);
 //            row.createCell(0).setCellValue(demanda.getId());
             row.createCell(1).setCellValue(demanda.getTitulo());
