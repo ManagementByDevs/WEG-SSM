@@ -7,7 +7,7 @@ import ColorModeContext from "../../service/TemaContext";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import FontContext from "../../service/FontContext";
-import TextLanguage from "../../service/TextLanguage";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const LinhaTabelaCustos = (props) => {
   // Context que contém os textos do sistema

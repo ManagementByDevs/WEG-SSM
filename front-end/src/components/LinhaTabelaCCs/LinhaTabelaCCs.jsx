@@ -7,6 +7,7 @@ import ColorModeContext from "../../service/TemaContext";
 
 import FontContext from "../../service/FontContext";
 import TextLanguage from "../../service/TextLanguage";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 const LinhaTabelaCCs = (props) => {
   // Context que contém os textos do sistema
