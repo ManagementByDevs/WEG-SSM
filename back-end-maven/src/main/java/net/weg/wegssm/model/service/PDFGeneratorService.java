@@ -5,6 +5,7 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
+import com.lowagie.text.pdf.draw.VerticalPositionMark;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.CustoDTO;
 import net.weg.wegssm.dto.TabelaCustoDTO;
@@ -324,14 +325,14 @@ public class PDFGeneratorService {
         paragraph25.setSpacingBefore(20);
 
         Paragraph paragraph = new Paragraph(proposta.getDemanda().getTitulo(), fontTitle);
-        paragraph.setSpacingBefore(15);
+        paragraph.setSpacingBefore(10);
 
         Chunk chunkSolicitante = new Chunk("Solicitante: ", fontParagraph2);
         Chunk chunkValorSolicitante = new Chunk(String.valueOf(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome()), fontParagraph3);
         Paragraph paragraph11 = new Paragraph();
         paragraph11.add(chunkSolicitante);
         paragraph11.add(chunkValorSolicitante);
-        paragraph11.setSpacingBefore(15);
+        paragraph11.setSpacingBefore(20);
 
         Chunk chunkGerente = new Chunk("Gerente: ", fontParagraph2);
         Chunk chunkValorGerente = new Chunk(String.valueOf(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome()), fontParagraph3);
@@ -339,6 +340,13 @@ public class PDFGeneratorService {
         paragraph31.add(chunkGerente);
         paragraph31.add(chunkValorGerente);
         paragraph31.setSpacingBefore(15);
+
+        Chunk chunkBuSolicitante = new Chunk("BU Solicitante: ", fontParagraph2);
+        Chunk chunkValorBuSolicitante = new Chunk(proposta.getBuSolicitante().getNome(), fontParagraph3);
+        Paragraph paragraph38 = new Paragraph();
+        paragraph38.add(chunkBuSolicitante);
+        paragraph38.add(chunkValorBuSolicitante);
+        paragraph38.setSpacingBefore(15);
 
         Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
         Chunk chunkValorForum = new Chunk(proposta.getForum().getNome(), fontParagraph3);
@@ -368,22 +376,25 @@ public class PDFGeneratorService {
         table4.setSpacingBefore(15);
 
         Paragraph paragraph4 = new Paragraph("Proposta: ", fontParagraph2);
-        paragraph4.setSpacingBefore(15);
+        paragraph4.setSpacingBefore(10);
 
         Paragraph paragraph5 = new Paragraph(proposta.getDemanda().getProposta(), fontParagraph3);
         paragraph5.setSpacingBefore(3);
+        paragraph5.setIndentationLeft(10);
 
         Paragraph paragraph2 = new Paragraph("Problema: ", fontParagraph2);
         paragraph2.setSpacingBefore(15);
 
         Paragraph paragraph3 = new Paragraph(proposta.getDemanda().getProblema(), fontParagraph3);
         paragraph3.setSpacingBefore(3);
+        paragraph3.setIndentationLeft(10);
 
         Paragraph paragraph26 = new Paragraph("Escopo da Proposta: ", fontParagraph2);
         paragraph26.setSpacingBefore(15);
 
         Paragraph paragraph27 = new Paragraph(String.valueOf(proposta.getEscopo()), fontParagraph3);
         paragraph27.setSpacingBefore(3);
+        paragraph27.setIndentationLeft(10);
 
         Paragraph paragraph28 = new Paragraph("Tabela de Custos: ", fontParagraph2);
         paragraph28.setSpacingBefore(15);
@@ -400,6 +411,7 @@ public class PDFGeneratorService {
         document.add(paragraph25);
         document.add(paragraph);
         document.add(paragraph11);
+        document.add(paragraph38);
         document.add(paragraph31);
         document.add(table4);
         document.add(paragraph4);
@@ -587,28 +599,14 @@ public class PDFGeneratorService {
         paragraph19.add(chunkValorPayback);
         paragraph19.setSpacingBefore(15);
 
-        PdfPTable table5 = new PdfPTable(2);
-        table5.setWidthPercentage(100);
-        table5.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-
-        PdfPCell cell6 = new PdfPCell(paragraph17);
-        cell6.setBorder(Rectangle.NO_BORDER);
-
-        PdfPCell cell7 = new PdfPCell(paragraph19);
-        cell7.setBorder(Rectangle.NO_BORDER);
-        cell7.setHorizontalAlignment(Element.ALIGN_RIGHT);
-
-        table5.addCell(cell6);
-        table5.addCell(cell7);
-        table5.setSpacingBefore(15);
-
         Paragraph paragraph9 = new Paragraph("Anexos: ", fontParagraph2);
         paragraph9.setAlignment(Paragraph.ANCHOR);
         paragraph9.setSpacingBefore(15);
 
         document.add(paragraph36);
         document.add(paragraph21);
-        document.add(table5);
+        document.add(paragraph17);
+        document.add(paragraph19);
         document.add(paragraph9);
 
         for (Anexo anexo : proposta.getDemanda().getAnexo()) {
