@@ -65,7 +65,8 @@ const BarraProgressaoProposta = (props) => {
     departamento: null,
     forum: null,
     secaoTI: null,
-    tamanho: ""
+    tamanho: "",
+    historicoDemanda: []
   });
 
   // Variável utilizada para armazenar a lista de benefícios
@@ -165,7 +166,8 @@ const BarraProgressaoProposta = (props) => {
       departamento: escopo.departamento,
       forum: escopo.forum,
       secaoTI: escopo.secaoTI,
-      tamanho: escopo.tamanho
+      tamanho: escopo.tamanho,
+      historicoDemanda: escopo.historicoDemanda
     });
 
     setGerais({

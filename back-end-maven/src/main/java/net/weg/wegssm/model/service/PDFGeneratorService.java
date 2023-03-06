@@ -158,13 +158,6 @@ public class PDFGeneratorService {
         paragraph9.setAlignment(Paragraph.ANCHOR);
         paragraph9.setSpacingBefore(15);
 
-        Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
-        Chunk chunkValorForum = new Chunk(demanda.getForum().getNome(), fontParagraph3);
-        Paragraph paragraph16 = new Paragraph();
-        paragraph16.setSpacingBefore(15);
-        paragraph16.add(chunkForum);
-        paragraph16.add(chunkValorForum);
-
         // Adicionando tudo na página pdf
 
         document.add(paragraph7);
@@ -232,7 +225,16 @@ public class PDFGeneratorService {
             document.add(table3);
         }
 
-        document.add(paragraph16);
+        if(demanda.getForum() != null) {
+            Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
+            Chunk chunkValorForum = new Chunk(demanda.getForum().getNome(), fontParagraph3);
+            Paragraph paragraph16 = new Paragraph();
+            paragraph16.setSpacingBefore(15);
+            paragraph16.add(chunkForum);
+            paragraph16.add(chunkValorForum);
+            document.add(paragraph16);
+        }
+
         document.add(paragraph9);
 
         // Adicionando o nome dos arquivos

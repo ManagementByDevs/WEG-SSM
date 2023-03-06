@@ -20,6 +20,7 @@ import BeneficioService from "../../service/beneficioService";
 import DemandaService from "../../service/demandaService";
 import AnexoService from "../../service/anexoService";
 import NotificacaoService from "../../service/notificacaoService";
+import ExportPdfService from "../../service/exportPdfService";
 
 import FontContext from "../../service/FontContext";
 
@@ -370,6 +371,7 @@ const DetalhesDemanda = (props) => {
           excluirBeneficiosRemovidos();
           setDemandaEmEdicao(false);
           props.setDados(response);
+          salvarHistorico("Demanda Editada");
         });
       } else {
         DemandaService.putSemAnexos(demandaAtualizada).then((response) => {
@@ -379,6 +381,7 @@ const DetalhesDemanda = (props) => {
           excluirBeneficiosRemovidos();
           setDemandaEmEdicao(false);
           props.setDados(response);
+          salvarHistorico("Demanda Editada");
         });
       }
     }
@@ -438,7 +441,10 @@ const DetalhesDemanda = (props) => {
 
   /** Função para aceitar a demanda como gerente, enviando-a para a criação de proposta */
   const aprovarDemandaGerencia = () => {
-    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(() => { navegarHome(1); });
+    DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(() => {
+      salvarHistorico("Demanda Aprovada");
+      navegarHome(1);
+    });
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -460,10 +466,14 @@ const DetalhesDemanda = (props) => {
       forum: dados.forum,
       analista: props.usuario,
       gerente: props.dados.gerente,
-      departamento: props.dados.departamento
+      departamento: props.dados.departamento,
+      historicoDemanda: props.dados.historicoDemanda
     };
 
-    DemandaService.put(demandaAtualizada, dados.anexos).then(() => { navegarHome(1); });
+    DemandaService.put(demandaAtualizada, dados.anexos).then(() => {
+      salvarHistorico("Demanda Aprovada");
+      navegarHome(1);
+    });
     NotificacaoService.post(NotificacaoService.createNotificationObject(NotificacaoService.aprovado, props.dados));
   };
 
@@ -476,9 +486,18 @@ const DetalhesDemanda = (props) => {
     DemandaService.put({ ...props.dados, motivoRecusa: motivoRecusaDemanda, status: status }, []).then(() => {
       const tipoNotificacao = modoModalRecusa === "devolucao" ? NotificacaoService.maisInformacoes : NotificacaoService.reprovado;
       NotificacaoService.post(NotificacaoService.createNotificationObject(tipoNotificacao, props.dados));
+      salvarHistorico(modoModalRecusa === "devolucao" ? "Demanda Devolvida" : "Demanda Reprovada");
       navegarHome(modoModalRecusa === "devolucao" ? 2 : 3);
     });
   };
+
+  /** Função usada para atualizar o histórico da demanda quando ela for atualizada no banco, recebendo um texto da ação realizada */
+  const salvarHistorico = (texto) => {
+    ExportPdfService.exportDemanda(props.dados.id).then((file) => {
+      let arquivo = new Blob([file], { type: "application/pdf" });
+      DemandaService.addHistorico(props.dados.id, texto, arquivo, parseInt(localStorage.getItem("usuarioId")));
+    });
+  }
 
   /** Função para transformar uma string em base64 para um ArrayBuffer, usada para baixar anexos */
   function converterBase64(base64) {

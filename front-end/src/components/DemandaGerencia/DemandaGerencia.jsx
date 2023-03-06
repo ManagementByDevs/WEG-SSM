@@ -9,6 +9,7 @@ import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemand
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import { useEffect } from "react";
 
 const DemandaGerencia = (props) => {
   // Contexto para trocar a linguagem
@@ -59,6 +60,7 @@ const DemandaGerencia = (props) => {
         <ModalHistoricoDemanda
           open={modalHistorico}
           setOpen={setModalHistorico}
+          historico={props.dados.historicoDemanda}
         />
       )}
       <Paper
