@@ -1,23 +1,22 @@
-import React, { useState, useContext } from "react";
-
+import React, { useContext } from "react";
 import { Modal, Typography, Box, Button } from "@mui/material";
 
-import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
-
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+/** Modal padrão usado para confirmação de ações (ex: criação de demanda, aprovação de demanda) */
 const ModalConfirmacao = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Função para retornar um tipo de mensagem no modal
+  /** Função para retornar um tipo de mensagem no modal */
   const mensagemModal = (tipoMensagem) => {
     switch (tipoMensagem) {
       case "descartarRascunho":
@@ -41,7 +40,7 @@ const ModalConfirmacao = (props) => {
     }
   };
 
-  // Função para retornar um tipo de mensagem no botão
+  /** Função para retornar um tipo de mensagem no botão */
   const mensagemBotao = (mensagemBotao) => {
     switch (mensagemBotao) {
       case "sim":
@@ -69,6 +68,8 @@ const ModalConfirmacao = (props) => {
             {mensagemModal(props.textoModal)}
           </Typography>
           <Box className="flex justify-center items-center mt-5">
+
+            {/* Botão de cancelar */}
             <Button
               onClick={() => {
                 props.setOpen(false);
@@ -77,16 +78,12 @@ const ModalConfirmacao = (props) => {
               variant="container"
               disableElevation
               color="tertiary"
-              sx={{
-                border: "solid 1px",
-                borderColor: "tertiary.main",
-                margin: "10px",
-                width: "7.5rem",
-                fontSize: FontConfig.big,
-              }}
+              sx={{ border: "solid 1px", borderColor: "tertiary.main", margin: "10px", width: "7.5rem", fontSize: FontConfig.big }}
             >
               {texts.modalConfirmacao.cancelar}
             </Button>
+
+            {/* Botão de confirmação */}
             <Button
               onClick={() => {
                 props.setOpen(false);

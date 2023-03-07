@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Box, IconButton } from "@mui/material";
 
@@ -14,6 +14,7 @@ import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
 
+/** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
 const DetalhesDemandaPagina = () => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
