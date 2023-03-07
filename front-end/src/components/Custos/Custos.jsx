@@ -1,15 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  Tooltip,
-} from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -88,6 +78,7 @@ const Custos = (props) => {
     });
   };
 
+  // Função para adicionar uma nova linha de CC no centro de custos
   const adicionarLinhaCC = () => {
     CustosService.postCC({ codigo: 0, porcentagem: 0 }).then((response) => {
       let custosNovos = [...props.custos];
@@ -96,6 +87,7 @@ const Custos = (props) => {
     });
   };
 
+  // Função para tirar uma linha de CC do centro de custos
   const deletarLinhaCC = (ccId, indexCC) => {
     CustosService.deleteCC(ccId).then((response) => {
       let custosNovos = [...props.custos];
