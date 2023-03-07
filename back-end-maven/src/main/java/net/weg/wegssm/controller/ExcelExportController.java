@@ -3,9 +3,7 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.Beneficio;
 import net.weg.wegssm.model.entities.Demanda;
-import net.weg.wegssm.model.entities.TipoBeneficio;
 import net.weg.wegssm.model.service.DemandaService;
-import net.weg.wegssm.model.service.ExcelGeneratorService;
 import net.weg.wegssm.util.DemandaUtil;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -14,18 +12,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor

@@ -13,32 +13,32 @@ const ModalOrdenacao = (props) => {
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   /** Função para mudar o valor do checkbox de ordenação por score "Menor Score" */
-  function mudarCheck1() {
+  const mudarCheck1 = () => {
     props.setOrdenacaoScore([!props.ordenacaoScore[0], false]);
   }
 
   /** Função para mudar o valor do checkbox de ordenação por score "Maior Score" */
-  function mudarCheck2() {
+  const mudarCheck2 = () => {
     props.setOrdenacaoScore([false, !props.ordenacaoScore[1]]);
   }
 
   /** Função para mudar o valor do checkbox de ordenação por título "Z-A" */
-  function mudarCheck3() {
+  const mudarCheck3 = () => {
     props.setOrdenacaoTitulo([!props.ordenacaoTitulo[0], false]);
   }
 
   /** Função para mudar o valor do checkbox de ordenação por título "A-Z" */
-  function mudarCheck4() {
+  const mudarCheck4 = () => {
     props.setOrdenacaoTitulo([false, !props.ordenacaoTitulo[1]]);
   }
 
   /** Função para mudar o valor do checkbox de ordenação por data "Mais Velha" */
-  function mudarCheck5() {
+  const mudarCheck5 = () => {
     props.setOrdenacaoDate([!props.ordenacaoDate[0], false]);
   }
 
   /** Função para mudar o valor do checkbox de ordenação por data "Mais Nova" */
-  function mudarCheck6() {
+  const mudarCheck6 = () => {
     props.setOrdenacaoDate([false, !props.ordenacaoDate[1]]);
   }
 
@@ -47,17 +47,7 @@ const ModalOrdenacao = (props) => {
       <Fade in={true}>
         <Box
           className="absolute flex flex-col items-center justify-evenly"
-          sx={{
-            top: "34%",
-            left: "34%",
-            transform: "translate(-50%, -50%)",
-            width: 310,
-            bgcolor: "background.paper",
-            borderRadius: "5px",
-            borderTop: "10px solid #00579D",
-            boxShadow: 24,
-            p: 1.5,
-          }}
+          sx={{ top: "34%", left: "34%", transform: "translate(-50%, -50%)", width: 310, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 1.5, }}
         >
           <CloseIcon
             onClick={props.fecharModal}

@@ -13,22 +13,18 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
-
-import FontContext from "../../service/FontContext";
-
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
-
-import UsuarioService from "../../service/usuarioService";
-import DemandaService from "../../service/demandaService";
-
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
-
 import Ajuda from "../../components/Ajuda/Ajuda";
+import Demanda from "../../components/Demanda/Demanda";
+
+import FontContext from "../../service/FontContext";
+import UsuarioService from "../../service/usuarioService";
+import DemandaService from "../../service/demandaService";
 
 import Tour from "reactour";
-import Demanda from "../../components/Demanda/Demanda";
 
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
 

@@ -1,19 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  TextareaAutosize,
-  FormControl,
-  Select,
-  MenuItem,
-} from "@mui/material";
-
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, TextareaAutosize, FormControl, Select, MenuItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -22,7 +8,9 @@ import ColorModeContext from "../../service/TemaContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+/** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -44,7 +32,7 @@ const BeneficiosDetalheDemanda = (props) => {
     }
   }, [mode]);
 
-  // Função responsável por estilar as linhas da tabela de benefícios
+  /** Função responsável por estilizar as linhas da tabela de benefícios */
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -54,15 +42,19 @@ const BeneficiosDetalheDemanda = (props) => {
     },
   }));
 
-  // Função utilizada para deletar um benefício
+  /** Função utilizada para deletar um benefício */
   const deleteBeneficio = () => {
     props.delete(props.index);
   };
 
   return (
     <Box className="flex items-center">
+
+      {/* Beneficios editáveis */}
       {props.editavel ? (
         <>
+
+          {/* Botão de excluir benefício */}
           <DeleteOutlineOutlinedIcon
             fontSize="large"
             className="delay-120 hover:scale-110 duration-300 mr-2"
@@ -94,7 +86,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontWeight="800"
                       color="text.white"
                     >
-                     {texts.BeneficiosDetalheDemanda.valorMensal}
+                      {texts.BeneficiosDetalheDemanda.valorMensal}
                     </Typography>
                   </th>
                   <th
@@ -132,18 +124,14 @@ const BeneficiosDetalheDemanda = (props) => {
                       variant="standard"
                       sx={{ marginRight: "10px", minWidth: 90 }}
                     >
+
+                      {/* Select de tipo do benefício */}
                       <Select
                         labelId="demo-simple-select-standard-label"
                         id="demo-simple-select-standard"
                         value={props.beneficio.tipoBeneficio}
                         onChange={(e) => {
-                          props.setBeneficio(
-                            {
-                              ...props.beneficio,
-                              tipoBeneficio: e.target.value,
-                            },
-                            props.index
-                          );
+                          props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value, }, props.index);
                         }}
                       >
                         <MenuItem value={"Real"}>{texts.BeneficiosDetalheDemanda.real}</MenuItem>
@@ -154,25 +142,17 @@ const BeneficiosDetalheDemanda = (props) => {
                   </td>
                   <td align="center">
                     {props.beneficio.tipoBeneficio != "Qualitativo" && (
+
+                      // Input de valor mensal
                       <Box
                         value={props.beneficio.valor_mensal || ""}
                         fontSize={FontConfig.medium}
                         onChange={(e) => {
-                          props.setBeneficio(
-                            {
-                              ...props.beneficio,
-                              valor_mensal: e.target.value,
-                            },
-                            props.index
-                          );
+                          props.setBeneficio({ ...props.beneficio, valor_mensal: e.target.value, }, props.index);
                         }}
                         color="text.primary"
                         className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
-                        sx={{
-                          width: "80%;",
-                          height: "30px",
-                          backgroundColor: "background.default",
-                        }}
+                        sx={{ width: "80%;", height: "30px", backgroundColor: "background.default" }}
                         component="input"
                         placeholder={texts.BeneficiosDetalheDemanda.digiteValorMensal}
                       />
@@ -184,15 +164,14 @@ const BeneficiosDetalheDemanda = (props) => {
                         variant="standard"
                         sx={{ marginRight: "10px", minWidth: 90 }}
                       >
+
+                        {/* Select de moeda do benefício */}
                         <Select
                           labelId="demo-simple-select-standard-label"
                           id="demo-simple-select-standard"
                           value={props.beneficio.moeda || ""}
                           onChange={(e) => {
-                            props.setBeneficio(
-                              { ...props.beneficio, moeda: e.target.value },
-                              props.index
-                            );
+                            props.setBeneficio({ ...props.beneficio, moeda: e.target.value }, props.index);
                           }}
                         >
                           <MenuItem value={"Real"}>BR</MenuItem>
@@ -206,23 +185,14 @@ const BeneficiosDetalheDemanda = (props) => {
                     align="center"
                     className="p-3 pl-5 pr-5 flex justify-center"
                   >
+
+                    {/* Textarea da memória de cálculo */}
                     <TextareaAutosize
-                      style={{
-                        width: "100%",
-                        resize: "none",
-                        textAlign: "center",
-                        backgroundColor: corFundoTextArea,
-                      }}
+                      style={{ width: "100%", resize: "none", textAlign: "center", backgroundColor: corFundoTextArea, }}
                       value={props.beneficio.memoriaCalculo}
                       fontSize={FontConfig.medium}
                       onChange={(e) => {
-                        props.setBeneficio(
-                          {
-                            ...props.beneficio,
-                            memoriaCalculo: e.target.value,
-                          },
-                          props.index
-                        );
+                        props.setBeneficio({ ...props.beneficio, memoriaCalculo: e.target.value, }, props.index);
                       }}
                       className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                       placeholder={texts.BeneficiosDetalheDemanda.digiteMemoriaCalculo}
@@ -234,6 +204,8 @@ const BeneficiosDetalheDemanda = (props) => {
           </TableContainer>
         </>
       ) : (
+
+        // Benefícios não editáveis
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 750 }} aria-label="customized table">
             <TableHead sx={{ backgroundColor: "primary.main" }}>
@@ -279,24 +251,26 @@ const BeneficiosDetalheDemanda = (props) => {
             <TableBody>
               <StyledTableRow className="flex">
                 <td align="center">
+                  {/* Tipo do benefício */}
                   <Typography fontSize={FontConfig.medium} color="text.primary">
                     {props.beneficio.tipoBeneficio}
                   </Typography>
                 </td>
                 <td align="center">
+                  {/* Valor mensal */}
                   <Typography fontSize={FontConfig.medium} color="text.primary">
                     {props.beneficio.valor_mensal}
                   </Typography>
                 </td>
                 <td align="center">
+                  {/* Moeda do benefício */}
                   <Typography fontSize={FontConfig.medium} color="text.primary">
                     {props.beneficio.moeda}
                   </Typography>
                 </td>
-                <td
-                  align="center"
-                  className="p-3 pl-5 pr-5 flex justify-center"
-                >
+                <td align="center" className="p-3 pl-5 pr-5 flex justify-center">
+
+                  {/* Memória de cálculo */}
                   <Typography
                     className="text-center"
                     fontSize={FontConfig.medium}

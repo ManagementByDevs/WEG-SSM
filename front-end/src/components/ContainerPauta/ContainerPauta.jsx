@@ -18,45 +18,6 @@ const ContainerPauta = (props) => {
   // Contexet para verificar o tema atual
   const { mode } = useContext(TemaContext);
 
-  // Variáveis de estilo utilizadas no componente
-  const containerGeral = {
-    width: "90%",
-    height: "5.5rem",
-    border: "1px solid",
-    borderLeft: "solid 6px",
-    borderColor: "primary.main",
-    borderRadius: "5px",
-    p: 4,
-    margin: "1%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    cursor: "pointer",
-  };
-
-  const parteCima = {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  };
-
-  const parteBaixo = {
-    width: "100%",
-    display: "grid",
-    color: "primary.main",
-    marginTop: "2%",
-    gap: "1rem",
-    gridTemplateColumns: "repeat(auto-fit, minmax(15%, 1fr))",
-  };
-
-  const tituloProposta = {
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-  };
-
   // Variável de estado para verificar se a pauta foi selecionada ou não
   const [pautaSelecionada, setPautaSelecionada] = useState(false);
 
@@ -97,13 +58,11 @@ const ContainerPauta = (props) => {
 
   return (
     <Paper
-      sx={{
-        ...containerGeral,
-        backgroundColor: getBackgroundColor(),
-      }}
+      className="flex justify-center items-center flex-col w-11/12 h-24 rounded-md cursor-pointer"
+      sx={{ border: '1px solid', borderLeft: "solid 6px", borderColor: "primary.main", p: 4, margin: '1%', backgroundColor: getBackgroundColor() }}
       onClick={selecionarPauta}
     >
-      <Box sx={parteCima}>
+      <Box className="w-full flex justify-between items-center">
         <Typography fontSize={FontConfig.medium}>
           {texts.containerPauta.propostas}:
         </Typography>
@@ -112,10 +71,9 @@ const ContainerPauta = (props) => {
           {getFormattedDate(props.pauta.dataReuniao)}
         </Typography>
       </Box>
-
-      <Box sx={parteBaixo}>
-        <Typography fontSize={FontConfig.medium} sx={tituloProposta}>{props.pauta.propostas[0] ? props.pauta.propostas[0].titulo : ""}</Typography>
-        <Typography sx={tituloProposta}>{props.pauta.propostas[1] ? props.pauta.propostas[0].titulo : ""}</Typography>
+      <Box className="w-full grid gap-4" sx={{ color: 'primary.main', marginTop: '2%', gridTemplateColumns: "repeat(auto-fit, minmax(15%, 1fr))" }}>
+        <Typography fontSize={FontConfig.medium} className="overflow-hidden whitespace-nowrap text-ellipsis">{props.pauta.propostas[0] ? props.pauta.propostas[0].titulo : ""}</Typography>
+        <Typography className="overflow-hidden whitespace-nowrap text-ellipsis">{props.pauta.propostas[1] ? props.pauta.propostas[0].titulo : ""}</Typography>
       </Box>
     </Paper>
   );

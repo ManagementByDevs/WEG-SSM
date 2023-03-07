@@ -6,6 +6,9 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+/** Componente de representação de um histórico da demanda, sendo repetido dentro de uma lista no componente ModalHistoricoDemanda
+ * Objeto de histórico recebido pelo props (props.historico)
+ */
 const ContainerHistorico = (props) => {
 
   // Contexto para trocar a linguagem
@@ -21,7 +24,7 @@ const ContainerHistorico = (props) => {
     return bytes.map((byte, i) => textoBinario.charCodeAt(i));
   }
 
-  /** Função para baixar o pdf do histórico da lista */
+  /** Função para baixar o pdf do histórico da lista, recebendo o documento do props */
   const baixarHistorico = () => {
     const arquivo = props.historico.documento;
     let blob = arquivo instanceof File ? arquivo : new Blob([converterBase64(arquivo.dados)], { type: "application/pdf" });
@@ -49,19 +52,25 @@ const ContainerHistorico = (props) => {
       className="flex justify-between items-center border border-solid"
       sx={{ borderLeft: "8px solid", borderColor: "primary.main", width: "90%", height: "4.5rem", borderRadius: "5px", p: 2, margin: "1%" }}
     >
+      {/* Nome do autor */}
       <Typography fontWeight={650} fontSize={FontConfig.veryBig}>
         {props.historico?.autor.nome}
       </Typography>
       <Box
         sx={{ display: "flex", justifyContent: "center", alignItens: "center", flexDirection: "column", textAlign: "center" }}
       >
+        {/* Data do histórico */}
         <Typography fontSize={FontConfig.small}>
           {props.historico?.data}
         </Typography>
+
+        {/* Texto da ação feita */}
         <Typography fontSize={FontConfig.big}>
           {props.historico?.acaoRealizada}
         </Typography>
       </Box>
+
+      {/* Botão para baixar o documento do histórico */}
       <Tooltip title="Baixar">
         <IconButton onClick={baixarHistorico}>
           <DownloadIcon sx={{ color: "text.primary" }} />

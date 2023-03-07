@@ -1,77 +1,37 @@
-import React, { useState, useContext } from "react";
-
+import React, { useContext } from "react";
 import { Modal, Typography, Box, Fade } from "@mui/material";
 
-import Backdrop from "@mui/material/Backdrop";
 import CloseIcon from "@mui/icons-material/Close";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+/** Modal para ver o motivo da recusa de demanda para o solicitante */
 const ModalMotivoRecusa = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Variável de estilo para o modal
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 480,
-    height: 350,
-    bgcolor: "background.paper",
-    borderRadius: "5px",
-    borderTop: "10px solid #00579D",
-    boxShadow: 24,
-    p: 4,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "column",
-  };
-
-  const styleMensagem = {
-    marginTop: "5%",
-    display: "flex",
-    textAlign: "justify",
-    border: "1px solid",
-    borderColor: "divider.main",
-    borderRadius: "5px",
-    p: 2,
-    width: "100%",
-    height: "100%",
-  };
-
-  // props para abrir o modal através de outra tela
-  let open = false;
-  open = props.open;
-  const setOpen = props.setOpen;
-
-  // useState para abrir e fechar o modal
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   return (
-    <Modal open={open} onClose={handleClose} closeAfterTransition>
-      <Fade in={open}>
-        <Box sx={style}>
+    <Modal open={props.open} onClose={() => { props.setOpen(false) }} closeAfterTransition>
+      <Fade in={props.open}>
+        <Box className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
+          sx={{ transform: "translate(-50%, -50%)", width: 480, height: 350, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}>
+          {/* Ícone de fechar o modal */}
           <CloseIcon
-            onClick={handleClose}
-            sx={{
-              position: "absolute",
-              left: "93%",
-              top: "3%",
-              cursor: "pointer",
-            }}
+            onClick={() => { props.setOpen(false) }}
+            sx={{ position: "absolute", left: "93%", top: "3%", cursor: "pointer" }}
           />
           <Typography fontSize={FontConfig.veryBig}>
             {texts.modalMotivoRecusa.motivoDaRecusa}
           </Typography>
-          <Box sx={styleMensagem}>
+          <Box className="flex text-justify border border-solid w-full h-full"
+            sx={{ marginTop: "5%", borderColor: "divider.main", borderRadius: "5px", p: 2 }}
+          >
+            {/* Motivo da recusa */}
             <Typography fontSize={FontConfig.normal}>
               {props.motivoRecusa}
             </Typography>
