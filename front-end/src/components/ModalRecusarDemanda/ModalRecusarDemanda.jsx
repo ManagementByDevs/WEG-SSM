@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
+import { Modal, Typography, Box, Fade, TextareaAutosize, Button } from '@mui/material';
 
-import { Modal, Typography, Box, Fade, TextareaAutosize, Backdrop, Button } from '@mui/material';
-
-import FontConfig from '../../service/FontConfig';
 import CloseIcon from '@mui/icons-material/Close';
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+/** Modal de recusar demanda na etapa de aprovação inicial (analista e gerente) */
 const ModalRecusarDemanda = (props) => {
+
     // Context para alterar a linguagem do sistema
     const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -55,22 +55,20 @@ const ModalRecusarDemanda = (props) => {
             closeAfterTransition
         >
             <Fade in={open}>
-                <Box sx={style}>
+                <Box className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
+                    sx={{ transform: 'translate(-50%, -50%)', width: 480, height: 350, bgcolor: 'background.paper', borderRadius: '5px', borderTop: '10px solid #00579D', boxShadow: 24, p: 4 }}
+                >
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} />
                     <Typography fontSize={FontConfig.veryBig}>
                         {texts.modalRecusarDemanda.motivoDaRecusa}
                     </Typography>
+
+                    {/* Textarea para escrita do motivo da recusa */}
                     <TextareaAutosize
-                        style={{
-                            width: "90%",
-                            height: "70%",
-                            resize: "none",
-                        }}
+                        style={{ width: "90%", height: "70%", resize: "none" }}
                         value={props.motivo}
                         fontSize={FontConfig.medium}
-                        onChange={(e) => {
-                            alterarTexto(e, "problema");
-                        }}
+                        onChange={(e) => { alterarTexto(e, "problema") }}
                         className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
                         placeholder={texts.modalRecusarDemanda.informeMotivo}
                     />
@@ -83,7 +81,7 @@ const ModalRecusarDemanda = (props) => {
                             }}
                             variant="contained"
                             onClick={props.confirmRecusarDemanda}
-                        > 
+                        >
                             {texts.modalRecusarDemanda.enviar}
                         </Button>
                     </Box>
