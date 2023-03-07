@@ -19,8 +19,7 @@ const ModalMotivoRecusa = (props) => {
     <Modal open={props.open} onClose={() => { props.setOpen(false) }} closeAfterTransition>
       <Fade in={props.open}>
         <Box className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
-          sx={{ transform: "translate(-50%, -50%)", width: 480, height: 350, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}
-        >
+          sx={{ transform: "translate(-50%, -50%)", width: 480, height: 350, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}>
           {/* Ícone de fechar o modal */}
           <CloseIcon
             onClick={() => { props.setOpen(false) }}

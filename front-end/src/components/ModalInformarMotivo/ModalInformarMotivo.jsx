@@ -15,21 +15,12 @@ const ModalInformarMotivo = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // props para abrir o modal através de outra tela
-  let open = false;
-  open = props.open;
-  const setOpen = props.setOpen;
-
-  // useState para abrir e fechar o modal
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   return (
-    <Modal open={open} onClose={handleClose} closeAfterTransition>
-      <Fade in={open}>
+    <Modal open={props.open} onClose={() => {props.setOpen(false)}} closeAfterTransition>
+      <Fade in={props.open}>
         <Box sx={{ transform: 'translate(-50%, -50%)', width: 480, height: 350, borderTop: '10px solid #00579D', boxShadow: 24, p: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', top: '50%', left: '50%', position: 'absolute' }} bgcolor={'background.paper'}>
           <CloseIcon
-            onClick={handleClose}
+            onClick={() => {props.setOpen(false)}}
             sx={{
               position: "absolute",
               left: "93%",
