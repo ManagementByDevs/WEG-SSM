@@ -1,8 +1,6 @@
 import React, { useContext, useState } from "react";
-
-import { useLocation } from "react-router-dom";
-
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -14,7 +12,6 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
-
 import ExportPdfService from "../../service/exportPdfService";
 
 const DetalhesPropostaPagina = () => {
@@ -27,13 +24,15 @@ const DetalhesPropostaPagina = () => {
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const [openModalAddPropostaPauta, setOpenModalAddPropostaPauta] =
-    useState(true);
+  // useState utilizado para abrir e fechar o modal de adicionar a pauta
+  const [openModalAddPropostaPauta, setOpenModalAddPropostaPauta] = useState(true);
 
+  // função para abrir o modal de adicionar a pauta
   const adicionarAPauta = () => {
     setOpenModalAddPropostaPauta(true);
   };
 
+  // função utilizada para baixar a proposta em formatado pdf
   const baixarProposta = () => {
     ExportPdfService.exportProposta(location.state.id).then((response) => {
       let blob = new Blob([response], { type: "application/pdf" });
@@ -55,29 +54,20 @@ const DetalhesPropostaPagina = () => {
       <Box className="relative p-2">
         <Box className="flex w-full relative">
           <Caminho />
-          <Box
-            className=" absolute"
-            sx={{ top: "10px", right: "20px", cursor: "pointer" }}
-          >
+          <Box className=" absolute" sx={{ top: "10px", right: "20px", cursor: "pointer" }}>
+            {/* Ícone para baixar a proposta em formato pdf */}
             <IconButton onClick={baixarProposta}>
-              <SaveAltOutlinedIcon
-                id="segundo"
-                fontSize="large"
-                className="delay-120 hover:scale-110 duration-600"
-                sx={{ color: "icon.main" }}
-              />
+              <SaveAltOutlinedIcon id="segundo" fontSize="large" className="delay-120 hover:scale-110 duration-600" sx={{ color: "icon.main" }} />
             </IconButton>
           </Box>
         </Box>
+        {/* Mostra o conteúdo da proposta */}
         <DetalhesProposta proposta={location.state} />
       </Box>
       <Box className="absolute bottom-4 right-6  p-1">
+        {/* Botão de adicionar proposta em pauta */}
         <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>
-          <Button
-            variant="contained"
-            sx={{ borderRadius: "9999px" }}
-            onClick={adicionarAPauta}
-          >
+          <Button variant="contained" sx={{ borderRadius: "9999px" }} onClick={adicionarAPauta}>
             <BookmarkAddIcon sx={{ fontSize: "28px", color: "text.white" }} />
           </Button>
         </Tooltip>
@@ -85,4 +75,5 @@ const DetalhesPropostaPagina = () => {
     </FundoComHeader>
   );
 };
+
 export default DetalhesPropostaPagina;
