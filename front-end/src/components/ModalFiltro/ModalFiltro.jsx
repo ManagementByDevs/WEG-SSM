@@ -6,6 +6,7 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 const ModalFiltro = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -13,32 +14,32 @@ const ModalFiltro = (props) => {
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   /** Função para mudar o valor da primeira checkbox do filtro */
-  function mudarCheck1() {
+  const mudarCheck1 = () => {
     props.setListaFiltros([!props.listaFiltros[0], false, false, false, false, false]);
   }
 
   /** Função para mudar o valor da segunda checkbox do filtro */
-  function mudarCheck2() {
+  const mudarCheck2 = () => {
     props.setListaFiltros([false, !props.listaFiltros[1], false, false, false, false]);
   }
 
   /** Função para mudar o valor da terceira checkbox do filtro */
-  function mudarCheck3() {
+  const mudarCheck3 = () => {
     props.setListaFiltros([false, false, !props.listaFiltros[2], false, false, false]);
   }
 
   /** Função para mudar o valor da quarta checkbox do filtro */
-  function mudarCheck4() {
+  const mudarCheck4 = () => {
     props.setListaFiltros([false, false, false, !props.listaFiltros[3], false, false]);
   }
 
   /** Função para mudar o valor da quinta checkbox do filtro */
-  function mudarCheck5() {
+  const mudarCheck5 = () => {
     props.setListaFiltros([false, false, false, false, !props.listaFiltros[4], false]);
   }
 
   /** Função para mudar o valor da sexta checkbox do filtro */
-  function mudarCheck6() {
+  const mudarCheck6 = () => {
     props.setListaFiltros([false, false, false, false, false, !props.listaFiltros[5]]);
   }
 
@@ -47,18 +48,7 @@ const ModalFiltro = (props) => {
       <Fade in={true}>
         <Box
           className="absolute flex justify-evenly items-center flex-col"
-          sx={{
-            top: "36%",
-            left: "37%",
-            transform: "translate(-50%, -50%)",
-            width: 310,
-            height: 320,
-            bgcolor: "background.paper",
-            borderRadius: "5px",
-            borderTop: "10px solid #00579D",
-            boxShadow: 24,
-            p: 2,
-          }}
+          sx={{ top: "36%", left: "37%", transform: "translate(-50%, -50%)", width: 310, height: 320, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 2 }}
         >
           {/* Botão para fechar o modal */}
           <CloseIcon
@@ -73,6 +63,7 @@ const ModalFiltro = (props) => {
                 >
                   {texts.modalFiltro.status}:
                 </Typography>
+
                 {/* Checkboxes com os filtros */}
                 <Box className="w-full flex justify-between flex-col m-0">
                   <FormControlLabel
