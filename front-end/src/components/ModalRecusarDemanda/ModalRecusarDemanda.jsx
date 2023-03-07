@@ -15,25 +15,6 @@ const ModalRecusarDemanda = (props) => {
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
-    // Variável de estilo para o modal
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 480,
-        height: 350,
-        bgcolor: 'background.paper',
-        borderRadius: '5px',
-        borderTop: '10px solid #00579D',
-        boxShadow: 24,
-        p: 4,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'column',
-    };
-
     // props para abrir o modal através de outra tela
     let open = false;
     open = props.open;
@@ -55,7 +36,7 @@ const ModalRecusarDemanda = (props) => {
             closeAfterTransition
         >
             <Fade in={open}>
-                <Box sx={style}>
+                <Box sx={{ transform: 'translate(-50%, -50%)', width: 480, height: 350, borderTop: '10px solid #00579D', boxShadow: 24, p: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', top: '50%', left: '50%', position: 'absolute' }} bgcolor={'background.paper'}>
                     <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} />
                     <Typography fontSize={FontConfig.veryBig}>
                         {texts.modalRecusarDemanda.motivoDaRecusa}
@@ -65,6 +46,8 @@ const ModalRecusarDemanda = (props) => {
                             width: "90%",
                             height: "70%",
                             resize: "none",
+                            overflow: "auto",
+                            marginTop: "4%",
                         }}
                         value={props.motivo}
                         fontSize={FontConfig.medium}
@@ -80,10 +63,11 @@ const ModalRecusarDemanda = (props) => {
                                 backgroundColor: "primary.main",
                                 color: "text.white",
                                 fontSize: FontConfig.default,
+                                marginTop: "2%",
                             }}
                             variant="contained"
                             onClick={props.confirmRecusarDemanda}
-                        > 
+                        >
                             {texts.modalRecusarDemanda.enviar}
                         </Button>
                     </Box>

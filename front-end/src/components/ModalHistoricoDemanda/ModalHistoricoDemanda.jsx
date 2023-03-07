@@ -16,15 +16,6 @@ const ModalHistoricoDemanda = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  const styleContainerHistorico = {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    overflow: "auto",
-    width: "100%",
-    height: "80%",
-  };
-
   // variáveis para abrir o modal a partir de outra tela
   let open = false;
   open = props.open;
@@ -57,7 +48,7 @@ const ModalHistoricoDemanda = (props) => {
             {texts.modalHistoricoDemanda.historico}
           </Typography>
           <Divider sx={{ width: "60%", borderColor: "tertiary.main" }} />
-          <Box sx={styleContainerHistorico}>
+          <Box className="flex items-center flex-col overflow-auto w-full h-4/5">
             {props?.historico?.map((e) => (
               <ContainerHistorico
                 key={e.id}

@@ -1,21 +1,10 @@
 import React, { useContext } from "react";
-import {
-  Modal,
-  Typography,
-  Box,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
+import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
-import UsuarioService from "../../service/usuarioService";
 
+import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
