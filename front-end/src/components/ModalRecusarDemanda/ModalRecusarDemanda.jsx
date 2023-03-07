@@ -15,15 +15,6 @@ const ModalRecusarDemanda = (props) => {
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
-    // props para abrir o modal através de outra tela
-    let open = false;
-    open = props.open;
-    const setOpen = props.setOpen;
-
-    // useState para abrir e fechar o modal
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
     // Função para alterar o texto do motivo
     const alterarTexto = (e) => {
         props.setMotivo(e.target.value);
@@ -31,15 +22,15 @@ const ModalRecusarDemanda = (props) => {
 
     return (
         <Modal
-            open={open}
-            onClose={handleClose}
+            open={props.open}
+            onClose={() => {props.setOpen(false)}}
             closeAfterTransition
         >
-            <Fade in={open}>
+            <Fade in={props.open}>
                 <Box className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
                     sx={{ transform: 'translate(-50%, -50%)', width: 480, height: 350, bgcolor: 'background.paper', borderRadius: '5px', borderTop: '10px solid #00579D', boxShadow: 24, p: 4 }}
                 >
-                    <CloseIcon onClick={handleClose} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} />
+                    <CloseIcon onClick={() => {props.setOpen(false)}} sx={{ position: 'absolute', left: '93%', top: '3%', cursor: 'pointer' }} />
                     <Typography fontSize={FontConfig.veryBig}>
                         {texts.modalRecusarDemanda.motivoDaRecusa}
                     </Typography>
