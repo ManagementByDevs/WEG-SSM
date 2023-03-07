@@ -1,8 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 
 import JoditEditor from "jodit-react";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
+
 const TextEditor = (props) => {
+  // Context para alterar idioma
+  const { texts, setTexts } = useContext(TextLanguageContext);
   // Variável para o editor
   const editor = useRef(null);
 
@@ -10,7 +14,7 @@ const TextEditor = (props) => {
   const config = {
     readonly: false, // Todas opções encontradas em https://xdsoft.net/jodit/docs/
     height: "700",
-    placeholder: "Digite aqui o escopo da proposta...",
+    placeholder: texts.textEditor.digiteAquiEscopoDaProposta,
     allowResizeX: false,
     allowResizeY: false,
   };

@@ -8,9 +8,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const PropostaDeAta = (props) => {
+  // Context para alterar o idioma do texto
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -84,7 +88,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Código PPM:
+          {texts.propostaDeAta.codigoPpm}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.ppm}
@@ -97,7 +101,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Título da Proposta:
+          {texts.propostaDeAta.tituloDaProposta}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.titulo}
@@ -110,7 +114,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Responsável Negócio:
+          {texts.propostaDeAta.responsavelDoNegocio}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.responsavelNegocio} - {dados.area}
@@ -123,7 +127,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Problema:
+          {texts.propostaDeAta.problema}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.problema}
@@ -136,7 +140,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Proposta:
+          {texts.propostaDeAta.proposta}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.proposta}
@@ -149,7 +153,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Benefícios:
+          {texts.propostaDeAta.beneficios}:
         </Typography>
         <Box className="mt-2 flex flex-col gap-5">
           {dados.beneficios.map((beneficio, index) => {
@@ -173,7 +177,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Frequência de Uso:
+          {texts.propostaDeAta.frequenciaDeUso}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.frequencia}
@@ -186,10 +190,10 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Custos:
+          {texts.propostaDeAta.custos}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
-          Custos aqui
+          {texts.propostaDeAta.custosAqui}
         </Typography>
       </Box>
 
@@ -199,7 +203,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Período de Execução:
+          {texts.propostaDeAta.periodoDeExecucao}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.periodoExecucao}
@@ -212,7 +216,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Payback Simples:
+          {texts.propostaDeAta.paybackSimples}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.paybackSimples}
@@ -225,7 +229,7 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Link do Jira:
+          {texts.propostaDeAta.linkDoJira}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
           {dados.linkJira}
@@ -238,10 +242,10 @@ const PropostaDeAta = (props) => {
           fontWeight="600"
           color="text.primary"
         >
-          Anexos:
+          {texts.propostaDeAta.anexos}:
         </Typography>
         <Typography fontSize={FontConfig.medium} sx={textoConteudo}>
-          Anexos
+          {texts.propostaDeAta.anexos}
         </Typography>
       </Box>
 
@@ -262,7 +266,7 @@ const PropostaDeAta = (props) => {
               fontWeight="600"
               color="text.primary"
             >
-              Parecer Comissão:
+              {texts.propostaDeAta.parecerComissao}:
             </Typography>
 
             {/* Aparecer o select do parecer da comissao ou aparecer o resultado do parecer, caso a pauta ja esteja criada */}
@@ -274,14 +278,14 @@ const PropostaDeAta = (props) => {
                   displayEmpty
                   inputProps={{ "aria-label": "Without label" }}
                 >
-                  <MenuItem value="">Aprovado</MenuItem>
-                  <MenuItem value={1}>Reprovado</MenuItem>
-                  <MenuItem value={2}>Mais Informações</MenuItem>
-                  <MenuItem value={3}>Business Case</MenuItem>
+                  <MenuItem value="">{texts.propostaDeAta.aprovado}</MenuItem>
+                  <MenuItem value={1}>{texts.propostaDeAta.reprovado}</MenuItem>
+                  <MenuItem value={2}>{texts.propostaDeAta.maisInformacoes}</MenuItem>
+                  <MenuItem value={3}>{texts.propostaDeAta.businessCase}</MenuItem>
                 </Select>
               </FormControl>
             ) : (
-              <Box sx={{ marginLeft: "2%" }}>Aprovado</Box>
+              <Box sx={{ marginLeft: "2%" }}>{texts.propostaDeAta.aprovado}</Box>
             )}
           </Box>
 
@@ -295,7 +299,7 @@ const PropostaDeAta = (props) => {
               }}
             >
               <TextareaAutosize
-                placeholder="Escreva a nova informação..."
+                placeholder={texts.propostaDeAta.escrevaNovaInformacao}
                 style={{
                   width: "70%",
                   height: "8rem",
@@ -330,7 +334,7 @@ const PropostaDeAta = (props) => {
                 fontWeight="600"
                 color="text.primary"
               >
-                Parecer DG:
+                {texts.propostaDeAta.parecerDG}:
               </Typography>
 
               <FormControl sx={{ width: "12rem", marginLeft: "2%" }}>
@@ -340,8 +344,8 @@ const PropostaDeAta = (props) => {
                   displayEmpty
                   inputProps={{ "aria-label": "Without label" }}
                 >
-                  <MenuItem value="">Aprovado</MenuItem>
-                  <MenuItem value={1}>Reprovado</MenuItem>
+                  <MenuItem value="">{texts.propostaDeAta.aprovado}</MenuItem>
+                  <MenuItem value={1}>{texts.propostaDeAta.reprovado}</MenuItem>
                 </Select>
               </FormControl>
             </Box>

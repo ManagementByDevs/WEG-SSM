@@ -30,6 +30,7 @@ import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
 import UsuarioService from "../../service/usuarioService";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ChatContext from "../../service/ChatContext";
 
@@ -41,6 +42,9 @@ import Tour from "reactour";
 var stompClient = null;
 
 const Chat = () => {
+  // Context para alterar o idioma
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   const { setVisibilidade, visibilidade } = useContext(ChatContext);
 
   // Context para alterar o tamanho da fonte
@@ -417,7 +421,7 @@ const Chat = () => {
     {
       selector: "#primeiro",
       content:
-        "Neste input você pode pesquisar pelos chats por nome do usuário e pelo número sequêncial da demanda.",
+       texts.chat.tour.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -426,7 +430,7 @@ const Chat = () => {
     {
       selector: "#segundo",
       content:
-        "Aqui fica os chats abertos, tendo o nome do usuário, o número sequêncial da demanda e de qual demanda pertence.",
+      texts.chat.tour.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -435,7 +439,7 @@ const Chat = () => {
     {
       selector: "#terceiro",
       content:
-        "Neste botão pode escolher entre minimizar o chat ou encerrar a conversa (fechando o chat).",
+        texts.chat.tour.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -444,7 +448,7 @@ const Chat = () => {
     {
       selector: "#quarto",
       content:
-        "Aqui pode escrever o que deseja enviar, podendo também anexar algum arquivo.",
+        texts.chat.tour.tour4,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -504,7 +508,7 @@ const Chat = () => {
                       color: "text.primary",
                       fontSize: FontConfig.medium,
                     }}
-                    placeholder="Pesquisar por nome..."
+                    placeholder={texts.chat.pesquisarPorNome}
                   />
                   <Box className="flex gap-2">
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
@@ -518,29 +522,29 @@ const Chat = () => {
                     }}
                     usuario={{
                       foto: "",
-                      nome: "Tour",
-                      cargo: "Gerente",
-                      demanda: "Mostrar no tour",
+                      nome: texts.chat.usuarioTour.tour,
+                      cargo: texts.chat.usuarioTour.gerente,
+                      demanda: texts.chat.usuarioTour.mostrarNoTour,
                       codigoDemanda: "#1",
                       mensagens: [
                         {
-                          texto: "Olá, tudo bem?",
+                          texto: texts.chat.usuarioTour.olaTudoBem,
                           data: "10/10/2021",
                           hora: "10:00",
-                          remetente: "Tour",
+                          remetente: texts.chat.usuarioTour.tour,
                         },
                         {
                           texto:
-                            "Tudo sim, e você? Estou aqui para te mostrar como funciona o chat.",
+                            texts.chat.usuarioTour.tudoSimVoce,
                           data: "10/10/2021",
                           hora: "10:01",
-                          remetente: "Eu",
+                          remetente: texts.chat.usuarioTour.eu,
                         },
                         {
-                          texto: "Bem também, obrigado.",
+                          texto: texts.chat.usuarioTour.bemTambemObrigado,
                           data: "10/10/2021",
                           hora: "10:02",
-                          remetente: "Tour",
+                          remetente: texts.chat.usuarioTour.tour,
                         },
                       ],
                     }}
@@ -575,7 +579,7 @@ const Chat = () => {
                       color={"text.secondary"}
                       sx={{ fontWeight: "600" }}
                     >
-                      Selecione alguma conversa
+                      {texts.chat.selecioneAlgumaConversa}
                     </Typography>
                   ) : (
                     <Typography
@@ -583,7 +587,7 @@ const Chat = () => {
                       color={"text.secondary"}
                       sx={{ fontWeight: "600" }}
                     >
-                      Mini chat aberto
+                      {texts.chat.selecioneAlgumaConversa}
                     </Typography>
                   )}
                 </Box>
@@ -611,7 +615,7 @@ const Chat = () => {
                           fontSize={FontConfig.veryBig}
                           fontWeight="600"
                         >
-                          Tour
+                          {texts.chat.usuarioTour.tour}
                         </Typography>
                         <Typography fontSize={FontConfig.small}>
                           {usuarios[indexUsuario].cargo}
@@ -620,12 +624,11 @@ const Chat = () => {
                     </Box>
                     <Box className="mr-5">
                       {/* Botão para abrir o menu */}
-                      <Tooltip title="Opções">
+                      <Tooltip title={texts.chat.opcoes}>
                         <IconButton
                           id="terceiro"
                           onClick={handleClick}
                           size="small"
-
                           aria-controls={open ? "account-menu" : undefined}
                           aria-haspopup="true"
                           aria-expanded={open ? "true" : undefined}
@@ -659,7 +662,7 @@ const Chat = () => {
                               fontSize={FontConfig.medium}
                               sx={{ fontWeight: 500 }}
                             >
-                              Abrir Pop-Up
+                              {texts.chat.abrirPopUp}
                             </Typography>
                           </MenuItem>
 
@@ -687,7 +690,7 @@ const Chat = () => {
                               fontSize={FontConfig.medium}
                               sx={{ fontWeight: 500 }}
                             >
-                              Encerrar Chat
+                              {texts.chat.encerrarChat}
                             </Typography>
                           </MenuItem>
                         </Box>
@@ -715,10 +718,10 @@ const Chat = () => {
                         color: "text.primary",
                         fontSize: FontConfig.medium,
                       }}
-                      placeholder="Escreva sua mensagem..."
+                      placeholder={texts.chat.escrevaSuaMensagem}
                     />
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                      <Tooltip title="Enviar Anexo">
+                      <Tooltip title={texts.chat.enviarAnexo}>
                         <IconButton>
                           <AttachFileOutlinedIcon
                             sx={{ color: "primary.main", cursor: "pointer" }}
@@ -734,7 +737,7 @@ const Chat = () => {
                       }}
                     />
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                      <Tooltip title="Enviar mensagem">
+                      <Tooltip title={texts.chat.enviarMensagem}>
                         <IconButton
                           onClick={() => {
                             salvarTexto();
@@ -781,7 +784,7 @@ const Chat = () => {
                     </Box>
                     <Box className="mr-5">
                       {/* Botão para abrir o menu */}
-                      <Tooltip title="Opções">
+                      <Tooltip title={texts.chat.opcoes}>
                         <IconButton
                           onClick={handleClick}
                           size="small"
@@ -818,7 +821,7 @@ const Chat = () => {
                               fontSize={FontConfig.medium}
                               sx={{ fontWeight: 500 }}
                             >
-                              Abrir Pop-Up
+                              {texts.chat.abrirPopUp}
                             </Typography>
                           </MenuItem>
 
@@ -846,7 +849,7 @@ const Chat = () => {
                               fontSize={FontConfig.medium}
                               sx={{ fontWeight: 500 }}
                             >
-                              Encerrar Chat
+                              {texts.chat.encerrarChat}
                             </Typography>
                           </MenuItem>
                         </Box>
@@ -889,10 +892,10 @@ const Chat = () => {
                         color: "text.primary",
                         fontSize: FontConfig.medium,
                       }}
-                      placeholder="Escreva sua mensagem..."
+                      placeholder={texts.chat.escrevaSuaMensagem}
                     />
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                      <Tooltip title="Enviar Anexo">
+                      <Tooltip title={texts.chat.enviarAnexo}>
                         <IconButton>
                           <AttachFileOutlinedIcon
                             sx={{ color: "primary.main", cursor: "pointer" }}
@@ -908,7 +911,7 @@ const Chat = () => {
                       }}
                     />
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                      <Tooltip title="Enviar mensagem">
+                      <Tooltip title={texts.chat.enviarMensagem}>
                         <IconButton
                           onClick={() => {
                             salvarTexto();

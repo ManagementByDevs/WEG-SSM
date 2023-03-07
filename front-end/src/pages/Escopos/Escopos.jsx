@@ -16,6 +16,7 @@ import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
 import { useNavigate } from "react-router-dom";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 import Ajuda from "../../components/Ajuda/Ajuda";
@@ -23,6 +24,9 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 import Tour from "reactour";
 
 const Escopos = () => {
+  // useContext para alterar a linguagem do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -138,8 +142,7 @@ const Escopos = () => {
   const stepsTour = [
     {
       selector: "#segundo",
-      content:
-        "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
+      content: texts.escopos.tour.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -147,8 +150,7 @@ const Escopos = () => {
     },
     {
       selector: "#primeiro",
-      content:
-        "Aqui fica os escopos criados automaticamente, em cada escopo é possível abrir novamente para edição. É criado um escopo para cada projeto que você abre e não finaliza.",
+      content: texts.escopos.tour.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -156,8 +158,7 @@ const Escopos = () => {
     },
     {
       selector: "#quarto",
-      content:
-        "Nesta área você consegue visualizar qual a porcentagem preenchida do formulário.",
+      content: texts.escopos.tour.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -165,7 +166,7 @@ const Escopos = () => {
     },
     {
       selector: "#terceiro",
-      content: "Clicando na lixeira você exclui o escopo.",
+      content: texts.escopos.tour.tour4,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -219,7 +220,7 @@ const Escopos = () => {
                     color: "text.primary",
                     fontSize: FontConfig.medium,
                   }}
-                  placeholder="Pesquisar por título..."
+                  placeholder={texts.escopos.pesquisarPorTitulo}
                   value={inputPesquisa}
                   onChange={(e) => salvarPesquisa(e)}
                   onKeyDown={(e) => {
@@ -233,7 +234,7 @@ const Escopos = () => {
                 {/* Container para os ícones */}
                 <Box className="flex gap-2">
                   {/* Ícone de pesquisa */}
-                  <Tooltip title="Pesquisar">
+                  <Tooltip title={texts.escopos.pesquisar}>
                     <SearchOutlinedIcon
                       onClick={buscarEscopos}
                       className="hover:cursor-pointer"
@@ -273,7 +274,7 @@ const Escopos = () => {
                 setFeedbackDeletar(false);
               }}
               status={"sucesso"}
-              mensagem={"Escopo deletado com sucesso!"}
+              mensagem={texts.escopos.escopoDeletadoComSucesso}
             />
           </Box>
         </Box>

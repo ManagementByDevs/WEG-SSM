@@ -3,9 +3,13 @@ import { Box, Typography } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const ResponsavelNegocio = (props) => {
+  // Context para alterar o idioma
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
   
@@ -14,7 +18,7 @@ const ResponsavelNegocio = (props) => {
       <Box className="flex flex-col">
         <Box className="flex mb-2">
           <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
-            Responsável do negócio:
+            {texts.responsavelNegocio.responsavelDoNegocio}:
           </Typography>
           <Typography
             sx={{
@@ -38,7 +42,7 @@ const ResponsavelNegocio = (props) => {
               borderLeftColor: "primary.main",
             }}
             component="input"
-            placeholder="Insira o responsável pelo negócio..."
+            placeholder={texts.responsavelNegocio.insiraResponsavelDoNegocio}
             value={props.dados.nome}
             onChange={(e) =>
               props.setDados({ ...props.dados, nome: e.target.value })
@@ -49,7 +53,7 @@ const ResponsavelNegocio = (props) => {
       <Box className="flex flex-col ml-10">
         <Box className="flex mb-2">
           <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
-            Área:
+            {texts.responsavelNegocio.area}:
           </Typography>
           <Typography
             sx={{
@@ -73,7 +77,7 @@ const ResponsavelNegocio = (props) => {
               borderLeftColor: "primary.main",
             }}
             component="input"
-            placeholder="Insira a área do responsável..."
+            placeholder={texts.responsavelNegocio.insiraAreaDoResponsavel}
             value={props.dados.area}
             onChange={(e) =>
               props.setDados({ ...props.dados, area: e.target.value })

@@ -122,7 +122,7 @@ const Login = () => {
               }}
               className="w-8/12"
               id="filled-basic"
-              label="Email"
+              label={texts.login.email}
               variant="filled"
               color="primary"
             />
@@ -138,7 +138,7 @@ const Login = () => {
               }}
               className="w-8/12"
               id="input-with-icon-textfield"
-              label="Senha"
+              label={texts.login.senha}
               color="primary"
               type={senha ? "password" : "text"}
               InputProps={{
@@ -167,7 +167,7 @@ const Login = () => {
                 color="text.primary"
                 className="underline hover:cursor-pointer"
               >
-                Esqueci a Senha
+                {texts.login.esqueciSenha}
               </Typography>
             </div>
             {/* Div para centralizar o botão de login */}
@@ -180,7 +180,7 @@ const Login = () => {
                 color="primary"
                 className="self-end w-2/6"
               >
-                Entrar
+                {texts.login.entrar}
               </Button>
             </div>
 
@@ -192,7 +192,7 @@ const Login = () => {
                   setOpenFeedbackDadosInvalidos(false);
                 }}
                 status={"erro"}
-                mensagem={"Dados inválidos!"}
+                mensagem={texts.login.feedback.dadosInvalidos}
               />
             )}
 
@@ -204,7 +204,7 @@ const Login = () => {
                   setOpenFeedbackDadosFaltantes(false);
                 }}
                 status={"erro"}
-                mensagem={"Preencha todos os campos!"}
+                mensagem={texts.login.feedback.preenchaTodosOsCampos}
               />
             )}
           </div>

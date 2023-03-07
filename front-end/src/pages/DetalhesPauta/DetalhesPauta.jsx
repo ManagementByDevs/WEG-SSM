@@ -22,9 +22,13 @@ import { keyframes } from "@emotion/react";
 
 import { useNavigate } from "react-router-dom";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const DetalhesPauta = (props) => {
+  // Context para alterar a linguagem do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -208,7 +212,7 @@ const DetalhesPauta = (props) => {
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
           >
-            <Tooltip title="Baixar PDF">
+            <Tooltip title={texts.detalhesPauta.baixarPDF}>
               <SaveAltOutlinedIcon
                 fontSize="large"
                 className="delay-120 hover:scale-110 duration-300"
@@ -236,15 +240,15 @@ const DetalhesPauta = (props) => {
                   color: "primary.main",
                 }}
               >
-                Pauta
+                {texts.detalhesPauta.pauta}
               </Typography>
               <Typography sx={informacoesAta}>
                 {/* {props.numeroSequencial} */}
-                Número Sequencial: 01
+                {texts.detalhesPauta.numeroSequencial}: 01
               </Typography>
               <Typography sx={informacoesAta}>
                 {/* {props.data} */}
-                Ano: 2022
+                {texts.detalhesPauta.ano}: 2022
               </Typography>
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
@@ -264,7 +268,7 @@ const DetalhesPauta = (props) => {
                   }}
                   color="primary.main"
                 >
-                  Sumário
+                  {texts.detalhesPauta.sumario}
                 </Typography>
 
                 <Box
@@ -311,7 +315,7 @@ const DetalhesPauta = (props) => {
                     fontSize={FontConfig.title}
                     fontWeight={650}
                   >
-                    Proposta {indexProposta}
+                    {texts.detalhesPauta.proposta} {indexProposta}
                   </Typography>
                   <DeleteIcon
                     sx={{
@@ -355,7 +359,7 @@ const DetalhesPauta = (props) => {
                     variant="contained"
                     onClick={() => voltar()}
                   >
-                    Voltar
+                    {texts.detalhesPauta.voltar}
                   </Button>
                   <Button
                     sx={{
@@ -379,11 +383,11 @@ const DetalhesPauta = (props) => {
                     variant="contained"
                     onClick={proximo}
                   >
-                    <Typography>Próximo</Typography>
+                    <Typography>{texts.detalhesPauta.proximo}</Typography>
                   </Button>
                 </Box>
               </Box>
-              <Tooltip title="Navegação">
+              <Tooltip title={texts.detalhesPauta.navegacao}>
                 <Box
                   className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                   sx={{
@@ -405,7 +409,7 @@ const DetalhesPauta = (props) => {
                 </Box>
               </Tooltip>
             </Box>
-            <Tooltip title="Criar Ata">
+            <Tooltip title={texts.detalhesPauta.criarAta}>
               <Box
                 onClick={feedbackAta}
                 className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"

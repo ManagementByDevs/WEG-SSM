@@ -10,12 +10,16 @@ import Caminho from "../../components/Caminho/Caminho";
 import DetalhesDemanda from "../../components/DetalhesDemanda/DetalhesDemanda";
 import Ajuda from "../../components/Ajuda/Ajuda";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
+
 import UsuarioService from "../../service/usuarioService";
 import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
 
 const DetalhesDemandaPagina = () => {
+  // Context para alterar a linguagem do sistema
+  const { texts } = useContext(TextLanguageContext); 
 
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
@@ -65,7 +69,7 @@ const DetalhesDemandaPagina = () => {
         {
           selector: "#terceiro",
           content:
-            "Clicando neste lápis, você consegue estar editando as informações.",
+          texts.detalhesDemandaPagina.tour.tour3,
           style: {
             backgroundColor: "#DCDCDC",
             color: "#000000",
@@ -80,7 +84,7 @@ const DetalhesDemandaPagina = () => {
     {
       selector: "#primeiro",
       content:
-        "Essa é a página de detalhes da demanda. Aqui você pode ver todos os detalhes da demanda selecionada.",
+        texts.detalhesDemandaPagina.tour.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -88,7 +92,7 @@ const DetalhesDemandaPagina = () => {
     },
     {
       selector: "#segundo",
-      content: "Cicando aqui, você consegue baixar em PDF essa demanda.",
+      content: texts.detalhesDemandaPagina.tour.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",

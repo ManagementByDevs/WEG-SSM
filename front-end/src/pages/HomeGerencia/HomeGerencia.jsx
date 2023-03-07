@@ -50,8 +50,7 @@ const HomeGerencia = () => {
   const stepsDemandas = [
     {
       selector: "#primeiroDemandas",
-      content:
-        "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",
+      content: texts.homeGerencia.toursDemandas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -59,8 +58,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#segundoDemandas",
-      content:
-        "Esse é icone de ordenação, onde poderá ordenar os itens por ordem alfabética, por score ou por data de criação",
+      content: texts.homeGerencia.toursDemandas.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -69,7 +67,7 @@ const HomeGerencia = () => {
     {
       selector: "#terceiroDemandas",
       content:
-        "Aqui fica o filtro, podendo filtrar por: Solicitante, Gerente Responsável, Fórum, Departamento, Tamanho e número",
+        texts.homeGerencia.toursDemandas.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -78,7 +76,7 @@ const HomeGerencia = () => {
     {
       selector: "#quartoDemandas",
       content:
-        "Aqui fica o lugar para exportar as demandas em formato de planilha",
+        texts.homeGerencia.toursDemandas.tour4,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -87,7 +85,7 @@ const HomeGerencia = () => {
     {
       selector: "#nonoDemandas",
       content:
-        "Clicando aqui você pode alterar o modo de visualização para tabela ou cards",
+        texts.homeGerencia.toursDemandas.tour9,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -95,7 +93,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#quintoDemandas",
-      content: "Aqui pode iniciar o processo de criação de uma nova demanda",
+      content: texts.homeGerencia.toursDemandas.tour5,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -104,7 +102,7 @@ const HomeGerencia = () => {
     {
       selector: "#sextoDemandas",
       content:
-        "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes",
+        texts.homeGerencia.toursDemandas.tour6,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -112,7 +110,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#oitavoDemandas",
-      content: "Nesta área você pode visualizar o status da demanda",
+      content: texts.homeGerencia.toursDemandas.tour8,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -121,7 +119,7 @@ const HomeGerencia = () => {
     {
       selector: "#setimoDemandas",
       content:
-        "Clicando aqui você pode ver o histórico de alterações da demanda",
+        texts.homeGerencia.toursDemandas.tour7,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -132,7 +130,7 @@ const HomeGerencia = () => {
     {
       selector: "#primeiroCriarPropostas",
       content:
-        "Nesta parte fica as demandas, podendo clicar em uma demanda para ver mais detalhes e/ou criar uma proposta",
+        texts.homeGerencia.toursCriarPropostas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -140,7 +138,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#segundoCriarPropostas",
-      content: "Nesta área você pode visualizar o status da demanda",
+      content: texts.homeGerencia.toursCriarPropostas.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -148,7 +146,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#terceiroCriarPropostas",
-      content: "Clique aqui para ver o histórico de alterações da demanda",
+      content: texts.homeGerencia.toursCriarPropostas.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -159,7 +157,7 @@ const HomeGerencia = () => {
     {
       selector: "#primeiroPropostas",
       content:
-        "Nesta parte fica as propostas, podendo clicar em uma proposta para ver mais detalhes.",
+        texts.homeGerencia.toursPropostas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -168,7 +166,7 @@ const HomeGerencia = () => {
     {
       selector: "#segundoPropostas",
       content:
-        "Clicando aqui você pode abrir o chat com o solicitante da demanda",
+        texts.homeGerencia.toursPropostas.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -177,7 +175,7 @@ const HomeGerencia = () => {
     {
       selector: "#setimoDemandas",
       content:
-        "Clicando aqui você pode ver o histórico de alterações da proposta",
+        texts.homeGerencia.toursPropostas.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -188,7 +186,7 @@ const HomeGerencia = () => {
     {
       selector: "#primeiroPautas",
       content:
-        "Nesta parte fica as pautas, podendo clicar em uma pauta para ver mais detalhes.",
+        texts.homeGerencia.toursPautas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -196,7 +194,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#segundoPautas",
-      content: "Clicando aqui você pode excluir a pauta",
+      content: texts.homeGerencia.toursPautas.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -207,7 +205,7 @@ const HomeGerencia = () => {
     {
       selector: "#primeiroAtas",
       content:
-        "Nesta parte fica as atas, podendo clicar em uma ata para ver mais detalhes",
+        texts.homeGerencia.toursAtas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -263,7 +261,7 @@ const HomeGerencia = () => {
     departamento: "",
     id: null,
     codigoPPM: null,
-    analista: null
+    analista: null,
   });
   const [modoFiltro, setModoFiltro] = useState("demanda");
 
@@ -336,7 +334,7 @@ const HomeGerencia = () => {
       departamento: null,
       codigoPPM: null,
       id: null,
-      analista: null
+      analista: null,
     };
 
     if (filtrosAtuais.solicitante != "") {
@@ -688,16 +686,43 @@ const HomeGerencia = () => {
   const pesquisaTitulo = () => {
     if (!parseInt(valorPesquisa)) {
       setParams({
-        titulo: valorPesquisa, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento), codigoPPM: null, id: null,
+        titulo: valorPesquisa,
+        solicitante: JSON.parse(params.solicitante),
+        gerente: JSON.parse(params.gerente),
+        analista: JSON.parse(params.analista),
+        forum: JSON.parse(params.forum),
+        tamanho: params.tamanho,
+        status: params.status,
+        departamento: JSON.parse(params.departamento),
+        codigoPPM: null,
+        id: null,
       });
     } else {
       if (value < 3) {
         setParams({
-          titulo: params.titulo, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento), codigoPPM: params.codigoPPM, id: valorPesquisa,
+          titulo: params.titulo,
+          solicitante: JSON.parse(params.solicitante),
+          gerente: JSON.parse(params.gerente),
+          analista: JSON.parse(params.analista),
+          forum: JSON.parse(params.forum),
+          tamanho: params.tamanho,
+          status: params.status,
+          departamento: JSON.parse(params.departamento),
+          codigoPPM: params.codigoPPM,
+          id: valorPesquisa,
         });
       } else {
         setParams({
-          titulo: params.titulo, solicitante: JSON.parse(params.solicitante), gerente: JSON.parse(params.gerente), analista: JSON.parse(params.analista), forum: JSON.parse(params.forum), tamanho: params.tamanho, status: params.status, departamento: JSON.parse(params.departamento), codigoPPM: valorPesquisa, id: params.id,
+          titulo: params.titulo,
+          solicitante: JSON.parse(params.solicitante),
+          gerente: JSON.parse(params.gerente),
+          analista: JSON.parse(params.analista),
+          forum: JSON.parse(params.forum),
+          tamanho: params.tamanho,
+          status: params.status,
+          departamento: JSON.parse(params.departamento),
+          codigoPPM: valorPesquisa,
+          id: params.id,
         });
       }
     }
@@ -727,7 +752,7 @@ const HomeGerencia = () => {
   // Função para exportar para excel
 
   const exportarExcel = () => {
-    console.log(listaItens)
+    console.log(listaItens);
     ExportExcelService.exportExcel(listaItens).then((response) => {
       let blob = new Blob([response], { type: "application/excel" });
       let url = URL.createObjectURL(blob);
@@ -736,7 +761,7 @@ const HomeGerencia = () => {
       link.download = "demandas.xlsx";
       link.click();
     });
-  }
+  };
 
   // ********************************************** Preferências **********************************************
   /**
@@ -835,7 +860,7 @@ const HomeGerencia = () => {
             setOpenFeedbackAta(false);
           }}
           status={"sucesso"}
-          mensagem={"Ata publicada com sucesso!"}
+          mensagem={texts.homeGerencia.feedback.feedback1}
         />
 
         <Feedback
@@ -844,7 +869,7 @@ const HomeGerencia = () => {
             setFeedbackDemandaAceita(false);
           }}
           status={"sucesso"}
-          mensagem={"Demanda aceita com sucesso!"}
+          mensagem={texts.homeGerencia.feedback.feedback2}
         />
 
         <Feedback
@@ -853,7 +878,7 @@ const HomeGerencia = () => {
             setFeedbackDemandaRecusada(false);
           }}
           status={"sucesso"}
-          mensagem={"Demanda recusada com sucesso!"}
+          mensagem={texts.homeGerencia.feedback.feedback3}
         />
 
         <Feedback
@@ -862,7 +887,7 @@ const HomeGerencia = () => {
             setFeedbackDemandaDevolvida(false);
           }}
           status={"sucesso"}
-          mensagem={"Demanda devolvida com sucesso!"}
+          mensagem={texts.homeGerencia.feedback.feedback4}
         />
 
         <Feedback
@@ -871,7 +896,7 @@ const HomeGerencia = () => {
             setFeedbackPropostaCriada(false);
           }}
           status={"sucesso"}
-          mensagem={"Proposta criada com sucesso!"}
+          mensagem={texts.homeGerencia.feedback.feedback5}
         />
 
         {/* Div container para o conteúdo da home */}
@@ -888,7 +913,7 @@ const HomeGerencia = () => {
               >
                 <Tab
                   sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Demandas"
+                  label={texts.homeGerencia.demandas}
                   value="1"
                 />
 
@@ -898,7 +923,7 @@ const HomeGerencia = () => {
                       color: "text.secondary",
                       fontSize: FontConfig.medium,
                     }}
-                    label="Criar Propostas"
+                    label={texts.homeGerencia.criarPropostas}
                     value="2"
                   />
                 )}
@@ -909,7 +934,7 @@ const HomeGerencia = () => {
                       color: "text.secondary",
                       fontSize: FontConfig.medium,
                     }}
-                    label="Propostas"
+                    label={texts.homeGerencia.propostas}
                     value="3"
                   />
                 )}
@@ -920,7 +945,7 @@ const HomeGerencia = () => {
                       color: "text.secondary",
                       fontSize: FontConfig.medium,
                     }}
-                    label="Pautas"
+                    label={texts.homeGerencia.pautas}
                     value="4"
                   />
                 )}
@@ -931,14 +956,14 @@ const HomeGerencia = () => {
                       color: "text.secondary",
                       fontSize: FontConfig.medium,
                     }}
-                    label="Atas"
+                    label={texts.homeGerencia.atas}
                     value="5"
                   />
                 )}
               </TabList>
               <Box id="nonoDemandas" className="absolute right-0 top-2">
                 {nextModoVisualizacao == "TABLE" ? (
-                  <Tooltip title="Visualização em tabela">
+                  <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
                     <IconButton
                       onClick={() => {
                         handleOnVisualizationModeClick();
@@ -949,7 +974,7 @@ const HomeGerencia = () => {
                     </IconButton>
                   </Tooltip>
                 ) : (
-                  <Tooltip title="Visualização em bloco">
+                  <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
                     <IconButton
                       onClick={() => {
                         handleOnVisualizationModeClick();
@@ -983,7 +1008,7 @@ const HomeGerencia = () => {
                       color: "text.primary",
                       fontSize: FontConfig.medium,
                     }}
-                    placeholder="Pesquisar por título..."
+                    placeholder={texts.homeGerencia.pesquisarPorTitulo}
                     onKeyDown={(e) => {
                       eventoTeclado(e);
                     }}
@@ -1000,7 +1025,7 @@ const HomeGerencia = () => {
                     {/* Ícone de pesquisa */}
                     <Tooltip
                       className="hover:cursor-pointer"
-                      title="Pesquisar"
+                      title={texts.homeGerencia.pesquisar}
                       onClick={() => {
                         pesquisaTitulo();
                       }}
@@ -1009,7 +1034,7 @@ const HomeGerencia = () => {
                     </Tooltip>
 
                     {/* Ícone de ordenação */}
-                    <Tooltip title="Ordenação">
+                    <Tooltip title={texts.homeGerencia.ordenacao}>
                       <SwapVertIcon
                         id="segundoDemandas"
                         onClick={() => {
@@ -1052,12 +1077,14 @@ const HomeGerencia = () => {
                     variant="contained"
                     disableElevation
                   >
-                    Filtrar <FilterAltOutlinedIcon />
+                    {texts.homeGerencia.filtrar} <FilterAltOutlinedIcon />
                   </Button>
                 )}
                 {modalFiltro && (
                   <ModalFiltroGerencia
-                    fecharModal={() => { setModalFiltro(false) }}
+                    fecharModal={() => {
+                      setModalFiltro(false);
+                    }}
                     filtro={filtrosAtuais}
                     setFiltro={setFiltrosAtuais}
                     modo={modoFiltro}
@@ -1087,7 +1114,7 @@ const HomeGerencia = () => {
                   variant="contained"
                   disableElevation
                 >
-                  Exportar <FileDownloadIcon />
+                  {texts.homeGerencia.exportar} <FileDownloadIcon />
                 </Button>
               </Box>
 
@@ -1106,7 +1133,7 @@ const HomeGerencia = () => {
                   navigate("/criar-demanda");
                 }}
               >
-                Criar demanda
+                {texts.homeGerencia.criarDemanda}
                 <AddIcon />
               </Button>
             </Box>
@@ -1130,13 +1157,13 @@ const HomeGerencia = () => {
                       gerente: {},
                       tamanho: "",
                       id: 0,
-                      titulo: "Demanda para Tour",
+                      titulo: texts.homeGerencia.demandaParaTour,
                       problema: "",
                       proposta: "",
                       motivoRecusa: "",
                       status: "BACKLOG_REVISAO",
                       data: "",
-                      solicitante: { nome: "Solicitante Tour" },
+                      solicitante: { nome: texts.homeGerencia.demandaParaTour },
                     }}
                     tipo="demanda"
                   />
@@ -1150,7 +1177,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1167,7 +1194,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{

@@ -15,9 +15,12 @@ import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 import Feedback from "../../components/Feedback/Feedback";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const DetalhesAta = (props) => {
+  // Context para trocar a liguagem
+  const { texts, setTexts } = useContext(TextLanguageContext);
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -222,7 +225,7 @@ const DetalhesAta = (props) => {
             setFeedbackAta(false);
           }}
           status={"sucesso"}
-          mensagem={"Ata criada com sucesso!"}
+          mensagem={texts.detalhesAta.ataCriadaComSucesso}
         />
 
         {/* container geral da tela */}
@@ -244,23 +247,23 @@ const DetalhesAta = (props) => {
                   color: "primary.main",
                 }}
               >
-                Ata
+                {texts.detalhesAta.ata}
               </Typography>
               <Typography sx={informacoesAta}>
                 {/* {props.numeroSequencial} */}
-                Número Sequencial: 01/2022
+                {texts.detalhesAta.numeroSequencial}: 01/2022
               </Typography>
               <Typography sx={informacoesAta}>
                 {/* {props.data} */}
-                Data: 06/12/2022
+                {texts.detalhesAta.data}: 06/12/2022
               </Typography>
               <Typography sx={informacoesAta}>
                 {/* {props.inicio} */}
-                Início: 14:30 Horas
+                {texts.detalhesAta.inicio}: 14:30 Horas
               </Typography>
               <Typography sx={informacoesAta}>
                 {/* {props.fim} */}
-                Fim: 15:30 Horas
+                {texts.detalhesAta.fim}: 15:30 Horas
               </Typography>
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
@@ -279,7 +282,7 @@ const DetalhesAta = (props) => {
                   }}
                   color="primary.main"
                 >
-                  Sumário
+                  {texts.detalhesAta.sumario}
                 </Typography>
                 <Box
                   sx={{
@@ -316,7 +319,7 @@ const DetalhesAta = (props) => {
                   fontSize={FontConfig.title}
                   fontWeight={650}
                 >
-                  Proposta {indexProposta}
+                  {texts.detalhesAta.proposta} {indexProposta}
                 </Typography>
                 <PropostaDeAta
                   dadosProposta={dadosProposta}
@@ -349,7 +352,7 @@ const DetalhesAta = (props) => {
                       variant="contained"
                       onClick={() => voltar()}
                     >
-                      Voltar
+                      {texts.detalhesAta.voltar}
                     </Button>
                     <Button
                       sx={{
@@ -373,11 +376,11 @@ const DetalhesAta = (props) => {
                       variant="contained"
                       onClick={proximo}
                     >
-                      <Typography>Próximo</Typography>
+                      <Typography>{texts.detalhesAta.proximo}</Typography>
                     </Button>
                   </Box>
                 </Box>
-                <Tooltip title="Navegação">
+                <Tooltip title={texts.detalhesAta.navegacao}>
                   <Box
                     className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                     sx={{
@@ -399,7 +402,7 @@ const DetalhesAta = (props) => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Tooltip title="Publicar Ata">
+              <Tooltip title={texts.detalhesAta.publicarAta}>
                 <Box
                   onClick={criarAta}
                   className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"

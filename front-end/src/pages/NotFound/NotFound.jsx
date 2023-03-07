@@ -5,9 +5,13 @@ import { useNavigate } from "react-router-dom";
 
 import Error from '../../assets/Error.png';
 
+import TextLanguageContext from '../../service/TextLanguageContext';
 import FontContext from "../../service/FontContext";
 
 const NotFound = (props) => {
+    // useContext para alterar o idioma do sistema
+    const { texts } = useContext(TextLanguageContext);
+
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -27,19 +31,19 @@ const NotFound = (props) => {
                 <img src={Error} />
 
                 <Typography fontSize={FontConfig.title} color={'primary.main'} fontWeight={650}>
-                    Page Not Found
+                   {texts.notFound.paginaNaoEncontrada}
                 </Typography>
 
                 <Typography fontSize={FontConfig.veryBig} fontWeight={500}>
-                    Desculpe, a página informada não foi encontrada!
+                    {texts.notFound.paginaNaoEncontrada}
                 </Typography>
 
                 <Typography fontSize={FontConfig.veryBig} fontWeight={500}>
-                    Por favor, volte para a página principal.
+                    {texts.notFound.porfavorVolteParaPaginaPrincipal}
                 </Typography>
 
                 <Button className='w-32 rounded-sm p-1' fontSize={FontConfig.big} onClick={voltarPaginaPrincipal} variant="contained">
-                    Voltar
+                    {texts.notFound.voltar}
                 </Button>
             </Box>
         </Box>

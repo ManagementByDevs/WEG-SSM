@@ -17,9 +17,13 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const Notificacao = () => {
+  // useContext para alterar o idioma do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -119,8 +123,8 @@ const Notificacao = () => {
 
     openFeedback(
       bool
-        ? "Notificações marcadas como não lidas com sucesso!"
-        : "Notificações marcadas como lidas com sucesso! "
+        ? texts.notificacao.notificacaoMArcadasComoNaoLidasComSucesso
+        : texts.notificacao.notificacaoMArcadasComoLidasComSucesso
     );
     setRows(newList);
   };
@@ -140,7 +144,7 @@ const Notificacao = () => {
       deleteNotificacao(notificacao);
     }
 
-    openFeedback("Notificações deletadas com sucesso!")
+    openFeedback(texts.notificacao.notificacaoExcluidasComSucesso);
   };
 
   // Atualiza o estado de visualizado da linha selecionada
@@ -148,13 +152,13 @@ const Notificacao = () => {
     let aux = [...rows];
     aux[index].visualizado = !aux[index].visualizado;
     updateNotificacao(aux[index]);
-    openFeedback(!aux[index].visualizado ? "Notificação marcada como não lida com sucesso!" : "Notificação marcada como lida com sucesso!");
+    openFeedback(!aux[index].visualizado ? texts.notificacao.notificacaoMArcadasComoNaoLidasComSucesso : texts.notificacao.notificacaoMArcadasComoLidasComSucesso);
   };
 
   // Deleta linha selecionada
   const onDeleteClick = () => {
     deleteNotificacao(rows[indexDelete]);
-    openFeedback("Notificação deletada com sucesso!");
+    openFeedback(texts.notificacao.notificacaoExcluidasComSucesso);
   };
 
   // Busca as notificações do usuário no banco de dados
@@ -252,7 +256,7 @@ const Notificacao = () => {
               color={"icon.main"}
               sx={{ fontWeight: "600", cursor: "default" }}
             >
-              Notificações
+              {texts.notificacao.notificacoes}
             </Typography>
           </Box>
           <Box className="w-10/12">
@@ -268,7 +272,7 @@ const Notificacao = () => {
                 >
                   {rows.find((row) => row.checked) ? (
                     <Box className="w-1/12 flex justify-center">
-                      <Tooltip title="Deletar">
+                      <Tooltip title={texts.notificacao.deletar}>
                         <IconButton
                           onClick={() => {
                             setOpenModalConfirmMultiDelete(true);
@@ -279,7 +283,7 @@ const Notificacao = () => {
                           />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Marcar como lido">
+                      <Tooltip title={texts.notificacao.marcarComoLido}>
                         <IconButton onClick={onMultiReadOrUnreadClick}>
                           {rows.every((row) => row.visualizado) ? (
                             <MarkEmailUnreadOutlinedIcon
@@ -322,17 +326,17 @@ const Notificacao = () => {
                         </th>
                         <th className="text-white">
                           <Typography fontSize={FontConfig.big}>
-                            Tipo
+                            {texts.notificacao.tipo}
                           </Typography>
                         </th>
                         <th className="text-white">
                           <Typography fontSize={FontConfig.big}>
-                            Título
+                          {texts.notificacao.titulo}
                           </Typography>
                         </th>
                         <th className="w-1/10 text-white">
                           <Typography fontSize={FontConfig.big}>
-                            Data
+                          {texts.notificacao.data}
                           </Typography>
                         </th>
                       </TableRow>
@@ -375,7 +379,7 @@ const Notificacao = () => {
                             </Typography>
                             <Typography className="notificacao-table-row-td-action">
                               {row.visualizado ? (
-                                <Tooltip title="Marcar como não lido">
+                                <Tooltip title={texts.login.marcarComoNaoLido}>
                                   <MarkEmailUnreadOutlinedIcon
                                     onClick={() => onReadOrUnreadClick(index)}
                                     className="cursor-pointer"
@@ -383,7 +387,7 @@ const Notificacao = () => {
                                   />
                                 </Tooltip>
                               ) : (
-                                <Tooltip title="Marcar como lido">
+                                <Tooltip title={texts.notificacao.marcarComoLido}>
                                   <MarkEmailReadOutlinedIcon
                                     onClick={() => onReadOrUnreadClick(index)}
                                     className="cursor-pointer"
@@ -392,7 +396,7 @@ const Notificacao = () => {
                                 </Tooltip>
                               )}
                               <Tooltip
-                                title="Deletar"
+                                title={texts.notificacao.deletar}
                                 className="cursor-pointer ml-4"
                               >
                                 <DeleteOutlineOutlinedIcon
@@ -426,7 +430,7 @@ const Notificacao = () => {
           ) : (
             <Box className="flex justify-center items-center h-32">
               <Typography fontSize={FontConfig.big}>
-                Não há nenhuma notificação
+                {texts.notificacao.naoHaNotificacoes}
               </Typography>
             </Box>
           )}

@@ -6,8 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/DetalhesProposta/DetalhesProposta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/DetalhesProposta/DetalhesProposta.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/PropostaDeAta/PropostaDeAta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/PropostaDeAta/PropostaDeAta.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/ResponsavelNegocio/ResponsavelNegocio.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/ResponsavelNegocio/ResponsavelNegocio.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/TextEditor/TextEditor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/TextEditor/TextEditor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/User-Modal/UserModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/User-Modal/UserModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesPauta/DetalhesPauta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesPauta/DetalhesPauta.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Escopos/Escopos.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Escopos/Escopos.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Home/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/HomeGerencia/HomeGerencia.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/HomeGerencia/HomeGerencia.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/NotFound/NotFound.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/NotFound/NotFound.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Notificacao/Notificacao.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Notificacao/Notificacao.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguageContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguageContext.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +51,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../API-Livraria" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/demo" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -102,5 +116,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

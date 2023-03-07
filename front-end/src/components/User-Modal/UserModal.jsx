@@ -328,15 +328,15 @@ const UserModal = (props) => {
   // Mudar o value para texto
   function valuetext(value) {
     if (value === 0) {
-      return "Normal";
+      return texts.userModal.normal;
     } else if (value === -1) {
-      return "Pequeno";
+      return texts.userModal.pequeno;
     } else if (value === -2) {
-      return "Muito Pequeno";
+      return texts.userModal.muitoPequeno;
     } else if (value === 1) {
-      return "Grande";
+      return texts.userModal.grande;
     } else if (value === 2) {
-      return "Muito Grande";
+      return texts.userModal.muitoGrande;
     }
   }
 
@@ -465,7 +465,7 @@ const UserModal = (props) => {
   return (
     <>
       {/* Botão para abrir o menu */}
-      <Tooltip title="Configurações">
+      <Tooltip title={texts.userModal.configuracoes}>
         <IconButton
           onClick={handleClick}
           size="small"
@@ -528,7 +528,7 @@ const UserModal = (props) => {
               fontSize={FontConfig.medium}
               sx={{ fontWeight: 500 }}
             >
-              Escopos
+              {texts.userModal.escopos}
             </Typography>
           </MenuItem>
 
@@ -554,7 +554,7 @@ const UserModal = (props) => {
               fontSize={FontConfig.medium}
               sx={{ fontWeight: 500 }}
             >
-              Chats
+              {texts.userModal.chats}
             </Typography>
           </MenuItem>
 
@@ -565,13 +565,13 @@ const UserModal = (props) => {
               sx={{ width: "85%" }}
             >
               {/* Letra A pequena, para diminuir a fonto */}
-              <Tooltip title="Diminuir fonte">
+              <Tooltip title={texts.userModal.diminuirFonte}>
                 <IconButton onClick={diminuirValue} size="small">
                   <Typography
                     fontSize={FontConfig.default}
                     sx={{ cursor: "pointer" }}
                   >
-                    A
+                    {texts.userModal.A}
                   </Typography>
                 </IconButton>
               </Tooltip>
@@ -591,13 +591,13 @@ const UserModal = (props) => {
                 />
               </Box>
               {/* Letra A grande, para aumentar a fonte */}
-              <Tooltip title="Aumentar fonte">
+              <Tooltip title={texts.userModal.aumentarFonte}>
                 <IconButton onClick={aumentarValue} size="small">
                   <Typography
                     fontSize={FontConfig.veryBig}
                     sx={{ cursor: "pointer" }}
                   >
-                    A
+                    {texts.userModal.A}
                   </Typography>
                 </IconButton>
               </Tooltip>
@@ -605,7 +605,7 @@ const UserModal = (props) => {
           </Box>
 
           <Box className="w-full flex gap-2 px-4 items-center justify-center ml-4">
-            <Tooltip title="Modo Claro/Escuro">
+            <Tooltip title={texts.userModal.modoClaroEscuro}>
               <FormControlLabel
                 control={
                   <MaterialUISwitch
@@ -634,7 +634,7 @@ const UserModal = (props) => {
             sx={{ fontWeight: 600, mt: "-16px" }}
           >
             <Link to={"/login"} onClick={sair}>
-              Sair
+              {texts.userModal.sair}
             </Link>
           </Typography>
         </Box>

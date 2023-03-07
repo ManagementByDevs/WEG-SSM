@@ -14,6 +14,7 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
 
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
@@ -34,6 +35,9 @@ import Demanda from "../../components/Demanda/Demanda";
 
 /** Página principal do solicitante */
 const Home = () => {
+  // useContext para alterar a linguagem do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -273,7 +277,7 @@ const Home = () => {
     {
       selector: "#primeiro",
       content:
-        "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
+        texts.home.tourAjuda.barraDePesquisa,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -282,7 +286,7 @@ const Home = () => {
     {
       selector: "#segundo",
       content:
-        "Neste ícone você pode ordenar as suas demandas por título (A-Z ou Z-A), Score (Maior ao menor ou Menor ao maior) e pela data (Mais nova à mais velha ou Mais velha à Mais nova).",
+        texts.home.tourAjuda.iconeOredenar,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -290,7 +294,7 @@ const Home = () => {
     },
     {
       selector: "#terceiro",
-      content: "Neste botão você pode filtrar suas demandas por seus status.",
+      content: texts.home.tourAjuda.botaoFiltrar,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -299,7 +303,7 @@ const Home = () => {
     {
       selector: "#sexto",
       content:
-        "Nesta parte você pode trocar o modo de visualização das suas demandas. Você pode escolher entre visualizar as demandas em forma de lista ou em forma de cards.",
+        texts.home.tourAjuda.modoVisualizacao,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -307,7 +311,7 @@ const Home = () => {
     },
     {
       selector: "#quarto",
-      content: "Aqui você consegue iniciar a criação de uma nova demanda.",
+      content: texts.home.tourAjuda.criarNovaDemanda,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -316,7 +320,7 @@ const Home = () => {
     {
       selector: "#quinto",
       content:
-        "Nesta área você consegue observar suas demandas. Você pode clicar em uma demanda para ver mais detalhes.",
+        texts.home.tourAjuda.areaDemanda,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -324,7 +328,7 @@ const Home = () => {
     },
     {
       selector: "#oitavo",
-      content: "Nesta área você consegue visualizar o status atual da demanda.",
+      content: texts.tourAjuda.statusDemanda,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -333,7 +337,7 @@ const Home = () => {
     {
       selector: "#setimo",
       content:
-        "Aqui consegue observar o motivo pelo qual foi recusado ou o motivo da edição.",
+        texts.home.tourAjuda.botaoMotivo,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -401,7 +405,7 @@ const Home = () => {
             setFeedbackDemandaCriada(false);
           }}
           status={"sucesso"}
-          mensagem={"Demanda criada com sucesso!"}
+          mensagem={texts.home.demandaCriadaComSucesso}
         />
 
         {/* Div container para o conteúdo da home */}
@@ -418,19 +422,19 @@ const Home = () => {
               >
                 <Tab
                   sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Minhas Demandas"
+                  label={texts.home.minhasDemandas}
                   value="1"
                 />
                 <Tab
                   sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label="Meu Departamento"
+                  label={texts.home.meuDepartamento}
                   value="2"
                 />
               </TabList>
 
               <Box className="absolute right-0 top-2" id="sexto">
                 {nextModoVisualizacao == "TABLE" ? (
-                  <Tooltip title="Visualização em tabela">
+                  <Tooltip title={texts.home.visualizacaoEmTabela}>
                     <IconButton
                       onClick={() => {
                         setNextModoVisualizacao("GRID");
@@ -440,7 +444,7 @@ const Home = () => {
                     </IconButton>
                   </Tooltip>
                 ) : (
-                  <Tooltip title="Visualização em bloco">
+                  <Tooltip title={texts.home.visualizacaoEmBloco}>
                     <IconButton
                       onClick={() => {
                         setNextModoVisualizacao("TABLE");
@@ -474,7 +478,7 @@ const Home = () => {
                       fontSize: FontConfig.medium,
                     }}
                     contentEditable
-                    placeholder="Pesquisar por título..."
+                    placeholder={texts.home.pesquisarPorTitulo}
                     onKeyDown={(e) => {
                       eventoTeclado(e);
                     }}
@@ -489,7 +493,7 @@ const Home = () => {
                   {/* Container para os ícones */}
                   <Box className="flex gap-2">
                     {/* Ícone de pesquisa */}
-                    <Tooltip title="Pesquisar">
+                    <Tooltip title={texts.home.pesquisar}>
                       <SearchOutlinedIcon
                         onClick={pesquisaTitulo}
                         className="hover:cursor-pointer"
@@ -498,7 +502,7 @@ const Home = () => {
                     </Tooltip>
 
                     {/* Ícone de ordenação */}
-                    <Tooltip title="Ordenação">
+                    <Tooltip title={texts.home.ordenacao}>
                       <SwapVertIcon
                         id="segundo"
                         onClick={abrirModalOrdenacao}
@@ -536,7 +540,7 @@ const Home = () => {
                       variant="contained"
                       disableElevation
                     >
-                      Filtrar <FilterAltOutlinedIcon />
+                      {texts.home.filtrar} <FilterAltOutlinedIcon />
                     </Button>
                   )}
                 </Box>
@@ -567,7 +571,7 @@ const Home = () => {
                   navigate("/criar-demanda");
                 }}
               >
-                Criar demanda
+                {texts.home.criarDemanda}
                 <AddIcon />
               </Button>
             </Box>
@@ -582,13 +586,13 @@ const Home = () => {
                     <Demanda
                       demanda={{
                         id: 0,
-                        titulo: "Demanda Tour",
-                        problema: "esse é um exemplo de demanda",
-                        proposta: "esse é um exemplo de demanda",
-                        motivoRecusa: "É apenas um exemplo!",
+                        titulo: texts.home.demandaTour,
+                        problema: texts.home.esseUmExemploDeDemanda,
+                        proposta: texts.home.esseUmExemploDeDemanda,
+                        motivoRecusa: texts.home.esseUmExemploDeDemanda,
                         status: "BACKLOG_EDICAO",
                         data: "10/10/10",
-                        solicitante: { id: 1, nome: "Nome do solicitante" },
+                        solicitante: { id: 1, nome: texts.home.nomeDoSolicitante },
                       }}
                     />
                   ) : (
