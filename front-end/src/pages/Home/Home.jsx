@@ -24,7 +24,6 @@ import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/De
 import Ajuda from "../../components/Ajuda/Ajuda";
 import Demanda from "../../components/Demanda/Demanda";
 
-import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 

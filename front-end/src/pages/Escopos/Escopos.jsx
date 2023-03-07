@@ -15,7 +15,6 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 
 import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
-import { useNavigate } from "react-router-dom";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
