@@ -1,25 +1,15 @@
-import {
-  Button,
-  Paper,
-  TextField,
-  InputAdornment,
-  FormControlLabel,
-  Checkbox,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { Button, Paper, TextField, InputAdornment, FormControlLabel, Checkbox, Typography, IconButton } from "@mui/material";
 import { React, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
+import Feedback from "../../components/Feedback/Feedback";
 
 import LogoWeg from "../../assets/logo-weg.png";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import UsuarioService from "../../service/usuarioService";
-import Feedback from "../../components/Feedback/Feedback";
-
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 

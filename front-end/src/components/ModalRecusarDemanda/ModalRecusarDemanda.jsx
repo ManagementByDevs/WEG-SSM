@@ -15,25 +15,6 @@ const ModalRecusarDemanda = (props) => {
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 
-    // Variável de estilo para o modal
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 480,
-        height: 350,
-        bgcolor: 'background.paper',
-        borderRadius: '5px',
-        borderTop: '10px solid #00579D',
-        boxShadow: 24,
-        p: 4,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'column',
-    };
-
     // props para abrir o modal através de outra tela
     let open = false;
     open = props.open;
@@ -65,7 +46,7 @@ const ModalRecusarDemanda = (props) => {
 
                     {/* Textarea para escrita do motivo da recusa */}
                     <TextareaAutosize
-                        style={{ width: "90%", height: "70%", resize: "none" }}
+                        style={{ width: "90%", height: "70%", resize: "none", overflow: "auto", marginTop: "4%" }}
                         value={props.motivo}
                         fontSize={FontConfig.medium}
                         onChange={(e) => { alterarTexto(e, "problema") }}
@@ -78,6 +59,7 @@ const ModalRecusarDemanda = (props) => {
                                 backgroundColor: "primary.main",
                                 color: "text.white",
                                 fontSize: FontConfig.default,
+                                marginTop: "2%",
                             }}
                             variant="contained"
                             onClick={props.confirmRecusarDemanda}
