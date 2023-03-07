@@ -647,6 +647,8 @@ const TextLanguage = (linguagem) => {
             naoPublicada: "Não publicada",
             novaPauta: "Nova Pauta",
             adicionar: "Adicionar",
+            numSequencial: "Nº Sequencial",
+            essaPropostaJaSeEncontraEmUmaPauta: "Essa proposta já se encontra em uma pauta!",
         }
 
     } : linguagem == "en" ? {

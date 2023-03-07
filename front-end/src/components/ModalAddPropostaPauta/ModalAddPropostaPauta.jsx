@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import {
   Modal,
   Fade,
@@ -17,6 +19,8 @@ import {
   TextField,
 } from "@mui/material";
 
+import { red } from "@mui/material/colors";
+
 import CloseIcon from "@mui/icons-material/Close";
 import ContainerPauta from "../ContainerPauta/ContainerPauta";
 
@@ -24,6 +28,7 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import TemaContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
+import PropostaService from "../../service/propostaService";
 
 const ModalAddPropostaPauta = (props) => {
   // Context para alterar o tamanho da fonte
@@ -34,6 +39,8 @@ const ModalAddPropostaPauta = (props) => {
 
   // Contexet para verificar o tema atual
   const { mode } = useContext(TemaContext);
+
+  const navigate = useNavigate();
 
   // variáveis de estilo para os itens do componente
   const cssModal = {
@@ -87,7 +94,7 @@ const ModalAddPropostaPauta = (props) => {
 
   const containerGeral = {
     width: "90%",
-    height: "5.5rem",
+    height: "6rem",
     border: "1px solid",
     borderLeft: "solid 6px",
     borderColor: "primary.main",
@@ -110,18 +117,12 @@ const ModalAddPropostaPauta = (props) => {
 
   const parteBaixo = {
     display: "flex",
-    justifyContent: "flex-end",
     alignItems: "flex-end",
     width: "100%",
     marginTop: "2%",
   };
 
-  const selectComissao = {
-    width: "10rem",
-  };
-
   const data = {
-    width: "10rem",
     border: "solid 1px",
     color: "grey",
     textAlign: "center",
@@ -242,21 +243,22 @@ const ModalAddPropostaPauta = (props) => {
   // UseState para habilitar ou desabilitar o botão de adicionar a nova pauta
   const [botaoNovaPauta, setBotaoNovaPauta] = useState(false);
 
+  // UseState para armazenar o número sequencial da pauta
+  const [numSequencial, setNumSequencial] = useState("");
+
   // UseState para armazenar a lista de pautas
   const [listaPautas, setListaPautas] = useState([
     {
       id: 0,
       numeroSequencial: 0,
-      inicioDataReuniao: "",
-      fimDataReuniao: "",
+      dataReuniao: "",
       comissao: "",
       propostas: [propostaExample],
     },
   ]);
 
-  // UseStates para armazenarem as datas da reunião
-  const [inputDataInicioReuniao, setInputDataInicioReuniao] = useState("");
-  const [inputDataFimReuniao, setInputDataFimReuniao] = useState("");
+  // UseState para armazenar a data da reunião
+  const [inputDataReuniao, setInputDataReuniao] = useState("");
 
   // UseState para armazenar a comissão
   const [comissao, setComissao] = useState("");
@@ -305,22 +307,52 @@ const ModalAddPropostaPauta = (props) => {
         console.log("preencha todos os campos para performar essa ação");
         return;
       }
-      pauta = {};
+
+      pauta = PautaService.createPautaObjectWithPropostas(
+        numSequencial,
+        inputDataReuniao,
+        comissao,
+        [props.proposta]
+      );
+      PautaService.post(pauta).then((res) => {
+        PropostaService.putWithoutArquivos(
+          { ...props.proposta, publicada: check[0] },
+          props.proposta.id
+        ).then((res) => {
+          console.log("Pauta criada com sucesso! res: ", res);
+        });
+      });
     } else {
+      if (!check.includes(true)) {
+        console.log("preencha todos os campos para performar essa ação");
+        return;
+      }
+
       pauta = listaPautas[indexPautaSelecionada];
       pauta.propostas.push(props.proposta);
       PautaService.put(pauta).then((res) => {
+        PropostaService.putWithoutArquivos(
+          { ...props.proposta, publicada: check[0] },
+          props.proposta.id
+        ).then((res) => {
+          console.log("Pauta atualizada com sucesso! res: ", res);
+        });
+
         console.log("res: ", res);
       });
     }
+
     handleClose();
+    navigate("/");
   };
 
+  // Verifica se todos os campos necessários para a criação de uma pauta estão preenchidos
   const isAllFieldsFilled = () => {
     return (
-      inputDataInicioReuniao != "" &&
-      inputDataFimReuniao != "" &&
-      comissao != ""
+      inputDataReuniao != "" &&
+      comissao != "" &&
+      check.includes(true) &&
+      numSequencial != ""
     );
   };
 
@@ -331,11 +363,27 @@ const ModalAddPropostaPauta = (props) => {
     }
   }, [indexPautaSelecionada]);
 
+  // Verifica se a proposta já se encontra em alguma pauta;
+  const isPropostaInPauta = () => {
+    let isPropostaInPauta = false;
+
+    listaPautas.forEach((pauta) => {
+      pauta.propostas.forEach((proposta) => {
+        if (proposta.id == props.proposta.id) {
+          isPropostaInPauta = true;
+        }
+      });
+    });
+
+    return isPropostaInPauta;
+  };
+
   return (
     <Modal open={open} onClose={handleClose} closeAfterTransition>
       <Fade in={open}>
         {/* Início conteúdo modal */}
         <Box sx={cssModal}>
+          {/* Título do modal */}
           <Typography
             fontWeight={650}
             fontSize={FontConfig.smallTitle}
@@ -343,6 +391,21 @@ const ModalAddPropostaPauta = (props) => {
           >
             {texts.modalAddPropostaPauta.selecioneAPauta}
           </Typography>
+          {isPropostaInPauta() && (
+            <Paper
+              className="px-2 py-1 mb-3"
+              sx={{ backgroundColor: red[200] }}
+              elevation={0}
+            >
+              <Typography
+                fontWeight="bold"
+                fontSize={FontConfig.default}
+                color="#000000"
+              >
+                {texts.modalAddPropostaPauta.essaPropostaJaSeEncontraEmUmaPauta}
+              </Typography>
+            </Paper>
+          )}
           <CloseIcon
             onClick={handleClose}
             sx={{
@@ -376,16 +439,29 @@ const ModalAddPropostaPauta = (props) => {
                 }}
                 onClick={selecionarNovaPauta}
               >
-                {/* falta 1 data */}
-                <Box sx={parteCima}>
+                <Box sx={{ ...parteCima, colorScheme: mode }}>
                   <Typography fontSize={FontConfig.medium}>
                     {texts.modalAddPropostaPauta.propostas}:
                   </Typography>
-                  <input style={data} type="date" />
+                  <input
+                    style={data}
+                    value={inputDataReuniao}
+                    onChange={(e) => setInputDataReuniao(e.target.value)}
+                    type="datetime-local"
+                  />
                 </Box>
 
-                <Box sx={parteBaixo}>
-                  <FormControl sx={selectComissao} size="small">
+                <Box className="gap-4 justify-between" sx={parteBaixo}>
+                  <Box className="w-1/2">
+                    <TextField
+                      value={numSequencial}
+                      onChange={(e) => setNumSequencial(e.target.value)}
+                      fullWidth
+                      placeholder={texts.modalAddPropostaPauta.numSequencial}
+                      variant="standard"
+                    />
+                  </Box>
+                  <FormControl size="small">
                     <Select
                       value={comissao}
                       onChange={handleChange}

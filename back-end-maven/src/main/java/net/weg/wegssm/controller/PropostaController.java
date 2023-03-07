@@ -1,12 +1,16 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
+import net.weg.wegssm.dto.PautaDTO;
+import net.weg.wegssm.dto.PropostaDTO;
+import net.weg.wegssm.dto.PropostaJaCriadaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
 import net.weg.wegssm.util.DepartamentoUtil;
 import net.weg.wegssm.util.ForumUtil;
 import net.weg.wegssm.util.PropostaUtil;
 import net.weg.wegssm.util.UsuarioUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,6 +26,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -4035,6 +4040,26 @@ public class PropostaController {
         proposta.setAnexo(listaAnexos);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
+    }
+
+    /**
+     * Método PUT para atualizar uma proposta no banco de dados, através de um id, recebendo a propostaDTO como JSON
+     * @param id
+     * @param propostaJaCriadaDTO
+     * @return
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody PropostaJaCriadaDTO propostaJaCriadaDTO) {
+        Optional<Proposta> propostaOptional = propostaService.findById(id);
+
+        if (propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar uma proposta com este id.");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        BeanUtils.copyProperties(propostaJaCriadaDTO, proposta, "id");
+
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
     /**

@@ -152,7 +152,6 @@ public class PautaController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody PautaDTO pautaDto) {
-        System.out.println("pauta dto\n\n\n\n\n\n" + pautaDto.toString());
         Optional<Pauta> pautaOptinal = pautaService.findById(id);
 
         if (pautaOptinal.isEmpty()) {

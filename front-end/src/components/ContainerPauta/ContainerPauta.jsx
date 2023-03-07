@@ -95,8 +95,6 @@ const ContainerPauta = (props) => {
     }
   };
 
-  console.log(props.pauta);
-
   return (
     <Paper
       sx={{
@@ -111,7 +109,7 @@ const ContainerPauta = (props) => {
         </Typography>
         <Typography fontSize={FontConfig.medium}>
           {props.pauta.numeroSequencial} -&nbsp;
-          {getFormattedDate(props.pauta.inicioDataReuniao)}
+          {getFormattedDate(props.pauta.dataReuniao)}
         </Typography>
       </Box>
 

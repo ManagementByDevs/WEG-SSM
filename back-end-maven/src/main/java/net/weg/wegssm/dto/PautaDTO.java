@@ -13,9 +13,8 @@ import java.util.List;
 @Data
 public class PautaDTO {
 
-    private Long numeroSequencial;
-    private Date inicioDataReuniao;
-    private Date fimDataReuniao;
+    private String numeroSequencial;
+    private Date dataReuniao;
     private String comissao;
     private List<Proposta> propostas;
 
