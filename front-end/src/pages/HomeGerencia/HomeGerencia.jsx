@@ -12,10 +12,6 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
-import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
-
-import FontContext from "../../service/FontContext";
-
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
@@ -23,7 +19,8 @@ import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaModoVisualizacao/DemandaGerenciaModoVisualizacao";
 import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/PautaAtaModoVisualizacao";
-
+import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
+import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ChatMinimizado from "../../components/ChatMinimizado/ChatMinimizado";
 
 import UsuarioService from "../../service/usuarioService";
@@ -32,21 +29,21 @@ import ForumService from "../../service/forumService";
 import DepartamentoService from "../../service/departamentoService";
 import PropostaService from "../../service/propostaService";
 import ExportExcelService from "../../service/exportExcelService";
-
+import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-
 import ColorModeContext from "../../service/TemaContext";
+
 import Tour from "reactour";
-import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 
 const HomeGerencia = () => {
+  //UseState utilizado para controlar o tour, se ele está aberto ou fechado
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
-    useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
   const [isTourPautasOpen, setIsTourPautasOpen] = useState(false);
   const [isTourAtasOpen, setIsTourAtasOpen] = useState(false);
 
+  //JSONs que contém as informações do tour
   const stepsDemandas = [
     {
       selector: "#primeiroDemandas",
@@ -126,6 +123,7 @@ const HomeGerencia = () => {
       },
     },
   ];
+
   const stepsCriarPropostas = [
     {
       selector: "#primeiroCriarPropostas",
@@ -153,6 +151,7 @@ const HomeGerencia = () => {
       },
     },
   ];
+
   const stepsPropostas = [
     {
       selector: "#primeiroPropostas",
@@ -182,6 +181,7 @@ const HomeGerencia = () => {
       },
     },
   ];
+
   const stepsPautas = [
     {
       selector: "#primeiroPautas",
@@ -201,6 +201,7 @@ const HomeGerencia = () => {
       },
     },
   ];
+
   const stepsAtas = [
     {
       selector: "#primeiroAtas",

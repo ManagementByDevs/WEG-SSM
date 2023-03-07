@@ -44,9 +44,6 @@ public class Proposta {
     @Column
     private Boolean publicada;
 
-    @Column
-    private Boolean naoPublicada;
-
     @Column(nullable = false)
     private Status status;
 

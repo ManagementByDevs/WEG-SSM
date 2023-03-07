@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import "./FormularioBeneficiosDemanda.css";
 
 import { Box, Button, Typography } from "@mui/material";
-
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 import Beneficios from "../Beneficios/Beneficios";
@@ -13,19 +12,25 @@ import FontContext from "../../service/FontContext";
 
 /** Segunda etapa da criação de demanda, usando uma lista de benefícios dos props */
 const FormularioBeneficiosDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Lista de benefícios adicionados
+  /** Lista de benefícios adicionados */
   const [beneficios, setBeneficios] = useState([]);
 
   // UseEffect para pegar os benefícios já adicionados na demanda na troca de página
   useEffect(() => {
     setBeneficios(props.dados);
   }, []);
+
+  // UseEffect que irá atualizar a lista de benefícios a serem salvos (que não foram excluídos)
+  useEffect(() => {
+    props.setDados(beneficios?.filter((beneficio) => beneficio.visible === true));
+  }, [beneficios]);
 
   /** Adiciona um benefício na lista de benefícios, já criando ele no banco de dados para receber um id */
   function adicionarBeneficio() {
@@ -58,11 +63,6 @@ const FormularioBeneficiosDemanda = (props) => {
       })
     );
   }
-
-  // UseEffect que irá atualizar a lista de benefícios a serem salvos (que não foram excluídos)
-  useEffect(() => {
-    props.setDados(beneficios?.filter((beneficio) => beneficio.visible === true));
-  }, [beneficios]);
 
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>

@@ -1,12 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  Tooltip,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Tooltip, Divider, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import Mensagem from "../../components/Mensagem/Mensagem";
@@ -18,10 +11,9 @@ import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
-import ChatContext from "../../service/ChatContext";
-
 import { keyframes } from "@emotion/react";
 
+import ChatContext from "../../service/ChatContext";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 

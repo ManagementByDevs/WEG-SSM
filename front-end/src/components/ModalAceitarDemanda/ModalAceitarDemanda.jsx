@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Typography, MenuItem, Checkbox, Autocomplete, Box, IconButton } from "@mui/material";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
@@ -16,34 +15,46 @@ import ForumService from "../../service/forumService";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+/** Modal de aceitar demanda na revisão inicial (analista), preenchendo informações adicionais */
 const ModalAceitarDemanda = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // UseState para armazenar a lista de BUs
+  /** UseState para armazenar a lista de BUs */
   const [listaBus, setListaBus] = useState([]);
 
-  // Lista de seções de ti
+  /** Lista de seções de ti */
   const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
 
-  // UseState para armazenar a lista de fóruns
+  /** UseState para armazenar a lista de fóruns */
   const [listaForum, setListaForum] = useState([]);
 
-  // Variável para armazenar o input de arquivos
+  /** Variável de referência do input de arquivos */
   const inputFile = useRef(null);
 
-  // UseStates para armazenar o valor dos campos da demanda
+  /** Tamanho selecionado */
   const [tamanho, setTamanho] = useState("");
+
+  /** BU solicitante selecionada */
   const [buSolicitante, setBuSolicitante] = useState("");
+
+  /** Listas de BUs beneficiadas selecionadas */
   const [busBeneficiadas, setBusBeneficiadas] = useState([]);
+
+  /** Seção TI selecionada */
   const [secaoTI, setSecaoTI] = useState("");
-  const [anexos, setAnexos] = useState([]);
+
+  /** Fórum selecionado */
   const [forum, setForum] = useState("");
 
-  // UseEffect para carregar as listas de BUs e fóruns
+  /** Lista de anexos adicionados */
+  const [anexos, setAnexos] = useState([]);
+
+  // UseEffect para carregar as listas de BUs e fóruns do banco de dados para serem usadas nos selects
   useEffect(() => {
     if (listaBus.length == 0) {
       BuService.getAll().then((response) => {
@@ -58,36 +69,32 @@ const ModalAceitarDemanda = (props) => {
     }
   }, []);
 
-  // Função para selecionar um arquivo
-  const onFilesSelect = () => {
-    setAnexos([...anexos, ...inputFile.current.files]);
+  /** Função para acionar o input de arquivos ao clicar no botão de adicionar anexo */
+  const adicionarAnexo = () => {
+    inputFile.current.click();
   };
 
-  // Função para adicionar algum arquivo
-  const onAddFileButtonClick = () => {
-    inputFile.current.click();
+  /** Função para salvar um arquivo quando selecionado no input de arquivos */
+  const salvarArquivo = () => {
+    setAnexos([...anexos, ...inputFile.current.files]);
   };
 
   return (
     <Dialog
-      PaperProps={{
-        sx: { backgroundColor: "background.default", backgroundImage: "none" },
-      }}
+      PaperProps={{ sx: { backgroundColor: "background.default", backgroundImage: "none" } }}
       open={props.open}
       onClose={props.handleClose}
     >
       <DialogTitle
-        sx={{
-          color: "primary.main",
-          fontSize: FontConfig.veryBig,
-          borderColor: "primary.main",
-        }}
+        sx={{ color: "primary.main", fontSize: FontConfig.veryBig, borderColor: "primary.main", }}
         fontWeight="bold"
         className="border-t-8 border-solid text-center"
       >
         {texts.modalAceitarDemanda.informacoes}
       </DialogTitle>
       <DialogContent className="flex flex-col gap-4" sx={{ width: 500 }}>
+
+        {/* Select de tamanho */}
         <TextField
           select
           label={texts.modalAceitarDemanda.tamanho}
@@ -103,6 +110,7 @@ const ModalAceitarDemanda = (props) => {
           <MenuItem key={"Muito Grande"} value={"Muito Grande"}>{texts.modalAceitarDemanda.muitoGrande}</MenuItem>
         </TextField>
 
+        {/* Select de BU solicitante */}
         <TextField
           select
           label={texts.modalAceitarDemanda.buSolicitante}
@@ -121,13 +129,12 @@ const ModalAceitarDemanda = (props) => {
           ) : null}
         </TextField>
 
+        {/* Select de BUs beneficiadas */}
         <Autocomplete
           multiple
           options={listaBus}
           disableCloseOnSelect
-          onChange={(event, newValue) => {
-            setBusBeneficiadas(newValue);
-          }}
+          onChange={(event, newValue) => { setBusBeneficiadas(newValue); }}
           getOptionLabel={(option) => option.nome}
           renderOption={(props, option, { selected }) => (
             <li {...props}>
@@ -152,6 +159,7 @@ const ModalAceitarDemanda = (props) => {
           )}
         />
 
+        {/* Select de Seções TI */}
         <Autocomplete
           disablePortal
           options={secoesTI}
@@ -165,6 +173,7 @@ const ModalAceitarDemanda = (props) => {
           )}
         />
 
+        {/* Select de fóruns */}
         <TextField
           select
           label={texts.modalAceitarDemanda.forum}
@@ -183,15 +192,16 @@ const ModalAceitarDemanda = (props) => {
           ) : null}
         </TextField>
 
+        {/* Input de anexos */}
         <Box className="flex w-full justify-between items-center">
           <Typography sx={{ color: "text.primary", fontSize: FontConfig.big }}>
             {texts.modalAceitarDemanda.anexos}
           </Typography>
-          <IconButton onClick={onAddFileButtonClick}>
+          <IconButton onClick={adicionarAnexo}>
             <AddIcon />
           </IconButton>
           <input
-            onChange={onFilesSelect}
+            onChange={salvarArquivo}
             ref={inputFile}
             type="file"
             multiple
@@ -199,6 +209,7 @@ const ModalAceitarDemanda = (props) => {
           />
         </Box>
 
+        {/* Lista de anexos */}
         {anexos.length > 0 ? (
           <Box className="flex flex-col gap-2">
             {anexos.map((anexo, index) => (
@@ -227,20 +238,15 @@ const ModalAceitarDemanda = (props) => {
           </Typography>
         )}
       </DialogContent>
+
+      {/* Botão para confirmar aceite */}
       <DialogActions>
         <Button onClick={props.handleClose}>{texts.modalAceitarDemanda.cancelar}</Button>
         <Button
           variant="contained"
           disableElevation
           onClick={() => {
-            props.confirmAceitarDemanda({
-              tamanho,
-              buSolicitante,
-              busBeneficiadas,
-              secaoTI,
-              anexos,
-              forum
-            });
+            props.confirmAceitarDemanda({ tamanho, buSolicitante, busBeneficiadas, secaoTI, anexos, forum });
             props.handleClose();
           }}
         >

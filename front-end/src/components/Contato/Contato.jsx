@@ -28,16 +28,7 @@ const Contato = (props) => {
       id="segundo"
       onClick={props.onClick}
       className="flex justify-evenly items-center rounded-lg border delay-120 hover:scale-105 duration-300"
-      sx={{
-        width: "90%",
-        minWidth: "195px",
-        minHeight: "8%",
-        cursor: "pointer",
-        backgroundColor: corSelecionado,
-        "&:hover": {
-          backgroundColor: "chat.eu",
-        },
-      }}
+      sx={{ width: "90%", minWidth: "195px", minHeight: "8%", cursor: "pointer", backgroundColor: corSelecionado, "&:hover": { backgroundColor: "chat.eu", } }}
       title={props.usuario.demanda}
     >
       <Box className="flex justify-content items-center">

@@ -5,18 +5,19 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 const Paginacao = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Função ativada quando o tamanho da página é mudada, atualizando a variável recebida no props */
+  /** Função ativada quando o tamanho da página é mudada, atualizando a variável recebida no props */
   const mudarTamanho = (event) => {
     props.setTamanho(event.target.value);
   };
 
-  // Função ativada quando a página é mudada, atualizando a variável recebida no props */
+  /** Função ativada quando a página é mudada, atualizando a variável recebida no props */
   const mudarPagina = (event, page) => {
     props.setPaginaAtual(page - 1);
   }

@@ -22,13 +22,10 @@ public class Pauta {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private Long numeroSequencial;
+    private String numeroSequencial;
 
     @Column(nullable = false)
-    private Date inicioDataReuniao;
-
-    @Column(nullable = false)
-    private Date fimDataReuniao;
+    private Date dataReuniao;
 
     @Column(nullable = false, length = 100)
     private String comissao;

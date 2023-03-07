@@ -1,21 +1,10 @@
 import React, { useContext } from "react";
-import {
-  Modal,
-  Typography,
-  Box,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
+import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
-import UsuarioService from "../../service/usuarioService";
 
+import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
@@ -165,27 +154,11 @@ const ModalFiltroGerencia = (props) => {
       <Fade in={true}>
         <Box
           className="absolute flex justify-evenly items-center flex-col"
-          sx={{
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 580,
-            height: 400,
-            bgcolor: "background.paper",
-            borderRadius: "5px",
-            borderTop: "10px solid #00579D",
-            boxShadow: 24,
-            p: 4,
-          }}
+          sx={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 580, height: 400, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4, }}
         >
           <CloseIcon
             onClick={props.fecharModal}
-            sx={{
-              position: "absolute",
-              left: "93%",
-              top: "3%",
-              cursor: "pointer",
-            }}
+            sx={{ position: "absolute", left: "93%", top: "3%", cursor: "pointer" }}
           />
           <Typography
             fontWeight={650}

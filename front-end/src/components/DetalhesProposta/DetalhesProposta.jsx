@@ -196,7 +196,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                 {texts.detalhesProposta.buSolicitante}:&nbsp;
               </Typography>
               <Typography fontSize={FontConfig.medium}>
-                {proposta.buSolicitante.nome} - {proposta.buSolicitante.id}
+                {proposta.buSolicitante?.nome} - {proposta.buSolicitante?.id}
               </Typography>
             </Box>
 
@@ -219,7 +219,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                 </Typography>
 
                 <Typography fontSize={FontConfig.medium}>
-                  {proposta.forum.nome}
+                  {proposta.forum?.nome}
                 </Typography>
               </Box>
               {/* Tamanho */}

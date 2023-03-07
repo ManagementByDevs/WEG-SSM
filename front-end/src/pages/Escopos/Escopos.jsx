@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Tooltip } from "@mui/material";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -11,6 +11,7 @@ import Escopo from "../../components/Escopo/Escopo";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import Feedback from "../../components/Feedback/Feedback";
+import Ajuda from "../../components/Ajuda/Ajuda";
 
 import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
@@ -18,8 +19,6 @@ import { useNavigate } from "react-router-dom";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
-
-import Ajuda from "../../components/Ajuda/Ajuda";
 
 import Tour from "reactour";
 
@@ -30,20 +29,28 @@ const Escopos = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  // navigate utilizado para navegar entre as páginas
   const navigate = useNavigate();
-  const [escopos, setEscopos] = useState(null);
-  const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
 
+  // useState utilizado para armazenar os escopos
+  const [escopos, setEscopos] = useState(null);
+  // useState utilizado para abrir e fechar o modal de confirmação
+  const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
+  // useState para armazenar o escopo selecionado
   const [escopoSelecionado, setEscopoSelecionado] = useState(null);
+  // useState para armazenar o valor do input na barra de pesquisa
   const [inputPesquisa, setInputPesquisa] = useState("");
+  // useState para aparecer o feedback de escopo deletado
   const [feedbackDeletar, setFeedbackDeletar] = useState(false);
 
+  // useEffect utilizado para buscar os escopos assim que a página é carregada
   useEffect(() => {
     if (!escopos) {
       buscarEscopos();
     }
   }, []);
 
+  // função integrada com a barra de pesquisa para buscar os escopos
   const buscarEscopos = () => {
     if (inputPesquisa == "") {
       EscopoService.buscarPorUsuario(
@@ -91,10 +98,12 @@ const Escopos = () => {
     }
   };
 
+  // Função para salvar o valor do input de pesquisa no estado
   const salvarPesquisa = (e) => {
     setInputPesquisa(e.target.value);
   };
 
+  // Função para calcular a porcentagem de preenchimento do escopo
   const calculaPorcentagem = (escopo) => {
     let porcentagem = 0;
     if (escopo.titulo != "" && escopo.titulo != null) {
@@ -112,10 +121,12 @@ const Escopos = () => {
     return porcentagem + "%";
   };
 
+  // Função para abrir o escopo para continuar a edição
   const openEscopo = (escopo) => {
     navigate("/editar-escopo", { state: escopo.id });
   };
 
+  // Função para deletar um escopo
   const onDeleteClickEscopo = () => {
     EscopoService.excluirEscopo(escopoSelecionado.id).then((response) => {
       buscarEscopos();
@@ -123,6 +134,7 @@ const Escopos = () => {
     setFeedbackDeletar(true);
   };
 
+  // Função que captura o click no ícone e abre o modal de confirmação de remoção do escopo
   const onTrashCanClick = (index) => {
     setOpenModalConfirmacao(true);
     setEscopoSelecionado(escopos[index]);

@@ -27,75 +27,56 @@ const BarraProgressaoDemanda = () => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Location utilizado para setar o state utilizado para verificação de lógica
+  /** Location utilizado para setar o state utilizado para verificação de lógica */
   const location = useLocation();
 
-  // Navigate utilizado para navegar para outras páginas
+  /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
-  // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
+  /** Variável utilizada para controlar a barra de progessão na criação da demanda */
   const [etapaAtiva, setEtapaAtiva] = useState(0);
 
-  // Variável utilizada para abrir o modal de feedback de dados faltantes
+  /** Variável utilizada para abrir o modal de feedback de dados faltantes */
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
 
   // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
 
-  const [escreveu, setEscreveu] = useState(false);
+  /** Variável para detectar se algum input for alterado e caso verdadeiro permitir a criação e salvamento dos escopos */
+  const [mudancasFeitas, setMudancasFeitas] = useState(false);
 
-  // Dados da página inicial da criação de demanda
+  /** Dados da página inicial da criação de demanda */
   const [paginaDados, setPaginaDados] = useState({ titulo: "", problema: "", proposta: "", frequencia: "", });
 
-  // Lista de benefícios definidos na segunda página da criação de demanda
+  /** Lista de benefícios definidos na segunda página da criação de demanda */
   const [paginaBeneficios, setPaginaBeneficios] = useState([]);
 
-  // Lista de anexos definidos na terceira página da criação de demanda
+  /** Lista de anexos definidos na terceira página da criação de demanda */
   const [paginaArquivos, setPaginaArquivos] = useState([]);
 
-  // Variável utilizada para abrir o modal de confirmação de criação de demanda
+  /** Variável utilizada para abrir o modal de confirmação de criação de demanda */
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
 
+  /** Variável com os nomes dos respectivos passos da criação da demanda, usando o contexto de tradução */
   const steps = [`${texts.barraProgressaoDemanda.steps.dados}`, `${texts.barraProgressaoDemanda.steps.beneficios}`, `${texts.barraProgressaoDemanda.steps.anexos}`];
 
   // UseEffect utilizado para criar um escopo ou receber um escopo do banco ao entrar na página
   useEffect(() => {
     if (!idEscopo) {
       if (!location.state) {
-        if (escreveu) {
+        if (mudancasFeitas) {
           idEscopo = 1;
-          EscopoService.postNew(
-            parseInt(localStorage.getItem("usuarioId"))
-          ).then((response) => {
-            idEscopo = response.id;
-            setUltimoEscopo({ id: idEscopo });
-          });
+          criarNovoEscopo();
         }
       } else {
         idEscopo = location.state;
-        EscopoService.buscarPorId(location.state).then((response) => {
-          setPaginaDados({
-            titulo: response.titulo,
-            problema: response.problema,
-            proposta: response.proposta,
-            frequencia: response.frequencia,
-          });
-          receberBeneficios(response.beneficios);
-          receberArquivos(response.anexo);
-          setUltimoEscopo({
-            id: response.id,
-            titulo: response.titulo,
-            problema: response.problema,
-            proposta: response.proposta,
-            frequencia: response.frequencia,
-            beneficios: formatarBeneficios(response.beneficios),
-          });
-        });
+        carregarEscopoExistente(idEscopo);
       }
     }
-  }, [escreveu]);
+  }, [mudancasFeitas]);
 
+  // UseEffect utilizado para atualizar a variável mudancasFeitas caso algum input seja preenchido
   useEffect(() => {
     if (
       paginaDados.frequencia !== "" ||
@@ -103,7 +84,7 @@ const BarraProgressaoDemanda = () => {
       paginaDados.problema !== "" ||
       paginaDados.titulo !== ""
     ) {
-      setEscreveu(true);
+      setMudancasFeitas(true);
     }
   }, [paginaDados]);
 
@@ -111,18 +92,45 @@ const BarraProgressaoDemanda = () => {
   useEffect(() => {
     if (ultimoEscopo) {
       setTimeout(() => {
-        if (ultimoEscopo.id) {
-          salvarEscopo(ultimoEscopo.id);
-        }
+        salvarEscopo();
       }, 5000);
     }
   }, [ultimoEscopo]);
 
-  /** Função para formatar os benefícios recebidos no banco para a lista da página de edição */
+  /** Função para criar um novo escopo ativada quando alguma alteração for feita (caso não seja um escopo já existente) */
+  const criarNovoEscopo = () => {
+    EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then((response) => {
+      idEscopo = response.id;
+      setUltimoEscopo({ id: idEscopo });
+    });
+  }
+
+  /** Função para carregar escopo recebido (quando selecionado para edição através da página de escopos)
+   * e preencher os inputs com as suas devidas informações salvas
+   */
+  const carregarEscopoExistente = (id) => {
+    EscopoService.buscarPorId(id).then((response) => {
+      setPaginaDados({ titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia });
+      receberBeneficios(response.beneficios);
+      receberArquivos(response.anexo);
+
+      setUltimoEscopo({
+        id: response.id,
+        titulo: response.titulo,
+        problema: response.problema,
+        proposta: response.proposta,
+        frequencia: response.frequencia,
+        beneficios: formatarBeneficios(response.beneficios),
+      });
+    });
+  }
+
+  /** Função para formatar os benefícios recebidos no banco para a lista da página de edição na edição de um escopo existente */
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-      let tipoNovo =
+
+      const tipoBeneficioNovo =
         beneficio.tipoBeneficio.charAt(0) +
         beneficio.tipoBeneficio
           .substring(1, beneficio.tipoBeneficio.length)
@@ -130,7 +138,7 @@ const BarraProgressaoDemanda = () => {
 
       listaNova.push({
         id: beneficio.id,
-        tipoBeneficio: tipoNovo,
+        tipoBeneficio: tipoBeneficioNovo,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -151,76 +159,6 @@ const BarraProgressaoDemanda = () => {
     setPaginaArquivos(listaArquivos);
   };
 
-  /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
-  const salvarEscopo = (id) => {
-    const escopo = {
-      id: id,
-      titulo: paginaDados.titulo,
-      problema: paginaDados.problema,
-      proposta: paginaDados.proposta,
-      frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios(paginaBeneficios),
-    }
-
-    try {
-      EscopoService.salvarDados(escopo).then((response) => {
-        setUltimoEscopo(escopo);
-        //Confirmação de salvamento (se sobrar tempo)
-      });
-    } catch (error) { }
-  };
-
-  /** Função para atualizar os anexos de um escopo quando um anexo for adicionado/removido */
-  const salvarAnexosEscopo = () => {
-    if (paginaArquivos.length > 0) {
-      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then((response) => { });
-    } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
-    }
-  };
-
-  /** Função para voltar para a etapa anterior na criação da demanda */
-  const voltarEtapa = () => {
-    setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  /** Função para ir para a próxima etapa da demanda */
-  const proximaEtapa = () => {
-    if (paginaDados.titulo !== "" && paginaDados.problema !== "" && paginaDados.proposta !== "" && paginaDados.frequencia !== "") {
-      setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
-    } else {
-      setFeedbackDadosFaltantes(true);
-    }
-  };
-
-  /** Função para abrir o modal de confirmação de criação de demanda */
-  const abrirModalConfirmacao = () => {
-    setOpenConfirmacao(true);
-  };
-
-  /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
-  const criarDemanda = () => {
-    let demandaFinal = {
-      titulo: paginaDados.titulo,
-      problema: paginaDados.problema,
-      proposta: paginaDados.proposta,
-      frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios(paginaBeneficios),
-      status: "BACKLOG_REVISAO",
-    };
-
-    DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
-      ExportPdfService.exportDemanda(e.id).then((file) => {
-
-        let arquivo = new Blob([file], { type: "application/pdf" });
-        DemandaService.addHistorico(e.id, "Demanda Criada", arquivo, parseInt(localStorage.getItem("usuarioId"))).then((response) => {
-          direcionarHome();
-          excluirEscopo();
-        })
-      });
-    });
-  }
-
   /** Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda */
   const formatarBeneficios = (listaBeneficios) => {
     let listaNova = [];
@@ -238,9 +176,75 @@ const BarraProgressaoDemanda = () => {
     return listaNova;
   };
 
+  /** Função para retornar um objeto de demanda para salvamento dela ou de um escopo */
+  const retornaObjetoDemanda = () => {
+    const objetoDemanda = {
+      titulo: paginaDados.titulo,
+      problema: paginaDados.problema,
+      proposta: paginaDados.proposta,
+      frequencia: paginaDados.frequencia,
+      beneficios: formatarBeneficios(paginaBeneficios)
+    }
+    return objetoDemanda;
+  }
+
+  /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
+  const salvarEscopo = () => {
+    let escopoFinal = retornaObjetoDemanda();
+    escopoFinal.id = ultimoEscopo.id;
+
+    try {
+      EscopoService.salvarDados(escopoFinal).then((response) => {
+        setUltimoEscopo(response);
+        //Confirmação de salvamento (se sobrar tempo)
+      });
+    } catch (error) { }
+  };
+
+  /** Função para atualizar os anexos de um escopo quando um anexo for adicionado/removido */
+  const salvarAnexosEscopo = () => {
+    if (paginaArquivos.length > 0) {
+      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then((response) => { });
+    } else {
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
+    }
+  };
+
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
     EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
+  };
+
+  /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
+  const criarDemanda = () => {
+    let demandaFinal = retornaObjetoDemanda();
+    demandaFinal.status = "BACKLOG_REVISAO";
+
+    DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
+      ExportPdfService.exportDemanda(e.id).then((file) => {
+
+        // Salvamento do histórico número 1 da demanda
+        let arquivo = new Blob([file], { type: "application/pdf" });
+        DemandaService.addHistorico(e.id, "Demanda Criada", arquivo, parseInt(localStorage.getItem("usuarioId"))).then((response) => {
+          direcionarHome();
+          excluirEscopo();
+        })
+      });
+    });
+  }
+
+  /** Função para voltar para a etapa anterior na criação da demanda */
+  const voltarEtapa = () => {
+    setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  /** Função para ir para a próxima etapa da demanda */
+  const proximaEtapa = () => {
+    if (paginaDados.titulo !== "" && paginaDados.problema !== "" && paginaDados.proposta !== "" && paginaDados.frequencia !== "") {
+      setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      setFeedbackDadosFaltantes(true);
+    }
   };
 
   /** Função para direcionar o usuário para a tela de home após terminar a criação de demanda */
@@ -263,6 +267,8 @@ const BarraProgressaoDemanda = () => {
           );
         })}
       </Stepper>
+
+      {/* Componentes / páginas respectivas da criação da demanda */}
       {etapaAtiva == 0 && (
         <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
       )}
@@ -272,8 +278,9 @@ const BarraProgressaoDemanda = () => {
       {etapaAtiva == 2 && (
         <FormularioAnexosDemanda salvarEscopo={salvarAnexosEscopo} dados={paginaArquivos} setDados={setPaginaArquivos} />
       )}
-      <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
 
+
+      <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
         {/* Botão de voltar à etapa anterior da criação */}
         <Button
           variant="outlined"
@@ -292,7 +299,7 @@ const BarraProgressaoDemanda = () => {
           <Button
             color="primary"
             variant="contained"
-            onClick={abrirModalConfirmacao}
+            onClick={() => { setOpenConfirmacao(true) }}
             disableElevation
           >
             <Typography fontSize={FontConfig.default}>{texts.barraProgressaoDemanda.botaoCriar}</Typography>

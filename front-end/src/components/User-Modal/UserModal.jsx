@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import {
-  Menu,
-  MenuItem,
-  Tooltip,
-  IconButton,
-  Avatar,
-  Typography,
-  Box,
-  FormControlLabel,
-  Switch,
-  Slider,
-} from "@mui/material/";
+import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography, Box, FormControlLabel, Switch, Slider } from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
@@ -22,9 +11,9 @@ import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlin
 import FontContext from "../../service/FontContext";
 import ColorModeContext from "../../service/TemaContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-
 import UsuarioService from "../../service/usuarioService";
 
+// Adiciona estilos personalizados para a aparência do Switch, incluindo tamanho, cores, imagens e animações
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 58,
   height: 32,

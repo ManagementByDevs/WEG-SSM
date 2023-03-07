@@ -243,13 +243,13 @@ const NadaEncontrado = () => {
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        {texts.pautaAtaModoVisualizacao.nadaEncontrado}
+        {/* {texts.pautaAtaModoVisualizacao.nadaEncontrado} */}
       </Typography>
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        {texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde}
+        {/* {texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde} */}
       </Typography>
     </Box>
   );

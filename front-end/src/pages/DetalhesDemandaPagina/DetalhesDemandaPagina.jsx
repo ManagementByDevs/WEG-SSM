@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Box, IconButton } from "@mui/material";
-
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Box, IconButton } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 
@@ -17,6 +16,7 @@ import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
 
+/** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
 const DetalhesDemandaPagina = () => {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext); 
@@ -62,6 +62,7 @@ const DetalhesDemandaPagina = () => {
   // Variável utilizada para o tour
   const [isTourOpen, setIsTourOpen] = useState(false);
 
+  // useEffect utilizado para adicionar uma mensagem ao tour caso o status da demanda seja "backlog_edicao"
   useEffect(() => {
     if (dados.status === "BACKLOG_EDICAO") {
       setSteps([
@@ -100,6 +101,7 @@ const DetalhesDemandaPagina = () => {
     },
   ]);
 
+  // Função para baixar a demanda em formato pdf 
   const baixarDemanda = () => {
     ExportPdfService.exportDemanda(dados.id).then((response) => {
       let blob = new Blob([response], { type: "application/pdf" });

@@ -1,9 +1,8 @@
 import { React, useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { keyframes } from "@emotion/react";
 
 import { Box, Typography, Button, Divider, Tooltip } from "@mui/material";
-
-import { keyframes } from "@emotion/react";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -27,23 +26,6 @@ const DetalhesAta = (props) => {
   // Navigate e location utilizados para verificar state passado por parametro para determinada verificação
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Variáveis de estilo para utilizar no componente
-  const tituloProposta = {
-    textDecoration: "underline",
-    cursor: "pointer",
-    color: "primary.main",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-    textAlign: "center",
-  };
-
-  const informacoesAta = {
-    fontWeight: "600",
-    cursor: "default",
-    marginTop: "1%",
-  };
 
   // Lista de propostas provisória apenas para visualização na tela
   const listaProposta = [
@@ -179,10 +161,12 @@ const DetalhesAta = (props) => {
     "100%": { width: "8rem", opacity: "0" },
   });
 
+  // useStates utilizados para animar os botões de navegação na ata
   const [girarIcon, setGirarIcon] = useState(false);
-
   const [aparecerSumir, setAparecerSumir] = useState(false);
+  const [display, setDisplay] = useState("hidden");
 
+  // Função para animar os botões de acordo com o click
   const animarBotoes = () => {
     if (minimizar) {
       setGirarIcon(girar);
@@ -196,8 +180,6 @@ const DetalhesAta = (props) => {
       setAparecerSumir(sumir);
     }
   };
-
-  const [display, setDisplay] = useState("hidden");
 
   return (
     // Começo com o header da página
@@ -249,19 +231,19 @@ const DetalhesAta = (props) => {
               >
                 {texts.detalhesAta.ata}
               </Typography>
-              <Typography sx={informacoesAta}>
+              <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {props.numeroSequencial} */}
                 {texts.detalhesAta.numeroSequencial}: 01/2022
               </Typography>
-              <Typography sx={informacoesAta}>
+              <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {props.data} */}
                 {texts.detalhesAta.data}: 06/12/2022
               </Typography>
-              <Typography sx={informacoesAta}>
+              <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {props.inicio} */}
                 {texts.detalhesAta.inicio}: 14:30 Horas
               </Typography>
-              <Typography sx={informacoesAta}>
+              <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {props.fim} */}
                 {texts.detalhesAta.fim}: 15:30 Horas
               </Typography>
@@ -297,7 +279,8 @@ const DetalhesAta = (props) => {
                     return (
                       <Typography
                         fontSize={FontConfig.big}
-                        sx={tituloProposta}
+                        color={"primary.main"}
+                        className="underline cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis text-center"
                         key={index}
                         setIndexTitulo={index}
                         onClick={() => onClickProposta(index)}

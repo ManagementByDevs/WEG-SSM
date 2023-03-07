@@ -1,52 +1,22 @@
-import React, { useState, useContext } from "react";
-
+import React, { useContext } from "react";
 import { Modal, Typography, Box, Button } from "@mui/material";
 
-import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
-
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+/** Modal padrão usado para confirmação de ações (ex: criação de demanda, aprovação de demanda) */
 const ModalConfirmacao = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Como chamar:
-  // <ModalConfirmacao open={boolean} setOpen={function} textoModal={"descartarRascunho"} onConfirmClick={'funcao executada ao confirmar'} onCancelClick={'funcao executada ao cancelar'} textoBotao={"sim"}/>
-
-  // Variáveis de estilo para o componente
-  const styleModal = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 450,
-    height: 300,
-    bgcolor: "background.paper",
-    borderRadius: "5px",
-    borderTop: "10px solid #00579D",
-    boxShadow: 24,
-    p: 4,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-  };
-
-  const styleBotoes = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: "6%",
-  };
-
-  // Função para retornar um tipo de mensagem no modal
+  /** Função para retornar um tipo de mensagem no modal */
   const mensagemModal = (tipoMensagem) => {
     switch (tipoMensagem) {
       case "descartarRascunho":
@@ -70,7 +40,7 @@ const ModalConfirmacao = (props) => {
     }
   };
 
-  // Função para retornar um tipo de mensagem no botão
+  /** Função para retornar um tipo de mensagem no botão */
   const mensagemBotao = (mensagemBotao) => {
     switch (mensagemBotao) {
       case "sim":
@@ -84,48 +54,39 @@ const ModalConfirmacao = (props) => {
     }
   };
 
-  // Abrir e fechar o modal
-  let open = false;
-  open = props.open;
-  const setOpen = props.setOpen;
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   return (
     <Modal
       open={props.open}
-      onClose={handleClose}
+      onClose={() => { props.setOpen(false) }}
       closeAfterTransition
     >
       <Fade in={props.open}>
-        <Box sx={styleModal}>
+        <Box className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
+          sx={{ transform: "translate(-50%, -50%)", width: 450, height: 300, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}>
           <ErrorOutlineIcon sx={{ fontSize: "100px", color: "primary.main" }} />
           <Typography fontSize={FontConfig.veryBig} sx={{ mt: 2 }}>
             {mensagemModal(props.textoModal)}
           </Typography>
-          <Box sx={styleBotoes}>
+          <Box className="flex justify-center items-center mt-5">
+
+            {/* Botão de cancelar */}
             <Button
               onClick={() => {
-                handleClose();
+                props.setOpen(false);
                 props.onCancelClick(true);
               }}
               variant="container"
               disableElevation
               color="tertiary"
-              sx={{
-                border: "solid 1px",
-                borderColor: "tertiary.main",
-                margin: "10px",
-                width: "7.5rem",
-                fontSize: FontConfig.big,
-              }}
+              sx={{ border: "solid 1px", borderColor: "tertiary.main", margin: "10px", width: "7.5rem", fontSize: FontConfig.big }}
             >
               {texts.modalConfirmacao.cancelar}
             </Button>
+
+            {/* Botão de confirmação */}
             <Button
               onClick={() => {
-                handleClose();
+                props.setOpen(false);
                 props.onConfirmClick(false);
               }}
               variant="contained"

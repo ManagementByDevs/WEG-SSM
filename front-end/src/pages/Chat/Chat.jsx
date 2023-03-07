@@ -1,17 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  Box,
-  Avatar,
-  Typography,
-  Divider,
-  Tooltip,
-  IconButton,
-  Menu,
-  MenuItem,
-  FormControlLabel,
-} from "@mui/material";
-
 import { useLocation } from "react-router-dom";
+
+import { Box, Avatar, Typography, Divider, Tooltip, IconButton, Menu, MenuItem, FormControlLabel } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
