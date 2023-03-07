@@ -36,9 +36,13 @@ import ColorModeContext from "../../service/TemaContext";
 import Tour from "reactour";
 
 const HomeGerencia = () => {
+  // Context que contém os textos do sistema
+  const { texts, setTexts } = useContext(TextLanguageContext);
+
   //UseState utilizado para controlar o tour, se ele está aberto ou fechado
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
+    useState(false);
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
   const [isTourPautasOpen, setIsTourPautasOpen] = useState(false);
   const [isTourAtasOpen, setIsTourAtasOpen] = useState(false);
@@ -63,8 +67,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#terceiroDemandas",
-      content:
-        texts.homeGerencia.toursDemandas.tour3,
+      content: texts.homeGerencia.toursDemandas.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -72,8 +75,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#quartoDemandas",
-      content:
-        texts.homeGerencia.toursDemandas.tour4,
+      content: texts.homeGerencia.toursDemandas.tour4,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -81,8 +83,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#nonoDemandas",
-      content:
-        texts.homeGerencia.toursDemandas.tour9,
+      content: texts.homeGerencia.toursDemandas.tour9,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -98,8 +99,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#sextoDemandas",
-      content:
-        texts.homeGerencia.toursDemandas.tour6,
+      content: texts.homeGerencia.toursDemandas.tour6,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -115,8 +115,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#setimoDemandas",
-      content:
-        texts.homeGerencia.toursDemandas.tour7,
+      content: texts.homeGerencia.toursDemandas.tour7,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -127,8 +126,7 @@ const HomeGerencia = () => {
   const stepsCriarPropostas = [
     {
       selector: "#primeiroCriarPropostas",
-      content:
-        texts.homeGerencia.toursCriarPropostas.tour1,
+      content: texts.homeGerencia.toursCriarPropostas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -155,8 +153,7 @@ const HomeGerencia = () => {
   const stepsPropostas = [
     {
       selector: "#primeiroPropostas",
-      content:
-        texts.homeGerencia.toursPropostas.tour1,
+      content: texts.homeGerencia.toursPropostas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -164,8 +161,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#segundoPropostas",
-      content:
-        texts.homeGerencia.toursPropostas.tour2,
+      content: texts.homeGerencia.toursPropostas.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -173,8 +169,7 @@ const HomeGerencia = () => {
     },
     {
       selector: "#setimoDemandas",
-      content:
-        texts.homeGerencia.toursPropostas.tour3,
+      content: texts.homeGerencia.toursPropostas.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -185,8 +180,7 @@ const HomeGerencia = () => {
   const stepsPautas = [
     {
       selector: "#primeiroPautas",
-      content:
-        texts.homeGerencia.toursPautas.tour1,
+      content: texts.homeGerencia.toursPautas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -205,8 +199,7 @@ const HomeGerencia = () => {
   const stepsAtas = [
     {
       selector: "#primeiroAtas",
-      content:
-        texts.homeGerencia.toursAtas.tour1,
+      content: texts.homeGerencia.toursAtas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -219,9 +212,6 @@ const HomeGerencia = () => {
 
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-
-  // Context que contém os textos do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
 
   // UseState para poder visualizar e alterar a aba selecionada
   const [value, setValue] = useState("1");
