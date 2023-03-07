@@ -91,16 +91,16 @@ const PautaTable = ({
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-2 width-75/1000">
-              <Typography fontSize={FontConfig.big}>Num. Seq.</Typography>
+              <Typography fontSize={FontConfig.big}>{texts.pautaAtaModoVisualizacao.numeroSequencial}</Typography>
             </th>
             <th className="text-left text-white p-3">
-              <Typography fontSize={FontConfig.big}>Comissão</Typography>
+              <Typography fontSize={FontConfig.big}>{texts.pautaAtaModoVisualizacao.comissao}</Typography>
             </th>
             <th className="text-left text-white p-3 width-3/10">
-              <Typography fontSize={FontConfig.big}>Anal. Resp.</Typography>
+              <Typography fontSize={FontConfig.big}>{texts.pautaAtaModoVisualizacao.analistaResponsavel}</Typography>
             </th>
             <th className="text-center text-white p-3 width-2/10">
-              <Typography fontSize={FontConfig.big}>Data</Typography>
+              <Typography fontSize={FontConfig.big}>{texts.pautaAtaModoVisualizacao.data}</Typography>
             </th>
           </TableRow>
         </TableHead>
@@ -149,7 +149,7 @@ const PautaTable = ({
                       row.fimDataReuniao
                     )}
                   </Typography>
-                  <Tooltip title="Deletar">
+                  <Tooltip title={texts.pautaAtaModoVisualizacao.deletar}>
                     <DeleteOutlineOutlinedIcon
                       className="delay-120 hover:scale-110 duration-300 tabela-linha-pauta-icon"
                       size="small"
@@ -243,13 +243,13 @@ const NadaEncontrado = () => {
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        Nada encontrado
+        {texts.pautaAtaModoVisualizacao.nadaEncontrado}
       </Typography>
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
       >
-        Tente novamente mais tarde
+        {texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde}
       </Typography>
     </Box>
   );

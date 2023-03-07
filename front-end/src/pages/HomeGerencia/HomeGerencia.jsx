@@ -724,18 +724,17 @@ const HomeGerencia = () => {
   // useState para fechar o chat minimizado
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
-  
   // Função para exportar para excel
 
   const exportarExcel = () => {
-    ExportExcelService.exportExcel().then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+    console.log(listaItens)
+    ExportExcelService.exportExcel(listaItens).then((response) => {
+      let blob = new Blob([response], { type: "application/excel" });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', 'demandas.xlsx');
-      document.body.appendChild(link);
+      link.download = "demandas.xlsx";
       link.click();
-      
     });
   }
 
