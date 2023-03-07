@@ -254,8 +254,9 @@ const ModalAddPropostaPauta = (props) => {
     },
   ]);
 
-  // UseState para armazenar a data
-  const [inputData, setInputData] = useState("");
+  // UseStates para armazenarem as datas da reunião
+  const [inputDataInicioReuniao, setInputDataInicioReuniao] = useState("");
+  const [inputDataFimReuniao, setInputDataFimReuniao] = useState("");
 
   // UseState para armazenar a comissão
   const [comissao, setComissao] = useState("");
@@ -316,7 +317,11 @@ const ModalAddPropostaPauta = (props) => {
   };
 
   const isAllFieldsFilled = () => {
-    return inputData != "" && comissao != "";
+    return (
+      inputDataInicioReuniao != "" &&
+      inputDataFimReuniao != "" &&
+      comissao != ""
+    );
   };
 
   // UseEffect para deselecionar a nova pauta quando selecionar outra pauta
@@ -371,6 +376,7 @@ const ModalAddPropostaPauta = (props) => {
                 }}
                 onClick={selecionarNovaPauta}
               >
+                {/* falta 1 data */}
                 <Box sx={parteCima}>
                   <Typography fontSize={FontConfig.medium}>
                     {texts.modalAddPropostaPauta.propostas}:
