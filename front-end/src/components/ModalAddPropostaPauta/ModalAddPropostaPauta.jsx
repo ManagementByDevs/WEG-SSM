@@ -299,6 +299,11 @@ const ModalAddPropostaPauta = (props) => {
     }
   };
 
+  // Função para retornar o id do analista que será responsável pela pauta (usuário logado)
+  const getIdAnalistaResponsavel = () => {
+    return JSON.parse(localStorage.getItem("user")).id;
+  }
+
   // Função para adicionar a proposta na pauta selecionada
   const addPropostaInPauta = () => {
     let pauta;
@@ -312,9 +317,12 @@ const ModalAddPropostaPauta = (props) => {
         numSequencial,
         inputDataReuniao,
         comissao,
+        getIdAnalistaResponsavel(),
         [props.proposta]
       );
+      
       PautaService.post(pauta).then((res) => {
+        console.log("rse: ", res)
         PropostaService.putWithoutArquivos(
           { ...props.proposta, publicada: check[0] },
           props.proposta.id

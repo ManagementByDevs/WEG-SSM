@@ -65,7 +65,7 @@ const Pautas = (props) => {
             fontWeight="600"
             sx={{ color: "text.secondary" }}
           >
-            {getDataFormatada(props.dados.inicioDataReuniao)}
+            {getDataFormatada(props.dados.dataReuniao)}
           </Typography>
           {props.tipo === "ata" && (
             <Typography
@@ -84,6 +84,7 @@ const Pautas = (props) => {
               <Tooltip title={texts.pauta.deletar}>
                 <IconButton
                   onClick={(e) => {
+                    props.setPautaSelecionada(props.dados);
                     e.stopPropagation();
                   }}
                 >
@@ -125,7 +126,7 @@ const Pautas = (props) => {
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
         >
-          {props.dados.analista.nome}
+          {props.dados.analistaResponsavel?.nome}
         </Typography>
       </Box>
     </Paper>

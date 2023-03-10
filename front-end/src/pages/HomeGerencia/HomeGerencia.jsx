@@ -21,7 +21,7 @@ import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaMod
 import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/PautaAtaModoVisualizacao";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
-import ChatMinimizado from "../../components/ChatMinimizado/ChatMinimizado";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -32,6 +32,7 @@ import ExportExcelService from "../../service/exportExcelService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import ColorModeContext from "../../service/TemaContext";
+import PautaService from "../../service/pautaService";
 
 import Tour from "reactour";
 
@@ -281,6 +282,16 @@ const HomeGerencia = () => {
     id: null,
   });
 
+  // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
+  const [paramsPautas, setParamsPautas] = useState({
+    titulo: null,
+  });
+
+  // UsaState que controla a visibilidade do modal de confirmação para exclusão de uma pauta
+  const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
+
+  const [pautaSelecionada, setPautaSelecionada] = useState();
+
   // Mostra o próximo modo de visualização
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
@@ -424,10 +435,11 @@ const HomeGerencia = () => {
         setModoFiltro("proposta");
         break;
       case "4":
-        setModoFiltro("proposta");
+        setParamsPautas({ ...paramsPautas });
+        // setModoFiltro("proposta");
         break;
       case "5":
-        setModoFiltro("proposta");
+        // setModoFiltro("proposta");
         break;
     }
   }, [value]);
@@ -448,7 +460,7 @@ const HomeGerencia = () => {
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
   useEffect(() => {
     buscarItens();
-  }, [params, paginaAtual, tamanhoPagina]);
+  }, [params, paginaAtual, tamanhoPagina, paramsPautas]);
 
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
   useEffect(() => {
@@ -552,6 +564,14 @@ const HomeGerencia = () => {
         }
         break;
       case "4":
+        PautaService.getPage(
+          paramsPautas,
+          ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+        ).then((response) => {
+          console.log("Pautas: ", response.content);
+          setPautas([...response.content]);
+          setTotalPaginas(response.totalPages);
+        });
         break;
       case "5":
         break;
@@ -564,8 +584,7 @@ const HomeGerencia = () => {
       numeroSequencial: "1/2022",
       comissao: "Comissão 1",
       analista: { nome: "Kenzo Sato" },
-      inicioDataReuniao: "2022-12-15 19:23:57.443000",
-      fimDataReuniao: "2023-02-07 19:06:26.511000",
+      dataReuniao: "2022-12-15 19:23:57.443000",
       propostas: [{}],
     },
     {
@@ -573,8 +592,7 @@ const HomeGerencia = () => {
       numeroSequencial: "2/2022",
       comissao: "Comissão 2",
       analista: { nome: "Kenzo Sato" },
-      inicioDataReuniao: "2022-12-15 19:23:57.443000",
-      fimDataReuniao: "2023-02-07 19:06:26.511000",
+      dataReuniao: "2022-12-15 19:23:57.443000",
       propostas: [{}],
     },
     {
@@ -582,8 +600,7 @@ const HomeGerencia = () => {
       numeroSequencial: "1/2022",
       comissao: "Comissão 3",
       analista: { nome: "Kenzo Sato" },
-      inicioDataReuniao: "2022-12-15 19:23:57.443000",
-      fimDataReuniao: "2023-02-07 19:06:26.511000",
+      dataReuniao: "2022-12-15 19:23:57.443000",
       propostas: [{}],
     },
     {
@@ -591,8 +608,7 @@ const HomeGerencia = () => {
       numeroSequencial: "4/2022",
       comissao: "Comissão 1",
       analista: { nome: "Kenzo Sato" },
-      inicioDataReuniao: "2022-12-15 19:23:57.443000",
-      fimDataReuniao: "2023-02-07 19:06:26.511000",
+      dataReuniao: "2022-12-15 19:23:57.443000",
       propostas: [{}],
     },
   ]);
@@ -741,7 +757,6 @@ const HomeGerencia = () => {
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
   // Função para exportar para excel
-
   const exportarExcel = () => {
     console.log(listaItens);
     ExportExcelService.exportExcel(listaItens).then((response) => {
@@ -753,6 +768,26 @@ const HomeGerencia = () => {
       link.click();
     });
   };
+
+  // Função que deleta uma pauta
+  const deletePauta = () => {
+    PautaService.delete(pautaSelecionada.id).then((res) => {
+      console.log("Pauta deletada com sucesso! ", res);
+      setPautaSelecionada(null);
+      buscarItens();
+    });
+  };
+
+  // Função acionada quando o usuário cancela a deleção de uma pauta
+  const handleOnCancelClickDeletePauta = () => {
+    setPautaSelecionada(null);
+  };
+
+  useEffect(() => {
+    if (pautaSelecionada) {
+      setOpenModalConfirmacao(true);
+    }
+  }, [pautaSelecionada]);
 
   // ********************************************** Preferências **********************************************
   /**
@@ -837,6 +872,17 @@ const HomeGerencia = () => {
         accentColor="#00579D"
         rounded={10}
         showCloseButton={false}
+      />
+
+      <ModalConfirmacao
+        open={openModalConfirmacao}
+        setOpen={setOpenModalConfirmacao}
+        textoModal={"confirmarExclusao"}
+        textoBotao={"sim"}
+        onConfirmClick={deletePauta}
+        onCancelClick={() => {
+          handleOnCancelClickDeletePauta();
+        }}
       />
       {/* Div container */}
 
@@ -1211,6 +1257,7 @@ const HomeGerencia = () => {
                         navigate("/detalhes-pauta");
                       }}
                       nextModoVisualizacao={nextModoVisualizacao}
+                      setPautaSelecionada={setPautaSelecionada}
                     />
                   </TabPanel>
                   <TabPanel sx={{ padding: 0 }} value="5">
@@ -1221,6 +1268,7 @@ const HomeGerencia = () => {
                         navigate("/detalhes-pauta");
                       }}
                       nextModoVisualizacao={nextModoVisualizacao}
+                      setPautaSelecionada={setPautaSelecionada}
                       isAta={true}
                     />
                   </TabPanel>

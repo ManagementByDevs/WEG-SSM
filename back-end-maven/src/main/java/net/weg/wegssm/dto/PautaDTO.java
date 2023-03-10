@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import net.weg.wegssm.model.entities.Proposta;
+import net.weg.wegssm.model.entities.Usuario;
 
 import javax.persistence.Column;
 import java.util.Date;
@@ -16,6 +17,7 @@ public class PautaDTO {
     private String numeroSequencial;
     private Date dataReuniao;
     private String comissao;
+    private Usuario analistaResponsavel;
     private List<Proposta> propostas;
 
 }

@@ -326,7 +326,7 @@ const Home = () => {
     },
     {
       selector: "#oitavo",
-      content: texts.tourAjuda.statusDemanda,
+      content: texts.home.tourAjuda.statusDemanda,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",

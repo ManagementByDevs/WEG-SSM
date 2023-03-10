@@ -7,6 +7,10 @@ class PautaService {
     return (await axios.get(pautaPath)).data;
   }
 
+  async getPage(params, page) {
+    return (await axios.get(pautaPath + `/page?${page}`, { params })).data;
+  }
+
   async put(pauta) {
     return (
       await axios.put(pautaPath + `/${pauta.id}`, JSON.stringify(pauta), {
@@ -27,21 +31,33 @@ class PautaService {
     ).data;
   }
 
+  async delete(id) {
+    return (await axios.delete(pautaPath + `/${id}`)).data;
+  }
+
   /**
    * Retorna um objeto pauta com uma proposta
    * @param {*} numeroSequencial
    * @param {*} dataReuniao
    * @param {*} comissao
-   * @param {*} proposta
+   * @param {*} analistaResponsavel
+   * @param {*} propostas
    * @returns
    */
   createPautaObjectWithPropostas(
     numeroSequencial,
     dataReuniao,
     comissao,
+    idAnalistaResponsavel,
     propostas
   ) {
-    return { numeroSequencial, dataReuniao, comissao, propostas };
+    return {
+      numeroSequencial,
+      dataReuniao,
+      comissao,
+      analistaResponsavel: { id: idAnalistaResponsavel },
+      propostas,
+    };
   }
 }
 

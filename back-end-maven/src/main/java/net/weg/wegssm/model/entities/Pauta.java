@@ -30,6 +30,10 @@ public class Pauta {
     @Column(nullable = false, length = 100)
     private String comissao;
 
+    @ManyToOne
+    @JoinColumn(name = "analista_id")
+    private Usuario analistaResponsavel;
+
     @OneToMany
     @JoinColumn(name = "pauta_id")
     private List<Proposta> propostas;
