@@ -4,11 +4,11 @@ import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.DemandaDTO;
+import net.weg.wegssm.model.entities.Ata;
 import net.weg.wegssm.model.entities.Demanda;
+import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.Proposta;
-import net.weg.wegssm.model.service.DemandaService;
-import net.weg.wegssm.model.service.PDFGeneratorService;
-import net.weg.wegssm.model.service.PropostaService;
+import net.weg.wegssm.model.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,8 @@ public class PDFExportController {
 
     private DemandaService demandaService;
     private PropostaService propostaService;
+    private PautaService pautaService;
+    private AtaService ataService;
 
     @GetMapping("/pdf/demanda/{id}")
     public void generatePDFDemanda(@PathVariable(value = "id") Long demandaId, HttpServletResponse response) throws IOException {
@@ -67,8 +69,6 @@ public class PDFExportController {
 
         response.setHeader(headerKey, headerValue);
 
-        System.out.println("Ainda nao deu erro");
-
         Document document = this.pdfGeneratorService.exportProposta(response, proposta);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter.getInstance(document, baos);
@@ -79,8 +79,9 @@ public class PDFExportController {
         response.getOutputStream().flush();
     }
 
-    @GetMapping("/pdf/pauta")
-    public void generatePDFPauta(HttpServletResponse response) throws IOException {
+    @GetMapping("/pdf/pauta/{id}")
+    public void generatePDFPauta(@PathVariable(value = "id") Long idPauta,  HttpServletResponse response) throws IOException {
+        Pauta pauta = pautaService.findById(idPauta).get();
         response.setContentType("application/pdf");
 
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
@@ -91,11 +92,19 @@ public class PDFExportController {
 
         response.setHeader(headerKey, headerValue);
 
-        this.pdfGeneratorService.exportPauta(response);
+        Document document = this.pdfGeneratorService.exportPauta(response, pauta);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, baos);
+        baos.flush();
+        byte[] pdfData = baos.toByteArray();
+        baos.close();
+        response.getOutputStream().write(pdfData);
+        response.getOutputStream().flush();
     }
 
-    @GetMapping("/pdf/ata")
-    public void generatePDFAta(HttpServletResponse response) throws IOException {
+    @GetMapping("/pdf/ata/{id}")
+    public void generatePDFAta(@PathVariable(value = "id") Long idAta, HttpServletResponse response) throws IOException {
+        Ata ata = ataService.findById(idAta).get();
         response.setContentType("application/pdf");
 
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
@@ -106,7 +115,14 @@ public class PDFExportController {
 
         response.setHeader(headerKey, headerValue);
 
-        this.pdfGeneratorService.exportAta(response);
+        Document document = this.pdfGeneratorService.exportAta(response, ata);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, baos);
+        baos.flush();
+        byte[] pdfData = baos.toByteArray();
+        baos.close();
+        response.getOutputStream().write(pdfData);
+        response.getOutputStream().flush();
     }
 
 }

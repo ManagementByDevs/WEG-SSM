@@ -33,6 +33,8 @@ public class PDFGeneratorService {
         this.demandaService = demandaService;
     }
 
+    // métodos para criar o modelo de exportação do pdf
+
     public Document exportDemanda(HttpServletResponse response, Demanda demanda) throws IOException {
 
         // Formatação da data para o documento pdf
@@ -111,7 +113,7 @@ public class PDFGeneratorService {
         document.add(paragraph5);
         document.add(paragraph6);
 
-        // Criando tabela para os centros de custo
+        // Criando tabela para os benefícios
 
         for (Beneficio beneficio : demanda.getBeneficios()) {
             PdfPTable table = new PdfPTable(4);
@@ -167,10 +169,10 @@ public class PDFGeneratorService {
         paragraph9.setAlignment(Paragraph.ANCHOR);
         paragraph9.setSpacingBefore(15);
 
-        // Adicionando tudo na página pdf
-
         document.add(paragraph7);
         document.add(paragraph8);
+
+        // Adicionando informações após o retorno do analista
 
         if (demanda.getTamanho() != null) {
             Chunk chunkTamanho = new Chunk("Tamanho: ", fontParagraph2);
@@ -239,16 +241,6 @@ public class PDFGeneratorService {
 
             document.add(table2);
             document.add(table3);
-            document.add(paragraph16);
-        }
-
-        if(demanda.getForum() != null) {
-            Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
-            Chunk chunkValorForum = new Chunk(demanda.getForum().getNome(), fontParagraph3);
-            Paragraph paragraph16 = new Paragraph();
-            paragraph16.setSpacingBefore(15);
-            paragraph16.add(chunkForum);
-            paragraph16.add(chunkValorForum);
             document.add(paragraph16);
         }
 
@@ -416,6 +408,8 @@ public class PDFGeneratorService {
         paragraph34.add(chunkValorFrequencia);
         paragraph34.setSpacingBefore(15);
 
+        // Adicionando os paragrafos no documento
+
         document.add(img);
         document.add(paragraph23);
         document.add(paragraph25);
@@ -432,6 +426,8 @@ public class PDFGeneratorService {
         document.add(paragraph27);
         document.add(paragraph34);
         document.add(paragraph28);
+
+        // Adicionando a tabela de CC
 
         for (TabelaCusto tableCusto : proposta.getTabelaCustos()) {
             PdfPTable table = new PdfPTable(4);
@@ -537,6 +533,8 @@ public class PDFGeneratorService {
 
         document.add(paragraph35);
 
+        // Adicionando a tabela de benefícios
+
         for (Beneficio beneficio : proposta.getDemanda().getBeneficios()) {
             PdfPTable table = new PdfPTable(4);
 
@@ -619,6 +617,8 @@ public class PDFGeneratorService {
         document.add(paragraph19);
         document.add(paragraph9);
 
+        // Adicionando o nome dos anexos
+
         for (Anexo anexo : proposta.getDemanda().getAnexo()) {
             Paragraph paragraph10 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
             paragraph10.setIndentationLeft(40);
@@ -626,6 +626,8 @@ public class PDFGeneratorService {
 
             document.add(paragraph10);
         }
+
+        // Adicionando os responsáveis pelo negócio
 
         for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
             Paragraph p = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontParagraph3);
@@ -647,9 +649,7 @@ public class PDFGeneratorService {
         return document;
     }
 
-    public void exportPauta(HttpServletResponse response) throws IOException {
-
-        Pauta pauta = new Pauta();
+    public Document exportPauta(HttpServletResponse response, Pauta pauta) throws IOException {
 
         // Formatação da data para quando baixar o documento
 
@@ -719,6 +719,8 @@ public class PDFGeneratorService {
         document.add(paragraph4);
 
         int contadorProposta = 1;
+
+        // Adicionando as propostas dentro da pauta
 
         for (Proposta proposta : pauta.getPropostas()) {
 
@@ -876,13 +878,13 @@ public class PDFGeneratorService {
             document.add(paragraph22);
             document.add(paragraph23);
 
-//            for (Anexo anexo : proposta.getDemanda().getAnexo()) {
-//                Paragraph paragraph24 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
-//                paragraph24.setIndentationLeft(40);
-//                paragraph24.setSpacingBefore(5);
-//
-//                document.add(paragraph24);
-//            }
+            for (Anexo anexo : proposta.getDemanda().getAnexo()) {
+                Paragraph paragraph26 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
+                paragraph26.setIndentationLeft(40);
+                paragraph26.setSpacingBefore(5);
+
+                document.add(paragraph26);
+            }
 
             document.add(paragraph24);
             document.add(paragraph25);
@@ -890,14 +892,18 @@ public class PDFGeneratorService {
         }
 
         document.close();
+
+        return document;
     }
 
-    public void exportAta(HttpServletResponse response) throws IOException {
+    public Document exportAta(HttpServletResponse response, Ata ata) throws IOException {
 
-        Ata ata = new Ata();
+        // Formatando a data para colocar no documento
 
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
+
+        // Criando o documento pdf
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
@@ -962,6 +968,8 @@ public class PDFGeneratorService {
         document.add(paragraph26);
 
         int contadorPropostas = 1;
+
+        // Adicionando as propostas dentro da ata
 
         for (Proposta proposta : ata.getPropostas()) {
 
@@ -1127,22 +1135,23 @@ public class PDFGeneratorService {
             document.add(paragraph22);
             document.add(paragraph23);
 
-//            for (Anexo anexo : proposta.getDemanda().getAnexo()) {
-//                Paragraph paragraph29 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
-//                paragraph29.setIndentationLeft(40);
-//                paragraph29.setSpacingBefore(5);
-//
-//                document.add(paragraph29);
-//            }
+            for (Anexo anexo : proposta.getDemanda().getAnexo()) {
+                Paragraph paragraph29 = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontParagraph3);
+                paragraph29.setIndentationLeft(40);
+                paragraph29.setSpacingBefore(5);
+
+                document.add(paragraph29);
+            }
 
             document.add(paragraph24);
             document.add(paragraph25);
             document.add(paragraph27);
             document.add(paragraph28);
-
         }
 
         document.close();
+
+        return document;
 
     }
 }

@@ -7,6 +7,7 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import BarraProgressaoProposta from "../../components/BarraProgressaoProposta/BarraProgressaoProposta";
 
+// Tela para criação de uma proposta ( chama o componente para criação )
 const CriarProposta = () => {
     // Location utilizado para mandar os dados para a variável "dados"
     const location = useLocation();

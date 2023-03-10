@@ -1,12 +1,7 @@
 import { useState, React, useContext } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -20,11 +15,10 @@ import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 
 import { keyframes } from "@emotion/react";
 
-import { useNavigate } from "react-router-dom";
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+// Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);

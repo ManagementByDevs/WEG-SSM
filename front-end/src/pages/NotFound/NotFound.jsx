@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import { Typography, Box, Button } from '@mui/material';
-import { useNavigate } from "react-router-dom";
 
 import Error from '../../assets/Error.png';
 
 import TextLanguageContext from '../../service/TextLanguageContext';
 import FontContext from "../../service/FontContext";
 
+// Página de Not Found, caso o usuário entre em alguma url inexistente no sistema
 const NotFound = (props) => {
     // useContext para alterar o idioma do sistema
     const { texts } = useContext(TextLanguageContext);
@@ -31,7 +32,7 @@ const NotFound = (props) => {
                 <img src={Error} />
 
                 <Typography fontSize={FontConfig.title} color={'primary.main'} fontWeight={650}>
-                   {texts.notFound.paginaNaoEncontrada}
+                    {texts.notFound.paginaNaoEncontrada}
                 </Typography>
 
                 <Typography fontSize={FontConfig.veryBig} fontWeight={500}>

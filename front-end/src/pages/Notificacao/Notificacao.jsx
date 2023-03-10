@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import { Box, Typography, Divider, Table, TableBody, TableHead, TableRow, Paper, Checkbox, IconButton, Tooltip } from "@mui/material";
 
 import "./notificacaoStyle.css";
@@ -12,14 +13,14 @@ import Feedback from "../../components/Feedback/Feedback";
 
 import NotificacaoService from "../../service/notificacaoService";
 import DateService from "../../service/dateService";
+import TextLanguageContext from "../../service/TextLanguageContext";
+import FontContext from "../../service/FontContext";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
 
-import TextLanguageContext from "../../service/TextLanguageContext";
-import FontContext from "../../service/FontContext";
-
+// Tela para mostrar as notificações do usuário no sistema
 const Notificacao = () => {
   // useContext para alterar o idioma do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -331,12 +332,12 @@ const Notificacao = () => {
                         </th>
                         <th className="text-white">
                           <Typography fontSize={FontConfig.big}>
-                          {texts.notificacao.titulo}
+                            {texts.notificacao.titulo}
                           </Typography>
                         </th>
                         <th className="w-1/10 text-white">
                           <Typography fontSize={FontConfig.big}>
-                          {texts.notificacao.data}
+                            {texts.notificacao.data}
                           </Typography>
                         </th>
                       </TableRow>

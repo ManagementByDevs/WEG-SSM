@@ -4,6 +4,7 @@ import JoditEditor from "jodit-react";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente para criar um editor de textos utilizados em outros componentes
 const TextEditor = (props) => {
   // Context para alterar idioma
   const { texts, setTexts } = useContext(TextLanguageContext);

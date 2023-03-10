@@ -1,5 +1,6 @@
 import { React, useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
 import { keyframes } from "@emotion/react";
 
 import { Box, Typography, Button, Divider, Tooltip } from "@mui/material";
@@ -17,6 +18,7 @@ import Feedback from "../../components/Feedback/Feedback";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+// Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
 const DetalhesAta = (props) => {
   // Context para trocar a liguagem
   const { texts, setTexts } = useContext(TextLanguageContext);
