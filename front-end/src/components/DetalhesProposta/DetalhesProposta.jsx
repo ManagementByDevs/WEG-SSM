@@ -1,19 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 
-import {
-  Box,
-  Divider,
-  IconButton,
-  MenuItem,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, IconButton, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -22,8 +9,10 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
+
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
+// Exemplo de proposta a ser seguido
 const propostaExample = {
   analista: {},
   anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
@@ -85,7 +74,9 @@ const propostaExample = {
   visibilidade: true,
 };
 
+// Componente  para mostrar os detalhes de uma proposta e suas respectivas funções
 const DetalhesProposta = ({ proposta = propostaExample }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -144,22 +135,12 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
         {/* Box header */}
         <Box className="w-full flex justify-between">
           <Box className="flex gap-4">
-            <Typography
-              color="primary"
-              fontWeight="bold"
-              fontSize={FontConfig.big}
-            >
+            <Typography color="primary" fontWeight="bold" fontSize={FontConfig.big} >
               {texts.detalhesProposta.ppm} {proposta.codigoPPM}
             </Typography>
-            <Typography
-              color="primary"
-              fontWeight="bold"
-              fontSize={FontConfig.big}
-            >
+            <Typography color="primary" fontWeight="bold" fontSize={FontConfig.big} >
               {texts.detalhesProposta.data}{" "}
-              {DateService.getTodaysDateUSFormat(
-                DateService.getDateByMySQLFormat(proposta.data)
-              )}
+              {DateService.getTodaysDateUSFormat(DateService.getDateByMySQLFormat(proposta.data))}
             </Typography>
           </Box>
           <Box className="w-16">
@@ -303,11 +284,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                     return <Beneficio key={index} beneficio={beneficio} />;
                   })
                 ) : (
-                  <Typography
-                    className="text-center"
-                    fontSize={FontConfig.medium}
-                    color="text.secondary"
-                  >
+                  <Typography className="text-center" fontSize={FontConfig.medium} color="text.secondary" >
                     {texts.detalhesProposta.semBeneficios}
                   </Typography>
                 )}
@@ -331,11 +308,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                     })}
                   </ol>
                 ) : (
-                  <Typography
-                    className="text-center"
-                    fontSize={FontConfig.medium}
-                    color="text.secondary"
-                  >
+                  <Typography className="text-center" fontSize={FontConfig.medium} color="text.secondary" >
                     {texts.detalhesProposta.semBuBeneficiada}
                   </Typography>
                 )}
@@ -409,11 +382,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                     );
                   })
                 ) : (
-                  <Typography
-                    className="text-center"
-                    fontSize={FontConfig.medium}
-                    color="text.secondary"
-                  >
+                  <Typography className="text-center" fontSize={FontConfig.medium} color="text.secondary" >
                     {texts.detalhesProposta.semAnexos}
                   </Typography>
                 )}
@@ -449,9 +418,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                       parecerComissaoInformacoes={parecerComissaoInformacoes}
                       proposta={proposta}
                       setParecerComissao={setParecerComissao}
-                      setParecerComissaoInformacoes={
-                        setParecerComissaoInformacoes
-                      }
+                      setParecerComissaoInformacoes={setParecerComissaoInformacoes}
                     />
 
                     {/* Parecer da Diretoria */}
@@ -475,6 +442,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
   );
 };
 
+// Mostrar a tabela de custos
 const TabelaCustos = ({
   dados = {
     id: 0,
@@ -491,7 +459,11 @@ const TabelaCustos = ({
     ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
   },
 }) => {
+
+  // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
   return (
@@ -577,6 +549,7 @@ const TabelaCustos = ({
   );
 };
 
+// Mostrar os custos na proposta
 const CustosRow = ({
   custo = {
     id: 0,
@@ -587,9 +560,14 @@ const CustosRow = ({
     valorHora: 0,
   },
 }) => {
+
+  // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Formatando o tipo da moeda de acordo com o local do usuário
   const getValorFormatted = (valor) => {
     let local = "pt-BR";
     let tipoMoeda = "BRL";
@@ -655,6 +633,7 @@ const CustosRow = ({
   );
 };
 
+// Mostrar os benefícios da proposta
 const Beneficio = ({
   beneficio = {
     id: 0,
@@ -664,10 +643,13 @@ const Beneficio = ({
     memoriaCalculo: "",
   },
 }) => {
+
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
+
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
   return (
     <Paper
       className="flex justify-between items-center mt-2 border-t-4"
@@ -746,6 +728,7 @@ const Beneficio = ({
   );
 };
 
+// Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
   parecerComissao = "",
@@ -766,6 +749,7 @@ const ParecerComissao = ({
   return <ParecerComissaoOnlyRead proposta={proposta} />;
 };
 
+// Chamar o parecer da DG
 const ParecerDG = ({
   proposta = propostaExample,
   parecerDG = "",
@@ -786,6 +770,7 @@ const ParecerDG = ({
   return <ParecerDGOnlyRead proposta={proposta} />;
 };
 
+// Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
   parecerComissao = "",
@@ -793,7 +778,11 @@ const ParecerComissaoInsertText = ({
   parecerComissaoInformacoes = "",
   setParecerComissaoInformacoes = () => { },
 }) => {
+
+  // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
   return (
@@ -844,12 +833,19 @@ const ParecerComissaoInsertText = ({
   );
 };
 
+// Visualizar o parecer da comissão
 const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
+
+  // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Variável para armazenar as informações do parecer da comissão
   const parecerComissaoInformacoesBox = useRef(null);
 
+  // useEffect para atualizar o texto do parecer da comissão
   useEffect(() => {
     if (parecerComissaoInformacoesBox.current) {
       parecerComissaoInformacoesBox.current.innerHTML =
@@ -859,6 +855,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
     }
   }, []);
 
+  // Função para formatar o parecer
   const getParecerComissaoFomartted = (parecer) => {
     return parecer
       ? parecer.toUpperCase() + parecer.substring(1).toLowerCase()
@@ -883,13 +880,18 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
   );
 };
 
+// Escrever o parecer da DG
 const ParecerDGInsertText = ({
   parecerDG = "",
   setParecerDG = () => { },
   parecerDGInformacoes = "",
   setParecerDGInformacoes = () => { },
 }) => {
+
+  // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
   return (
@@ -938,12 +940,19 @@ const ParecerDGInsertText = ({
   );
 };
 
+// Visualizar o parecer da DG 
 const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
+
+  // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Variável para armazenar o parecer da DG
   const parecerDGInformacoesBox = useRef(null);
 
+  // UseEffect utilizado para armazenar o valor do parecer da dg
   useEffect(() => {
     if (parecerDGInformacoesBox.current) {
       parecerDGInformacoesBox.current.innerHTML = proposta.parecerDGInformacao
@@ -952,6 +961,7 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
     }
   }, []);
 
+  // Função para formatar o parecer da DG
   const getParecerDGFomartted = (parecer) => {
     return parecer
       ? parecer.toUpperCase() + parecer.substring(1).toLowerCase()

@@ -1,26 +1,17 @@
 import React, { useContext, useState } from "react";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, Button } from "@mui/material";
 
 import "./DemandaModoVisualizacao.css";
 
 import Demanda from "../Demanda/Demanda";
 
 import DateService from "../../service/dateService";
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 
+// Componente para mudar o modo de visualização das demandas (Grid, tabela ou nenhuma demanda encontrada) - Usuário padrão
 const DemandaModoVisualizacao = ({
   listaDemandas,
   onDemandaClick,
@@ -64,12 +55,16 @@ const DemandaTable = ({
   onDemandaClick,
   myDemandas,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
   // useState para abrir o modal de motivo recusa
   const [abrirModal, setOpenModal] = useState(false);
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
+
   // Guarda a demanda selecionada para abrir o modal de motivo recusa
   const [demandaSelecionada, setDemandaSelecionada] = useState();
 
@@ -254,9 +249,10 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
 
 // Componente para exibir nada encontrado
 const NadaEncontrado = () => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
-  
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 

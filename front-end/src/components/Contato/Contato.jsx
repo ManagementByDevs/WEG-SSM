@@ -1,10 +1,13 @@
-import { Box, Typography, Avatar } from "@mui/material";
 import React, { useContext, useState, useEffect } from "react";
+
+import { Box, Typography, Avatar } from "@mui/material";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente contato utilizado para representar os contatos do chat
 const Contato = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -31,12 +34,15 @@ const Contato = (props) => {
       sx={{ width: "90%", minWidth: "195px", minHeight: "8%", cursor: "pointer", backgroundColor: corSelecionado, "&:hover": { backgroundColor: "chat.eu", } }}
       title={props.usuario.demanda}
     >
+      {/* Pegando a foto de perfil do usuário */}
       <Box className="flex justify-content items-center">
         <Avatar
           sx={{ width: "3rem", height: "3rem" }}
           src={props.usuario.foto}
         />
       </Box>
+
+      {/* Informações adicioanais do usuário e da demanda respectiva */}
       <Box className="flex justify-content flex-col" sx={{ width: "70%" }}>
         <Box className="flex justify-between">
           <Typography fontSize={FontConfig.medium} fontWeight="600">

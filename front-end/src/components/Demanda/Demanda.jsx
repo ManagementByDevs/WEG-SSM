@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
+
 import { Box, Typography, Button, Paper } from "@mui/material";
 
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
+
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
@@ -9,6 +11,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -86,11 +89,7 @@ const Demanda = (props) => {
       >
         <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
           {/* Título da demanda */}
-          <Typography
-            fontSize={FontConfig.veryBig}
-            sx={{ fontWeight: "600" }}
-            color="text.primary"
-          >
+          <Typography fontSize={FontConfig.veryBig} sx={{ fontWeight: "600" }} color="text.primary">
             {props.demanda.titulo}
           </Typography>
 
@@ -98,10 +97,7 @@ const Demanda = (props) => {
           {parseInt(localStorage.getItem("usuarioId")) ==
             props.demanda?.solicitante?.id && (
               <Box id="oitavo" className={`items-center text-justify flex`}>
-                <Typography
-                  fontSize={FontConfig.default}
-                  sx={{ fontWeight: "600" }}
-                >
+                <Typography fontSize={FontConfig.default} sx={{ fontWeight: "600" }}>
                   {formatarNomeStatus()}
                 </Typography>
                 <Box
@@ -119,11 +115,7 @@ const Demanda = (props) => {
         </Box>
 
         {/* Proposta da demanda */}
-        <Typography
-          gutterBottom
-          fontSize={FontConfig.default}
-          color="text.secondary"
-        >
+        <Typography gutterBottom fontSize={FontConfig.default} color="text.secondary">
           {props.demanda.proposta}
         </Typography>
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>

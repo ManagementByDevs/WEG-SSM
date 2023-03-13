@@ -7,7 +7,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente para mostrar os dados do escopo
 const Escopo = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

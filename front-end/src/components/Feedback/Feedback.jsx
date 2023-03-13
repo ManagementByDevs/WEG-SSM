@@ -4,9 +4,6 @@ import { Snackbar, Alert } from "@mui/material";
 /** Feedback padrão para avisos do sistema sobre processos concluídos / problemas no sistema */
 const Feedback = (props) => {
 
-  // Como chamar:
-  // <Feedback open={true} handleClose={funcao para deixar o open false} status={"o status que quer: sucesso, erro, aviso, info"} mensagem={"mensagem que quer que apareça"}/>
-
   // Variáveis de estilo para o componente (definir a posição)
   const vertical = "top";
   const horizontal = "right";
