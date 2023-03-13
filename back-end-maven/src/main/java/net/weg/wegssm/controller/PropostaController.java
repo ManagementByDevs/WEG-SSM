@@ -46,6 +46,9 @@ public class PropostaController {
     private BeneficioService beneficioService;
     private DemandaService demandaService;
 
+    private HistoricoService historicoService;
+    private DocumentoHistoricoService documentoHistoricoService;
+
     /**
      * Método GET para listar todas as propostas
      */
@@ -4058,6 +4061,31 @@ public class PropostaController {
 
         Proposta proposta = propostaOptional.get();
         BeanUtils.copyProperties(propostaJaCriadaDTO, proposta, "id");
+
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
+    @PutMapping("/add-historico/{idProposta}")
+    public ResponseEntity<Proposta> addHistorico(@PathVariable(value = "idProposta") Long idProposta,
+                                                @RequestParam("usuarioId") Long usuarioId,
+                                                @RequestParam("acao") String acao,
+                                                @RequestParam("documento") MultipartFile documento) {
+        Usuario usuario = usuarioService.findById(usuarioId).get();
+        Proposta proposta = propostaService.findById(idProposta).get();
+
+        Historico historico = new Historico();
+        historico.setAutor(usuario);
+        historico.setData(new Date());
+        historico.setAcaoRealizada(acao);
+
+        List<Historico> listaHistorico = proposta.getHistoricoProposta();
+        historico.setDocumentoMultipart(documento);
+
+        DocumentoHistorico documentoHistorico = historico.getDocumento();
+        documentoHistorico.setNome(proposta.getTitulo() + " - Versão " + (listaHistorico.size() + 1));
+        historico.setDocumento(documentoHistoricoService.save(documentoHistorico));
+
+        listaHistorico.add(historicoService.save(historico));
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }

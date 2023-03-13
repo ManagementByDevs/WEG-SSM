@@ -96,7 +96,7 @@ public class BuController {
 
         Bu bu = new Bu();
         BeanUtils.copyProperties(buDTO, bu);
-        bu.setId(id);
+        bu.setIdBu(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(buService.save(bu));
     }

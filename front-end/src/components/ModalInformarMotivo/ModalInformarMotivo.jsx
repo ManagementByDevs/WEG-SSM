@@ -1,6 +1,13 @@
 import React, { useState, useContext } from "react";
 
-import { Modal, Typography, Box, Fade, TextareaAutosize, Button } from "@mui/material";
+import {
+  Modal,
+  Typography,
+  Box,
+  Fade,
+  TextareaAutosize,
+  Button,
+} from "@mui/material";
 
 import Backdrop from "@mui/material/Backdrop";
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,12 +25,42 @@ const ModalInformarMotivo = (props) => {
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   return (
-    <Modal open={props.open} onClose={() => { props.setOpen(false) }} closeAfterTransition>
+    <Modal
+      open={props.open}
+      onClose={() => {
+        props.setOpen(false);
+      }}
+      closeAfterTransition
+    >
       <Fade in={props.open}>
-        <Box sx={{ transform: 'translate(-50%, -50%)', width: 480, height: 350, borderTop: '10px solid #00579D', boxShadow: 24, p: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', top: '50%', left: '50%', position: 'absolute' }} bgcolor={'background.paper'}>
+        <Box
+          sx={{
+            transform: "translate(-50%, -50%)",
+            width: 480,
+            height: 350,
+            borderTop: "10px solid #00579D",
+            boxShadow: 24,
+            p: 4,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexDirection: "column",
+            top: "50%",
+            left: "50%",
+            position: "absolute",
+          }}
+          bgcolor={"background.paper"}
+        >
           <CloseIcon
-            onClick={() => { props.setOpen(false) }}
-            sx={{ position: "absolute", left: "93%", top: "3%", cursor: "pointer", }}
+            onClick={() => {
+              props.setOpen(false);
+            }}
+            sx={{
+              position: "absolute",
+              left: "93%",
+              top: "3%",
+              cursor: "pointer",
+            }}
           />
           <Typography
             fontWeight={650}
@@ -32,7 +69,20 @@ const ModalInformarMotivo = (props) => {
           >
             {texts.modalInformarMotivo.informarMotivo}
           </Typography>
-          <Box sx={{ marginTop: '5%', display: 'flex', textAlign: 'justify', border: '1px solid', borderColor: 'divider.main', borderRadius: '5px', p: 2, width: '100%', height: '100%', overflow: 'auto' }}>
+          <Box
+            sx={{
+              marginTop: "5%",
+              display: "flex",
+              textAlign: "justify",
+              border: "1px solid",
+              borderColor: "divider.main",
+              borderRadius: "5px",
+              p: 2,
+              width: "100%",
+              height: "100%",
+              overflow: "auto",
+            }}
+          >
             {/* text area para informar o motivo */}
             <TextareaAutosize
               placeholder={texts.modalInformarMotivo.informeMotivo}

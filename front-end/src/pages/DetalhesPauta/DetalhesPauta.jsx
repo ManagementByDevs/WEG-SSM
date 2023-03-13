@@ -1,7 +1,13 @@
-import { useState, React, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
+import React, { useState, useContext, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -29,6 +35,9 @@ const DetalhesPauta = (props) => {
   // Navigate utilizado para navegar para uma determianda página
   const navigate = useNavigate();
 
+  // Variável do react-router-dom que guarda as informações da rota atual
+  const location = useLocation();
+
   // Variáveis de estilo para o componente
   const tituloProposta = {
     textDecoration: "underline",
@@ -46,8 +55,18 @@ const DetalhesPauta = (props) => {
     marginTop: "1%",
   };
 
+  // UseState para guardar a pauta atual
+  const [pauta, setPauta] = useState({
+    analistaResponsavel: {},
+    comissao: "",
+    dataReuniao: "",
+    id: 0,
+    numeroSequencial: 0,
+    propostas: [{}],
+  });
+
   // Lista provisória de propostas para preencher a tela
-  const listaProposta = [
+  const [listaProposta, setListaProposta] = useState([
     {
       titulo: "Exemplo de Proposta",
       problema:
@@ -94,7 +113,7 @@ const DetalhesPauta = (props) => {
       responsavelNegocio: "Matheus Franzener Hohmann",
       area: "Weg Digital",
     },
-  ];
+  ]);
 
   // Variável de verificação utilizada para mostrar o sumário ou uma proposta
   const [proposta, setProposta] = useState(false);
@@ -197,6 +216,11 @@ const DetalhesPauta = (props) => {
 
   const [display, setDisplay] = useState("hidden");
 
+  useEffect(() => {
+    console.log(location.state);
+    setPauta(location.state.pauta);
+  }, []);
+
   return (
     <FundoComHeader>
       <Box className="p-2">
@@ -216,7 +240,7 @@ const DetalhesPauta = (props) => {
           </Box>
         </Box>
         {/* Corpo da pauta */}
-        <Box className="flex flex-col justify-center relative items-center mt-3">
+        <Box className="flex flex-col justify-center relative items-center mt-5">
           <Box
             className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
             sx={{ width: "55rem" }}
@@ -238,11 +262,11 @@ const DetalhesPauta = (props) => {
               </Typography>
               <Typography sx={informacoesAta}>
                 {/* {props.numeroSequencial} */}
-                {texts.detalhesPauta.numeroSequencial}: 01
+                {texts.detalhesPauta.numeroSequencial}: {pauta.numeroSequencial}
               </Typography>
               <Typography sx={informacoesAta}>
                 {/* {props.data} */}
-                {texts.detalhesPauta.ano}: 2022
+                {texts.detalhesPauta.comissao}:
               </Typography>
               <Divider sx={{ marginTop: "1%" }} />
             </Box>

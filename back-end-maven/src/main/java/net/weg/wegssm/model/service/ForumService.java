@@ -25,7 +25,7 @@ public class ForumService {
     }
 
     public Boolean existsByNome(String nome) {
-        return forumRepository.existsByNome(nome);
+        return forumRepository.existsByNomeForum(nome);
     }
 
     public Boolean existsById(Long id) {

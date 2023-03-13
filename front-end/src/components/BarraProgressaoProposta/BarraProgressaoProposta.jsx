@@ -16,12 +16,15 @@ import DemandaService from "../../service/demandaService";
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import CustosService from "../../service/custosService";
 import EscopoPropostaService from "../../service/escopoPropostaService";
+import ExportPdfService from "../../service/exportPdfService";
+import SecaoTIService from "../../service/secaoTIService";
+
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
   // Contexto para trocar a linguagem
-  const {texts} = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Location utilizado para pegar informações passadas por parâmetro na URL
   const location = useLocation();
@@ -40,6 +43,9 @@ const BarraProgressaoProposta = (props) => {
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
 
   let variaveisIniciais = false;
+
+  /** Variável utilizada para armazenar a lista de seções de TI */
+  const [listaSecoesTI, setListaSecoesTI] = useState([]);
 
   // Variável utilizada para armazenar a lista de fóruns
   const [listaForuns, setListaForuns] = useState([]);
@@ -99,6 +105,7 @@ const BarraProgressaoProposta = (props) => {
     setDadosDemanda(props.dados);
     pesquisarBUs();
     pesquisarForuns();
+    pesquisarSecoesTI();
   }, []);
 
   useEffect(() => {
@@ -114,6 +121,7 @@ const BarraProgressaoProposta = (props) => {
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then((data) => {
             if (data.length == 0) {
               let escopo = retornaObjetoProposta();
+              delete escopo.historicoProposta;
               delete escopo.status;
               EscopoPropostaService.post(escopo).then((response) => {
                 idEscopo = response.id;
@@ -272,6 +280,13 @@ const BarraProgressaoProposta = (props) => {
     })
   }
 
+  /** Função para pesquisar as seções de TI do banco para uso no select */
+  const pesquisarSecoesTI = () => {
+    SecaoTIService.getAll().then((response) => {
+      setListaSecoesTI(response);
+    })
+  }
+
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
     try {
@@ -377,6 +392,7 @@ const BarraProgressaoProposta = (props) => {
       paybackTipo: gerais.unidadePaybackSimples,
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
+      historicoProposta: dadosDemanda.historicoDemanda,
       anexo: pegarAnexosSalvos()
     }
     return objeto;
@@ -386,11 +402,18 @@ const BarraProgressaoProposta = (props) => {
   const criarProposta = () => {
     excluirBeneficios();
 
-    propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then(() => {
+    propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then((response) => {
       DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
         EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
-          localStorage.setItem("tipoFeedback", "5");
-          navigate("/");
+
+          // Salvamento de histórico
+          ExportPdfService.exportProposta(response.id).then((file) => {
+            let arquivo = new Blob([file], { type: "application/pdf" });
+            propostaService.addHistorico(response.id, "Proposta Criada", arquivo, parseInt(localStorage.getItem("usuarioId"))).then(() => {
+              localStorage.setItem("tipoFeedback", "5");
+              navigate("/");
+            })
+          });
         })
       });
     });
@@ -425,6 +448,7 @@ const BarraProgressaoProposta = (props) => {
 
           listaForuns={listaForuns}
           listaBU={listaBU}
+          listaSecoesTI={listaSecoesTI}
         />
       )}
       {activeStep == 1 && (
@@ -452,7 +476,7 @@ const BarraProgressaoProposta = (props) => {
         sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
         disableElevation
       >
-        {texts.barraProgressaoProposta.voltar}
+        {texts.barraProgressaoProposta.botaoVoltar}
       </Button>
       <Box sx={{ flex: "1 1 auto" }} />
       {activeStep === etapasProposta.length - 1 ? (
@@ -463,7 +487,7 @@ const BarraProgressaoProposta = (props) => {
           sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >
-          {texts.barraProgressaoProposta.criar}
+          {texts.barraProgressaoProposta.botaoCriar}
         </Button>
       ) : (
         <Button
@@ -473,7 +497,7 @@ const BarraProgressaoProposta = (props) => {
           sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >
-          {texts.barraProgressaoProposta.proximo}
+          {texts.barraProgressaoProposta.botaoProximo}
         </Button>
       )}
     </>
