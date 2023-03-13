@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { Box, Button, Typography, IconButton } from "@mui/material";
 
+import { Box, Button, Typography, IconButton } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
@@ -15,6 +15,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -99,30 +100,18 @@ const FormularioAnexosDemanda = (props) => {
             <Typography
               fontSize={FontConfig.veryBig}
               color="text.secondary"
-              sx={{
-                fontWeight: "600",
-                cursor: "default",
-                marginBottom: "1rem",
-              }}
+              sx={{ fontWeight: "600", cursor: "default", marginBottom: "1rem", }}
             >
               {textoCaixa}
             </Typography>
             <Typography
               fontSize={FontConfig.veryBig}
               color="text.secondary"
-              sx={{
-                fontWeight: "600",
-                cursor: "default",
-                marginBottom: "1rem",
-              }}
+              sx={{ fontWeight: "600", cursor: "default", marginBottom: "1rem", }}
             >
               {texts.formularioAnexosDemanda.ou}
             </Typography>
-            <Button
-              onClick={clickInputArquivos}
-              variant="contained"
-              disableElevation
-            >
+            <Button onClick={clickInputArquivos} variant="contained" disableElevation >
               <Typography fontSize={FontConfig.medium}>
                 {texts.formularioAnexosDemanda.pesquisarArquivos}
               </Typography>
@@ -141,29 +130,17 @@ const FormularioAnexosDemanda = (props) => {
                 <TableHead className="border-b">
                   <TableRow>
                     <th>
-                      <Typography
-                        fontSize={FontConfig.big}
-                        color="text.primary"
-                        sx={{ fontWeight: "700", cursor: "default" }}
-                      >
+                      <Typography fontSize={FontConfig.big} color="text.primary" sx={{ fontWeight: "700", cursor: "default" }} >
                         {texts.formularioAnexosDemanda.nome}
                       </Typography>
                     </th>
                     <th>
-                      <Typography
-                        fontSize={FontConfig.big}
-                        color="text.primary"
-                        sx={{ fontWeight: "700", cursor: "default" }}
-                      >
+                      <Typography fontSize={FontConfig.big} color="text.primary" sx={{ fontWeight: "700", cursor: "default" }} >
                         {texts.formularioAnexosDemanda.tipo}
                       </Typography>
                     </th>
                     <th>
-                      <Typography
-                        fontSize={FontConfig.big}
-                        color="text.primary"
-                        sx={{ fontWeight: "700", cursor: "default" }}
-                      >
+                      <Typography fontSize={FontConfig.big} color="text.primary" sx={{ fontWeight: "700", cursor: "default" }} >
                         {texts.formularioAnexosDemanda.remover}
                       </Typography>
                     </th>
@@ -175,20 +152,12 @@ const FormularioAnexosDemanda = (props) => {
                     return (
                       <TableRow key={index} className="border-b">
                         <td className="text-center">
-                          <Typography
-                            fontSize={FontConfig.medium}
-                            color="text.secondary"
-                            sx={{ fontWeight: "500", cursor: "default" }}
-                          >
+                          <Typography fontSize={FontConfig.medium} color="text.secondary" sx={{ fontWeight: "500", cursor: "default" }} >
                             {file.name}
                           </Typography>
                         </td>
                         <td className="text-center">
-                          <Typography
-                            fontSize={FontConfig.medium}
-                            color="text.secondary"
-                            sx={{ fontWeight: "500", cursor: "default" }}
-                          >
+                          <Typography fontSize={FontConfig.medium} color="text.secondary" sx={{ fontWeight: "500", cursor: "default" }} >
                             {file.type}
                           </Typography>
                         </td>

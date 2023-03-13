@@ -4,6 +4,7 @@ import { FormControl, MenuItem, Select, Pagination, Box, Typography, } from "@mu
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+// Componente de paginação dos resultados na página principal
 const Paginacao = (props) => {
 
   // Context para alterar a linguagem do sistema

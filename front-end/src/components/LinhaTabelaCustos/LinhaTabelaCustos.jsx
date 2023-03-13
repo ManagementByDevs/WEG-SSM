@@ -2,14 +2,15 @@ import React, { useState, useContext, useEffect } from "react";
 
 import { TableRow, Box, TextareaAutosize, FormControl, Select, MenuItem, Tooltip, InputLabel } from "@mui/material";
 
-import ColorModeContext from "../../service/TemaContext";
-
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
+import ColorModeContext from "../../service/TemaContext";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente para criar uma linha na tabela de custos
 const LinhaTabelaCustos = (props) => {
+
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -71,7 +72,7 @@ const LinhaTabelaCustos = (props) => {
         />
       </td>
       <td align="center" className="pt-5 pb-5">
-      <TextareaAutosize
+        <TextareaAutosize
           style={{
             width: "80%",
             resize: "none",
@@ -85,9 +86,9 @@ const LinhaTabelaCustos = (props) => {
           value={props.dados.custos[props.index].perfilDespesa || ""}
           onChange={(e) => {
             let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].perfilDespesa =
-                e.target.value;
-              props.setCustos(aux);
+            aux[props.indexCusto].custos[props.index].perfilDespesa =
+              e.target.value;
+            props.setCustos(aux);
           }}
         />
       </td>

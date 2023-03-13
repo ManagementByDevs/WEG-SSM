@@ -8,7 +8,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+// Modal para informar o motivo da recusa ou devolvimento da demanda
 const ModalInformarMotivo = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -16,17 +18,12 @@ const ModalInformarMotivo = (props) => {
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   return (
-    <Modal open={props.open} onClose={() => {props.setOpen(false)}} closeAfterTransition>
+    <Modal open={props.open} onClose={() => { props.setOpen(false) }} closeAfterTransition>
       <Fade in={props.open}>
         <Box sx={{ transform: 'translate(-50%, -50%)', width: 480, height: 350, borderTop: '10px solid #00579D', boxShadow: 24, p: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', top: '50%', left: '50%', position: 'absolute' }} bgcolor={'background.paper'}>
           <CloseIcon
-            onClick={() => {props.setOpen(false)}}
-            sx={{
-              position: "absolute",
-              left: "93%",
-              top: "3%",
-              cursor: "pointer",
-            }}
+            onClick={() => { props.setOpen(false) }}
+            sx={{ position: "absolute", left: "93%", top: "3%", cursor: "pointer", }}
           />
           <Typography
             fontWeight={650}
@@ -55,12 +52,7 @@ const ModalInformarMotivo = (props) => {
             variant="contained"
             disableElevation
             color="primary"
-            sx={{
-              marginTop: "2%",
-              width: "8rem",
-              height: "3rem",
-              fontSize: FontConfig.normal,
-            }}
+            sx={{ marginTop: "2%", width: "8rem", height: "3rem", fontSize: FontConfig.normal, }}
           >
             {texts.modalInformarMotivo.confirmar}
           </Button>

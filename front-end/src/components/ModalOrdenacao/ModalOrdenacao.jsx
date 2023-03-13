@@ -1,11 +1,15 @@
 import React, { useContext } from "react";
+
 import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from "@mui/material";
+
 import CloseIcon from "@mui/icons-material/Close";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+// Modal de ordenação do sistema
 const ModalOrdenacao = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 

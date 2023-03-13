@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+
 import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
@@ -10,6 +11,7 @@ import FontContext from "../../service/FontContext";
 
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
