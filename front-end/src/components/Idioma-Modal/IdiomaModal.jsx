@@ -174,10 +174,8 @@ const IdiomaModal = () => {
 
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(Espanha)}>
-          <img className="h-8 w-7" src={Espanha} />
-          <Typography fontSize={FontConfig.default}>
-            Espanhol
-          </Typography>
+          <img className="h-6 w-7" src={Espanha} />
+          <Typography fontSize={FontConfig.default}>Espanhol</Typography>
         </MenuItem>
       </Menu>
     </div>
