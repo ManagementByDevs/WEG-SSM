@@ -367,6 +367,7 @@ const DetalhesDemanda = (props) => {
         anexo: props.dados.anexo,
         departamento: props.dados?.departamento,
         analista: props.dados?.analista,
+        historicoDemanda: props.dados?.historicoDemanda
       };
 
       const anexosVelhos = [];
@@ -389,7 +390,7 @@ const DetalhesDemanda = (props) => {
             AnexoService.deleteById(anexo.id);
           }
           // atualizar demanda salva no location
-
+          
           setEditar(false);
           excluirBeneficiosRemovidos();
           setDemandaEmEdicao(false);
