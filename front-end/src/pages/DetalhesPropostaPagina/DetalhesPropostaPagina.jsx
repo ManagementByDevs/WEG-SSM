@@ -27,7 +27,8 @@ const DetalhesPropostaPagina = () => {
   const { texts } = useContext(TextLanguageContext);
 
   // useState utilizado para abrir e fechar o modal de adicionar a pauta
-  const [openModalAddPropostaPauta, setOpenModalAddPropostaPauta] = useState(true);
+  const [openModalAddPropostaPauta, setOpenModalAddPropostaPauta] =
+    useState(false);
 
   // função para abrir o modal de adicionar a pauta
   const adicionarAPauta = () => {
@@ -54,12 +55,20 @@ const DetalhesPropostaPagina = () => {
         proposta={location.state}
       />
       <Box className="relative p-2">
-        <Box className="flex w-full relative">
+        <Box className="flex w-full relative mb-10">
           <Caminho />
-          <Box className=" absolute" sx={{ top: "10px", right: "20px", cursor: "pointer" }}>
+          <Box
+            className=" absolute"
+            sx={{ top: "10px", right: "20px", cursor: "pointer" }}
+          >
             {/* Ícone para baixar a proposta em formato pdf */}
             <IconButton onClick={baixarProposta}>
-              <SaveAltOutlinedIcon id="segundo" fontSize="large" className="delay-120 hover:scale-110 duration-600" sx={{ color: "icon.main" }} />
+              <SaveAltOutlinedIcon
+                id="segundo"
+                fontSize="large"
+                className="delay-120 hover:scale-110 duration-600"
+                sx={{ color: "icon.main" }}
+              />
             </IconButton>
           </Box>
         </Box>
@@ -69,7 +78,11 @@ const DetalhesPropostaPagina = () => {
       <Box className="absolute bottom-4 right-6  p-1">
         {/* Botão de adicionar proposta em pauta */}
         <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>
-          <Button variant="contained" sx={{ borderRadius: "9999px" }} onClick={adicionarAPauta}>
+          <Button
+            variant="contained"
+            sx={{ borderRadius: "9999px" }}
+            onClick={adicionarAPauta}
+          >
             <BookmarkAddIcon sx={{ fontSize: "28px", color: "text.white" }} />
           </Button>
         </Tooltip>

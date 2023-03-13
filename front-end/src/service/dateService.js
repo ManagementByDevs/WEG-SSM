@@ -49,9 +49,25 @@ class DateService {
   }
 
   /**
+   * Retorna a data passada por parâmetro com padrão MySQL para o padrão americano
+   * @param {DateMySQL} date 
+   * @returns Data no padrão americano com hora
+   */
+  getFullDateUSFormat(date) {
+    const newDate = new Date(date);
+    const dd = String(newDate.getDate()).padStart(2, "0");
+    const mm = String(newDate.getMonth() + 1).padStart(2, "0");
+    const yyyy = newDate.getFullYear();
+    const hh = String(newDate.getHours()).padStart(2, "0");
+    const min = String(newDate.getMinutes()).padStart(2, "0");
+
+    return yyyy + "-" + mm + "-" + dd + " " + hh + ":" + min;
+  }
+
+  /**
    * Retorna um objeto do tipo Date a partir de um registro do tipo Date do MySQL
-   * @param {*} date 
-   * @returns 
+   * @param {*} date
+   * @returns
    */
   getDateByMySQLFormat(dataMysql) {
     let date = dataMysql.replace(/[-]/g, "/").replace(/[T]/g, " ");

@@ -1,6 +1,19 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 
-import { Box, Divider, IconButton, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -76,7 +89,6 @@ const propostaExample = {
 
 // Componente  para mostrar os detalhes de uma proposta e suas respectivas funções
 const DetalhesProposta = ({ proposta = propostaExample }) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -127,7 +139,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
   };
 
   return (
-    <Box className="mt-10 flex justify-center">
+    <Box className="flex justify-center">
       <Box
         className="border rounded px-10 py-4 border-t-6"
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
@@ -135,12 +147,22 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
         {/* Box header */}
         <Box className="w-full flex justify-between">
           <Box className="flex gap-4">
-            <Typography color="primary" fontWeight="bold" fontSize={FontConfig.big} >
+            <Typography
+              color="primary"
+              fontWeight="bold"
+              fontSize={FontConfig.big}
+            >
               {texts.detalhesProposta.ppm} {proposta.codigoPPM}
             </Typography>
-            <Typography color="primary" fontWeight="bold" fontSize={FontConfig.big} >
+            <Typography
+              color="primary"
+              fontWeight="bold"
+              fontSize={FontConfig.big}
+            >
               {texts.detalhesProposta.data}{" "}
-              {DateService.getTodaysDateUSFormat(DateService.getDateByMySQLFormat(proposta.data))}
+              {DateService.getTodaysDateUSFormat(
+                DateService.getDateByMySQLFormat(proposta.data)
+              )}
             </Typography>
           </Box>
           <Box className="w-16">
@@ -284,7 +306,11 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                     return <Beneficio key={index} beneficio={beneficio} />;
                   })
                 ) : (
-                  <Typography className="text-center" fontSize={FontConfig.medium} color="text.secondary" >
+                  <Typography
+                    className="text-center"
+                    fontSize={FontConfig.medium}
+                    color="text.secondary"
+                  >
                     {texts.detalhesProposta.semBeneficios}
                   </Typography>
                 )}
@@ -308,7 +334,11 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                     })}
                   </ol>
                 ) : (
-                  <Typography className="text-center" fontSize={FontConfig.medium} color="text.secondary" >
+                  <Typography
+                    className="text-center"
+                    fontSize={FontConfig.medium}
+                    color="text.secondary"
+                  >
                     {texts.detalhesProposta.semBuBeneficiada}
                   </Typography>
                 )}
@@ -382,7 +412,11 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                     );
                   })
                 ) : (
-                  <Typography className="text-center" fontSize={FontConfig.medium} color="text.secondary" >
+                  <Typography
+                    className="text-center"
+                    fontSize={FontConfig.medium}
+                    color="text.secondary"
+                  >
                     {texts.detalhesProposta.semAnexos}
                   </Typography>
                 )}
@@ -418,7 +452,9 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                       parecerComissaoInformacoes={parecerComissaoInformacoes}
                       proposta={proposta}
                       setParecerComissao={setParecerComissao}
-                      setParecerComissaoInformacoes={setParecerComissaoInformacoes}
+                      setParecerComissaoInformacoes={
+                        setParecerComissaoInformacoes
+                      }
                     />
 
                     {/* Parecer da Diretoria */}
@@ -459,7 +495,6 @@ const TabelaCustos = ({
     ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
   },
 }) => {
-
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -560,7 +595,6 @@ const CustosRow = ({
     valorHora: 0,
   },
 }) => {
-
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -593,9 +627,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-        style: "currency",
-        currency: tipoMoeda,
-      })
+          style: "currency",
+          currency: tipoMoeda,
+        })
       : 0.0;
   };
 
@@ -643,7 +677,6 @@ const Beneficio = ({
     memoriaCalculo: "",
   },
 }) => {
-
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -732,9 +765,9 @@ const Beneficio = ({
 const ParecerComissao = ({
   proposta = propostaExample,
   parecerComissao = "",
-  setParecerComissao = () => { },
+  setParecerComissao = () => {},
   parecerComissaoInformacoes = "",
-  setParecerComissaoInformacoes = () => { },
+  setParecerComissaoInformacoes = () => {},
 }) => {
   if (proposta.status == "ASSESSMENT_APROVACAO")
     return (
@@ -753,9 +786,9 @@ const ParecerComissao = ({
 const ParecerDG = ({
   proposta = propostaExample,
   parecerDG = "",
-  setParecerDG = () => { },
+  setParecerDG = () => {},
   parecerDGInformacoes = "",
-  setParecerDGInformacoes = () => { },
+  setParecerDGInformacoes = () => {},
 }) => {
   if (proposta.status == "ASSESSMENT_APROVACAO")
     return (
@@ -774,11 +807,10 @@ const ParecerDG = ({
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
   parecerComissao = "",
-  setParecerComissao = () => { },
+  setParecerComissao = () => {},
   parecerComissaoInformacoes = "",
-  setParecerComissaoInformacoes = () => { },
+  setParecerComissaoInformacoes = () => {},
 }) => {
-
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -835,7 +867,6 @@ const ParecerComissaoInsertText = ({
 
 // Visualizar o parecer da comissão
 const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
-
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -883,11 +914,10 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   parecerDG = "",
-  setParecerDG = () => { },
+  setParecerDG = () => {},
   parecerDGInformacoes = "",
-  setParecerDGInformacoes = () => { },
+  setParecerDGInformacoes = () => {},
 }) => {
-
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -940,9 +970,8 @@ const ParecerDGInsertText = ({
   );
 };
 
-// Visualizar o parecer da DG 
+// Visualizar o parecer da DG
 const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
-
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 

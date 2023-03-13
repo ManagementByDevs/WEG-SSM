@@ -17,12 +17,14 @@ import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
+import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 
 import { keyframes } from "@emotion/react";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import DateService from "../../service/dateService";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
@@ -133,7 +135,7 @@ const DetalhesPauta = (props) => {
   // Função para selecionar uma proposta do sumário
   const onClickProposta = (index) => {
     setIndexProposta(index);
-    setDadosProposta(listaProposta[index]);
+    setDadosProposta(pauta.propostas[index]);
     setProposta(true);
   };
 
@@ -260,14 +262,29 @@ const DetalhesPauta = (props) => {
               >
                 {texts.detalhesPauta.pauta}
               </Typography>
+              {/* Número sequencial */}
               <Typography sx={informacoesAta}>
-                {/* {props.numeroSequencial} */}
                 {texts.detalhesPauta.numeroSequencial}: {pauta.numeroSequencial}
               </Typography>
+              {/* Comissão */}
               <Typography sx={informacoesAta}>
-                {/* {props.data} */}
-                {texts.detalhesPauta.comissao}:
+                {texts.detalhesPauta.comissao}: {pauta.comissao}
               </Typography>
+              {/* Data da reunião da comissão */}
+              <Typography sx={informacoesAta}>
+                {texts.detalhesPauta.reuniaoDoForum}:{" "}
+                {DateService.getFullDateUSFormat(
+                  DateService.getDateByMySQLFormat(pauta?.dataReuniao)
+                )}
+              </Typography>
+              {/* Data da reunião da DG */}
+              <Typography sx={informacoesAta}>
+                {texts.detalhesPauta.reuniaoDaDG}:{" "}
+                {DateService.getFullDateUSFormat(
+                  DateService.getDateByMySQLFormat(pauta?.dataReuniao)
+                )}
+              </Typography>
+
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
 
@@ -299,7 +316,7 @@ const DetalhesPauta = (props) => {
                   }}
                 >
                   {/* Lista utilizada para mostrar os títulos no sumário */}
-                  {listaProposta.map((proposta, index) => {
+                  {pauta.propostas?.map((proposta, index) => {
                     return (
                       <Typography
                         fontSize={FontConfig.big}
@@ -344,12 +361,13 @@ const DetalhesPauta = (props) => {
                       color: "primary.main",
                       cursor: "pointer",
                     }}
-                  ></DeleteIcon>
+                  />
                 </Box>
-                <PropostaDeAta
+                {/* <PropostaDeAta
                   dadosProposta={dadosProposta}
                   propostaPauta={false}
-                />
+                /> */}
+                <DetalhesProposta proposta={dadosProposta} />
               </Box>
             )}
           </Box>
