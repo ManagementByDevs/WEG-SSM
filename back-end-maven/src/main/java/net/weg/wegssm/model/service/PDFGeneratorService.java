@@ -182,13 +182,13 @@ public class PDFGeneratorService {
             paragraph12.add(chunkValorTamanho);
 
             Chunk chunkSecao = new Chunk("Seção de TI: ", fontParagraph2);
-            Chunk chunkValorSecao = new Chunk(demanda.getSecaoTI(), fontParagraph3);
+            Chunk chunkValorSecao = new Chunk(demanda.getSecaoTI().getNomeSecao(), fontParagraph3);
             Paragraph paragraph13 = new Paragraph();
             paragraph13.add(chunkSecao);
             paragraph13.add(chunkValorSecao);
 
             Chunk chunkBuSolicitante = new Chunk("BU Solicitante: ", fontParagraph2);
-            Chunk chunkValorBuSolicitante = new Chunk(demanda.getBuSolicitante().getNome(), fontParagraph3);
+            Chunk chunkValorBuSolicitante = new Chunk(demanda.getBuSolicitante().getNomeBu(), fontParagraph3);
             Paragraph paragraph14 = new Paragraph();
             paragraph14.add(chunkBuSolicitante);
             paragraph14.add(chunkValorBuSolicitante);
@@ -198,12 +198,12 @@ public class PDFGeneratorService {
             paragraph15.add(chunkBuBeneficiadas);
 
             for (Bu bu : demanda.getBusBeneficiadas()) {
-                Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNome() + " ", fontParagraph3);
+                Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNomeBu() + " ", fontParagraph3);
                 paragraph15.add(chunkValorBuBeneficiadas);
             }
 
             Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
-            Chunk chunkValorForum = new Chunk(demanda.getForum().getNome(), fontParagraph3);
+            Chunk chunkValorForum = new Chunk(demanda.getForum().getNomeForum(), fontParagraph3);
             Paragraph paragraph16 = new Paragraph();
             paragraph16.setSpacingBefore(15);
             paragraph16.add(chunkForum);
@@ -344,14 +344,14 @@ public class PDFGeneratorService {
         paragraph31.setSpacingBefore(15);
 
         Chunk chunkBuSolicitante = new Chunk("BU Solicitante: ", fontParagraph2);
-        Chunk chunkValorBuSolicitante = new Chunk(proposta.getBuSolicitante().getNome(), fontParagraph3);
+        Chunk chunkValorBuSolicitante = new Chunk(proposta.getBuSolicitante().getNomeBu(), fontParagraph3);
         Paragraph paragraph38 = new Paragraph();
         paragraph38.add(chunkBuSolicitante);
         paragraph38.add(chunkValorBuSolicitante);
         paragraph38.setSpacingBefore(15);
 
         Chunk chunkForum = new Chunk("Fórum: ", fontParagraph2);
-        Chunk chunkValorForum = new Chunk(proposta.getForum().getNome(), fontParagraph3);
+        Chunk chunkValorForum = new Chunk(proposta.getForum().getNomeForum(), fontParagraph3);
         Paragraph paragraph32 = new Paragraph();
         paragraph32.add(chunkForum);
         paragraph32.add(chunkValorForum);
@@ -582,7 +582,7 @@ public class PDFGeneratorService {
         paragraph36.setSpacingBefore(15);
 
         for (Bu bu : demanda.getBusBeneficiadas()) {
-            Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNome() + " ", fontParagraph3);
+            Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNomeBu() + " ", fontParagraph3);
             paragraph36.add(chunkValorBuBeneficiadas);
         }
 

@@ -2,9 +2,7 @@ package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.ForumDTO;
-import net.weg.wegssm.dto.UsuarioDTO;
 import net.weg.wegssm.model.entities.Forum;
-import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.ForumService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -63,7 +61,6 @@ public class ForumController {
         }
 
         Forum forum = new Forum();
-        forum.setVisibilidade(true);
         BeanUtils.copyProperties(forumDTO, forum);
 
         return ResponseEntity.status(HttpStatus.OK).body(forumService.save(forum));
@@ -108,8 +105,7 @@ public class ForumController {
         }
 
         Forum forum = forumService.findById(id).get();
-        forum.setVisibilidade(false);
-        forumService.save(forum);
+        forumService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(forum);
     }

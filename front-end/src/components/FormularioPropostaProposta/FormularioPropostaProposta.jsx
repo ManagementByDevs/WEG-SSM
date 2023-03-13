@@ -1,17 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import {
-  Box,
-  Typography,
-  Divider,
-  TextareaAutosize,
-  Paper,
-  IconButton,
-  Tooltip,
-  MenuItem,
-  TextField,
-  Autocomplete,
-  Checkbox,
-} from "@mui/material";
+import { Box, Typography, Divider, TextareaAutosize, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox } from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -35,9 +23,6 @@ const FormularioPropostaProposta = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-
-  // Variável para adicionar seções de ti
-  const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
 
   // UseState para mudar a cor do textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -637,13 +622,16 @@ const FormularioPropostaProposta = (props) => {
             <Autocomplete
               sx={{ width: "45%" }}
               disablePortal
-              options={secoesTI}
+              options={props.listaSecoesTI}
               value={props.dados.secaoTI}
               onChange={(event, value) => {
                 alterarTexto(value, "secao");
               }}
               getOptionLabel={(option) => {
-                return option || "";
+                return option.siglaSecao || "";
+              }}
+              isOptionEqualToValue={(option, value) => {
+                return option?.idSecao == value?.idSecao;
               }}
               fullWidth
               noOptionsText={texts.formularioPropostaProposta.nenhumaSecaoEncontrada}
@@ -665,10 +653,10 @@ const FormularioPropostaProposta = (props) => {
                 alterarTexto(value, "buSolicitante");
               }}
               getOptionLabel={(option) => {
-                return option?.nome || "";
+                return option?.siglaBu || "";
               }}
               isOptionEqualToValue={(option, value) => {
-                return option?.id == value?.id;
+                return option?.idBu == value?.idBu;
               }}
               fullWidth
               noOptionsText={texts.formularioPropostaProposta.nenhumaBuEncontrada}
@@ -687,10 +675,8 @@ const FormularioPropostaProposta = (props) => {
               value={props.dados.busBeneficiadas}
               options={props.listaBU}
               disableCloseOnSelect
-              onChange={(event, newValue) => {
-                alterarTexto(newValue, "busBeneficiadas");
-              }}
-              getOptionLabel={(option) => option.nome}
+              onChange={(event, newValue) => { alterarTexto(newValue, "busBeneficiadas"); }}
+              getOptionLabel={(option) => option.siglaBu}
               renderOption={(props, option, { selected }) => (
                 <li {...props}>
                   <Checkbox
@@ -699,11 +685,11 @@ const FormularioPropostaProposta = (props) => {
                     style={{ marginRight: 8 }}
                     checked={selected}
                   />
-                  {option.nome}
+                  {option.siglaBu}
                 </li>
               )}
               isOptionEqualToValue={(option, value) => {
-                return option?.id == value?.id;
+                return option?.idBu == value?.idBu;
               }}
               noOptionsText={texts.formularioPropostaProposta.nenhumaBuEncontrada}
               renderInput={(params) => (

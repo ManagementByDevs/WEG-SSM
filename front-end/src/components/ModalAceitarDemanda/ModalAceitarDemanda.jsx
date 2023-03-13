@@ -10,6 +10,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
+import SecaoTIService from "../../service/secaoTIService";
 
 // Variável para armazenar os ícones do checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -27,8 +28,8 @@ const ModalAceitarDemanda = (props) => {
   /** UseState para armazenar a lista de BUs */
   const [listaBus, setListaBus] = useState([]);
 
-  /** Lista de seções de ti */
-  const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
+  /** UseState para armazenar a lista de Seções de TI */
+  const [listaSecoesTI, setListaSecoesTI] = useState([]);
 
   /** UseState para armazenar a lista de fóruns */
   const [listaForum, setListaForum] = useState([]);
@@ -54,11 +55,17 @@ const ModalAceitarDemanda = (props) => {
   /** Lista de anexos adicionados */
   const [anexos, setAnexos] = useState([]);
 
-  // UseEffect para carregar as listas de BUs e fóruns do banco de dados para serem usadas nos selects
+  // UseEffect para carregar as listas de BUs, Seções de TI e Fóruns do banco de dados para serem usadas nos selects
   useEffect(() => {
     if (listaBus.length == 0) {
       BuService.getAll().then((response) => {
         setListaBus([...response]);
+      })
+    }
+
+    if (listaSecoesTI.length == 0) {
+      SecaoTIService.getAll().then((response) => {
+        setListaSecoesTI([...response]);
       })
     }
 
@@ -120,8 +127,8 @@ const ModalAceitarDemanda = (props) => {
           fullWidth
         >
           {listaBus.map((option) => (
-            <MenuItem key={option.id} value={option}>
-              {option.nome}
+            <MenuItem key={option.idBu} value={option} title={option.nomeBu}>
+              {option.siglaBu}
             </MenuItem>
           ))}
           {listaBus.length == 0 ? (
@@ -135,16 +142,16 @@ const ModalAceitarDemanda = (props) => {
           options={listaBus}
           disableCloseOnSelect
           onChange={(event, newValue) => { setBusBeneficiadas(newValue); }}
-          getOptionLabel={(option) => option.nome}
+          getOptionLabel={(option) => option.siglaBu}
           renderOption={(props, option, { selected }) => (
-            <li {...props}>
+            <li {...props} title={option.nomeBu}>
               <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
                 style={{ marginRight: 8 }}
                 checked={selected}
               />
-              {option.nome}
+              {option.siglaBu}
             </li>
           )}
           noOptionsText={texts.modalAceitarDemanda.nenhumaBuEncontrada}
@@ -160,18 +167,22 @@ const ModalAceitarDemanda = (props) => {
         />
 
         {/* Select de Seções TI */}
-        <Autocomplete
-          disablePortal
-          options={secoesTI}
-          onChange={(event, newValue) => {
-            setSecaoTI(newValue);
-          }}
+        <TextField
+          select
+          label={texts.modalAceitarDemanda.secaoTi}
+          value={secaoTI}
+          onChange={(event) => setSecaoTI(event.target.value)}
           fullWidth
-          noOptionsText={texts.modalAceitarDemanda.nenhumaSecaoEncontrada}
-          renderInput={(params) => (
-            <TextField variant="standard" {...params} label={texts.modalAceitarDemanda.secaoTi} />
-          )}
-        />
+          variant="standard"
+        >
+          {listaSecoesTI.map((option) => (
+            <MenuItem key={option.idSecao} value={option} title={option.nomeSecao}>
+              {option.siglaSecao}
+            </MenuItem>
+          ))}
+          {listaSecoesTI.length == 0 ? (
+            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>{texts.modalAceitarDemanda.nenhumaSecaoEncontrada}</Typography>
+          ) : null}</TextField>
 
         {/* Select de fóruns */}
         <TextField
@@ -183,8 +194,8 @@ const ModalAceitarDemanda = (props) => {
           fullWidth
         >
           {listaForum.map((option) => (
-            <MenuItem key={option.id} value={option}>
-              {option.nome}
+            <MenuItem key={option.idForum} value={option} title={option.nomeForum}>
+              {option.siglaForum}
             </MenuItem>
           ))}
           {listaForum.length == 0 ? (

@@ -17,12 +17,14 @@ import DemandaService from "../../service/demandaService";
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import CustosService from "../../service/custosService";
 import EscopoPropostaService from "../../service/escopoPropostaService";
+import ExportPdfService from "../../service/exportPdfService";
+import SecaoTIService from "../../service/secaoTIService";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 const BarraProgressaoProposta = (props) => {
   // Contexto para trocar a linguagem
-  const {texts} = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   const location = useLocation();
 
@@ -40,6 +42,9 @@ const BarraProgressaoProposta = (props) => {
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
 
   let variaveisIniciais = false;
+
+  /** Variável utilizada para armazenar a lista de seções de TI */
+  const [listaSecoesTI, setListaSecoesTI] = useState([]);
 
   // Variável utilizada para armazenar a lista de fóruns
   const [listaForuns, setListaForuns] = useState([]);
@@ -99,6 +104,7 @@ const BarraProgressaoProposta = (props) => {
     setDadosDemanda(props.dados);
     pesquisarBUs();
     pesquisarForuns();
+    pesquisarSecoesTI();
   }, []);
 
   useEffect(() => {
@@ -114,6 +120,7 @@ const BarraProgressaoProposta = (props) => {
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then((data) => {
             if (data.length == 0) {
               let escopo = retornaObjetoProposta();
+              delete escopo.historicoProposta;
               delete escopo.status;
               EscopoPropostaService.post(escopo).then((response) => {
                 idEscopo = response.id;
@@ -272,6 +279,13 @@ const BarraProgressaoProposta = (props) => {
     })
   }
 
+  /** Função para pesquisar as seções de TI do banco para uso no select */
+  const pesquisarSecoesTI = () => {
+    SecaoTIService.getAll().then((response) => {
+      setListaSecoesTI(response);
+    })
+  }
+
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
     try {
@@ -377,6 +391,7 @@ const BarraProgressaoProposta = (props) => {
       paybackTipo: gerais.unidadePaybackSimples,
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
+      historicoProposta: dadosDemanda.historicoDemanda,
       anexo: pegarAnexosSalvos()
     }
     return objeto;
@@ -386,11 +401,18 @@ const BarraProgressaoProposta = (props) => {
   const criarProposta = () => {
     excluirBeneficios();
 
-    propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then(() => {
+    propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then((response) => {
       DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
         EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
-          localStorage.setItem("tipoFeedback", "5");
-          navigate("/");
+
+          // Salvamento de histórico
+          ExportPdfService.exportProposta(response.id).then((file) => {
+            let arquivo = new Blob([file], { type: "application/pdf" });
+            propostaService.addHistorico(response.id, "Proposta Criada", arquivo, parseInt(localStorage.getItem("usuarioId"))).then(() => {
+              localStorage.setItem("tipoFeedback", "5");
+              navigate("/");
+            })
+          });
         })
       });
     });
@@ -425,6 +447,7 @@ const BarraProgressaoProposta = (props) => {
 
           listaForuns={listaForuns}
           listaBU={listaBU}
+          listaSecoesTI={listaSecoesTI}
         />
       )}
       {activeStep == 1 && (
