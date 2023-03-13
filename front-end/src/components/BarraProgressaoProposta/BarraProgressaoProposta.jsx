@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
-
 import { useNavigate, useLocation } from "react-router-dom";
+
+import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
 
 import FormularioPropostaProposta from "../FormularioPropostaProposta/FormularioPropostaProposta";
 import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCustosProposta";
@@ -10,20 +10,20 @@ import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEsco
 
 import ForumService from "../../service/forumService";
 import BUService from "../../service/buService";
-
 import beneficioService from "../../service/beneficioService";
 import propostaService from "../../service/propostaService";
 import DemandaService from "../../service/demandaService";
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import CustosService from "../../service/custosService";
 import EscopoPropostaService from "../../service/escopoPropostaService";
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
   // Contexto para trocar a linguagem
   const {texts} = useContext(TextLanguageContext);
 
+  // Location utilizado para pegar informações passadas por parâmetro na URL
   const location = useLocation();
 
   // Variáveis utilizadas para controlar a barra de progessão na criação da demanda

@@ -1,6 +1,6 @@
 import { React, useContext } from "react";
-import { Box, IconButton, Tooltip } from "@mui/material";
 
+import { Box, IconButton, Tooltip } from "@mui/material";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -13,6 +13,7 @@ const aparecer = keyframes({ from: { width: "1.3rem" }, to: { width: "3.2rem" } 
 // Função utilizada para desaparecer o ícone de ajuda ao tirar o mouse
 const sumir = keyframes({ from: { width: "3.2rem" }, to: { width: "1.3rem" } });
 
+// Componente de ajuda utilizado para demonstrar o usuário as principais funções do sistema
 const Ajuda = (props) => {
 
   const { texts } = useContext(TextLanguageContext);
