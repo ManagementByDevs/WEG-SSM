@@ -452,7 +452,7 @@ const BarraProgressaoProposta = (props) => {
         sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
         disableElevation
       >
-        {texts.barraProgressaoProposta.voltar}
+        {texts.barraProgressaoProposta.botaoVoltar}
       </Button>
       <Box sx={{ flex: "1 1 auto" }} />
       {activeStep === etapasProposta.length - 1 ? (
@@ -463,7 +463,7 @@ const BarraProgressaoProposta = (props) => {
           sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >
-          {texts.barraProgressaoProposta.criar}
+          {texts.barraProgressaoProposta.botaoCriar}
         </Button>
       ) : (
         <Button
@@ -473,7 +473,7 @@ const BarraProgressaoProposta = (props) => {
           sx={{ position: "fixed", bottom: 50, right: 160 }}
           disableElevation
         >
-          {texts.barraProgressaoProposta.proximo}
+          {texts.barraProgressaoProposta.botaoProximo}
         </Button>
       )}
     </>
