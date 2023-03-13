@@ -1,10 +1,13 @@
 import { React, useContext } from "react";
+
 import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid, Fade } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
+
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Modal para do filtro do usuário padrão
 const ModalFiltro = (props) => {
 
   // Context para alterar a linguagem do sistema

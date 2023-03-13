@@ -39,9 +39,6 @@ public class Demanda {
     @Column(length = 20)
     private String tamanho;
 
-    @Column(length = 45)
-    private String secaoTI;
-
     @Column(length = 1000)
     private String motivoRecusa;
 
@@ -52,6 +49,10 @@ public class Demanda {
     private Date data;
 
     // foreign keys
+
+    @ManyToOne
+    @JoinColumn(name = "secao_ti_id")
+    private SecaoTI secaoTI;
 
     @OneToMany
     @JoinColumn(name = "demanda_id")

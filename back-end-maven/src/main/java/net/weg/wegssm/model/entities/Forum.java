@@ -17,12 +17,12 @@ public class Forum {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    private Long id;
+    private Long idForum;
 
-    @Column(nullable = false, length = 50)
-    private String nome;
+    @Column(length = 6)
+    private String siglaForum;
 
-    @Column
-    private Boolean visibilidade;
+    @Column(nullable = false, length = 100)
+    private String nomeForum;
 
 }

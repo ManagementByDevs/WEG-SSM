@@ -420,7 +420,7 @@ const DetalhesDemanda = (props) => {
   const retornarBUsBeneficiadas = () => {
     let textoFinal = "";
     for (const bu of props.dados.busBeneficiadas) {
-      textoFinal += bu.nome + ", ";
+      textoFinal += bu.siglaBu + ", ";
     }
     textoFinal = textoFinal.substring(0, textoFinal.length - 2);
     return textoFinal;
@@ -772,7 +772,7 @@ const DetalhesDemanda = (props) => {
                     color="text.secondary"
                     sx={{ marginLeft: "10px", marginRight: "15px" }}
                   >
-                    {props.dados.secaoTI}
+                    {props.dados.secaoTI.siglaSecao}
                   </Typography>
                 </Box>
               </Box>
@@ -789,7 +789,7 @@ const DetalhesDemanda = (props) => {
                     color="text.secondary"
                     sx={{ marginLeft: "10px" }}
                   >
-                    {props.dados.buSolicitante.nome}
+                    {props.dados.buSolicitante.siglaBu}
                   </Typography>
                 </Box>
                 <Box className="flex items-center">
@@ -818,7 +818,7 @@ const DetalhesDemanda = (props) => {
                   color="text.secondary"
                   sx={{ marginLeft: "10px" }}
                 >
-                  {props.dados.forum.nome}
+                  {props.dados.forum.siglaForum} - {props.dados.forum.nomeForum}
                 </Typography>
               </Box>
             )}

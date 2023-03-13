@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 
 import { Box } from "@mui/material";
 
@@ -6,10 +6,12 @@ import Header from "../Header/Header";
 
 import FontContext from "../../service/FontContext";
 
+// Componente que cria um fundo com um header
 const FundoComHeader = (props) => {
+  
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-  
+
   return (
     <Box
       sx={{

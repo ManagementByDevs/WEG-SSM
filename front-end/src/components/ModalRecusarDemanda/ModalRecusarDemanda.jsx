@@ -1,12 +1,6 @@
 import React, { useContext } from "react";
-import {
-  Modal,
-  Typography,
-  Box,
-  Fade,
-  TextareaAutosize,
-  Button,
-} from "@mui/material";
+
+import { Modal, Typography, Box, Fade, TextareaAutosize, Button } from '@mui/material';
 
 import CloseIcon from "@mui/icons-material/Close";
 

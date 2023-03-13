@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Box, Tooltip, Typography, IconButton, Menu } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
+import { Box, Tooltip, Typography, IconButton, Menu } from "@mui/material";
 
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
@@ -11,7 +12,9 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import NotificacaoService from "../../service/notificacaoService";
 
+// Modal de notificações do sistema
 const NotificacaoModal = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -73,9 +76,7 @@ const NotificacaoModal = (props) => {
     <>
       <Feedback
         open={feedback}
-        handleClose={() => {
-          setFeedback(false);
-        }}
+        handleClose={() => { setFeedback(false); }}
         status={"info"}
         mensagem={texts.notificacaoModal.notificacaoLidaComSucesso}
       />
@@ -111,14 +112,8 @@ const NotificacaoModal = (props) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right", }}
+        transformOrigin={{ vertical: "top", horizontal: "right", }}
         {...props}
       >
         <Box className="w-72 px-3 py-2 max-h-60 overflow-hidden">

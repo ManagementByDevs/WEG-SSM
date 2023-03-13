@@ -15,7 +15,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+// Modal para informar o motivo da recusa ou devolvimento da demanda
 const ModalInformarMotivo = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -100,12 +102,7 @@ const ModalInformarMotivo = (props) => {
             variant="contained"
             disableElevation
             color="primary"
-            sx={{
-              marginTop: "2%",
-              width: "8rem",
-              height: "3rem",
-              fontSize: FontConfig.normal,
-            }}
+            sx={{ marginTop: "2%", width: "8rem", height: "3rem", fontSize: FontConfig.normal, }}
           >
             {texts.modalInformarMotivo.confirmar}
           </Button>

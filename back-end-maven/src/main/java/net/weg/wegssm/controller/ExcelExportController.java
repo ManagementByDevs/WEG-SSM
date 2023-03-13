@@ -104,7 +104,7 @@ public class ExcelExportController {
 
             row.createCell(5).setCellValue(demanda.getFrequencia());
             row.createCell(6).setCellValue(demanda.getTamanho());
-            row.createCell(7).setCellValue(demanda.getSecaoTI());
+            row.createCell(7).setCellValue(demanda.getSecaoTI().getNomeSecao());
 
             sheet.autoSizeColumn(1);
             sheet.autoSizeColumn(2);

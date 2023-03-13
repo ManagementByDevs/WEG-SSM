@@ -5,24 +5,23 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bu")
+@Table(name = "secao_ti")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
-public class Bu {
+public class SecaoTI {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    private Long idBu;
+    private Long idSecao;
 
     @Column(length = 6)
-    private String siglaBu;
+    private String siglaSecao;
 
-    @Column(nullable = false, length = 100)
-    private String nomeBu;
-
+    @Column(length = 100)
+    private String nomeSecao;
 }
