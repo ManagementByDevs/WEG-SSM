@@ -40,7 +40,7 @@ const Pautas = (props) => {
 
   return (
     <Paper
-      onClick={props.onItemClick}
+      onClick={() => props.onItemClick(props.dados)}
       className="flex flex-col border-t-4 pt-2 pb-3 px-6"
       sx={{
         "&:hover": {

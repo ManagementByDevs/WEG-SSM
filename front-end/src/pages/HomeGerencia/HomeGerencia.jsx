@@ -1253,8 +1253,10 @@ const HomeGerencia = () => {
                     <Ajuda onClick={() => setIsTourPautasOpen(true)} />
                     <PautaAtaModoVisualizacao
                       listaPautas={pautas}
-                      onItemClick={() => {
-                        navigate("/detalhes-pauta");
+                      onItemClick={(pauta) => {
+                        navigate("/detalhes-pauta", {
+                          state: { pauta },
+                        });
                       }}
                       nextModoVisualizacao={nextModoVisualizacao}
                       setPautaSelecionada={setPautaSelecionada}
