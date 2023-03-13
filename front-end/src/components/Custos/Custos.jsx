@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+
 import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -11,7 +12,9 @@ import FontContext from "../../service/FontContext";
 import CustosService from "../../service/custosService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente utilizado para representar a tabela de custos utilizada na proposta
 const Custos = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -100,6 +103,7 @@ const Custos = (props) => {
     <Box className="flex w-full mt-5">
       <Box className="flex items-top mr-2">
         <Box className="h-full flex items-center">
+          {/* Ícone para deletar uma tabela de custos */}
           <Tooltip title={texts.custos.excluirTabelaDeCustos}>
             <DeleteOutlineOutlinedIcon
               fontSize="large"
@@ -112,91 +116,46 @@ const Custos = (props) => {
           </Tooltip>
         </Box>
         <Box>
+          {/* Criação da tabela e adicionando as informações nela */}
           <Paper className="w-full mr-3 pb-1">
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: "90%" }} aria-label="customized table">
                 <TableHead sx={{ backgroundColor: "primary.main" }}>
                   <TableRow>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "5%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                      >
+                    <th align="center" className="p-4 w-0" style={{ width: "5%" }} >
+                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
                         {texts.custos.tipoDaDespesa}
                       </Typography>
                     </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "5%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                      >
+                    <th align="center" className="p-4 w-0" style={{ width: "5%" }}>
+                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
                         {texts.custos.perfilDaDespesa}
                       </Typography>
                     </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "10%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                      >
+                    <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
+                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
                         {texts.custos.periodoDeExecucao}
                       </Typography>
                     </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "7%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                      >
+                    <th align="center" className="p-4 w-0" style={{ width: "7%" }}>
+                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
                         {texts.custos.horas}
                       </Typography>
                     </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "8%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                      >
+                    <th align="center" className="p-4 w-0" style={{ width: "8%" }}>
+                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white">
                         {texts.custos.valorHora}
                       </Typography>
                     </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "10%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                      >
+                    <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
+                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white">
                         {texts.custos.total}
                       </Typography>
                     </th>
                   </TableRow>
                 </TableHead>
+
+                {/* Criando uma nova linha a cada custo */}
                 <TableBody>
                   {props.dados.custos?.map((despesa, index) => {
                     return (
@@ -216,33 +175,23 @@ const Custos = (props) => {
             </TableContainer>
             <Box className="w-full flex justify-between items-center m-2">
               <Box className="flex w-full">
-                <Typography
-                  fontSize={FontConfig.medium}
-                  sx={{ marginRight: "8px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
                   {texts.custos.total}:{" "}
                 </Typography>
-                <Typography
-                  fontSize={FontConfig.medium}
-                  sx={{ marginRight: "15px" }}
-                >
+                <Typography ontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
                   {horasTotais}
                   {texts.custos.h}
                 </Typography>
-                <Typography
-                  fontSize={FontConfig.medium}
-                  sx={{ marginRight: "15px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
                   -
                 </Typography>
-                <Typography
-                  fontSize={FontConfig.medium}
-                  sx={{ marginRight: "8px" }}
-                >
+                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
                   {texts.custos.moeda}
                   {valorTotal}
                 </Typography>
               </Box>
+
+              {/* Ícone para adicionar uma nova linha de custos */}
               <Tooltip title={texts.custos.adicionarNovaLinha}>
                 <AddCircleOutlineOutlinedIcon
                   fontSize="medium"
@@ -256,6 +205,7 @@ const Custos = (props) => {
         </Box>
       </Box>
       <Paper className="h-full pb-1" sx={{ width: "25%" }}>
+        {/* Outra tabela para os CCs */}
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">
             <TableHead
@@ -263,16 +213,14 @@ const Custos = (props) => {
             >
               <TableRow>
                 <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
-                  <Typography
-                    fontSize={FontConfig.big}
-                    fontWeight="800"
-                    color="text.white"
-                  >
+                  <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white">
                     {texts.custos.ccs}
                   </Typography>
                 </th>
               </TableRow>
             </TableHead>
+
+            {/* Criando uma nova linha a cada cc */}
             <TableBody>
               {props.dados.ccs?.map((cc, index) => {
                 return (
@@ -292,16 +240,15 @@ const Custos = (props) => {
         </TableContainer>
         <Box className="w-full flex justify-between items-center m-2">
           <Box className="flex">
-            <Typography
-              fontSize={FontConfig.medium}
-              sx={{ marginRight: "8px" }}
-            >
+            <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
               {texts.custos.total}:
             </Typography>
             <Typography fontSize={FontConfig.medium}>
               {porcentagemTotal}%{" "}
             </Typography>
           </Box>
+
+          {/* Ícone para adicionar uma nova linha de CC */}
           <Tooltip title={texts.custos.adicionarNovaLinha}>
             <AddCircleOutlineOutlinedIcon
               fontSize="medium"

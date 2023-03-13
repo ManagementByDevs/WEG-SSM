@@ -8,7 +8,9 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import DateService from "../../service/dateService";
 import TemaContext from "../../service/TemaContext";
 
+// Componente para representar uma pauta no sistema, contendo suas informações e ações
 const ContainerPauta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -62,6 +64,7 @@ const ContainerPauta = (props) => {
       sx={{ border: '1px solid', borderLeft: "solid 6px", borderColor: "primary.main", p: 4, margin: '1%', backgroundColor: getBackgroundColor() }}
       onClick={selecionarPauta}
     >
+      {/* Cabeçalho da pauta */}
       <Box className="w-full flex justify-between items-center">
         <Typography fontSize={FontConfig.medium}>
           {texts.containerPauta.propostas}:
@@ -71,6 +74,8 @@ const ContainerPauta = (props) => {
           {getFormattedDate(props.pauta.dataReuniao)}
         </Typography>
       </Box>
+
+      {/* Título das propostas que estão na pauta */}
       <Box className="w-full grid gap-4" sx={{ color: 'primary.main', marginTop: '2%', gridTemplateColumns: "repeat(auto-fit, minmax(15%, 1fr))" }}>
         <Typography fontSize={FontConfig.medium} className="overflow-hidden whitespace-nowrap text-ellipsis">{props.pauta.propostas[0] ? props.pauta.propostas[0].titulo : ""}</Typography>
         <Typography className="overflow-hidden whitespace-nowrap text-ellipsis">{props.pauta.propostas[1] ? props.pauta.propostas[0].titulo : ""}</Typography>
