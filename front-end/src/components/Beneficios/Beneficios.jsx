@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Select, FormControl, InputLabel, MenuItem, Typography } from "@mui/material";
 
-import "./Beneficios.css";
+import { Box, Select, FormControl, InputLabel, MenuItem, Typography } from "@mui/material";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import FontContext from "../../service/FontContext";
 
+import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+
+import "./Beneficios.css";
 
 /** Componente de benefício editável utilizado na segunda etapa da criação da demanda */
 const Beneficios = (props) => {
@@ -126,10 +127,7 @@ const Beneficios = (props) => {
                   variant="filled"
                   sx={{ margin: "0 0 0 2rem", minWidth: "90px", width: "10%" }}
                 >
-                  <InputLabel
-                    id="demo-simple-select-label"
-                    sx={{ margin: "-10px 0 0 -5px" }}
-                  >
+                  <InputLabel id="demo-simple-select-label" sx={{ margin: "-10px 0 0 -5px" }}>
                     <Typography fontSize={FontConfig.default}>{texts.beneficios.moeda}</Typography>
                   </InputLabel>
 
@@ -174,11 +172,7 @@ const Beneficios = (props) => {
           />
         </Box>
       ) : null}
-      <Box
-        className="flex flex-col justify-end items-end"
-        sx={{ position: "absolute", bottom: "5px", right: "5px" }}
-      >
-
+      <Box className="flex flex-col justify-end items-end" sx={{ position: "absolute", bottom: "5px", right: "5px" }}>
         {/* Botão de excluir benefício */}
         <DeleteOutlineOutlinedIcon
           className="delay-120 hover:scale-110 duration-300"
