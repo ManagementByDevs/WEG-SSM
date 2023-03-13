@@ -11,21 +11,19 @@ import AddIcon from "@mui/icons-material/Add";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
-import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
-import Feedback from "../../components/Feedback/Feedback";
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import UsuarioService from "../../service/usuarioService";
+import DemandaService from "../../service/demandaService";
 
+import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
+import Feedback from "../../components/Feedback/Feedback";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import Demanda from "../../components/Demanda/Demanda";
-
-import UsuarioService from "../../service/usuarioService";
-import DemandaService from "../../service/demandaService";
 
 import Tour from "reactour";
 

@@ -8,7 +8,9 @@ import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutl
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente utilizado para mostrar o caminho atual do usuário no sistema
 const Caminho = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -42,6 +44,7 @@ const Caminho = (props) => {
         />
       </Tooltip>
       <ArrowForwardIosOutlinedIcon sx={{ fontSize: "20px" }} />
+      {/* Mostrando o caminho atual no sistema */}
       {listaCaminho.map((item, index) => {
         if (item !== "") {
           return (

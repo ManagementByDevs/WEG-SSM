@@ -9,9 +9,10 @@ import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemand
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-import { useEffect } from "react";
 
+// Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

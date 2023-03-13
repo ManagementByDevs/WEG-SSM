@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
 import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
 import FormularioAnexosDemanda from "../FormularioAnexosDemanda/FormularioAnexosDemanda";
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 import Feedback from "../Feedback/Feedback";
 
 import DemandaService from "../../service/demandaService";
 import EscopoService from "../../service/escopoService";
 import ExportPdfService from "../../service/exportPdfService";
-
-import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
-
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 

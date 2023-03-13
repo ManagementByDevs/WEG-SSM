@@ -19,7 +19,6 @@ import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
 import UsuarioService from "../../service/usuarioService";
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ChatContext from "../../service/ChatContext";
@@ -31,6 +30,7 @@ import Tour from "reactour";
 
 var stompClient = null;
 
+// Chat para conversa entre usuários do sistema
 const Chat = () => {
   // Context para alterar o idioma
   const { texts, setTexts } = useContext(TextLanguageContext);
@@ -411,7 +411,7 @@ const Chat = () => {
     {
       selector: "#primeiro",
       content:
-       texts.chat.tour.tour1,
+        texts.chat.tour.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -420,7 +420,7 @@ const Chat = () => {
     {
       selector: "#segundo",
       content:
-      texts.chat.tour.tour2,
+        texts.chat.tour.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",

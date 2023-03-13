@@ -1,15 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -23,12 +14,14 @@ import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente para mudar o modo de visualização das demandas (Grid, tabela ou nenhuma demanda encontrada) - Gerência
 const DemandaGerenciaModoVisualizacao = ({
   listaDemandas,
   onDemandaClick,
   nextModoVisualizacao,
   isProposta = false,
 }) => {
+
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
   }
@@ -41,6 +34,7 @@ const DemandaGerenciaModoVisualizacao = ({
         isProposta={isProposta}
       />
     );
+
   return (
     <DemandaTable
       listaDemandas={listaDemandas}
@@ -124,11 +118,7 @@ const DemandaTable = ({
         <Table sx={{ width: "100%" }} className="table-fixed">
           <TableHead sx={{ width: "100%" }}>
             <TableRow
-              sx={{
-                backgroundColor: "primary.main",
-                minWidth: "75rem",
-                width: "100%",
-              }}
+              sx={{ backgroundColor: "primary.main", minWidth: "75rem", width: "100%", }}
             >
               <th className="text-white p-2 width-75/1000">
                 <Typography fontSize={FontConfig.big}>
@@ -278,10 +268,7 @@ const DemandaTable = ({
                           abrirModalHistorico();
                         }}
                         className="delay-120 hover:scale-110 duration-300"
-                        sx={{
-                          color: "icon.main",
-                          cursor: "pointer",
-                        }}
+                        sx={{ color: "icon.main", cursor: "pointer", }}
                       />
                     </Tooltip>
                     {isProposta && (
@@ -296,10 +283,7 @@ const DemandaTable = ({
                             abrirModalHistorico();
                           }}
                           className="delay-120 hover:scale-110 duration-300"
-                          sx={{
-                            color: "icon.main",
-                            cursor: "pointer",
-                          }}
+                          sx={{ color: "icon.main", cursor: "pointer", }}
                         />
                       </Tooltip>
                     )}
@@ -342,6 +326,7 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
 
 // Componente para exibição de nada encontrado
 const NadaEncontrado = () => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 

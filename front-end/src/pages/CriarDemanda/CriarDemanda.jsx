@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Box } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
-import { Box, IconButton, Button, Tooltip } from "@mui/material";
 import { useLocation } from "react-router-dom";
+
+import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -14,6 +15,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ExportPdfService from "../../service/exportPdfService";
 
+// Página que mostra os detalhes da proposta selecionada, com opção de download para pdf
 const DetalhesPropostaPagina = () => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();

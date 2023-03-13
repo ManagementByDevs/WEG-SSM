@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { Box, Button, Tooltip } from "@mui/material";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -15,12 +16,12 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 
 import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 import Tour from "reactour";
 
+// Tela para mostrar os escopos de demandas/propostas não finalizadas
 const Escopos = () => {
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);

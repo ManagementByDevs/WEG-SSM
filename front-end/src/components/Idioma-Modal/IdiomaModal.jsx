@@ -10,6 +10,7 @@ import {
 import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
 import EstadosUnidos from "../../assets/estados-unidos.png";
+import Espanha from "../../assets/espanha.png";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -54,6 +55,7 @@ const IdiomaModal = () => {
     if (idioma == Brasil) setTexts(TextLanguage("pt"));
     else if (idioma == EstadosUnidos) setTexts(TextLanguage("en"));
     else if (idioma == China) setTexts(TextLanguage("ch"));
+    else if (idioma == Espanha) setTexts(TextLanguage("es"));
   };
 
   // ********************************************** Preferências **********************************************
@@ -66,6 +68,7 @@ const IdiomaModal = () => {
     if (lang == "pt" && idioma != Brasil) setIdioma(Brasil);
     else if (lang == "ch" && idioma != China) setIdioma(China);
     else if (lang == "en" && idioma != EstadosUnidos) setIdioma(EstadosUnidos);
+    else if (lang == "es" && idioma != Espanha) setIdioma(Espanha);
   };
 
   /**
@@ -89,6 +92,9 @@ const IdiomaModal = () => {
         break;
       case EstadosUnidos:
         preferencias.lang = "en";
+        break;
+      case Espanha:
+        preferencias.lang = "es";
         break;
       default:
         preferencias.lang = "en";
@@ -159,6 +165,17 @@ const IdiomaModal = () => {
         <MenuItem className="gap-2" onClick={() => handleClose(China)}>
           <img className="h-5 w-7" src={China} />
           <Typography fontSize={FontConfig.default}>中国人</Typography>
+        </MenuItem>
+
+        {/* Divisor entre um item de idioma e outro */}
+        <div className="w-full flex justify-center">
+          <hr className="w-10/12" />
+        </div>
+
+        {/* Item de idioma */}
+        <MenuItem className="gap-2" onClick={() => handleClose(Espanha)}>
+          <img className="h-6 w-7" src={Espanha} />
+          <Typography fontSize={FontConfig.default}>Espanhol</Typography>
         </MenuItem>
       </Menu>
     </div>
