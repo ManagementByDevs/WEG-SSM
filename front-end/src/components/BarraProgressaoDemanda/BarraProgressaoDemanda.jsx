@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+  Button,
+} from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -19,7 +26,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
  * salvando a demanda e escopos no banco de dados
  */
 const BarraProgressaoDemanda = () => {
-
   // Contexto para alterar o idioma
   const { texts } = useContext(TextLanguageContext);
 
@@ -46,7 +52,12 @@ const BarraProgressaoDemanda = () => {
   const [mudancasFeitas, setMudancasFeitas] = useState(false);
 
   /** Dados da página inicial da criação de demanda */
-  const [paginaDados, setPaginaDados] = useState({ titulo: "", problema: "", proposta: "", frequencia: "", });
+  const [paginaDados, setPaginaDados] = useState({
+    titulo: "",
+    problema: "",
+    proposta: "",
+    frequencia: "",
+  });
 
   /** Lista de benefícios definidos na segunda página da criação de demanda */
   const [paginaBeneficios, setPaginaBeneficios] = useState([]);
@@ -58,7 +69,11 @@ const BarraProgressaoDemanda = () => {
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
 
   /** Variável com os nomes dos respectivos passos da criação da demanda, usando o contexto de tradução */
-  const steps = [`${texts.barraProgressaoDemanda.steps.dados}`, `${texts.barraProgressaoDemanda.steps.beneficios}`, `${texts.barraProgressaoDemanda.steps.anexos}`];
+  const steps = [
+    `${texts.barraProgressaoDemanda.steps.dados}`,
+    `${texts.barraProgressaoDemanda.steps.beneficios}`,
+    `${texts.barraProgressaoDemanda.steps.anexos}`,
+  ];
 
   // UseEffect utilizado para criar um escopo ou receber um escopo do banco ao entrar na página
   useEffect(() => {
@@ -98,18 +113,25 @@ const BarraProgressaoDemanda = () => {
 
   /** Função para criar um novo escopo ativada quando alguma alteração for feita (caso não seja um escopo já existente) */
   const criarNovoEscopo = () => {
-    EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then((response) => {
-      idEscopo = response.id;
-      setUltimoEscopo({ id: idEscopo });
-    });
-  }
+    EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
+      (response) => {
+        idEscopo = response.id;
+        setUltimoEscopo({ id: idEscopo });
+      }
+    );
+  };
 
   /** Função para carregar escopo recebido (quando selecionado para edição através da página de escopos)
    * e preencher os inputs com as suas devidas informações salvas
    */
   const carregarEscopoExistente = (id) => {
     EscopoService.buscarPorId(id).then((response) => {
-      setPaginaDados({ titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia });
+      setPaginaDados({
+        titulo: response.titulo,
+        problema: response.problema,
+        proposta: response.proposta,
+        frequencia: response.frequencia,
+      });
       receberBeneficios(response.beneficios);
       receberArquivos(response.anexo);
 
@@ -122,13 +144,12 @@ const BarraProgressaoDemanda = () => {
         beneficios: formatarBeneficios(response.beneficios),
       });
     });
-  }
+  };
 
   /** Função para formatar os benefícios recebidos no banco para a lista da página de edição na edição de um escopo existente */
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-
       const tipoBeneficioNovo =
         beneficio.tipoBeneficio.charAt(0) +
         beneficio.tipoBeneficio
@@ -182,10 +203,10 @@ const BarraProgressaoDemanda = () => {
       problema: paginaDados.problema,
       proposta: paginaDados.proposta,
       frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios(paginaBeneficios)
-    }
+      beneficios: formatarBeneficios(paginaBeneficios),
+    };
     return objetoDemanda;
-  }
+  };
 
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = () => {
@@ -197,21 +218,23 @@ const BarraProgressaoDemanda = () => {
         setUltimoEscopo(response);
         //Confirmação de salvamento (se sobrar tempo)
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para atualizar os anexos de um escopo quando um anexo for adicionado/removido */
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
-      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then((response) => { });
+      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
+        (response) => {}
+      );
     } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
     }
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
@@ -219,18 +242,26 @@ const BarraProgressaoDemanda = () => {
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
 
-    DemandaService.post(demandaFinal, paginaArquivos, parseInt(localStorage.getItem("usuarioId"))).then((e) => {
+    DemandaService.post(
+      demandaFinal,
+      paginaArquivos,
+      parseInt(localStorage.getItem("usuarioId"))
+    ).then((e) => {
       ExportPdfService.exportDemanda(e.id).then((file) => {
-
         // Salvamento do histórico número 1 da demanda
         let arquivo = new Blob([file], { type: "application/pdf" });
-        DemandaService.addHistorico(e.id, "Demanda Criada", arquivo, parseInt(localStorage.getItem("usuarioId"))).then((response) => {
+        DemandaService.addHistorico(
+          e.id,
+          "Demanda Criada",
+          arquivo,
+          parseInt(localStorage.getItem("usuarioId"))
+        ).then((response) => {
           direcionarHome();
           excluirEscopo();
-        })
+        });
       });
     });
-  }
+  };
 
   /** Função para voltar para a etapa anterior na criação da demanda */
   const voltarEtapa = () => {
@@ -239,10 +270,47 @@ const BarraProgressaoDemanda = () => {
 
   /** Função para ir para a próxima etapa da demanda */
   const proximaEtapa = () => {
-    if (paginaDados.titulo !== "" && paginaDados.problema !== "" && paginaDados.proposta !== "" && paginaDados.frequencia !== "") {
-      setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
-    } else {
-      setFeedbackDadosFaltantes(true);
+    switch (etapaAtiva) {
+      case 0:
+        if (
+          paginaDados.titulo !== "" &&
+          paginaDados.problema !== "" &&
+          paginaDados.proposta !== "" &&
+          paginaDados.frequencia !== ""
+        ) {
+          setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
+        } else {
+          setFeedbackDadosFaltantes(true);
+        }
+        break;
+      case 1:
+        let precisaFeedback = false;
+        if (paginaBeneficios.length > 0) {
+          paginaBeneficios.map((beneficio) => {
+            if (
+              beneficio.tipoBeneficio == "Qualitativo" &&
+              beneficio.memoriaCalculo == ""
+            ) {
+              precisaFeedback = true;
+            } else if (
+              (beneficio.tipoBeneficio == "Real" ||
+                beneficio.tipoBeneficio == "Potencial") &&
+              (beneficio.valor_mensal == "" ||
+                beneficio.moeda == "" ||
+                beneficio.memoriaCalculo == "")
+            ) {
+              precisaFeedback = true;
+            }
+          });
+          if (precisaFeedback) {
+            setFeedbackDadosFaltantes(true);
+          } else {
+            setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
+          }
+        } else {
+          setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
+        }
+        break;
     }
   };
 
@@ -272,12 +340,18 @@ const BarraProgressaoDemanda = () => {
         <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
       )}
       {etapaAtiva == 1 && (
-        <FormularioBeneficiosDemanda dados={paginaBeneficios} setDados={setPaginaBeneficios} />
+        <FormularioBeneficiosDemanda
+          dados={paginaBeneficios}
+          setDados={setPaginaBeneficios}
+        />
       )}
       {etapaAtiva == 2 && (
-        <FormularioAnexosDemanda salvarEscopo={salvarAnexosEscopo} dados={paginaArquivos} setDados={setPaginaArquivos} />
+        <FormularioAnexosDemanda
+          salvarEscopo={salvarAnexosEscopo}
+          dados={paginaArquivos}
+          setDados={setPaginaArquivos}
+        />
       )}
-
 
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
         {/* Botão de voltar à etapa anterior da criação */}
@@ -289,7 +363,9 @@ const BarraProgressaoDemanda = () => {
           sx={{ mr: 1 }}
           disableElevation
         >
-          <Typography fontSize={FontConfig.default}>{texts.barraProgressaoDemanda.botaoVoltar}</Typography>
+          <Typography fontSize={FontConfig.default}>
+            {texts.barraProgressaoDemanda.botaoVoltar}
+          </Typography>
         </Button>
         <Box sx={{ flex: "1 1 auto" }} />
 
@@ -298,10 +374,14 @@ const BarraProgressaoDemanda = () => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => { setOpenConfirmacao(true) }}
+            onClick={() => {
+              setOpenConfirmacao(true);
+            }}
             disableElevation
           >
-            <Typography fontSize={FontConfig.default}>{texts.barraProgressaoDemanda.botaoCriar}</Typography>
+            <Typography fontSize={FontConfig.default}>
+              {texts.barraProgressaoDemanda.botaoCriar}
+            </Typography>
           </Button>
         ) : (
           <Button
@@ -310,7 +390,9 @@ const BarraProgressaoDemanda = () => {
             onClick={proximaEtapa}
             disableElevation
           >
-            <Typography fontSize={FontConfig.default}>{texts.barraProgressaoDemanda.botaoProximo}</Typography>
+            <Typography fontSize={FontConfig.default}>
+              {texts.barraProgressaoDemanda.botaoProximo}
+            </Typography>
           </Button>
         )}
 
