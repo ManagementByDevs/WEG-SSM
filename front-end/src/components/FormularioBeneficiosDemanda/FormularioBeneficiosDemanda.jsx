@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import "./FormularioBeneficiosDemanda.css";
 
 import { Box, Button, Typography } from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
+import "./FormularioBeneficiosDemanda.css";
 import Beneficios from "../Beneficios/Beneficios";
-import BeneficioService from "../../service/beneficioService";
 
+import BeneficioService from "../../service/beneficioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
@@ -68,7 +68,7 @@ const FormularioBeneficiosDemanda = (props) => {
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
       <Box className="w-3/4 flex flex-col" sx={{ height: "85%" }}>
         <Box>
-          
+
           {/* Botão para adicionar novo benefício */}
           <Button
             className="rounded flex justify-evenly"

@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+
 import { Box, IconButton, Typography } from "@mui/material";
 
 import "./Notificacao.css";
@@ -12,7 +13,9 @@ import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import NotificacaoService from "../../service/notificacaoService";
 
+// Componente para exibir as notificações do sistema
 const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 

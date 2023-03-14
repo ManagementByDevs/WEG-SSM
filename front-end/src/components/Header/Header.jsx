@@ -1,17 +1,17 @@
 import React, { useState, useContext } from "react";
-import { Paper, Tooltip } from "@mui/material/";
 import { Link, useLocation } from "react-router-dom";
+
+import { Paper, Tooltip } from "@mui/material/";
+
+import LogoBranca from "../../assets/LogoBranca.png";
+import Grid from "../../assets/GridSemFundo.png";
 
 import IdiomaModal from "../Idioma-Modal/IdiomaModal";
 import UserModal from "../User-Modal/UserModal";
 import NotificacaoModal from "../Notificacao-Modal/NotificacaoModal";
-
-import ChatContext from "../../service/ChatContext";
-
-import LogoBranca from "../../assets/LogoBranca.png";
-import Grid from "../../assets/GridSemFundo.png";
 import ChatMinimizado from "../ChatMinimizado/ChatMinimizado";
 
+import ChatContext from "../../service/ChatContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Header padrão usado no topo de todas as páginas do sistema */
@@ -19,8 +19,9 @@ const Header = () => {
 
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
-  
-  const { visibilidade,usuarioId } = useContext(ChatContext);
+
+  // Contexto para ver o chat minimizado
+  const { visibilidade, usuarioId } = useContext(ChatContext);
 
   // Variável para pegar informações da URL
   const location = useLocation();
@@ -39,7 +40,7 @@ const Header = () => {
       {visibilidade && (
         <ChatMinimizado usuarioId={usuarioId} />
       )}
-      
+
       {/* Link para página inicial */}
       <Link to={"/"}>
         {/* Title */}

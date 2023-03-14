@@ -1,15 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
+
 import { TableRow, Box, Tooltip, Input, InputAdornment } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import ColorModeContext from "../../service/TemaContext";
-
 import FontContext from "../../service/FontContext";
 import TextLanguage from "../../service/TextLanguage";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Componente para criar uma linha da tabela de CCs
 const LinhaTabelaCCs = (props) => {
+
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 

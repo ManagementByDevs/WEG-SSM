@@ -104,6 +104,15 @@ class PropostaService {
       })
     ).data;
   }
+
+  async addHistorico(idProposta, texto, documento, usuario) {
+    let form = new FormData();
+    form.set("acao", texto);
+    form.set("documento", documento);
+    form.set("usuarioId", usuario);
+
+    return (await axios.put(`/demanda/add-historico/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+  }
 }
 
 export default new PropostaService();

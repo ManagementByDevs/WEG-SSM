@@ -493,6 +493,9 @@ const TextLanguage = (linguagem) => {
             proximo: "Próximo",
             navegacao: "Navegação",
             criarAta: "Criar Ata",
+            comissao: "Comissão",
+            reuniaoDoForum: "Reunião do fórum",
+            reuniaoDaDG: "Reunião da DG",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Adicionar à Pauta",

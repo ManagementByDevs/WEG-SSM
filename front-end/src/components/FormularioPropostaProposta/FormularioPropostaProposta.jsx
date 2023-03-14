@@ -1,43 +1,32 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import {
-  Box,
-  Typography,
-  Divider,
-  TextareaAutosize,
-  Paper,
-  IconButton,
-  Tooltip,
-  MenuItem,
-  TextField,
-  Autocomplete,
-  Checkbox,
-} from "@mui/material";
+
+import { Box, Typography, Divider, TextareaAutosize, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox, } from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import DownloadIcon from "@mui/icons-material/Download";
-import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
-
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
+import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from "../../service/beneficioService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// Ícone selecionado e não selecionado, para o checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+// Componente de editar uma demanda na criação da proposta
 const FormularioPropostaProposta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
-
-  // Variável para adicionar seções de ti
-  const secoesTI = ["Seção 1", "Seção 2", "Seção 3"];
 
   // UseState para mudar a cor do textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -473,93 +462,55 @@ const FormularioPropostaProposta = (props) => {
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
-      <Box
-        className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
-        sx={{ width: "55rem" }}
-      >
+      <Box className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg" sx={{ width: "55rem" }} >
         <>
           <Box className="flex justify-center">
             <Box
               value={props.dados.titulo}
-              onChange={(e) => {
-                alterarTexto(e, "titulo");
-              }}
+              onChange={(e) => { alterarTexto(e, "titulo"); }}
               fontSize={FontConfig.title}
               color="primary.main"
               className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-              sx={{
-                width: "100%;",
-                height: "54px",
-                backgroundColor: "background.default",
-                fontWeight: "600",
-              }}
+              sx={{ width: "100%;", height: "54px", backgroundColor: "background.default", fontWeight: "600", }}
               component="input"
               placeholder={texts.formularioPropostaProposta.digiteTituloDaDemanda}
             />
           </Box>
           <Divider />
           <Box>
-            <Typography
-              fontSize={FontConfig.veryBig}
-              fontWeight="600"
-              color="text.primary"
-            >
+            <Typography fontSize={FontConfig.veryBig} fontWeight="600" color="text.primary" >
               {texts.formularioPropostaProposta.problema}:
             </Typography>
             <TextareaAutosize
-              style={{
-                width: 775,
-                marginLeft: "26px",
-                resize: "none",
-                backgroundColor: corFundoTextArea,
-              }}
+              style={{ width: 775, marginLeft: "26px", resize: "none", backgroundColor: corFundoTextArea, }}
               value={props.dados.problema}
               fontSize={FontConfig.medium}
-              onChange={(e) => {
-                alterarTexto(e, "problema");
-              }}
+              onChange={(e) => { alterarTexto(e, "problema"); }}
               className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
               placeholder={texts.formularioPropostaProposta.digiteProblema}
             />
           </Box>
           <Box>
-            <Typography
-              fontSize={FontConfig.veryBig}
-              fontWeight="600"
-              color="text.primary"
-            >
+            <Typography fontSize={FontConfig.veryBig} fontWeight="600" color="text.primary" >
               {texts.formularioPropostaProposta.proposta}:
             </Typography>
             <TextareaAutosize
-              style={{
-                width: 775,
-                marginLeft: "26px",
-                resize: "none",
-                backgroundColor: corFundoTextArea,
-              }}
+              style={{ width: 775, marginLeft: "26px", resize: "none", backgroundColor: corFundoTextArea, }}
               value={props.dados.proposta}
               fontSize={FontConfig.medium}
-              onChange={(e) => {
-                alterarTexto(e, "proposta");
-              }}
+              onChange={(e) => { alterarTexto(e, "proposta"); }}
               className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
               placeholder={texts.formularioPropostaProposta.digiteProposta}
             />
           </Box>
           <Box>
             <Box className="flex items-center">
-              <Typography
-                fontSize={FontConfig.veryBig}
-                fontWeight="600"
-                color="text.primary"
-              >
+              <Typography fontSize={FontConfig.veryBig} fontWeight="600" color="text.primary"  >
                 {texts.formularioPropostaProposta.beneficios}:
               </Typography>
               <AddCircleOutlineOutlinedIcon
                 className="delay-120 hover:scale-110 duration-300 ml-1"
-                onClick={() => {
-                  adicionarBeneficio();
-                }}
+                onClick={() => { adicionarBeneficio(); }}
                 sx={{ color: "primary.main", cursor: "pointer" }}
               />
             </Box>
@@ -581,33 +532,20 @@ const FormularioPropostaProposta = (props) => {
             </Box>
           </Box>
           <Box>
-            <Typography
-              fontSize={FontConfig.veryBig}
-              fontWeight="600"
-              color="text.primary"
-            >
+            <Typography fontSize={FontConfig.veryBig} fontWeight="600" color="text.primary" >
               {texts.formularioPropostaProposta.frequenciaDeUso}:
             </Typography>
             <Box
               value={props.dados.frequencia}
-              onChange={(e) => {
-                alterarTexto(e, "frequencia");
-              }}
+              onChange={(e) => { alterarTexto(e, "frequencia"); }}
               fontSize={FontConfig.medium}
               className="outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-              sx={{
-                width: "90%;",
-                backgroundColor: corFundoTextArea,
-                marginLeft: "30px",
-              }}
+              sx={{ width: "90%;", backgroundColor: corFundoTextArea, marginLeft: "30px", }}
               component="input"
               placeholder={texts.formularioPropostaProposta.digiteFrequencia}
             />
           </Box>
-          <Box
-            className="flex justify-evenly"
-            sx={{ marginTop: "15px", marginBottom: "10px" }}
-          >
+          <Box className="flex justify-evenly" sx={{ marginTop: "15px", marginBottom: "10px" }} >
             <TextField
               sx={{ width: "45%" }}
               select
@@ -637,25 +575,23 @@ const FormularioPropostaProposta = (props) => {
             <Autocomplete
               sx={{ width: "45%" }}
               disablePortal
-              options={secoesTI}
+              options={props.listaSecoesTI}
               value={props.dados.secaoTI}
               onChange={(event, value) => {
                 alterarTexto(value, "secao");
               }}
               getOptionLabel={(option) => {
-                return option || "";
+                return option.siglaSecao || "";
+              }}
+              isOptionEqualToValue={(option, value) => {
+                return option?.idSecao == value?.idSecao;
               }}
               fullWidth
               noOptionsText={texts.formularioPropostaProposta.nenhumaSecaoEncontrada}
-              renderInput={(params) => (
-                <TextField variant="standard" {...params} label={texts.formularioPropostaProposta.labelSecaoTi} />
-              )}
+              renderInput={(params) => (<TextField variant="standard" {...params} label={texts.formularioPropostaProposta.labelSecaoTi} />)}
             />
           </Box>
-          <Box
-            className="flex justify-evenly"
-            sx={{ marginTop: "15px", marginBottom: "10px" }}
-          >
+          <Box className="flex justify-evenly" sx={{ marginTop: "15px", marginBottom: "10px" }} >
             <Autocomplete
               sx={{ width: "45%" }}
               disablePortal
@@ -665,10 +601,10 @@ const FormularioPropostaProposta = (props) => {
                 alterarTexto(value, "buSolicitante");
               }}
               getOptionLabel={(option) => {
-                return option?.nome || "";
+                return option?.siglaBu || "";
               }}
               isOptionEqualToValue={(option, value) => {
-                return option?.id == value?.id;
+                return option?.idBu == value?.idBu;
               }}
               fullWidth
               noOptionsText={texts.formularioPropostaProposta.nenhumaBuEncontrada}
@@ -687,10 +623,8 @@ const FormularioPropostaProposta = (props) => {
               value={props.dados.busBeneficiadas}
               options={props.listaBU}
               disableCloseOnSelect
-              onChange={(event, newValue) => {
-                alterarTexto(newValue, "busBeneficiadas");
-              }}
-              getOptionLabel={(option) => option.nome}
+              onChange={(event, newValue) => { alterarTexto(newValue, "busBeneficiadas"); }}
+              getOptionLabel={(option) => option.siglaBu}
               renderOption={(props, option, { selected }) => (
                 <li {...props}>
                   <Checkbox
@@ -699,11 +633,11 @@ const FormularioPropostaProposta = (props) => {
                     style={{ marginRight: 8 }}
                     checked={selected}
                   />
-                  {option.nome}
+                  {option.siglaBu}
                 </li>
               )}
               isOptionEqualToValue={(option, value) => {
-                return option?.id == value?.id;
+                return option?.idBu == value?.idBu;
               }}
               noOptionsText={texts.formularioPropostaProposta.nenhumaBuEncontrada}
               renderInput={(params) => (
@@ -716,24 +650,15 @@ const FormularioPropostaProposta = (props) => {
               )}
             />
           </Box>
-          <Box
-            className="flex"
-            sx={{ marginTop: "15px", marginBottom: "10px" }}
-          >
+          <Box className="flex" sx={{ marginTop: "15px", marginBottom: "10px" }}  >
             <Autocomplete
               sx={{ width: "45%", marginLeft: "3%" }}
               disablePortal
               options={props.listaForuns}
               value={props.dados.forum}
-              onChange={(event, value) => {
-                alterarTexto(value, "forum");
-              }}
-              getOptionLabel={(option) => {
-                return option?.nome || "";
-              }}
-              isOptionEqualToValue={(option, value) => {
-                return option?.id == value?.id;
-              }}
+              onChange={(event, value) => { alterarTexto(value, "forum"); }}
+              getOptionLabel={(option) => { return option?.nome || ""; }}
+              isOptionEqualToValue={(option, value) => { return option?.id == value?.id; }}
               fullWidth
               noOptionsText={texts.formularioPropostaProposta.nenhumForumEncontrado}
               renderInput={(params) => (
@@ -743,11 +668,7 @@ const FormularioPropostaProposta = (props) => {
           </Box>
           <Box>
             <Box className="flex items-center">
-              <Typography
-                fontSize={FontConfig.veryBig}
-                fontWeight="600"
-                color="text.primary"
-              >
+              <Typography fontSize={FontConfig.veryBig} fontWeight="600" color="text.primary" >
                 {texts.formularioPropostaProposta.anexos}:
               </Typography>
               <AddCircleOutlineOutlinedIcon
@@ -778,30 +699,17 @@ const FormularioPropostaProposta = (props) => {
                     }}
                     elevation={0}
                   >
-                    <Typography
-                      sx={{
-                        color: "text.primary",
-                        fontSize: FontConfig.default,
-                      }}
-                    >
+                    <Typography sx={{ color: "text.primary", fontSize: FontConfig.default, }} >
                       {anexo.nome ? anexo.nome : anexo.name}
                     </Typography>
                     <Box className="flex gap-2">
                       <Tooltip title={texts.formularioPropostaProposta.titleBaixar}>
-                        <IconButton
-                          onClick={() => {
-                            baixarAnexo(index);
-                          }}
-                        >
+                        <IconButton onClick={() => { baixarAnexo(index); }}>
                           <DownloadIcon sx={{ color: "text.primary" }} />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title={texts.formularioPropostaProposta.titleRemover}>
-                        <IconButton
-                          onClick={() => {
-                            removerAnexo(index);
-                          }}
-                        >
+                        <IconButton onClick={() => { removerAnexo(index); }} >
                           <CloseIcon sx={{ color: "text.primary" }} />
                         </IconButton>
                       </Tooltip>

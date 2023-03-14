@@ -1,11 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  Menu,
-  MenuItem,
-  Tooltip,
-  IconButton,
-  Typography,
-} from "@mui/material/";
+
+import { Menu, MenuItem, Tooltip, IconButton, Typography, } from "@mui/material/";
 
 import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
@@ -17,6 +12,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import UsuarioService from "../../service/usuarioService";
 import TextLanguage from "../../service/TextLanguage";
 
+// Modal para selecionar o idioma do sistema
 const IdiomaModal = () => {
   useEffect(() => {
     arrangePreferences();

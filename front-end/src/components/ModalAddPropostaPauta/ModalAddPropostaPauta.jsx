@@ -1,27 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import { useNavigate } from "react-router-dom";
 
-import {
-  Modal,
-  Fade,
-  Divider,
-  Typography,
-  Box,
-  Button,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Paper,
-  Select,
-  FormControl,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import { Modal, Fade, Divider, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Paper, Select, FormControl, MenuItem, TextField, } from "@mui/material";
 
 import { red } from "@mui/material/colors";
-
 import CloseIcon from "@mui/icons-material/Close";
+
 import ContainerPauta from "../ContainerPauta/ContainerPauta";
 
 import FontContext from "../../service/FontContext";
@@ -30,7 +14,9 @@ import TemaContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
 import PropostaService from "../../service/propostaService";
 
+// Modal de adicionar uma proposta em uma pauta
 const ModalAddPropostaPauta = (props) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -320,7 +306,7 @@ const ModalAddPropostaPauta = (props) => {
         getIdAnalistaResponsavel(),
         [props.proposta]
       );
-      
+
       PautaService.post(pauta).then((res) => {
         console.log("rse: ", res)
         PropostaService.putWithoutArquivos(

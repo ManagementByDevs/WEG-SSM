@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import { Box, Button, Typography } from "@mui/material";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 import Custos from "../Custos/Custos";
 
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
-
 import CustosService from "../../service/custosService";
 
+// Etapa de criação de proposta para adicionar as tabelas de custos
 const FormularioCustosProposta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -89,15 +90,11 @@ const FormularioCustosProposta = (props) => {
             -
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
-           {texts.formularioCustosProposta.moeda}{valorTotal}
+            {texts.formularioCustosProposta.moeda}{valorTotal}
           </Typography>
         </Box>
         <Button
-          sx={{
-            backgroundColor: "primary.main",
-            color: "text.white",
-            fontSize: FontConfig.default,
-          }}
+          sx={{ backgroundColor: "primary.main", color: "text.white", fontSize: FontConfig.default, }}
           variant="contained"
           disableElevation
           onClick={criarTabelaCusto}

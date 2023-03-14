@@ -1,12 +1,15 @@
 import React, { useContext } from "react";
+
 import { Box } from "@mui/material";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
+
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -38,14 +41,8 @@ const FormularioDadosDemanda = (props) => {
 
   return (
     <>
-      <Box
-        className="flex justify-center items-center"
-        sx={{ height: "45rem" }}
-      >
-        <Box
-          className="w-3/4 flex flex-col justify-evenly"
-          sx={{ height: "85%" }}
-        >
+      <Box className="flex justify-center items-center" sx={{ height: "45rem" }} >
+        <Box className="w-3/4 flex flex-col justify-evenly" sx={{ height: "85%" }} >
 
           {/* Input de título */}
           <InputComLabel
@@ -78,7 +75,7 @@ const FormularioDadosDemanda = (props) => {
             fontConfig={FontConfig.default}
             rows="8"
           />
-          
+
           <Box sx={{ width: "40%" }}>
             {/* Input de frequência */}
             <InputComLabel

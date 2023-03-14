@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
+
 import { Modal, Typography, Box, Divider } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
 
 import ContainerHistorico from "../ContainerHistorico/ContainerHistorico";
+
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 

@@ -12,6 +12,6 @@ public interface ForumRepository extends JpaRepository<Forum, Long> {
      * @param nome
      * @return
      */
-    Boolean existsByNome(String nome);
+    Boolean existsByNomeForum(String nome);
 
 }

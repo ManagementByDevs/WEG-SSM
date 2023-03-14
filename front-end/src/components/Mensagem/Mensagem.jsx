@@ -1,11 +1,14 @@
-import { Box, Typography, Avatar } from "@mui/material";
 import React, { useContext } from "react";
 
-import FontContext from "../../service/FontContext";
+import { Box, Typography, Avatar } from "@mui/material";
 
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
+import FontContext from "../../service/FontContext";
+
+// Componnete para utilizar durante uma mensagem no chat
 const Mensagem = (props) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -16,7 +19,7 @@ const Mensagem = (props) => {
           <Box
             className="flex items-center border py-2 px-4 my-2"
             sx={{
-              backgroundColor: "chat.eu", borderRadius: "10px 10px 0px 10px", maxWidth: "70%", 
+              backgroundColor: "chat.eu", borderRadius: "10px 10px 0px 10px", maxWidth: "70%",
             }}
           >
             <Box className="flex flex-col w-full">
@@ -34,7 +37,7 @@ const Mensagem = (props) => {
                 >
                   {props.usuario.mensagens[props.index].hora}
                 </Typography>
-                <DoneAllIcon fontSize="small" sx={{color: "#FFFF"}}/>
+                <DoneAllIcon fontSize="small" sx={{ color: "#FFFF" }} />
               </Box>
             </Box>
           </Box>
