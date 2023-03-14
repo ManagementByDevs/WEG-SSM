@@ -11,7 +11,7 @@ const InputComLabel = (props) => {
   };
 
   return (
-    <Box sx={{ width: "110%" }}>
+    <Box sx={{ width: "100%" }}>
       <Box className="flex">
 
         {/* Label acima do input */}

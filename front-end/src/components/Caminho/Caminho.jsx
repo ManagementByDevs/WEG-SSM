@@ -10,7 +10,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para mostrar o caminho atual do usuário no sistema
 const Caminho = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -33,7 +32,7 @@ const Caminho = (props) => {
   };
 
   return (
-    <Box className="flex items-center gap-x-1" color="link.main">
+    <Box className="flex items-center gap-x-1" color="link.main" sx={{minWidth:"20rem"}}>
       <Tooltip title={texts.caminho.home}>
         <HomeOutlinedIcon
           className="cursor-pointer"

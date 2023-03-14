@@ -62,11 +62,11 @@ const Beneficios = (props) => {
   return (
     <Box
       className="flex rounded max-h-52 border-2 drop-shadow-md"
-      sx={{ backgroundColor: "background.default", padding: "1%", position: "relative", minWidth: "725px", }}
+      sx={{ backgroundColor: "background.default", padding: "1%", position: "relative", minWidth: "44rem", }}
     >
       <Box className="flex flex-col" sx={{ width: "30%", marginTop: "1%" }}>
         <Box className="" sx={{ width: "100%", margin: "1%" }}>
-          <FormControl sx={{ width: "68%", height: "35%" }}>
+          <FormControl sx={{ width: "70%", height: "35%", minWidth: "12rem" }}>
             <InputLabel
               id="demo-simple-select-label"
               sx={{ margin: "-2px 0 0 0" }}
@@ -125,7 +125,7 @@ const Beneficios = (props) => {
                 </Box>
                 <FormControl
                   variant="filled"
-                  sx={{ margin: "0 0 0 2rem", minWidth: "90px", width: "10%" }}
+                  sx={{ margin: "0 0 0 2%", minWidth: "5rem", width: "10%" }}
                 >
                   <InputLabel id="demo-simple-select-label" sx={{ margin: "-10px 0 0 -5px" }}>
                     <Typography fontSize={FontConfig.default}>{texts.beneficios.moeda}</Typography>

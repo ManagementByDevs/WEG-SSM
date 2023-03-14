@@ -83,7 +83,14 @@ const Home = () => {
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
   // Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado
-  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
+  const [listaFiltros, setListaFiltros] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   // Valores dos checkboxes no modal de ordenação
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
@@ -221,7 +228,11 @@ const Home = () => {
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });
     } else {
-      setParams({ ...params, solicitante: null, departamento: usuario?.departamento, });
+      setParams({
+        ...params,
+        solicitante: null,
+        departamento: usuario?.departamento,
+      });
     }
   };
 
@@ -272,8 +283,7 @@ const Home = () => {
   const stepsTour = [
     {
       selector: "#primeiro",
-      content:
-        texts.home.tourAjuda.barraDePesquisa,
+      content: texts.home.tourAjuda.barraDePesquisa,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -281,8 +291,7 @@ const Home = () => {
     },
     {
       selector: "#segundo",
-      content:
-        texts.home.tourAjuda.iconeOredenar,
+      content: texts.home.tourAjuda.iconeOredenar,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -298,8 +307,7 @@ const Home = () => {
     },
     {
       selector: "#sexto",
-      content:
-        texts.home.tourAjuda.modoVisualizacao,
+      content: texts.home.tourAjuda.modoVisualizacao,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -315,8 +323,7 @@ const Home = () => {
     },
     {
       selector: "#quinto",
-      content:
-        texts.home.tourAjuda.areaDemanda,
+      content: texts.home.tourAjuda.areaDemanda,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -332,8 +339,7 @@ const Home = () => {
     },
     {
       selector: "#setimo",
-      content:
-        texts.home.tourAjuda.botaoMotivo,
+      content: texts.home.tourAjuda.botaoMotivo,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -461,7 +467,11 @@ const Home = () => {
                 <Box
                   id="primeiro"
                   className="flex justify-between items-center border px-3 py-1"
-                  sx={{ backgroundColor: "input.main", width: "50%" }}
+                  sx={{
+                    backgroundColor: "input.main",
+                    width: "50%",
+                    minWidth: "10rem",
+                  }}
                 >
                   {/* Input de pesquisa */}
                   <Box
@@ -531,6 +541,7 @@ const Home = () => {
                         backgroundColor: "primary.main",
                         color: "text.white",
                         fontSize: FontConfig.default,
+                        minWidth: "5rem",
                       }}
                       onClick={abrirModalFiltro}
                       variant="contained"
@@ -560,6 +571,8 @@ const Home = () => {
                   backgroundColor: "primary.main",
                   color: "text.white",
                   fontSize: FontConfig.default,
+                  maxHeight: "2.5rem",
+                  minWidth: "10.5rem",
                 }}
                 variant="contained"
                 disableElevation
@@ -588,7 +601,10 @@ const Home = () => {
                         motivoRecusa: texts.home.esseUmExemploDeDemanda,
                         status: "BACKLOG_EDICAO",
                         data: "10/10/10",
-                        solicitante: { id: 1, nome: texts.home.nomeDoSolicitante },
+                        solicitante: {
+                          id: 1,
+                          nome: texts.home.nomeDoSolicitante,
+                        },
                       }}
                     />
                   ) : (

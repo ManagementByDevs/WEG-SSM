@@ -41,8 +41,8 @@ const FormularioDadosDemanda = (props) => {
 
   return (
     <>
-      <Box className="flex justify-center items-center" sx={{ height: "45rem" }} >
-        <Box className="w-3/4 flex flex-col justify-evenly" sx={{ height: "85%" }} >
+      <Box className="flex justify-center items-center" sx={{ height: "45rem", minWidth: "50rem" }} >
+        <Box className="w-3/4 flex flex-col justify-evenly" sx={{ height: "85%"}} >
 
           {/* Input de título */}
           <InputComLabel

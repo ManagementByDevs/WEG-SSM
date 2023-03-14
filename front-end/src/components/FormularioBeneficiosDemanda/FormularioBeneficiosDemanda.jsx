@@ -12,7 +12,6 @@ import FontContext from "../../service/FontContext";
 
 /** Segunda etapa da criação de demanda, usando uma lista de benefícios dos props */
 const FormularioBeneficiosDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -29,13 +28,30 @@ const FormularioBeneficiosDemanda = (props) => {
 
   // UseEffect que irá atualizar a lista de benefícios a serem salvos (que não foram excluídos)
   useEffect(() => {
-    props.setDados(beneficios?.filter((beneficio) => beneficio.visible === true));
+    props.setDados(
+      beneficios?.filter((beneficio) => beneficio.visible === true)
+    );
   }, [beneficios]);
 
   /** Adiciona um benefício na lista de benefícios, já criando ele no banco de dados para receber um id */
   function adicionarBeneficio() {
-    BeneficioService.post({ tipoBeneficio: "", valor_mensal: "", moeda: "", memoriaCalculo: "", }).then((response) => {
-      setBeneficios([...beneficios, { id: response.id, tipoBeneficio: "", valor_mensal: "", moeda: "", memoriaCalculo: "", visible: true }]);
+    BeneficioService.post({
+      tipoBeneficio: "",
+      valor_mensal: "",
+      moeda: "",
+      memoriaCalculo: "",
+    }).then((response) => {
+      setBeneficios([
+        ...beneficios,
+        {
+          id: response.id,
+          tipoBeneficio: "",
+          valor_mensal: "",
+          moeda: "",
+          memoriaCalculo: "",
+          visible: true,
+        },
+      ]);
     });
   }
 
@@ -57,7 +73,7 @@ const FormularioBeneficiosDemanda = (props) => {
       beneficios.map((beneficio, index) => {
         if (index === desiredIndex) {
           beneficio.visible = false;
-          BeneficioService.delete(beneficio.id).then((response) => { });
+          BeneficioService.delete(beneficio.id).then((response) => {});
         }
         return beneficio;
       })
@@ -66,9 +82,8 @@ const FormularioBeneficiosDemanda = (props) => {
 
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
-      <Box className="w-3/4 flex flex-col" sx={{ height: "85%" }}>
+      <Box className= "flex flex-col" sx={{ height: "85%", width: "48rem" }}>
         <Box>
-
           {/* Botão para adicionar novo benefício */}
           <Button
             className="rounded flex justify-evenly"
@@ -77,20 +92,20 @@ const FormularioBeneficiosDemanda = (props) => {
             disableElevation
             onClick={adicionarBeneficio}
           >
-            <Typography fontSize={FontConfig.default}>{texts.formularioBeneficiosDemanda.adicionar}</Typography>
+            <Typography fontSize={FontConfig.default}>
+              {texts.formularioBeneficiosDemanda.adicionar}
+            </Typography>
             <AddOutlinedIcon />
           </Button>
         </Box>
         <Box
-          className="flex flex-col overflow-auto"
+          className="flex flex-col w-full"
           sx={{
             marginTop: "3%",
             gap: "5%",
-            paddingRight: "20px",
             minHeight: "35rem",
           }}
         >
-
           {/* Lista de benefícios */}
           {beneficios?.map((beneficio, index) => {
             if (beneficio.visible) {
