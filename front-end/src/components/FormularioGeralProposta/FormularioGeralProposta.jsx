@@ -97,11 +97,19 @@ const FormularioGeralProposta = (props) => {
   return (
     <Box className="flex flex-col">
       <Box className="mt-12">
-        <Box className="flex w-full justify-around mb-5 mt-10">
+        <Box
+          className="flex justify-around mb-5 mt-10 "
+          sx={{
+            width: "80%",
+            display: "grid",
+            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))",
+          }}
+        >
           <Box>
             <Box className="flex mb-2">
               <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
-                {texts.formularioGeralProposta.periodoExecucacao}:
+                {texts.formularioGeralProposta.periodoDeExecucao}:
               </Typography>
               <Typography
                 sx={{
@@ -139,7 +147,9 @@ const FormularioGeralProposta = (props) => {
                 />
               </Box>
               <Box>
-                <Typography sx={{ fontSize: FontConfig.big }}>{texts.formularioGeralProposta.a}</Typography>
+                <Typography sx={{ fontSize: FontConfig.big }}>
+                  {texts.formularioGeralProposta.a}
+                </Typography>
               </Box>
               <Box className="ml-5">
                 <Box
@@ -218,9 +228,15 @@ const FormularioGeralProposta = (props) => {
                     })
                   }
                 >
-                  <MenuItem value={"DIAS"}>{texts.formularioGeralProposta.dias}</MenuItem>
-                  <MenuItem value={"SEMANAS"}>{texts.formularioGeralProposta.semanas}</MenuItem>
-                  <MenuItem value={"MESES"}>{texts.formularioGeralProposta.meses}</MenuItem>
+                  <MenuItem value={"DIAS"}>
+                    {texts.formularioGeralProposta.dias}
+                  </MenuItem>
+                  <MenuItem value={"SEMANAS"}>
+                    {texts.formularioGeralProposta.semanas}
+                  </MenuItem>
+                  <MenuItem value={"MESES"}>
+                    {texts.formularioGeralProposta.meses}
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -325,7 +341,11 @@ const FormularioGeralProposta = (props) => {
             >
               *
             </Typography>
-            <Tooltip title={texts.formularioGeralProposta.titleAdicionarNovoResponsavel}>
+            <Tooltip
+              title={
+                texts.formularioGeralProposta.titleAdicionarNovoResponsavel
+              }
+            >
               <AddCircleOutlineOutlinedIcon
                 className="delay-120 hover:scale-110 duration-300"
                 sx={{ color: "primary.main", cursor: "pointer" }}
@@ -366,7 +386,9 @@ const FormularioGeralProposta = (props) => {
                 }}
               >
                 {texts.formularioGeralProposta.anexos}:
-                <Tooltip title={texts.formularioGeralProposta.adicionarNovoAnexo}>
+                <Tooltip
+                  title={texts.formularioGeralProposta.adicionarNovoAnexo}
+                >
                   <AddCircleOutlineOutlinedIcon
                     className="ml-1 delay-120 hover:scale-110 duration-300"
                     sx={{ color: "icon.main", cursor: "pointer" }}
