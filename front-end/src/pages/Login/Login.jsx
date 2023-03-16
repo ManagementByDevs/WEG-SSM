@@ -1,7 +1,17 @@
 import { React, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Paper, TextField, InputAdornment, FormControlLabel, Checkbox, Typography, IconButton } from "@mui/material";
+import {
+  Button,
+  Box,
+  Paper,
+  TextField,
+  InputAdornment,
+  FormControlLabel,
+  Checkbox,
+  Typography,
+  IconButton,
+} from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
@@ -87,7 +97,7 @@ const Login = () => {
   return (
     <FundoComHeader>
       <Paper
-        sx={{ height: "100%" }}
+        sx={{ height: "100%", minWidth: "89rem", minHeight: "48rem" }}
         className="flex justify-center items-center"
       >
         {/* Div Principal com as opções do login */}
@@ -99,9 +109,11 @@ const Login = () => {
           }}
           className=" "
         >
-          <div className="w-full h-full border-t-12 border-[#00579D] rounded shadow-2xl flex flex-col items-center justify-center space-y-10">
-            {/* Logo WEG */}
-            <img className="w-3/12" src={LogoWeg}></img>
+          <Box className="w-full h-full border-t-12 border-[#00579D] rounded shadow-2xl flex flex-col items-center justify-center space-y-10">
+            <Box>
+              {/* Logo WEG */}
+              <img className="w-36" src={LogoWeg}></img>
+            </Box>
             {/* Input de texto do email do usuário */}
             <TextField
               value={dados.email}
@@ -198,7 +210,7 @@ const Login = () => {
                 mensagem={texts.login.feedback.preenchaTodosOsCampos}
               />
             )}
-          </div>
+          </Box>
         </Paper>
       </Paper>
     </FundoComHeader>

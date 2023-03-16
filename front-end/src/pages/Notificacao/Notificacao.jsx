@@ -248,7 +248,7 @@ const Notificacao = () => {
         textoBotao={"sim"}
       />
 
-      <Box className="p-2">
+      <Box className="p-2" sx={{minWidth: "40rem"}}>
         <Caminho />
         <Box className="w-full flex flex-col items-center">
           <Box className="w-full flex justify-center m-2">
