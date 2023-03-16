@@ -96,11 +96,11 @@ const FormularioGeralProposta = (props) => {
 
   return (
     <Box className="flex flex-col">
-      <Box className="mt-12">
+      <Box className="mt-12" sx={{minWidth:"55rem"}}>
         <Box
           className="flex justify-around mb-5 mt-10 "
           sx={{
-            width: "80%",
+            marginLeft: "6.1rem",
             display: "grid",
             gap: "1rem",
             gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))",
@@ -262,7 +262,7 @@ const FormularioGeralProposta = (props) => {
                 color="text.primary"
                 className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
                 sx={{
-                  width: "100%;",
+                  width: "90%;",
                   height: "30px",
                   backgroundColor: "background.default",
                   borderLeftColor: "primary.main",
