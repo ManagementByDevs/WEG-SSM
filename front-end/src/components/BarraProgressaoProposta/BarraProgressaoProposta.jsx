@@ -421,7 +421,7 @@ const BarraProgressaoProposta = (props) => {
 
   return (
     <>
-      <Stepper activeStep={activeStep}>
+      <Stepper activeStep={activeStep} sx={{minWidth: "60rem"}}>
         {etapasProposta.map((label, index) => {
           const stepProps = {};
           const labelProps = {};

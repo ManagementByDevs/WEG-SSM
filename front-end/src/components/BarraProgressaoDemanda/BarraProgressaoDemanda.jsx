@@ -323,7 +323,7 @@ const BarraProgressaoDemanda = () => {
   return (
     <>
       {/* Stepper utilizado para os passos da criação e a barra de progressão */}
-      <Stepper activeStep={etapaAtiva}>
+      <Stepper activeStep={etapaAtiva} sx={{ minWidth: "50rem" }}>
         {steps.map((label, index) => {
           return (
             <Step key={label}>
@@ -340,10 +340,12 @@ const BarraProgressaoDemanda = () => {
         <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
       )}
       {etapaAtiva == 1 && (
-        <FormularioBeneficiosDemanda
-          dados={paginaBeneficios}
-          setDados={setPaginaBeneficios}
-        />
+        <Box className="w-full" sx={{minWidth: "50rem"}}> 
+          <FormularioBeneficiosDemanda
+            dados={paginaBeneficios}
+            setDados={setPaginaBeneficios}
+          />
+        </Box>
       )}
       {etapaAtiva == 2 && (
         <FormularioAnexosDemanda

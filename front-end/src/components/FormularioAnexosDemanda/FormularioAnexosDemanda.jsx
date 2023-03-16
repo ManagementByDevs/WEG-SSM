@@ -77,7 +77,7 @@ const FormularioAnexosDemanda = (props) => {
   };
 
   return (
-    <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
+    <Box className="flex justify-center items-center" sx={{ height: "45rem", minWidth:"50.5rem" }}>
       {/* Caixa de seleção */}
       <Box
         ref={areaArquivos}

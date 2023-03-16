@@ -48,7 +48,7 @@ const Caminho = (props) => {
   };
 
   return (
-    <Box className="flex items-center gap-x-1" color="link.main">
+    <Box className="flex items-center gap-x-1" color="link.main" sx={{minWidth:"20rem"}}>
       <Tooltip title={texts.caminho.home}>
         <HomeOutlinedIcon
           className="cursor-pointer"

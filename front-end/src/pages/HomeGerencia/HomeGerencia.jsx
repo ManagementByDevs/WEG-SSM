@@ -943,7 +943,11 @@ const HomeGerencia = () => {
           <TabContext value={value}>
             <Box
               className="relative mb-4"
-              sx={{ borderBottom: 1, borderColor: "divider.main" }}
+              sx={{
+                borderBottom: 1,
+                borderColor: "divider.main",
+                minWidth: "37rem",
+              }}
             >
               <TabList
                 onChange={handleChange}
@@ -1033,7 +1037,11 @@ const HomeGerencia = () => {
                 {/* Input de pesquisa */}
                 <Box
                   className="flex justify-between items-center border px-3 py-1"
-                  sx={{ backgroundColor: "input.main", width: "50%" }}
+                  sx={{
+                    backgroundColor: "input.main",
+                    width: "50%",
+                    minWidth: "10rem",
+                  }}
                   id="primeiroDemandas"
                 >
                   {/* Input de pesquisa */}
@@ -1110,6 +1118,7 @@ const HomeGerencia = () => {
                       backgroundColor: "primary.main",
                       color: "text.white",
                       fontSize: FontConfig.default,
+                      minWidth: "5rem",
                     }}
                     onClick={abrirModalFiltro}
                     variant="contained"
@@ -1147,6 +1156,7 @@ const HomeGerencia = () => {
                     backgroundColor: "primary.main",
                     color: "text.white",
                     fontSize: FontConfig.default,
+                    minWidth: "6rem",
                   }}
                   onClick={exportarExcel}
                   variant="contained"
@@ -1164,6 +1174,8 @@ const HomeGerencia = () => {
                   backgroundColor: "primary.main",
                   color: "text.white",
                   fontSize: FontConfig.default,
+                  maxHeight: "2.5rem",
+                  minWidth: "10.5rem",
                 }}
                 variant="contained"
                 disableElevation
