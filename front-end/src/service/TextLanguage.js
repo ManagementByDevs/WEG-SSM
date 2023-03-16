@@ -28,7 +28,7 @@ const TextLanguage = (linguagem) => {
             potencial: "Potencial",
             qualitativo: "Qualitativo",
             valorMensal: "Valor Mensal",
-            exemploValorMensal: "Ex: 1000,00",
+            exemploValorMensal: "Ex: 1000.00",
             moeda: "Moeda",
             memoriaCalculo: "Memória de cálculo",
             digiteMemoriaCalculo: "Digite a memória de cálculo...",
@@ -678,7 +678,20 @@ const TextLanguage = (linguagem) => {
             adicionar: "Adicionar",
             numSequencial: "Nº Sequencial",
             essaPropostaJaSeEncontraEmUmaPauta: "Essa proposta já se encontra em uma pauta!",
-        }
+        },
+        rotas: [
+            "Login",
+            "Criar demanda",
+            "Notificacao",
+            "Chat",
+            "Detalhes demanda",
+            "Editar escopo",
+            "Escopos",
+            "Criar proposta",
+            "Detalhes proposta",
+            "Detalhes ata",
+            "Detalhes pauta",
+          ]
 
     } : linguagem == "en" ? {
         linguagem: "en",
@@ -709,7 +722,7 @@ const TextLanguage = (linguagem) => {
             potencial: "Potential",
             qualitativo: "Qualitative",
             valorMensal: "Monthly Value",
-            exemploValorMensal: "E.g: 1000,00",
+            exemploValorMensal: "E.g: 1000.00",
             moeda: "Currency",
             memoriaCalculo: "Calculation memory",
             digiteMemoriaCalculo: "Enter the calculation memory...",
@@ -1345,7 +1358,20 @@ const TextLanguage = (linguagem) => {
             adicionar: "Add",
             numSequencial: "Seq. Number",
             essaPropostaJaSeEncontraEmUmaPauta: "This proposal is already in a minute!",
-        }
+        },
+        rotas: [
+            "Login",
+            "Create demand",
+            "Notifications",
+            "Chat",
+            "Demand",
+            "Edit Scope",
+            "Scopes",
+            "Create proposal",
+            "Proposal details",
+            "Guideline details",
+            "Minute details",
+          ]
     } : linguagem == "ch" ? {
         linguagem: "ch",
         ajuda: {
@@ -1375,7 +1401,7 @@ const TextLanguage = (linguagem) => {
             potencial: "潜在",
             qualitativo: "定性",
             valorMensal: "每月价值",
-            exemploValorMensal: "例如：1000,00",
+            exemploValorMensal: "例如：1000.00",
             moeda: "货币",
             memoriaCalculo: "计算记忆",
             digiteMemoriaCalculo: "输入计算记忆...",
@@ -2009,8 +2035,22 @@ const TextLanguage = (linguagem) => {
             adicionar: "添加",
             numSequencial: "序号",
             essaPropostaJaSeEncontraEmUmaPauta: "该提案已在会议记录中！",
-        }
+        },
+        rotas: [
+            "登录",
+            "创造需求",
+            "通知",
+            "聊天",
+            "Demand",
+            "编辑范围",
+            "范围",
+            "创建提案",
+            "提案详情",
+            "指南详情",
+            "分钟细节",
+          ]
     } : linguagem == "es" ?{
+        linguagem: "es",
         ajuda: {
             ajuda: "Ayuda",
         },
@@ -2038,7 +2078,7 @@ const TextLanguage = (linguagem) => {
             potencial: "Potencial",
             qualitativo: "Cualitativo",
             valorMensal: "Valor Mensual",
-            exemploValorMensal: "Ej: 1000,00",
+            exemploValorMensal: "Ej: 1000.00",
             moeda: "Moneda",
             memoriaCalculo: "Memoria de cálculo",
             digiteMemoriaCalculo: "Escribe la memoria de cálculo...",
@@ -2684,7 +2724,20 @@ const TextLanguage = (linguagem) => {
             adicionar: "Agregar",
             numSequencial: "Nº Secuencial",
             essaPropostaJaSeEncontraEmUmaPauta: "¡Esta propuesta ya se encuentra en una pauta!",
-        }
+        },
+        rotas: [
+            "Login",
+            "Crear demanda",
+            "Notificaciones",
+            "Chat",
+            "Demanda",
+            "Editar alcance",
+            "Ámbitos",
+            "Crear propuesta",
+            "Detalles de la propuesta",
+            "Detalles de la guía",
+            "Detalles del minuto",
+          ]
     } : null;
 }
 

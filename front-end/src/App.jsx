@@ -92,7 +92,7 @@ const App = () => {
                     element={<DetalhesDemandaPagina />}
                   />
                   <Route path="/editar-escopo" element={<EditarEscopo />} />
-                  <Route path="escopos" element={<Escopos />} />
+                  <Route path="/escopos" element={<Escopos />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
                 <Route
