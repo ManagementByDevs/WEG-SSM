@@ -493,7 +493,7 @@ const TextLanguage = (linguagem) => {
             proximo: "Próximo",
             navegacao: "Navegação",
             criarAta: "Criar Ata",
-            comissao: "Comissão",
+            comissao: "Comission",
             reuniaoDoForum: "Reunião do fórum",
             reuniaoDaDG: "Reunião da DG",
         },
@@ -1182,6 +1182,12 @@ const TextLanguage = (linguagem) => {
             proximo: "Next",
             navegacao: "Navigation",
             criarAta: "Create Minutes",
+            comissao: "Comission",
+            reuniaoDoForum: "Forum meeting",
+            reuniaoDaDG: "DG meeting",
+        },
+        detalhesPropostaPagina: {
+            adicionarAPauta: "Add to Minute",
         },
         escopos: {
             tour: {
@@ -1860,6 +1866,12 @@ const TextLanguage = (linguagem) => {
             proximo: "下一个",
             navegacao: "导航",
             criarAta: "创建会议记录",
+            comissao: "佣金",
+            reuniaoDoForum: "论坛会议",
+            reuniaoDaDG: "总干事会议",
+        },
+        detalhesPropostaPagina: {
+            adicionarAPauta: "Add to Minute",
         },
         escopos: {
             tour: {
@@ -2542,6 +2554,9 @@ const TextLanguage = (linguagem) => {
             proximo: "Siguiente",
             navegacao: "Navegación",
             criarAta: "Crear Ata",
+            comissao: "Comisión",
+            reuniaoDoForum: "Reunión del foro",
+            reuniaoDaDG: "reunión del DG",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Agregar a la pauta",

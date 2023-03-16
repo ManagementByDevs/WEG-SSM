@@ -16,7 +16,7 @@ const FormularioCustosProposta = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   /** Função usada para excluir uma tabela de custos */
   const deletarTabelaCustos = (index) => {

@@ -13,7 +13,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 const LinhaTabelaCCs = (props) => {
 
   // Context que contém os textos do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -37,7 +37,7 @@ const LinhaTabelaCCs = (props) => {
     <TableRow className="border-b">
       <td align="center" className="pb-5 relative">
         <Box className="flex w-full justify-end absolute" sx={{ width: "98%" }}>
-          <Tooltip title={texts.LinhaTabelaCCs.titleExcluirLinha}>
+          <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
             <DeleteOutlineOutlinedIcon
               fontSize="medium"
               className="mt-1 delay-120 hover:scale-110 duration-300"
