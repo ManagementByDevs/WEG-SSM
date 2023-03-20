@@ -385,7 +385,7 @@ const TextLanguageContext = createContext({
       analistaResponsavel: "Anal. Resp.",
       deletar: "Deletar",
       data: "Data",
-      nadaEncontrados: "Nada encontrado",
+      nadaEncontrado: "Nada encontrado",
       tenteNovamenteMaisTarde: "Tente novamente mais tarde",
     },
     propostaDeAta: {

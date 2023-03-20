@@ -108,8 +108,6 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
   // UseState para as informações do parecer da comissão
   const [parecerDGInformacoes, setParecerDGInformacoes] = useState("");
 
-  console.log("proposta: ", proposta);
-
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
     const file = anexo;
@@ -154,7 +152,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
               fontWeight="bold"
               fontSize={FontConfig.big}
             >
-              {texts.detalhesProposta.ppm} {proposta.codigoPPM}
+              {texts.detalhesProposta.ppm} {proposta.codigoPPM}{" "}
             </Typography>
             <Typography
               color="primary"
@@ -165,6 +163,17 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
               {DateService.getTodaysDateUSFormat(
                 DateService.getDateByMySQLFormat(proposta.data)
               )}
+            </Typography>
+            <Typography
+              color="primary"
+              fontWeight="bold"
+              fontSize={FontConfig.big}
+            >
+              {proposta.publicada != null
+                ? proposta.publicada
+                  ? texts.detalhesProposta.publicada.toUpperCase()
+                  : texts.detalhesProposta.naoPublicada.toUpperCase()
+                : ""}
             </Typography>
           </Box>
           <Box className="w-16">
@@ -772,7 +781,7 @@ const ParecerComissao = ({
   parecerComissaoInformacoes = "",
   setParecerComissaoInformacoes = () => {},
 }) => {
-  if (proposta.status == "ASSESSMENT_APROVACAO")
+  if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
       <ParecerComissaoInsertText
         proposta={proposta}
@@ -793,7 +802,7 @@ const ParecerDG = ({
   parecerDGInformacoes = "",
   setParecerDGInformacoes = () => {},
 }) => {
-  if (proposta.status == "ASSESSMENT_APROVACAO")
+  if (proposta.status == "ASSESSMENT_DG")
     return (
       <ParecerDGInsertText
         proposta={proposta}

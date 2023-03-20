@@ -325,7 +325,7 @@ const ModalAddPropostaPauta = (props) => {
         console.log("preencha todos os campos para performar essa ação");
         return;
       }
-      
+
       pauta = PautaService.createPautaObjectWithPropostas(
         numSequencial,
         inputDataReuniao,
@@ -333,11 +333,15 @@ const ModalAddPropostaPauta = (props) => {
         getIdAnalistaResponsavel(),
         [props.proposta]
       );
-      
+
       PautaService.post(pauta).then((res) => {
         console.log("rse: ", res);
         PropostaService.putWithoutArquivos(
-          { ...props.proposta, publicada: check[0] },
+          {
+            ...props.proposta,
+            publicada: check[0],
+            status: "ASSESSMENT_COMISSAO",
+          },
           props.proposta.id
         ).then((res) => {
           console.log("Pauta criada com sucesso! res: ", res);
@@ -353,7 +357,11 @@ const ModalAddPropostaPauta = (props) => {
       pauta.propostas.push(props.proposta);
       PautaService.put(pauta).then((res) => {
         PropostaService.putWithoutArquivos(
-          { ...props.proposta, publicada: check[0] },
+          {
+            ...props.proposta,
+            publicada: check[0],
+            status: "ASSESSMENT_COMISSAO",
+          },
           props.proposta.id
         ).then((res) => {
           console.log("Pauta atualizada com sucesso! res: ", res);
@@ -400,7 +408,12 @@ const ModalAddPropostaPauta = (props) => {
   };
 
   return (
-    <Modal open={open} onClose={handleClose} closeAfterTransition sx={{minWidth: "40rem"}}>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+      sx={{ minWidth: "40rem" }}
+    >
       <Fade in={open}>
         {/* Início conteúdo modal */}
         <Box sx={cssModal}>

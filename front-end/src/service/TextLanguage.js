@@ -285,6 +285,7 @@ const TextLanguage = (linguagem) => {
                 aceitarDemanda: "Deseja aceitar a demanda?",
                 confirmarExclusao: "Tem certeza que deseja excluir?",
                 fecharChat: "Deseja realmente fechar este chat?",
+                tirarPropostaDePauta: "Deseja realmente tirar a proposta da pauta?",
             },
             mensagensBotao: {
                 sim: "Sim",
@@ -383,7 +384,7 @@ const TextLanguage = (linguagem) => {
             analistaResponsavel: "Anal. Resp.",
             deletar: "Deletar",
             data: "Data",
-            nadaEncontrados: "Nada encontrado",
+            nadaEncontrado: "Nada encontrado",
             tenteNovamenteMaisTarde: "Tente novamente mais tarde",
         },
         propostaDeAta: {
@@ -666,6 +667,8 @@ const TextLanguage = (linguagem) => {
             direcaoGeral: "Direção Geral",
             semInformacoesAdicionais: "Sem informações adicionais",
             semParecer: "Sem parecer",
+            publicada: "Publicada",
+            naoPublicada: "Não publicada",
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "Selecione a pauta",
@@ -978,6 +981,7 @@ const TextLanguage = (linguagem) => {
                 aceitarDemanda: "Do you want to accept the demand?",
                 confirmarExclusao: "Are you sure you want to delete?",
                 fecharChat: "Do you really want to close this chat?",
+                tirarPropostaDePauta: "Do you really want to remove the proposal from the minute?",
             },
             mensagensBotao: {
                 sim: "Yes",
@@ -1075,7 +1079,7 @@ const TextLanguage = (linguagem) => {
             analistaResponsavel: "Respon. Anal.",
             deletar: "Delete",
             data: "Date",
-            nadaEncontrados: "Nothing found",
+            nadaEncontrado: "Nothing found",
             tenteNovamenteMaisTarde: "Try again later",
         },
         propostaDeAta: {
@@ -1354,6 +1358,8 @@ const TextLanguage = (linguagem) => {
             devolvido: "Returned",
             businessCase: "Business Case",
             parecer: "Opinion",
+            publicada: "Published",
+            naoPublicada: "Not published",
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "Select a minute",
@@ -1664,6 +1670,7 @@ const TextLanguage = (linguagem) => {
                 aceitarDemanda: "您想要接受需求吗？",
                 confirmarExclusao: "您确定要删除吗？",
                 fecharChat: "您真的想要关闭这个聊天吗？",
+                tirarPropostaDePauta: "您真的要从议程中删除该提案吗",
             },
             mensagensBotao: {
                 sim: "是",
@@ -1761,7 +1768,7 @@ const TextLanguage = (linguagem) => {
             analistaResponsavel: "负责分析师",
             deletar: "删除",
             data: "日期",
-            nadaEncontrados: "没有找到",
+            nadaEncontrado: "没有找到",
             tenteNovamenteMaisTarde: "稍后再试",
         },
         propostaDeAta: {
@@ -2039,6 +2046,8 @@ const TextLanguage = (linguagem) => {
             devolvido: "退回",
             businessCase: "商业案例",
             parecer: "意见",
+            publicada: "发表",
+            naoPublicada: "未发表",
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "选择会议记录",
@@ -2353,6 +2362,7 @@ const TextLanguage = (linguagem) => {
                 aceitarDemanda: "¿Desea aceptar la demanda?",
                 confirmarExclusao: "¿Está seguro de que desea eliminar?",
                 fecharChat: "¿Desea realmente cerrar este chat?",
+                tirarPropostaDePauta: "¿De verdad quieres quitar la propuesta del minuto?",
             },
             mensagensBotao: {
                 sim: "Sí",
@@ -2450,7 +2460,7 @@ const TextLanguage = (linguagem) => {
             analistaResponsavel: "Analista responsable",
             deletar: "Eliminar",
             data: "Data",
-            nadaEncontrados: "Nada encontrado",
+            nadaEncontrado: "Nada encontrado",
             tenteNovamenteMaisTarde: "Tente novamente mais tarde",
         },
         propostaDeAta: {
@@ -2733,6 +2743,8 @@ const TextLanguage = (linguagem) => {
             direcaoGeral: "Dirección General",
             semInformacoesAdicionais: "Sin información adicional",
             semParecer: "Sin parecer",
+            publicada: "Publicada",
+            naoPublicada: "No publicado",
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "Seleccione la pauta",

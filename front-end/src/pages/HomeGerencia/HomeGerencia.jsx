@@ -760,7 +760,7 @@ const HomeGerencia = () => {
   // Função para exportar para excel
   const exportarExcel = () => {
     let listaObjetosString = [];
-    
+
     for (const object in listaItens) {
       listaObjetosString.push(JSON.stringify(listaItens[object]));
     }
@@ -777,6 +777,25 @@ const HomeGerencia = () => {
 
   // Função que deleta uma pauta
   const deletePauta = () => {
+    // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
+    for (let propostaAux of pautaSelecionada.propostas) {
+      propostaAux.publicada = null;
+      propostaAux.status = "ASSESSMENT_APROVACAO";
+      propostaAux.parecerInformacao = null;
+      propostaAux.parecerComissao = null;
+      propostaAux.parecerDG = null;
+
+      PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
+        (newProposta) => {
+          console.log(
+            "Proposta de id " + newProposta.id + " atualizada com sucesso! ",
+            newProposta
+          );
+        }
+      );
+    }
+
+    // Deleta a pauta
     PautaService.delete(pautaSelecionada.id).then((res) => {
       console.log("Pauta deletada com sucesso! ", res);
       setPautaSelecionada(null);
@@ -1232,7 +1251,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1249,7 +1268,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{

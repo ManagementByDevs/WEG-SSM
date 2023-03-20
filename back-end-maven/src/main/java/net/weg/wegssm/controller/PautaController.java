@@ -73,7 +73,7 @@ public class PautaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pauta com este id.");
         }
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(pautaService.findById(id).get());
     }
 
     /**
