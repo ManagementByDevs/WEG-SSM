@@ -12,7 +12,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -85,6 +84,7 @@ const DemandaGerencia = (props) => {
               fontSize={FontConfig.veryBig}
               fontWeight="600"
               className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
+              title={props.dados.titulo}
             >
               {tipo === "proposta" && (
                 <Typography
@@ -163,8 +163,12 @@ const DemandaGerencia = (props) => {
                 className="flex flex-col"
                 sx={{ width: "24rem", height: "100%" }}
               >
-                <Box className="flex" sx={{ width: "24rem" }}>
-                  <Typography fontSize={FontConfig.default} fontWeight="600">
+                <Box className="flex" sx={{ width: "80%" }}>
+                  <Typography
+                    className="overflow-hidden truncate"
+                    fontSize={FontConfig.default}
+                    fontWeight="600"
+                  >
                     {texts.demandaGerencia.analistaResponsavel}:
                   </Typography>
                   <Typography
@@ -182,7 +186,11 @@ const DemandaGerencia = (props) => {
                   </Typography>
                 </Box>
                 <Box className="flex" sx={{ width: "24rem" }}>
-                  <Typography fontSize={FontConfig.default} fontWeight="600">
+                  <Typography
+                    className="overflow-hidden truncate"
+                    fontSize={FontConfig.default}
+                    fontWeight="600"
+                  >
                     {texts.demandaGerencia.gerenteResponsavel}:
                   </Typography>
                   <Typography
