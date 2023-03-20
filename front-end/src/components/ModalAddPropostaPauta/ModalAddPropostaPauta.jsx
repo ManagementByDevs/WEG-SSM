@@ -373,7 +373,7 @@ const ModalAddPropostaPauta = (props) => {
   };
 
   return (
-    <Modal open={open} onClose={handleClose} closeAfterTransition>
+    <Modal open={open} onClose={handleClose} closeAfterTransition sx={{minWidth: "40rem"}}>
       <Fade in={open}>
         {/* Início conteúdo modal */}
         <Box sx={cssModal}>
