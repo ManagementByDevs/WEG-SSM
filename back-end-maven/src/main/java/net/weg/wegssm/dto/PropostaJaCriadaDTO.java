@@ -3,7 +3,6 @@ package net.weg.wegssm.dto;
 import lombok.Data;
 import net.weg.wegssm.model.entities.*;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

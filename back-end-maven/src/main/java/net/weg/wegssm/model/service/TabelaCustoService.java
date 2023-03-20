@@ -5,6 +5,7 @@ import net.weg.wegssm.repository.TabelaCustoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TabelaCustoService {
@@ -29,5 +30,9 @@ public class TabelaCustoService {
 
     public void deleteById(Long id) {
         tabelaCustoRepository.deleteById(id);
+    }
+
+    public Optional<TabelaCusto> findById(Long aLong) {
+        return tabelaCustoRepository.findById(aLong);
     }
 }

@@ -678,6 +678,8 @@ const TextLanguage = (linguagem) => {
             adicionar: "Adicionar",
             numSequencial: "Nº Sequencial",
             essaPropostaJaSeEncontraEmUmaPauta: "Essa proposta já se encontra em uma pauta!",
+            nenhumaPautaEncontrada: "Nenhuma pauta encontrada!",
+            pfvCrieUmaNova: "Por favor, crie uma nova",
         },
         rotas: [
             "Login",
@@ -1364,6 +1366,8 @@ const TextLanguage = (linguagem) => {
             adicionar: "Add",
             numSequencial: "Seq. Number",
             essaPropostaJaSeEncontraEmUmaPauta: "This proposal is already in a minute!",
+            nenhumaPautaEncontrada: "No minutes found!",
+            pfvCrieUmaNova: "Please, create a new",
         },
         rotas: [
             "Login",
@@ -2047,6 +2051,8 @@ const TextLanguage = (linguagem) => {
             adicionar: "添加",
             numSequencial: "序号",
             essaPropostaJaSeEncontraEmUmaPauta: "该提案已在会议记录中！",
+            nenhumaPautaEncontrada: "找不到分钟!",
+            pfvCrieUmaNova: "请创建一个新的",
         },
         rotas: [
             "登录",
@@ -2739,6 +2745,8 @@ const TextLanguage = (linguagem) => {
             adicionar: "Agregar",
             numSequencial: "Nº Secuencial",
             essaPropostaJaSeEncontraEmUmaPauta: "¡Esta propuesta ya se encuentra en una pauta!",
+            nenhumaPautaEncontrada: "No se encontraron minutos!",
+            pfvCrieUmaNova: "Por favor, crea uno nuevo",
         },
         rotas: [
             "Login",

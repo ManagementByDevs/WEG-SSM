@@ -4007,11 +4007,13 @@ public class PropostaController {
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
 
+        System.out.println("proposta: " + proposta.toString());
+
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
 
         for (Beneficio beneficio : proposta.getBeneficios()) {
-            beneficioService.save(beneficio);
+            beneficioService.save(beneficioService.findById(beneficio.getId()).get());
         }
 
         Demanda demanda = proposta.getDemanda();
@@ -4023,17 +4025,19 @@ public class PropostaController {
         demandaService.save(proposta.getDemanda());
 
         for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
-            responsavelNegocioService.save(responsavelNegocio);
+            responsavelNegocioService.save(responsavelNegocioService.findById(responsavelNegocio.getId()).get());
         }
 
         for (TabelaCusto tabelaCusto : proposta.getTabelaCustos()) {
-            for (Custo custo : tabelaCusto.getCustos()) {
+            TabelaCusto tabelaCustoAux = tabelaCustoService.findById(tabelaCusto.getId()).get();
+
+            for (Custo custo : tabelaCustoAux.getCustos()) {
                 custoService.save(custo);
             }
-            for (CC cc : tabelaCusto.getCcs()) {
+            for (CC cc : tabelaCustoAux.getCcs()) {
                 ccsService.save(cc);
             }
-            tabelaCustoService.save(tabelaCusto);
+            tabelaCustoService.save(tabelaCustoAux);
         }
 
         List<Anexo> listaAnexos = new ArrayList<>();

@@ -54,7 +54,7 @@ class PautaService {
     return {
       numeroSequencial,
       dataReuniao,
-      comissao,
+      comissao: { idForum: comissao.idForum },
       analistaResponsavel: { id: idAnalistaResponsavel },
       propostas,
     };

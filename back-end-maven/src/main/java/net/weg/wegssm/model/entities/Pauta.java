@@ -27,8 +27,9 @@ public class Pauta {
     @Column(nullable = false)
     private Date dataReuniao;
 
-    @Column(nullable = false, length = 100)
-    private String comissao;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "comissao_id")
+    private Forum comissao;
 
     @ManyToOne
     @JoinColumn(name = "analista_id")

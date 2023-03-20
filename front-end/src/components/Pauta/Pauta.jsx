@@ -38,6 +38,8 @@ const Pautas = (props) => {
     );
   };
 
+  console.log("props. dados: ", props.dados);
+
   return (
     <Paper
       onClick={() => props.onItemClick(props.dados)}
@@ -73,10 +75,7 @@ const Pautas = (props) => {
               fontWeight="600"
               sx={{ color: "text.secondary", marginLeft: "5px" }}
             >
-              {getHorasFormatado(
-                props.dados.inicioDataReuniao,
-                props.dados.fimDataReuniao
-              )}
+              {getDataFormatada(props.dados.dataReuniao)}
             </Typography>
           )}
           {props.tipo === "pauta" && (
@@ -113,7 +112,7 @@ const Pautas = (props) => {
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px" }}
         >
-          {props.dados.comissao}
+          {props.dados.comissao.siglaForum} - {props.dados.comissao.nomeForum}
         </Typography>
       </Box>
       <Box className="flex items-center">

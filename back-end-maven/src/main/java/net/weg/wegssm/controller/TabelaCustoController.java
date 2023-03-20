@@ -32,6 +32,11 @@ public class TabelaCustoController {
         return ResponseEntity.status(HttpStatus.OK).body(tabelaCustoService.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TabelaCusto> findById(@RequestParam(value = "id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(tabelaCustoService.findById(id).get());
+    }
+
     @PostMapping
     public ResponseEntity<TabelaCusto> save(@RequestBody @Valid TabelaCustoDTO tabelaCustoDTO) {
         for (Custo custo : tabelaCustoDTO.getCustos()) {
