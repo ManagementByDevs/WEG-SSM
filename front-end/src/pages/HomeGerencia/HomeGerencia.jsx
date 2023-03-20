@@ -759,8 +759,13 @@ const HomeGerencia = () => {
 
   // Função para exportar para excel
   const exportarExcel = () => {
-    console.log(listaItens);
-    ExportExcelService.exportExcel(listaItens).then((response) => {
+    let listaObjetosString = [];
+    
+    for (const object in listaItens) {
+      listaObjetosString.push(JSON.stringify(listaItens[object]));
+    }
+
+    ExportExcelService.exportExcel(listaObjetosString).then((response) => {
       let blob = new Blob([response], { type: "application/excel" });
       let url = URL.createObjectURL(blob);
       let link = document.createElement("a");
@@ -1227,7 +1232,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1244,7 +1249,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{

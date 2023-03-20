@@ -1,8 +1,7 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.model.entities.Beneficio;
-import net.weg.wegssm.model.entities.Demanda;
+import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.DemandaService;
 import net.weg.wegssm.util.DemandaUtil;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -34,16 +33,21 @@ public class ExcelExportController {
 
         DemandaUtil demandaUtil = new DemandaUtil();
         ArrayList<Demanda> listDemandas = new ArrayList<>();
+        SecaoTI secaoTI = new SecaoTI();
+
+        secaoTI.setNomeSecao("nome");
+        secaoTI.setSiglaSecao("n");
 
         for (int i = 0; i < listaDemandas.size(); i++) {
             String demandaJSON = listaDemandas.get(i);
-            Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
+            Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
+            demanda.setSecaoTI(secaoTI);
             listDemandas.add(demanda);
         }
 
         // Cria um workbook do Excel e uma planilha
 
-        System.out.println("Pegou a lista: " + listDemandas);
+        System.out.println("Pegou a lista: " + listDemandas.get(1).getSecaoTI().getNomeSecao());
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Demandas");
@@ -105,6 +109,17 @@ public class ExcelExportController {
             row.createCell(5).setCellValue(demanda.getFrequencia());
             row.createCell(6).setCellValue(demanda.getTamanho());
             row.createCell(7).setCellValue(demanda.getSecaoTI().getNomeSecao());
+//            row.createCell(8).setCellValue(demanda.getBuSolicitante().getNomeBu());
+
+//            for(Bu bu : demanda.getBusBeneficiadas()){
+//                row.createCell(9).setCellValue(" - " + bu.getNomeBu());
+//            }
+
+//            row.createCell(10).setCellValue(demanda.getForum().getNomeForum());
+
+            for(Anexo anexo : demanda.getAnexo()){
+                row.createCell(11).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
+            }
 
             sheet.autoSizeColumn(1);
             sheet.autoSizeColumn(2);
