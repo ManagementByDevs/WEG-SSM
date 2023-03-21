@@ -65,24 +65,23 @@ const Login = () => {
    */
   const fazerLogin = async () => {
     if (dados.email && dados.senha) {
-      // UsuarioService.login(dados.email, dados.senha).then((e) => {
-      //   if (e != null && e != "") {
-      //     // Salvar token recebido no localstorage
-      //     localStorage.setItem("usuarioId", e.id);
-      //     localStorage.setItem("user", JSON.stringify(e));
-      //     navigate("/");
-      //   } else {
-      //     // Abrir modal de feedback de usuário ou senha inválidos
-      //     setOpenFeedbackDadosInvalidos(true);
-      //     setDadosInvalidos(true);
-      //   }
-      // });
-      try {
-        const response = await AutenticacaoService.login(dados);
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
+      UsuarioService.login(dados.email, dados.senha).then((e) => {
+        if (e != null && e != "") {
+          // Salvar token recebido no localstorage
+          localStorage.setItem("usuarioId", e.id);
+          localStorage.setItem("user", JSON.stringify(e));
+          navigate("/");
+        } else {
+          // Abrir modal de feedback de usuário ou senha inválidos
+          setDadosInvalidos(true);
+        }
+      });
+      // try {
+      //   const response = await AutenticacaoService.login(dados);
+      //   console.log(response);
+      // } catch (error) {
+      //   console.log(error);
+      // }
     } else {
       // Abrir modal de feedback de dados não preenchidos
       setDadosFaltantes(true);

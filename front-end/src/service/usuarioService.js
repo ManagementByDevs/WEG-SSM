@@ -14,12 +14,7 @@ class UsuarioService {
    */
 
   async login(email, senha) {
-    const usuarioJson = {
-      email: email,
-      senha: senha
-    }
-
-    return (await axios.post(`/login/auth`, usuarioJson, { headers: { "Content-Type": "application/json" } })).data;
+    return (await axios.get(usuario + `/login/${email}/${senha}`)).data;
   }
 
   async getUsuarioById(id) {
