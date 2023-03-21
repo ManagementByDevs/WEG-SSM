@@ -17,6 +17,7 @@ import Feedback from "../../components/Feedback/Feedback";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import ExportPdfService from "../../service/exportPdfService";
 
 // Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
 const DetalhesAta = (props) => {
@@ -183,6 +184,18 @@ const DetalhesAta = (props) => {
     }
   };
 
+  // Função para baixar o arquivo pdf da respectiva ata
+  const baixarPDF = () => {
+    // ExportPdfService.exportAta(ata.id).then((response) => {
+    //   let blob = new Blob([response], { type: "application/pdf" });
+    //   let url = URL.createObjectURL(blob);
+    //   let link = document.createElement("a");
+    //   link.href = url;
+    //   link.download = "pdf_ata.pdf";
+    //   link.click();
+    // });
+  }
+
   return (
     // Começo com o header da página
     <FundoComHeader>
@@ -198,6 +211,7 @@ const DetalhesAta = (props) => {
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
               sx={{ color: "icon.main" }}
+              onClick={baixarPDF}
             />
           </Box>
         </Box>

@@ -1,13 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip, IconButton, } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -27,6 +20,7 @@ import DateService from "../../service/dateService";
 import PautaService from "../../service/pautaService";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import PropostaService from "../../service/propostaService";
+import ExportPdfService from "../../service/exportPdfService";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
@@ -265,6 +259,18 @@ const DetalhesPauta = (props) => {
     setPauta(location.state.pauta);
   }, []);
 
+  // Função para baixar o arquivo pdf da respectiva pauta
+  const baixarPDF = () => {
+    ExportPdfService.exportPauta(pauta.id).then((response) => {
+      let blob = new Blob([response], { type: "application/pdf" });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement("a");
+      link.href = url;
+      link.download = "pdf_pauta.pdf";
+      link.click();
+    });
+  }
+
   return (
     <FundoComHeader>
       <ModalConfirmacao
@@ -273,7 +279,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       <Box className="p-2">
         <Box className="flex w-full relative">
@@ -287,6 +293,7 @@ const DetalhesPauta = (props) => {
                 fontSize="large"
                 className="delay-120 hover:scale-110 duration-300"
                 sx={{ color: "icon.main" }}
+                onClick={baixarPDF}
               />
             </Tooltip>
           </Box>

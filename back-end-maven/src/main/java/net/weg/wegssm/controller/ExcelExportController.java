@@ -1,5 +1,7 @@
 package net.weg.wegssm.controller;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.DemandaService;
@@ -15,9 +17,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,6 +33,29 @@ import java.util.List;
 public class ExcelExportController {
 
     private static DemandaService demandaService;
+
+//    @GetMapping("/excel/demandas_backlog")
+//    public void generatePDFAta(HttpServletResponse response, @RequestParam("demandas_backlog") List<String> listaDemandas) throws IOException {
+//        Ata ata = ataService.findById(idAta).get();
+//        response.setContentType("application/pdf");
+//
+//        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy:hh:mm:ss");
+//        String currentDateTime = dateFormatter.format(new Date());
+//
+//        String headerKey = "Content-Disposition";
+//        String headerValue = "attachment; filename=pdf_ata_" + currentDateTime + " .pdf";
+//
+//        response.setHeader(headerKey, headerValue);
+//
+//        Document document = this.pdfGeneratorService.exportAta(response, ata);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        PdfWriter.getInstance(document, baos);
+//        baos.flush();
+//        byte[] pdfData = baos.toByteArray();
+//        baos.close();
+//        response.getOutputStream().write(pdfData);
+//        response.getOutputStream().flush();
+//    }
 
     @PostMapping("/excel/demandas")
     public void exportDemandasToExcel(HttpServletResponse response, @RequestParam("demandas") List<String> listaDemandas) throws IOException {
@@ -70,12 +99,7 @@ public class ExcelExportController {
         headerRow.createCell(3).setCellValue("Proposta");
         headerRow.createCell(4).setCellValue("Benefícios");
         headerRow.createCell(5).setCellValue("Frequência de Uso");
-        headerRow.createCell(6).setCellValue("Tamanho");
-        headerRow.createCell(7).setCellValue("Seção de TI");
-        headerRow.createCell(8).setCellValue("BU Solicitante");
-        headerRow.createCell(9).setCellValue("BUs Beneficiadas");
-        headerRow.createCell(10).setCellValue("Fórum");
-        headerRow.createCell(11).setCellValue("Anexos");
+        headerRow.createCell(6).setCellValue("Anexos");
 
         headerRow.getCell(0).setCellStyle(style);
         headerRow.getCell(1).setCellStyle(style);
@@ -84,11 +108,6 @@ public class ExcelExportController {
         headerRow.getCell(4).setCellStyle(style);
         headerRow.getCell(5).setCellStyle(style);
         headerRow.getCell(6).setCellStyle(style);
-        headerRow.getCell(7).setCellStyle(style);
-        headerRow.getCell(8).setCellStyle(style);
-        headerRow.getCell(9).setCellStyle(style);
-        headerRow.getCell(10).setCellStyle(style);
-        headerRow.getCell(11).setCellStyle(style);
 
         int rowNum = 1;
         for (Demanda demanda : listDemandas) {
@@ -107,15 +126,6 @@ public class ExcelExportController {
             }
 
             row.createCell(5).setCellValue(demanda.getFrequencia());
-            row.createCell(6).setCellValue(demanda.getTamanho());
-            row.createCell(7).setCellValue(demanda.getSecaoTI().getNomeSecao());
-//            row.createCell(8).setCellValue(demanda.getBuSolicitante().getNomeBu());
-
-//            for(Bu bu : demanda.getBusBeneficiadas()){
-//                row.createCell(9).setCellValue(" - " + bu.getNomeBu());
-//            }
-
-//            row.createCell(10).setCellValue(demanda.getForum().getNomeForum());
 
             for(Anexo anexo : demanda.getAnexo()){
                 row.createCell(11).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
@@ -127,11 +137,6 @@ public class ExcelExportController {
             sheet.autoSizeColumn(4);
             sheet.autoSizeColumn(5);
             sheet.autoSizeColumn(6);
-            sheet.autoSizeColumn(7);
-            sheet.autoSizeColumn(8);
-            sheet.autoSizeColumn(9);
-            sheet.autoSizeColumn(10);
-            sheet.autoSizeColumn(11);
 
             rowNum = rowIndex;
         }
@@ -143,15 +148,20 @@ public class ExcelExportController {
         outputStream.close();
     }
 
-    @GetMapping("/excel/propostas")
+    @PostMapping("/excel/demandas_assessment")
+    public void exportDemandasAssessmentToExcel(HttpServletResponse response) throws IOException{
+
+    }
+
+    @PostMapping("/excel/propostas")
     public void exportPropostasToExcel(HttpServletResponse response) throws IOException {
     }
 
-    @GetMapping("/excel/pautas")
+    @PostMapping("/excel/pautas")
     public void exportPautasToExcel(HttpServletResponse response) throws IOException {
     }
 
-    @GetMapping("/excel/atas")
+    @PostMapping("/excel/atas")
     public void exportAtasToExcel(HttpServletResponse response) throws IOException {
     }
 
