@@ -39,7 +39,6 @@ import Tour from "reactour";
 
 // Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home
 const HomeGerencia = () => {
-  
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -54,8 +53,8 @@ const HomeGerencia = () => {
   // Lista de demandas presentes
   const [listaDemandas, setListaDemandas] = useState([]);
 
-   // Parâmetros para pesquisa das demandas (filtros)
-   const [params, setParams] = useState({
+  // Parâmetros para pesquisa das demandas (filtros)
+  const [params, setParams] = useState({
     titulo: null,
     solicitante: null,
     gerente: null,
@@ -67,11 +66,6 @@ const HomeGerencia = () => {
     codigoPPM: null,
     id: null,
   });
-
-  // UseEffect para buscar as demandas sempre que os parâmetros (filtros e ordenação) forem modificados
-  useEffect(() => {
-    buscarDemandas();
-  }, [params]);
 
   //JSONs que contém as informações do tour
   const stepsDemandas = [
@@ -292,7 +286,6 @@ const HomeGerencia = () => {
     departamento: null,
     preferencias: null,
   });
- 
 
   // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
   const [paramsPautas, setParamsPautas] = useState({
@@ -415,6 +408,14 @@ const HomeGerencia = () => {
   useEffect(() => {
     switch (value) {
       case "1":
+          setParams({
+            ...params,
+            gerente: null,
+            solicitante: usuario,
+          });
+          setModoFiltro("demanda");
+        break;
+      case "2":
         if (usuario.tipoUsuario == "GERENTE") {
           setParams({
             ...params,
@@ -430,7 +431,7 @@ const HomeGerencia = () => {
         }
         setModoFiltro("demanda");
         break;
-      case "2":
+      case "3":
         setParams({
           ...params,
           gerente: null,
@@ -438,7 +439,7 @@ const HomeGerencia = () => {
         });
         setModoFiltro("demanda");
         break;
-      case "3":
+      case "4":
         setParams({
           ...params,
           gerente: null,
@@ -446,11 +447,11 @@ const HomeGerencia = () => {
         });
         setModoFiltro("proposta");
         break;
-      case "4":
+      case "5":
         setParamsPautas({ ...paramsPautas });
         // setModoFiltro("proposta");
         break;
-      case "5":
+      case "6":
         // setModoFiltro("proposta");
         break;
     }
@@ -537,13 +538,14 @@ const HomeGerencia = () => {
         visibilidade: e.visibilidade,
         preferencias: JSON.parse(e.preferencias),
       });
+      setParams({ ...params, solicitante: e });
     });
   };
 
   const buscarItens = () => {
     switch (value) {
       case "1":
-        if (params.status != null || params.gerente != null) {
+        if (usuario.id != 0 && params.solicitante == null && params.status != null) {
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -554,7 +556,7 @@ const HomeGerencia = () => {
         }
         break;
       case "2":
-        if (params.status != null) {
+        if (params.status != null || params.gerente != null) {
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -566,7 +568,7 @@ const HomeGerencia = () => {
         break;
       case "3":
         if (params.status != null) {
-          PropostaService.getPage(
+          DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
@@ -576,6 +578,17 @@ const HomeGerencia = () => {
         }
         break;
       case "4":
+        if (params.status != null) {
+          PropostaService.getPage(
+            params,
+            ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+          ).then((response) => {
+            setListaItens([...response.content]);
+            setTotalPaginas(response.totalPages);
+          });
+        }
+        break;
+      case "5":
         PautaService.getPage(
           paramsPautas,
           ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -585,7 +598,7 @@ const HomeGerencia = () => {
           setTotalPaginas(response.totalPages);
         });
         break;
-      case "5":
+      case "6":
         break;
     }
   };
@@ -825,21 +838,8 @@ const HomeGerencia = () => {
     }
   }, [pautaSelecionada]);
 
-   // String para ordenação das demandas
-   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
-
-  /** Função para buscar as demandas com os parâmetros e ordenação salvos */
-  const buscarDemandas = () => {
-    if(params.status != null || params.solicitante != null) {
-      DemandaService.getPage(
-        params,
-        stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
-      ).then((e) => {
-        setTotalPaginas(e.totalPages);
-        setListaDemandas(e.content);
-      });
-    }
-  };
+  // String para ordenação das demandas
+  const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
   // ********************************************** Preferências **********************************************
   /**
@@ -1251,7 +1251,7 @@ const HomeGerencia = () => {
                   <Ajuda />
                   <Box>
                     <DemandaModoVisualizacao
-                      listaDemandas={listaDemandas}
+                      listaDemandas={listaItens}
                       onDemandaClick={verDemanda}
                       myDemandas={true}
                       nextModoVisualizacao={nextModoVisualizacao}
