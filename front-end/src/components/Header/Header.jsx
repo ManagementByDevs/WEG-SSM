@@ -32,7 +32,7 @@ const Header = () => {
   return (
     // Div Principal com width preenchendo a tela
     <Paper
-      sx={{ backgroundColor: "primary.main", padding: "1rem", width: "100%" }}
+      sx={{ backgroundColor: "primary.main", padding: "1rem", width: "100%", minWidth: "27rem" }}
       className={`flex justify-between items-center h-header-weg min-h-header-weg`}
       square
     >

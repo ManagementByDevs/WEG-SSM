@@ -11,6 +11,10 @@ class PautaService {
     return (await axios.get(pautaPath + `/page?${page}`, { params })).data;
   }
 
+  async getById(id) {
+    return (await axios.get(pautaPath + `/id/${id}`)).data;
+  }
+
   async put(pauta) {
     return (
       await axios.put(pautaPath + `/${pauta.id}`, JSON.stringify(pauta), {
@@ -54,7 +58,7 @@ class PautaService {
     return {
       numeroSequencial,
       dataReuniao,
-      comissao,
+      comissao: { idForum: comissao.idForum },
       analistaResponsavel: { id: idAnalistaResponsavel },
       propostas,
     };

@@ -18,6 +18,7 @@ import Paginacao from "../../components/Paginacao/Paginacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaModoVisualizacao/DemandaGerenciaModoVisualizacao";
+import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
 import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/PautaAtaModoVisualizacao";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
@@ -48,6 +49,23 @@ const HomeGerencia = () => {
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
   const [isTourPautasOpen, setIsTourPautasOpen] = useState(false);
   const [isTourAtasOpen, setIsTourAtasOpen] = useState(false);
+
+  // Lista de demandas presentes
+  const [listaDemandas, setListaDemandas] = useState([]);
+
+  // Parâmetros para pesquisa das demandas (filtros)
+  const [params, setParams] = useState({
+    titulo: null,
+    solicitante: null,
+    gerente: null,
+    analista: null,
+    forum: null,
+    departamento: null,
+    tamanho: null,
+    status: null,
+    codigoPPM: null,
+    id: null,
+  });
 
   //JSONs que contém as informações do tour
   const stepsDemandas = [
@@ -269,20 +287,6 @@ const HomeGerencia = () => {
     preferencias: null,
   });
 
-  // Parâmetros para pesquisa das demandas (filtros)
-  const [params, setParams] = useState({
-    titulo: null,
-    solicitante: null,
-    gerente: null,
-    analista: null,
-    forum: null,
-    departamento: null,
-    tamanho: null,
-    status: null,
-    codigoPPM: null,
-    id: null,
-  });
-
   // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
   const [paramsPautas, setParamsPautas] = useState({
     titulo: null,
@@ -404,6 +408,14 @@ const HomeGerencia = () => {
   useEffect(() => {
     switch (value) {
       case "1":
+          setParams({
+            ...params,
+            gerente: null,
+            solicitante: usuario,
+          });
+          setModoFiltro("demanda");
+        break;
+      case "2":
         if (usuario.tipoUsuario == "GERENTE") {
           setParams({
             ...params,
@@ -419,7 +431,7 @@ const HomeGerencia = () => {
         }
         setModoFiltro("demanda");
         break;
-      case "2":
+      case "3":
         setParams({
           ...params,
           gerente: null,
@@ -427,7 +439,7 @@ const HomeGerencia = () => {
         });
         setModoFiltro("demanda");
         break;
-      case "3":
+      case "4":
         setParams({
           ...params,
           gerente: null,
@@ -435,11 +447,11 @@ const HomeGerencia = () => {
         });
         setModoFiltro("proposta");
         break;
-      case "4":
+      case "5":
         setParamsPautas({ ...paramsPautas });
         // setModoFiltro("proposta");
         break;
-      case "5":
+      case "6":
         // setModoFiltro("proposta");
         break;
     }
@@ -526,13 +538,14 @@ const HomeGerencia = () => {
         visibilidade: e.visibilidade,
         preferencias: JSON.parse(e.preferencias),
       });
+      setParams({ ...params, solicitante: e });
     });
   };
 
   const buscarItens = () => {
     switch (value) {
       case "1":
-        if (params.status != null || params.gerente != null) {
+        if (usuario.id != 0) {
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -543,7 +556,7 @@ const HomeGerencia = () => {
         }
         break;
       case "2":
-        if (params.status != null) {
+        if (params.status != null || params.gerente != null) {
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -555,7 +568,7 @@ const HomeGerencia = () => {
         break;
       case "3":
         if (params.status != null) {
-          PropostaService.getPage(
+          DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
@@ -565,6 +578,17 @@ const HomeGerencia = () => {
         }
         break;
       case "4":
+        if (params.status != null) {
+          PropostaService.getPage(
+            params,
+            ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+          ).then((response) => {
+            setListaItens([...response.content]);
+            setTotalPaginas(response.totalPages);
+          });
+        }
+        break;
+      case "5":
         PautaService.getPage(
           paramsPautas,
           ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -574,7 +598,7 @@ const HomeGerencia = () => {
           setTotalPaginas(response.totalPages);
         });
         break;
-      case "5":
+      case "6":
         break;
     }
   };
@@ -759,8 +783,13 @@ const HomeGerencia = () => {
 
   // Função para exportar para excel
   const exportarExcel = () => {
-    console.log(listaItens);
-    ExportExcelService.exportExcel(listaItens).then((response) => {
+    let listaObjetosString = [];
+
+    for (const object in listaItens) {
+      listaObjetosString.push(JSON.stringify(listaItens[object]));
+    }
+
+    ExportExcelService.exportExcel(listaObjetosString).then((response) => {
       let blob = new Blob([response], { type: "application/excel" });
       let url = URL.createObjectURL(blob);
       let link = document.createElement("a");
@@ -772,6 +801,25 @@ const HomeGerencia = () => {
 
   // Função que deleta uma pauta
   const deletePauta = () => {
+    // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
+    for (let propostaAux of pautaSelecionada.propostas) {
+      propostaAux.publicada = null;
+      propostaAux.status = "ASSESSMENT_APROVACAO";
+      propostaAux.parecerInformacao = null;
+      propostaAux.parecerComissao = null;
+      propostaAux.parecerDG = null;
+
+      PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
+        (newProposta) => {
+          console.log(
+            "Proposta de id " + newProposta.id + " atualizada com sucesso! ",
+            newProposta
+          );
+        }
+      );
+    }
+
+    // Deleta a pauta
     PautaService.delete(pautaSelecionada.id).then((res) => {
       console.log("Pauta deletada com sucesso! ", res);
       setPautaSelecionada(null);
@@ -789,6 +837,9 @@ const HomeGerencia = () => {
       setOpenModalConfirmacao(true);
     }
   }, [pautaSelecionada]);
+
+  // String para ordenação das demandas
+  const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
   // ********************************************** Preferências **********************************************
   /**
@@ -943,7 +994,11 @@ const HomeGerencia = () => {
           <TabContext value={value}>
             <Box
               className="relative mb-4"
-              sx={{ borderBottom: 1, borderColor: "divider.main" }}
+              sx={{
+                borderBottom: 1,
+                borderColor: "divider.main",
+                minWidth: "37rem",
+              }}
             >
               <TabList
                 onChange={handleChange}
@@ -951,8 +1006,13 @@ const HomeGerencia = () => {
               >
                 <Tab
                   sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label={texts.homeGerencia.demandas}
+                  label={texts.home.minhasDemandas}
                   value="1"
+                />
+                <Tab
+                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                  label={texts.homeGerencia.demandas}
+                  value="2"
                 />
 
                 {isGerente && (
@@ -962,17 +1022,6 @@ const HomeGerencia = () => {
                       fontSize: FontConfig.medium,
                     }}
                     label={texts.homeGerencia.criarPropostas}
-                    value="2"
-                  />
-                )}
-
-                {isGerente && (
-                  <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig.medium,
-                    }}
-                    label={texts.homeGerencia.propostas}
                     value="3"
                   />
                 )}
@@ -983,7 +1032,7 @@ const HomeGerencia = () => {
                       color: "text.secondary",
                       fontSize: FontConfig.medium,
                     }}
-                    label={texts.homeGerencia.pautas}
+                    label={texts.homeGerencia.propostas}
                     value="4"
                   />
                 )}
@@ -994,8 +1043,19 @@ const HomeGerencia = () => {
                       color: "text.secondary",
                       fontSize: FontConfig.medium,
                     }}
-                    label={texts.homeGerencia.atas}
+                    label={texts.homeGerencia.pautas}
                     value="5"
+                  />
+                )}
+
+                {isGerente && (
+                  <Tab
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
+                    label={texts.homeGerencia.atas}
+                    value="6"
                   />
                 )}
               </TabList>
@@ -1033,7 +1093,11 @@ const HomeGerencia = () => {
                 {/* Input de pesquisa */}
                 <Box
                   className="flex justify-between items-center border px-3 py-1"
-                  sx={{ backgroundColor: "input.main", width: "50%" }}
+                  sx={{
+                    backgroundColor: "input.main",
+                    width: "50%",
+                    minWidth: "10rem",
+                  }}
                   id="primeiroDemandas"
                 >
                   {/* Input de pesquisa */}
@@ -1110,6 +1174,7 @@ const HomeGerencia = () => {
                       backgroundColor: "primary.main",
                       color: "text.white",
                       fontSize: FontConfig.default,
+                      minWidth: "5rem",
                     }}
                     onClick={abrirModalFiltro}
                     variant="contained"
@@ -1147,6 +1212,7 @@ const HomeGerencia = () => {
                     backgroundColor: "primary.main",
                     color: "text.white",
                     fontSize: FontConfig.default,
+                    minWidth: "6rem",
                   }}
                   onClick={exportarExcel}
                   variant="contained"
@@ -1164,6 +1230,8 @@ const HomeGerencia = () => {
                   backgroundColor: "primary.main",
                   color: "text.white",
                   fontSize: FontConfig.default,
+                  maxHeight: "2.5rem",
+                  minWidth: "10.5rem",
                 }}
                 variant="contained"
                 disableElevation
@@ -1178,8 +1246,21 @@ const HomeGerencia = () => {
 
             {/* Container para o conteúdo das abas */}
             <Box className="mt-6" id="sextoDemandas">
+              <Box>
+                <TabPanel sx={{ padding: 0 }} value="1">
+                  <Ajuda />
+                  <Box>
+                    <DemandaModoVisualizacao
+                      listaDemandas={listaItens}
+                      onDemandaClick={verDemanda}
+                      myDemandas={true}
+                      nextModoVisualizacao={nextModoVisualizacao}
+                    />
+                  </Box>
+                </TabPanel>
+              </Box>
               {/* Valores para as abas selecionadas */}
-              <TabPanel sx={{ padding: 0 }} value="1">
+              <TabPanel sx={{ padding: 0 }} value="2">
                 <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
                 {isTourDemandasOpen ? (
                   <DemandaGerencia
@@ -1215,7 +1296,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1232,7 +1313,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1250,7 +1331,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4">
+                  <TabPanel sx={{ padding: 0 }} value="5">
                     <Ajuda onClick={() => setIsTourPautasOpen(true)} />
                     <PautaAtaModoVisualizacao
                       listaPautas={pautas}
@@ -1263,7 +1344,7 @@ const HomeGerencia = () => {
                       setPautaSelecionada={setPautaSelecionada}
                     />
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="5">
+                  <TabPanel sx={{ padding: 0 }} value="6">
                     <Ajuda onClick={() => setIsTourAtasOpen(true)} />
                     <PautaAtaModoVisualizacao
                       listaPautas={pautas}

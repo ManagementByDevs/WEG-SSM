@@ -1,7 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Modal, Fade, Divider, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Paper, Select, FormControl, MenuItem, TextField, } from "@mui/material";
+import {
+  Modal,
+  Fade,
+  Divider,
+  Typography,
+  Box,
+  Button,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Paper,
+  Select,
+  FormControl,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 
 import { red } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
@@ -13,10 +28,10 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import TemaContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
 import PropostaService from "../../service/propostaService";
+import ForumService from "../../service/forumService";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalAddPropostaPauta = (props) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -184,6 +199,10 @@ const ModalAddPropostaPauta = (props) => {
     PautaService.get().then((res) => {
       setListaPautas(res);
     });
+
+    ForumService.getAll().then((res) => {
+      setListaComissoes(res);
+    });
   }, []);
 
   // props para abrir o modal através de outra tela
@@ -243,11 +262,19 @@ const ModalAddPropostaPauta = (props) => {
     },
   ]);
 
+  const [listaComissoes, setListaComissoes] = useState([]);
+
   // UseState para armazenar a data da reunião
   const [inputDataReuniao, setInputDataReuniao] = useState("");
 
+  const comissaoEstatico = {
+    idForum: 0,
+    nomeForum: texts.modalAddPropostaPauta.comissao,
+    siglaForum: texts.modalAddPropostaPauta.comissao,
+  };
+
   // UseState para armazenar a comissão
-  const [comissao, setComissao] = useState("");
+  const [comissao, setComissao] = useState(comissaoEstatico);
 
   // Provavelmente não possui uso no componente ( verificar depois )
 
@@ -288,7 +315,7 @@ const ModalAddPropostaPauta = (props) => {
   // Função para retornar o id do analista que será responsável pela pauta (usuário logado)
   const getIdAnalistaResponsavel = () => {
     return JSON.parse(localStorage.getItem("user")).id;
-  }
+  };
 
   // Função para adicionar a proposta na pauta selecionada
   const addPropostaInPauta = () => {
@@ -308,9 +335,13 @@ const ModalAddPropostaPauta = (props) => {
       );
 
       PautaService.post(pauta).then((res) => {
-        console.log("rse: ", res)
+        console.log("rse: ", res);
         PropostaService.putWithoutArquivos(
-          { ...props.proposta, publicada: check[0] },
+          {
+            ...props.proposta,
+            publicada: check[0],
+            status: "ASSESSMENT_COMISSAO",
+          },
           props.proposta.id
         ).then((res) => {
           console.log("Pauta criada com sucesso! res: ", res);
@@ -326,7 +357,11 @@ const ModalAddPropostaPauta = (props) => {
       pauta.propostas.push(props.proposta);
       PautaService.put(pauta).then((res) => {
         PropostaService.putWithoutArquivos(
-          { ...props.proposta, publicada: check[0] },
+          {
+            ...props.proposta,
+            publicada: check[0],
+            status: "ASSESSMENT_COMISSAO",
+          },
           props.proposta.id
         ).then((res) => {
           console.log("Pauta atualizada com sucesso! res: ", res);
@@ -373,7 +408,12 @@ const ModalAddPropostaPauta = (props) => {
   };
 
   return (
-    <Modal open={open} onClose={handleClose} closeAfterTransition>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+      sx={{ minWidth: "40rem" }}
+    >
       <Fade in={open}>
         {/* Início conteúdo modal */}
         <Box sx={cssModal}>
@@ -412,17 +452,28 @@ const ModalAddPropostaPauta = (props) => {
 
           <Box sx={listaPropostas}>
             {/* Exibe as pautas do sistema */}
-            {listaPautas.map((pauta, index) => {
-              return (
-                <ContainerPauta
-                  key={index}
-                  pauta={pauta}
-                  setIndexPautaSelecionada={setIndexPautaSelecionada}
-                  index={index}
-                  indexPautaSelecionada={indexPautaSelecionada}
-                />
-              );
-            })}
+            {listaPautas.length > 0 || novaPauta ? (
+              listaPautas.map((pauta, index) => {
+                return (
+                  <ContainerPauta
+                    key={index}
+                    pauta={pauta}
+                    setIndexPautaSelecionada={setIndexPautaSelecionada}
+                    index={index}
+                    indexPautaSelecionada={indexPautaSelecionada}
+                  />
+                );
+              })
+            ) : (
+              <>
+                <Typography fontSize={FontConfig.medium}>
+                  {texts.modalAddPropostaPauta.nenhumaPautaEncontrada}
+                </Typography>
+                <Typography fontSize={FontConfig.default}>
+                  {texts.modalAddPropostaPauta.pfvCrieUmaNova}
+                </Typography>
+              </>
+            )}
 
             {/* Nova pauta criada */}
             {novaPauta && (
@@ -461,13 +512,15 @@ const ModalAddPropostaPauta = (props) => {
                       onChange={handleChange}
                       displayEmpty
                       inputProps={{ "aria-label": "Without label" }}
-                      placeholder="teste"
                     >
-                      <MenuItem value="" disabled>
+                      <MenuItem value={comissao} disabled>
                         {texts.modalAddPropostaPauta.comissao}
                       </MenuItem>
-                      <MenuItem value={1}>Exemplo 01</MenuItem>
-                      <MenuItem value={2}>Exemplo 02</MenuItem>
+                      {listaComissoes?.map((e, index) => (
+                        <MenuItem key={index} value={e} title={e.nomeForum}>
+                          {e.siglaForum}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Box>

@@ -14,6 +14,7 @@ public enum Status {
     ASSESSMENT("Assessment Criação"),
     ASSESSMENT_APROVACAO("Assessment Aprovação"),
     ASSESSMENT_EDICAO("Assessment Edição"),
+    ASSESSMENT_COMISSAO("Assessment Comissão"),
     ASSESSMENT_DG("Assessment DG"),
     DONE("Done");
 

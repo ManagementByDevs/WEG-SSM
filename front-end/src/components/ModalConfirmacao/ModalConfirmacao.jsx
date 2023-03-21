@@ -10,7 +10,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Modal padrão usado para confirmação de ações (ex: criação de demanda, aprovação de demanda) */
 const ModalConfirmacao = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -38,6 +37,8 @@ const ModalConfirmacao = (props) => {
         return texts.modalConfirmacao.mensagensModal.confirmarExclusao;
       case "fecharChat":
         return texts.modalConfirmacao.mensagensModal.fecharChat;
+      case "tirarPropostaDePauta":
+        return texts.modalConfirmacao.mensagensModal.tirarPropostaDePauta;
     }
   };
 
@@ -58,18 +59,30 @@ const ModalConfirmacao = (props) => {
   return (
     <Modal
       open={props.open}
-      onClose={() => { props.setOpen(false) }}
+      onClose={() => {
+        props.setOpen(false);
+      }}
       closeAfterTransition
     >
       <Fade in={props.open}>
-        <Box className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
-          sx={{ transform: "translate(-50%, -50%)", width: 450, height: 300, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}>
+        <Box
+          className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
+          sx={{
+            transform: "translate(-50%, -50%)",
+            width: 450,
+            height: 300,
+            bgcolor: "background.paper",
+            borderRadius: "5px",
+            borderTop: "10px solid #00579D",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
           <ErrorOutlineIcon sx={{ fontSize: "100px", color: "primary.main" }} />
-          <Typography fontSize={FontConfig.veryBig} sx={{ mt: 2 }}>
+          <Typography fontSize={FontConfig.veryBig} className="text-center" sx={{ mt: 2 }}>
             {mensagemModal(props.textoModal)}
           </Typography>
           <Box className="flex justify-center items-center mt-5">
-
             {/* Botão de cancelar */}
             <Button
               onClick={() => {
@@ -79,7 +92,13 @@ const ModalConfirmacao = (props) => {
               variant="container"
               disableElevation
               color="tertiary"
-              sx={{ border: "solid 1px", borderColor: "tertiary.main", margin: "10px", width: "7.5rem", fontSize: FontConfig.big }}
+              sx={{
+                border: "solid 1px",
+                borderColor: "tertiary.main",
+                margin: "10px",
+                width: "7.5rem",
+                fontSize: FontConfig.big,
+              }}
             >
               {texts.modalConfirmacao.cancelar}
             </Button>

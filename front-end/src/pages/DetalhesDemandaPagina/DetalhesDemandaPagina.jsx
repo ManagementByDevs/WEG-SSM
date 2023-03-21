@@ -19,7 +19,7 @@ import Tour from "reactour";
 /** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
 const DetalhesDemandaPagina = () => {
   // Context para alterar a linguagem do sistema
-  const { texts } = useContext(TextLanguageContext); 
+  const { texts } = useContext(TextLanguageContext);
 
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
@@ -69,8 +69,7 @@ const DetalhesDemandaPagina = () => {
         ...steps,
         {
           selector: "#terceiro",
-          content:
-          texts.detalhesDemandaPagina.tour.tour3,
+          content: texts.detalhesDemandaPagina.tour.tour3,
           style: {
             backgroundColor: "#DCDCDC",
             color: "#000000",
@@ -84,8 +83,7 @@ const DetalhesDemandaPagina = () => {
   const [steps, setSteps] = useState([
     {
       selector: "#primeiro",
-      content:
-        texts.detalhesDemandaPagina.tour.tour1,
+      content: texts.detalhesDemandaPagina.tour.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -101,7 +99,7 @@ const DetalhesDemandaPagina = () => {
     },
   ]);
 
-  // Função para baixar a demanda em formato pdf 
+  // Função para baixar a demanda em formato pdf
   const baixarDemanda = () => {
     ExportPdfService.exportDemanda(dados.id).then((response) => {
       let blob = new Blob([response], { type: "application/pdf" });
@@ -125,7 +123,7 @@ const DetalhesDemandaPagina = () => {
         showCloseButton={false}
       />
       <Ajuda onClick={() => setIsTourOpen(true)} />
-      <Box className="p-2">
+      <Box className="p-2 w-full" sx={{minWidth: "58rem"}}>
         <Box className="flex w-full relative">
           <Caminho />
           <Box
@@ -142,15 +140,17 @@ const DetalhesDemandaPagina = () => {
             </IconButton>
           </Box>
         </Box>
-        {/* Mostrar os dados da demanda */}
-        <DetalhesDemanda
-          dados={dados}
-          usuario={usuario}
-          setDados={setDados}
-          botao="sim"
-          salvar="sim"
-          updateDemandaProps={updateDemandaProps}
-        />
+        <Box className="w-full">
+          {/* Mostrar os dados da demanda */}
+          <DetalhesDemanda
+            dados={dados}
+            usuario={usuario}
+            setDados={setDados}
+            botao="sim"
+            salvar="sim"
+            updateDemandaProps={updateDemandaProps}
+          />
+        </Box>
       </Box>
     </FundoComHeader>
   );

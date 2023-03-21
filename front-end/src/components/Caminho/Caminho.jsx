@@ -10,7 +10,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para mostrar o caminho atual do usuário no sistema
 const Caminho = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -26,14 +25,30 @@ const Caminho = (props) => {
   // Variável que armazena o caminho url sem a "/"
   const listaCaminho = caminhoURL.split("/");
 
+  const listaRotasPT = [
+    "login",
+    "criar-demanda",
+    "notificacao",
+    "chat",
+    "detalhes-demanda",
+    "editar-escopo",
+    "escopos",
+    "criar-proposta",
+    "detalhes-proposta",
+    "detalhes-ata",
+    "detalhes-pauta",
+  ];
+
   // Função responsável por retornar para o caminho desejado
   const getPathName = (item) => {
     item = item.charAt(0).toUpperCase() + item.slice(1);
-    return item.replaceAll("-", " ");
+    let indexCaminho = listaRotasPT.findIndex((e) => e == item.toLowerCase());
+
+    return texts.rotas[indexCaminho];
   };
 
   return (
-    <Box className="flex items-center gap-x-1" color="link.main">
+    <Box className="flex items-center gap-x-1" color="link.main" sx={{minWidth:"20rem"}}>
       <Tooltip title={texts.caminho.home}>
         <HomeOutlinedIcon
           className="cursor-pointer"

@@ -38,15 +38,15 @@ const propostaExample = {
       memoriaCalculo: "",
     },
   ],
-  buSolicitante: { id: 0, nome: "" },
-  busBeneficiadas: [{ id: 0, nome: "" }],
+  buSolicitante: { idBu: 0, nomeBu: "", siglaBu: "" },
+  busBeneficiadas: [{ idBu: 0, nomeBu: "", siglaBu: "" }],
   codigoPPM: 0,
   data: "",
   demanda: 0,
   departamento: 0,
   escopo: 0,
   fimExecucao: "",
-  forum: { id: 0, nome: "", visibilidade: true },
+  forum: { idForum: 0, nomeForum: "", siglaForum: "" },
   frequencia: "",
   gerente: 0,
   historicoProposta: [],
@@ -152,7 +152,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
               fontWeight="bold"
               fontSize={FontConfig.big}
             >
-              {texts.detalhesProposta.ppm} {proposta.codigoPPM}
+              {texts.detalhesProposta.ppm} {proposta.codigoPPM}{" "}
             </Typography>
             <Typography
               color="primary"
@@ -163,6 +163,17 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
               {DateService.getTodaysDateUSFormat(
                 DateService.getDateByMySQLFormat(proposta.data)
               )}
+            </Typography>
+            <Typography
+              color="primary"
+              fontWeight="bold"
+              fontSize={FontConfig.big}
+            >
+              {proposta.publicada != null
+                ? proposta.publicada
+                  ? texts.detalhesProposta.publicada.toUpperCase()
+                  : texts.detalhesProposta.naoPublicada.toUpperCase()
+                : ""}
             </Typography>
           </Box>
           <Box className="w-16">
@@ -199,7 +210,8 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                 {texts.detalhesProposta.buSolicitante}:&nbsp;
               </Typography>
               <Typography fontSize={FontConfig.medium}>
-                {proposta.buSolicitante?.nome} - {proposta.buSolicitante?.id}
+                {proposta.buSolicitante?.siglaBu} -{" "}
+                {proposta.buSolicitante?.nomeBu}
               </Typography>
             </Box>
 
@@ -216,13 +228,13 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
             {/* Fórum e Tamanho*/}
             <Box className="flex w-full justify-between mt-4">
               {/* Fórum */}
-              <Box className="flex flex-row">
+              <Box className="flex flex-row w-3/4">
                 <Typography fontSize={FontConfig.medium} fontWeight="bold">
                   {texts.detalhesProposta.forum}:&nbsp;
                 </Typography>
 
                 <Typography fontSize={FontConfig.medium}>
-                  {proposta.forum?.nome}
+                  {proposta.forum?.siglaForum} - {proposta.forum?.nomeForum}
                 </Typography>
               </Box>
               {/* Tamanho */}
@@ -328,7 +340,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                     {proposta.busBeneficiadas.map((bu, index) => {
                       return (
                         <li key={index}>
-                          {bu.nome} - {bu.id}
+                          {bu.siglaBu} - {bu.nomeBu}
                         </li>
                       );
                     })}
@@ -769,7 +781,7 @@ const ParecerComissao = ({
   parecerComissaoInformacoes = "",
   setParecerComissaoInformacoes = () => {},
 }) => {
-  if (proposta.status == "ASSESSMENT_APROVACAO")
+  if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
       <ParecerComissaoInsertText
         proposta={proposta}
@@ -790,7 +802,7 @@ const ParecerDG = ({
   parecerDGInformacoes = "",
   setParecerDGInformacoes = () => {},
 }) => {
-  if (proposta.status == "ASSESSMENT_APROVACAO")
+  if (proposta.status == "ASSESSMENT_DG")
     return (
       <ParecerDGInsertText
         proposta={proposta}

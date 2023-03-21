@@ -1,13 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip, IconButton, } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -18,13 +11,16 @@ import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
-import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 
 import { keyframes } from "@emotion/react";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
+import PautaService from "../../service/pautaService";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import PropostaService from "../../service/propostaService";
+import ExportPdfService from "../../service/exportPdfService";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
@@ -132,6 +128,9 @@ const DetalhesPauta = (props) => {
   // Variável utilizada para minimizar os botões da página
   const [minimizar, setMinimizar] = useState(true);
 
+  // Estado para mostrar o modal de confirmação
+  const [modal, setModal] = useState(false);
+
   // Função para selecionar uma proposta do sumário
   const onClickProposta = (index) => {
     setIndexProposta(index);
@@ -218,13 +217,70 @@ const DetalhesPauta = (props) => {
 
   const [display, setDisplay] = useState("hidden");
 
+  // Função acionada quando é clicado no botão de delete de alguma proposta
+  const onDeletePropostaClick = () => {
+    setModal(true);
+  };
+
+  // Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida
+  const deletePropostaFromPauta = () => {
+    const indexProposta = pauta.propostas.findIndex(
+      (proposta) => proposta.id == dadosProposta.id
+    );
+
+    const propostasDeleted = pauta.propostas.splice(indexProposta, 1);
+    const propostaDeleted = propostasDeleted[0];
+
+    propostaDeleted.publicada = null;
+    propostaDeleted.status = "ASSESSMENT_APROVACAO";
+    propostaDeleted.parecerInformacao = null;
+    propostaDeleted.parecerComissao = null;
+    propostaDeleted.parecerDG = null;
+
+    PautaService.put(pauta).then((e) => {
+      console.log("Pauta atualizada: ", e);
+      PropostaService.putWithoutArquivos(
+        propostaDeleted,
+        propostaDeleted.id
+      ).then((newProposta) => {
+        console.log("Proposta atualizada com sucesso! ", newProposta);
+      });
+      PautaService.getById(pauta.id).then((newPauta) => {
+        location.state = { pauta: newPauta };
+        setPauta(newPauta);
+        setProposta(false);
+        setDadosProposta(null);
+      });
+    });
+  };
+
   useEffect(() => {
     console.log(location.state);
     setPauta(location.state.pauta);
   }, []);
 
+  // Função para baixar o arquivo pdf da respectiva pauta
+  const baixarPDF = () => {
+    ExportPdfService.exportPauta(pauta.id).then((response) => {
+      let blob = new Blob([response], { type: "application/pdf" });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement("a");
+      link.href = url;
+      link.download = "pdf_pauta.pdf";
+      link.click();
+    });
+  }
+
   return (
     <FundoComHeader>
+      <ModalConfirmacao
+        open={modal}
+        setOpen={setModal}
+        textoModal={"tirarPropostaDePauta"}
+        textoBotao={"sim"}
+        onConfirmClick={deletePropostaFromPauta}
+        onCancelClick={() => { }}
+      />
       <Box className="p-2">
         <Box className="flex w-full relative">
           <Caminho />
@@ -237,6 +293,7 @@ const DetalhesPauta = (props) => {
                 fontSize="large"
                 className="delay-120 hover:scale-110 duration-300"
                 sx={{ color: "icon.main" }}
+                onClick={baixarPDF}
               />
             </Tooltip>
           </Box>
@@ -268,7 +325,8 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Comissão */}
               <Typography sx={informacoesAta}>
-                {texts.detalhesPauta.comissao}: {pauta.comissao}
+                {texts.detalhesPauta.comissao}: {pauta.comissao.siglaForum} -{" "}
+                {pauta.comissao.nomeForum}
               </Typography>
               {/* Data da reunião da comissão */}
               <Typography sx={informacoesAta}>
@@ -322,7 +380,6 @@ const DetalhesPauta = (props) => {
                         fontSize={FontConfig.big}
                         sx={tituloProposta}
                         key={index}
-                        setIndexTitulo={index}
                         onClick={() => onClickProposta(index)}
                       >
                         {index} - {proposta.titulo}
@@ -352,16 +409,18 @@ const DetalhesPauta = (props) => {
                   >
                     {texts.detalhesPauta.proposta} {indexProposta}
                   </Typography>
-                  <DeleteIcon
-                    sx={{
-                      position: "absolute",
-                      left: "90%",
-                      width: "40px",
-                      height: "40px",
-                      color: "primary.main",
-                      cursor: "pointer",
-                    }}
-                  />
+                  <IconButton
+                    sx={{ position: "absolute", left: "90%" }}
+                    onClick={onDeletePropostaClick}
+                  >
+                    <DeleteIcon
+                      sx={{
+                        width: "32px",
+                        height: "32px",
+                        color: "primary.main",
+                      }}
+                    />
+                  </IconButton>
                 </Box>
                 {/* <PropostaDeAta
                   dadosProposta={dadosProposta}
@@ -407,7 +466,7 @@ const DetalhesPauta = (props) => {
                     variant="contained"
                     onClick={voltarSumario}
                   >
-                    <OtherHousesIcon></OtherHousesIcon>
+                    <OtherHousesIcon />
                   </Button>
                   <Button
                     sx={{

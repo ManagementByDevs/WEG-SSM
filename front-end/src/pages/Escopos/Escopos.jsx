@@ -220,7 +220,11 @@ const Escopos = () => {
               <Box
                 id="segundo"
                 className="flex justify-between border px-3 py-1"
-                sx={{ backgroundColor: "input.main", width: "50%" }}
+                sx={{
+                  backgroundColor: "input.main",
+                  width: "50%",
+                  minWidth: "15rem",
+                }}
               >
                 {/* Input de pesquisa */}
                 <Box

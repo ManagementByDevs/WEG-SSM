@@ -57,7 +57,7 @@ const PautaTable = ({
       id: 0,
       numeroSequencial: 0,
       dataReuniao: "",
-      comissao: "",
+      comissao: { idForum: 0, siglaForum: "", nomeForum: "" },
       propostas: [{}],
       analistaResponsavel: { nome: "" },
     },
@@ -131,7 +131,7 @@ const PautaTable = ({
               </td>
               <td className="text-left p-3" title={row.comissao}>
                 <Typography className="truncate" fontSize={FontConfig.medium}>
-                  {row.comissao}
+                  {row.comissao.siglaForum} - {row.comissao.nomeForum}
                 </Typography>
               </td>
               <td
@@ -192,7 +192,7 @@ const PautaGrid = ({
       id: 0,
       numeroSequencial: 0,
       dataReuniao: "",
-      comissao: "",
+      comissao: { idForum: 0, siglaForum: "", nomeForum: "" },
       propostas: [{}],
       analistaResponsavel: { nome: "" },
     },

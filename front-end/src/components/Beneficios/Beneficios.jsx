@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { Box, Select, FormControl, InputLabel, MenuItem, Typography } from "@mui/material";
+import {
+  Box,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
@@ -12,7 +19,6 @@ import "./Beneficios.css";
 
 /** Componente de benefício editável utilizado na segunda etapa da criação da demanda */
 const Beneficios = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -46,7 +52,11 @@ const Beneficios = (props) => {
 
   /** Função para salvar o valor mensal do benefício */
   function salvarValorMensal(texto) {
-    setDadosBeneficio({ ...dadosBeneficio, valor_mensal: texto });
+    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
+
+    if (regexp.test(texto)) {
+      setDadosBeneficio({ ...dadosBeneficio, valor_mensal: texto });
+    }
   }
 
   /** Função para salvar a memória de cálculo do benefício */
@@ -57,16 +67,16 @@ const Beneficios = (props) => {
   /** Função para remover algum benefício, utilizando o props.removerBeneficio() para tirar a sua visibilidade */
   const removerComponente = () => {
     props.removerBeneficio(props.index);
-  }
+  };
 
   return (
     <Box
       className="flex rounded max-h-52 border-2 drop-shadow-md"
-      sx={{ backgroundColor: "background.default", padding: "1%", position: "relative", minWidth: "725px", }}
+      sx={{ backgroundColor: "background.default", padding: "1%", position: "relative", minWidth: "44rem", }}
     >
       <Box className="flex flex-col" sx={{ width: "30%", marginTop: "1%" }}>
         <Box className="" sx={{ width: "100%", margin: "1%" }}>
-          <FormControl sx={{ width: "68%", height: "35%" }}>
+          <FormControl sx={{ width: "70%", height: "35%", minWidth: "12rem" }}>
             <InputLabel
               id="demo-simple-select-label"
               sx={{ margin: "-2px 0 0 0" }}
@@ -104,7 +114,7 @@ const Beneficios = (props) => {
           </FormControl>
         </Box>
         {dadosBeneficio.tipoBeneficio === "Real" ||
-          dadosBeneficio.tipoBeneficio === "Potencial" ? (
+        dadosBeneficio.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -112,23 +122,27 @@ const Beneficios = (props) => {
             >
               <Box className="flex items-end" sx={{ width: "100%" }}>
                 <Box sx={{ width: "40%" }}>
-
                   {/* Input de valor mensal */}
                   <InputComLabel
                     saveInputValue={salvarValorMensal}
                     component="input"
                     label={texts.beneficios.valorMensal}
-                    placeholder="Ex: 1000,00"
+                    placeholder={texts.beneficios.exemploValorMensal}
                     fontConfig={FontConfig.default}
                     texto={dadosBeneficio.valor_mensal}
                   />
                 </Box>
                 <FormControl
                   variant="filled"
-                  sx={{ margin: "0 0 0 2rem", minWidth: "90px", width: "10%" }}
+                  sx={{ margin: "0 0 0 2%", minWidth: "5rem", width: "10%" }}
                 >
-                  <InputLabel id="demo-simple-select-label" sx={{ margin: "-10px 0 0 -5px" }}>
-                    <Typography fontSize={FontConfig.default}>{texts.beneficios.moeda}</Typography>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    sx={{ margin: "-10px 0 0 -5px" }}
+                  >
+                    <Typography fontSize={FontConfig.default}>
+                      {texts.beneficios.moeda}
+                    </Typography>
                   </InputLabel>
 
                   {/* Select da moeda do benefício */}
@@ -155,10 +169,9 @@ const Beneficios = (props) => {
         ) : null}
       </Box>
       {dadosBeneficio.tipoBeneficio === "Real" ||
-        dadosBeneficio.tipoBeneficio === "Potencial" ||
-        dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
+      dadosBeneficio.tipoBeneficio === "Potencial" ||
+      dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
         <Box className="flex items-end" sx={{ width: "65%" }}>
-
           {/* Input de memória de cálculo */}
           <InputComLabel
             saveInputValue={salvarMemoriaCalculo}
@@ -172,7 +185,10 @@ const Beneficios = (props) => {
           />
         </Box>
       ) : null}
-      <Box className="flex flex-col justify-end items-end" sx={{ position: "absolute", bottom: "5px", right: "5px" }}>
+      <Box
+        className="flex flex-col justify-end items-end"
+        sx={{ position: "absolute", bottom: "5px", right: "5px" }}
+      >
         {/* Botão de excluir benefício */}
         <DeleteOutlineOutlinedIcon
           className="delay-120 hover:scale-110 duration-300"
