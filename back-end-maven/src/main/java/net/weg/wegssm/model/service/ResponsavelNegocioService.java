@@ -4,6 +4,8 @@ import net.weg.wegssm.model.entities.ResponsavelNegocio;
 import net.weg.wegssm.repository.ResponsavelNegocioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * Classe service para os responsáveis de negócio
  */
@@ -43,4 +45,7 @@ public class ResponsavelNegocioService {
         responsavelNegocioRepository.deleteById(id);
     }
 
+    public Optional<ResponsavelNegocio> findById(Long aLong) {
+        return responsavelNegocioRepository.findById(aLong);
+    }
 }
