@@ -3,16 +3,27 @@ import axios from "./api";
 const excel = "/excel";
 
 class ExportExcelService {
-    async exportExcel(listaDemandas) {
+    async exportDemandasBacklogToExcel(listaDemandas) {
 
         let form = new FormData();
 
-        for(let demanda of listaDemandas) {
+        for (let demanda of listaDemandas) {
             form.append("demandas", demanda);
         }
 
-        return (await axios.post(`${excel}/demandas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.post(`${excel}/demandas_backlog`, form, { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
     }
+
+    // async exportDemandasAssessmentToExcel(listaDemandas) {
+
+    //     let form = new FormData();
+
+    //     for(let demanda of listaDemandas) {
+    //         form.append("demandas", demanda);
+    //     }
+
+    //     return (await axios.post(`${excel}/demandas_assessment`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+    // }
 
 }
 

@@ -789,7 +789,7 @@ const HomeGerencia = () => {
       listaObjetosString.push(JSON.stringify(listaItens[object]));
     }
 
-    ExportExcelService.exportExcel(listaObjetosString).then((response) => {
+    ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
       let blob = new Blob([response], { type: "application/excel" });
       let url = URL.createObjectURL(blob);
       let link = document.createElement("a");
