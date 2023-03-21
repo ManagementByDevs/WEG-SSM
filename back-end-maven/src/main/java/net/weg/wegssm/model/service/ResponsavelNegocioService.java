@@ -4,7 +4,6 @@ import net.weg.wegssm.model.entities.ResponsavelNegocio;
 import net.weg.wegssm.repository.ResponsavelNegocioRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Optional;
 
 /**
