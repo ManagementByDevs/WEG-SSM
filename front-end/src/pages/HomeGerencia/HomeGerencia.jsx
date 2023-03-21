@@ -542,10 +542,6 @@ const HomeGerencia = () => {
     });
   };
 
-  useEffect(() => {
-    console.log("valueeeeee", value);
-  }, [value]);
-
   const buscarItens = () => {
     switch (value) {
       case "1":
