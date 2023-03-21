@@ -542,10 +542,14 @@ const HomeGerencia = () => {
     });
   };
 
+  useEffect(() => {
+    console.log("valueeeeee", value);
+  }, [value]);
+
   const buscarItens = () => {
     switch (value) {
       case "1":
-        if (usuario.id != 0 && params.solicitante == null && params.status != null) {
+        if (usuario.id != 0) {
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
