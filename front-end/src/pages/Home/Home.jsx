@@ -196,7 +196,7 @@ const Home = () => {
 
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
   const buscarDemandas = () => {
-    if (params.departamento != null || params.solicitante != null) {
+    if (params.status != null || params.solicitante != null) {
       DemandaService.getPage(
         params,
         stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual

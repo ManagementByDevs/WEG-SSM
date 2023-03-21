@@ -18,6 +18,7 @@ import Paginacao from "../../components/Paginacao/Paginacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import DemandaGerenciaModoVisualizacao from "../../components/DemandaGerenciaModoVisualizacao/DemandaGerenciaModoVisualizacao";
+import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
 import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/PautaAtaModoVisualizacao";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
@@ -38,6 +39,7 @@ import Tour from "reactour";
 
 // Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home
 const HomeGerencia = () => {
+  
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -48,6 +50,28 @@ const HomeGerencia = () => {
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
   const [isTourPautasOpen, setIsTourPautasOpen] = useState(false);
   const [isTourAtasOpen, setIsTourAtasOpen] = useState(false);
+
+  // Lista de demandas presentes
+  const [listaDemandas, setListaDemandas] = useState([]);
+
+   // Parâmetros para pesquisa das demandas (filtros)
+   const [params, setParams] = useState({
+    titulo: null,
+    solicitante: null,
+    gerente: null,
+    analista: null,
+    forum: null,
+    departamento: null,
+    tamanho: null,
+    status: null,
+    codigoPPM: null,
+    id: null,
+  });
+
+  // UseEffect para buscar as demandas sempre que os parâmetros (filtros e ordenação) forem modificados
+  useEffect(() => {
+    buscarDemandas();
+  }, [params]);
 
   //JSONs que contém as informações do tour
   const stepsDemandas = [
@@ -268,20 +292,7 @@ const HomeGerencia = () => {
     departamento: null,
     preferencias: null,
   });
-
-  // Parâmetros para pesquisa das demandas (filtros)
-  const [params, setParams] = useState({
-    titulo: null,
-    solicitante: null,
-    gerente: null,
-    analista: null,
-    forum: null,
-    departamento: null,
-    tamanho: null,
-    status: null,
-    codigoPPM: null,
-    id: null,
-  });
+ 
 
   // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
   const [paramsPautas, setParamsPautas] = useState({
@@ -814,6 +825,22 @@ const HomeGerencia = () => {
     }
   }, [pautaSelecionada]);
 
+   // String para ordenação das demandas
+   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
+
+  /** Função para buscar as demandas com os parâmetros e ordenação salvos */
+  const buscarDemandas = () => {
+    if(params.status != null || params.solicitante != null) {
+      DemandaService.getPage(
+        params,
+        stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+      ).then((e) => {
+        setTotalPaginas(e.totalPages);
+        setListaDemandas(e.content);
+      });
+    }
+  };
+
   // ********************************************** Preferências **********************************************
   /**
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
@@ -979,8 +1006,13 @@ const HomeGerencia = () => {
               >
                 <Tab
                   sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label={texts.homeGerencia.demandas}
+                  label={texts.home.minhasDemandas}
                   value="1"
+                />
+                <Tab
+                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                  label={texts.homeGerencia.demandas}
+                  value="2"
                 />
 
                 {isGerente && (
@@ -990,17 +1022,6 @@ const HomeGerencia = () => {
                       fontSize: FontConfig.medium,
                     }}
                     label={texts.homeGerencia.criarPropostas}
-                    value="2"
-                  />
-                )}
-
-                {isGerente && (
-                  <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig.medium,
-                    }}
-                    label={texts.homeGerencia.propostas}
                     value="3"
                   />
                 )}
@@ -1011,7 +1032,7 @@ const HomeGerencia = () => {
                       color: "text.secondary",
                       fontSize: FontConfig.medium,
                     }}
-                    label={texts.homeGerencia.pautas}
+                    label={texts.homeGerencia.propostas}
                     value="4"
                   />
                 )}
@@ -1022,8 +1043,19 @@ const HomeGerencia = () => {
                       color: "text.secondary",
                       fontSize: FontConfig.medium,
                     }}
-                    label={texts.homeGerencia.atas}
+                    label={texts.homeGerencia.pautas}
                     value="5"
+                  />
+                )}
+
+                {isGerente && (
+                  <Tab
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
+                    label={texts.homeGerencia.atas}
+                    value="6"
                   />
                 )}
               </TabList>
@@ -1214,8 +1246,21 @@ const HomeGerencia = () => {
 
             {/* Container para o conteúdo das abas */}
             <Box className="mt-6" id="sextoDemandas">
+              <Box>
+                <TabPanel sx={{ padding: 0 }} value="1">
+                  <Ajuda />
+                  <Box>
+                    <DemandaModoVisualizacao
+                      listaDemandas={listaDemandas}
+                      onDemandaClick={verDemanda}
+                      myDemandas={true}
+                      nextModoVisualizacao={nextModoVisualizacao}
+                    />
+                  </Box>
+                </TabPanel>
+              </Box>
               {/* Valores para as abas selecionadas */}
-              <TabPanel sx={{ padding: 0 }} value="1">
+              <TabPanel sx={{ padding: 0 }} value="2">
                 <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
                 {isTourDemandasOpen ? (
                   <DemandaGerencia
@@ -1251,7 +1296,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="2" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1268,7 +1313,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1286,7 +1331,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4">
+                  <TabPanel sx={{ padding: 0 }} value="5">
                     <Ajuda onClick={() => setIsTourPautasOpen(true)} />
                     <PautaAtaModoVisualizacao
                       listaPautas={pautas}
@@ -1299,7 +1344,7 @@ const HomeGerencia = () => {
                       setPautaSelecionada={setPautaSelecionada}
                     />
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="5">
+                  <TabPanel sx={{ padding: 0 }} value="6">
                     <Ajuda onClick={() => setIsTourAtasOpen(true)} />
                     <PautaAtaModoVisualizacao
                       listaPautas={pautas}
