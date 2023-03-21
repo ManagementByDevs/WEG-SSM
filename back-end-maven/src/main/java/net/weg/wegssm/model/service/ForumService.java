@@ -5,39 +5,30 @@ import net.weg.wegssm.repository.ForumRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Classe service para os fóruns
+ */
 @Service
 public class ForumService {
 
+    /**
+     * Classe repository dos fóruns
+     */
     ForumRepository forumRepository;
 
+    /**
+     * Construtor da classe
+     */
     public ForumService(ForumRepository forumRepository) {
         this.forumRepository = forumRepository;
     }
 
+    /**
+     * Função para buscar todos os fóruns salvos no banco de dados
+     */
     public List<Forum> findAll() {
         return forumRepository.findAll();
-    }
-
-    public Optional<Forum> findById(Long id) {
-        return forumRepository.findById(id);
-    }
-
-    public Boolean existsByNome(String nome) {
-        return forumRepository.existsByNomeForum(nome);
-    }
-
-    public Boolean existsById(Long id) {
-        return forumRepository.existsById(id);
-    }
-
-    public <S extends Forum> S save(S entity) {
-        return forumRepository.save(entity);
-    }
-
-    public void deleteById(Long id) {
-        forumRepository.deleteById(id);
     }
 
 }

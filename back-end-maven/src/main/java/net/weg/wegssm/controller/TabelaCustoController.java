@@ -13,30 +13,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.util.List;
 
+/**
+ * Classe controller para as tabelas de custos
+ */
 @AllArgsConstructor
 @Controller
 @RequestMapping("/weg_ssm/tabela-custo")
 @CrossOrigin(origins = "http://localhost:3000")
 public class TabelaCustoController {
 
+    /**
+     * Classe service das tabelas de custos
+     */
     private TabelaCustoService tabelaCustoService;
+
+    /**
+     * Classe service dos custos
+     */
     private CustoService custoService;
+
+    /**
+     * Classe service dos CCs
+     */
     private CCsService ccsService;
 
-    @GetMapping
-    public ResponseEntity<List<TabelaCusto>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(tabelaCustoService.findAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<TabelaCusto> findById(@RequestParam(value = "id") Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(tabelaCustoService.findById(id).get());
-    }
-
+    /**
+     * Função para criar uma nova tabela de custos, recebendo o objeto como body
+     */
     @PostMapping
     public ResponseEntity<TabelaCusto> save(@RequestBody @Valid TabelaCustoDTO tabelaCustoDTO) {
         for (Custo custo : tabelaCustoDTO.getCustos()) {
@@ -52,6 +57,9 @@ public class TabelaCustoController {
         return ResponseEntity.status(HttpStatus.OK).body(tabelaCustoService.save(tabelaCusto));
     }
 
+    /**
+     * Função para atualizar uma tabela de custos, recebendo o objeto no body
+     */
     @PutMapping
     public ResponseEntity<TabelaCusto> update(@RequestBody TabelaCusto tabelaCusto) {
         for (Custo custo : tabelaCusto.getCustos()) {
@@ -65,6 +73,9 @@ public class TabelaCustoController {
         return ResponseEntity.status(HttpStatus.OK).body(tabelaCustoService.save(tabelaCusto));
     }
 
+    /**
+     * Função para excluir uma tabela de custos pelo ID, recebido como variável
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
         if (!tabelaCustoService.existsById(id)) {

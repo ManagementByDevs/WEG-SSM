@@ -11,6 +11,14 @@ class ExportPDFService {
     async exportProposta(propostaId) {
         return (await axios.get(`${pdf}/proposta/${propostaId}`, { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
     }
+
+    async exportPauta(pautaId) {
+        return (await axios.get(`${pdf}/pauta/${pautaId}`, { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+    }
+
+    async exportAta(ataId) {
+        return (await axios.get(`${pdf}/ata/${ataId}`, { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+    }
 }
 
 export default new ExportPDFService();

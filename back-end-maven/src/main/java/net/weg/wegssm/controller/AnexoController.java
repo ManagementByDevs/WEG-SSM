@@ -13,14 +13,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.transaction.Transactional;
 
+/**
+ * Classe Controller para as funções dos anexos
+ */
 @Controller
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/anexo")
 public class AnexoController {
 
+    /**
+     * Service de anexos
+     */
     private AnexoService anexoService;
 
+    /**
+     * Função para excluir um anexo pelo seu ID, recebido pela variável "id"
+     */
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
@@ -29,6 +38,9 @@ public class AnexoController {
         return ResponseEntity.status(HttpStatus.OK).body(anexo);
     }
 
+    /**
+     * Função para excluir um anexo pelo seu nome, recebido pela variável "nome"
+     */
     @Transactional
     @DeleteMapping("/nome/{nome}")
     public ResponseEntity<Object> deleteByNome(@PathVariable(value = "nome") String nome) {

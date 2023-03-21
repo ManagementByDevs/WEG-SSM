@@ -9,17 +9,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
+/**
+ * Classe controller para as CCs
+ */
 @AllArgsConstructor
 @Controller
 @RequestMapping("/weg_ssm/cc")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CCsController {
 
+    /**
+     * Classe service das CCs
+     */
     private CCsService ccsService;
 
+    /**
+     * Função para salvar uma CC nova no banco, recebendo o objeto no body
+     */
     @PostMapping
     public ResponseEntity<CC> save(@RequestBody @Valid CcDTO ccDTO) {
         CC cc = new CC();
@@ -27,6 +35,9 @@ public class CCsController {
         return ResponseEntity.status(HttpStatus.OK).body(ccsService.save(cc));
     }
 
+    /**
+     * Função para excluir uma CC pelo seu ID, recebido como variável
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
         if (!ccsService.existsById(id)) {

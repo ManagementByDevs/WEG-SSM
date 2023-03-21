@@ -14,36 +14,22 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Classe controller para os benefícios
+ */
 @AllArgsConstructor
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/beneficio")
 public class BeneficioController {
 
+    /**
+     * Service dos benefícios
+     */
     private BeneficioService beneficioService;
 
     /**
-     * Método GET para buscar todos os benefícios
-     */
-    @GetMapping
-    public ResponseEntity<List<Beneficio>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(beneficioService.findAll());
-    }
-
-    /**
-     * Método GET para buscar um benefício específico através do id
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
-        if (!beneficioService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum benefício com este id.");
-        }
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(beneficioService.findById(id).get());
-    }
-
-    /**
-     * Método POST para salvar um benefício
+     * Função para salvar um benefício, recebendo o objeto no body
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid BeneficioDTO beneficioDTO) {
@@ -55,20 +41,18 @@ public class BeneficioController {
     }
 
     /**
-     * Método para atualizar um benefício já existente
-     * @param beneficio - Benefício atualizado
-     * @return - Resposta do banco de dados
+     * Função para atualizar um benefício já existente, recebendo ele atualizado no body
      */
     @PutMapping
     public ResponseEntity<Object> update(@RequestBody Beneficio beneficio) {
-        if(!beneficioService.existsById(beneficio.getId())) {
+        if (!beneficioService.existsById(beneficio.getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Benefício não encontrado!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(beneficioService.save(beneficio));
     }
 
     /**
-     * Método DELETE para remover um benefício
+     * Função para excluir um benefício, recebendo seu ID como variável
      */
     @Transactional
     @DeleteMapping("/{id}")
