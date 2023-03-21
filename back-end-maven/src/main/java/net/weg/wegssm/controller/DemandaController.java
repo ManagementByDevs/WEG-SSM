@@ -29,7 +29,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RequestMapping("/weg_ssm/demanda")
 public class DemandaController {
 
@@ -3533,6 +3533,8 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
+    /** Função utilizada para somente atualizar o status de uma demanda, recebendo como parâmetros o id e o novo status da demanda.
+     * Usada na aceitação/recusa do gerente e na criação/edição de propostas para acompanhamento do status da demanda */
     @PutMapping("/status/{id}/{status}")
     public ResponseEntity<Object> atualizarStatus(@PathVariable(value = "id") Long id,
                                                   @PathVariable(value = "status") Status status) {

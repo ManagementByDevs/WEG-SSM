@@ -13,6 +13,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import UsuarioService from "../../service/usuarioService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import AutenticacaoService from "../../service/autenticacaoService";
 
 /** Página de login, para que o usuário tenha acesso ao restante do sistema */
 const Login = () => {
@@ -32,11 +33,7 @@ const Login = () => {
 
   // Variáveis usadas para determinar se os feedback de dados inválidos ou faltantes estão visívies, respectivamente
   const [dadosInvalidos, setDadosInvalidos] = useState(false);
-  const [openFeedbackDadosInvalidos, setOpenFeedbackDadosInvalidos] =
-    useState(true);
   const [dadosFaltantes, setDadosFaltantes] = useState(false);
-  const [openFeedbackDadosFaltantes, setOpenFeedbackDadosFaltantes] =
-    useState(true);
 
   /** Função para mudar a visualização da senha (visível ou em formato padrão) */
   const mudarVisualizacaoSenha = () => {
@@ -56,23 +53,28 @@ const Login = () => {
   /** Função para fazer login através do botão "Entrar", procurando o usuário no back-end e indo para a página principal caso encontre
    * Caso não encontre ou os inputs não estejam preenchidos, os feedbacks respectivos serão ativados
    */
-  const fazerLogin = () => {
+  const fazerLogin = async () => {
     if (dados.email && dados.senha) {
-      UsuarioService.login(dados.email, dados.senha).then((e) => {
-        if (e != null && e != "") {
-          // Salvar token recebido no localstorage
-          localStorage.setItem("usuarioId", e.id);
-          localStorage.setItem("user", JSON.stringify(e));
-          navigate("/");
-        } else {
-          // Abrir modal de feedback de usuário ou senha inválidos
-          setOpenFeedbackDadosInvalidos(true);
-          setDadosInvalidos(true);
-        }
-      });
+      // UsuarioService.login(dados.email, dados.senha).then((e) => {
+      //   if (e != null && e != "") {
+      //     // Salvar token recebido no localstorage
+      //     localStorage.setItem("usuarioId", e.id);
+      //     localStorage.setItem("user", JSON.stringify(e));
+      //     navigate("/");
+      //   } else {
+      //     // Abrir modal de feedback de usuário ou senha inválidos
+      //     setOpenFeedbackDadosInvalidos(true);
+      //     setDadosInvalidos(true);
+      //   }
+      // });
+      try {
+        const response = await AutenticacaoService.login(dados);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       // Abrir modal de feedback de dados não preenchidos
-      setOpenFeedbackDadosFaltantes(true);
       setDadosFaltantes(true);
     }
   };
@@ -178,9 +180,9 @@ const Login = () => {
             {/* Feedback de dados inválidos */}
             {dadosInvalidos && (
               <Feedback
-                open={openFeedbackDadosInvalidos}
+                open={dadosInvalidos}
                 handleClose={() => {
-                  setOpenFeedbackDadosInvalidos(false);
+                  setDadosInvalidos(false);
                 }}
                 status={"erro"}
                 mensagem={texts.login.feedback.dadosInvalidos}
@@ -190,9 +192,9 @@ const Login = () => {
             {/* Feedback de dados faltantes / não preenchidos */}
             {dadosFaltantes && (
               <Feedback
-                open={openFeedbackDadosFaltantes}
+                open={dadosFaltantes}
                 handleClose={() => {
-                  setOpenFeedbackDadosFaltantes(false);
+                  setDadosFaltantes(false);
                 }}
                 status={"erro"}
                 mensagem={texts.login.feedback.preenchaTodosOsCampos}

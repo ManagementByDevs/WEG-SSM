@@ -14,6 +14,7 @@
     "axios": "^1.2.0",
     "jodit": "^3.23.3",
     "jodit-react": "^1.3.31",
+    "mkcert": "^1.5.1",
     "net": "^1.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,7 +30,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "m": "npm i -g mkcert",
+    "mk": "mkcert create-ca --organization 'SENAI' --country-code 'BR' --state 'Santa Catarina' --locality 'Jaragua do Sul'",
+    "mk2": "mkcert create-cert --domains 'localhost'"
   },
   "eslintConfig": {
     "extends": [
