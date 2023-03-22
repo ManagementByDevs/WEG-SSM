@@ -10,44 +10,29 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe repository para os usuários
+ */
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     /**
-     * Método que verifica se existe um usuário com o email passado por parâmetro
-     *
-     * @param email
-     * @return
+     * Função de verificação caso exista um usuário com o email recebido
      */
     Boolean existsByEmail(String email);
 
     /**
-     * Método para listar todos os usuários pertencentes a um departamento
-     *
-     * @param departamento
-     * @return
+     * Função para buscar um usuário pelo seu email e senha
      */
-    List<Usuario> findByDepartamento(Departamento departamento);
-
-    /**
-     * Método para listar todos os usuários que começam com o nome passado por parâmetro
-     *
-     * @param nome
-     * @return
-     */
-    List<Usuario> findByNomeStartsWith(String nome);
-
-    Boolean existsByNomeContains(String titulo);
-
-    Optional<Usuario> findByEmail(String email);
-
     Usuario findByEmailAndSenha(String email, String senha);
 
-    Boolean existsByEmailAndSenha(String email, String senha);
-
-    List<Usuario> findByTipoUsuario(TipoUsuario tipo_usuario);
-
+    /**
+     * Função para buscar uma lista de usuários com o nome (ou parte) e tipo usuário recebidos
+     */
     List<Usuario> findByNomeContainingAndTipoUsuario(String nome, TipoUsuario tipo_usuario, Pageable pageable);
 
+    /**
+     * Função para buscar um usuário pelo seu departamento e tipo de usuário
+     */
     Usuario findByDepartamentoAndTipoUsuario(Departamento departamento, TipoUsuario tipoUsuario);
 }

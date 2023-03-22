@@ -20,21 +20,15 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+/** Classe controller para o usuário */
 @Controller
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/usuario")
 public class UsuarioController {
 
+    /** Classe service dos usuários */
     private UsuarioService usuarioService;
-
-    /**
-     * Método GET para listar todos os usuários
-     */
-    @GetMapping
-    public ResponseEntity<List<Usuario>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findAll());
-    }
 
     /**
      * Método GET para procurar um usuário por email e senha, necessário para o login
@@ -45,7 +39,7 @@ public class UsuarioController {
     }
 
     /**
-     * Método GET para listar um usuário específico através de um id
+     * Função para buscar um usuário pelo seu ID, recebido por uma variável
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -56,19 +50,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findById(id).get());
     }
 
-    /**
-     * Método GET para listar todos os usuários de um departamento específico
-     */
-    @GetMapping("/departamento/{departamento}")
-    public ResponseEntity<List<Usuario>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento) {
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByDepartamento(departamento));
-    }
-
-    @GetMapping("/tipo_usuario/{tipo_usuario}")
-    public ResponseEntity<List<Usuario>> findByTipoUsuario(@PathVariable(value = "tipo_usuario") TipoUsuario tipo_usuario) {
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByTipoUsuario(tipo_usuario));
-    }
-
+    /** Função para buscar uma lista de usuários pelo nome e tipo de usuário, necessária para filtragem */
     @GetMapping("/filtragem/{nome}/{tipo_usuario}")
     public ResponseEntity<List<Usuario>> findByNomeAndTipoUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                   @PathVariable(value = "nome") String nome,
@@ -77,9 +59,7 @@ public class UsuarioController {
     }
 
     /**
-     * Método POST para criar um usuário no banco de dados
-     *
-     * @param usuarioDTO ( Objeto a ser cadastrado = req.body )
+     * Função para criar um novo usuário, recebendo o objeto pelo body
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid UsuarioDTO usuarioDTO) {
@@ -98,9 +78,7 @@ public class UsuarioController {
     }
 
     /**
-     * Método PUT para atualizar um usuário no banco de dados, através de um id
-     *
-     * @param usuarioDTO ( Novos dados do usuário = req.body )
+     * Função para atualizar um usuário, recebendo o objeto atualizado no body e o ID como parâmetro
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody UsuarioDTO usuarioDTO) {
@@ -126,35 +104,6 @@ public class UsuarioController {
         usuario.setPreferencias(preferencias);
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
-    }
-
-    /**
-     * Método DELETE para deletar um usuário, colocando sua visibilidade como false
-     */
-    @Transactional
-    @DeleteMapping("/visibilidade/{id}")
-    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
-        if (!usuarioService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
-        }
-
-        Usuario usuario = usuarioService.findById(id).get();
-        usuario.setVisibilidade(false);
-        usuarioService.save(usuario);
-
-        return ResponseEntity.status(HttpStatus.OK).body(usuario);
-    }
-
-    @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
-        if (!usuarioService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
-        }
-
-        usuarioService.deleteById(id);
-
-        return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado com sucesso.");
     }
 
 }

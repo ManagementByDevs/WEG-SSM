@@ -10,65 +10,76 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe service para os usuários
+ */
 @Service
 public class UsuarioService {
 
+    /**
+     * Classe repository do usuário
+     */
     private UsuarioRepository usuarioRepository;
 
+    /**
+     * Construtor da classe
+     */
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
-    }
-
-    public List<Usuario> findByDepartamento(Departamento departamento){ return usuarioRepository.findByDepartamento(departamento); }
-
+    /**
+     * Função para buscar um usuário pelo seu ID
+     */
     public Optional<Usuario> findById(Long id) {
         return usuarioRepository.findById(id);
     }
 
-    public List<Usuario> findByNomeStartsWith(String nome) {
-        return usuarioRepository.findByNomeStartsWith(nome);
-    }
-
+    /**
+     * Função booleana de verificação caso exista um usuário com o email recebido
+     */
     public Boolean existsByEmail(String email) {
         return usuarioRepository.existsByEmail(email);
     }
 
+    /**
+     * Função booleana de verificação caso exista um usuário com o ID recebido
+     */
     public Boolean existsById(Long id) {
         return usuarioRepository.existsById(id);
     }
 
-    public Boolean existsByNomeContains(String titulo) {
-        return usuarioRepository.existsByNomeContains(titulo);
-    }
-
+    /**
+     * Função para salvar um usuário no banco
+     */
     public <S extends Usuario> S save(S entity) {
         return usuarioRepository.save(entity);
     }
 
+    /**
+     * Função para excluir um usuário pelo seu ID
+     */
     public void deleteById(Long id) {
         usuarioRepository.deleteById(id);
     }
 
+    /**
+     * Função para buscar um usuário pelo seu email e senha
+     */
     public Usuario findByEmailAndSenha(String email, String senha) {
         return usuarioRepository.findByEmailAndSenha(email, senha);
     }
 
-    public Boolean existsByEmailAndSenha(String email, String senha) {
-        return usuarioRepository.existsByEmailAndSenha(email, senha);
-    }
-
-    public List<Usuario> findByTipoUsuario(TipoUsuario tipo_usuario) {
-        return usuarioRepository.findByTipoUsuario(tipo_usuario);
-    }
-
+    /**
+     * Função para buscar uma lisa de usuários pelo seu nome e tipo de usuário
+     */
     public List<Usuario> findByNomeAndTipoUsuario(String nome, TipoUsuario tipo_usuario, Pageable pageable) {
         return usuarioRepository.findByNomeContainingAndTipoUsuario(nome, tipo_usuario, pageable);
     }
 
+    /**
+     * Função para buscar um usuário pelo seu departamento e tipo de usuário
+     */
     public Usuario findByDepartamentoAndTipoUsuario(Departamento departamento, TipoUsuario tipoUsuario) {
         return usuarioRepository.findByDepartamentoAndTipoUsuario(departamento, tipoUsuario);
     }

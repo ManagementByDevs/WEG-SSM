@@ -2,6 +2,7 @@ import axios from "./api";
 
 const usuario = "/usuario";
 
+/** Classe service do usuário */
 class UsuarioService {
   /*
    * Preferências:

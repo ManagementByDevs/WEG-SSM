@@ -12,16 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+/** Classe controller para as seções de TI */
 @Controller
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/secao_ti")
 public class SecaoTIController {
 
+    /** Classe service das seções de TI */
     private SecaoTIService secaoTIService;
 
     /**
-     * Método GET para buscar todas as seções de TI
+     * Função para buscar todas as seções de TI
      */
     @GetMapping
     public ResponseEntity<List<SecaoTI>> findAll() {
