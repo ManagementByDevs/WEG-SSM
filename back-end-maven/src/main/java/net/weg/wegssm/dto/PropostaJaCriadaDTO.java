@@ -28,7 +28,7 @@ public class PropostaJaCriadaDTO {
     private String proposta;
     private String frequencia;
     private String tamanho;
-    private String secaoTI;
+    private SecaoTI secaoTI;
     private byte[] escopo;
     private List<Beneficio> beneficios = new ArrayList<>();
     private Bu buSolicitante;

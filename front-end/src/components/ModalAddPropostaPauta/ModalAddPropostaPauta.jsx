@@ -171,7 +171,7 @@ const ModalAddPropostaPauta = (props) => {
     proposta: "",
     publicada: false,
     responsavelNegocio: [],
-    secaoTI: "",
+    secaoTI: { idSecao: 0, nomeSecao: "", siglaSecao: "" },
     solicitante: {},
     status: "",
     tabelaCustos: [

@@ -669,6 +669,7 @@ const TextLanguage = (linguagem) => {
             semParecer: "Sem parecer",
             publicada: "Publicada",
             naoPublicada: "Não publicada",
+            secaoTi: "Seção TI"
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "Selecione a pauta",
@@ -1360,6 +1361,7 @@ const TextLanguage = (linguagem) => {
             parecer: "Opinion",
             publicada: "Published",
             naoPublicada: "Not published",
+            secaoTi: "TI Section"
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "Select a minute",
@@ -2048,6 +2050,7 @@ const TextLanguage = (linguagem) => {
             parecer: "意见",
             publicada: "发表",
             naoPublicada: "未发表",
+            secaoTi: "TI 部分"
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "选择会议记录",
@@ -2745,6 +2748,7 @@ const TextLanguage = (linguagem) => {
             semParecer: "Sin parecer",
             publicada: "Publicada",
             naoPublicada: "No publicado",
+            secaoTi: "Sección TI"
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "Seleccione la pauta",

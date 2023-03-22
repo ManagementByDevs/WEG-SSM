@@ -77,8 +77,9 @@ public class Proposta {
     @Column(nullable = false, length = 20)
     private String tamanho;
 
-    @Column(nullable = false, length = 45)
-    private String secaoTI;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "secao_ti_id")
+    private SecaoTI secaoTI;
 
     @Lob
     @Column
@@ -125,8 +126,11 @@ public class Proposta {
     @JoinColumn(name = "proposta_id")
     private List<TabelaCusto> tabelaCustos;
 
-    @OneToMany
-    @JoinColumn(name = "proposta_id")
+    @ManyToMany
+    @JoinTable(
+            name = "proposta_responsavel_negocio",
+            joinColumns = @JoinColumn(name = "proposta_id"),
+            inverseJoinColumns = @JoinColumn(name = "responsavel_negocio_id"))
     private List<ResponsavelNegocio> responsavelNegocio;
 
     @OneToOne

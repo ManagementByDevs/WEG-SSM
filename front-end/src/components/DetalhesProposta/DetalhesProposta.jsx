@@ -63,7 +63,7 @@ const propostaExample = {
   proposta: "",
   publicada: false,
   responsavelNegocio: [],
-  secaoTI: "",
+  secaoTI: { idSecao: 0, nomeSecao: "", siglaSecao: "" },
   solicitante: {},
   status: "",
   tabelaCustos: [
@@ -137,6 +137,8 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
+
+  console.log("proposta: ", proposta);
 
   return (
     <Box className="flex justify-center">
@@ -249,6 +251,16 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
               </Box>
             </Box>
 
+            {/* Secao TI */}
+            <Box className="flex mt-4">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.secaoTi}:&nbsp;
+              </Typography>
+              <Typography fontSize={FontConfig.medium}>
+                {proposta.secaoTI.siglaSecao} - {proposta.secaoTI.nomeSecao}
+              </Typography>
+            </Box>
+
             {/* Proposta / Objetivo */}
             <Box className="mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
@@ -301,7 +313,7 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                 {texts.detalhesProposta.tabelaDeCustos}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                {proposta.tabelaCustos.map((tabela, index) => {
+                {proposta.tabelaCustos?.map((tabela, index) => {
                   return <TabelaCustos key={index} dados={tabela} />;
                 })}
               </Box>

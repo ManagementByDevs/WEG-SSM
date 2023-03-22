@@ -70,6 +70,10 @@ class DateService {
    * @returns
    */
   getDateByMySQLFormat(dataMysql) {
+    if (!dataMysql) {
+      return "";
+    }
+    
     let date = dataMysql.replace(/[-]/g, "/").replace(/[T]/g, " ");
     date = Date.parse(date);
     return new Date(date);
