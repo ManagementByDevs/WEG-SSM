@@ -284,9 +284,9 @@ public class PDFGeneratorService {
         PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
 
-        String html = "<h1>123ksdjfçlasjfçskldajfçkldsajfçskldajç</h1>";
+//        String html = "<h1>123ksdjfçlasjfçskldajfçkldsajfçskldajç</h1>";
 
-        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()));
+//        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()));
 
         // Criando a logo da weg para o modelo pdf
 
