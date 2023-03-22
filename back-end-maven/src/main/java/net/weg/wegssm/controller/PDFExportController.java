@@ -1,7 +1,7 @@
 package net.weg.wegssm.controller;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.Ata;
@@ -34,7 +34,7 @@ public class PDFExportController {
     private AtaService ataService;
 
     @GetMapping("/pdf/demanda/{id}")
-    public void generatePDFDemanda(@PathVariable(value = "id") Long demandaId, HttpServletResponse response) throws IOException {
+    public void generatePDFDemanda(@PathVariable(value = "id") Long demandaId, HttpServletResponse response) throws IOException, DocumentException {
         Demanda demanda = demandaService.findById(demandaId).get();
         response.setContentType("application/pdf");
 
@@ -57,7 +57,7 @@ public class PDFExportController {
     }
 
     @GetMapping("/pdf/proposta/{id}")
-    public void generatePDFProposta(@PathVariable(value = "id") Long propostaId, HttpServletResponse response) throws IOException {
+    public void generatePDFProposta(@PathVariable(value = "id") Long propostaId, HttpServletResponse response) throws IOException, DocumentException {
         Proposta proposta = propostaService.findById(propostaId).get();
         response.setContentType("application/pdf");
 
@@ -80,7 +80,7 @@ public class PDFExportController {
     }
 
     @GetMapping("/pdf/pauta/{id}")
-    public void generatePDFPauta(@PathVariable(value = "id") Long idPauta,  HttpServletResponse response) throws IOException {
+    public void generatePDFPauta(@PathVariable(value = "id") Long idPauta,  HttpServletResponse response) throws IOException, DocumentException {
         Pauta pauta = pautaService.findById(idPauta).get();
         response.setContentType("application/pdf");
 
@@ -103,7 +103,7 @@ public class PDFExportController {
     }
 
     @GetMapping("/pdf/ata/{id}")
-    public void generatePDFAta(@PathVariable(value = "id") Long idAta, HttpServletResponse response) throws IOException {
+    public void generatePDFAta(@PathVariable(value = "id") Long idAta, HttpServletResponse response) throws IOException, DocumentException {
         Ata ata = ataService.findById(idAta).get();
         response.setContentType("application/pdf");
 

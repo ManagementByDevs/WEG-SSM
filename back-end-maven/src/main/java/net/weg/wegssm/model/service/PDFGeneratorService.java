@@ -1,28 +1,25 @@
 package net.weg.wegssm.model.service;
 
-import com.lowagie.text.*;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.*;
-import com.lowagie.text.pdf.draw.VerticalPositionMark;
-import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.CustoDTO;
-import net.weg.wegssm.dto.TabelaCustoDTO;
+import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import net.weg.wegssm.model.entities.*;
-import net.weg.wegssm.repository.DemandaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class PDFGeneratorService {
@@ -35,7 +32,10 @@ public class PDFGeneratorService {
 
     // métodos para criar o modelo de exportação do pdf
 
-    public Document exportDemanda(HttpServletResponse response, Demanda demanda) throws IOException {
+    public Document exportDemanda(HttpServletResponse response, Demanda demanda) throws IOException, DocumentException {
+
+        // Colors
+        BaseColor azulWeg = new BaseColor(0, 87, 157);
 
         // Formatação da data para o documento pdf
 
@@ -62,7 +62,7 @@ public class PDFGeneratorService {
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
-        fontTitle.setColor(Color.decode("#00579D"));
+        fontTitle.setColor(azulWeg);
         fontTitle.setStyle(Font.BOLD);
 
         Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
@@ -127,7 +127,7 @@ public class PDFGeneratorService {
             table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
             PdfPCell cell = new PdfPCell();
-            cell.setBackgroundColor(Color.decode("#00579D"));
+            cell.setBackgroundColor(azulWeg);
             cell.setPadding(5);
             cell.setBorder(0);
 
@@ -263,9 +263,12 @@ public class PDFGeneratorService {
         return document;
     }
 
-    public Document exportProposta(HttpServletResponse response, Proposta proposta) throws IOException {
+    public Document exportProposta(HttpServletResponse response, Proposta proposta) throws IOException, DocumentException {
 
         Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
+
+        //Colors
+        BaseColor azulWeg = new BaseColor(0, 87, 157);
 
         // Formatação da data para quando baixar o documento pdf
 
@@ -275,8 +278,15 @@ public class PDFGeneratorService {
         // Criando a página do pdf
 
         Document document = new Document(PageSize.A4);
+
         PdfWriter.getInstance(document, response.getOutputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
+
+//        String html = "<h1>123ksdjfçlasjfçskldajfçkldsajfçskldajç</h1>";
+
+//        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()));
 
         // Criando a logo da weg para o modelo pdf
 
@@ -292,7 +302,7 @@ public class PDFGeneratorService {
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
-        fontTitle.setColor(Color.decode("#00579D"));
+        fontTitle.setColor(azulWeg);
         fontTitle.setStyle(Font.BOLD);
 
         Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
@@ -311,7 +321,7 @@ public class PDFGeneratorService {
 
         Font fontParagraph5 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph5.setSize(15);
-        fontParagraph5.setColor(Color.decode("#00579D"));
+        fontParagraph5.setColor(azulWeg);
         fontParagraph5.setStyle(Font.BOLD);
 
         // Criando a formatação da página pdf
@@ -441,7 +451,7 @@ public class PDFGeneratorService {
             table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
             PdfPCell cell = new PdfPCell();
-            cell.setBackgroundColor(Color.decode("#00579D"));
+            cell.setBackgroundColor(azulWeg);
             cell.setPadding(5);
             cell.setBorder(0);
 
@@ -481,7 +491,7 @@ public class PDFGeneratorService {
             table2.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
             PdfPCell cell2 = new PdfPCell();
-            cell2.setBackgroundColor(Color.decode("#00579D"));
+            cell2.setBackgroundColor(azulWeg);
             cell2.setPadding(5);
             cell2.setBorder(0);
 
@@ -507,7 +517,7 @@ public class PDFGeneratorService {
             table3.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
             PdfPCell cell3 = new PdfPCell();
-            cell3.setBackgroundColor(Color.decode("#00579D"));
+            cell3.setBackgroundColor(azulWeg);
             cell3.setPadding(5);
             cell3.setBorder(0);
 
@@ -547,7 +557,7 @@ public class PDFGeneratorService {
             table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
             PdfPCell cell = new PdfPCell();
-            cell.setBackgroundColor(Color.decode("#00579D"));
+            cell.setBackgroundColor(azulWeg);
             cell.setPadding(5);
             cell.setBorder(0);
 
@@ -649,7 +659,10 @@ public class PDFGeneratorService {
         return document;
     }
 
-    public Document exportPauta(HttpServletResponse response, Pauta pauta) throws IOException {
+    public Document exportPauta(HttpServletResponse response, Pauta pauta) throws IOException, DocumentException {
+
+        // Colors
+        BaseColor azulWeg = new BaseColor(0, 87, 157);
 
         // Formatação da data para quando baixar o documento
 
@@ -676,7 +689,7 @@ public class PDFGeneratorService {
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
-        fontTitle.setColor(Color.decode("#00579D"));
+//        fontTitle.setColor(Color.decode("#00579D"));
         fontTitle.setStyle(Font.BOLD);
 
         Font fontTitleProposta = FontFactory.getFont(FontFactory.HELVETICA);
@@ -703,7 +716,7 @@ public class PDFGeneratorService {
 
         Font fontParagraph6 = FontFactory.getFont(FontFactory.HELVETICA);
         fontParagraph6.setSize(15);
-        fontParagraph6.setColor(Color.decode("#00579D"));
+        fontParagraph6.setColor(azulWeg);
         fontParagraph6.setStyle(Font.BOLD);
 
         // Formatação da página pdf
@@ -871,7 +884,7 @@ public class PDFGeneratorService {
                 table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
                 PdfPCell cell = new PdfPCell();
-                cell.setBackgroundColor(Color.decode("#00579D"));
+                cell.setBackgroundColor(azulWeg);
                 cell.setPadding(5);
                 cell.setBorder(0);
 
@@ -911,7 +924,7 @@ public class PDFGeneratorService {
                 table2.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
                 PdfPCell cell2 = new PdfPCell();
-                cell2.setBackgroundColor(Color.decode("#00579D"));
+                cell2.setBackgroundColor(azulWeg);
                 cell2.setPadding(5);
                 cell2.setBorder(0);
 
@@ -937,7 +950,7 @@ public class PDFGeneratorService {
                 table3.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
                 PdfPCell cell3 = new PdfPCell();
-                cell3.setBackgroundColor(Color.decode("#00579D"));
+                cell3.setBackgroundColor(azulWeg);
                 cell3.setPadding(5);
                 cell3.setBorder(0);
 
@@ -977,7 +990,7 @@ public class PDFGeneratorService {
                 table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
                 PdfPCell cell = new PdfPCell();
-                cell.setBackgroundColor(Color.decode("#00579D"));
+                cell.setBackgroundColor(azulWeg);
                 cell.setPadding(5);
                 cell.setBorder(0);
 
@@ -1080,7 +1093,10 @@ public class PDFGeneratorService {
         return document;
     }
 
-    public Document exportAta(HttpServletResponse response, Ata ata) throws IOException {
+    public Document exportAta(HttpServletResponse response, Ata ata) throws IOException, DocumentException {
+
+        // Colors
+        BaseColor azulWeg = new BaseColor(0, 87, 157);
 
         // Formatando a data para colocar no documento
 
@@ -1107,7 +1123,7 @@ public class PDFGeneratorService {
 
         Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitle.setSize(24);
-        fontTitle.setColor(Color.decode("#00579D"));
+        fontTitle.setColor(azulWeg);
         fontTitle.setStyle(Font.BOLD);
 
         Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
@@ -1221,7 +1237,7 @@ public class PDFGeneratorService {
                 table.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
                 PdfPCell cell = new PdfPCell();
-                cell.setBackgroundColor(Color.decode("#00579D"));
+                cell.setBackgroundColor(azulWeg);
                 cell.setPadding(5);
                 cell.setBorder(0);
 
@@ -1336,6 +1352,5 @@ public class PDFGeneratorService {
         document.close();
 
         return document;
-
     }
 }
