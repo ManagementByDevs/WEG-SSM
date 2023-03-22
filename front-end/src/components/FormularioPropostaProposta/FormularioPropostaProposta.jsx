@@ -749,7 +749,7 @@ const FormularioPropostaProposta = (props) => {
                 alterarTexto(value, "forum");
               }}
               getOptionLabel={(option) => {
-                return option?.nome || "";
+                return option?.siglaForum || "";
               }}
               isOptionEqualToValue={(option, value) => {
                 return option?.id == value?.id;

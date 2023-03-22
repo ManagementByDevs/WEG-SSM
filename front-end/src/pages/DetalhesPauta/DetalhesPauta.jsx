@@ -231,6 +231,7 @@ const DetalhesPauta = (props) => {
     const propostasDeleted = pauta.propostas.splice(indexProposta, 1);
     const propostaDeleted = propostasDeleted[0];
 
+    // Anulando os campos da proposta
     propostaDeleted.publicada = null;
     propostaDeleted.status = "ASSESSMENT_APROVACAO";
     propostaDeleted.parecerInformacao = null;
