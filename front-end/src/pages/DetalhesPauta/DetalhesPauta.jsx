@@ -144,7 +144,7 @@ const DetalhesPauta = (props) => {
       setBotaoProximo(false);
     } else {
       setProposta(true);
-      setDadosProposta(listaProposta[indexProposta + 1]);
+      setDadosProposta(pauta.propostas[indexProposta + 1]);
       setIndexProposta(indexProposta + 1);
     }
   };
@@ -153,9 +153,10 @@ const DetalhesPauta = (props) => {
   const voltar = () => {
     if (indexProposta == 0) {
       setProposta(false);
+      setIndexProposta(-1);
     } else {
       setBotaoProximo(true);
-      setDadosProposta(listaProposta[indexProposta - 1]);
+      setDadosProposta(pauta.propostas[indexProposta - 1]);
       setIndexProposta(indexProposta - 1);
     }
   };
