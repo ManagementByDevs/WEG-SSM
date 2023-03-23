@@ -570,6 +570,8 @@ const TextLanguageContext = createContext({
         feedback3: "Demanda recusada com sucesso!",
         feedback4: "Demanda devolvida com sucesso!",
         feedback5: "Proposta criada com sucesso!",
+        feedback6: "Pauta deletada com sucesso!",
+        feedback7: "Proposta atualizada com sucesso!",
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",
