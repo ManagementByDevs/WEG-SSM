@@ -8,22 +8,22 @@ class ExportExcelService {
         let form = new FormData();
 
         for (let demanda of listaDemandas) {
-            form.append("demandas", demanda);
+            form.append("demandas_backlog", demanda);
         }
 
         return (await axios.post(`${excel}/demandas_backlog`, form, { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
     }
 
-    // async exportDemandasAssessmentToExcel(listaDemandas) {
+    async exportDemandasAssessmentToExcel(listaDemandas) {
 
-    //     let form = new FormData();
+        let form = new FormData();
 
-    //     for(let demanda of listaDemandas) {
-    //         form.append("demandas", demanda);
-    //     }
+        for(let demanda of listaDemandas) {
+            form.append("demandas_assessment", demanda);
+        }
 
-    //     return (await axios.post(`${excel}/demandas_assessment`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
-    // }
+        return (await axios.post(`${excel}/demandas_assessment`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+    }
 
 }
 
