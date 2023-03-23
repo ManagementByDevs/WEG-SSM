@@ -33,17 +33,16 @@ import java.util.List;
 @RequestMapping("/weg_ssm")
 public class ExcelExportController {
 
-    private static DemandaService demandaService;
     private ExcelGeneratorService excelGeneratorService;
 
-    @GetMapping("/excel/demandas_backlog")
+    @PostMapping("/excel/demandas_backlog")
     public void generateExcelDemandasBacklog(HttpServletResponse response, @RequestParam("demandas_backlog") List<String> listaDemandas) throws IOException {
-        excelGeneratorService.exportExcel(response, listaDemandas);
+        excelGeneratorService.exportDemandasBackLogToExcel(response, listaDemandas);
     }
 
     @PostMapping("/excel/demandas_assessment")
-    public void exportDemandasAssessmentToExcel(HttpServletResponse response) throws IOException{
-
+    public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<String> listaDemandas) throws IOException{
+        excelGeneratorService.exportDemandasAssessmentToExcel(response, listaDemandas);
     }
 
     @PostMapping("/excel/propostas")
