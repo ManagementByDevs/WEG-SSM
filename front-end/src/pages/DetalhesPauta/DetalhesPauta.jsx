@@ -1,6 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Box, Typography, Button, Divider, Tooltip, IconButton, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -21,6 +28,8 @@ import PautaService from "../../service/pautaService";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import PropostaService from "../../service/propostaService";
 import ExportPdfService from "../../service/exportPdfService";
+import AtaService from "../../service/ataService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
@@ -54,63 +63,11 @@ const DetalhesPauta = (props) => {
   };
 
   // UseState para guardar a pauta atual
-  const [pauta, setPauta] = useState({
-    analistaResponsavel: {},
-    comissao: "",
-    dataReuniao: "",
-    id: 0,
-    numeroSequencial: 0,
-    propostas: [{}],
-  });
+  const [pauta, setPauta] = useState(EntitiesObjectService.pauta());
 
   // Lista provisória de propostas para preencher a tela
   const [listaProposta, setListaProposta] = useState([
-    {
-      titulo: "Exemplo de Proposta",
-      problema:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-      proposta:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-      frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-      beneficios: [
-        {
-          tipoBeneficio: "Real",
-          valor_mensal: "300,00",
-          moeda: "BR",
-          memoriaCalculo: "memória de cálculo",
-          visible: true,
-        },
-      ],
-      periodoExecucao: "07/12/2022 à 08/12/2022",
-      paybackSimples: "10 meses",
-      ppm: "1234",
-      linkJira: "https://www.jira.com",
-      responsavelNegocio: "Matheus Franzener Hohmann",
-      area: "Weg Digital",
-    },
-    {
-      titulo: "Sistema de Gestão de Demandas",
-      problema:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-      proposta:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-      frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-      beneficios: [
-        {
-          tipoBeneficio: "Real",
-          valor_mensal: "300,00",
-          moeda: "BR",
-          memoriaCalculo: "memória de cálculo",
-          visible: true,
-        },
-      ],
-      periodoExecucao: "07/12/2022 à 08/12/2022",
-      paybackSimples: "10 meses",
-      ppm: "1234",
-      linkJira: "https://www.jira.com",
-      responsavelNegocio: "Matheus Franzener Hohmann",
-      area: "Weg Digital",
-    },
+    EntitiesObjectService.proposta(),
   ]);
 
   // Variável de verificação utilizada para mostrar o sumário ou uma proposta
@@ -143,19 +100,26 @@ const DetalhesPauta = (props) => {
     if (indexProposta == listaProposta.length - 1) {
       setBotaoProximo(false);
     } else {
-      setProposta(true);
+      setProposta(false);
       setDadosProposta(pauta.propostas[indexProposta + 1]);
       setIndexProposta(indexProposta + 1);
     }
   };
 
+  useEffect(() => {
+    if (indexProposta != -1) {
+      setProposta(true);
+    }
+  }, [indexProposta]);
+
   // Função para voltar para uma proposta
   const voltar = () => {
-    if (indexProposta == 0) {
+    if (indexProposta <= 0) {
       setProposta(false);
       setIndexProposta(-1);
     } else {
       setBotaoProximo(true);
+      setProposta(false);
       setDadosProposta(pauta.propostas[indexProposta - 1]);
       setIndexProposta(indexProposta - 1);
     }
@@ -259,6 +223,7 @@ const DetalhesPauta = (props) => {
   useEffect(() => {
     console.log(location.state);
     setPauta(location.state.pauta);
+    setListaProposta(location.state.pauta.propostas);
   }, []);
 
   // Função para baixar o arquivo pdf da respectiva pauta
@@ -271,7 +236,48 @@ const DetalhesPauta = (props) => {
       link.download = "pdf_pauta.pdf";
       link.click();
     });
-  }
+  };
+
+  // Verifica se todos os campos necessários para criação de uma ata foram preenchidos
+  const isAllFieldsFilled = () => {
+    // Verifica se os pareceres das propostas foram preenchidos
+    let isFilled = pauta.propostas.every((proposta) => {
+      return (
+        proposta.parecerComissao != null &&
+        proposta.parecerInformacao != null && // Essa variável sempre começa como null
+        proposta.parecerInformacao != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+      );
+    });
+
+    return isFilled;
+  };
+
+  // Função que cria uma ata
+  const criarAta = () => {
+    if (!isAllFieldsFilled()) {
+      console.log("Preencha todos os campos!");
+      return;
+    }
+
+    AtaService.post(pauta).then((response) => {
+      console.log(response);
+      feedbackAta();
+    });
+  };
+
+  useEffect(() => {
+    if (indexProposta > -1) {
+      let aux = [...listaProposta];
+      console.log("aux: ", aux);
+      aux[indexProposta] = { ...dadosProposta };
+      setListaProposta(aux);
+      setPauta({ ...pauta, propostas: aux });
+    }
+  }, [dadosProposta]);
+
+  useEffect(() => {
+    console.log("pauta: ", pauta);
+  }, [pauta]);
 
   return (
     <FundoComHeader>
@@ -281,7 +287,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
       <Box className="p-2" sx={{minWidth: "60rem"}}>
         <Box className="flex w-full relative">
@@ -339,10 +345,8 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Data da reunião da DG */}
               <Typography sx={informacoesAta}>
-                {texts.detalhesPauta.reuniaoDaDG}:{" "}
-                {DateService.getFullDateUSFormat(
-                  DateService.getDateByMySQLFormat(pauta?.dataReuniao)
-                )}
+                {texts.detalhesPauta.analistaResponsavel}:{" "}
+                {pauta.analistaResponsavel.nome}
               </Typography>
 
               <Divider sx={{ marginTop: "1%" }} />
@@ -424,11 +428,10 @@ const DetalhesPauta = (props) => {
                     />
                   </IconButton>
                 </Box>
-                {/* <PropostaDeAta
-                  dadosProposta={dadosProposta}
-                  propostaPauta={false}
-                /> */}
-                <DetalhesProposta proposta={dadosProposta} />
+                <DetalhesProposta
+                  proposta={dadosProposta}
+                  setProposta={setDadosProposta}
+                />
               </Box>
             )}
           </Box>
@@ -508,7 +511,8 @@ const DetalhesPauta = (props) => {
             </Box>
             <Tooltip title={texts.detalhesPauta.criarAta}>
               <Box
-                onClick={feedbackAta}
+                // onClick={feedbackAta}
+                onClick={criarAta}
                 className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                 sx={{
                   backgroundColor: "primary.main",

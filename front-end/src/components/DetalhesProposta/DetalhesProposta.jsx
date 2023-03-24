@@ -22,91 +22,27 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 // Exemplo de proposta a ser seguido
-const propostaExample = {
-  analista: {},
-  anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
-  beneficios: [
-    {
-      id: 0,
-      tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
-      valor_mensal: 0,
-      moeda: "",
-      memoriaCalculo: "",
-    },
-  ],
-  buSolicitante: { idBu: 0, nomeBu: "", siglaBu: "" },
-  busBeneficiadas: [{ idBu: 0, nomeBu: "", siglaBu: "" }],
-  codigoPPM: 0,
-  data: "",
-  demanda: 0,
-  departamento: 0,
-  escopo: 0,
-  fimExecucao: "",
-  forum: { idForum: 0, nomeForum: "", siglaForum: "" },
-  frequencia: "",
-  gerente: 0,
-  historicoProposta: [],
-  id: 0,
-  inicioExecucao: "",
-  linkJira: "",
-  naoPublicada: true,
-  parecerComissao: "",
-  parecerDG: "",
-  parecerInformacao: "",
-  paybackTipo: "",
-  paybackValor: 0,
-  problema: "",
-  proposta: "",
-  publicada: false,
-  responsavelNegocio: [],
-  secaoTI: { idSecao: 0, nomeSecao: "", siglaSecao: "" },
-  solicitante: {},
-  status: "",
-  tabelaCustos: [
-    {
-      id: 0,
-      custos: [
-        {
-          id: 0,
-          tipoDespesa: "",
-          perfilDespesa: "",
-          periodoExecucao: 0,
-          horas: 0,
-          valorHora: 0,
-        },
-      ],
-      ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
-    },
-  ],
-  tamanho: "",
-  titulo: "",
-  visibilidade: true,
-};
+const propostaExample = EntitiesObjectService.proposta();
 
 // Componente  para mostrar os detalhes de uma proposta e suas respectivas funções
-const DetalhesProposta = ({ proposta = propostaExample }) => {
+const DetalhesProposta = ({
+  proposta = propostaExample,
+  setProposta = () => {},
+}) => {
+
+  useEffect(() => {
+    console.log("proposta: ", proposta);
+  }, [proposta])
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
-
-  // UseState do parecer da comissão
-  const [parecerComissao, setParecerComissao] = useState("");
-
-  // UseState do parecer da comissão
-  const [parecerDG, setParecerDG] = useState("");
-
-  // UseState para as informações do parecer da comissão
-  const [parecerComissaoInformacoes, setParecerComissaoInformacoes] =
-    useState("");
-
-  // UseState para as informações do parecer da comissão
-  const [parecerDGInformacoes, setParecerDGInformacoes] = useState("");
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -137,8 +73,6 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
-
-  console.log("proposta: ", proposta);
 
   return (
     <Box className="flex justify-center">
@@ -472,23 +406,15 @@ const DetalhesProposta = ({ proposta = propostaExample }) => {
                   <Box className="mx-4">
                     {/* Parecer da Comissão */}
                     <ParecerComissao
-                      parecerComissao={parecerComissao}
-                      parecerComissaoInformacoes={parecerComissaoInformacoes}
                       proposta={proposta}
-                      setParecerComissao={setParecerComissao}
-                      setParecerComissaoInformacoes={
-                        setParecerComissaoInformacoes
-                      }
+                      setProposta={setProposta}
                     />
 
                     {/* Parecer da Diretoria */}
                     {["ASSESSMENT_DG", "DONE"].includes(proposta.status) && (
                       <ParecerDG
                         proposta={proposta}
-                        parecerDG={parecerDG}
-                        setParecerDG={setParecerDG}
-                        parecerDGInformacoes={parecerDGInformacoes}
-                        setParecerDGInformacoes={setParecerDGInformacoes}
+                        setProposta={setProposta}
                       />
                     )}
                   </Box>
@@ -788,41 +714,23 @@ const Beneficio = ({
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  parecerComissao = "",
-  setParecerComissao = () => {},
-  parecerComissaoInformacoes = "",
-  setParecerComissaoInformacoes = () => {},
+  setProposta = () => {},
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
       <ParecerComissaoInsertText
         proposta={proposta}
-        parecerComissao={parecerComissao}
-        setParecerComissao={setParecerComissao}
-        parecerComissaoInformacoes={parecerComissaoInformacoes}
-        setParecerComissaoInformacoes={setParecerComissaoInformacoes}
+        setProposta={setProposta}
       />
     );
   return <ParecerComissaoOnlyRead proposta={proposta} />;
 };
 
 // Chamar o parecer da DG
-const ParecerDG = ({
-  proposta = propostaExample,
-  parecerDG = "",
-  setParecerDG = () => {},
-  parecerDGInformacoes = "",
-  setParecerDGInformacoes = () => {},
-}) => {
+const ParecerDG = ({ proposta = propostaExample, setProposta = () => {} }) => {
   if (proposta.status == "ASSESSMENT_DG")
     return (
-      <ParecerDGInsertText
-        proposta={proposta}
-        parecerDG={parecerDG}
-        setParecerDG={setParecerDG}
-        parecerDGInformacoes={parecerDGInformacoes}
-        setParecerDGInformacoes={setParecerDGInformacoes}
-      />
+      <ParecerDGInsertText proposta={proposta} setProposta={setProposta} />
     );
   return <ParecerDGOnlyRead proposta={proposta} />;
 };
@@ -830,10 +738,7 @@ const ParecerDG = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  parecerComissao = "",
-  setParecerComissao = () => {},
-  parecerComissaoInformacoes = "",
-  setParecerComissaoInformacoes = () => {},
+  setProposta = () => {},
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -852,8 +757,10 @@ const ParecerComissaoInsertText = ({
         <TextField
           select
           label={texts.detalhesProposta.parecer}
-          value={parecerComissao}
-          onChange={(event) => setParecerComissao(event.target.value)}
+          value={proposta.parecerComissao ? proposta.parecerComissao : ""}
+          onChange={(event) =>
+            setProposta({ ...proposta, parecerComissao: event.target.value })
+          }
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
         >
@@ -881,8 +788,8 @@ const ParecerComissaoInsertText = ({
       </Box>
       <Box className="mt-4">
         <CaixaTextoQuill
-          texto={parecerComissaoInformacoes}
-          setTexto={setParecerComissaoInformacoes}
+          texto={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
+          setTexto={(e) => setProposta({ ...proposta, parecerInformacao: e })}
         />
       </Box>
     </Box>
@@ -937,10 +844,8 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
-  parecerDG = "",
-  setParecerDG = () => {},
-  parecerDGInformacoes = "",
-  setParecerDGInformacoes = () => {},
+  proposta = propostaExample,
+  setProposta = () => {},
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -957,8 +862,10 @@ const ParecerDGInsertText = ({
         <TextField
           select
           label={texts.detalhesProposta.parecer}
-          value={parecerDG}
-          onChange={(event) => setParecerDG(event.target.value)}
+          value={proposta.parecerDG ? proposta.parecerDG : ""}
+          onChange={(event) =>
+            setProposta({ ...proposta, parecerDG: event.target.value })
+          }
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
         >
@@ -986,8 +893,8 @@ const ParecerDGInsertText = ({
       </Box>
       <Box className="mt-4">
         <CaixaTextoQuill
-          texto={parecerDGInformacoes}
-          setTexto={setParecerDGInformacoes}
+          texto={proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""}
+          setTexto={(e) => setProposta({ ...proposta, parecerInformacaoDG: e })}
         />
       </Box>
     </Box>

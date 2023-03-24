@@ -497,6 +497,7 @@ const TextLanguage = (linguagem) => {
             comissao: "Comissão",
             reuniaoDoForum: "Reunião do fórum",
             reuniaoDaDG: "Reunião da DG",
+            analistaResponsavel: "Analista Responsável",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Adicionar à Pauta",
@@ -1194,6 +1195,7 @@ const TextLanguage = (linguagem) => {
             comissao: "Comission",
             reuniaoDoForum: "Forum meeting",
             reuniaoDaDG: "DG meeting",
+            analistaResponsavel: "Responsible Analyst",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Add to Minute",
@@ -1365,7 +1367,8 @@ const TextLanguage = (linguagem) => {
             parecer: "Opinion",
             publicada: "Published",
             naoPublicada: "Not published",
-            secaoTi: "TI Section"
+            secaoTi: "TI Section",
+            comissao: "Comission",
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "Select a minute",
@@ -1886,6 +1889,7 @@ const TextLanguage = (linguagem) => {
             comissao: "佣金",
             reuniaoDoForum: "论坛会议",
             reuniaoDaDG: "总干事会议",
+            analistaResponsavel: "责任分析师",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Add to Minute",
@@ -2056,7 +2060,8 @@ const TextLanguage = (linguagem) => {
             parecer: "意见",
             publicada: "发表",
             naoPublicada: "未发表",
-            secaoTi: "TI 部分"
+            secaoTi: "TI 部分",
+            comissao: "佣金",
         },
         modalAddPropostaPauta: {
             selecioneAPauta: "选择会议记录",
@@ -2582,6 +2587,7 @@ const TextLanguage = (linguagem) => {
             comissao: "Comisión",
             reuniaoDoForum: "Reunión del foro",
             reuniaoDaDG: "reunión del DG",
+            analistaResponsavel: "Analista Responsable",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Agregar a la pauta",

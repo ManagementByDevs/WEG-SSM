@@ -1154,18 +1154,14 @@ public class PDFGeneratorService {
         Paragraph paragraph3 = new Paragraph("Número Sequencial: " + ata.getNumeroSequencial(), fontParagraph5);
         paragraph3.setSpacingBefore(20);
 
-        Paragraph paragraph4 = new Paragraph("Início: " + ata.getInicioDataReuniao(), fontParagraph5);
+        Paragraph paragraph4 = new Paragraph("Reunião: " + ata.getDataReuniao(), fontParagraph5);
         paragraph4.setSpacingBefore(5);
-
-        Paragraph paragraph26 = new Paragraph("Fim: " + ata.getFimDataReuniao(), fontParagraph5);
-        paragraph26.setSpacingBefore(5);
 
         document.add(img);
         document.add(paragraph);
         document.add(paragraph2);
         document.add(paragraph3);
         document.add(paragraph4);
-        document.add(paragraph26);
 
         int contadorPropostas = 1;
 
