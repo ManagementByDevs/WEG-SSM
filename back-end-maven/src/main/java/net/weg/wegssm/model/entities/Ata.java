@@ -20,16 +20,14 @@ public class Ata {
     private Long id;
 
     @Column(nullable = false)
-    private Date inicioDataReuniao;
-
-    @Column(nullable = false)
-    private Date fimDataReuniao;
+    private Date dataReuniao;
 
     @Column(nullable = false, length = 14)
     private String numeroSequencial;
 
-    @Column(nullable = false, length = 100)
-    private String comissao;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "comissao_id")
+    private Forum comissao;
 
     @Column
     private Boolean visibilidade;
@@ -38,4 +36,7 @@ public class Ata {
     @JoinColumn(name = "ata_id")
     private List<Proposta> propostas;
 
+    @ManyToOne
+    @JoinColumn(name = "analista_id")
+    private Usuario analistaResponsavel;
 }

@@ -59,6 +59,9 @@ public class Proposta {
     @Column
     private ParecerGerencia parecerDG;
 
+    @Column(length = 1000)
+    private String parecerInformacaoDG;
+
     @Column
     private Boolean visibilidade;
 

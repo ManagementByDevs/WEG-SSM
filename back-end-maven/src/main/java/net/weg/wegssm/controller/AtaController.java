@@ -24,6 +24,7 @@ import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/ata")
 public class AtaController {
 

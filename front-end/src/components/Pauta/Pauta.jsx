@@ -38,8 +38,6 @@ const Pautas = (props) => {
     );
   };
 
-  console.log("props. dados: ", props.dados);
-
   return (
     <Paper
       onClick={() => props.onItemClick(props.dados)}

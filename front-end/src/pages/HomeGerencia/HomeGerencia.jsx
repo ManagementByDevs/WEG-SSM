@@ -34,6 +34,8 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import ColorModeContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
+import AtaService from "../../service/ataService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 import Tour from "reactour";
 
@@ -292,6 +294,9 @@ const HomeGerencia = () => {
     titulo: null,
   });
 
+  // Parâmetros para pesquisa das atas
+  const [paramsAta, setParamsAta] = useState({ titulo: null });
+
   // UsaState que controla a visibilidade do modal de confirmação para exclusão de uma pauta
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
 
@@ -408,12 +413,12 @@ const HomeGerencia = () => {
   useEffect(() => {
     switch (value) {
       case "1":
-          setParams({
-            ...params,
-            gerente: null,
-            solicitante: usuario,
-          });
-          setModoFiltro("demanda");
+        setParams({
+          ...params,
+          gerente: null,
+          solicitante: usuario,
+        });
+        setModoFiltro("demanda");
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
@@ -452,6 +457,7 @@ const HomeGerencia = () => {
         // setModoFiltro("proposta");
         break;
       case "6":
+        setParamsAta({ ...paramsAta });
         // setModoFiltro("proposta");
         break;
     }
@@ -599,6 +605,15 @@ const HomeGerencia = () => {
         });
         break;
       case "6":
+        console.log("oi");
+        AtaService.getPage(
+          paramsAta,
+          ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+        ).then((response) => {
+          console.log("atas: ", response);
+          setAtas([...response.content]);
+          setTotalPaginas(response.totalPages);
+        });
         break;
     }
   };
@@ -638,40 +653,7 @@ const HomeGerencia = () => {
     },
   ]);
 
-  const [atas, setAtas] = useState([
-    {
-      numeroSequencial: "1/2022",
-      comissao: "Comissão 1",
-      analistaResponsavel: "Kenzo Sato",
-      data: "01/01/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "2/2022",
-      comissao: "Comissão 2",
-      analistaResponsavel: "Kenzo S",
-      data: "02/02/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "3/2022",
-      comissao: "Comissão 3",
-      analistaResponsavel: "Kenzo S",
-      data: "03/03/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "4/2022",
-      comissao: "Comissão 4",
-      analistaResponsavel: "Kenzo S",
-      data: "04/04/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-  ]);
+  const [atas, setAtas] = useState([EntitiesObjectService.ata()]);
 
   // Função para alterar a aba selecionada
   const handleChange = (event, newValue) => {
@@ -789,14 +771,16 @@ const HomeGerencia = () => {
       listaObjetosString.push(JSON.stringify(listaItens[object]));
     }
 
-    ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
-      let blob = new Blob([response], { type: "application/excel" });
-      let url = URL.createObjectURL(blob);
-      let link = document.createElement("a");
-      link.href = url;
-      link.download = "demandas.xlsx";
-      link.click();
-    });
+    ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then(
+      (response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "demandas.xlsx";
+        link.click();
+      }
+    );
   };
 
   // Função que deleta uma pauta
@@ -1347,7 +1331,7 @@ const HomeGerencia = () => {
                   <TabPanel sx={{ padding: 0 }} value="6">
                     <Ajuda onClick={() => setIsTourAtasOpen(true)} />
                     <PautaAtaModoVisualizacao
-                      listaPautas={pautas}
+                      listaPautas={atas}
                       onItemClick={() => {
                         navigate("/detalhes-pauta");
                       }}
