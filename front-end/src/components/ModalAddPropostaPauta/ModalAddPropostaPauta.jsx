@@ -21,6 +21,7 @@ import {
 import { red } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
 
+import Feedback from "../../components/Feedback/Feedback";
 import ContainerPauta from "../ContainerPauta/ContainerPauta";
 
 import FontContext from "../../service/FontContext";
@@ -317,12 +318,16 @@ const ModalAddPropostaPauta = (props) => {
     return JSON.parse(localStorage.getItem("user")).id;
   };
 
+  const [feedbackPreenchaTodosCampos, setFeedbackPreenchaTodosCampos] =
+    useState(false);
+  const [feedbackPautaAtualizada, setFeedbackPautaAtualizada] = useState(false);
+
   // Função para adicionar a proposta na pauta selecionada
   const addPropostaInPauta = () => {
     let pauta;
     if (novaPautaSelecionada) {
       if (!isAllFieldsFilled()) {
-        console.log("preencha todos os campos para performar essa ação");
+        setFeedbackPreenchaTodosCampos(true);
         return;
       }
 
@@ -349,7 +354,7 @@ const ModalAddPropostaPauta = (props) => {
       });
     } else {
       if (!check.includes(true)) {
-        console.log("preencha todos os campos para performar essa ação");
+        setFeedbackPreenchaTodosCampos(true);
         return;
       }
 
@@ -364,7 +369,7 @@ const ModalAddPropostaPauta = (props) => {
           },
           props.proposta.id
         ).then((res) => {
-          console.log("Pauta atualizada com sucesso! res: ", res);
+          setFeedbackPautaAtualizada(true);
         });
 
         console.log("res: ", res);
@@ -408,198 +413,225 @@ const ModalAddPropostaPauta = (props) => {
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      closeAfterTransition
-      sx={{ minWidth: "40rem" }}
-    >
-      <Fade in={open}>
-        {/* Início conteúdo modal */}
-        <Box sx={cssModal}>
-          {/* Título do modal */}
-          <Typography
-            fontWeight={650}
-            fontSize={FontConfig.smallTitle}
-            color={"primary.main"}
-          >
-            {texts.modalAddPropostaPauta.selecioneAPauta}
-          </Typography>
-          {isPropostaInPauta() && (
-            <Paper
-              className="px-2 py-1 mb-3"
-              sx={{ backgroundColor: red[200] }}
-              elevation={0}
-            >
-              <Typography
-                fontWeight="bold"
-                fontSize={FontConfig.default}
-                color="#000000"
-              >
-                {texts.modalAddPropostaPauta.essaPropostaJaSeEncontraEmUmaPauta}
-              </Typography>
-            </Paper>
-          )}
-          <CloseIcon
-            onClick={handleClose}
-            sx={{
-              position: "absolute",
-              left: "93%",
-              top: "3%",
-              cursor: "pointer",
-            }}
-          />
-
-          <Box sx={listaPropostas}>
-            {/* Exibe as pautas do sistema */}
-            {listaPautas.length > 0 || novaPauta ? (
-              listaPautas.map((pauta, index) => {
-                return (
-                  <ContainerPauta
-                    key={index}
-                    pauta={pauta}
-                    setIndexPautaSelecionada={setIndexPautaSelecionada}
-                    index={index}
-                    indexPautaSelecionada={indexPautaSelecionada}
-                  />
-                );
-              })
-            ) : (
-              <>
-                <Typography fontSize={FontConfig.medium}>
-                  {texts.modalAddPropostaPauta.nenhumaPautaEncontrada}
-                </Typography>
-                <Typography fontSize={FontConfig.default}>
-                  {texts.modalAddPropostaPauta.pfvCrieUmaNova}
-                </Typography>
-              </>
-            )}
-
-            {/* Nova pauta criada */}
-            {novaPauta && (
-              <Paper
-                sx={{
-                  ...containerGeral,
-                  backgroundColor: getBackgroundColor(),
-                }}
-                onClick={selecionarNovaPauta}
-              >
-                <Box sx={{ ...parteCima, colorScheme: mode }}>
-                  <Typography fontSize={FontConfig.medium}>
-                    {texts.modalAddPropostaPauta.propostas}:
-                  </Typography>
-                  <input
-                    style={data}
-                    value={inputDataReuniao}
-                    onChange={(e) => setInputDataReuniao(e.target.value)}
-                    type="datetime-local"
-                  />
-                </Box>
-
-                <Box className="gap-4 justify-between" sx={parteBaixo}>
-                  <Box className="w-1/2">
-                    <TextField
-                      value={numSequencial}
-                      onChange={(e) => setNumSequencial(e.target.value)}
-                      fullWidth
-                      placeholder={texts.modalAddPropostaPauta.numSequencial}
-                      variant="standard"
-                    />
-                  </Box>
-                  <FormControl size="small">
-                    <Select
-                      value={comissao}
-                      onChange={handleChange}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
-                    >
-                      <MenuItem value={comissao} disabled>
-                        {texts.modalAddPropostaPauta.comissao}
-                      </MenuItem>
-                      {listaComissoes?.map((e, index) => (
-                        <MenuItem key={index} value={e} title={e.nomeForum}>
-                          {e.siglaForum}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Box>
-              </Paper>
-            )}
-          </Box>
-
-          <Divider
-            sx={{ marginTop: "2%", width: "80%", borderColor: "tertiary.main" }}
-          />
-
-          {/* Parte de baixo do componente, com a opção de selecionar se é uma pauta publicada ou não publicada, 
-                        assim como opção de criar nova pauta ou adicionar em alguma pauta */}
-          <Box sx={parteCheck}>
+    <>
+      {/* Feedback proposta atualizada */}
+      <Feedback
+        open={feedbackPreenchaTodosCampos}
+        handleClose={() => {
+          setFeedbackPreenchaTodosCampos(false);
+        }}
+        status={"erro"}
+        mensagem={texts.modalAddPropostaPauta.feedbacks.feedback1}
+      />
+      {/* Feedback pauta atualizada */}
+      <Feedback
+        open={feedbackPautaAtualizada}
+        handleClose={() => {
+          setFeedbackPautaAtualizada(false);
+        }}
+        status={"sucesso"}
+        mensagem={texts.modalAddPropostaPauta.feedbacks.feedback2}
+      />
+      <Modal
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        sx={{ minWidth: "40rem" }}
+      >
+        <Fade in={open}>
+          {/* Início conteúdo modal */}
+          <Box sx={cssModal}>
+            {/* Título do modal */}
             <Typography
               fontWeight={650}
-              fontSize={FontConfig.veryBig}
+              fontSize={FontConfig.smallTitle}
               color={"primary.main"}
             >
-              {texts.modalAddPropostaPauta.adicionarComoProposta}
+              {texts.modalAddPropostaPauta.selecioneAPauta}
             </Typography>
-            <Box>
-              <FormGroup>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    padding: "4px",
-                  }}
+            {isPropostaInPauta() && (
+              <Paper
+                className="px-2 py-1 mb-3"
+                sx={{ backgroundColor: red[200] }}
+                elevation={0}
+              >
+                <Typography
+                  fontWeight="bold"
+                  fontSize={FontConfig.default}
+                  color="#000000"
                 >
-                  <FormControlLabel
-                    checked={check[0]}
-                    onChange={mudarCheck1}
-                    control={<Checkbox />}
-                    label={texts.modalAddPropostaPauta.publicada}
-                  />
-                  <FormControlLabel
-                    checked={check[1]}
-                    onChange={mudarCheck2}
-                    control={<Checkbox />}
-                    label={texts.modalAddPropostaPauta.naoPublicada}
-                  />
-                </Box>
-              </FormGroup>
-            </Box>
-            <Box
-              sx={{
-                width: "90%",
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: "3%",
-              }}
-            >
-              <Button
-                sx={botaoCriar}
-                disableElevation
-                onClick={addPauta}
-                disabled={novaPauta}
-              >
-                <Typography fontSize={FontConfig.default}>
-                  {texts.modalAddPropostaPauta.novaPauta}
+                  {
+                    texts.modalAddPropostaPauta
+                      .essaPropostaJaSeEncontraEmUmaPauta
+                  }
                 </Typography>
-              </Button>
-              <Button
-                sx={botaoDesabilitado}
-                disableElevation
-                disabled={
-                  indexPautaSelecionada == null && !novaPautaSelecionada
-                }
-                variant="contained"
-                onClick={addPropostaInPauta}
+              </Paper>
+            )}
+            <CloseIcon
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                left: "93%",
+                top: "3%",
+                cursor: "pointer",
+              }}
+            />
+
+            <Box sx={listaPropostas}>
+              {/* Exibe as pautas do sistema */}
+              {listaPautas.length > 0 || novaPauta ? (
+                listaPautas.map((pauta, index) => {
+                  return (
+                    <ContainerPauta
+                      key={index}
+                      pauta={pauta}
+                      setIndexPautaSelecionada={setIndexPautaSelecionada}
+                      index={index}
+                      indexPautaSelecionada={indexPautaSelecionada}
+                    />
+                  );
+                })
+              ) : (
+                <>
+                  <Typography fontSize={FontConfig.medium}>
+                    {texts.modalAddPropostaPauta.nenhumaPautaEncontrada}
+                  </Typography>
+                  <Typography fontSize={FontConfig.default}>
+                    {texts.modalAddPropostaPauta.pfvCrieUmaNova}
+                  </Typography>
+                </>
+              )}
+
+              {/* Nova pauta criada */}
+              {novaPauta && (
+                <Paper
+                  sx={{
+                    ...containerGeral,
+                    backgroundColor: getBackgroundColor(),
+                  }}
+                  onClick={selecionarNovaPauta}
+                >
+                  <Box sx={{ ...parteCima, colorScheme: mode }}>
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.modalAddPropostaPauta.propostas}:
+                    </Typography>
+                    <input
+                      style={data}
+                      value={inputDataReuniao}
+                      onChange={(e) => setInputDataReuniao(e.target.value)}
+                      type="datetime-local"
+                    />
+                  </Box>
+
+                  <Box className="gap-4 justify-between" sx={parteBaixo}>
+                    <Box className="w-1/2">
+                      <TextField
+                        value={numSequencial}
+                        onChange={(e) => setNumSequencial(e.target.value)}
+                        fullWidth
+                        placeholder={texts.modalAddPropostaPauta.numSequencial}
+                        variant="standard"
+                      />
+                    </Box>
+                    <FormControl size="small">
+                      <Select
+                        value={comissao}
+                        onChange={handleChange}
+                        displayEmpty
+                        inputProps={{ "aria-label": "Without label" }}
+                      >
+                        <MenuItem value={comissao} disabled>
+                          {texts.modalAddPropostaPauta.comissao}
+                        </MenuItem>
+                        {listaComissoes?.map((e, index) => (
+                          <MenuItem key={index} value={e} title={e.nomeForum}>
+                            {e.siglaForum}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Paper>
+              )}
+            </Box>
+
+            <Divider
+              sx={{
+                marginTop: "2%",
+                width: "80%",
+                borderColor: "tertiary.main",
+              }}
+            />
+
+            {/* Parte de baixo do componente, com a opção de selecionar se é uma pauta publicada ou não publicada, 
+                        assim como opção de criar nova pauta ou adicionar em alguma pauta */}
+            <Box sx={parteCheck}>
+              <Typography
+                fontWeight={650}
+                fontSize={FontConfig.veryBig}
+                color={"primary.main"}
               >
-                {texts.modalAddPropostaPauta.adicionar}
-              </Button>
+                {texts.modalAddPropostaPauta.adicionarComoProposta}
+              </Typography>
+              <Box>
+                <FormGroup>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      padding: "4px",
+                    }}
+                  >
+                    <FormControlLabel
+                      checked={check[0]}
+                      onChange={mudarCheck1}
+                      control={<Checkbox />}
+                      label={texts.modalAddPropostaPauta.publicada}
+                    />
+                    <FormControlLabel
+                      checked={check[1]}
+                      onChange={mudarCheck2}
+                      control={<Checkbox />}
+                      label={texts.modalAddPropostaPauta.naoPublicada}
+                    />
+                  </Box>
+                </FormGroup>
+              </Box>
+              <Box
+                sx={{
+                  width: "90%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginTop: "3%",
+                }}
+              >
+                <Button
+                  sx={botaoCriar}
+                  disableElevation
+                  onClick={addPauta}
+                  disabled={novaPauta}
+                >
+                  <Typography fontSize={FontConfig.default}>
+                    {texts.modalAddPropostaPauta.novaPauta}
+                  </Typography>
+                </Button>
+                <Button
+                  sx={botaoDesabilitado}
+                  disableElevation
+                  disabled={
+                    indexPautaSelecionada == null && !novaPautaSelecionada
+                  }
+                  variant="contained"
+                  onClick={addPropostaInPauta}
+                >
+                  {texts.modalAddPropostaPauta.adicionar}
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </Fade>
-    </Modal>
+        </Fade>
+      </Modal>
+    </>
   );
 };
 

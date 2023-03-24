@@ -21,6 +21,7 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
+import Feedback from "../../components/Feedback/Feedback";
 
 import ColorModeContext from "../../service/TemaContext";
 import BeneficioService from "../../service/beneficioService";
@@ -259,6 +260,8 @@ const FormularioPropostaProposta = (props) => {
     inputFile.current.click();
   };
 
+  const [feedbackAnexoExistente, setFeedbackAnexoExistente] = useState(false);
+
   // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
@@ -286,7 +289,7 @@ const FormularioPropostaProposta = (props) => {
         });
       } else {
         // feedback de anexo já existente
-        console.log("já há um anexo com esse nome");
+        setFeedbackAnexoExistente(true);
       }
     }
   };
@@ -472,6 +475,16 @@ const FormularioPropostaProposta = (props) => {
   };
 
   return (
+    <>
+    {/* Feedback anexos existente */}
+    <Feedback
+        open={feedbackAnexoExistente}
+        handleClose={() => {
+          setFeedbackAnexoExistente(false);
+        }}
+        status={"erro"}
+        mensagem={texts.formularioPropostaProposta.feedbacks.feedback1}
+      />
     <Box
       className="flex flex-col justify-center relative items-center"
       sx={{minWidth: "60rem", height: "110rem"}}
@@ -851,6 +864,7 @@ const FormularioPropostaProposta = (props) => {
         </>
       </Box>
     </Box>
+    </>
   );
 };
 

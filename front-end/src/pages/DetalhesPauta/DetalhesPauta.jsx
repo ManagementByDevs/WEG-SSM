@@ -1,6 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Box, Typography, Button, Divider, Tooltip, IconButton, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -8,6 +15,7 @@ import DensitySmallIcon from "@mui/icons-material/DensitySmall";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 
+import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
@@ -223,6 +231,9 @@ const DetalhesPauta = (props) => {
     setModal(true);
   };
 
+  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
+    useState(false);
+
   // Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida
   const deletePropostaFromPauta = () => {
     const indexProposta = pauta.propostas.findIndex(
@@ -240,7 +251,7 @@ const DetalhesPauta = (props) => {
     propostaDeleted.parecerDG = null;
 
     PautaService.put(pauta).then((e) => {
-      console.log("Pauta atualizada: ", e);
+      setFeedbackPropostaDeletada(true);
       PropostaService.putWithoutArquivos(
         propostaDeleted,
         propostaDeleted.id
@@ -271,19 +282,28 @@ const DetalhesPauta = (props) => {
       link.download = "pdf_pauta.pdf";
       link.click();
     });
-  }
+  };
 
   return (
     <FundoComHeader>
+      {/* Feedback proposta deletada da pauta */}
+      <Feedback
+        open={feedbackPropostaDeletada}
+        handleClose={() => {
+          setFeedbackPropostaDeletada(false);
+        }}
+        status={"erro"}
+        mensagem={texts.detalhesPauta.feedbacks.feedback1}
+      />
       <ModalConfirmacao
         open={modal}
         setOpen={setModal}
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
-      <Box className="p-2" sx={{minWidth: "60rem"}}>
+      <Box className="p-2" sx={{ minWidth: "60rem" }}>
         <Box className="flex w-full relative">
           <Caminho />
           <Box

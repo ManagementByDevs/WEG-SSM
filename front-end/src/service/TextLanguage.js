@@ -18,6 +18,10 @@ const TextLanguage = (linguagem) => {
             mensagemFeedback: "Preencha todos os campos obrigatórios!"
         },
         barraProgressaoProposta: {
+            proposta: 'Proposta', 
+            escopo: 'Escopo', 
+            custo: 'Custos', 
+            gerais: 'Gerais',
             botaoVoltar: "Voltar",
             botaoCriar: "Criar",
             botaoProximo: "Próximo",
@@ -208,6 +212,9 @@ const TextLanguage = (linguagem) => {
             nenhumAnexoAdicionado: "Nenhum anexo adicionado",
         },
         formularioPropostaProposta: {
+            feedbacks: {
+                feedback1: "Já há um anexo com esse nome!",
+            },
             digiteTituloDaDemanda: "Digite o título da demanda...",
             problema: "Problema",
             digiteProblema: "Digite o problema...",
@@ -484,6 +491,9 @@ const TextLanguage = (linguagem) => {
             }
         },
         detalhesPauta: {
+            feedbacks: {
+                feedback1: "Proposta removida da pauta com sucesso!",
+            },
             baixarPDF: "Baixar PDF",
             pauta: "Pauta",
             numeroSequencial: "Número Sequencial",
@@ -674,6 +684,10 @@ const TextLanguage = (linguagem) => {
             secaoTi: "Seção TI"
         },
         modalAddPropostaPauta: {
+            feedbacks: {
+                feedback1: "Preencha todos os campos!",
+                feedback2: "Pauta atualizada com sucesso!",
+            },
             selecioneAPauta: "Selecione a pauta",
             propostas: "Propostas",
             comissao: "Comissão",
@@ -720,6 +734,10 @@ const TextLanguage = (linguagem) => {
             mensagemFeedback: "You must fill in all the fields!",
         },
         barraProgressaoProposta: {
+            proposta: "Proposal",
+            escopo: "Scope",
+            custo: "Costs",
+            gerais: "General",
             botaoVoltar: "Back",
             botaoCriar: "Create",
             botaoProximo: "Next",
@@ -907,6 +925,9 @@ const TextLanguage = (linguagem) => {
             nenhumAnexoAdicionado: "No attachments added",
         },
         formularioPropostaProposta: {
+            feedbacks: {
+                feedback1: "An attachment with that name already exists!",
+            },
             digiteTituloDaDemanda: "Enter the title of the demand...",
             problema: "Problem",
             digiteProblema: "Enter the problem...",
@@ -1181,6 +1202,9 @@ const TextLanguage = (linguagem) => {
             }
         },
         detalhesPauta: {
+            feedbacks: {
+                feedback1: "Proposal removed from the agenda successfully!",
+            },
             baixarPDF: "PDF Download",
             pauta: "Minutes",
             numeroSequencial: "Seq. Num.",
@@ -1368,6 +1392,10 @@ const TextLanguage = (linguagem) => {
             secaoTi: "TI Section"
         },
         modalAddPropostaPauta: {
+            feedbacks: {
+                feedback1: "Fill in all fields!",
+                feedback2: "Minute updated successfully!",
+            },
             selecioneAPauta: "Select a minute",
             propostas: "Proposals",
             comissao: "Commission",
@@ -1413,6 +1441,10 @@ const TextLanguage = (linguagem) => {
             mensagemFeedback: "您必须填写所有字段！",
         },
         barraProgressaoProposta: {
+            proposta: "提案",
+            escopo: "范围",
+            custo: "成本",
+            gerais: "一般",
             botaoVoltar: "背部",
             botaoCriar: "创建",
             botaoProximo: "下一个",
@@ -1599,6 +1631,9 @@ const TextLanguage = (linguagem) => {
             nenhumAnexoAdicionado: "没有添加附件",
         },
         formularioPropostaProposta: {  
+            feedbacks: {
+                feedback1: "同名附件已存在",
+            },
             digiteTituloDaDemanda: "输入需求标题...",
             problema: "问题",
             digiteProblema: "输入问题...",
@@ -1873,6 +1908,9 @@ const TextLanguage = (linguagem) => {
             },
         },
         detalhesPauta: {
+            feedbacks: {
+                feedback1: "提案已成功从议程中删除！",
+            },
             baixarPDF: "PDF下载",
             pauta: "会议记录",
             numeroSequencial: "序列号",
@@ -2059,6 +2097,10 @@ const TextLanguage = (linguagem) => {
             secaoTi: "TI 部分"
         },
         modalAddPropostaPauta: {
+            feedbacks: {
+                feedback1: "请填写所有字段！",
+                feedback2: "提案添加成功！",
+            },
             selecioneAPauta: "选择会议记录",
             propostas: "提案",
             comissao: "委员会",
@@ -2104,6 +2146,10 @@ const TextLanguage = (linguagem) => {
             mensagemFeedback: "¡Rellena todos los campos obligatorios!"
         },
         barraProgressaoProposta: {
+            proposta: 'Propuesta',
+            escopo: 'Alcance',
+            custo: 'Costos',
+            gerais: 'Generales',
             botaoVoltar: "Volver",
             botaoCriar: "Crear",
             botaoProximo: "Siguiente",
@@ -2294,6 +2340,9 @@ const TextLanguage = (linguagem) => {
             nenhumAnexoAdicionado: "Ningún archivo adjunto agregado",
         },
         formularioPropostaProposta: {
+            feedbacks: {
+                feedback1: "¡Ya existe un archivo adjunto con ese nombre!",
+            },
             digiteTituloDaDemanda: "Escribe el título de la demanda...",
             problema: "Problema",
             digiteProblema: "Escribe el problema...",
@@ -2569,6 +2618,9 @@ const TextLanguage = (linguagem) => {
             },
         },
         detalhesPauta: {
+            feedbacks: {
+                feedback1: "Propuesta eliminada de la pauta con éxito!",
+            },
             baixarPDF: "Descargar PDF",
             pauta: "Pauta",
             numeroSequencial: "Num. Seq.",
@@ -2759,6 +2811,10 @@ const TextLanguage = (linguagem) => {
             secaoTi: "Sección TI"
         },
         modalAddPropostaPauta: {
+            feedbacks: {
+                feedback1: "¡Rellene todos los campos!",
+                feedback2: "¡Propuesta agregada con éxito!",
+            },
             selecioneAPauta: "Seleccione la pauta",
             propostas: "Propuestas",
             comissao: "Comisión",
