@@ -371,7 +371,7 @@ const HomeGerencia = () => {
 
     setParams({
       titulo: valorPesquisa,
-      solicitante: paramsTemp.solicitante,
+      solicitante: JSON.parse(params.solicitante) || null,
       gerente: paramsTemp.gerente,
       analista: paramsTemp.analista,
       forum: paramsTemp.forum,
@@ -386,8 +386,7 @@ const HomeGerencia = () => {
   // feedbacks para o gerenciamento das demandas por parte do analista
 
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
-    useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
   const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
 
@@ -408,24 +407,27 @@ const HomeGerencia = () => {
   useEffect(() => {
     switch (value) {
       case "1":
-          setParams({
-            ...params,
-            gerente: null,
-            solicitante: usuario,
-          });
-          setModoFiltro("demanda");
+        setParams({
+          ...params,
+          gerente: null,
+          status: null,
+          solicitante: usuario,
+        });
+        setModoFiltro("demanda");
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
           setParams({
             ...params,
             gerente: usuario,
+            solicitante: null,
             status: "BACKLOG_APROVACAO",
           });
         } else {
           setParams({
             ...params,
             gerente: null,
+            solicitante: null,
             status: "BACKLOG_REVISAO",
           });
         }
@@ -435,6 +437,7 @@ const HomeGerencia = () => {
         setParams({
           ...params,
           gerente: null,
+          solicitante: null,
           status: "ASSESSMENT",
         });
         setModoFiltro("demanda");
@@ -443,6 +446,7 @@ const HomeGerencia = () => {
         setParams({
           ...params,
           gerente: null,
+          solicitante: null,
           status: "ASSESSMENT_APROVACAO",
         });
         setModoFiltro("proposta");
@@ -462,7 +466,7 @@ const HomeGerencia = () => {
     if (usuario.tipoUsuario == "GERENTE") {
       setParams({ ...params, gerente: usuario, status: "BACKLOG_APROVACAO" });
     } else {
-      setParams({ ...params, status: "BACKLOG_REVISAO" });
+      setParams({ ...params, solicitante: usuario });
     }
 
     if (listaAnalistas.length == 0 && usuario.tipoUsuario == "ANALISTA") {
@@ -528,16 +532,7 @@ const HomeGerencia = () => {
     UsuarioService.getUsuarioById(
       parseInt(localStorage.getItem("usuarioId"))
     ).then((e) => {
-      setUsuario({
-        id: e.id,
-        email: e.email,
-        nome: e.nome,
-        senha: e.senha,
-        tipoUsuario: e.tipoUsuario,
-        departamento: e.departamento,
-        visibilidade: e.visibilidade,
-        preferencias: JSON.parse(e.preferencias),
-      });
+      setUsuario(e);
       setParams({ ...params, solicitante: e });
     });
   };
@@ -593,7 +588,6 @@ const HomeGerencia = () => {
           paramsPautas,
           ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
         ).then((response) => {
-          console.log("Pautas: ", response.content);
           setPautas([...response.content]);
           setTotalPaginas(response.totalPages);
         });
@@ -603,40 +597,7 @@ const HomeGerencia = () => {
     }
   };
 
-  const [pautas, setPautas] = useState([
-    {
-      id: 1,
-      numeroSequencial: "1/2022",
-      comissao: "Comissão 1",
-      analista: { nome: "Kenzo Sato" },
-      dataReuniao: "2022-12-15 19:23:57.443000",
-      propostas: [{}],
-    },
-    {
-      id: 1,
-      numeroSequencial: "2/2022",
-      comissao: "Comissão 2",
-      analista: { nome: "Kenzo Sato" },
-      dataReuniao: "2022-12-15 19:23:57.443000",
-      propostas: [{}],
-    },
-    {
-      id: 1,
-      numeroSequencial: "1/2022",
-      comissao: "Comissão 3",
-      analista: { nome: "Kenzo Sato" },
-      dataReuniao: "2022-12-15 19:23:57.443000",
-      propostas: [{}],
-    },
-    {
-      id: 1,
-      numeroSequencial: "4/2022",
-      comissao: "Comissão 1",
-      analista: { nome: "Kenzo Sato" },
-      dataReuniao: "2022-12-15 19:23:57.443000",
-      propostas: [{}],
-    },
-  ]);
+  const [pautas, setPautas] = useState([]);
 
   const [atas, setAtas] = useState([
     {
@@ -686,7 +647,7 @@ const HomeGerencia = () => {
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
   const verDemanda = (demanda) => {
-    if (demanda.status == "ASSESSMENT") {
+    if (demanda.status == "ASSESSMENT" && usuario.tipoUsuario == "ANALISTA") {
       navigate("/criar-proposta", { state: demanda });
     } else {
       navigate("/detalhes-demanda", { state: demanda });
@@ -1296,7 +1257,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1313,7 +1274,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{
