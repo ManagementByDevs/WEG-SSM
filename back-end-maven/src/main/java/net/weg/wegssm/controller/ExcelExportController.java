@@ -41,7 +41,7 @@ public class ExcelExportController {
     }
 
     @PostMapping("/excel/demandas_assessment")
-    public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<String> listaDemandas) throws IOException{
+    public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<String> listaDemandas) throws IOException {
         excelGeneratorService.exportDemandasAssessmentToExcel(response, listaDemandas);
     }
 
@@ -52,12 +52,12 @@ public class ExcelExportController {
 
     @PostMapping("/excel/pautas")
     public void exportPautasToExcel(HttpServletResponse response, @RequestParam("pautas") List<String> listaPautas) throws IOException {
-//        excelGeneratorService.exportPautasToExcel(response, listaPautas);
+        excelGeneratorService.exportPautasToExcel(response, listaPautas);
     }
 
     @PostMapping("/excel/atas")
     public void exportAtasToExcel(HttpServletResponse response, @RequestParam("atas") List<String> listaAtas) throws IOException {
-//        excelGeneratorService.exportAtasToExcel(response, listaAtas);
+        excelGeneratorService.exportAtasToExcel(response, listaAtas);
     }
 
 }
