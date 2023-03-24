@@ -838,6 +838,9 @@ const HomeGerencia = () => {
     }
   };
 
+  const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
+
   // Função que deleta uma pauta
   const deletePauta = () => {
     // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
@@ -850,17 +853,14 @@ const HomeGerencia = () => {
 
       PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
         (newProposta) => {
-          console.log(
-            "Proposta de id " + newProposta.id + " atualizada com sucesso! ",
-            newProposta
-          );
+          setFeedbackPropostaAtualizada(true);
         }
       );
     }
 
     // Deleta a pauta
     PautaService.delete(pautaSelecionada.id).then((res) => {
-      console.log("Pauta deletada com sucesso! ", res);
+      setFeedbackDeletarPauta(true);
       setPautaSelecionada(null);
       buscarItens();
     });
@@ -1027,6 +1027,25 @@ const HomeGerencia = () => {
           mensagem={texts.homeGerencia.feedback.feedback5}
         />
 
+        {/* Feedback pauta deletada */}
+        <Feedback
+          open={feedbackDeletarPauta}
+          handleClose={() => {
+            setFeedbackDeletarPauta(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback6}
+        />
+        {/* Feedback proposta atualizada */}
+        <Feedback
+          open={feedbackPropostaAtualizada}
+          handleClose={() => {
+            setFeedbackPropostaAtualizada(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback7}
+        />
+
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
           {/* Sistema de abas */}
@@ -1036,7 +1055,7 @@ const HomeGerencia = () => {
               sx={{
                 borderBottom: 1,
                 borderColor: "divider.main",
-                minWidth: "37rem",
+                minWidth: "47rem",
               }}
             >
               <TabList
