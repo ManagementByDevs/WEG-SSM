@@ -408,12 +408,12 @@ const HomeGerencia = () => {
   useEffect(() => {
     switch (value) {
       case "1":
-          setParams({
-            ...params,
-            gerente: null,
-            solicitante: usuario,
-          });
-          setModoFiltro("demanda");
+        setParams({
+          ...params,
+          gerente: null,
+          solicitante: usuario,
+        });
+        setModoFiltro("demanda");
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
@@ -789,14 +789,53 @@ const HomeGerencia = () => {
       listaObjetosString.push(JSON.stringify(listaItens[object]));
     }
 
-    ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
-      let blob = new Blob([response], { type: "application/excel" });
-      let url = URL.createObjectURL(blob);
-      let link = document.createElement("a");
-      link.href = url;
-      link.download = "demandas.xlsx";
-      link.click();
-    });
+    // Verificação para saber em qual aba o usuário deseja exportar para excel
+    if (value == 2) {
+      ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "demandas.xlsx";
+        link.click();
+      });
+    } else if (value == 3) {
+      ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "demandas.xlsx";
+        link.click();
+      });
+    } else if (value == 4) {
+      ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "propostas.xlsx";
+        link.click();
+      });
+    } else if (value == 5) {
+      ExportExcelService.exportPautasToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "pautas.xlsx";
+        link.click();
+      });
+    } else {
+      ExportExcelService.exportAtasToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "atas.xlsx";
+        link.click();
+      });
+    }
   };
 
   // Função que deleta uma pauta
@@ -1296,7 +1335,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1313,7 +1352,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{
