@@ -55,8 +55,9 @@ public class EscopoProposta {
     @Column(length = 20)
     private String tamanho;
 
-    @Column(length = 45)
-    private String secaoTI;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "secao_ti_id")
+    private SecaoTI secaoTI;
 
     @Column
     private Date ultimaModificacao;
@@ -133,12 +134,11 @@ public class EscopoProposta {
         }
     }
 
-    public void addAnexos(List<MultipartFile> files, List<Anexo> listaAnexos) {
+    public void addAnexos(List<MultipartFile> files) {
         try {
             for (MultipartFile file : files) {
-                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+                this.anexo.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
             }
-            this.anexo = listaAnexos;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
