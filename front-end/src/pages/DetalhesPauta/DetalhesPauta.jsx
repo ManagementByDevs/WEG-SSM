@@ -283,7 +283,7 @@ const DetalhesPauta = (props) => {
         onConfirmClick={deletePropostaFromPauta}
         onCancelClick={() => { }}
       />
-      <Box className="p-2">
+      <Box className="p-2" sx={{minWidth: "60rem"}}>
         <Box className="flex w-full relative">
           <Caminho />
           <Box

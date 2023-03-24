@@ -750,15 +750,57 @@ const HomeGerencia = () => {
       listaObjetosString.push(JSON.stringify(listaItens[object]));
     }
 
-    ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
-      let blob = new Blob([response], { type: "application/excel" });
-      let url = URL.createObjectURL(blob);
-      let link = document.createElement("a");
-      link.href = url;
-      link.download = "demandas.xlsx";
-      link.click();
-    });
+    // Verificação para saber em qual aba o usuário deseja exportar para excel
+    if (value == 2) {
+      ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "demandas.xlsx";
+        link.click();
+      });
+    } else if (value == 3) {
+      ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "demandas.xlsx";
+        link.click();
+      });
+    } else if (value == 4) {
+      ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "propostas.xlsx";
+        link.click();
+      });
+    } else if (value == 5) {
+      ExportExcelService.exportPautasToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "pautas.xlsx";
+        link.click();
+      });
+    } else {
+      ExportExcelService.exportAtasToExcel(listaObjetosString).then((response) => {
+        let blob = new Blob([response], { type: "application/excel" });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "atas.xlsx";
+        link.click();
+      });
+    }
   };
+
+  const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
 
   // Função que deleta uma pauta
   const deletePauta = () => {
@@ -772,17 +814,14 @@ const HomeGerencia = () => {
 
       PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
         (newProposta) => {
-          console.log(
-            "Proposta de id " + newProposta.id + " atualizada com sucesso! ",
-            newProposta
-          );
+          setFeedbackPropostaAtualizada(true);
         }
       );
     }
 
     // Deleta a pauta
     PautaService.delete(pautaSelecionada.id).then((res) => {
-      console.log("Pauta deletada com sucesso! ", res);
+      setFeedbackDeletarPauta(true);
       setPautaSelecionada(null);
       buscarItens();
     });
@@ -949,6 +988,25 @@ const HomeGerencia = () => {
           mensagem={texts.homeGerencia.feedback.feedback5}
         />
 
+        {/* Feedback pauta deletada */}
+        <Feedback
+          open={feedbackDeletarPauta}
+          handleClose={() => {
+            setFeedbackDeletarPauta(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback6}
+        />
+        {/* Feedback proposta atualizada */}
+        <Feedback
+          open={feedbackPropostaAtualizada}
+          handleClose={() => {
+            setFeedbackPropostaAtualizada(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback7}
+        />
+
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
           {/* Sistema de abas */}
@@ -958,7 +1016,7 @@ const HomeGerencia = () => {
               sx={{
                 borderBottom: 1,
                 borderColor: "divider.main",
-                minWidth: "37rem",
+                minWidth: "47rem",
               }}
             >
               <TabList
