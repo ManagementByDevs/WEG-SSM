@@ -20,6 +20,10 @@ const TextLanguageContext = createContext({
       mensagemFeedback: "Preencha todos os campos obrigatórios!",
     },
     barraProgressaoProposta: {
+      proposta: "Proposta",
+      escopo: "Escopo",
+      custo: "Custos",
+      gerais: "Gerais",
       botaoVoltar: "Voltar",
       botaoCriar: "Criar",
       botaoProximo: "Próximo",
