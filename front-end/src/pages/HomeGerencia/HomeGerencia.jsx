@@ -34,6 +34,7 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import ColorModeContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
+import AtaService from "../../service/ataService";
 
 import Tour from "reactour";
 
@@ -292,6 +293,11 @@ const HomeGerencia = () => {
     titulo: null,
   });
 
+  // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
+  const [paramsAtas, setParamsAtas] = useState({
+    titulo: null,
+  });
+
   // UsaState que controla a visibilidade do modal de confirmação para exclusão de uma pauta
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
 
@@ -386,7 +392,8 @@ const HomeGerencia = () => {
   // feedbacks para o gerenciamento das demandas por parte do analista
 
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
+    useState(false);
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
   const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
 
@@ -456,6 +463,7 @@ const HomeGerencia = () => {
         // setModoFiltro("proposta");
         break;
       case "6":
+        setParamsAtas({ ...paramsAtas });
         // setModoFiltro("proposta");
         break;
     }
@@ -477,7 +485,7 @@ const HomeGerencia = () => {
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
   useEffect(() => {
     buscarItens();
-  }, [params, paginaAtual, tamanhoPagina, paramsPautas]);
+  }, [params, paginaAtual, tamanhoPagina, paramsPautas, paramsAtas]);
 
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
   useEffect(() => {
@@ -593,46 +601,21 @@ const HomeGerencia = () => {
         });
         break;
       case "6":
+        AtaService.getPage(
+          paramsAtas,
+          ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+        ).then((response) => {
+          console.log("response: ", response);
+          setAtas([...response.content]);
+          setTotalPaginas(response.totalPages);
+        });
         break;
     }
   };
 
   const [pautas, setPautas] = useState([]);
 
-  const [atas, setAtas] = useState([
-    {
-      numeroSequencial: "1/2022",
-      comissao: "Comissão 1",
-      analistaResponsavel: "Kenzo Sato",
-      data: "01/01/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "2/2022",
-      comissao: "Comissão 2",
-      analistaResponsavel: "Kenzo S",
-      data: "02/02/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "3/2022",
-      comissao: "Comissão 3",
-      analistaResponsavel: "Kenzo S",
-      data: "03/03/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "4/2022",
-      comissao: "Comissão 4",
-      analistaResponsavel: "Kenzo S",
-      data: "04/04/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-  ]);
+  const [atas, setAtas] = useState([]);
 
   // Função para alterar a aba selecionada
   const handleChange = (event, newValue) => {
@@ -731,11 +714,20 @@ const HomeGerencia = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Feedback para quando a ata é publicada
   const [feedbackAta, setOpenFeedbackAta] = useState(false);
+
+  // Feedback para quando a ata é criada
+  const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   useEffect(() => {
     if (location.state?.feedback) {
-      setOpenFeedbackAta(true);
+      console.log(location.state?.feedback);
+      if (location.state.feedback == "ata-criada") {
+        setFeedbackAtaCriada(true);
+      } else {
+        setOpenFeedbackAta(true);
+      }
     }
   }, [location.state?.feedback]);
 
@@ -752,16 +744,20 @@ const HomeGerencia = () => {
 
     // Verificação para saber em qual aba o usuário deseja exportar para excel
     if (value == 2) {
-      ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "demandas.xlsx";
-        link.click();
-      });
+      ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then(
+        (response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "demandas.xlsx";
+          link.click();
+        }
+      );
     } else if (value == 3) {
-      ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
+      ExportExcelService.exportDemandasAssessmentToExcel(
+        listaObjetosString
+      ).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
@@ -770,37 +766,44 @@ const HomeGerencia = () => {
         link.click();
       });
     } else if (value == 4) {
-      ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "propostas.xlsx";
-        link.click();
-      });
+      ExportExcelService.exportPropostasToExcel(listaObjetosString).then(
+        (response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "propostas.xlsx";
+          link.click();
+        }
+      );
     } else if (value == 5) {
-      ExportExcelService.exportPautasToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "pautas.xlsx";
-        link.click();
-      });
+      ExportExcelService.exportPautasToExcel(listaObjetosString).then(
+        (response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "pautas.xlsx";
+          link.click();
+        }
+      );
     } else {
-      ExportExcelService.exportAtasToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "atas.xlsx";
-        link.click();
-      });
+      ExportExcelService.exportAtasToExcel(listaObjetosString).then(
+        (response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "atas.xlsx";
+          link.click();
+        }
+      );
     }
   };
 
   const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
+    useState(false);
 
   // Função que deleta uma pauta
   const deletePauta = () => {
@@ -943,6 +946,16 @@ const HomeGerencia = () => {
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
         {/* Feedback ata criada */}
+        <Feedback
+          open={feedbackAtaCriada}
+          handleClose={() => {
+            setFeedbackAtaCriada(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback8}
+        />
+
+        {/* Feedback ata publicada */}
         <Feedback
           open={feedbackAta}
           handleClose={() => {
@@ -1315,7 +1328,7 @@ const HomeGerencia = () => {
               </TabPanel>
               {isGerente && (
                 <>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1332,7 +1345,7 @@ const HomeGerencia = () => {
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
                     <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                     <Box
                       sx={{
@@ -1366,9 +1379,9 @@ const HomeGerencia = () => {
                   <TabPanel sx={{ padding: 0 }} value="6">
                     <Ajuda onClick={() => setIsTourAtasOpen(true)} />
                     <PautaAtaModoVisualizacao
-                      listaPautas={pautas}
-                      onItemClick={() => {
-                        navigate("/detalhes-pauta");
+                      listaPautas={atas}
+                      onItemClick={(ata) => {
+                        navigate("/detalhes-ata", { state: { ata } });
                       }}
                       nextModoVisualizacao={nextModoVisualizacao}
                       setPautaSelecionada={setPautaSelecionada}

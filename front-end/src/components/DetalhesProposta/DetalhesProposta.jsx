@@ -774,7 +774,7 @@ const ParecerComissaoInsertText = ({
               {texts.detalhesProposta.reprovado}
             </Typography>
           </MenuItem>
-          <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
+          <MenuItem key={"Mais informações"} value={"MAIS_INFORMACOES"}>
             <Typography fontSize={FontConfig.medium}>
               {texts.detalhesProposta.devolvido}
             </Typography>
