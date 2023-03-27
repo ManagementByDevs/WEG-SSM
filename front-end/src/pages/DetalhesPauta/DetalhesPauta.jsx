@@ -213,7 +213,6 @@ const DetalhesPauta = (props) => {
         propostaDeleted,
         propostaDeleted.id
       ).then((newProposta) => {
-        console.log("Proposta atualizada com sucesso! ", newProposta);
       });
       PautaService.getById(pauta.id).then((newPauta) => {
         location.state = { pauta: newPauta };
@@ -225,7 +224,6 @@ const DetalhesPauta = (props) => {
   };
 
   useEffect(() => {
-    console.log(location.state);
     setPauta(location.state.pauta);
     setListaProposta(location.state.pauta.propostas);
   }, []);
@@ -264,7 +262,6 @@ const DetalhesPauta = (props) => {
     }
 
     AtaService.post(pauta).then((response) => {
-      console.log(response);
       feedbackAta();
     });
   };
@@ -272,7 +269,6 @@ const DetalhesPauta = (props) => {
   useEffect(() => {
     if (indexProposta > -1) {
       let aux = [...listaProposta];
-      console.log("aux: ", aux);
       aux[indexProposta] = { ...dadosProposta };
       setListaProposta(aux);
       setPauta({ ...pauta, propostas: aux });
@@ -280,7 +276,6 @@ const DetalhesPauta = (props) => {
   }, [dadosProposta]);
 
   useEffect(() => {
-    console.log("pauta: ", pauta);
   }, [pauta]);
 
   return (

@@ -282,7 +282,6 @@ const ModalAddPropostaPauta = (props) => {
       );
 
       PautaService.post(pauta).then((res) => {
-        console.log("rse: ", res);
         PropostaService.putWithoutArquivos(
           {
             ...props.proposta,
@@ -291,7 +290,6 @@ const ModalAddPropostaPauta = (props) => {
           },
           props.proposta.id
         ).then((res) => {
-          console.log("Pauta criada com sucesso! res: ", res);
         });
       });
     } else {
@@ -313,8 +311,6 @@ const ModalAddPropostaPauta = (props) => {
         ).then((res) => {
           setFeedbackPautaAtualizada(true);
         });
-
-        console.log("res: ", res);
       });
     }
 

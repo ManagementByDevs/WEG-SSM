@@ -35,9 +35,6 @@ const DetalhesProposta = ({
   setProposta = () => {},
 }) => {
 
-  useEffect(() => {
-    console.log("proposta: ", proposta);
-  }, [proposta])
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 

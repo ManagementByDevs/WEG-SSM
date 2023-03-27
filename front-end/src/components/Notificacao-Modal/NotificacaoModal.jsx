@@ -57,7 +57,6 @@ const NotificacaoModal = (props) => {
         setContNaoLidas(response.totalElements);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 

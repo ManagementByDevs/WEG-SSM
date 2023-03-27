@@ -78,9 +78,7 @@ const Login = () => {
       });
       // try {
       //   const response = await AutenticacaoService.login(dados);
-      //   console.log(response);
       // } catch (error) {
-      //   console.log(error);
       // }
     } else {
       // Abrir modal de feedback de dados não preenchidos
