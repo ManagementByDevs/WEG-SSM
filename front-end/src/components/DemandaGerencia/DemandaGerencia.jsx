@@ -32,7 +32,7 @@ const DemandaGerencia = (props) => {
   function getCorStatus() {
     if (props.dados.status === "BACKLOG_REVISAO") {
       return "#00579D";
-    } else if (props.dados.status.startsWith("ASSESSMENT")) {
+    } else if (props.dados.status?.startsWith("ASSESSMENT")) {
       return "#8862A2";
     }
   }
@@ -49,7 +49,7 @@ const DemandaGerencia = (props) => {
   const formatarStatus = () => {
     if (props.dados.status == "BACKLOG_REVISAO") {
       return texts.demandaGerencia.backlog;
-    } else if (props.dados.status.startsWith("ASSESSMENT")) {
+    } else if (props.dados.status?.startsWith("ASSESSMENT")) {
       return texts.demandaGerencia.assessment;
     }
   };
@@ -137,7 +137,7 @@ const DemandaGerencia = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginLeft: "5px" }}
                 >
-                  {props.dados.solicitante.nome}
+                  {props.dados.solicitante?.nome}
                 </Typography>
               </Box>
 
