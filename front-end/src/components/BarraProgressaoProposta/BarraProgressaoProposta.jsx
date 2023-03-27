@@ -33,7 +33,7 @@ const BarraProgressaoProposta = (props) => {
   const [activeStep, setActiveStep] = useState(0);
 
   /** Lista de etapas usadas na criação de proposta */
-  const etapasProposta = ['Proposta', 'Escopo', 'Custos', 'Gerais'];
+  const etapasProposta = [texts.barraProgressaoProposta.proposta, texts.barraProgressaoProposta.escopo, texts.barraProgressaoProposta.custo, texts.barraProgressaoProposta.gerais];
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
