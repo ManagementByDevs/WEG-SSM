@@ -779,7 +779,15 @@ const HomeGerencia = () => {
         link.click();
       });
     } else if (value == 5) {
-      ExportExcelService.exportPautasToExcel(listaObjetosString).then((response) => {
+
+      // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA PAUTAS
+      let listaIdPautas = [];
+
+      for (const object in pautas) {
+        listaIdPautas.push(pautas[object].id);
+      }
+
+      ExportExcelService.exportPautasToExcel(listaIdPautas).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
@@ -788,7 +796,15 @@ const HomeGerencia = () => {
         link.click();
       });
     } else {
-      ExportExcelService.exportAtasToExcel(listaObjetosString).then((response) => {
+
+      // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
+      let listaIdAtas = [];
+
+      for (const object in atas) {
+        listaIdAtas.push(atas[object].id);
+      }
+
+      ExportExcelService.exportAtasToExcel(listaIdAtas).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");

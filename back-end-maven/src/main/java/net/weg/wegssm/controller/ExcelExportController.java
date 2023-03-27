@@ -51,7 +51,7 @@ public class ExcelExportController {
     }
 
     @PostMapping("/excel/pautas")
-    public void exportPautasToExcel(HttpServletResponse response, @RequestParam("pautas") List<String> listaPautas) throws IOException {
+    public void exportPautasToExcel(HttpServletResponse response, @RequestParam("pautas") List<Long> listaPautas) throws IOException {
         excelGeneratorService.exportPautasToExcel(response, listaPautas);
     }
 
