@@ -25,6 +25,39 @@ class ExportExcelService {
         return (await axios.post(`${excel}/demandas_assessment`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
     }
 
+    async exportPropostasToExcel(listaPropostas) {
+
+        let form = new FormData();
+
+        for(let proposta of listaPropostas) {
+            form.append("propostas", proposta);
+        }
+
+        return (await axios.post(`${excel}/propostas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+    }
+
+    async exportPautasToExcel(listaPautas) {
+
+        let form = new FormData();
+
+        for(let pauta of listaPautas) {
+            form.append("pautas", pauta);
+        }
+
+        return (await axios.post(`${excel}/pautas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+    }
+
+    async exportAtasToExcel(listaAtas) {
+
+        let form = new FormData();
+
+        for(let ata of listaAtas) {
+            form.append("atas", ata);
+        }
+
+        return (await axios.post(`${excel}/atas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+    }
+
 }
 
 export default new ExportExcelService();

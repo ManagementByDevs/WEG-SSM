@@ -208,8 +208,8 @@ const ModalFiltroGerencia = (props) => {
                   </MenuItem>
                   {props.listaForuns.map((forum) => {
                     return (
-                      <MenuItem key={forum.id} value={forum}>
-                        {forum.nome}
+                      <MenuItem key={forum.idForum} value={forum}>
+                        {forum.nomeForum}
                       </MenuItem>
                     );
                   })}

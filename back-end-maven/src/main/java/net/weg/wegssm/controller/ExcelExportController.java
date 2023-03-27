@@ -36,25 +36,28 @@ public class ExcelExportController {
     private ExcelGeneratorService excelGeneratorService;
 
     @PostMapping("/excel/demandas_backlog")
-    public void generateExcelDemandasBacklog(HttpServletResponse response, @RequestParam("demandas_backlog") List<String> listaDemandas) throws IOException {
+    public void exportDemandasBackLogToExcel(HttpServletResponse response, @RequestParam("demandas_backlog") List<String> listaDemandas) throws IOException {
         excelGeneratorService.exportDemandasBackLogToExcel(response, listaDemandas);
     }
 
     @PostMapping("/excel/demandas_assessment")
-    public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<String> listaDemandas) throws IOException{
+    public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<String> listaDemandas) throws IOException {
         excelGeneratorService.exportDemandasAssessmentToExcel(response, listaDemandas);
     }
 
     @PostMapping("/excel/propostas")
-    public void exportPropostasToExcel(HttpServletResponse response) throws IOException {
+    public void exportPropostasToExcel(HttpServletResponse response, @RequestParam("propostas") List<String> listaPropostas) throws IOException {
+        excelGeneratorService.exportPropostasToExcel(response, listaPropostas);
     }
 
     @PostMapping("/excel/pautas")
-    public void exportPautasToExcel(HttpServletResponse response) throws IOException {
+    public void exportPautasToExcel(HttpServletResponse response, @RequestParam("pautas") List<String> listaPautas) throws IOException {
+        excelGeneratorService.exportPautasToExcel(response, listaPautas);
     }
 
     @PostMapping("/excel/atas")
-    public void exportAtasToExcel(HttpServletResponse response) throws IOException {
+    public void exportAtasToExcel(HttpServletResponse response, @RequestParam("atas") List<String> listaAtas) throws IOException {
+        excelGeneratorService.exportAtasToExcel(response, listaAtas);
     }
 
 }

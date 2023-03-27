@@ -146,9 +146,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || texts.DetalhesDemanda.real,
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -284,7 +284,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -292,7 +292,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosNovos([]);
   };
@@ -309,7 +309,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => {});
+        BeneficioService.put(beneficio).then((response) => { });
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -330,12 +330,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-          props.dados.beneficios[index].moeda.toLowerCase() &&
+        props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -690,8 +690,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -700,8 +700,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"

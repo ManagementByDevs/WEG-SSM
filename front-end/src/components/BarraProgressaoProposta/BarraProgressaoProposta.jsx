@@ -196,6 +196,7 @@ const BarraProgressaoProposta = (props) => {
   const salvarEscopo = () => {
     try {
       let escopo = retornaObjetoProposta();
+      delete escopo.historicoProposta;
       delete escopo.status;
       escopo.id = ultimoEscopo.id;
       EscopoPropostaService.salvarDados(escopo).then((response) => {

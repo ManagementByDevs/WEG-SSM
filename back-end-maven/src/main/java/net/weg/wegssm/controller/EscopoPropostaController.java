@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/** Classe controller para os escopos de propostas */
 @AllArgsConstructor
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
@@ -109,6 +110,37 @@ public class EscopoPropostaController {
             tabelaCustoService.save(tabelaCusto);
         }
 
+        return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
+    }
+
+    /** Função para salvar anexos adicionados a um escopo, recebendo os anexos pelos parâmetros e o ID do escopo com variável */
+    @PutMapping("/anexos/{id}")
+    public ResponseEntity<EscopoProposta> addAnexos(@PathVariable(value = "id") Long idEscopo, @RequestParam("anexos") List<MultipartFile> anexos) {
+        EscopoProposta escopoProposta = escopoPropostaService.findById(idEscopo).get();
+        escopoProposta.addAnexos(anexos);
+
+        List<Anexo> listaAnexos = new ArrayList<>();
+        for (Anexo anexo : escopoProposta.getAnexo()) {
+            listaAnexos.add(anexoService.save(anexo));
+        }
+        escopoProposta.setAnexo(listaAnexos);
+
+        return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
+    }
+
+    /** Função para excluir um anexo de um escopo, recebendo os IDs de ambos por variáveis */
+    @PutMapping("/anexos/{idEscopo}/{idAnexo}")
+    public ResponseEntity<EscopoProposta> removeAnexo(@PathVariable(value = "idEscopo") Long idEscopo, @PathVariable(value = "idAnexo") Long idAnexo) {
+        EscopoProposta escopoProposta = escopoPropostaService.findById(idEscopo).get();
+
+        List<Anexo> listaAnexos = new ArrayList<>();
+        for (Anexo anexo : escopoProposta.getAnexo()) {
+            if(anexo.getId() != idAnexo) {
+                listaAnexos.add(anexo);
+            }
+        }
+        escopoProposta.setAnexo(listaAnexos);
+        anexoService.deleteById(idAnexo);
         return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
     }
 

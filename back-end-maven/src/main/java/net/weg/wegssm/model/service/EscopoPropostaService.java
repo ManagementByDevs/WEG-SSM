@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EscopoPropostaService {
@@ -41,5 +42,9 @@ public class EscopoPropostaService {
 
     public List<EscopoProposta> findByDemanda(Demanda demanda) {
         return escopoPropostaRepository.findByDemanda(demanda);
+    }
+
+    public Optional<EscopoProposta> findById(Long idEscopo) {
+        return escopoPropostaRepository.findById(idEscopo);
     }
 }

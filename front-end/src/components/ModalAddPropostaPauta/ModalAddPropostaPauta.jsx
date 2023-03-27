@@ -30,6 +30,7 @@ import TemaContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
 import PropostaService from "../../service/propostaService";
 import ForumService from "../../service/forumService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalAddPropostaPauta = (props) => {
@@ -135,66 +136,7 @@ const ModalAddPropostaPauta = (props) => {
   };
 
   // Exemplo de um objeto proposta
-  const propostaExample = {
-    analista: {},
-    anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
-    beneficios: [
-      {
-        id: 0,
-        tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
-        valor_mensal: 0,
-        moeda: "",
-        memoriaCalculo: "",
-      },
-    ],
-    buSolicitante: { id: 0, nome: "" },
-    busBeneficiadas: [{ id: 0, nome: "" }],
-    codigoPPM: 0,
-    data: "",
-    demanda: 0,
-    departamento: 0,
-    escopo: 0,
-    fimExecucao: "",
-    forum: { id: 0, nome: "", visibilidade: true },
-    frequencia: "",
-    gerente: 0,
-    historicoProposta: [],
-    id: 0,
-    inicioExecucao: "",
-    linkJira: "",
-    naoPublicada: true,
-    parecerComissao: "",
-    parecerDG: "",
-    parecerInformacao: "",
-    paybackTipo: "",
-    paybackValor: 0,
-    problema: "",
-    proposta: "",
-    publicada: false,
-    responsavelNegocio: [],
-    secaoTI: { idSecao: 0, nomeSecao: "", siglaSecao: "" },
-    solicitante: {},
-    status: "",
-    tabelaCustos: [
-      {
-        id: 0,
-        custos: [
-          {
-            id: 0,
-            tipoDespesa: "",
-            perfilDespesa: "",
-            periodoExecucao: 0,
-            horas: 0,
-            valorHora: 0,
-          },
-        ],
-        ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
-      },
-    ],
-    tamanho: "",
-    titulo: "",
-    visibilidade: true,
-  };
+  const propostaExample = EntitiesObjectService.proposta();
 
   useEffect(() => {
     PautaService.get().then((res) => {
