@@ -81,6 +81,7 @@ public class ExcelGeneratorService {
         // Preenchendo informações das demandas
         int rowNum = 1;
         int contadorDemanda = 1;
+
         for (Demanda demanda : listDemandas) {
             // Criando uma nova linha
             XSSFRow row = sheet.createRow(rowNum++);
@@ -197,6 +198,7 @@ public class ExcelGeneratorService {
         // Preenchendo informações das demandas
         int rowNum = 1;
         int contadorDemanda = 1;
+
         for (Demanda demanda : listDemandas) {
             // Criando uma nova linha
             XSSFRow row = sheet.createRow(rowNum++);
@@ -396,50 +398,26 @@ public class ExcelGeneratorService {
                 row.getCell(21).setCellStyle(alignLeft);
             }
 
+            // Aplicando o estilo nas linhas
+            int startRowIndex = 1;
+            int endRowIndex = 21;
+            int colIndex = 0;
+
+            for (int rowwIndex = startRowIndex; rowwIndex <= endRowIndex; rowwIndex++) {
+                Cell cell = sheet.getRow(rowwIndex).getCell(colIndex);
+                cell.setCellStyle(alignLeft);
+            }
+
             // Setando os estilos para as colunas
             row.getCell(0).setCellStyle(style);
-            row.getCell(1).setCellStyle(alignLeft);
-            row.getCell(2).setCellStyle(alignLeft);
-            row.getCell(3).setCellStyle(alignLeft);
-            row.getCell(5).setCellStyle(alignLeft);
-            row.getCell(6).setCellStyle(alignLeft);
-            row.getCell(7).setCellStyle(alignLeft);
-            row.getCell(8).setCellStyle(alignLeft);
-            row.getCell(10).setCellStyle(alignLeft);
-            row.getCell(11).setCellStyle(alignLeft);
-            row.getCell(12).setCellStyle(alignLeft);
-            row.getCell(13).setCellStyle(alignLeft);
-            row.getCell(14).setCellStyle(alignLeft);
-            row.getCell(15).setCellStyle(alignLeft);
-            row.getCell(16).setCellStyle(alignLeft);
-            row.getCell(17).setCellStyle(alignLeft);
-            row.getCell(18).setCellStyle(alignLeft);
-            row.getCell(19).setCellStyle(alignLeft);
-            row.getCell(20).setCellStyle(alignLeft);
-            row.getCell(21).setCellStyle(alignLeft);
 
             // Auto ajustando o tamanho das colunas de acordo com as informações
-            sheet.autoSizeColumn(1);
-            sheet.autoSizeColumn(2);
-            sheet.autoSizeColumn(3);
-            sheet.autoSizeColumn(4);
-            sheet.autoSizeColumn(5);
-            sheet.autoSizeColumn(6);
-            sheet.autoSizeColumn(7);
-            sheet.autoSizeColumn(8);
-            sheet.autoSizeColumn(9);
-            sheet.autoSizeColumn(10);
-            sheet.autoSizeColumn(11);
-            sheet.autoSizeColumn(12);
-            sheet.autoSizeColumn(13);
-            sheet.autoSizeColumn(14);
-            sheet.autoSizeColumn(15);
-            sheet.autoSizeColumn(16);
-            sheet.autoSizeColumn(17);
-            sheet.autoSizeColumn(18);
-            sheet.autoSizeColumn(19);
-            sheet.autoSizeColumn(20);
-            sheet.autoSizeColumn(21);
+            Row headerRowAutoSize = sheet.getRow(0);
+            int lastCellNum = headerRowAutoSize.getLastCellNum();
+
+            for (int i = 0; i < lastCellNum; i++) {
+                sheet.autoSizeColumn(i);
+            }
 
             rowNum = rowIndex;
             contadorProposta++;
@@ -450,5 +428,13 @@ public class ExcelGeneratorService {
         workbook.write(outputStream);
         workbook.close();
         outputStream.close();
+    }
+
+    public void exportPautasToExcel(HttpServletResponse response, List<String> listaPautas) throws IOException {
+
+    }
+
+    public void exportAtasToExcel(HttpServletResponse response, List<String> listaAtas) throws IOException {
+
     }
 }
