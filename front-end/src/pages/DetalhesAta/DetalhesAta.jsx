@@ -184,8 +184,6 @@ const DetalhesAta = (props) => {
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
   ) => {
     for (let proposta of listaPropostasToUpdate) {
-      console.log("proposta a ser atualizada: ", proposta);
-      proposta.status = "DONE";
       PropostaService.putWithoutArquivos(proposta, proposta.id).then(
         (response) => {
           console.log("Proposta atualizada com sucesso! ", response);
@@ -204,11 +202,15 @@ const DetalhesAta = (props) => {
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };
 
-    // updatePropostas(ataPublished.propostas);
-
     for (let proposta of ataPublished.propostas) {
-      proposta.status = "DONE";
+      if (proposta.parecerDG == "APROVADO") {
+        proposta.status = "DONE";
+      } else {
+        proposta.status = "CANCELLED";
+      }
     }
+
+    updatePropostas(ataPublished.propostas);
 
     console.log("ata a ser ataulizada: ", ataPublished);
     AtaService.put(ataPublished, ataPublished.id).then((response) => {

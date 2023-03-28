@@ -32,9 +32,11 @@ const Pautas = (props) => {
   };
 
   // Função para formatar a data para melhor leitura
-  const getDataFormatada = (dataInicio) => {
-    return DateService.getTodaysDateUSFormat(
-      DateService.getDateByMySQLFormat(dataInicio)
+  const getDataFormatada = (dataReuniao) => {
+    return props.tipo == "pauta" ? DateService.getTodaysDateUSFormat(
+      DateService.getDateByMySQLFormat(dataReuniao)
+    ) : DateService.getFullDateUSFormat(
+      DateService.getDateByMySQLFormat(dataReuniao)
     );
   };
 
@@ -67,15 +69,6 @@ const Pautas = (props) => {
           >
             {getDataFormatada(props.dados.dataReuniao)}
           </Typography>
-          {props.tipo === "ata" && (
-            <Typography
-              fontSize={FontConfig.default}
-              fontWeight="600"
-              sx={{ color: "text.secondary", marginLeft: "5px" }}
-            >
-              {getDataFormatada(props.dados.dataReuniao)}
-            </Typography>
-          )}
           {props.tipo === "pauta" && (
             <Box sx={{ marginRight: "-16px" }} className="ml-2">
               <Tooltip title={texts.pauta.deletar}>

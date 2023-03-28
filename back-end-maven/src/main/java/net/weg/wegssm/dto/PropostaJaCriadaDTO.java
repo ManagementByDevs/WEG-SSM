@@ -22,6 +22,7 @@ public class PropostaJaCriadaDTO {
     private ParecerGerencia parecerComissao;
     private String parecerInformacao;
     private ParecerGerencia parecerDG;
+    private String parecerInformacaoDG;
     private Boolean visibilidade;
     private String titulo;
     private String problema;
