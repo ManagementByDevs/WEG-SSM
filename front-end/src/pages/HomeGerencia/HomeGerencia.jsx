@@ -34,19 +34,20 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import ColorModeContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
+import AtaService from "../../service/ataService";
 
 import Tour from "reactour";
-import ClipLoader from 'react-spinners/ClipLoader';
+import ClipLoader from "react-spinners/ClipLoader";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
-
   // Context que contém os textos do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   //UseState utilizado para controlar o tour, se ele está aberto ou fechado
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
+    useState(false);
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
   const [isTourPautasOpen, setIsTourPautasOpen] = useState(false);
   const [isTourAtasOpen, setIsTourAtasOpen] = useState(false);
@@ -231,13 +232,11 @@ const HomeGerencia = () => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-
   /** Variável armazenando qual a aba atual que o usuário está */
   const [valorAba, setValorAba] = useState("1");
 
   /** Lista geral de itens (demandas, propostas, pautas e atas) para mostrar nas abas */
   const [listaItens, setListaItens] = useState([]);
-
 
   /** Lista armazenando os fóruns presentes no sistema para uso no modal de filtros */
   const [listaForum, setListaForum] = useState([]);
@@ -254,7 +253,6 @@ const HomeGerencia = () => {
   /** Lista de analistas utilizada no modal de filtro */
   const [listaAnalistas, setListaAnalistas] = useState([]);
 
-
   /** Número de páginas totais recebido nas buscas de itens para paginação */
   const [totalPaginas, setTotalPaginas] = useState(1);
 
@@ -263,7 +261,6 @@ const HomeGerencia = () => {
 
   /** Variável editável na paginação com o número de itens em uma página */
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
-
 
   /** String para ordenação dos itens atualizada com o valor dos checkboxes a cada busca de itens */
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
@@ -277,13 +274,11 @@ const HomeGerencia = () => {
   /** Valores dos checkboxes de data no modal de ordenação (0 - "Mais Antiga" | 1 - "Mais Recente") */
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
-
   /** Valor do input de pesquisa por título */
   const [valorPesquisa, setValorPesquisa] = useState("");
 
   /** Variável booleana que determina se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
-
 
   /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
   const [filtrosAtuais, setFiltrosAtuais] = useState({
@@ -311,6 +306,11 @@ const HomeGerencia = () => {
 
   // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
   const [paramsPautas, setParamsPautas] = useState({
+    titulo: null,
+  });
+
+  // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
+  const [paramsAtas, setParamsAtas] = useState({
     titulo: null,
   });
 
@@ -411,7 +411,8 @@ const HomeGerencia = () => {
   // feedbacks para o gerenciamento das demandas por parte do analista
 
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
+    useState(false);
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
   const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
 
@@ -477,6 +478,7 @@ const HomeGerencia = () => {
         setParamsPautas({ ...paramsPautas });
         break;
       case "6":
+        setParamsPautas({ ...paramsAtas });
         break;
     }
   }, [valorAba]);
@@ -493,7 +495,7 @@ const HomeGerencia = () => {
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
   useEffect(() => {
     buscarItens();
-  }, [params, paginaAtual, tamanhoPagina, paramsPautas]);
+  }, [params, paginaAtual, tamanhoPagina, paramsPautas, paramsAtas]);
 
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
   useEffect(() => {
@@ -520,7 +522,7 @@ const HomeGerencia = () => {
   // UseEffect para retirar o ícone de carregamento quando os itens forem buscados do banco de dados
   useEffect(() => {
     setCarregamento(false);
-  }, [listaItens])
+  }, [listaItens]);
 
   // Função para buscar a lista de fóruns e departamentos para o modal de filtros
   const buscarFiltros = () => {
@@ -615,46 +617,20 @@ const HomeGerencia = () => {
         });
         break;
       case "6":
+        AtaService.getPage(
+          paramsAtas,
+          ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+        ).then((response) => {
+          setListaItens([...response.content]);
+          setTotalPaginas(response.totalPages);
+        });
         break;
     }
   };
 
   const [pautas, setPautas] = useState([]);
 
-  const [atas, setAtas] = useState([
-    {
-      numeroSequencial: "1/2022",
-      comissao: "Comissão 1",
-      analistaResponsavel: "Kenzo Sato",
-      data: "01/01/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "2/2022",
-      comissao: "Comissão 2",
-      analistaResponsavel: "Kenzo S",
-      data: "02/02/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "3/2022",
-      comissao: "Comissão 3",
-      analistaResponsavel: "Kenzo S",
-      data: "03/03/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-    {
-      numeroSequencial: "4/2022",
-      comissao: "Comissão 4",
-      analistaResponsavel: "Kenzo S",
-      data: "04/04/2022",
-      horaInicio: "10:00",
-      horaFim: "11:00",
-    },
-  ]);
+  const [atas, setAtas] = useState([]);
 
   // Função para alterar a aba selecionada
   const handleChange = (event, novoValor) => {
@@ -771,16 +747,20 @@ const HomeGerencia = () => {
 
     // Verificação para saber em qual aba o usuário deseja exportar para excel
     if (valorAba == 2) {
-      ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "demandas.xlsx";
-        link.click();
-      });
+      ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then(
+        (response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "demandas.xlsx";
+          link.click();
+        }
+      );
     } else if (valorAba == 3) {
-      ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
+      ExportExcelService.exportDemandasAssessmentToExcel(
+        listaObjetosString
+      ).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
@@ -789,16 +769,17 @@ const HomeGerencia = () => {
         link.click();
       });
     } else if (valorAba == 4) {
-      ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "propostas.xlsx";
-        link.click();
-      });
+      ExportExcelService.exportPropostasToExcel(listaObjetosString).then(
+        (response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "propostas.xlsx";
+          link.click();
+        }
+      );
     } else if (valorAba == 5) {
-
       let listaIdPautas = [];
       for (const object in listaItens) {
         listaIdPautas.push(listaItens[object].id);
@@ -813,7 +794,6 @@ const HomeGerencia = () => {
         link.click();
       });
     } else {
-
       // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
       let listaIdAtas = [];
 
@@ -833,7 +813,8 @@ const HomeGerencia = () => {
   };
 
   const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
+    useState(false);
 
   // Função que deleta uma pauta
   const deletePauta = () => {
@@ -1295,10 +1276,10 @@ const HomeGerencia = () => {
 
             {carregamento ? (
               <Box className="mt-6 w-full h-full flex justify-center items-center">
-                <ClipLoader color={'primary.main'} size={110} />
+                <ClipLoader color={"primary.main"} size={110} />
               </Box>
             ) : (
-              < Box className="mt-6" id="sextoDemandas">
+              <Box className="mt-6" id="sextoDemandas">
                 <Box>
                   <TabPanel sx={{ padding: 0 }} value="1">
                     <Ajuda />
@@ -1335,7 +1316,9 @@ const HomeGerencia = () => {
                         motivoRecusa: "",
                         status: "BACKLOG_REVISAO",
                         data: "",
-                        solicitante: { nome: texts.homeGerencia.demandaParaTour },
+                        solicitante: {
+                          nome: texts.homeGerencia.demandaParaTour,
+                        },
                       }}
                       tipo="demanda"
                     />
@@ -1349,8 +1332,10 @@ const HomeGerencia = () => {
                 </TabPanel>
                 {isGerente && (
                   <>
-                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
-                      <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
+                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                      <Ajuda
+                        onClick={() => setIsTourCriarPropostasOpen(true)}
+                      />
                       <Box
                         sx={{
                           display: "grid",
@@ -1366,7 +1351,7 @@ const HomeGerencia = () => {
                         />
                       </Box>
                     </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
                       <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                       <Box
                         sx={{
@@ -1400,9 +1385,9 @@ const HomeGerencia = () => {
                     <TabPanel sx={{ padding: 0 }} value="6">
                       <Ajuda onClick={() => setIsTourAtasOpen(true)} />
                       <PautaAtaModoVisualizacao
-                        listaPautas={pautas}
-                        onItemClick={() => {
-                          navigate("/detalhes-pauta");
+                        listaPautas={listaItens}
+                        onItemClick={(ata) => {
+                          navigate("/detalhes-ata", { state: { ata } });
                         }}
                         nextModoVisualizacao={nextModoVisualizacao}
                         setPautaSelecionada={setPautaSelecionada}
@@ -1415,7 +1400,7 @@ const HomeGerencia = () => {
             )}
           </TabContext>
         </Box>
-      </Box >
+      </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
         {totalPaginas > 1 || listaItens.length > 20 ? (
           <Paginacao
@@ -1426,7 +1411,7 @@ const HomeGerencia = () => {
           />
         ) : null}
       </Box>
-    </FundoComHeader >
+    </FundoComHeader>
   );
 };
 
