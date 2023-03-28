@@ -43,11 +43,6 @@ const BeneficiosDetalheDemanda = (props) => {
     },
   }));
 
-  /** Função utilizada para deletar um benefício */
-  const deleteBeneficio = () => {
-    props.delete(props.index);
-  };
-
   return (
     <Box className="flex items-center">
 
@@ -60,7 +55,7 @@ const BeneficiosDetalheDemanda = (props) => {
             fontSize="large"
             className="delay-120 hover:scale-110 duration-300 mr-2"
             sx={{ color: "icon.main", cursor: "pointer" }}
-            onClick={deleteBeneficio}
+            onClick={() => { props.delete(props.index) }}
           />
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 750 }} aria-label="customized table">
@@ -135,9 +130,9 @@ const BeneficiosDetalheDemanda = (props) => {
                           props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value, }, props.index);
                         }}
                       >
-                        <MenuItem value={"Real"}>{texts.BeneficiosDetalheDemanda.real}</MenuItem>
-                        <MenuItem value={"Potencial"}>{texts.BeneficiosDetalheDemanda.potencial}</MenuItem>
-                        <MenuItem value={"Qualitativo"}>{texts.BeneficiosDetalheDemanda.qualitativo}</MenuItem>
+                        <MenuItem value={"REAL"}>{texts.BeneficiosDetalheDemanda.real}</MenuItem>
+                        <MenuItem value={"POTENCIAL"}>{texts.BeneficiosDetalheDemanda.potencial}</MenuItem>
+                        <MenuItem value={"QUALITATIVO"}>{texts.BeneficiosDetalheDemanda.qualitativo}</MenuItem>
                       </Select>
                     </FormControl>
                   </td>

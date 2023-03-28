@@ -1,17 +1,18 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
+import net.weg.wegssm.dto.AnexoDTO;
 import net.weg.wegssm.model.entities.Anexo;
 import net.weg.wegssm.model.service.AnexoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 
 /**
  * Classe Controller para as funções dos anexos
@@ -26,6 +27,15 @@ public class AnexoController {
      * Service de anexos
      */
     private AnexoService anexoService;
+
+    /**
+     * Função para criar um anexo no banco de dados, recebendo um AnexoDTO no body
+     */
+    @PostMapping
+    public ResponseEntity<Anexo> save(@RequestParam(value = "anexo") MultipartFile file) throws IOException {
+        Anexo anexo = new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+        return ResponseEntity.status(HttpStatus.OK).body(anexoService.save(anexo));
+    }
 
     /**
      * Função para excluir um anexo pelo seu ID, recebido pela variável "id"

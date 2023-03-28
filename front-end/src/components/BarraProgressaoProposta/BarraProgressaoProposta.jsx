@@ -109,10 +109,6 @@ const BarraProgressaoProposta = (props) => {
   }, []);
 
   useEffect(() => {
-    receberBeneficios();
-  }, [dadosDemanda]);
-
-  useEffect(() => {
     if (!idEscopo) {
       if (!location.state.tabelaCustos) {
         if (mudancasFeitas) {
@@ -120,6 +116,7 @@ const BarraProgressaoProposta = (props) => {
 
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then((data) => {
             if (data.length == 0) {
+              receberBeneficios();
               let escopo = retornaObjetoProposta();
               delete escopo.historicoProposta;
               delete escopo.status;
@@ -264,9 +261,6 @@ const BarraProgressaoProposta = (props) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  // Variável utilizada para salvar alterações caso o click seja acionado
-  const [salvarClick, setSalvarClick] = useState(false);
-
   // Função para pesquisar os fóruns do banco e salvar na lista para o select
   const pesquisarForuns = () => {
     ForumService.getAll().then((response) => {
@@ -306,9 +300,6 @@ const BarraProgressaoProposta = (props) => {
       return [];
     }
   };
-
-  // Variável utilizada para realizar edições
-  const [editar, setEditar] = useState(false);
 
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
@@ -437,10 +428,6 @@ const BarraProgressaoProposta = (props) => {
         <FormularioPropostaProposta
           dados={dadosDemanda}
           setDadosDemanda={setDadosDemanda}
-          editar={editar}
-          setEditar={setEditar}
-          salvarClick={salvarClick}
-          setSalvarClick={setSalvarClick}
 
           beneficios={listaBeneficios}
           setBeneficios={setListaBeneficios}
