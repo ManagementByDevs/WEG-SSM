@@ -144,14 +144,14 @@ const DetalhesAta = (props) => {
 
   // Função para baixar o arquivo pdf da respectiva ata
   const baixarPDF = () => {
-    // ExportPdfService.exportAta(ata.id).then((response) => {
-    //   let blob = new Blob([response], { type: "application/pdf" });
-    //   let url = URL.createObjectURL(blob);
-    //   let link = document.createElement("a");
-    //   link.href = url;
-    //   link.download = "pdf_ata.pdf";
-    //   link.click();
-    // });
+    ExportPdfService.exportAta(ata.id).then((response) => {
+      let blob = new Blob([response], { type: "application/pdf" });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement("a");
+      link.href = url;
+      link.download = "pdf_ata.pdf";
+      link.click();
+    });
   };
 
   useEffect(() => {
