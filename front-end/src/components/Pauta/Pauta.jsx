@@ -10,10 +10,10 @@ import DateService from "../../service/dateService";
 
 const Pautas = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Retorna as horas de início e fim formatadas para melhor leitura
   const getHorasFormatado = (dataInicio, dataFim) => {
