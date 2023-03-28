@@ -740,12 +740,21 @@ const HomeGerencia = () => {
   // Feedback ata criada
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
+  // Feedback propostas atualizadas
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
+
   useEffect(() => {
     if (location.state?.feedback) {
-      if (location.state.feedback == "ata-criada") {
-        setFeedbackAtaCriada(true);
-      } else {
-        setOpenFeedbackAta(true);
+      switch (location.state.feedback) {
+        case "ata-criada":
+          setFeedbackAtaCriada(true);
+          break;
+        case "propostas-atualizadas":
+          setFeedbackPropostasAtualizadas(true);
+          break;
+        default:
+          setOpenFeedbackAta(true);
+          break;
       }
     }
   }, [location.state?.feedback]);
@@ -999,6 +1008,16 @@ const HomeGerencia = () => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback8}
+        />
+
+        {/* Feedback propostas atualizadas */}
+        <Feedback
+          open={feedbackPropostasAtualizadas}
+          handleClose={() => {
+            setFeedbackPropostasAtualizadas(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback9}
         />
 
         <Feedback

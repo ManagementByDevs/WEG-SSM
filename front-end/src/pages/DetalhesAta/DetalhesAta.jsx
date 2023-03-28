@@ -260,7 +260,7 @@ const DetalhesAta = (props) => {
         </Box>
 
         {/* container geral da tela */}
-        <Box className="flex flex-col justify-center relative items-center mt-3">
+        <Box className="flex flex-col justify-center relative items-center mt-5">
           {/* container da folha */}
           <Box
             className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
@@ -356,7 +356,7 @@ const DetalhesAta = (props) => {
                     fontSize={FontConfig.title}
                     fontWeight={650}
                   >
-                    {texts.detalhesPauta.proposta} {indexProposta}
+                    {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
                 </Box>
                 <DetalhesProposta
@@ -368,93 +368,95 @@ const DetalhesAta = (props) => {
           </Box>
 
           {/* Botões de navegação entre as propostas da ata */}
-          <Box
-            className="flex fixed justify-end items-center"
-            sx={{ width: "30rem", bottom: "20px", right: "20px" }}
-          >
-            <Box className="flex justify-center">
-              <Box className="flex justify-end">
-                <Box
-                  className={`w-full ${display} items-center mr-1`}
-                  sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
-                >
-                  <Box className="flex justify-around w-full">
-                    <Button
-                      sx={{
-                        backgroundColor: "primary.main",
-                        color: "text.white",
-                        fontSize: FontConfig.default,
-                        maxHeight: "2.5rem",
-                      }}
-                      variant="contained"
-                      onClick={() => voltar()}
-                    >
-                      {texts.detalhesAta.voltar}
-                    </Button>
-                    <Button
-                      sx={{
-                        backgroundColor: "primary.main",
-                        color: "text.white",
-                        fontSize: FontConfig.default,
-                        maxHeight: "2.5rem",
-                      }}
-                      variant="contained"
-                      onClick={voltarSumario}
-                    >
-                      <OtherHousesIcon></OtherHousesIcon>
-                    </Button>
-                    <Button
-                      sx={{
-                        backgroundColor: "primary.main",
-                        color: "text.white",
-                        fontSize: FontConfig.default,
-                        maxHeight: "2.5rem",
-                      }}
-                      variant="contained"
-                      onClick={proximo}
-                    >
-                      <Typography>{texts.detalhesAta.proximo}</Typography>
-                    </Button>
-                  </Box>
-                </Box>
-                <Tooltip title={texts.detalhesAta.navegacao}>
+          {ata.propostas[0].parecerDG == null && (
+            <Box
+              className="flex fixed justify-end items-center"
+              sx={{ width: "30rem", bottom: "20px", right: "20px" }}
+            >
+              <Box className="flex justify-center">
+                <Box className="flex justify-end">
                   <Box
+                    className={`w-full ${display} items-center mr-1`}
+                    sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
+                  >
+                    <Box className="flex justify-around w-full">
+                      <Button
+                        sx={{
+                          backgroundColor: "primary.main",
+                          color: "text.white",
+                          fontSize: FontConfig.default,
+                          maxHeight: "2.5rem",
+                        }}
+                        variant="contained"
+                        onClick={() => voltar()}
+                      >
+                        {texts.detalhesAta.voltar}
+                      </Button>
+                      <Button
+                        sx={{
+                          backgroundColor: "primary.main",
+                          color: "text.white",
+                          fontSize: FontConfig.default,
+                          maxHeight: "2.5rem",
+                        }}
+                        variant="contained"
+                        onClick={voltarSumario}
+                      >
+                        <OtherHousesIcon />
+                      </Button>
+                      <Button
+                        sx={{
+                          backgroundColor: "primary.main",
+                          color: "text.white",
+                          fontSize: FontConfig.default,
+                          maxHeight: "2.5rem",
+                        }}
+                        variant="contained"
+                        onClick={proximo}
+                      >
+                        <Typography>{texts.detalhesAta.proximo}</Typography>
+                      </Button>
+                    </Box>
+                  </Box>
+                  <Tooltip title={texts.detalhesAta.navegacao}>
+                    <Box
+                      className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
+                      sx={{
+                        backgroundColor: "primary.main",
+                        color: "text.white",
+                        fontSize: FontConfig.default,
+                      }}
+                      onClick={() => {
+                        animarBotoes();
+                        setMinimizar(!minimizar);
+                      }}
+                    >
+                      <DensitySmallIcon
+                        sx={{
+                          rotate: "90deg",
+                          animation: `${girarIcon} 1.2s forwards`,
+                        }}
+                      ></DensitySmallIcon>
+                    </Box>
+                  </Tooltip>
+                </Box>
+                <Tooltip title={texts.detalhesAta.publicarAta}>
+                  <Box
+                    onClick={publicarAta}
                     className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                     sx={{
                       backgroundColor: "primary.main",
-                      color: "text.white",
                       fontSize: FontConfig.default,
-                    }}
-                    onClick={() => {
-                      animarBotoes();
-                      setMinimizar(!minimizar);
+                      marginLeft: "1rem",
+                      color: "#FFFF",
                     }}
                   >
-                    <DensitySmallIcon
-                      sx={{
-                        rotate: "90deg",
-                        animation: `${girarIcon} 1.2s forwards`,
-                      }}
-                    ></DensitySmallIcon>
+                    <DoneOutlinedIcon fontSize="large" />
                   </Box>
                 </Tooltip>
               </Box>
-              <Tooltip title={texts.detalhesAta.publicarAta}>
-                <Box
-                  onClick={publicarAta}
-                  className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
-                  sx={{
-                    backgroundColor: "primary.main",
-                    fontSize: FontConfig.default,
-                    marginLeft: "1rem",
-                    color: "#FFFF",
-                  }}
-                >
-                  <DoneOutlinedIcon fontSize="large" />
-                </Box>
-              </Tooltip>
             </Box>
-          </Box>
+          )}
         </Box>
       </Box>
     </FundoComHeader>

@@ -588,7 +588,8 @@ const TextLanguage = (linguagem) => {
                 feedback5: "Proposta criada com sucesso!",
                 feedback6: "Pauta deletada com sucesso!",
                 feedback7: "Proposta atualizada com sucesso!",
-                feedback8: "Ata criada com sucesso!"
+                feedback8: "Ata criada com sucesso!",
+                feedback9: "Propostas atualizadas com sucesso!",
             },
             demandas: "Demandas",
             criarPropostas: "Criar Propostas",
@@ -1305,7 +1306,8 @@ const TextLanguage = (linguagem) => {
                 feedback5: "Proposal created successfully!",
                 feedback6: "Minutes deleted successfully!",
                 feedback7: "Proposal updated successfully!",
-                feedback8: "Guideline created successfully!"
+                feedback8: "Guideline created successfully!",
+                feedback9: "Proposals successfully updated!",
             },
             demandas: "Demands",
             criarPropostas: "Create Proposals",
@@ -2017,7 +2019,8 @@ const TextLanguage = (linguagem) => {
                 feedback5: "提案创建成功！",
                 feedback6: "议程删除成功！",
                 feedback7: "议程创建成功！",
-                feedback8: "指南创建成功！"
+                feedback8: "指南创建成功！",
+                feedback9: "提案已成功更新！",
             },
             demandas: "需求",
             criarPropostas: "创建提案",
@@ -2734,7 +2737,8 @@ const TextLanguage = (linguagem) => {
                 feedback5: "Propuesta creada con éxito!",
                 feedback6: "Pauta eliminada con éxito!",
                 feedback7: "Propuesta actualizada con éxito!",
-                feedback8: "¡Pauta creada con éxito!"
+                feedback8: "¡Pauta creada con éxito!",
+                feedback9: "¡Propuestas actualizadas con éxito!",
             },
             demandas: "Demandas",
             criarPropostas: "Crear Propuestas",

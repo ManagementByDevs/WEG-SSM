@@ -148,7 +148,12 @@ const DetalhesPauta = (props) => {
     navigate("/", { state: { feedback: "ata-criada" } });
   };
 
-  //   Fazer uma animação para os notões de navegação
+  // Feedback de propostas atualizadas caso não tenha proposta aprovada
+  const feedbackPropostasAtualizadas = () => {
+    navigate("/", { state: { feedback: "propostas-atualizadas" } });
+  };
+
+  // Fazer uma animação para os notões de navegação
   const girar = keyframes({
     from: { rotate: "90deg" },
     to: { rotate: "0deg" },
@@ -271,11 +276,11 @@ const DetalhesPauta = (props) => {
       }
     }
 
-    // Só para ver
-    // if (ata.propostas.length == 0) {
-    //   console.log("Não há propostas aprovadas!");
-    //   return;
-    // }
+    // Caso não haja propostas aprovadas, não cria a ata
+    if (ata.propostas.length == 0) {
+      handlePautaWithNoApprovedProposals();
+      return;
+    }
 
     updatePropostas(pauta.propostas);
 
@@ -293,6 +298,32 @@ const DetalhesPauta = (props) => {
         });
       });
     }
+  };
+
+  const handlePautaWithNoApprovedProposals = () => {
+    for (let proposta of pauta.propostas) {
+      switch (proposta.parecerComissao) {
+        case "REPROVADO":
+          proposta.status = "CANCELLED";
+          break;
+        case "MAIS_INFORMACOES":
+          proposta.status = "ASSESSMENT_EDICAO";
+          break;
+        case "BUSINESSCASE":
+          proposta.status = "ASSESSMENT_EDICAO";
+          break;
+      }
+
+      PropostaService.putWithoutArquivos(proposta, proposta.id);
+    }
+
+    PautaService.delete(pauta.id).then((response) => {
+      console.log(
+        "Pauta deletada com sucesso e propostas atualizadas! ",
+        response
+      );
+      feedbackPropostasAtualizadas(); // Caso não tenha propostas aprovadas, atualiza as propostas
+    });
   };
 
   // Atualiza a lista de propostas passada por parâmetro
@@ -469,7 +500,7 @@ const DetalhesPauta = (props) => {
                     fontSize={FontConfig.title}
                     fontWeight={650}
                   >
-                    {texts.detalhesPauta.proposta} {indexProposta}
+                    {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
                   <IconButton
                     sx={{ position: "absolute", left: "90%" }}
