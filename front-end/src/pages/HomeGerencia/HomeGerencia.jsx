@@ -776,7 +776,7 @@ const HomeGerencia = () => {
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
         link.href = url;
-        link.download = "demandas.xlsx";
+        link.download = "demandas-backlog.xlsx";
         link.click();
       });
     } else if (valorAba == 3) {
@@ -785,7 +785,7 @@ const HomeGerencia = () => {
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
         link.href = url;
-        link.download = "demandas.xlsx";
+        link.download = "demandas-assessment.xlsx";
         link.click();
       });
     } else if (valorAba == 4) {
@@ -798,8 +798,8 @@ const HomeGerencia = () => {
         link.click();
       });
     } else if (valorAba == 5) {
-
       let listaIdPautas = [];
+
       for (const object in listaItens) {
         listaIdPautas.push(listaItens[object].id);
       }
