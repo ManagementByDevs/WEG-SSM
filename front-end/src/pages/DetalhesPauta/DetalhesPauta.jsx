@@ -129,7 +129,7 @@ const DetalhesPauta = (props) => {
     }
   };
 
-  // Função para voltar ao sumário da ata
+  // Função para voltar ao sumário da pauta
   const voltarSumario = () => {
     setBotaoProximo(true);
     setIndexProposta(-1);
@@ -215,8 +215,7 @@ const DetalhesPauta = (props) => {
       PropostaService.putWithoutArquivos(
         propostaDeleted,
         propostaDeleted.id
-      ).then((newProposta) => {
-      });
+      ).then((newProposta) => {});
       console.log("pauta nova: ", newPauta);
       location.state = { pauta: newPauta };
       setPauta(newPauta);
@@ -264,9 +263,6 @@ const DetalhesPauta = (props) => {
       return;
     }
 
-    AtaService.post(pauta).then((response) => {
-      feedbackAta();
-    });
     // Criação do obj ata
     let ata = { ...pauta };
     for (let proposta of ata.propostas) {
@@ -288,17 +284,19 @@ const DetalhesPauta = (props) => {
       for (let proposta of ata.propostas) {
         proposta.status = "ASSESSMENT_DG";
       }
-      
+
+      updatePropostas(ata.propostas);
+
       AtaService.post(ata).then((response) => {
-        console.log(response);
-        feedbackAta();
+        PautaService.delete(pauta.id).then((response) => {
+          feedbackAta();
+        });
       });
     }
   };
 
   // Atualiza a lista de propostas passada por parâmetro
   const updatePropostas = (listaPropostasToUpdate = []) => {
-    console.log("listaPropostasToUpdate: ", listaPropostasToUpdate);
     for (let proposta of listaPropostasToUpdate) {
       PropostaService.putWithoutArquivos(proposta, proposta.id).then(
         (response) => {
@@ -317,9 +315,6 @@ const DetalhesPauta = (props) => {
       setPauta({ ...pauta, propostas: aux });
     }
   }, [dadosProposta]);
-
-  useEffect(() => {
-  }, [pauta]);
 
   useEffect(() => {
     setIsSummaryVisible(true);
@@ -444,7 +439,7 @@ const DetalhesPauta = (props) => {
                           key={index}
                           onClick={() => onClickProposta(index)}
                         >
-                          {index} - {proposta.titulo}
+                          {index + 1} - {proposta.titulo}
                         </Typography>
                       );
                     })

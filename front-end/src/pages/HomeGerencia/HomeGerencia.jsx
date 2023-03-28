@@ -1,7 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Box, Button, IconButton, Tab, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Tab,
+  Tooltip,
+  Autocomplete,
+  TextField,
+} from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -726,11 +734,19 @@ const HomeGerencia = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Feedback ata publicada
   const [feedbackAta, setOpenFeedbackAta] = useState(false);
+
+  // Feedback ata criada
+  const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   useEffect(() => {
     if (location.state?.feedback) {
-      setOpenFeedbackAta(true);
+      if (location.state.feedback == "ata-criada") {
+        setFeedbackAtaCriada(true);
+      } else {
+        setOpenFeedbackAta(true);
+      }
     }
   }, [location.state?.feedback]);
 
@@ -746,10 +762,11 @@ const HomeGerencia = () => {
     }
 
     if (listaObjetosString != null && listaObjetosString.length > 0) {
-
       // Verificação para saber em qual aba o usuário deseja exportar para excel
       if (valorAba == 2) {
-        ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
+        ExportExcelService.exportDemandasBacklogToExcel(
+          listaObjetosString
+        ).then((response) => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
@@ -758,7 +775,9 @@ const HomeGerencia = () => {
           link.click();
         });
       } else if (valorAba == 3) {
-        ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
+        ExportExcelService.exportDemandasAssessmentToExcel(
+          listaObjetosString
+        ).then((response) => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
@@ -767,14 +786,16 @@ const HomeGerencia = () => {
           link.click();
         });
       } else if (valorAba == 4) {
-        ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
-          let blob = new Blob([response], { type: "application/excel" });
-          let url = URL.createObjectURL(blob);
-          let link = document.createElement("a");
-          link.href = url;
-          link.download = "propostas.xlsx";
-          link.click();
-        });
+        ExportExcelService.exportPropostasToExcel(listaObjetosString).then(
+          (response) => {
+            let blob = new Blob([response], { type: "application/excel" });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = url;
+            link.download = "propostas.xlsx";
+            link.click();
+          }
+        );
       } else if (valorAba == 5) {
         let listaIdPautas = [];
 
@@ -783,14 +804,16 @@ const HomeGerencia = () => {
         }
 
         if (listaIdPautas.length > 0) {
-          ExportExcelService.exportPautasToExcel(listaIdPautas).then((response) => {
-            let blob = new Blob([response], { type: "application/excel" });
-            let url = URL.createObjectURL(blob);
-            let link = document.createElement("a");
-            link.href = url;
-            link.download = "pautas.xlsx";
-            link.click();
-          });
+          ExportExcelService.exportPautasToExcel(listaIdPautas).then(
+            (response) => {
+              let blob = new Blob([response], { type: "application/excel" });
+              let url = URL.createObjectURL(blob);
+              let link = document.createElement("a");
+              link.href = url;
+              link.download = "pautas.xlsx";
+              link.click();
+            }
+          );
         }
       } else {
         // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
@@ -958,7 +981,7 @@ const HomeGerencia = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
-        {/* Feedback ata criada */}
+        {/* Feedback ata publicada */}
         <Feedback
           open={feedbackAta}
           handleClose={() => {
@@ -966,6 +989,16 @@ const HomeGerencia = () => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback1}
+        />
+
+        {/* Feedback ata criada */}
+        <Feedback
+          open={feedbackAtaCriada}
+          handleClose={() => {
+            setFeedbackAtaCriada(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback8}
         />
 
         <Feedback
@@ -1136,6 +1169,32 @@ const HomeGerencia = () => {
                   id="primeiroDemandas"
                 >
                   {/* Input de pesquisa */}
+                  {/* <Autocomplete
+                    className="w-full"
+                    freeSolo
+                    id="free-solo-2-demo"
+                    disableClearable
+                    options={pesquisaTitulo}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={texts.homeGerencia.pesquisarPorTitulo}
+                        InputProps={{
+                          ...params.InputProps,
+                          type: "search",
+                        }}
+                      />
+                    )}
+                    onKeyDown={(e) => {
+                      eventoTeclado(e);
+                    }}
+                    onBlur={() => {
+                      pesquisaTitulo();
+                    }}
+                    onChange={(e) => {
+                      salvarPesquisa(e);
+                    }}
+                  /> */}
                   <Box
                     className="w-full"
                     component="input"
@@ -1156,7 +1215,6 @@ const HomeGerencia = () => {
                       salvarPesquisa(e);
                     }}
                   />
-
                   {/* Container para os ícones */}
                   <Box className="flex gap-2">
                     {/* Ícone de pesquisa */}
@@ -1278,7 +1336,7 @@ const HomeGerencia = () => {
 
             {carregamento ? (
               <Box className="mt-6 w-full h-full flex justify-center items-center">
-                <ClipLoader color={"primary.main"} size={110} />
+                <ClipLoader color="#00579D" size={110} />
               </Box>
             ) : (
               <Box className="mt-6" id="sextoDemandas">
@@ -1334,7 +1392,7 @@ const HomeGerencia = () => {
                 </TabPanel>
                 {isGerente && (
                   <>
-                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                       <Ajuda
                         onClick={() => setIsTourCriarPropostasOpen(true)}
                       />
@@ -1353,7 +1411,7 @@ const HomeGerencia = () => {
                         />
                       </Box>
                     </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
                       <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                       <Box
                         sx={{

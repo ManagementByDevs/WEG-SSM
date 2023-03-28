@@ -178,7 +178,7 @@ const Custos = (props) => {
                 <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
                   {texts.custos.total}:{" "}
                 </Typography>
-                <Typography ontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
+                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
                   {horasTotais}
                   {texts.custos.h}
                 </Typography>

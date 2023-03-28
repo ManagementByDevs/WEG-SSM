@@ -3,7 +3,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import { keyframes } from "@emotion/react";
 
-import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -12,7 +19,6 @@ import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
-import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 import Feedback from "../../components/Feedback/Feedback";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
 
@@ -20,6 +26,8 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import ExportPdfService from "../../service/exportPdfService";
+import PropostaService from "../../service/propostaService";
+import AtaService from "../../service/ataService";
 
 // Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
 const DetalhesAta = (props) => {
@@ -66,8 +74,8 @@ const DetalhesAta = (props) => {
   // Função para voltar ao sumário da ata
   const voltarSumario = () => {
     setBotaoProximo(true);
-    setProposta(false);
     setIndexProposta(-1);
+    setProposta(false);
   };
 
   // Função para selecionar uma proposta do sumário
@@ -77,31 +85,34 @@ const DetalhesAta = (props) => {
     setProposta(true);
   };
 
+  useEffect(() => {
+    if (indexProposta != -1) {
+      setProposta(true);
+    }
+  }, [indexProposta]);
+
   // Função para voltar para uma proposta
   const voltar = () => {
-    if (indexProposta == 0) {
+    if (indexProposta <= 0) {
       setProposta(false);
+      setIndexProposta(-1);
     } else {
       setBotaoProximo(true);
-      setDadosProposta(listaProposta[indexProposta - 1]);
+      setProposta(false);
+      setDadosProposta(ata.propostas[indexProposta - 1]);
       setIndexProposta(indexProposta - 1);
     }
   };
 
   // Função para passar para a próxima proposta
   const proximo = () => {
-    if (indexProposta == listaProposta.length - 1) {
+    if (indexProposta == ata.propostas.length - 1) {
       setBotaoProximo(false);
     } else {
-      setProposta(true);
-      setDadosProposta(listaProposta[indexProposta + 1]);
+      setProposta(false);
+      setDadosProposta(ata.propostas[indexProposta + 1]);
       setIndexProposta(indexProposta + 1);
     }
-  };
-
-  // Função de criar ata e enviar feedback
-  const criarAta = () => {
-    navigate("/", { state: { feedback: true } });
   };
 
   //   Fazer uma animação para os notões de navegação
@@ -153,6 +164,68 @@ const DetalhesAta = (props) => {
       link.click();
     });
   };
+
+  // Função para verificar se todos os campos estão preenchidos
+  const isAllFieldsFilled = () => {
+    // Verifica se os pareceres das propostas foram preenchidos
+    let isFilled = ata.propostas.every((proposta) => {
+      return (
+        proposta.parecerDG != null &&
+        proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
+        proposta.parecerInformacaoDG != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+      );
+    });
+
+    return isFilled;
+  };
+
+  // Atualiza a lista de propostas passada por parâmetro
+  const updatePropostas = (
+    listaPropostasToUpdate = [EntitiesObjectService.proposta()]
+  ) => {
+    for (let proposta of listaPropostasToUpdate) {
+      console.log("proposta a ser atualizada: ", proposta);
+      proposta.status = "DONE";
+      PropostaService.putWithoutArquivos(proposta, proposta.id).then(
+        (response) => {
+          console.log("Proposta atualizada com sucesso! ", response);
+        }
+      );
+    }
+  };
+
+  // Função de criar ata e enviar feedback
+  const publicarAta = () => {
+    if (!isAllFieldsFilled()) {
+      console.log("Preencha todos os campos!");
+      return;
+    }
+
+    // Criação do objeto da ata publicada
+    let ataPublished = { ...ata };
+
+    // updatePropostas(ataPublished.propostas);
+
+    for (let proposta of ataPublished.propostas) {
+      proposta.status = "DONE";
+    }
+
+    console.log("ata a ser ataulizada: ", ataPublished);
+    AtaService.put(ataPublished, ataPublished.id).then((response) => {
+      console.log("Ata atualizada com sucesso! ", response);
+    });
+
+    navigate("/", { state: { feedback: true } });
+  };
+
+  // Função que atualiza as propostas da pauta sempre que uma proposta é atualizada
+  useEffect(() => {
+    if (indexProposta > -1 && dadosProposta != null) {
+      let aux = [...ata.propostas];
+      aux[indexProposta] = { ...dadosProposta };
+      setAta({ ...ata, propostas: aux });
+    }
+  }, [dadosProposta]);
 
   useEffect(() => {
     if (location.state?.ata) {
@@ -210,6 +283,11 @@ const DetalhesAta = (props) => {
                 {texts.detalhesAta.numeroSequencial}: {ata.numeroSequencial}
               </Typography>
               <Typography className="cursor-default mt-2" fontWeight={600}>
+                {/* {analista responsavel} */}
+                {texts.detalhesAta.analistaResponsavel}:{" "}
+                {ata.analistaResponsavel.nome}
+              </Typography>
+              <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {props.inicio} */}
                 {texts.detalhesAta.comissao}: {ata.comissao.siglaForum} -{" "}
                 {ata.comissao.nomeForum}
@@ -251,7 +329,7 @@ const DetalhesAta = (props) => {
                         key={index}
                         onClick={() => onClickProposta(index)}
                       >
-                        {index} - {proposta.titulo}
+                        {index + 1} - {proposta.titulo}
                       </Typography>
                     );
                   })}
@@ -361,7 +439,7 @@ const DetalhesAta = (props) => {
               </Box>
               <Tooltip title={texts.detalhesAta.publicarAta}>
                 <Box
-                  onClick={criarAta}
+                  onClick={publicarAta}
                   className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                   sx={{
                     backgroundColor: "primary.main",

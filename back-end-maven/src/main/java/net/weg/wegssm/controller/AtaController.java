@@ -2,7 +2,9 @@ package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.AtaDTO;
+import net.weg.wegssm.dto.PautaDTO;
 import net.weg.wegssm.model.entities.Ata;
+import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.service.AtaService;
 import net.weg.wegssm.model.service.PropostaService;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -144,6 +147,20 @@ public class AtaController {
         Ata ata = new Ata();
         ata.setVisibilidade(true);
         BeanUtils.copyProperties(ataDto, ata);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody AtaDTO ataDTO) {
+        Optional<Ata> ataOptional = ataService.findById(id);
+
+        if (ataOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível encontrar uma ata com este id.");
+        }
+
+        Ata ata = ataOptional.get();
+        BeanUtils.copyProperties(ataDTO, ata, "id");
 
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));
     }
