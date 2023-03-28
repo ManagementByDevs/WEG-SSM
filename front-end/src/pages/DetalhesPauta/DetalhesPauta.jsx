@@ -89,6 +89,9 @@ const DetalhesPauta = (props) => {
   // Estado para mostrar o modal de confirmação
   const [modal, setModal] = useState(false);
 
+  // Estado para mostrar o sumário ou não, usado também para atualizar a página com as novas propostas
+  const [isSummaryVisible, setIsSummaryVisible] = useState(true);
+
   // Função para selecionar uma proposta do sumário
   const onClickProposta = (index) => {
     setIndexProposta(index);
@@ -142,7 +145,7 @@ const DetalhesPauta = (props) => {
 
   // Feedback de ata criada com sucesso
   const feedbackAta = () => {
-    navigate("/detalhes-ata", { state: { feedback: true } });
+    navigate("/", { state: { feedback: "ata-criada" } });
   };
 
   //   Fazer uma animação para os notões de navegação
@@ -206,20 +209,20 @@ const DetalhesPauta = (props) => {
     propostaDeleted.parecerInformacao = null;
     propostaDeleted.parecerComissao = null;
     propostaDeleted.parecerDG = null;
-
-    PautaService.put(pauta).then((e) => {
+    console.log("new pauta", pauta);
+    PautaService.put(pauta).then((newPauta) => {
       setFeedbackPropostaDeletada(true);
       PropostaService.putWithoutArquivos(
         propostaDeleted,
         propostaDeleted.id
       ).then((newProposta) => {
       });
-      PautaService.getById(pauta.id).then((newPauta) => {
-        location.state = { pauta: newPauta };
-        setPauta(newPauta);
-        setProposta(false);
-        setDadosProposta(null);
-      });
+      console.log("pauta nova: ", newPauta);
+      location.state = { pauta: newPauta };
+      setPauta(newPauta);
+      setProposta(false);
+      setListaProposta(newPauta.propostas);
+      setDadosProposta(null);
     });
   };
 
@@ -264,10 +267,50 @@ const DetalhesPauta = (props) => {
     AtaService.post(pauta).then((response) => {
       feedbackAta();
     });
+    // Criação do obj ata
+    let ata = { ...pauta };
+    for (let proposta of ata.propostas) {
+      if (proposta.parecerComissao != "APROVADO") {
+        ata.propostas.splice(proposta, 1);
+      }
+    }
+
+    // Só para ver
+    // if (ata.propostas.length == 0) {
+    //   console.log("Não há propostas aprovadas!");
+    //   return;
+    // }
+
+    updatePropostas(pauta.propostas);
+
+    // Cria a ata caso tenha propostas aprovadas
+    if (ata.propostas.length > 0) {
+      for (let proposta of ata.propostas) {
+        proposta.status = "ASSESSMENT_DG";
+      }
+      
+      AtaService.post(ata).then((response) => {
+        console.log(response);
+        feedbackAta();
+      });
+    }
   };
 
+  // Atualiza a lista de propostas passada por parâmetro
+  const updatePropostas = (listaPropostasToUpdate = []) => {
+    console.log("listaPropostasToUpdate: ", listaPropostasToUpdate);
+    for (let proposta of listaPropostasToUpdate) {
+      PropostaService.putWithoutArquivos(proposta, proposta.id).then(
+        (response) => {
+          console.log("Proposta atualizada com sucesso! ", response);
+        }
+      );
+    }
+  };
+
+  // Função que atualiza as propostas da pauta sempre que uma proposta é atualizada
   useEffect(() => {
-    if (indexProposta > -1) {
+    if (indexProposta > -1 && dadosProposta != null) {
       let aux = [...listaProposta];
       aux[indexProposta] = { ...dadosProposta };
       setListaProposta(aux);
@@ -277,6 +320,10 @@ const DetalhesPauta = (props) => {
 
   useEffect(() => {
   }, [pauta]);
+
+  useEffect(() => {
+    setIsSummaryVisible(true);
+  }, [dadosProposta]);
 
   return (
     <FundoComHeader>
@@ -388,18 +435,24 @@ const DetalhesPauta = (props) => {
                   }}
                 >
                   {/* Lista utilizada para mostrar os títulos no sumário */}
-                  {pauta.propostas?.map((proposta, index) => {
-                    return (
-                      <Typography
-                        fontSize={FontConfig.big}
-                        sx={tituloProposta}
-                        key={index}
-                        onClick={() => onClickProposta(index)}
-                      >
-                        {index} - {proposta.titulo}
-                      </Typography>
-                    );
-                  })}
+                  {isSummaryVisible ? (
+                    pauta.propostas?.map((proposta, index) => {
+                      return (
+                        <Typography
+                          fontSize={FontConfig.big}
+                          sx={tituloProposta}
+                          key={index}
+                          onClick={() => onClickProposta(index)}
+                        >
+                          {index} - {proposta.titulo}
+                        </Typography>
+                      );
+                    })
+                  ) : (
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesPauta.nenhumaPropostaAdicionada}
+                    </Typography>
+                  )}
                 </Box>
               </Box>
             ) : (

@@ -482,6 +482,7 @@ const TextLanguage = (linguagem) => {
             publicarAta: "Publicar Ata",
             proximo: "Próximo",
             publicar: "Publicar",
+            comissao: "Comissão",
         },
         detalhesDemandaPagina: {
             tour: {
@@ -508,6 +509,7 @@ const TextLanguage = (linguagem) => {
             reuniaoDoForum: "Reunião do fórum",
             reuniaoDaDG: "Reunião da DG",
             analistaResponsavel: "Analista Responsável",
+            nenhumaPropostaAdicionada: "Nenhuma proposta adicionada",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Adicionar à Pauta",
@@ -585,6 +587,7 @@ const TextLanguage = (linguagem) => {
                 feedback5: "Proposta criada com sucesso!",
                 feedback6: "Pauta deletada com sucesso!",
                 feedback7: "Proposta atualizada com sucesso!",
+                feedback8: "Ata criada com sucesso!"
             },
             demandas: "Demandas",
             criarPropostas: "Criar Propostas",
@@ -1194,6 +1197,7 @@ const TextLanguage = (linguagem) => {
             publicarAta: "Publish Minutes",
             proximo: "Next",
             publicar: "Publish",
+            comissao: "Comission",
         },
         detalhesDemandaPagina: {
             tour: {
@@ -1220,6 +1224,7 @@ const TextLanguage = (linguagem) => {
             reuniaoDoForum: "Forum meeting",
             reuniaoDaDG: "DG meeting",
             analistaResponsavel: "Responsible Analyst",
+            nenhumaPropostaAdicionada: "No proposal added",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Add to Minute",
@@ -1298,6 +1303,7 @@ const TextLanguage = (linguagem) => {
                 feedback5: "Proposal created successfully!",
                 feedback6: "Minutes deleted successfully!",
                 feedback7: "Proposal updated successfully!",
+                feedback8: "Guideline created successfully!"
             },
             demandas: "Demands",
             criarPropostas: "Create Proposals",
@@ -1902,6 +1908,7 @@ const TextLanguage = (linguagem) => {
             publicarAta: "发布会议记录",
             proximo: "下一个",
             publicar: "发布",
+            comissao: "委员会",
         },
         detalhesDemandaPagina: {
             tour: {
@@ -1928,6 +1935,7 @@ const TextLanguage = (linguagem) => {
             reuniaoDoForum: "论坛会议",
             reuniaoDaDG: "总干事会议",
             analistaResponsavel: "责任分析师",
+            nenhumaPropostaAdicionada: "未添加提案",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Add to Minute",
@@ -2005,6 +2013,7 @@ const TextLanguage = (linguagem) => {
                 feedback5: "提案创建成功！",
                 feedback6: "议程删除成功！",
                 feedback7: "议程创建成功！",
+                feedback8: "指南创建成功！"
             },
             demandas: "需求",
             criarPropostas: "创建提案",
@@ -2614,6 +2623,7 @@ const TextLanguage = (linguagem) => {
             publicarAta: "Publicar Ata",
             proximo: "Siguiente",
             publicar: "Publicar",
+            comissao: "Comisión",
         },
         detalhesDemandaPagina: {
             tour: {
@@ -2640,6 +2650,7 @@ const TextLanguage = (linguagem) => {
             reuniaoDoForum: "Reunión del foro",
             reuniaoDaDG: "reunión del DG",
             analistaResponsavel: "Analista Responsable",
+            nenhumaPropostaAdicionada: "No se ha añadido ninguna propuesta",
         },
         detalhesPropostaPagina: {
             adicionarAPauta: "Agregar a la pauta",
@@ -2717,6 +2728,7 @@ const TextLanguage = (linguagem) => {
                 feedback5: "Propuesta creada con éxito!",
                 feedback6: "Pauta eliminada con éxito!",
                 feedback7: "Propuesta actualizada con éxito!",
+                feedback8: "¡Pauta creada con éxito!"
             },
             demandas: "Demandas",
             criarPropostas: "Crear Propuestas",

@@ -36,24 +36,22 @@ import ColorModeContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
 
 import Tour from "reactour";
+import ClipLoader from 'react-spinners/ClipLoader';
 
-// Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home
+/** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
+
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   //UseState utilizado para controlar o tour, se ele está aberto ou fechado
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
-    useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
   const [isTourPautasOpen, setIsTourPautasOpen] = useState(false);
   const [isTourAtasOpen, setIsTourAtasOpen] = useState(false);
 
-  // Lista de demandas presentes
-  const [listaDemandas, setListaDemandas] = useState([]);
-
-  // Parâmetros para pesquisa das demandas (filtros)
+  /** Parâmetros para pesquisa das demandas e propostas (filtros e pesquisa por título) */
   const [params, setParams] = useState({
     titulo: null,
     solicitante: null,
@@ -233,37 +231,61 @@ const HomeGerencia = () => {
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // UseState para poder visualizar e alterar a aba selecionada
-  const [value, setValue] = useState("1");
 
+  /** Variável armazenando qual a aba atual que o usuário está */
+  const [valorAba, setValorAba] = useState("1");
+
+  /** Lista geral de itens (demandas, propostas, pautas e atas) para mostrar nas abas */
   const [listaItens, setListaItens] = useState([]);
 
-  // Listas para os inputs de fórum e departamento no modal de filtro
+
+  /** Lista armazenando os fóruns presentes no sistema para uso no modal de filtros */
   const [listaForum, setListaForum] = useState([]);
+
+  /** Lista armazenando os departamentos presentes no sistema para uso no modal de filtros */
   const [listaDepartamento, setListaDepartamento] = useState([]);
 
-  // Listas usadas para os inputs de solicitante e gerente no modal de filtro
+  /** Lista de solicitantes utilizada no modal de filtro */
   const [listaSolicitantes, setListaSolicitantes] = useState([]);
+
+  /** Lista de gerentes utilizada no modal de filtro */
   const [listaGerentes, setListaGerentes] = useState([]);
+
+  /** Lista de analistas utilizada no modal de filtro */
   const [listaAnalistas, setListaAnalistas] = useState([]);
 
-  // String para ordenação das demandas
+
+  /** Número de páginas totais recebido nas buscas de itens para paginação */
   const [totalPaginas, setTotalPaginas] = useState(1);
 
+  /** Variável armazenando a página atual usada para a paginação e busca de itens */
   const [paginaAtual, setPaginaAtual] = useState(0);
+
+  /** Variável editável na paginação com o número de itens em uma página */
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
 
+
+  /** String para ordenação dos itens atualizada com o valor dos checkboxes a cada busca de itens */
   const [ordenacao, setOrdenacao] = useState("sort=id,asc&");
 
-  // Valores dos checkboxes no modal de ordenação
-  const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
+  /** Valores dos checkboxes de score no modal de ordenação (0 - "Menor Score" | 1 - "Maior Score") */
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
+
+  /** Valores dos checkboxes de título no modal de ordenação (0 - "Z-A" | 1 - "A-Z") */
+  const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
+
+  /** Valores dos checkboxes de data no modal de ordenação (0 - "Mais Antiga" | 1 - "Mais Recente") */
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
-  // Valor do input de pesquisa
+
+  /** Valor do input de pesquisa por título */
   const [valorPesquisa, setValorPesquisa] = useState("");
 
+  /** Variável booleana que determina se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
+
+
+  /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
   const [filtrosAtuais, setFiltrosAtuais] = useState({
     solicitante: null,
     forum: "",
@@ -274,8 +296,8 @@ const HomeGerencia = () => {
     codigoPPM: null,
     analista: null,
   });
-  const [modoFiltro, setModoFiltro] = useState("demanda");
 
+  /** Objeto contendo o usuário logado no sistema */
   const [usuario, setUsuario] = useState({
     id: 0,
     email: "",
@@ -299,6 +321,9 @@ const HomeGerencia = () => {
 
   // Mostra o próximo modo de visualização
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
+
+  /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
+  const [carregamento, setCarregamento] = useState(false);
 
   const handleOnVisualizationModeClick = () => {
     setNextModoVisualizacao((prevMode) => {
@@ -405,7 +430,8 @@ const HomeGerencia = () => {
   }, []);
 
   useEffect(() => {
-    switch (value) {
+    setCarregamento(true);
+    switch (valorAba) {
       case "1":
         setParams({
           ...params,
@@ -413,7 +439,6 @@ const HomeGerencia = () => {
           status: null,
           solicitante: usuario,
         });
-        setModoFiltro("demanda");
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
@@ -431,7 +456,6 @@ const HomeGerencia = () => {
             status: "BACKLOG_REVISAO",
           });
         }
-        setModoFiltro("demanda");
         break;
       case "3":
         setParams({
@@ -440,7 +464,6 @@ const HomeGerencia = () => {
           solicitante: null,
           status: "ASSESSMENT",
         });
-        setModoFiltro("demanda");
         break;
       case "4":
         setParams({
@@ -449,25 +472,18 @@ const HomeGerencia = () => {
           solicitante: null,
           status: "ASSESSMENT_APROVACAO",
         });
-        setModoFiltro("proposta");
         break;
       case "5":
         setParamsPautas({ ...paramsPautas });
-        // setModoFiltro("proposta");
         break;
       case "6":
-        // setModoFiltro("proposta");
         break;
     }
-  }, [value]);
+  }, [valorAba]);
 
   // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
   useEffect(() => {
-    if (usuario.tipoUsuario == "GERENTE") {
-      setParams({ ...params, gerente: usuario, status: "BACKLOG_APROVACAO" });
-    } else {
-      setParams({ ...params, solicitante: usuario });
-    }
+    setParams({ ...params, solicitante: usuario });
 
     if (listaAnalistas.length == 0 && usuario.tipoUsuario == "ANALISTA") {
       listaAnalistas.push(usuario);
@@ -500,6 +516,11 @@ const HomeGerencia = () => {
 
     setOrdenacao(textoNovo);
   }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
+
+  // UseEffect para retirar o ícone de carregamento quando os itens forem buscados do banco de dados
+  useEffect(() => {
+    setCarregamento(false);
+  }, [listaItens])
 
   // Função para buscar a lista de fóruns e departamentos para o modal de filtros
   const buscarFiltros = () => {
@@ -538,7 +559,8 @@ const HomeGerencia = () => {
   };
 
   const buscarItens = () => {
-    switch (value) {
+    setCarregamento(true);
+    switch (valorAba) {
       case "1":
         if (usuario.id != 0) {
           DemandaService.getPage(
@@ -588,7 +610,7 @@ const HomeGerencia = () => {
           paramsPautas,
           ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
         ).then((response) => {
-          setPautas([...response.content]);
+          setListaItens([...response.content]);
           setTotalPaginas(response.totalPages);
         });
         break;
@@ -635,8 +657,8 @@ const HomeGerencia = () => {
   ]);
 
   // Função para alterar a aba selecionada
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChange = (event, novoValor) => {
+    setValorAba(novoValor);
   };
 
   const [modalFiltro, setModalFiltro] = useState(false);
@@ -691,7 +713,7 @@ const HomeGerencia = () => {
         id: null,
       });
     } else {
-      if (value < 3) {
+      if (valorAba < 3) {
         setParams({
           titulo: params.titulo,
           solicitante: JSON.parse(params.solicitante),
@@ -724,9 +746,6 @@ const HomeGerencia = () => {
   const abrirModalOrdenacao = () => {
     setOpenOrdenacao(true);
   };
-  const abrirDetalhesPauta = () => {
-    console.log("clicou");
-  };
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -751,7 +770,7 @@ const HomeGerencia = () => {
     }
 
     // Verificação para saber em qual aba o usuário deseja exportar para excel
-    if (value == 2) {
+    if (valorAba == 2) {
       ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
@@ -760,7 +779,7 @@ const HomeGerencia = () => {
         link.download = "demandas.xlsx";
         link.click();
       });
-    } else if (value == 3) {
+    } else if (valorAba == 3) {
       ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
@@ -769,7 +788,7 @@ const HomeGerencia = () => {
         link.download = "demandas.xlsx";
         link.click();
       });
-    } else if (value == 4) {
+    } else if (valorAba == 4) {
       ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
@@ -778,8 +797,14 @@ const HomeGerencia = () => {
         link.download = "propostas.xlsx";
         link.click();
       });
-    } else if (value == 5) {
-      ExportExcelService.exportPautasToExcel(listaObjetosString).then((response) => {
+    } else if (valorAba == 5) {
+
+      let listaIdPautas = [];
+      for (const object in listaItens) {
+        listaIdPautas.push(listaItens[object].id);
+      }
+
+      ExportExcelService.exportPautasToExcel(listaIdPautas).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
@@ -788,7 +813,15 @@ const HomeGerencia = () => {
         link.click();
       });
     } else {
-      ExportExcelService.exportAtasToExcel(listaObjetosString).then((response) => {
+
+      // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
+      let listaIdAtas = [];
+
+      for (const object in atas) {
+        listaIdAtas.push(atas[object].id);
+      }
+
+      ExportExcelService.exportAtasToExcel(listaIdAtas).then((response) => {
         let blob = new Blob([response], { type: "application/excel" });
         let url = URL.createObjectURL(blob);
         let link = document.createElement("a");
@@ -1010,7 +1043,7 @@ const HomeGerencia = () => {
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
           {/* Sistema de abas */}
-          <TabContext value={value}>
+          <TabContext value={valorAba}>
             <Box
               className="relative mb-4"
               sx={{
@@ -1171,8 +1204,6 @@ const HomeGerencia = () => {
                 {/* Modal de ordenação */}
                 {abrirOrdenacao && (
                   <ModalOrdenacao
-                    open={abrirOrdenacao}
-                    setOpen={setOpenOrdenacao}
                     tipoComponente="demanda"
                     ordenacaoTitulo={ordenacaoTitulo}
                     setOrdenacaoTitulo={setOrdenacaoTitulo}
@@ -1185,7 +1216,7 @@ const HomeGerencia = () => {
                 )}
 
                 {/* Botão de filtrar */}
-                {value < 4 && (
+                {valorAba < 5 && (
                   <Button
                     id="terceiroDemandas"
                     className="flex gap-1"
@@ -1209,7 +1240,6 @@ const HomeGerencia = () => {
                     }}
                     filtro={filtrosAtuais}
                     setFiltro={setFiltrosAtuais}
-                    modo={modoFiltro}
                     listaForuns={listaForum}
                     listaDepartamentos={listaDepartamento}
                     listaSolicitantes={listaSolicitantes}
@@ -1263,136 +1293,140 @@ const HomeGerencia = () => {
               </Button>
             </Box>
 
-            {/* Container para o conteúdo das abas */}
-            <Box className="mt-6" id="sextoDemandas">
-              <Box>
-                <TabPanel sx={{ padding: 0 }} value="1">
-                  <Ajuda />
-                  <Box>
-                    <DemandaModoVisualizacao
-                      listaDemandas={listaItens}
-                      onDemandaClick={verDemanda}
-                      myDemandas={true}
-                      nextModoVisualizacao={nextModoVisualizacao}
-                    />
-                  </Box>
-                </TabPanel>
+            {carregamento ? (
+              <Box className="mt-6 w-full h-full flex justify-center items-center">
+                <ClipLoader color={'primary.main'} size={110} />
               </Box>
-              {/* Valores para as abas selecionadas */}
-              <TabPanel sx={{ padding: 0 }} value="2">
-                <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
-                {isTourDemandasOpen ? (
-                  <DemandaGerencia
-                    key={1}
-                    isTourDemandasOpen={isTourDemandasOpen}
-                    dados={{
-                      analista: {},
-                      beneficios: [{}],
-                      buSolicitante: {},
-                      busBeneficiados: [{}],
-                      departamento: {},
-                      frequencia: "",
-                      gerente: {},
-                      tamanho: "",
-                      id: 0,
-                      titulo: texts.homeGerencia.demandaParaTour,
-                      problema: "",
-                      proposta: "",
-                      motivoRecusa: "",
-                      status: "BACKLOG_REVISAO",
-                      data: "",
-                      solicitante: { nome: texts.homeGerencia.demandaParaTour },
-                    }}
-                    tipo="demanda"
-                  />
-                ) : (
-                  <DemandaGerenciaModoVisualizacao
-                    listaDemandas={listaItens}
-                    onDemandaClick={verDemanda}
-                    nextModoVisualizacao={nextModoVisualizacao}
-                  />
-                )}
-              </TabPanel>
-              {isGerente && (
-                <>
-                  <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
-                    <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gap: "1rem",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(720px, 1fr))",
-                      }}
-                    >
-                      <DemandaGerenciaModoVisualizacao
+            ) : (
+              < Box className="mt-6" id="sextoDemandas">
+                <Box>
+                  <TabPanel sx={{ padding: 0 }} value="1">
+                    <Ajuda />
+                    <Box>
+                      <DemandaModoVisualizacao
                         listaDemandas={listaItens}
                         onDemandaClick={verDemanda}
+                        myDemandas={true}
                         nextModoVisualizacao={nextModoVisualizacao}
                       />
                     </Box>
                   </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
-                    <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
-                    <Box
-                      sx={{
-                        display: "grid",
-                        gap: "1rem",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(720px, 1fr))",
+                </Box>
+                {/* Valores para as abas selecionadas */}
+                <TabPanel sx={{ padding: 0 }} value="2">
+                  <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
+                  {isTourDemandasOpen ? (
+                    <DemandaGerencia
+                      key={1}
+                      isTourDemandasOpen={isTourDemandasOpen}
+                      dados={{
+                        analista: {},
+                        beneficios: [{}],
+                        buSolicitante: {},
+                        busBeneficiados: [{}],
+                        departamento: {},
+                        frequencia: "",
+                        gerente: {},
+                        tamanho: "",
+                        id: 0,
+                        titulo: texts.homeGerencia.demandaParaTour,
+                        problema: "",
+                        proposta: "",
+                        motivoRecusa: "",
+                        status: "BACKLOG_REVISAO",
+                        data: "",
+                        solicitante: { nome: texts.homeGerencia.demandaParaTour },
                       }}
-                    >
-                      <DemandaGerenciaModoVisualizacao
-                        listaDemandas={listaItens}
-                        onDemandaClick={verProposta}
+                      tipo="demanda"
+                    />
+                  ) : (
+                    <DemandaGerenciaModoVisualizacao
+                      listaDemandas={listaItens}
+                      onDemandaClick={verDemanda}
+                      nextModoVisualizacao={nextModoVisualizacao}
+                    />
+                  )}
+                </TabPanel>
+                {isGerente && (
+                  <>
+                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                      <Ajuda onClick={() => setIsTourCriarPropostasOpen(true)} />
+                      <Box
+                        sx={{
+                          display: "grid",
+                          gap: "1rem",
+                          gridTemplateColumns:
+                            "repeat(auto-fit, minmax(720px, 1fr))",
+                        }}
+                      >
+                        <DemandaGerenciaModoVisualizacao
+                          listaDemandas={listaItens}
+                          onDemandaClick={verDemanda}
+                          nextModoVisualizacao={nextModoVisualizacao}
+                        />
+                      </Box>
+                    </TabPanel>
+                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                      <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
+                      <Box
+                        sx={{
+                          display: "grid",
+                          gap: "1rem",
+                          gridTemplateColumns:
+                            "repeat(auto-fit, minmax(720px, 1fr))",
+                        }}
+                      >
+                        <DemandaGerenciaModoVisualizacao
+                          listaDemandas={listaItens}
+                          onDemandaClick={verProposta}
+                          nextModoVisualizacao={nextModoVisualizacao}
+                          isProposta={true}
+                        />
+                      </Box>
+                    </TabPanel>
+                    <TabPanel sx={{ padding: 0 }} value="5">
+                      <Ajuda onClick={() => setIsTourPautasOpen(true)} />
+                      <PautaAtaModoVisualizacao
+                        listaPautas={listaItens}
+                        onItemClick={(pauta) => {
+                          navigate("/detalhes-pauta", {
+                            state: { pauta },
+                          });
+                        }}
                         nextModoVisualizacao={nextModoVisualizacao}
-                        isProposta={true}
+                        setPautaSelecionada={setPautaSelecionada}
                       />
-                    </Box>
-                  </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="5">
-                    <Ajuda onClick={() => setIsTourPautasOpen(true)} />
-                    <PautaAtaModoVisualizacao
-                      listaPautas={pautas}
-                      onItemClick={(pauta) => {
-                        navigate("/detalhes-pauta", {
-                          state: { pauta },
-                        });
-                      }}
-                      nextModoVisualizacao={nextModoVisualizacao}
-                      setPautaSelecionada={setPautaSelecionada}
-                    />
-                  </TabPanel>
-                  <TabPanel sx={{ padding: 0 }} value="6">
-                    <Ajuda onClick={() => setIsTourAtasOpen(true)} />
-                    <PautaAtaModoVisualizacao
-                      listaPautas={pautas}
-                      onItemClick={() => {
-                        navigate("/detalhes-pauta");
-                      }}
-                      nextModoVisualizacao={nextModoVisualizacao}
-                      setPautaSelecionada={setPautaSelecionada}
-                      isAta={true}
-                    />
-                  </TabPanel>
-                </>
-              )}
-            </Box>
+                    </TabPanel>
+                    <TabPanel sx={{ padding: 0 }} value="6">
+                      <Ajuda onClick={() => setIsTourAtasOpen(true)} />
+                      <PautaAtaModoVisualizacao
+                        listaPautas={pautas}
+                        onItemClick={() => {
+                          navigate("/detalhes-pauta");
+                        }}
+                        nextModoVisualizacao={nextModoVisualizacao}
+                        setPautaSelecionada={setPautaSelecionada}
+                        isAta={true}
+                      />
+                    </TabPanel>
+                  </>
+                )}
+              </Box>
+            )}
           </TabContext>
         </Box>
-      </Box>
+      </Box >
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
         {totalPaginas > 1 || listaItens.length > 20 ? (
           <Paginacao
             totalPaginas={totalPaginas}
             setTamanho={setTamanhoPagina}
             tamanhoPagina={tamanhoPagina}
-            tipo={value}
             setPaginaAtual={setPaginaAtual}
           />
         ) : null}
       </Box>
-    </FundoComHeader>
+    </FundoComHeader >
   );
 };
 

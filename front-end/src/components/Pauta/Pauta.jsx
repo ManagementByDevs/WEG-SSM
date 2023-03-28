@@ -110,7 +110,7 @@ const Pautas = (props) => {
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px" }}
         >
-          {props.dados.comissao.siglaForum} - {props.dados.comissao.nomeForum}
+          {props.dados.comissao?.siglaForum} - {props.dados.comissao?.nomeForum}
         </Typography>
       </Box>
       <Box className="flex items-center">

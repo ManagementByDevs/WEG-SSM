@@ -26,6 +26,7 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 import Demanda from "../../components/Demanda/Demanda";
 
 import Tour from "reactour";
+import ClipLoader from 'react-spinners/ClipLoader';
 
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
 
@@ -109,6 +110,9 @@ const Home = () => {
   // Variável para determinar se o modal de filtragem está aberto
   const [filtroAberto, setFiltroAberto] = useState(false);
 
+  // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
+  const [carregamento, setCarregamento] = useState(false);
+
   // UseEffect para buscar o usuário e ativar possíveis filtros assim que entrar na página
   useEffect(() => {
     ativarFeedback();
@@ -175,6 +179,11 @@ const Home = () => {
     }
   }, [listaFiltros]);
 
+  // UseEffect para retirar o ícone de carregamento quando as demandas forem atualizadas
+  useEffect(() => {
+    setCarregamento(false);
+  }, [listaDemandas]);
+
   /** Função para mostrar feedbacks possíveis advindos de outras páginas, utilizando o localStorage */
   const ativarFeedback = () => {
     //Feedback de demanda criada
@@ -196,15 +205,14 @@ const Home = () => {
 
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
   const buscarDemandas = () => {
-    if (params.status != null || params.solicitante != null) {
-      DemandaService.getPage(
-        params,
-        stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
-      ).then((e) => {
-        setTotalPaginas(e.totalPages);
-        setListaDemandas(e.content);
-      });
-    }
+    setCarregamento(true);
+    DemandaService.getPage(
+      params,
+      stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+    ).then((e) => {
+      setTotalPaginas(e.totalPages);
+      setListaDemandas(e.content);
+    });
   };
 
   /** Função para atualizar o filtro de status quando modificado no modal de filtros */
@@ -585,47 +593,51 @@ const Home = () => {
               </Button>
             </Box>
 
-            {/* Container para o conteúdo das abas */}
-            <Box className="mt-6" id="quinto">
-              {/* Valores para as abas selecionadas */}
-              <TabPanel sx={{ padding: 0 }} value="1">
-                <Ajuda onClick={() => setIsTourOpen(true)} />
-                <Box>
-                  {isTourOpen ? (
-                    <Demanda
-                      demanda={{
-                        id: 0,
-                        titulo: texts.home.demandaTour,
-                        problema: texts.home.esseUmExemploDeDemanda,
-                        proposta: texts.home.esseUmExemploDeDemanda,
-                        motivoRecusa: texts.home.esseUmExemploDeDemanda,
-                        status: "BACKLOG_EDICAO",
-                        data: "10/10/10",
-                        solicitante: {
-                          id: 1,
-                          nome: texts.home.nomeDoSolicitante,
-                        },
-                      }}
-                    />
-                  ) : (
-                    <DemandaModoVisualizacao
-                      listaDemandas={listaDemandas}
-                      onDemandaClick={verDemanda}
-                      myDemandas={true}
-                      nextModoVisualizacao={nextModoVisualizacao}
-                    />
-                  )}
-                </Box>
-              </TabPanel>
-              <TabPanel sx={{ padding: 0 }} value="2">
-                <DemandaModoVisualizacao
-                  listaDemandas={listaDemandas}
-                  onDemandaClick={verDemanda}
-                  myDemandas={false}
-                  nextModoVisualizacao={nextModoVisualizacao}
-                />
-              </TabPanel>
-            </Box>
+            {carregamento ? (
+              <Box className="mt-6 w-full h-full flex justify-center items-center">
+                <ClipLoader color={'primary.main'} size={110} />
+              </Box>
+            ) : (
+              <Box className="mt-6" id="quinto">
+                <TabPanel sx={{ padding: 0 }} value="1">
+                  <Ajuda onClick={() => setIsTourOpen(true)} />
+                  <Box>
+                    {isTourOpen ? (
+                      <Demanda
+                        demanda={{
+                          id: 0,
+                          titulo: texts.home.demandaTour,
+                          problema: texts.home.esseUmExemploDeDemanda,
+                          proposta: texts.home.esseUmExemploDeDemanda,
+                          motivoRecusa: texts.home.esseUmExemploDeDemanda,
+                          status: "BACKLOG_EDICAO",
+                          data: "10/10/10",
+                          solicitante: {
+                            id: 1,
+                            nome: texts.home.nomeDoSolicitante,
+                          },
+                        }}
+                      />
+                    ) : (
+                      <DemandaModoVisualizacao
+                        listaDemandas={listaDemandas}
+                        onDemandaClick={verDemanda}
+                        myDemandas={true}
+                        nextModoVisualizacao={nextModoVisualizacao}
+                      />
+                    )}
+                  </Box>
+                </TabPanel>
+                <TabPanel sx={{ padding: 0 }} value="2">
+                  <DemandaModoVisualizacao
+                    listaDemandas={listaDemandas}
+                    onDemandaClick={verDemanda}
+                    myDemandas={false}
+                    nextModoVisualizacao={nextModoVisualizacao}
+                  />
+                </TabPanel>
+              </Box>
+            )}
           </TabContext>
         </Box>
       </Box>

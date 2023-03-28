@@ -3,88 +3,44 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import { keyframes } from "@emotion/react";
 
-import { Box, Typography, Button, Divider, Tooltip } from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
-import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import PropostaDeAta from "../../components/PropostaDeAta/PropostaDeAta";
 import Feedback from "../../components/Feedback/Feedback";
+import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 import ExportPdfService from "../../service/exportPdfService";
 
 // Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
 const DetalhesAta = (props) => {
   // Context para trocar a liguagem
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Navigate e location utilizados para verificar state passado por parametro para determinada verificação
   const navigate = useNavigate();
   const location = useLocation();
 
   // Lista de propostas provisória apenas para visualização na tela
-  const listaProposta = [
-    {
-      titulo: "oiiii",
-      problema:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-      proposta:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-      frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-      beneficios: [
-        {
-          tipoBeneficio: "Real",
-          valor_mensal: "300,00",
-          moeda: "BR",
-          memoriaCalculo: "memória de cálculo",
-          visible: true,
-        },
-      ],
-      periodoExecucao: "07/12/2022 à 08/12/2022",
-      paybackSimples: "10 meses",
-      ppm: "1234",
-      linkJira: "https://www.jira.com",
-      responsavelNegocio: "Matheus Franzener Hohmann",
-      area: "Weg Digital",
-    },
-    {
-      titulo: "Sistema de Gestão de Demandas",
-      problema:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-      proposta:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen  book. It has survived not only five centuries is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since  the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-      frequencia: "Lorem Ipsum is simply dummy text of the printing and",
-      beneficios: [
-        {
-          tipoBeneficio: "Real",
-          valor_mensal: "300,00",
-          moeda: "BR",
-          memoriaCalculo: "memória de cálculo",
-          visible: true,
-        },
-      ],
-      periodoExecucao: "07/12/2022 à 08/12/2022",
-      paybackSimples: "10 meses",
-      ppm: "1234",
-      linkJira: "https://www.jira.com",
-      responsavelNegocio: "Matheus Franzener Hohmann",
-      area: "Weg Digital",
-    },
-  ];
+  const listaProposta = [EntitiesObjectService.proposta()];
 
   // Variável de verificação utilizada para mostrar o sumário ou uma proposta
   const [proposta, setProposta] = useState(false);
 
   // Variável utilizada para mostrar os dados de uma proposta
-  const [dadosProposta, setDadosProposta] = useState(listaProposta[0]);
+  const [dadosProposta, setDadosProposta] = useState(null);
 
   // Index de uma proposta, utilizado para mostrar os dados de uma porposta específica
   const [indexProposta, setIndexProposta] = useState(-1);
@@ -97,6 +53,8 @@ const DetalhesAta = (props) => {
 
   // feedback para ata criada com sucesso
   const [feedbackAta, setFeedbackAta] = useState(false);
+
+  const [ata, setAta] = useState(EntitiesObjectService.ata());
 
   // useEffect usado para feedback
   useEffect(() => {
@@ -115,7 +73,7 @@ const DetalhesAta = (props) => {
   // Função para selecionar uma proposta do sumário
   const onClickProposta = (index) => {
     setIndexProposta(index);
-    setDadosProposta(listaProposta[index]);
+    setDadosProposta(ata.propostas[index]);
     setProposta(true);
   };
 
@@ -194,7 +152,17 @@ const DetalhesAta = (props) => {
     //   link.download = "pdf_ata.pdf";
     //   link.click();
     // });
-  }
+  };
+
+  useEffect(() => {
+    if (location.state?.ata) {
+      setAta(location.state.ata);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("ata: ", ata);
+  }, [ata]);
 
   return (
     // Começo com o header da página
@@ -215,16 +183,6 @@ const DetalhesAta = (props) => {
             />
           </Box>
         </Box>
-
-        {/* Feedback ata criada com sucesso */}
-        <Feedback
-          open={feedbackAta}
-          handleClose={() => {
-            setFeedbackAta(false);
-          }}
-          status={"sucesso"}
-          mensagem={texts.detalhesAta.ataCriadaComSucesso}
-        />
 
         {/* container geral da tela */}
         <Box className="flex flex-col justify-center relative items-center mt-3">
@@ -249,19 +207,12 @@ const DetalhesAta = (props) => {
               </Typography>
               <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {props.numeroSequencial} */}
-                {texts.detalhesAta.numeroSequencial}: 01/2022
-              </Typography>
-              <Typography className="cursor-default mt-2" fontWeight={600}>
-                {/* {props.data} */}
-                {texts.detalhesAta.data}: 06/12/2022
+                {texts.detalhesAta.numeroSequencial}: {ata.numeroSequencial}
               </Typography>
               <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {props.inicio} */}
-                {texts.detalhesAta.inicio}: 14:30 Horas
-              </Typography>
-              <Typography className="cursor-default mt-2" fontWeight={600}>
-                {/* {props.fim} */}
-                {texts.detalhesAta.fim}: 15:30 Horas
+                {texts.detalhesAta.comissao}: {ata.comissao.siglaForum} -{" "}
+                {ata.comissao.nomeForum}
               </Typography>
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
@@ -291,14 +242,13 @@ const DetalhesAta = (props) => {
                     gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
                   }}
                 >
-                  {listaProposta.map((proposta, index) => {
+                  {ata.propostas?.map((proposta, index) => {
                     return (
                       <Typography
                         fontSize={FontConfig.big}
                         color={"primary.main"}
                         className="underline cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis text-center"
                         key={index}
-                        setIndexTitulo={index}
                         onClick={() => onClickProposta(index)}
                       >
                         {index} - {proposta.titulo}
@@ -308,22 +258,30 @@ const DetalhesAta = (props) => {
                 </Box>
               </Box>
             ) : (
+              // Mostrar uma proposta e seus dados
               <Box>
-                <Typography
+                <Box
                   sx={{
-                    marginBottom: "2%",
                     display: "flex",
+                    alignItems: "center",
                     justifyContent: "center",
                   }}
-                  fontSize={FontConfig.title}
-                  fontWeight={650}
                 >
-                  {texts.detalhesAta.proposta} {indexProposta}
-                </Typography>
-                <PropostaDeAta
-                  dadosProposta={dadosProposta}
-                  propostaPauta={false}
-                  parecerDG={true}
+                  <Typography
+                    sx={{
+                      marginBottom: "2%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                    fontSize={FontConfig.title}
+                    fontWeight={650}
+                  >
+                    {texts.detalhesPauta.proposta} {indexProposta}
+                  </Typography>
+                </Box>
+                <DetalhesProposta
+                  proposta={dadosProposta}
+                  setProposta={setDadosProposta}
                 />
               </Box>
             )}
