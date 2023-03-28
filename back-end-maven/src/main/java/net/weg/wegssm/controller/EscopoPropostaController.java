@@ -1,5 +1,6 @@
 package net.weg.wegssm.controller;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
@@ -35,6 +36,7 @@ public class EscopoPropostaController {
     private CustoService custoService;
     private CCsService ccsService;
     private AnexoService anexoService;
+    private BeneficioService beneficioService;
 
     /**
      * Método GET para listar um escopo específico através do id do usuário
@@ -71,6 +73,10 @@ public class EscopoPropostaController {
             responsavelNegocioService.save(responsavelNegocio);
         }
 
+        for (Beneficio beneficio : escopoProposta.getBeneficios()) {
+            beneficioService.save(beneficio);
+        }
+
         for (TabelaCusto tabelaCusto : escopoProposta.getTabelaCustos()) {
             for (Custo custo : tabelaCusto.getCustos()) {
                 custoService.save(custo);
@@ -93,12 +99,21 @@ public class EscopoPropostaController {
     @PutMapping
     public ResponseEntity<EscopoProposta> update(@RequestParam("escopo-proposta") String escopoPropostaJSON) {
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
+
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
         escopoProposta.setUltimaModificacao(new Date());
 
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
         }
+
+        ArrayList<Beneficio> listaNovaBeneficios = new ArrayList<>();
+        for (Beneficio beneficio : escopoProposta.getBeneficios()) {
+            if(beneficioService.existsById(beneficio.getId())) {
+                listaNovaBeneficios.add(beneficioService.save(beneficio));
+            }
+        }
+        escopoProposta.setBeneficios(listaNovaBeneficios);
 
         for (TabelaCusto tabelaCusto : escopoProposta.getTabelaCustos()) {
             for (Custo custo : tabelaCusto.getCustos()) {
