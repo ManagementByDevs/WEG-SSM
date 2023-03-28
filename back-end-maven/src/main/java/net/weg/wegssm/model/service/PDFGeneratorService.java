@@ -280,10 +280,6 @@ public class PDFGeneratorService {
         PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
 
-//        String html = "<h1>123ksdjfçlasjfçskldajfçkldsajfçskldajç</h1>";
-
-//        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()));
-
         // Criando a logo da weg para o modelo pdf
 
         Image img = Image.getInstance("https://logospng.org/download/weg/logo-weg-2048.png");
@@ -697,8 +693,8 @@ public class PDFGeneratorService {
 
         Font fontInformacoes = FontFactory.getFont(FontFactory.HELVETICA);
 
-        Font fontInfoHeader = FontFactory.getFont(FontFactory.HELVETICA);
-        fontInfoHeader.setSize(12);
+        Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA);
+        fontHeader.setSize(13);
 
         Font fontInfoHeaderProposta = FontFactory.getFont(FontFactory.HELVETICA);
         fontInfoHeaderProposta.setSize(13);
@@ -711,7 +707,7 @@ public class PDFGeneratorService {
 
         // Formatação da página pdf
 
-        Paragraph paragraphData = new Paragraph("Data de emissão: " + currentDateTime, fontInfoHeader);
+        Paragraph paragraphData = new Paragraph("Data de emissão: " + currentDateTime, fontHeader);
         paragraphData.setSpacingBefore(20);
 
         Paragraph paragraphPauta = new Paragraph("Pauta", fontTitulo);
@@ -1078,6 +1074,29 @@ public class PDFGeneratorService {
 
             document.add(paragraphResponsavelNegocio);
 
+            if (proposta.getParecerComissao() != null) {
+                Paragraph paragraphParecer = new Paragraph("Pareceres: ", fontSubtitulo);
+                paragraphParecer.setAlignment(Paragraph.ANCHOR);
+                paragraphParecer.setSpacingBefore(15);
+
+                Chunk chunkParecerComissao = new Chunk("Comisão: ", fontInformacoes);
+                Chunk chunkValorParecerComissao = new Chunk(String.valueOf(proposta.getParecerComissao()), fontHeader);
+                Paragraph paragraphParecerComissao = new Paragraph();
+                paragraphParecerComissao.add(chunkParecerComissao);
+                paragraphParecerComissao.add(chunkValorParecerComissao);
+                paragraphParecerComissao.setSpacingBefore(10);
+
+                Paragraph paragraphInformacaoParecerComissao = new Paragraph(proposta.getParecerInformacao(), fontInformacoes);
+
+//                String html = "<h1>123ksdjfçlasjfçskldajfçkldsajfçskldajç</h1>";
+
+//                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()));
+
+                document.add(paragraphParecer);
+                document.add(paragraphParecerComissao);
+                document.add(paragraphInformacaoParecerComissao);
+            }
+
         }
 
         document.close();
@@ -1129,7 +1148,7 @@ public class PDFGeneratorService {
         Font fontInformacoes = FontFactory.getFont(FontFactory.HELVETICA);
 
         Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA);
-        fontHeader.setSize(12);
+        fontHeader.setSize(13);
 
         Font fontHeaderProposta = FontFactory.getFont(FontFactory.HELVETICA);
         fontHeaderProposta.setSize(13);
@@ -1147,17 +1166,33 @@ public class PDFGeneratorService {
         paragraphAta.setSpacingBefore(22);
         paragraphAta.setAlignment(Element.ALIGN_CENTER);
 
-        Paragraph paragraphNumeroSequencial = new Paragraph("Número Sequencial: " + ata.getNumeroSequencial(), fontHeaderProposta);
+        Chunk numeroSequencial = new Chunk("Número Sequencial: ", fontHeaderProposta);
+        Chunk numeroSequencialValor = new Chunk(ata.getNumeroSequencial(), fontHeader);
+        Paragraph paragraphNumeroSequencial = new Paragraph();
+        paragraphNumeroSequencial.add(numeroSequencial);
+        paragraphNumeroSequencial.add(numeroSequencialValor);
         paragraphNumeroSequencial.setSpacingBefore(20);
 
-        Paragraph paragraphReuniao = new Paragraph("Reunião: " + ata.getDataReuniao(), fontHeaderProposta);
-        paragraphReuniao.setSpacingBefore(5);
+        Chunk analistaResponsavel = new Chunk("Analista Responsável: ", fontHeaderProposta);
+        Chunk analistaResponsavelValor = new Chunk(ata.getAnalistaResponsavel().getNome(), fontHeader);
+        Paragraph paragraphAnalistaResponsavelHeader = new Paragraph();
+        paragraphAnalistaResponsavelHeader.add(analistaResponsavel);
+        paragraphAnalistaResponsavelHeader.add(analistaResponsavelValor);
+        paragraphAnalistaResponsavelHeader.setSpacingBefore(5);
+
+        Chunk comissao = new Chunk("Comissão: ", fontHeaderProposta);
+        Chunk comissaoValor = new Chunk(ata.getComissao().getSiglaForum() + " - " + ata.getComissao().getNomeForum(), fontHeader);
+        Paragraph paragraphComissaoHeader = new Paragraph();
+        paragraphComissaoHeader.add(comissao);
+        paragraphComissaoHeader.add(comissaoValor);
+        paragraphComissaoHeader.setSpacingBefore(5);
 
         document.add(img);
         document.add(paragraphData);
         document.add(paragraphAta);
         document.add(paragraphNumeroSequencial);
-        document.add(paragraphReuniao);
+        document.add(paragraphAnalistaResponsavelHeader);
+        document.add(paragraphComissaoHeader);
 
         int contadorProposta = 1;
 
@@ -1273,7 +1308,7 @@ public class PDFGeneratorService {
 
             // Adicionando os paragrafos no documento
 
-            document.add(paragraphProposta);
+            document.add(paragraphContadorProposta);
             document.add(paragraph);
             document.add(paragraphTitulo);
             document.add(paragraphSolicitante);
@@ -1506,6 +1541,35 @@ public class PDFGeneratorService {
             paragraphResponsavelNegocio.setSpacingBefore(10);
 
             document.add(paragraphResponsavelNegocio);
+
+            Paragraph paragraphParecer = new Paragraph("Pareceres: ", fontSubtitulo);
+            paragraphParecer.setAlignment(Paragraph.ANCHOR);
+            paragraphParecer.setSpacingBefore(15);
+
+            Chunk chunkParecerComissao = new Chunk("Comisão: ", fontInformacoes);
+            Chunk chunkValorParecerComissao = new Chunk(String.valueOf(proposta.getParecerComissao()), fontHeader);
+            Paragraph paragraphParecerComissao = new Paragraph();
+            paragraphParecerComissao.add(chunkParecerComissao);
+            paragraphParecerComissao.add(chunkValorParecerComissao);
+            paragraphParecerComissao.setSpacingBefore(10);
+
+            Paragraph paragraphInformacaoParecerComissao = new Paragraph("A: " + proposta.getParecerInformacao(), fontInformacoes);
+
+            document.add(paragraphParecer);
+            document.add(paragraphParecerComissao);
+            document.add(paragraphInformacaoParecerComissao);
+
+            if (proposta.getParecerDG() != null) {
+                Chunk chunkParecerDG = new Chunk("Direção Geral: ", fontInformacoes);
+                Chunk chunkValorParecerDG = new Chunk(String.valueOf(proposta.getParecerDG()), fontHeader);
+                Paragraph paragraphParecerDG = new Paragraph();
+                paragraphParecerDG.add(chunkParecerDG);
+                paragraphParecerDG.add(chunkValorParecerDG);
+                paragraphParecerDG.setSpacingBefore(10);
+
+                document.add(paragraphParecerDG);
+            }
+
         }
 
         document.close();
