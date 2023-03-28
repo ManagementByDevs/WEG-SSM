@@ -67,9 +67,9 @@ const PautaTable = ({
   setPautaSelecionada = () => {},
 }) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Retorna data formatada para melhor leitura
   const getDataFormatada = (dataInicio) => {

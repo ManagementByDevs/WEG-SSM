@@ -726,11 +726,19 @@ const HomeGerencia = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Feedback ata publicada
   const [feedbackAta, setOpenFeedbackAta] = useState(false);
+
+  // Feedback ata criada
+  const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   useEffect(() => {
     if (location.state?.feedback) {
-      setOpenFeedbackAta(true);
+      if (location.state.feedback == "ata-criada") {
+        setFeedbackAtaCriada(true);
+      } else {
+        setOpenFeedbackAta(true);
+      }
     }
   }, [location.state?.feedback]);
 
@@ -958,7 +966,7 @@ const HomeGerencia = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
-        {/* Feedback ata criada */}
+        {/* Feedback ata publicada */}
         <Feedback
           open={feedbackAta}
           handleClose={() => {
@@ -966,6 +974,16 @@ const HomeGerencia = () => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback1}
+        />
+
+        {/* Feedback ata criada */}
+        <Feedback
+          open={feedbackAtaCriada}
+          handleClose={() => {
+            setFeedbackAtaCriada(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback8}
         />
 
         <Feedback

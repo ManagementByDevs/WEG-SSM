@@ -19,6 +19,10 @@ class AtaService {
   async post(pauta) {
     return (await axios.post(`${ataPath}`, pauta)).data;
   }
+
+  async put(ata, idAta) {
+    return (await axios.put(`${ataPath}/${idAta}`, ata)).data;
+  }
 }
 
 export default new AtaService();
