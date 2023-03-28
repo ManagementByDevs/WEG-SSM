@@ -670,7 +670,7 @@ public class ExcelGeneratorService {
                 Ata ata = ataOp.get();
 
                 row.createCell(0).setCellValue(contadorAta);
-                row.createCell(1).setCellValue("Número Sequencial: " + ata.getNumeroSequencial() + "    Comissão: " + ata.getComissao().getSiglaForum() + " - " + ata.getComissao().getNomeForum() + "    Reunião do Fórum: " + ata.getDataReuniao() + "    Analista Responsável: " + ata.getAnalistaResponsavel().getNome());
+                row.createCell(1).setCellValue("Número Sequencial: " + ata.getNumeroSequencial() + "    Comissão: " + ata.getComissao().getSiglaForum() + " - " + ata.getComissao().getNomeForum());
 
                 boolean primeiraProposta = true;
 

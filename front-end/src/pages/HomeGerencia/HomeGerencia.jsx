@@ -745,65 +745,72 @@ const HomeGerencia = () => {
       listaObjetosString.push(JSON.stringify(listaItens[object]));
     }
 
-    // Verificação para saber em qual aba o usuário deseja exportar para excel
-    if (valorAba == 2) {
-      ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "demandas-backlog.xlsx";
-        link.click();
-      });
-    } else if (valorAba == 3) {
-      ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "demandas-assessment.xlsx";
-        link.click();
-      });
-    } else if (valorAba == 4) {
-      ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "propostas.xlsx";
-        link.click();
-      });
-    } else if (valorAba == 5) {
-      let listaIdPautas = [];
+    if (listaObjetosString != null && listaObjetosString.length > 0) {
 
-      for (const object in listaItens) {
-        listaIdPautas.push(listaItens[object].id);
+      // Verificação para saber em qual aba o usuário deseja exportar para excel
+      if (valorAba == 2) {
+        ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "demandas-backlog.xlsx";
+          link.click();
+        });
+      } else if (valorAba == 3) {
+        ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "demandas-assessment.xlsx";
+          link.click();
+        });
+      } else if (valorAba == 4) {
+        ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "propostas.xlsx";
+          link.click();
+        });
+      } else if (valorAba == 5) {
+        let listaIdPautas = [];
+
+        for (const object in listaItens) {
+          listaIdPautas.push(listaItens[object].id);
+        }
+
+        if (listaIdPautas.length > 0) {
+          ExportExcelService.exportPautasToExcel(listaIdPautas).then((response) => {
+            let blob = new Blob([response], { type: "application/excel" });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = url;
+            link.download = "pautas.xlsx";
+            link.click();
+          });
+        }
+      } else {
+        // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
+        let listaIdAtas = [];
+
+        for (const object in listaItens) {
+          listaIdAtas.push(listaItens[object].id);
+        }
+
+        if (listaIdAtas.length > 0) {
+          ExportExcelService.exportAtasToExcel(listaIdAtas).then((response) => {
+            let blob = new Blob([response], { type: "application/excel" });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = url;
+            link.download = "atas.xlsx";
+            link.click();
+          });
+        }
       }
-
-      ExportExcelService.exportPautasToExcel(listaIdPautas).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "pautas.xlsx";
-        link.click();
-      });
-    } else {
-      // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
-      let listaIdAtas = [];
-
-      for (const object in atas) {
-        listaIdAtas.push(atas[object].id);
-      }
-
-      ExportExcelService.exportAtasToExcel(listaIdAtas).then((response) => {
-        let blob = new Blob([response], { type: "application/excel" });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "atas.xlsx";
-        link.click();
-      });
     }
   };
 
