@@ -34,10 +34,6 @@ const DetalhesProposta = ({
   proposta = propostaExample,
   setProposta = () => {},
 }) => {
-
-  useEffect(() => {
-    console.log("proposta: ", proposta);
-  }, [proposta])
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -820,7 +816,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
   // Função para formatar o parecer
   const getParecerComissaoFomartted = (parecer) => {
     return parecer
-      ? parecer.toUpperCase() + parecer.substring(1).toLowerCase()
+      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
       : texts.detalhesProposta.semParecer;
   };
 
@@ -832,12 +828,16 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
             {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
           </Typography>
           <Typography fontSize={FontConfig.medium} fontWeight="bold">
-            {getParecerComissaoFomartted(proposta.parecerInformacao)}
+            {getParecerComissaoFomartted(proposta.parecerComissao)}
           </Typography>
         </Box>
       </Box>
       {/* Comporta o texto do parecer da comissão */}
-      <Box ref={parecerComissaoInformacoesBox} className="mt-2 mx-4" />
+      <Box
+        ref={parecerComissaoInformacoesBox}
+        className="mt-2 mx-4 border-l-2 px-2"
+        sx={{ borderColor: "primary.main" }}
+      />
     </Box>
   );
 };
@@ -879,21 +879,13 @@ const ParecerDGInsertText = ({
               {texts.detalhesProposta.reprovado}
             </Typography>
           </MenuItem>
-          <MenuItem key={"Devolvido"} value={"DEVOLVIDO"}>
-            <Typography fontSize={FontConfig.medium}>
-              {texts.detalhesProposta.devolvido}
-            </Typography>
-          </MenuItem>
-          <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
-            <Typography fontSize={FontConfig.medium}>
-              {texts.detalhesProposta.businessCase}
-            </Typography>
-          </MenuItem>
         </TextField>
       </Box>
       <Box className="mt-4">
         <CaixaTextoQuill
-          texto={proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""}
+          texto={
+            proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""
+          }
           setTexto={(e) => setProposta({ ...proposta, parecerInformacaoDG: e })}
         />
       </Box>
@@ -915,8 +907,8 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
   // UseEffect utilizado para armazenar o valor do parecer da dg
   useEffect(() => {
     if (parecerDGInformacoesBox.current) {
-      parecerDGInformacoesBox.current.innerHTML = proposta.parecerDGInformacao
-        ? proposta.parecerDGInformacao
+      parecerDGInformacoesBox.current.innerHTML = proposta.parecerInformacaoDG
+        ? proposta.parecerInformacaoDG
         : texts.detalhesProposta.semInformacoesAdicionais;
     }
   }, []);
@@ -924,7 +916,7 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
   // Função para formatar o parecer da DG
   const getParecerDGFomartted = (parecer) => {
     return parecer
-      ? parecer.toUpperCase() + parecer.substring(1).toLowerCase()
+      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
       : texts.detalhesProposta.semParecer;
   };
 
@@ -936,12 +928,16 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
             {texts.detalhesProposta.direcaoGeral}:&nbsp;
           </Typography>
           <Typography fontSize={FontConfig.medium} fontWeight="bold">
-            {getParecerDGFomartted(proposta.parecerDGInformacao)}
+            {getParecerDGFomartted(proposta.parecerDG)}
           </Typography>
         </Box>
       </Box>
       {/* Comporta o texto do parecer da comissão */}
-      <Box ref={parecerDGInformacoesBox} className="mt-2 mx-4" />
+      <Box
+        ref={parecerDGInformacoesBox}
+        className="mt-2 mx-4 border-l-2 px-2"
+        sx={{ borderColor: "primary.main" }}
+      />
     </Box>
   );
 };

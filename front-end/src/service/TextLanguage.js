@@ -483,6 +483,7 @@ const TextLanguage = (linguagem) => {
             proximo: "Próximo",
             publicar: "Publicar",
             comissao: "Comissão",
+            analistaResponsavel: "Analista Responsável",
         },
         detalhesDemandaPagina: {
             tour: {
@@ -1198,6 +1199,7 @@ const TextLanguage = (linguagem) => {
             proximo: "Next",
             publicar: "Publish",
             comissao: "Comission",
+            analistaResponsavel: "Responsable Analyst",
         },
         detalhesDemandaPagina: {
             tour: {
@@ -1399,6 +1401,7 @@ const TextLanguage = (linguagem) => {
             naoPublicada: "Not published",
             secaoTi: "TI Section",
             comissao: "Comission",
+            direcaoGeral: "General Direction",
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -1909,6 +1912,7 @@ const TextLanguage = (linguagem) => {
             proximo: "下一个",
             publicar: "发布",
             comissao: "委员会",
+            analistaResponsavel: "负责分析师",
         },
         detalhesDemandaPagina: {
             tour: {
@@ -2109,6 +2113,7 @@ const TextLanguage = (linguagem) => {
             naoPublicada: "未发表",
             secaoTi: "TI 部分",
             comissao: "佣金",
+            direcaoGeral: "总方向",
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -2624,6 +2629,7 @@ const TextLanguage = (linguagem) => {
             proximo: "Siguiente",
             publicar: "Publicar",
             comissao: "Comisión",
+            analistaResponsavel: "Analista Responsable",
         },
         detalhesDemandaPagina: {
             tour: {
@@ -2826,7 +2832,8 @@ const TextLanguage = (linguagem) => {
             semParecer: "Sin parecer",
             publicada: "Publicada",
             naoPublicada: "No publicado",
-            secaoTi: "Sección TI"
+            secaoTi: "Sección TI",
+            direcaoGeral: "Direccion General",
         },
         modalAddPropostaPauta: {
             feedbacks: {

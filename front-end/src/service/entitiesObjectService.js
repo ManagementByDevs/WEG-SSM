@@ -1,4 +1,25 @@
 class EntitiesObjectService {
+  usuario() {
+    return {
+      id: 0,
+      nome: "",
+      senha: "",
+      email: "",
+      visibilidade: true,
+      tipoUsuario: "SOLICITANTE" | "ANALISTA" | "GERENTE" | "GESTOR",
+      preferencias: "",
+      departamento: this.departamento(),
+    };
+  }
+
+  departamento() {
+    return {
+      id: 0,
+      nome: "",
+      visibilidade: true,
+    };
+  }
+
   proposta() {
     return {
       analista: {},
@@ -82,6 +103,7 @@ class EntitiesObjectService {
       comissao: this.forum(),
       visibilidade: true,
       propostas: [this.proposta()],
+      analistaResponsavel: this.usuario(),
     };
   }
 

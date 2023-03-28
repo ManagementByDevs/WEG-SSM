@@ -595,7 +595,7 @@ const Home = () => {
 
             {carregamento ? (
               <Box className="mt-6 w-full h-full flex justify-center items-center">
-                <ClipLoader color={'primary.main'} size={110} />
+                <ClipLoader color="#00579D" size={110} />
               </Box>
             ) : (
               <Box className="mt-6" id="quinto">
