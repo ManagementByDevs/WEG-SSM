@@ -301,6 +301,9 @@ const BarraProgressaoDemanda = () => {
             ) {
               precisaFeedback = true;
             }
+            if(beneficio.tipoBeneficio == "") {
+              precisaFeedback = true;
+            }
           });
           if (precisaFeedback) {
             setFeedbackDadosFaltantes(true);
