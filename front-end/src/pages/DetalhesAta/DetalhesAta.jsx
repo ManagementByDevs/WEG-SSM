@@ -64,6 +64,8 @@ const DetalhesAta = (props) => {
 
   const [ata, setAta] = useState(EntitiesObjectService.ata());
 
+  const [actionButtons, setActionButtons] = useState(true);
+
   // useEffect usado para feedback
   useEffect(() => {
     if (location.state?.feedback) {
@@ -231,7 +233,11 @@ const DetalhesAta = (props) => {
 
   useEffect(() => {
     if (location.state?.ata) {
-      setAta(location.state.ata);
+      let aux = location.state.ata;
+      setAta(aux);
+      if (aux.propostas[0].parecerDG != null) {
+        setActionButtons(false);
+      }
     }
   }, []);
 
@@ -368,7 +374,7 @@ const DetalhesAta = (props) => {
           </Box>
 
           {/* Botões de navegação entre as propostas da ata */}
-          {ata.propostas[0].parecerDG == null && (
+          {actionButtons && (
             <Box
               className="flex fixed justify-end items-center"
               sx={{ width: "30rem", bottom: "20px", right: "20px" }}
