@@ -276,8 +276,6 @@ public class PDFGeneratorService {
         Document document = new Document(PageSize.A4);
 
         PdfWriter.getInstance(document, response.getOutputStream());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
 
         // Criando a logo da weg para o modelo pdf
@@ -665,6 +663,8 @@ public class PDFGeneratorService {
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
 
         // Criando a logo da weg para o modelo pdf
@@ -1088,14 +1088,16 @@ public class PDFGeneratorService {
 
                 Paragraph paragraphInformacaoParecerComissao = new Paragraph(proposta.getParecerInformacao(), fontInformacoes);
 
-//                String html = "<h1>123ksdjfçlasjfçskldajfçkldsajfçskldajç</h1>";
 
-//                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()));
 
                 document.add(paragraphParecer);
                 document.add(paragraphParecerComissao);
                 document.add(paragraphInformacaoParecerComissao);
             }
+
+            String html = "<h1>123ksdjfçlasjfçskldajfçkldsajfçskldajç</h1>";
+
+            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()));
 
         }
 
