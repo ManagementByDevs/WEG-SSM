@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.ElementList;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import net.weg.wegssm.model.entities.*;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -274,8 +277,9 @@ public class PDFGeneratorService {
         // Criando a página do pdf
 
         Document document = new Document(PageSize.A4);
-
         PdfWriter.getInstance(document, response.getOutputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
 
         // Criando a logo da weg para o modelo pdf
@@ -389,9 +393,21 @@ public class PDFGeneratorService {
         Paragraph paragraphEscopo = new Paragraph("Escopo da Proposta: ", fontSubtitulo);
         paragraphEscopo.setSpacingBefore(15);
 
-        Paragraph paragraphInfoEscopo = new Paragraph(String.valueOf(proposta.getEscopo()), fontInformacoes);
+        Paragraph paragraphInfoEscopo = new Paragraph();
         paragraphInfoEscopo.setSpacingBefore(3);
         paragraphInfoEscopo.setIndentationLeft(10);
+
+        byte[] escopoByte = proposta.getEscopo();
+
+        if(escopoByte != null) {
+            String stringEscopo = new String(escopoByte, StandardCharsets.UTF_8);
+
+            ElementList elementList = XMLWorkerHelper.parseToElementList(stringEscopo, null);
+
+            for (Element element : elementList) {
+                paragraphInfoEscopo.add(element);
+            }
+        }
 
         Paragraph paragraphTabelaCustos = new Paragraph("Tabela de Custos: ", fontSubtitulo);
         paragraphTabelaCustos.setSpacingBefore(15);
@@ -824,9 +840,21 @@ public class PDFGeneratorService {
             Paragraph paragraphEscopo = new Paragraph("Escopo da Proposta: ", fontSubtitulo);
             paragraphEscopo.setSpacingBefore(15);
 
-            Paragraph paragraphInfoEscopo = new Paragraph(String.valueOf(proposta.getEscopo()), fontInformacoes);
+            Paragraph paragraphInfoEscopo = new Paragraph();
             paragraphInfoEscopo.setSpacingBefore(3);
             paragraphInfoEscopo.setIndentationLeft(10);
+
+            byte[] escopoByte = proposta.getEscopo();
+
+            if(escopoByte != null) {
+                String stringEscopo = new String(escopoByte, StandardCharsets.UTF_8);
+
+                ElementList elementList = XMLWorkerHelper.parseToElementList(stringEscopo, null);
+
+                for (Element element : elementList) {
+                    paragraphInfoEscopo.add(element);
+                }
+            }
 
             Paragraph paragraphTabelaCustos = new Paragraph("Tabela de Custos: ", fontSubtitulo);
             paragraphTabelaCustos.setSpacingBefore(15);
@@ -1086,18 +1114,10 @@ public class PDFGeneratorService {
                 paragraphParecerComissao.add(chunkValorParecerComissao);
                 paragraphParecerComissao.setSpacingBefore(10);
 
-                Paragraph paragraphInformacaoParecerComissao = new Paragraph(proposta.getParecerInformacao(), fontInformacoes);
-
-
-
                 document.add(paragraphParecer);
                 document.add(paragraphParecerComissao);
-                document.add(paragraphInformacaoParecerComissao);
+                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacao().getBytes()));
             }
-
-            String html = "<h1>123ksdjfçlasjfçskldajfçkldsajfçskldajç</h1>";
-
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(html.getBytes()));
 
         }
 
@@ -1120,6 +1140,8 @@ public class PDFGeneratorService {
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
 
         // Criando a logo da weg para o modelo pdf
@@ -1294,9 +1316,21 @@ public class PDFGeneratorService {
             Paragraph paragraphEscopo = new Paragraph("Escopo da Proposta: ", fontSubtitulo);
             paragraphEscopo.setSpacingBefore(15);
 
-            Paragraph paragraphInfoEscopo = new Paragraph(String.valueOf(proposta.getEscopo()), fontInformacoes);
+            Paragraph paragraphInfoEscopo = new Paragraph();
             paragraphInfoEscopo.setSpacingBefore(3);
             paragraphInfoEscopo.setIndentationLeft(10);
+
+            byte[] escopoByte = proposta.getEscopo();
+
+            if(escopoByte != null) {
+                String stringEscopo = new String(escopoByte, StandardCharsets.UTF_8);
+
+                ElementList elementList = XMLWorkerHelper.parseToElementList(stringEscopo, null);
+
+                for (Element element : elementList) {
+                    paragraphInfoEscopo.add(element);
+                }
+            }
 
             Paragraph paragraphTabelaCustos = new Paragraph("Tabela de Custos: ", fontSubtitulo);
             paragraphTabelaCustos.setSpacingBefore(15);
@@ -1555,11 +1589,10 @@ public class PDFGeneratorService {
             paragraphParecerComissao.add(chunkValorParecerComissao);
             paragraphParecerComissao.setSpacingBefore(10);
 
-            Paragraph paragraphInformacaoParecerComissao = new Paragraph("A: " + proposta.getParecerInformacao(), fontInformacoes);
-
             document.add(paragraphParecer);
             document.add(paragraphParecerComissao);
-            document.add(paragraphInformacaoParecerComissao);
+            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacao().getBytes()));
+
 
             if (proposta.getParecerDG() != null) {
                 Chunk chunkParecerDG = new Chunk("Direção Geral: ", fontInformacoes);
@@ -1570,6 +1603,7 @@ public class PDFGeneratorService {
                 paragraphParecerDG.setSpacingBefore(10);
 
                 document.add(paragraphParecerDG);
+                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacaoDG().getBytes()));
             }
 
         }
