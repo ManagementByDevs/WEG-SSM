@@ -407,7 +407,7 @@ const DetalhesProposta = ({
                     />
 
                     {/* Parecer da Diretoria */}
-                    {["ASSESSMENT_DG", "DONE"].includes(proposta.status) && (
+                    {["ASSESSMENT_DG", "DONE", "ASSESSMENT_EDICAO", "CANCELLED"].includes(proposta.status) && (
                       <ParecerDG
                         proposta={proposta}
                         setProposta={setProposta}
@@ -438,7 +438,7 @@ const TabelaCustos = ({
         valorHora: 0,
       },
     ],
-    ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
+    ccs: [{ id: 0, codigo: 0, porcentagem: 0.0 }],
   },
 }) => {
   // Context para obter as configurações de fontes do sistema
@@ -517,7 +517,7 @@ const TabelaCustos = ({
                   </td>
                   <td className="text-center p-1">
                     <Typography fontSize={FontConfig.medium}>
-                      {cc.porcentegem}%
+                      {cc.porcentagem}%
                     </Typography>
                   </td>
                 </TableRow>

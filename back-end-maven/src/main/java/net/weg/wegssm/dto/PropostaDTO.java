@@ -32,7 +32,7 @@ public class PropostaDTO {
     private String proposta;
     private String frequencia;
     private String tamanho;
-    private String secaoTI;
+    private SecaoTI secaoTI;
     private Boolean publicada;
     private Bu buSolicitante;
     private List<Bu> busBeneficiadas;
@@ -43,5 +43,5 @@ public class PropostaDTO {
     private Forum forum;
     private Departamento departamento;
     private List<TabelaCusto> tabelaCustos;
-    private List<Anexo> anexo;
+    private List<Historico> historicoProposta;
 }

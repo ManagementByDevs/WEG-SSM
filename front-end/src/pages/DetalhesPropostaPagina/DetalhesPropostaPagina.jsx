@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
@@ -19,6 +19,10 @@ import ExportPdfService from "../../service/exportPdfService";
 const DetalhesPropostaPagina = () => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
+
+  useEffect(() => {
+    console.log(location.state);
+  }, []);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);

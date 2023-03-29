@@ -40,30 +40,15 @@ class PropostaService {
     ).data;
   }
 
-  async post(proposta, arquivos) {
+  async post(proposta, listaIds) {
     let form = new FormData();
 
     form.append("proposta", JSON.stringify(proposta));
-    for (let arquivo of arquivos) {
-      form.append("anexos", arquivo);
+    for (let id of listaIds) {
+      form.append("idsAnexos", id);
     }
 
-    if (arquivos.length > 0) {
-      return (
-        await axios.post(`/proposta/`, form, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-      ).data;
-    } else {
-      return (
-        await axios.post(`/proposta/sem-arquivos/`, form, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "Access-Control-Allow-Origin": "*",
-          },
-        })
-      ).data;
-    }
+    return (await axios.post(`/proposta`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
   }
 
   async atualizarStatus(idProposta, statusNovo) {
@@ -111,7 +96,7 @@ class PropostaService {
     form.set("documento", documento);
     form.set("usuarioId", usuario);
 
-    return (await axios.put(`/demanda/add-historico/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+    return (await axios.put(`/proposta/add-historico/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
   }
 }
 
