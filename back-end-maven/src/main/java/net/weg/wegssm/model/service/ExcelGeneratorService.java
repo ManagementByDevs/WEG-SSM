@@ -3,7 +3,6 @@ package net.weg.wegssm.model.service;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.util.DemandaUtil;
-import net.weg.wegssm.util.PautaUtil;
 import net.weg.wegssm.util.PropostaUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -14,10 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -504,71 +500,65 @@ public class ExcelGeneratorService {
                 row.createCell(0).setCellValue(contadorPauta);
                 row.createCell(1).setCellValue("Número Sequencial: " + pauta.getNumeroSequencial() + "    Comissão: " + pauta.getComissao().getSiglaForum() + " - " + pauta.getComissao().getNomeForum() + "    Reunião do Fórum: " + pauta.getDataReuniao() + "    Analista Responsável: " + pauta.getAnalistaResponsavel().getNome());
 
-                boolean primeiraProposta = true;
-
+                int rowIndexProposta = rowIndex;
                 for (Proposta proposta : pauta.getPropostas()) {
-                    if (!primeiraProposta) {
-                        Row rowVazia = sheet.createRow(rowIndex++);
-                    } else {
-                        primeiraProposta = false;
-                    }
+                    XSSFRow rowProposta = sheet.createRow(rowIndexProposta++);
 
-                    row.createCell(2).setCellValue(proposta.getTitulo());
-                    row.createCell(3).setCellValue(proposta.getCodigoPPM());
+                    rowProposta.createCell(2).setCellValue(proposta.getTitulo());
+                    rowProposta.createCell(3).setCellValue(proposta.getCodigoPPM());
 
-                    row.createCell(4).setCellValue(proposta.getData());
-                    row.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
-                    row.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                    row.createCell(7).setCellValue(proposta.getProblema());
-                    row.createCell(8).setCellValue(proposta.getProposta());
+                    rowProposta.createCell(4).setCellValue(proposta.getData());
+                    rowProposta.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
+                    rowProposta.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
+                    rowProposta.createCell(7).setCellValue(proposta.getProblema());
+                    rowProposta.createCell(8).setCellValue(proposta.getProposta());
 
                     for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                         for (Custo custo : tbCusto.getCustos()) {
-                            Row rowCusto = sheet.createRow(rowIndex);
+                            Row rowCusto = sheet.createRow(rowIndexProposta);
                             rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                         }
                     }
 
                     for (Beneficio beneficio : proposta.getBeneficios()) {
-                        Row roww = sheet.createRow(rowIndex);
+                        Row roww = sheet.createRow(rowIndexProposta);
                         roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + beneficio.getMemoriaCalculo());
-                        rowIndex++;
+                        rowIndexProposta++;
                     }
 
-                    row.createCell(12).setCellValue(proposta.getFrequencia());
-                    row.createCell(13).setCellValue(proposta.getLinkJira());
-                    row.createCell(14).setCellValue(proposta.getInicioExecucao() + " à " + proposta.getFimExecucao());
-                    row.createCell(15).setCellValue(proposta.getPaybackValor() + "  " + proposta.getPaybackTipo());
-                    row.createCell(16).setCellValue(proposta.getTamanho());
-                    row.createCell(17).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
-                    row.createCell(18).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
+                    rowProposta.createCell(12).setCellValue(proposta.getFrequencia());
+                    rowProposta.createCell(13).setCellValue(proposta.getLinkJira());
+                    rowProposta.createCell(14).setCellValue(proposta.getInicioExecucao() + " à " + proposta.getFimExecucao());
+                    rowProposta.createCell(15).setCellValue(proposta.getPaybackValor() + "  " + proposta.getPaybackTipo());
+                    rowProposta.createCell(16).setCellValue(proposta.getTamanho());
+                    rowProposta.createCell(17).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
+                    rowProposta.createCell(18).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
 
                     for (Bu bu : proposta.getBusBeneficiadas()) {
-                        row.createCell(19).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                        row.getCell(19).setCellStyle(alignLeft);
+                        rowProposta.createCell(19).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
+                        rowProposta.getCell(19).setCellStyle(alignLeft);
                     }
 
-                    row.createCell(20).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
+                    rowProposta.createCell(20).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
 
                     for (ResponsavelNegocio rn : proposta.getResponsavelNegocio()) {
-                        row.createCell(21).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
-                        row.getCell(21).setCellStyle(alignLeft);
+                        rowProposta.createCell(21).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
+                        rowProposta.getCell(21).setCellStyle(alignLeft);
                     }
 
                     for (Anexo anexo : proposta.getAnexo()) {
-                        row.createCell(22).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                        row.getCell(22).setCellStyle(alignLeft);
+                        rowProposta.createCell(22).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
+                        rowProposta.getCell(22).setCellStyle(alignLeft);
                     }
 
                     // Setando os estilos para as colunas
                     int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
                     for (int colunaStyle : colunasStyle) {
-                        if (row.getCell(colunaStyle) != null) {
-                            row.getCell(colunaStyle).setCellStyle(alignLeft);
+                        if (rowProposta.getCell(colunaStyle) != null) {
+                            rowProposta.getCell(colunaStyle).setCellStyle(alignLeft);
                         }
                     }
-                    row.getCell(0).setCellStyle(style);
 
                     // Auto ajustando o tamanho das colunas de acordo com as informações
                     int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
@@ -577,9 +567,10 @@ public class ExcelGeneratorService {
                         sheet.autoSizeColumn(colunaAuto);
                     }
                 }
+
+                rowNum = rowIndexProposta;
             }
 
-            rowNum = rowIndex;
             contadorPauta++;
         }
 
