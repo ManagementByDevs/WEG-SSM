@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Box, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 
@@ -14,6 +14,9 @@ const Pautas = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  // Estado para saber se a ata já foi apreciada pela DG
+  const [isApreciada, setIsApreciada] = useState(false);
 
   // Retorna as horas de início e fim formatadas para melhor leitura
   const getHorasFormatado = (dataInicio, dataFim) => {
@@ -33,17 +36,32 @@ const Pautas = (props) => {
 
   // Função para formatar a data para melhor leitura
   const getDataFormatada = (dataReuniao) => {
-    return props.tipo == "pauta" ? DateService.getTodaysDateUSFormat(
-      DateService.getDateByMySQLFormat(dataReuniao)
-    ) : DateService.getFullDateUSFormat(
-      DateService.getDateByMySQLFormat(dataReuniao)
-    );
+    return props.tipo == "pauta"
+      ? DateService.getTodaysDateUSFormat(
+          DateService.getDateByMySQLFormat(dataReuniao)
+        )
+      : DateService.getFullDateUSFormat(
+          DateService.getDateByMySQLFormat(dataReuniao)
+        );
   };
+
+  // Função que retorna a cor do status da ata
+  const getStatusColor = () => {
+    if (isApreciada) return "success.main";
+    return "#C4C4C4";
+  };
+
+  useEffect(() => {
+    // Faz a verificação se a ata já foi apreciada pela DG
+    if (props.dados.propostas?.length > 0) {
+      setIsApreciada(props.dados.propostas[0].parecerDG != null);
+    }
+  }, []);
 
   return (
     <Paper
       onClick={() => props.onItemClick(props.dados)}
-      className="flex flex-col border-t-4 pt-2 pb-3 px-6"
+      className="flex flex-col border-t-4 pt-2 pb-3 pl-6 pr-4"
       sx={{
         "&:hover": {
           backgroundColor: "hover.main",
@@ -69,8 +87,8 @@ const Pautas = (props) => {
           >
             {getDataFormatada(props.dados.dataReuniao)}
           </Typography>
-          {props.tipo === "pauta" && (
-            <Box sx={{ marginRight: "-16px" }} className="ml-2">
+          {props.tipo == "pauta" ? (
+            <Box sx={{ marginRight: "-8px" }} className="ml-2">
               <Tooltip title={texts.pauta.deletar}>
                 <IconButton
                   onClick={(e) => {
@@ -90,6 +108,17 @@ const Pautas = (props) => {
                 </IconButton>
               </Tooltip>
             </Box>
+          ) : (
+            <Tooltip
+              title={
+                isApreciada ? texts.pauta.jaApreciada : texts.pauta.naoApreciada
+              }
+            >
+              <Box
+                className="w-6 h-4 ml-3 rounded"
+                sx={{ backgroundColor: getStatusColor() }}
+              />
+            </Tooltip>
           )}
         </Box>
       </Box>

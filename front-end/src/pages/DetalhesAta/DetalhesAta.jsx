@@ -66,6 +66,9 @@ const DetalhesAta = (props) => {
 
   const [actionButtons, setActionButtons] = useState(true);
 
+  // Feedback para quando o usuário não preencher todos os campos obrigatórios
+  const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
+
   // useEffect usado para feedback
   useEffect(() => {
     if (location.state?.feedback) {
@@ -197,7 +200,7 @@ const DetalhesAta = (props) => {
   // Função de criar ata e enviar feedback
   const publicarAta = () => {
     if (!isAllFieldsFilled()) {
-      console.log("Preencha todos os campos!");
+      setFeedbackCamposFaltantes(true);
       return;
     }
 
@@ -248,6 +251,15 @@ const DetalhesAta = (props) => {
   return (
     // Começo com o header da página
     <FundoComHeader>
+      {/* Feedback campos faltantes */}
+      <Feedback
+        open={feedbackCamposFaltantes}
+        handleClose={() => {
+          setFeedbackCamposFaltantes(false);
+        }}
+        status={"erro"}
+        mensagem={texts.detalhesPauta.feedbacks.feedback2}
+      />
       <Box className="p-2">
         {/* caminho da página */}
         <Box className="flex w-full relative">
