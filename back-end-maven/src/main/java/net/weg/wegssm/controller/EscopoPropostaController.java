@@ -88,8 +88,10 @@ public class EscopoPropostaController {
         }
 
         List<Anexo> listaAnexos = new ArrayList<>();
-        for (Anexo anexo : escopoProposta.getAnexo()) {
-            listaAnexos.add(anexoService.save(anexo));
+        if(escopoProposta.getAnexo() != null) {
+            for (Anexo anexo : escopoProposta.getAnexo()) {
+                listaAnexos.add(anexoService.save(anexo));
+            }
         }
         escopoProposta.setAnexo(listaAnexos);
 
@@ -97,7 +99,8 @@ public class EscopoPropostaController {
     }
 
     @PutMapping
-    public ResponseEntity<EscopoProposta> update(@RequestParam("escopo-proposta") String escopoPropostaJSON) {
+    public ResponseEntity<EscopoProposta> update(@RequestParam(value = "escopo-proposta") String escopoPropostaJSON,
+                                                 @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos) {
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
 
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
@@ -125,37 +128,14 @@ public class EscopoPropostaController {
             tabelaCustoService.save(tabelaCusto);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
-    }
-
-    /** Função para salvar anexos adicionados a um escopo, recebendo os anexos pelos parâmetros e o ID do escopo com variável */
-    @PutMapping("/anexos/{id}")
-    public ResponseEntity<EscopoProposta> addAnexos(@PathVariable(value = "id") Long idEscopo, @RequestParam("anexos") List<MultipartFile> anexos) {
-        EscopoProposta escopoProposta = escopoPropostaService.findById(idEscopo).get();
-        escopoProposta.addAnexos(anexos);
-
-        List<Anexo> listaAnexos = new ArrayList<>();
-        for (Anexo anexo : escopoProposta.getAnexo()) {
-            listaAnexos.add(anexoService.save(anexo));
-        }
-        escopoProposta.setAnexo(listaAnexos);
-
-        return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
-    }
-
-    /** Função para excluir um anexo de um escopo, recebendo os IDs de ambos por variáveis */
-    @PutMapping("/anexos/{idEscopo}/{idAnexo}")
-    public ResponseEntity<EscopoProposta> removeAnexo(@PathVariable(value = "idEscopo") Long idEscopo, @PathVariable(value = "idAnexo") Long idAnexo) {
-        EscopoProposta escopoProposta = escopoPropostaService.findById(idEscopo).get();
-
-        List<Anexo> listaAnexos = new ArrayList<>();
-        for (Anexo anexo : escopoProposta.getAnexo()) {
-            if(anexo.getId() != idAnexo) {
-                listaAnexos.add(anexo);
+        ArrayList<Anexo> listaAnexos = new ArrayList<>();
+        if(listaIdsAnexos != null) {
+            for (String id : listaIdsAnexos) {
+                listaAnexos.add(anexoService.findById(Long.parseLong(id)));
             }
         }
         escopoProposta.setAnexo(listaAnexos);
-        anexoService.deleteById(idAnexo);
+
         return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
     }
 
@@ -167,6 +147,6 @@ public class EscopoPropostaController {
         }
         escopoPropostaService.deleteById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body("Escopo deletado com sucesso.");
+        return ResponseEntity.status(HttpStatus.OK).body("Escopo da proposta excluído!");
     }
 }

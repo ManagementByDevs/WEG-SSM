@@ -252,7 +252,7 @@ const TextLanguageContext = createContext({
     idiomaModal: {
       idiomas: "Idiomas",
     },
-    linhaTabelaCcs: {
+    linhaTabelaCCs: {
       titleExcluirLinha: "Excluir linha",
       digiteCodigo: "Digite o código...",
     },

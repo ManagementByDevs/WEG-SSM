@@ -55,10 +55,6 @@ public class EscopoProposta {
     @Column(length = 20)
     private String tamanho;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "secao_ti_id")
-    private SecaoTI secaoTI;
-
     @Column
     private Date ultimaModificacao;
 
@@ -68,54 +64,58 @@ public class EscopoProposta {
 
 //    Foreign Keys
 
-    @OneToMany
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(nullable = false, name = "secao_ti_id")
+    private SecaoTI secaoTI;
+
+    @OneToMany(cascade = CascadeType.DETACH)
     @JoinColumn(name = "escopo_proposta_id")
     private List<Beneficio> beneficios = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "bu_solicitante")
     private Bu buSolicitante;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(
             name = "bu_escopo_proposta",
             joinColumns = @JoinColumn(name = "escopo_proposta_id"),
             inverseJoinColumns = @JoinColumn(name = "bu_id"))
     private List<Bu> busBeneficiadas;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "solicitante_id")
     private Usuario solicitante;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "gerente_id")
     private Usuario gerente;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "analista_id")
     private Usuario analista;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "forum_id")
     private Forum forum;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "departamento_id")
     private Departamento departamento;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.DETACH)
     @JoinColumn(name = "escopo_proposta_id")
     private List<TabelaCusto> tabelaCustos;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.DETACH)
     @JoinColumn(name = "responsavel_negocio_id")
     private List<ResponsavelNegocio> responsavelNegocio;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "demanda_id")
     private Demanda demanda;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_escopo_proposta")
     private List<Anexo> anexo;
 

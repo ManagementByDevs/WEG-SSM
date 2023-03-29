@@ -196,8 +196,12 @@ const DetalhesPauta = (props) => {
     setModal(true);
   };
 
+  // Feedback para quando o usuário deletar uma proposta da pauta
   const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
     useState(false);
+
+  // Feedback para quando o usuário não preencher todos os campos obrigatórios
+  const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
   // Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida
   const deletePropostaFromPauta = () => {
@@ -264,7 +268,7 @@ const DetalhesPauta = (props) => {
   // Função que cria uma ata
   const criarAta = () => {
     if (!isAllFieldsFilled()) {
-      console.log("Preencha todos os campos!");
+      setFeedbackCamposFaltantes(true);
       return;
     }
 
@@ -282,15 +286,13 @@ const DetalhesPauta = (props) => {
       return;
     }
 
-    updatePropostas(pauta.propostas);
-
     // Cria a ata caso tenha propostas aprovadas
     if (ata.propostas.length > 0) {
       for (let proposta of ata.propostas) {
         proposta.status = "ASSESSMENT_DG";
       }
 
-      updatePropostas(ata.propostas);
+      updatePropostas(pauta.propostas);
 
       AtaService.post(ata).then((response) => {
         PautaService.delete(pauta.id).then((response) => {
@@ -361,6 +363,16 @@ const DetalhesPauta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.detalhesPauta.feedbacks.feedback1}
+      />
+
+      {/* Feedback campos faltantes */}
+      <Feedback
+        open={feedbackCamposFaltantes}
+        handleClose={() => {
+          setFeedbackCamposFaltantes(false);
+        }}
+        status={"erro"}
+        mensagem={texts.detalhesPauta.feedbacks.feedback2}
       />
       <ModalConfirmacao
         open={modal}

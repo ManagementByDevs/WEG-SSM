@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import {
   Box,
@@ -20,6 +20,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 const PautaAtaModoVisualizacao = ({
   listaPautas,
@@ -69,6 +70,7 @@ const PautaTable = ({
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Retorna data formatada para melhor leitura
@@ -83,6 +85,16 @@ const PautaTable = ({
         : dateInicio.getMinutes()
     }`;
   };
+
+  // Função que retorna a cor do status da ata
+  const getStatusColor = (ata = EntitiesObjectService.ata()) => {
+    if (ata.propostas[0].parecerDG != null) return "success.main";
+    return "#C4C4C4";
+  };
+
+  const isApreciada = (ata = EntitiesObjectService.ata()) => {
+    return ata.propostas[0].parecerDG != null
+  }
 
   return (
     <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
@@ -170,12 +182,25 @@ const PautaTable = ({
                 </td>
               ) : (
                 <td
-                  className="flex justify-center text-right p-3"
+                  className="flex justify-center items-center text-right p-3"
                   title={getDataFormatada(row.dataReuniao)}
                 >
                   <Typography className="truncate" fontSize={FontConfig.medium}>
                     {getDataFormatada(row.dataReuniao)}
                   </Typography>
+
+                  <Tooltip
+                    title={
+                      isApreciada(row)
+                        ? texts.pauta.jaApreciada
+                        : texts.pauta.naoApreciada
+                    }
+                  >
+                    <Box
+                      className="w-6 h-4 ml-3 rounded"
+                      sx={{ backgroundColor: getStatusColor(row) }}
+                    />
+                  </Tooltip>
                 </td>
               )}
             </TableRow>

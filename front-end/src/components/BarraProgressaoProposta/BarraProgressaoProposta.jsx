@@ -23,6 +23,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -37,6 +38,9 @@ const BarraProgressaoProposta = (props) => {
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
+
+  // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
+  const [carregamento, setCarregamento] = useState(true);
 
   // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
@@ -187,6 +191,8 @@ const BarraProgressaoProposta = (props) => {
 
     setListaBeneficios(escopo.beneficios);
     setCustos(escopo.tabelaCustos);
+    
+    setCarregamento(false);
   }
 
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
@@ -196,7 +202,7 @@ const BarraProgressaoProposta = (props) => {
       delete escopo.historicoProposta;
       delete escopo.status;
       escopo.id = ultimoEscopo.id;
-      EscopoPropostaService.salvarDados(escopo).then((response) => {
+      EscopoPropostaService.salvarDados(escopo, receberIdsAnexos()).then((response) => {
         setUltimoEscopo(response);
       });
     } catch (error) { }
@@ -228,6 +234,7 @@ const BarraProgressaoProposta = (props) => {
           }]
         }).then((response) => {
           setCustos([...custos, response]);
+          setCarregamento(false);
         })
       }
     }
@@ -332,35 +339,19 @@ const BarraProgressaoProposta = (props) => {
     return listaNova;
   }
 
-  /** Função para filtrar a lista de anexos totais e retornar somente os anexos já salvos no banco */
-  const pegarAnexosSalvos = () => {
-    let listaNova = [];
+  /** Função que retorna os IDs de todos os anexos da proposta */
+  const receberIdsAnexos = () => {
+    let listaIds = [];
     for (const anexo of dadosDemanda.anexo) {
-      if (anexo.id) { listaNova.push(anexo); }
+      listaIds.push(anexo.id);
     }
-    return listaNova;
-  }
-
-  /** Função para filtrar a lista de anexos totais e retornar somente os anexos não salvos no banco */
-  const pegarAnexosNovos = () => {
-    let listaNova = [];
-    for (const anexo of dadosDemanda.anexo) {
-      if (!anexo.id) listaNova.push(anexo);
-    }
-    return listaNova;
-  }
-
-  /** Função para tirar os anexos não salvos dos dados da demanda para criação de proposta */
-  const retirarAnexosDemanda = () => {
-    let demandaNova = { ...dadosDemanda };
-    demandaNova.anexo = pegarAnexosSalvos();
-    return demandaNova;
+    return listaIds;
   }
 
   /** Função para montar um objeto de proposta para salvamento de escopos e propostas */
   const retornaObjetoProposta = () => {
     const objeto = {
-      demanda: retirarAnexosDemanda(),
+      demanda: dadosDemanda,
       titulo: dadosDemanda.titulo,
       status: "ASSESSMENT_APROVACAO",
       problema: dadosDemanda.problema,
@@ -385,7 +376,6 @@ const BarraProgressaoProposta = (props) => {
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
       historicoProposta: dadosDemanda.historicoDemanda,
-      anexo: pegarAnexosSalvos()
     }
     return objeto;
   }
@@ -394,8 +384,8 @@ const BarraProgressaoProposta = (props) => {
   const criarProposta = () => {
     excluirBeneficios();
 
-    propostaService.post(retornaObjetoProposta(), pegarAnexosNovos()).then((response) => {
-      DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
+    propostaService.post(retornaObjetoProposta(), receberIdsAnexos()).then((response) => {
+      // DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
         EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
 
           // Salvamento de histórico
@@ -407,7 +397,7 @@ const BarraProgressaoProposta = (props) => {
             })
           });
         })
-      });
+      // });
     });
   }
 
@@ -426,6 +416,7 @@ const BarraProgressaoProposta = (props) => {
       </Stepper>
       {activeStep == 0 && (
         <FormularioPropostaProposta
+          carregamento={carregamento}
           dados={dadosDemanda}
           setDadosDemanda={setDadosDemanda}
 

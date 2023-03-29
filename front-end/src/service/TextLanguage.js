@@ -383,6 +383,8 @@ const TextLanguage = (linguagem) => {
             deletar: "Deletar",
             comissao: "Comissão",
             analistaResponsavel: "Analista Responsável",
+            jaApreciada: "Já Apreciada",
+            naoApreciada: "Não Apreciada",
         },
         pautaAtaModoVisualizacao: {
             as: "às",
@@ -495,6 +497,7 @@ const TextLanguage = (linguagem) => {
         detalhesPauta: {
             feedbacks: {
                 feedback1: "Proposta removida da pauta com sucesso!",
+                feedback2: "Preencha todos os campos!"
             },
             baixarPDF: "Baixar PDF",
             pauta: "Pauta",
@@ -1101,6 +1104,8 @@ const TextLanguage = (linguagem) => {
             deletar: "Delete",
             comissao: "Commission",
             analistaResponsavel: "Responsible Analyst",
+            jaApreciada: "Already Appreciated",
+            naoApreciada: "Not Appreciated",
         },
         pautaAtaModoVisualizacao: {
             as: "to",
@@ -1212,6 +1217,7 @@ const TextLanguage = (linguagem) => {
         detalhesPauta: {
             feedbacks: {
                 feedback1: "Proposal removed from the agenda successfully!",
+                feedback2: "Fill in all fields!"
             },
             baixarPDF: "PDF Download",
             pauta: "Minutes",
@@ -1815,6 +1821,8 @@ const TextLanguage = (linguagem) => {
             deletar: "删除",
             comissao: "委员会",
             analistaResponsavel: "负责分析师",
+            jaApreciada: "已经欣赏",
+            naoApreciada: "不被赏识",
         },
         pautaAtaModoVisualizacao: {
             as: "到",
@@ -1926,6 +1934,7 @@ const TextLanguage = (linguagem) => {
         detalhesPauta: {
             feedbacks: {
                 feedback1: "提案已成功从议程中删除！",
+                feedback2: "填写所有字段！"
             },
             baixarPDF: "PDF下载",
             pauta: "会议记录",
@@ -2532,6 +2541,8 @@ const TextLanguage = (linguagem) => {
             deletar: "Eliminar",
             comissao: "Comisión",
             analistaResponsavel: "Analista responsable",
+            jaApreciada: "Ya apreciada",
+            naoApreciada: "No apreciada",
         },
         pautaAtaModoVisualizacao: {
             as: "a las",
@@ -2644,6 +2655,7 @@ const TextLanguage = (linguagem) => {
         detalhesPauta: {
             feedbacks: {
                 feedback1: "Propuesta eliminada de la pauta con éxito!",
+                feedback2: "¡Complete todos los campos!"
             },
             baixarPDF: "Descargar PDF",
             pauta: "Pauta",
