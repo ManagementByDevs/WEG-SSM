@@ -478,18 +478,17 @@ public class PDFGeneratorService {
                 tableCustos.addCell(custos.getPerfilDespesa());
                 tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                 tableCustos.addCell(String.valueOf(custos.getHoras()));
-                tableCustos.addCell(String.valueOf(custos.getValorHora()));
             }
 
-            PdfPTable tableValorHora = new PdfPTable(2);
+            PdfPTable tableValorTotal = new PdfPTable(2);
 
-            tableValorHora.setWidthPercentage(100);
-            tableValorHora.setWidths(new int[]{3, 3});
-            tableValorHora.setSpacingBefore(15);
+            tableValorTotal.setWidthPercentage(100);
+            tableValorTotal.setWidths(new int[]{3, 3});
+            tableValorTotal.setSpacingBefore(15);
 
-            tableValorHora.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-            tableValorHora.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-            tableValorHora.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
+            tableValorTotal.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+            tableValorTotal.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            tableValorTotal.getDefaultCell().setVerticalAlignment(Element.ALIGN_CENTER);
 
             PdfPCell cell2 = new PdfPCell();
             cell2.setBackgroundColor(azulWeg);
@@ -502,12 +501,14 @@ public class PDFGeneratorService {
             // FAZER O CALCULO
 
             cell2.setPhrase(new Phrase("Valor Hora", font));
-            tableValorHora.addCell(cell2);
+            tableValorTotal.addCell(cell2);
             cell2.setPhrase(new Phrase("Total", font));
-            tableValorHora.addCell(cell2);
+            tableValorTotal.addCell(cell2);
 
-            tableValorHora.addCell("10");
-            tableValorHora.addCell("100");
+            for(Custo custos : tableCusto.getCustos()){
+                tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
+                tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+            }
 
             PdfPTable tableCC = new PdfPTable(2);
 
@@ -538,7 +539,7 @@ public class PDFGeneratorService {
             }
 
             document.add(tableCustos);
-            document.add(tableValorHora);
+            document.add(tableValorTotal);
             document.add(tableCC);
         }
 
@@ -924,7 +925,6 @@ public class PDFGeneratorService {
                     tableCustos.addCell(custos.getPerfilDespesa());
                     tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                     tableCustos.addCell(String.valueOf(custos.getHoras()));
-                    tableCustos.addCell(String.valueOf(custos.getValorHora()));
                 }
 
                 PdfPTable tableValorTotal = new PdfPTable(2);
@@ -950,8 +950,10 @@ public class PDFGeneratorService {
                 cell2.setPhrase(new Phrase("Total", font));
                 tableValorTotal.addCell(cell2);
 
-                tableValorTotal.addCell("10");
-                tableValorTotal.addCell("100");
+                for(Custo custos : tableCusto.getCustos()){
+                    tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
+                    tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                }
 
                 PdfPTable tableCC = new PdfPTable(2);
 
@@ -1400,7 +1402,6 @@ public class PDFGeneratorService {
                     tableCustos.addCell(custos.getPerfilDespesa());
                     tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                     tableCustos.addCell(String.valueOf(custos.getHoras()));
-                    tableCustos.addCell(String.valueOf(custos.getValorHora()));
                 }
 
                 PdfPTable tableValorTotal = new PdfPTable(2);
@@ -1426,8 +1427,10 @@ public class PDFGeneratorService {
                 cell2.setPhrase(new Phrase("Total", font));
                 tableValorTotal.addCell(cell2);
 
-                tableValorTotal.addCell("10");
-                tableValorTotal.addCell("100");
+                for(Custo custos : tableCusto.getCustos()){
+                    tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
+                    tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                }
 
                 PdfPTable tableCC = new PdfPTable(2);
 
@@ -1592,7 +1595,6 @@ public class PDFGeneratorService {
             document.add(paragraphParecer);
             document.add(paragraphParecerComissao);
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacao().getBytes()));
-
 
             if (proposta.getParecerDG() != null) {
                 Chunk chunkParecerDG = new Chunk("Direção Geral: ", fontInformacoes);

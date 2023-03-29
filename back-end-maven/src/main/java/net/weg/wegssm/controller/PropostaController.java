@@ -3959,25 +3959,17 @@ public class PropostaController {
      * Método POST para criar uma proposta no banco de dados
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("proposta") String propostaJSON) {
+    public ResponseEntity<Object> save(@RequestParam(value = "proposta") String propostaJSON,
+                                       @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos) {
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
 
-        proposta.addAnexos(files, proposta.getAnexo());
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
 
         for (Beneficio beneficio : proposta.getBeneficios()) {
             beneficioService.save(beneficio);
         }
-
-        Demanda demanda = proposta.getDemanda();
-        List<Anexo> listaAnexosDemanda = new ArrayList<>();
-        for (Anexo anexo : demanda.getAnexo()) {
-            listaAnexosDemanda.add(anexoService.save(anexo));
-        }
-        demanda.setAnexosWithoutMultiparFile(listaAnexosDemanda);
-        demandaService.save(proposta.getDemanda());
 
         for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
@@ -3993,58 +3985,14 @@ public class PropostaController {
             tabelaCustoService.save(tabelaCusto);
         }
 
-        List<Anexo> listaAnexos = new ArrayList<>();
-        for (Anexo anexo : proposta.getAnexo()) {
-            listaAnexos.add(anexoService.save(anexo));
+        ArrayList<Anexo> listaAnexos = new ArrayList<>();
+        if(listaIdsAnexos != null) {
+            for (String id : listaIdsAnexos) {
+                listaAnexos.add(anexoService.findById(Long.parseLong(id)));
+            }
         }
         proposta.setAnexo(listaAnexos);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
-    }
-
-    @PostMapping("/sem-arquivos")
-    public ResponseEntity<Object> saveSemArquivos(@RequestParam("proposta") String propostaJSON) {
-        PropostaUtil propostaUtil = new PropostaUtil();
-        Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
-
-        System.out.println("proposta: " + proposta.toString());
-
-        proposta.setData(new Date());
-        proposta.setVisibilidade(true);
-
-        for (Beneficio beneficio : proposta.getBeneficios()) {
-            beneficioService.save(beneficioService.findById(beneficio.getId()).get());
-        }
-
-        Demanda demanda = proposta.getDemanda();
-        List<Anexo> listaAnexosDemanda = new ArrayList<>();
-        for (Anexo anexo : demanda.getAnexo()) {
-            listaAnexosDemanda.add(anexoService.save(anexo));
-        }
-        demanda.setAnexosWithoutMultiparFile(listaAnexosDemanda);
-        demandaService.save(proposta.getDemanda());
-
-        for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
-            responsavelNegocioService.save(responsavelNegocioService.findById(responsavelNegocio.getId()).get());
-        }
-
-        for (TabelaCusto tabelaCusto : proposta.getTabelaCustos()) {
-            TabelaCusto tabelaCustoAux = tabelaCustoService.findById(tabelaCusto.getId()).get();
-
-            for (Custo custo : tabelaCustoAux.getCustos()) {
-                custoService.save(custo);
-            }
-            for (CC cc : tabelaCustoAux.getCcs()) {
-                ccsService.save(cc);
-            }
-            tabelaCustoService.save(tabelaCustoAux);
-        }
-
-        List<Anexo> listaAnexos = new ArrayList<>();
-        for (Anexo anexo : proposta.getAnexo()) {
-            listaAnexos.add(anexoService.save(anexo));
-        }
-        proposta.setAnexo(listaAnexos);
+        System.out.println(proposta.getAnexo());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
     }

@@ -1,15 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import {
-  Box,
-  Button,
-  IconButton,
-  Tab,
-  Tooltip,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
+import { Box, Button, IconButton, Tab, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -31,6 +23,7 @@ import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import InputPesquisa from "../../components/InputPesquisa/InputPesquisa";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -678,7 +671,11 @@ const HomeGerencia = () => {
 
   // Função para salvar o input de pesquisa quando houver alteração
   const salvarPesquisa = (e) => {
-    setValorPesquisa(e.target.value);
+    if (typeof e == "string") {
+      setValorPesquisa(e);
+    } else {
+      setValorPesquisa(e.target.value);
+    }
   };
 
   // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
@@ -1176,9 +1173,14 @@ const HomeGerencia = () => {
             {/* Container das ações abaixo das abas (input de pesquisa, filtrar e criar demanda) */}
             <Box className="flex justify-between w-full">
               {/* Container para o input e botão de filtrar */}
-              <Box className="flex gap-4 w-2/4">
+              <Box className="flex gap-2 w-2/4 items-center">
                 {/* Input de pesquisa */}
-                <Box
+                <InputPesquisa
+                  eventoTeclado={eventoTeclado}
+                  pesquisaTitulo={pesquisaTitulo}
+                  salvarPesquisa={salvarPesquisa}
+                />
+                {/* <Box
                   className="flex justify-between items-center border px-3 py-1"
                   sx={{
                     backgroundColor: "input.main",
@@ -1188,33 +1190,7 @@ const HomeGerencia = () => {
                   id="primeiroDemandas"
                 >
                   {/* Input de pesquisa */}
-                  {/* <Autocomplete
-                    className="w-full"
-                    freeSolo
-                    id="free-solo-2-demo"
-                    disableClearable
-                    options={pesquisaTitulo}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={texts.homeGerencia.pesquisarPorTitulo}
-                        InputProps={{
-                          ...params.InputProps,
-                          type: "search",
-                        }}
-                      />
-                    )}
-                    onKeyDown={(e) => {
-                      eventoTeclado(e);
-                    }}
-                    onBlur={() => {
-                      pesquisaTitulo();
-                    }}
-                    onChange={(e) => {
-                      salvarPesquisa(e);
-                    }}
-                  /> */}
-                  <Box
+                {/* <Box
                     className="w-full"
                     component="input"
                     sx={{
@@ -1233,11 +1209,11 @@ const HomeGerencia = () => {
                     onChange={(e) => {
                       salvarPesquisa(e);
                     }}
-                  />
-                  {/* Container para os ícones */}
-                  <Box className="flex gap-2">
-                    {/* Ícone de pesquisa */}
-                    <Tooltip
+                  /> */}
+                {/* Container para os ícones */}
+                {/* <Box className="flex gap-2"> */}
+                {/* Ícone de pesquisa */}
+                {/* <Tooltip
                       className="hover:cursor-pointer"
                       title={texts.homeGerencia.pesquisar}
                       onClick={() => {
@@ -1245,10 +1221,10 @@ const HomeGerencia = () => {
                       }}
                     >
                       <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
-                    </Tooltip>
+                    </Tooltip> */}
 
-                    {/* Ícone de ordenação */}
-                    <Tooltip title={texts.homeGerencia.ordenacao}>
+                {/* Ícone de ordenação */}
+                {/* <Tooltip title={texts.homeGerencia.ordenacao}>
                       <SwapVertIcon
                         id="segundoDemandas"
                         onClick={() => {
@@ -1259,9 +1235,19 @@ const HomeGerencia = () => {
                       />
                     </Tooltip>
                   </Box>
-                </Box>
+                </Box> */}
 
                 {/* Modal de ordenação */}
+                <Tooltip title={texts.homeGerencia.ordenacao}>
+                  <SwapVertIcon
+                    id="segundoDemandas"
+                    onClick={() => {
+                      abrirModalOrdenacao();
+                    }}
+                    className="cursor-pointer"
+                    sx={{ color: "text.secondary" }}
+                  />
+                </Tooltip>
                 {abrirOrdenacao && (
                   <ModalOrdenacao
                     tipoComponente="demanda"

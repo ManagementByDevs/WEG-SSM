@@ -21,9 +21,12 @@ class EscopoPropostaService {
         return (await axios.post(`/escopo-proposta`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
     }
 
-    async salvarDados(escopoProposta) {
+    async salvarDados(escopoProposta, listaIdsAnexos) {
         let form = new FormData();
         form.append("escopo-proposta", JSON.stringify(escopoProposta));
+        for(const id of listaIdsAnexos) {
+            form.append("idsAnexos", id);
+        }
 
         return (await axios.put(`/escopo-proposta`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
     }
