@@ -407,7 +407,7 @@ const DetalhesProposta = ({
                     />
 
                     {/* Parecer da Diretoria */}
-                    {["ASSESSMENT_DG", "DONE"].includes(proposta.status) && (
+                    {["ASSESSMENT_DG", "DONE", "ASSESSMENT_EDICAO", "CANCELLED"].includes(proposta.status) && (
                       <ParecerDG
                         proposta={proposta}
                         setProposta={setProposta}
