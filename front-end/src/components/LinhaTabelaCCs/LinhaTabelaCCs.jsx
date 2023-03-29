@@ -37,7 +37,7 @@ const LinhaTabelaCCs = (props) => {
     <TableRow className="border-b">
       <td align="center" className="pb-5 relative">
         <Box className="flex w-full justify-end absolute" sx={{ width: "98%" }}>
-          <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
+          <Tooltip title={texts?.linhaTabelaCCs?.titleExcluirLinha}>
             <DeleteOutlineOutlinedIcon
               fontSize="medium"
               className="mt-1 delay-120 hover:scale-110 duration-300"
@@ -55,7 +55,7 @@ const LinhaTabelaCCs = (props) => {
           <Input
             className="border rounded drop-shadow-sm outline-none"
             fontSize={FontConfig.medium}
-            placeholder={texts.LinhaTabelaCCs.digiteCodigo}
+            placeholder={texts?.linhaTabelaCCs?.digiteCodigo}
             size="small"
             style={{
               width: "70%",
