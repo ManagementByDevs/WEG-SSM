@@ -22,6 +22,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Boolean existsByEmail(String email);
 
     /**
+     * Função para buscar um usuário pelo seu email
+     */
+    Optional<Usuario> findByEmail(String email);
+
+    /**
      * Função para buscar um usuário pelo seu email e senha
      */
     Usuario findByEmailAndSenha(String email, String senha);
