@@ -17,7 +17,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/historico")
 public class HistoricoController {

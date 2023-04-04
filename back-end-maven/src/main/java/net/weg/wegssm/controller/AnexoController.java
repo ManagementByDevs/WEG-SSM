@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Classe Controller para as funções dos anexos
  */
-@Controller
+@RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/anexo")

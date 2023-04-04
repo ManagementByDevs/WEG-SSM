@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Classe controller para os fóruns
  */
-@Controller
+@RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/forum")

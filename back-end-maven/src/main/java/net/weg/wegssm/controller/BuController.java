@@ -13,7 +13,7 @@ import java.util.List;
  * Classe controller para as BUs
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/bu")
 public class BuController {

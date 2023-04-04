@@ -18,7 +18,7 @@ import java.util.List;
  * Classe controller para os benefícios
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/beneficio")
 public class BeneficioController {

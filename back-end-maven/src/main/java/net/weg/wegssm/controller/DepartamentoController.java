@@ -13,7 +13,7 @@ import java.util.List;
  * Classe controller para os departamentos
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/departamento")
 public class DepartamentoController {

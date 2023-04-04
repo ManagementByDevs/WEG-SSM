@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/ata")
