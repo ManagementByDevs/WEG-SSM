@@ -22,7 +22,7 @@ import java.util.List;
 
 /** Classe controller para os escopos de propostas */
 @AllArgsConstructor
-@Controller
+@RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/escopo-proposta")
 public class EscopoPropostaController {

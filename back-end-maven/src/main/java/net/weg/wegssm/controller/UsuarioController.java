@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 /** Classe controller para o usuário */
-@Controller
+@RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/usuario")

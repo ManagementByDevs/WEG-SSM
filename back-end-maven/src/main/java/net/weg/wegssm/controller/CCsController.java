@@ -15,7 +15,7 @@ import javax.validation.Valid;
  * Classe controller para as CCs
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/weg_ssm/cc")
 @CrossOrigin(origins = "http://localhost:3000")
 public class CCsController {
