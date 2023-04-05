@@ -581,17 +581,31 @@ const HomeGerencia = () => {
   //   return Object.values(params).every((e) => e == null);
   // };
 
+  const arrangeParams = () => {
+    if(typeof params.solicitante == "string") {
+      params.solicitante = JSON.parse(params.solicitante);
+    }
+  };  
+
   const buscarItens = () => {
     setCarregamento(true);
     switch (valorAba) {
       case "1":
         if (usuario.id != 0) {
+          arrangeParams();
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
             setListaItens([...response.content]);
             setTotalPaginas(response.totalPages);
+          arrangeParams();
+          DemandaService.getPage(
+              params,
+              ordenacao + "size=" + 50 + "&page=" + paginaAtual
+            ).then((response) => {
+              setListaAutocomplete(response.content);
+            });
           });
         }
         break;
@@ -647,19 +661,9 @@ const HomeGerencia = () => {
         });
         break;
     }
-    buscarListaAutocomplete();
   };
 
-  const buscarListaAutocomplete = () => {
-    console.log("paramas: ",params)
-    DemandaService.getPage(
-      params,
-      ordenacao + "size=" + 50 + "&page=" + paginaAtual
-    ).then((response) => {
-      console.log("aaaaaaaaaaa", response);
-      setListaAutocomplete(response.content);
-    });
-  };
+  
 
   // Função para alterar a aba selecionada
   const handleChange = (event, novoValor) => {
