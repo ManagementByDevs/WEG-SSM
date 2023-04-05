@@ -278,7 +278,7 @@ const Chat = () => {
   }, [tab]);
 
   const connect = () => {
-    let Sock = new SockJS("http://localhost:8080/ws");
+    let Sock = new SockJS("http://localhost:8081/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   };
@@ -925,59 +925,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
-// Parte do websocket
-
-{
-  /* <>
-{
-  abrirModal && (
-    <ModalConfirmacao open={abrirModal} setOpen={setOpenModal} textoModal={"fecharChat"} onConfirmClick={deletarChat} onCancelClick={fecharModalCancelarChat} textoBotao={"sim"} />
-  )
-}
-<FundoComHeader>
-  <Box>
-    Enviar Mensagem:
-    <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
-    <button type="button" className="send-button" onClick={sendPrivateValue}>send</button>
-  </Box>
-
-  <Box>
-    {[...privateChats.get(tab)].map((chat, index) => (
-      <li key={index}>
-        <div >{chat.usuario.nome}</div>
-        <div >{chat.texto}</div>
-      </li>
-    ))}
-  </Box>
-</FundoComHeader>
-</> */
-}
-
-{
-  /* <Box>
-  <ul>
-    <li onClick={() => { setTab("CHATROOM") }}>Chatroom</li>
-    {[...privateChats.keys()].map((id, index) => (
-      <li onClick={() => { setTab(id) }} key={index}>{buscarNomeLista(id)}</li>
-    ))}
-  </ul>
-
-  {tab !== "CHATROOM" && <Box>
-    <ul>
-      {[...privateChats.get(tab)].map((chat, index) => (
-        <li key={index}>
-          {chat.usuario.nome !== userData.username && <div className="avatar">Usuario: {chat.usuario.nome}</div>}
-          <div className="message-data">Mensagem: {chat.texto}</div>
-          {chat.usuario.nome === userData.username && <div className="avatar self">Usuario: {chat.usuario.nome}</div>}
-        </li>
-      ))}
-    </ul>
-
-    <div className="send-message">
-      <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
-      <button type="button" className="send-button" onClick={sendPrivateValue}>send</button>
-    </div>
-  </Box>}
-</Box> */
-}
