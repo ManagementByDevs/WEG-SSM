@@ -482,6 +482,8 @@ const HomeGerencia = () => {
         setParamsPautas({ ...paramsAtas });
         break;
     }
+
+    saveNewPreference();
   }, [valorAba]);
 
   // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
@@ -891,14 +893,16 @@ const HomeGerencia = () => {
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
   const arrangePreferences = () => {
-    let itemsVisualizationMode =
-      UsuarioService.getPreferencias().itemsVisualizationMode.toUpperCase();
+    let preferencias = UsuarioService.getPreferencias();
+    console.log(preferencias)
 
     // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o
     // próximo modo para o qual será trocado a visualização
-    if (itemsVisualizationMode == nextModoVisualizacao) {
+    if (preferencias.itemsVisualizationMode == nextModoVisualizacao) {
       setNextModoVisualizacao("GRID");
     }
+
+    setValorAba(preferencias.abaPadrao);
   };
 
   /**
@@ -908,8 +912,12 @@ const HomeGerencia = () => {
     let user = UsuarioService.getUser();
     let preferencias = UsuarioService.getPreferencias();
 
+    // Nova preferência do modo de visualização
     preferencias.itemsVisualizationMode =
       nextModoVisualizacao == "TABLE" ? "grid" : "table";
+
+    // Nova preferência da aba padrão
+    preferencias.abaPadrao = valorAba;
 
     user.preferencias = JSON.stringify(preferencias);
 

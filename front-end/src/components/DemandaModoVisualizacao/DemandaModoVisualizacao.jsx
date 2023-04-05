@@ -87,6 +87,7 @@ const DemandaTable = ({
 
   // Função para formatar o nome do status da demanda
   const formatarNomeStatus = (status) => {
+    console.log(status)
     if (status == "CANCELLED") {
       return texts.demandaModoVisualizacao.status.reprovada;
     } else if (status == "BACKLOG_REVISAO") {
@@ -100,6 +101,8 @@ const DemandaTable = ({
     } else if (status == "ASSESSMENT_APROVACAO") {
       return texts.demandaModoVisualizacao.status.emAndamento;
     }
+    console.log("a")
+
   };
 
   //Abre o modal de motivo recusa
@@ -134,7 +137,7 @@ const DemandaTable = ({
             {myDemandas && (
               <th className="text-left text-white p-3 w-1/6">
                 <Typography fontSize={FontConfig.big}>
-                  {texts.demandaModoVisualizacao.status}
+                  {texts.demandaModoVisualizacao.statusString}
                 </Typography>
               </th>
             )}
