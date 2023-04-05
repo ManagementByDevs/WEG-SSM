@@ -6,6 +6,7 @@ import { styled } from "@mui/system";
 import DemandaService from "../../service/demandaService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import debounce from 'lodash/debounce';
 
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 
@@ -57,13 +58,6 @@ export default function UseAutocomplete(props) {
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const teste = [
-    { titulo: "teste1" },
-    { titulo: "teste2" },
-    { titulo: "teste3" },
-    { titulo: "teste4" },
-  ]
-
   const {
     getRootProps,
     getInputLabelProps,
@@ -73,11 +67,20 @@ export default function UseAutocomplete(props) {
     groupedOptions,
   } = useAutocomplete({
     id: "use-autocomplete-demo",
-    options: teste,
+    options: props.listaAutocomplete,
     getOptionLabel: (option) => option.titulo,
   });
 
-  
+  const handleChange = (event) => {
+    props.setValorPesquisa(event.target.value);
+    handleInputChangeDebounced(event.target.value); // chamando a função debounce
+  };
+
+  const handleInputChange = (valorInput) => {
+    console.log('O valor de entrada é:', valorInput);
+  };
+
+  const handleInputChangeDebounced = debounce(handleInputChange, 5000);
 
   return (
     <div>
@@ -88,7 +91,7 @@ export default function UseAutocomplete(props) {
           sx={{ fontSize: FontConfig.medium }}
           value={props.valorPesquisa}
           onChange={(e) => {
-            props.setValorPesquisa(e.target.value);
+            handleChange(e);
           }}
           onKeyDown={(e) => {
             props.eventoTeclado(e);
@@ -102,7 +105,9 @@ export default function UseAutocomplete(props) {
           {groupedOptions.map((option, index) => {
             return (
               option.titulo.includes(props.valorPesquisa) && (
-                <li {...getOptionProps({ option, index })}>{option.titulo}</li>
+                <li {...getOptionProps({ option, index })} onClick={() => {
+                  props.setValorPesquisa(option.titulo);
+                }}>{option.titulo}</li>
               )
             );
           })}

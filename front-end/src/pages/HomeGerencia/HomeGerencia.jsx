@@ -581,11 +581,20 @@ const HomeGerencia = () => {
   //   return Object.values(params).every((e) => e == null);
   // };
 
+  // useEffect(() => {
+  //   DemandaService.getPage(
+  //     params,
+  //     ordenacao + "size=" + 50 + "&page=" + paginaAtual
+  //   ).then((response) => {
+  //     setListaAutocomplete(response.content);
+  //   });
+  // }, [valorPesquisa]);
+
   const arrangeParams = () => {
-    if(typeof params.solicitante == "string") {
+    if (typeof params.solicitante == "string") {
       params.solicitante = JSON.parse(params.solicitante);
     }
-  };  
+  };
 
   const buscarItens = () => {
     setCarregamento(true);
@@ -599,8 +608,8 @@ const HomeGerencia = () => {
           ).then((response) => {
             setListaItens([...response.content]);
             setTotalPaginas(response.totalPages);
-          arrangeParams();
-          DemandaService.getPage(
+            arrangeParams();
+            DemandaService.getPage(
               params,
               ordenacao + "size=" + 50 + "&page=" + paginaAtual
             ).then((response) => {
@@ -662,8 +671,6 @@ const HomeGerencia = () => {
         break;
     }
   };
-
-  
 
   // Função para alterar a aba selecionada
   const handleChange = (event, novoValor) => {
@@ -1232,6 +1239,7 @@ const HomeGerencia = () => {
                   paginaAtual={paginaAtual}
                   setListaItens={setListaItens}
                   setTotalPaginas={setTotalPaginas}
+                  listaAutocomplete={listaAutocomplete}
                 />
                 {/* <Box
                   className="flex justify-between items-center border px-3 py-1"
