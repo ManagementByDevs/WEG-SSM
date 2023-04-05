@@ -785,9 +785,7 @@ const HomeGerencia = () => {
     if (listaObjetosString != null && listaObjetosString.length > 0) {
       // Verificação para saber em qual aba o usuário deseja exportar para excel
       if (valorAba == 2) {
-        ExportExcelService.exportDemandasBacklogToExcel(
-          listaObjetosString
-        ).then((response) => {
+        ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
@@ -796,9 +794,7 @@ const HomeGerencia = () => {
           link.click();
         });
       } else if (valorAba == 3) {
-        ExportExcelService.exportDemandasAssessmentToExcel(
-          listaObjetosString
-        ).then((response) => {
+        ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
@@ -807,15 +803,14 @@ const HomeGerencia = () => {
           link.click();
         });
       } else if (valorAba == 4) {
-        ExportExcelService.exportPropostasToExcel(listaObjetosString).then(
-          (response) => {
-            let blob = new Blob([response], { type: "application/excel" });
-            let url = URL.createObjectURL(blob);
-            let link = document.createElement("a");
-            link.href = url;
-            link.download = "propostas.xlsx";
-            link.click();
-          }
+        ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
+          let blob = new Blob([response], { type: "application/excel" });
+          let url = URL.createObjectURL(blob);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "propostas.xlsx";
+          link.click();
+        }
         );
       } else if (valorAba == 5) {
         let listaIdPautas = [];
@@ -825,15 +820,14 @@ const HomeGerencia = () => {
         }
 
         if (listaIdPautas.length > 0) {
-          ExportExcelService.exportPautasToExcel(listaIdPautas).then(
-            (response) => {
-              let blob = new Blob([response], { type: "application/excel" });
-              let url = URL.createObjectURL(blob);
-              let link = document.createElement("a");
-              link.href = url;
-              link.download = "pautas.xlsx";
-              link.click();
-            }
+          ExportExcelService.exportPautasToExcel(listaIdPautas).then((response) => {
+            let blob = new Blob([response], { type: "application/excel" });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = url;
+            link.download = "pautas.xlsx";
+            link.click();
+          }
           );
         }
       } else {
@@ -1428,7 +1422,7 @@ const HomeGerencia = () => {
                 </TabPanel>
                 {isGerente && (
                   <>
-                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                       <Ajuda
                         onClick={() => setIsTourCriarPropostasOpen(true)}
                       />
@@ -1447,7 +1441,7 @@ const HomeGerencia = () => {
                         />
                       </Box>
                     </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
+                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
                       <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                       <Box
                         sx={{
