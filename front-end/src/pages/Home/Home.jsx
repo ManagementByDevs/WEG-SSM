@@ -115,6 +115,9 @@ const Home = () => {
   // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
   const [carregamento, setCarregamento] = useState(false);
 
+  // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
+  const [isFirstTime, setIsFirstTime] = useState(false);
+
   // UseEffect para buscar o usuário e ativar possíveis filtros assim que entrar na página
   useEffect(() => {
     ativarFeedback();
@@ -131,7 +134,7 @@ const Home = () => {
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros e ordenação) forem modificados
   useEffect(() => {
     buscarDemandas();
-  }, [params]);
+  }, [params, isFirstTime]);
 
   // UseEffect para redefinir os parâmetros quando a ordenação ou a paginação for modificada, consequentemente buscando as demandas
   useEffect(() => {
@@ -217,7 +220,18 @@ const Home = () => {
 
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
   const buscarDemandas = () => {
+    // Verifica se os parâmetros estão nulos, se estiverem, não faz nada
     if (isParamsNull()) {
+      return;
+    }
+    
+    // Verifica o solicitante está em JSON, se está, transforma para um objeto
+    if (typeof params.solicitante == "string") {
+      params.solicitante = JSON.parse(params.solicitante);
+    }
+
+    // Verifica se tem um solicitante, senão ele busca as demandas com um usuário vazio
+    if (params.solicitante && params.solicitante.id == 0) {
       return;
     }
 
@@ -384,6 +398,7 @@ const Home = () => {
     }
 
     atualizarAba(null, preferencias.abaPadrao);
+    setIsFirstTime(true);
   };
 
   /**
