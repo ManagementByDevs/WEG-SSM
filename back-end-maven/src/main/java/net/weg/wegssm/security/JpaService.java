@@ -7,7 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+<<<<<<< Updated upstream
 import java.util.Optional;
+=======
+>>>>>>> Stashed changes
 
 /** Classe usada para buscar um usuário no banco para sua autenticação */
 @Service
@@ -21,6 +24,7 @@ public class JpaService implements UserDetailsService {
     /** Função que busca o usuário no banco de dados caso ele exista, prosseguindo com a autenticação */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+<<<<<<< Updated upstream
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(username);
 
         if (usuarioOptional.isPresent()) {
@@ -28,6 +32,10 @@ public class JpaService implements UserDetailsService {
         }
 
         throw new UsernameNotFoundException("Dados inválidos!");
+=======
+        Usuario usuarioOptional = usuarioRepository.findByEmail(username);
+        return new UserJpa(usuarioOptional);
+>>>>>>> Stashed changes
     }
 
 }

@@ -15,15 +15,19 @@ class UsuarioService {
    */
 
   async login(email, senha) {
-    return (await axios.get(usuario + `/login/${email}/${senha}`)).data;
+    return (await axios.get(usuario + `/login/${email}/${senha}`, { withCredentials: true })).data;
   }
 
   async getUsuarioById(id) {
-    return (await axios.get(usuario + `/${id}`)).data;
+    return (await axios.get(usuario + `/${id}`, { withCredentials: true })).data;
+  }
+
+  async getUsuarioByEmail(email) {
+    return (await axios.get(usuario + `/email/${email}`, { withCredentials: true })).data;
   }
 
   async getUsuarioByNomeAndTipo(nome, tipo) {
-    return (await axios.get(usuario + `/filtragem/${nome}/${tipo}`)).data;
+    return (await axios.get(usuario + `/filtragem/${nome}/${tipo}`, { withCredentials: true })).data;
   }
 
   /**
@@ -35,7 +39,7 @@ class UsuarioService {
   async updateUser(userId, user) {
     return (
       await axios.put(usuario + `/${userId}`, user, {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" }, withCredentials: true
       })
     ).data;
   }

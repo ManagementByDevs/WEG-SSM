@@ -4,15 +4,15 @@ const demanda = "/demanda";
 
 class DemandaService {
     async get() {
-        return (await axios.get(demanda)).data;
+        return (await axios.get(demanda, { withCredentials: true })).data;
     }
 
     async getById(id) {
-        return (await axios.get(demanda + "/" + id)).data;
+        return (await axios.get(demanda + "/" + id, { withCredentials: true })).data;
     }
 
     async getByPPM(ppm) {
-        return (await axios.get(demanda + `/ppm/${ppm}`)).data;
+        return (await axios.get(demanda + `/ppm/${ppm}`, { withCredentials: true })).data;
     }
 
     async getPage(params, page) {
@@ -32,7 +32,7 @@ class DemandaService {
         if (params.analista != null) {
             params.analista = JSON.stringify(params.analista);
         }
-        return (await axios.get(demanda + `/page?${page}`, { params: params, headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.get(demanda + `/page?${page}`, { params: params, headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async post(demanda, arquivos, usuarioId) {
@@ -44,14 +44,14 @@ class DemandaService {
         }
 
         if (arquivos.length > 0) {
-            return (await axios.post(`/demanda/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+            return (await axios.post(`/demanda/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
         } else {
-            return (await axios.post(`/demanda/sem-arquivos/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+            return (await axios.post(`/demanda/sem-arquivos/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
         }
     }
 
     async atualizarStatus(idDemanda, statusNovo) {
-        return (await axios.put(`/demanda/status/${idDemanda}/${statusNovo}`, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.put(`/demanda/status/${idDemanda}/${statusNovo}`, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async put(demanda, arquivos) {
@@ -63,9 +63,9 @@ class DemandaService {
         }
 
         if (arquivos.length > 0) {
-            return (await axios.put(`/demanda/aceite`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+            return (await axios.put(`/demanda/aceite`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
         } else {
-            return (await axios.put(`/demanda/manter-arquivos-velhos`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+            return (await axios.put(`/demanda/manter-arquivos-velhos`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
         }
     }
 
@@ -74,7 +74,7 @@ class DemandaService {
 
         form.append("demanda", JSON.stringify(demanda));
 
-        return (await axios.put(`/demanda/manter-arquivos-velhos`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.put(`/demanda/manter-arquivos-velhos`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async addHistorico(idDemanda, texto, documento, usuario) {
@@ -83,7 +83,7 @@ class DemandaService {
         form.set("documento", documento);
         form.set("usuarioId", usuario);
 
-        return (await axios.put(`/demanda/add-historico/${idDemanda}`, form, { headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.put(`/demanda/add-historico/${idDemanda}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 }
 

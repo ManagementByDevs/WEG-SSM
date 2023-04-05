@@ -40,4 +40,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
      * Função para buscar um usuário pelo seu departamento e tipo de usuário
      */
     Usuario findByDepartamentoAndTipoUsuario(Departamento departamento, TipoUsuario tipoUsuario);
+
+    /**
+     * Função para buscar um usuário pelo seu email
+     */
+    Usuario findByEmail(String email);
 }

@@ -83,4 +83,11 @@ public class UsuarioService {
     public Usuario findByDepartamentoAndTipoUsuario(Departamento departamento, TipoUsuario tipoUsuario) {
         return usuarioRepository.findByDepartamentoAndTipoUsuario(departamento, tipoUsuario);
     }
+
+    /**
+     * Função para buscar um usuário pelo seu email
+     */
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
 }

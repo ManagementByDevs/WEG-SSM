@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -29,6 +29,9 @@ import TextLanguage from "./service/TextLanguage";
 import FontContext from "./service/FontContext";
 import TextLanguageContext from "./service/TextLanguageContext";
 import ChatContext from "./service/ChatContext";
+
+import UsuarioService from "./service/usuarioService";
+import CookieService from "./service/cookieService";
 
 const App = () => {
   const [FontConfig, setFontConfig] = useState({
@@ -99,7 +102,7 @@ const App = () => {
                   path="/"
                   element={
                     <ProtectedRoute>
-                      <DetermineHomeUser />
+                      {DetermineHomeUser()}
                     </ProtectedRoute>
                   }
                 />
@@ -161,39 +164,48 @@ const ProtectedRoute = ({
   children,
   redirectPath = "/login",
 }) => {
-  // Quando formos retirar o user do localstorage,
-  // lembrar de deletar no Login.jsx a linha de adicionar o user no localstorage na função login;
-  // Lembrar de deletar no UserModal.jsx a linha de deletar o user do localstorage na função sair;
-  const [user, setUser] = useState(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
-  );
 
-  // Caso não tenha usuário logado ou o usuário não possua um tipo que possa acessar tal
-  // página, redireciona para o redirectPath (Valor padrão é login)
-  if (
-    !user ||
-    (tiposUsuarioAllowed && !tiposUsuarioAllowed.includes(user.tipoUsuario))
-  ) {
+  const cookie = CookieService.getCookie();
+  if (cookie != null) {
+    UsuarioService.getUsuarioByEmail(cookie.sub)
+      .then((user) => {
+        return children ? children : <Outlet />;
+      })
+      .catch((error) => {
+        console.error("Failed to load user data: ", error);
+      });
+  } else {
     return <Navigate to={redirectPath} replace />;
   }
-
-  // Caso o componente esteja sendo usado como Layout Route, não possuirá um children, retornando o Outlet
-  return children ? children : <Outlet />;
 };
 
 const DetermineHomeUser = () => {
-  const [user, setUser] = useState(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
-  );
 
-  if (user.tipoUsuario === "SOLICITANTE") {
-    return <Home />;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (user != null) {
+      if (user.tipoUsuario === "SOLICITANTE") {
+        console.log("home");
+        return <Home />;
+      } else {
+        return <HomeGerencia />;
+      }
+    }
+  }, [user]);
+
+  const cookie = CookieService.getCookie();
+  if (cookie != null) {
+    try {
+      UsuarioService.getUsuarioByEmail(cookie.sub).then((usuario) => {
+        setUser(usuario);
+      });
+    } catch (error) {
+      console.error("Failed to load user data: ", error);
+      return null;
+    }
   } else {
-    return <HomeGerencia />;
+    return null;
   }
 };
 

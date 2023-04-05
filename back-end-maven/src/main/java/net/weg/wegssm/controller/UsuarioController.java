@@ -20,14 +20,23 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+<<<<<<< Updated upstream
 /** Classe controller para o usuário */
 @Controller
+=======
+/**
+ * Classe controller para o usuário
+ */
+@RestController
+>>>>>>> Stashed changes
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/usuario")
 public class UsuarioController {
 
-    /** Classe service dos usuários */
+    /**
+     * Classe service dos usuários
+     */
     private UsuarioService usuarioService;
 
     /**
@@ -36,6 +45,14 @@ public class UsuarioController {
     @GetMapping("/login/{email}/{senha}")
     public ResponseEntity<Usuario> findByEmailAndSenha(@PathVariable String email, @PathVariable String senha) {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByEmailAndSenha(email, senha));
+    }
+
+    /**
+     * Função para buscar um usuário pelo seu email, usado na conversão do cookie de autenticação
+     */
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Usuario> findByEmail(@PathVariable(value = "email") String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByEmail(email));
     }
 
     /**
@@ -50,7 +67,9 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findById(id).get());
     }
 
-    /** Função para buscar uma lista de usuários pelo nome e tipo de usuário, necessária para filtragem */
+    /**
+     * Função para buscar uma lista de usuários pelo nome e tipo de usuário, necessária para filtragem
+     */
     @GetMapping("/filtragem/{nome}/{tipo_usuario}")
     public ResponseEntity<List<Usuario>> findByNomeAndTipoUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                   @PathVariable(value = "nome") String nome,
