@@ -358,6 +358,8 @@ const HomeGerencia = () => {
     });
   }, [ordenacao]);
 
+  const [listaAutocomplete, setListaAutocomplete] = useState([]);
+
   useEffect(() => {
     let paramsTemp = {
       solicitante: null,
@@ -673,11 +675,7 @@ const HomeGerencia = () => {
 
   // Função para salvar o input de pesquisa quando houver alteração
   const salvarPesquisa = (e) => {
-    if (typeof e == "string") {
       setValorPesquisa(e);
-    } else {
-      setValorPesquisa(e.target.value);
-    }
   };
 
   // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
@@ -740,7 +738,8 @@ const HomeGerencia = () => {
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   // Feedback propostas atualizadas
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] =
+    useState(false);
 
   useEffect(() => {
     if (location.state?.feedback) {
@@ -894,7 +893,7 @@ const HomeGerencia = () => {
    */
   const arrangePreferences = () => {
     let preferencias = UsuarioService.getPreferencias();
-    console.log(preferencias)
+    console.log(preferencias);
 
     // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o
     // próximo modo para o qual será trocado a visualização
@@ -1187,6 +1186,14 @@ const HomeGerencia = () => {
                   eventoTeclado={eventoTeclado}
                   pesquisaTitulo={pesquisaTitulo}
                   salvarPesquisa={salvarPesquisa}
+                  valorPesquisa = {valorPesquisa}
+                  setValorPesquisa = {setValorPesquisa}
+                  params={params}
+                  ordenacao = {ordenacao}
+                  tamanhoPagina = {tamanhoPagina}
+                  paginaAtual = {paginaAtual}
+                  setListaItens = {setListaItens}
+                  setTotalPaginas = {setTotalPaginas}
                 />
                 {/* <Box
                   className="flex justify-between items-center border px-3 py-1"

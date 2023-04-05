@@ -1,17 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  Tab,
-  Tooltip,
-  useAutocomplete,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
+import { useAutocomplete } from "@mui/material";
 
 import { styled } from "@mui/system";
 
+import DemandaService from "../../service/demandaService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
@@ -20,18 +12,6 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 const Label = styled("label")({
   display: "block",
 });
-
-const Input = styled("input")(({ theme }) => ({
-  width: "28rem",
-  height: "2.2rem",
-  padding: "0.5rem 0.5rem",
-  backgroundColor: "transparent",
-  color: "input.main",
-  border: "1.5px solid",
-  borderColor: "#BDBEC0",
-  borderRadius: 4,
-  outline: "none",
-}));
 
 const Listbox = styled("ul")(({ theme }) => ({
   width: "28rem",
@@ -58,13 +38,24 @@ const Listbox = styled("ul")(({ theme }) => ({
   },
 }));
 
+const Input = styled("input")(({ theme }) => ({
+  width: "28rem",
+  height: "2.2rem",
+  padding: "0.5rem 0.5rem",
+  backgroundColor: "transparent",
+  color: "input.main",
+  border: "1.5px solid",
+  borderColor: "#BDBEC0",
+  borderRadius: 4,
+  outline: "none",
+}));
+
 export default function UseAutocomplete(props) {
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
-
-  const [textoPesquisa, setTextoPesquisa] = useState("");
-
-  useEffect(() => {}, [textoPesquisa]);
 
   const {
     getRootProps,
@@ -75,50 +66,41 @@ export default function UseAutocomplete(props) {
     groupedOptions,
   } = useAutocomplete({
     id: "use-autocomplete-demo",
-    options: top100Films,
-    getOptionLabel: (option) => option.title,
-    // blurOnSelect: true,
-    // onChange: (value) => {
-    //   props.salvarPesquisa(value);
-    //   props.pesquisaTitulo();
-    // },
+    options: opcoes,
+    getOptionLabel: (option) => option.titulo,
   });
 
   return (
     <div>
       <div {...getRootProps()}>
         <Input
-          placeholder={texts.homeGerencia.pesquisarPorTitulo}
           {...getInputProps()}
+          placeholder={texts.homeGerencia.pesquisarPorTitulo}
+          sx={{ fontSize: FontConfig.medium }}
+          value={props.valorPesquisa}
+          onChange={(e) => {
+            props.setValorPesquisa(e.target.value);
+          }}
           onKeyDown={(e) => {
-            console.log(getInputProps().value);
             props.eventoTeclado(e);
-            props.salvarPesquisa(e);
           }}
         />
       </div>
       {groupedOptions.length > 0 ? (
         <Listbox
-          onChange={(e) => {
-            console.log("getInputProps().value");
-            props.eventoTeclado(e);
-            props.salvarPesquisa(e);
-          }}
           {...getListboxProps()}
+          onClick={() => {
+          }}
         >
-          {groupedOptions.map((option, index) => (
-            <li {...getOptionProps({ option, index })}>{option.title}</li>
-          ))}
+          {groupedOptions.map((option, index) => {
+            return (
+              option.titulo.includes(props.valorPesquisa) && (
+                <li {...getOptionProps({ option, index })}>{option.titulo}</li>
+              )
+            );
+          })}
         </Listbox>
       ) : null}
     </div>
   );
 }
-
-const top100Films = [
-  { title: "The Shawshank Redemption", year: 1994 },
-  { title: "The Godfather", year: 1972 },
-  { title: "The Godfather: Part II", year: 1974 },
-  { title: "The Dark Knight", year: 2008 },
-  { title: "12 Angry Men", year: 1957 },
-];
