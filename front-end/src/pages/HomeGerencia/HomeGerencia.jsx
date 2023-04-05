@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Box, Button, IconButton, Tab, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AddIcon from "@mui/icons-material/Add";
@@ -227,14 +226,16 @@ const HomeGerencia = () => {
     },
   ];
 
-  // Context para alterar o tema do sistema
-  const { mode, toggleColorMode } = useContext(ColorModeContext);
+  // Context para ver o tema do sistema
+  const { mode } = useContext(ColorModeContext);
 
   // Contexto para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   /** Variável armazenando qual a aba atual que o usuário está */
-  const [valorAba, setValorAba] = useState("1");
+  const [valorAba, setValorAba] = useState(
+    UsuarioService.getPreferencias().abaPadrao
+  );
 
   /** Lista geral de itens (demandas, propostas, pautas e atas) para mostrar nas abas */
   const [listaItens, setListaItens] = useState([]);
@@ -280,6 +281,9 @@ const HomeGerencia = () => {
 
   /** Variável booleana que determina se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
+
+  // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
+  const [isFirstTime, setIsFirstTime] = useState(false);
 
   /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
   const [filtrosAtuais, setFiltrosAtuais] = useState({
@@ -339,8 +343,14 @@ const HomeGerencia = () => {
   useEffect(() => {
     buscarUsuario();
     buscarFiltros();
-    arrangePreferences();
   }, []);
+
+  // UseEffect para arrumar as preferências do usuário
+  useEffect(() => {
+    if (Object.values(usuario).every((value) => value != null)) {
+      arrangePreferences();
+    }
+  }, [usuario]);
 
   // UseEffect para redefinir os parâmteros quando a ordenação for modificada
   useEffect(() => {
@@ -433,14 +443,18 @@ const HomeGerencia = () => {
 
   useEffect(() => {
     setCarregamento(true);
+
     switch (valorAba) {
       case "1":
-        setParams({
-          ...params,
-          gerente: null,
-          status: null,
-          solicitante: usuario,
-        });
+        // Se usuário for diferente de null ele deve setar os parâmetros, senão o usuário fica como objeto vazio
+        if (Object.values(usuario).every((value) => value != null)) {
+          setParams({
+            ...params,
+            gerente: null,
+            status: null,
+            solicitante: usuario,
+          });
+        }
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
@@ -482,13 +496,11 @@ const HomeGerencia = () => {
         setParamsPautas({ ...paramsAtas });
         break;
     }
-
-    saveNewPreference();
-  }, [valorAba]);
+  }, [valorAba, isFirstTime]);
 
   // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
   useEffect(() => {
-    setParams({ ...params, solicitante: usuario });
+    // setParams({ ...params, solicitante: usuario });
 
     if (listaAnalistas.length == 0 && usuario.tipoUsuario == "ANALISTA") {
       listaAnalistas.push(usuario);
@@ -559,9 +571,13 @@ const HomeGerencia = () => {
       parseInt(localStorage.getItem("usuarioId"))
     ).then((e) => {
       setUsuario(e);
-      setParams({ ...params, solicitante: e });
     });
   };
+
+  // Função que verifica se os parâmetros estão nulos
+  // const isParamsNull = () => {
+  //   return Object.values(params).every((e) => e == null);
+  // };
 
   const buscarItens = () => {
     setCarregamento(true);
@@ -630,10 +646,6 @@ const HomeGerencia = () => {
         break;
     }
   };
-
-  const [pautas, setPautas] = useState([]);
-
-  const [atas, setAtas] = useState([]);
 
   // Função para alterar a aba selecionada
   const handleChange = (event, novoValor) => {
@@ -740,7 +752,8 @@ const HomeGerencia = () => {
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   // Feedback propostas atualizadas
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] =
+    useState(false);
 
   useEffect(() => {
     if (location.state?.feedback) {
@@ -894,7 +907,6 @@ const HomeGerencia = () => {
    */
   const arrangePreferences = () => {
     let preferencias = UsuarioService.getPreferencias();
-    console.log(preferencias)
 
     // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o
     // próximo modo para o qual será trocado a visualização
@@ -903,21 +915,28 @@ const HomeGerencia = () => {
     }
 
     setValorAba(preferencias.abaPadrao);
+    setIsFirstTime(true);
   };
 
   /**
    * Função que salva a nova preferência do usuário
    */
-  const saveNewPreference = () => {
+  const saveNewPreference = (preferenciaTipo) => {
     let user = UsuarioService.getUser();
     let preferencias = UsuarioService.getPreferencias();
 
-    // Nova preferência do modo de visualização
-    preferencias.itemsVisualizationMode =
-      nextModoVisualizacao == "TABLE" ? "grid" : "table";
-
-    // Nova preferência da aba padrão
-    preferencias.abaPadrao = valorAba;
+    switch (preferenciaTipo) {
+      case "itemsVisualizationMode":
+        // Nova preferência do modo de visualização
+        preferencias.itemsVisualizationMode =
+          nextModoVisualizacao == "TABLE" ? "grid" : "table";
+        break;
+      case "abaPadrao":
+        // Nova preferência da aba padrão
+        preferencias.abaPadrao = valorAba;
+        setValorAba(preferencias.abaPadrao);
+        break;
+    }
 
     user.preferencias = JSON.stringify(preferencias);
 
@@ -928,8 +947,12 @@ const HomeGerencia = () => {
 
   // UseEffect para salvar as novas preferências do usuário
   useEffect(() => {
-    saveNewPreference();
+    saveNewPreference("itemsVisualizationMode");
   }, [nextModoVisualizacao]);
+
+  useEffect(() => {
+    saveNewPreference("abaPadrao");
+  }, [valorAba]);
   // ********************************************** Fim Preferências **********************************************
 
   return (
