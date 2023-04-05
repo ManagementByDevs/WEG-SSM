@@ -647,6 +647,18 @@ const HomeGerencia = () => {
         });
         break;
     }
+    buscarListaAutocomplete();
+  };
+
+  const buscarListaAutocomplete = () => {
+    console.log("paramas: ",params)
+    DemandaService.getPage(
+      params,
+      ordenacao + "size=" + 50 + "&page=" + paginaAtual
+    ).then((response) => {
+      console.log("aaaaaaaaaaa", response);
+      setListaAutocomplete(response.content);
+    });
   };
 
   // Função para alterar a aba selecionada
@@ -687,7 +699,7 @@ const HomeGerencia = () => {
 
   // Função para salvar o input de pesquisa quando houver alteração
   const salvarPesquisa = (e) => {
-      setValorPesquisa(e);
+    setValorPesquisa(e);
   };
 
   // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
@@ -783,7 +795,9 @@ const HomeGerencia = () => {
     if (listaObjetosString != null && listaObjetosString.length > 0) {
       // Verificação para saber em qual aba o usuário deseja exportar para excel
       if (valorAba == 2) {
-        ExportExcelService.exportDemandasBacklogToExcel(listaObjetosString).then((response) => {
+        ExportExcelService.exportDemandasBacklogToExcel(
+          listaObjetosString
+        ).then((response) => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
@@ -792,7 +806,9 @@ const HomeGerencia = () => {
           link.click();
         });
       } else if (valorAba == 3) {
-        ExportExcelService.exportDemandasAssessmentToExcel(listaObjetosString).then((response) => {
+        ExportExcelService.exportDemandasAssessmentToExcel(
+          listaObjetosString
+        ).then((response) => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
@@ -801,14 +817,15 @@ const HomeGerencia = () => {
           link.click();
         });
       } else if (valorAba == 4) {
-        ExportExcelService.exportPropostasToExcel(listaObjetosString).then((response) => {
-          let blob = new Blob([response], { type: "application/excel" });
-          let url = URL.createObjectURL(blob);
-          let link = document.createElement("a");
-          link.href = url;
-          link.download = "propostas.xlsx";
-          link.click();
-        }
+        ExportExcelService.exportPropostasToExcel(listaObjetosString).then(
+          (response) => {
+            let blob = new Blob([response], { type: "application/excel" });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = url;
+            link.download = "propostas.xlsx";
+            link.click();
+          }
         );
       } else if (valorAba == 5) {
         let listaIdPautas = [];
@@ -818,14 +835,15 @@ const HomeGerencia = () => {
         }
 
         if (listaIdPautas.length > 0) {
-          ExportExcelService.exportPautasToExcel(listaIdPautas).then((response) => {
-            let blob = new Blob([response], { type: "application/excel" });
-            let url = URL.createObjectURL(blob);
-            let link = document.createElement("a");
-            link.href = url;
-            link.download = "pautas.xlsx";
-            link.click();
-          }
+          ExportExcelService.exportPautasToExcel(listaIdPautas).then(
+            (response) => {
+              let blob = new Blob([response], { type: "application/excel" });
+              let url = URL.createObjectURL(blob);
+              let link = document.createElement("a");
+              link.href = url;
+              link.download = "pautas.xlsx";
+              link.click();
+            }
           );
         }
       } else {
@@ -1202,14 +1220,14 @@ const HomeGerencia = () => {
                   eventoTeclado={eventoTeclado}
                   pesquisaTitulo={pesquisaTitulo}
                   salvarPesquisa={salvarPesquisa}
-                  valorPesquisa = {valorPesquisa}
-                  setValorPesquisa = {setValorPesquisa}
+                  valorPesquisa={valorPesquisa}
+                  setValorPesquisa={setValorPesquisa}
                   params={params}
-                  ordenacao = {ordenacao}
-                  tamanhoPagina = {tamanhoPagina}
-                  paginaAtual = {paginaAtual}
-                  setListaItens = {setListaItens}
-                  setTotalPaginas = {setTotalPaginas}
+                  ordenacao={ordenacao}
+                  tamanhoPagina={tamanhoPagina}
+                  paginaAtual={paginaAtual}
+                  setListaItens={setListaItens}
+                  setTotalPaginas={setTotalPaginas}
                 />
                 {/* <Box
                   className="flex justify-between items-center border px-3 py-1"
@@ -1428,7 +1446,7 @@ const HomeGerencia = () => {
                 </TabPanel>
                 {isGerente && (
                   <>
-                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                       <Ajuda
                         onClick={() => setIsTourCriarPropostasOpen(true)}
                       />
@@ -1447,7 +1465,7 @@ const HomeGerencia = () => {
                         />
                       </Box>
                     </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
                       <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                       <Box
                         sx={{

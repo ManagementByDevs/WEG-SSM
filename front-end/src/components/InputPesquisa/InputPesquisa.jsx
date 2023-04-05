@@ -57,6 +57,13 @@ export default function UseAutocomplete(props) {
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  const teste = [
+    { titulo: "teste1" },
+    { titulo: "teste2" },
+    { titulo: "teste3" },
+    { titulo: "teste4" },
+  ]
+
   const {
     getRootProps,
     getInputLabelProps,
@@ -66,9 +73,11 @@ export default function UseAutocomplete(props) {
     groupedOptions,
   } = useAutocomplete({
     id: "use-autocomplete-demo",
-    options: opcoes,
+    options: teste,
     getOptionLabel: (option) => option.titulo,
   });
+
+  
 
   return (
     <div>
@@ -89,8 +98,6 @@ export default function UseAutocomplete(props) {
       {groupedOptions.length > 0 ? (
         <Listbox
           {...getListboxProps()}
-          onClick={() => {
-          }}
         >
           {groupedOptions.map((option, index) => {
             return (
