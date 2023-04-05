@@ -217,15 +217,13 @@ const Home = () => {
 
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
   const buscarDemandas = () => {
-    let auxParams = { ...params };
-
     if (isParamsNull()) {
       return;
     }
 
     setCarregamento(true);
     DemandaService.getPage(
-      auxParams,
+      params,
       stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
     ).then((e) => {
       setTotalPaginas(e.totalPages);
