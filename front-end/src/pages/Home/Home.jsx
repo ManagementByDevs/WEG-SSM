@@ -26,7 +26,7 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 import Demanda from "../../components/Demanda/Demanda";
 
 import Tour from "reactour";
-import ClipLoader from 'react-spinners/ClipLoader';
+import ClipLoader from "react-spinners/ClipLoader";
 
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
 
@@ -36,7 +36,7 @@ const Home = () => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Lista de demandas presentes
   const [listaDemandas, setListaDemandas] = useState([]);
@@ -99,7 +99,9 @@ const Home = () => {
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   // UseState para poder visualizar e alterar a aba selecionada
-  const [valorAba, setValorAba] = useState("1");
+  const [valorAba, setValorAba] = useState(
+    UsuarioService.getPreferencias().abaPadrao
+  );
 
   // Valor do input de pesquisa por título da demanda
   const [valorPesquisa, setValorPesquisa] = useState("");
@@ -117,8 +119,14 @@ const Home = () => {
   useEffect(() => {
     ativarFeedback();
     buscarUsuario();
-    arrangePreferences();
   }, []);
+
+  // UseEffect para arrumar as preferências do usuário
+  useEffect(() => {
+    if (Object.values(usuario).every((value) => value != null)) {
+      arrangePreferences();
+    }
+  }, [usuario]);
 
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros e ordenação) forem modificados
   useEffect(() => {
@@ -199,15 +207,25 @@ const Home = () => {
       parseInt(localStorage.getItem("usuarioId"))
     ).then((e) => {
       setUsuario(e);
-      setParams({ ...params, solicitante: e });
     });
+  };
+
+  // Função que verifica se os parâmetros estão nulos
+  const isParamsNull = () => {
+    return Object.values(params).every((e) => e == null);
   };
 
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
   const buscarDemandas = () => {
+    let auxParams = { ...params };
+
+    if (isParamsNull()) {
+      return;
+    }
+
     setCarregamento(true);
     DemandaService.getPage(
-      params,
+      auxParams,
       stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
     ).then((e) => {
       setTotalPaginas(e.totalPages);
@@ -360,24 +378,35 @@ const Home = () => {
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
   const arrangePreferences = () => {
-    let itemsVisualizationMode =
-      UsuarioService.getPreferencias().itemsVisualizationMode.toUpperCase();
+    let preferencias = UsuarioService.getPreferencias();
 
     // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
-    if (itemsVisualizationMode == nextModoVisualizacao) {
+    if (preferencias.itemsVisualizationMode == nextModoVisualizacao) {
       setNextModoVisualizacao("GRID");
     }
+
+    atualizarAba(null, preferencias.abaPadrao);
   };
 
   /**
    * Função que salva a nova preferência do usuário
    */
-  const saveNewPreference = () => {
+  const saveNewPreference = (preferenciaTipo) => {
     let user = UsuarioService.getUser();
     let preferencias = UsuarioService.getPreferencias();
 
-    preferencias.itemsVisualizationMode =
-      nextModoVisualizacao == "TABLE" ? "grid" : "table";
+    switch (preferenciaTipo) {
+      case "itemsVisualizationMode":
+        // Nova preferência do modo de visualização
+        preferencias.itemsVisualizationMode =
+          nextModoVisualizacao == "TABLE" ? "grid" : "table";
+        break;
+      case "abaPadrao":
+        // Nova preferência da aba padrão
+        preferencias.abaPadrao = valorAba;
+        atualizarAba(null, preferencias.abaPadrao);
+        break;
+    }
 
     user.preferencias = JSON.stringify(preferencias);
 
@@ -388,8 +417,12 @@ const Home = () => {
 
   // UseEffect para salvar as novas preferências do usuário
   useEffect(() => {
-    saveNewPreference();
+    saveNewPreference("itemsVisualizationMode");
   }, [nextModoVisualizacao]);
+
+  useEffect(() => {
+    saveNewPreference("abaPadrao");
+  }, [valorAba]);
   // ********************************************** Fim Preferências **********************************************
 
   return (

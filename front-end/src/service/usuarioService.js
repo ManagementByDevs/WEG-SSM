@@ -42,7 +42,7 @@ class UsuarioService {
 
   /**
    * Pega as preferências do usuário logado ou retorna as preferências padrão se não estiver logado
-   * @returns {{themeMode: "dark" | "light", fontSizeDefault: "14px" | "12px" | "16px" | "18px", itemsVisualizationMode: "grid" | "table", lang: "pt" | "en" | "ch", abaPadrao: 1 | 2 | 3 | 4 | 5 | 6}} Preferências do usuário
+   * @returns {{themeMode: "dark" | "light", fontSizeDefault: "14px" | "12px" | "16px" | "18px", itemsVisualizationMode: "grid" | "table", lang: "pt" | "en" | "ch", abaPadrao: "1" | "2" | "3" | "4" | "5" | "6"}} Preferências do usuário
    */
   getPreferencias() {
     let user = JSON.parse(localStorage.getItem("user"));
