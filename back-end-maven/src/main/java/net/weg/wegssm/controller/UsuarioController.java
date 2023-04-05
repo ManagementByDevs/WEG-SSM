@@ -20,15 +20,10 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-<<<<<<< Updated upstream
-/** Classe controller para o usuário */
-@Controller
-=======
 /**
  * Classe controller para o usuário
  */
 @RestController
->>>>>>> Stashed changes
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/usuario")

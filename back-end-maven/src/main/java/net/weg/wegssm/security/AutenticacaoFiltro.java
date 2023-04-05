@@ -34,11 +34,7 @@ public class AutenticacaoFiltro extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-<<<<<<< Updated upstream
-        if (request.getRequestURI().equals("/weg_ssm/login") || request.getRequestURI().equals("/weg_ssm/login/auth") || request.getRequestURI().equals("/login")) {
-=======
         if (request.getRequestURI().equals("/weg_ssm/login") || request.getRequestURI().equals("/weg_ssm/login/auth") || request.getRequestURI().equals("/login") || request.getRequestURI().equals("/weg_ssm/usuario/email")) {
->>>>>>> Stashed changes
             filterChain.doFilter(request, response);
             return;
         }

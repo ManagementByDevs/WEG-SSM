@@ -40,10 +40,6 @@ public class TokenUtils {
     public Cookie gerarCookie(Authentication authentication) {
         Cookie cookie = new Cookie("jwt", gerarToken(authentication));
         cookie.setPath("/");
-<<<<<<< Updated upstream
-=======
-        cookie.setSecure(true);
->>>>>>> Stashed changes
         cookie.setMaxAge(3600);
         return cookie;
     }
