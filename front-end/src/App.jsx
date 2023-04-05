@@ -181,32 +181,26 @@ const ProtectedRoute = ({
 
 const DetermineHomeUser = () => {
 
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    if (user != null) {
-      if (user.tipoUsuario === "SOLICITANTE") {
-        console.log("home");
-        return <Home />;
-      } else {
-        return <HomeGerencia />;
-      }
-    }
-  }, [user]);
-
-  const cookie = CookieService.getCookie();
-  if (cookie != null) {
-    try {
-      UsuarioService.getUsuarioByEmail(cookie.sub).then((usuario) => {
-        setUser(usuario);
-      });
-    } catch (error) {
-      console.error("Failed to load user data: ", error);
-      return null;
+  const user = returnUsuario();
+  console.log(user);
+  if (user != null) {
+    if (user.tipoUsuario == "SOLICITANTE") {
+      return <Home />
+    } else {
+      return <HomeGerencia />
     }
   } else {
     return null;
   }
 };
+
+const returnUsuario = async () => {
+  const cookie = CookieService.getCookie();
+  if (cookie != null) {
+    return await UsuarioService.getUsuarioByEmail(cookie.sub);
+  } else {
+    return null;
+  }
+}
 
 export default App;
