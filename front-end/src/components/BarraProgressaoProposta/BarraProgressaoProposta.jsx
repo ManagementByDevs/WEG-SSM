@@ -191,7 +191,7 @@ const BarraProgressaoProposta = (props) => {
 
     setListaBeneficios(escopo.beneficios);
     setCustos(escopo.tabelaCustos);
-    
+
     setCarregamento(false);
   }
 
@@ -334,7 +334,7 @@ const BarraProgressaoProposta = (props) => {
       }
 
       let listaCCs = [...tabelaCustos.ccs];
-      listaNova.push({ custos: listaCustos, ccs: listaCCs });
+      listaNova.push({ id: tabelaCustos.id, custos: listaCustos, ccs: listaCCs });
     }
     return listaNova;
   }
@@ -385,9 +385,9 @@ const BarraProgressaoProposta = (props) => {
     excluirBeneficios();
 
     propostaService.post(retornaObjetoProposta(), receberIdsAnexos()).then((response) => {
-      // DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
+      DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
         EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
-
+          console.log(response);
           // Salvamento de histórico
           ExportPdfService.exportProposta(response.id).then((file) => {
             let arquivo = new Blob([file], { type: "application/pdf" });
@@ -397,13 +397,13 @@ const BarraProgressaoProposta = (props) => {
             })
           });
         })
-      // });
+      });
     });
   }
 
   return (
     <>
-      <Stepper activeStep={activeStep} sx={{minWidth: "60rem"}}>
+      <Stepper activeStep={activeStep} sx={{ minWidth: "60rem" }}>
         {etapasProposta.map((label, index) => {
           const stepProps = {};
           const labelProps = {};

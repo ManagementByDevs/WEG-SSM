@@ -3992,7 +3992,6 @@ public class PropostaController {
             }
         }
         proposta.setAnexo(listaAnexos);
-        System.out.println(proposta.getAnexo());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
     }
@@ -4037,7 +4036,12 @@ public class PropostaController {
         documentoHistorico.setNome(proposta.getTitulo() + " - Versão " + (listaHistorico.size() + 1));
         historico.setDocumento(documentoHistoricoService.save(documentoHistorico));
 
-        listaHistorico.add(historicoService.save(historico));
+        if(listaHistorico != null) {
+            listaHistorico.add(historicoService.save(historico));
+        } else {
+            listaHistorico = new ArrayList<>();
+            listaHistorico.add(historicoService.save(historico));
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
