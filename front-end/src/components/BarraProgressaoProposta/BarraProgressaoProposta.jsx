@@ -326,14 +326,14 @@ const BarraProgressaoProposta = (props) => {
               dadosFaltantes = true;
               setFeedbackFaltante(true);
             }
-          })
+          });
           custo.ccs.map((cc) => {
             if (cc.codigo == "" || cc.porcentagem == "") {
               dadosFaltantes = true;
               setFeedbackFaltante(true);
             }
-          })
-        })
+          });
+        });
         break;
     }
     if (dadosFaltantes == false) {
@@ -398,6 +398,7 @@ const BarraProgressaoProposta = (props) => {
     let listaNova = [];
     for (const responsavelNegocio of gerais.responsaveisNegocio) {
       listaNova.push({
+        id: responsavelNegocio.id,
         nome: responsavelNegocio.nome,
         area: responsavelNegocio.area,
       });
@@ -421,7 +422,11 @@ const BarraProgressaoProposta = (props) => {
       }
 
       let listaCCs = [...tabelaCustos.ccs];
-      listaNova.push({ custos: listaCustos, ccs: listaCCs });
+      listaNova.push({
+        id: tabelaCustos.id,
+        custos: listaCustos,
+        ccs: listaCCs,
+      });
     }
     return listaNova;
   };
@@ -489,30 +494,34 @@ const BarraProgressaoProposta = (props) => {
             propostaService
               .post(retornaObjetoProposta(), receberIdsAnexos())
               .then((response) => {
-                // DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
-                EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
-                  () => {
-                    // Salvamento de histórico
-                    ExportPdfService.exportProposta(response.id).then(
-                      (file) => {
-                        let arquivo = new Blob([file], {
-                          type: "application/pdf",
-                        });
-                        propostaService
-                          .addHistorico(
-                            response.id,
-                            "Proposta Criada",
-                            arquivo,
-                            parseInt(localStorage.getItem("usuarioId"))
-                          )
-                          .then(() => {
-                            localStorage.setItem("tipoFeedback", "5");
-                            navigate("/");
+                DemandaService.atualizarStatus(
+                  dadosDemanda.id,
+                  "ASSESSMENT_APROVACAO"
+                ).then(() => {
+                  EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
+                    () => {
+                      // Salvamento de histórico
+                      ExportPdfService.exportProposta(response.id).then(
+                        (file) => {
+                          let arquivo = new Blob([file], {
+                            type: "application/pdf",
                           });
-                      }
-                    );
-                  }
-                );
+                          propostaService
+                            .addHistorico(
+                              response.id,
+                              "Proposta Criada",
+                              arquivo,
+                              parseInt(localStorage.getItem("usuarioId"))
+                            )
+                            .then(() => {
+                              localStorage.setItem("tipoFeedback", "5");
+                              navigate("/");
+                            });
+                        }
+                      );
+                    }
+                  );
+                });
               });
           }
         });

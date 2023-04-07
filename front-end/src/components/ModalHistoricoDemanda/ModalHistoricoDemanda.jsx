@@ -26,7 +26,7 @@ const ModalHistoricoDemanda = (props) => {
       <Fade in={props.open}>
         <Box
           className="absolute flex justify-evenly items-center flex-col"
-          sx={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 550, height: 480, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}
+          sx={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 700, height: 480, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4 }}
         >
           {/* Ícone de fechar modal */}
           <CloseIcon

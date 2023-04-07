@@ -506,8 +506,10 @@ public class PDFGeneratorService {
             tableValorTotal.addCell(cell2);
 
             for(Custo custos : tableCusto.getCustos()){
-                tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
-                tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                if(custos.getValorHora() != null) {
+                    tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
+                    tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                }
             }
 
             PdfPTable tableCC = new PdfPTable(2);

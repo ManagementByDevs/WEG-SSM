@@ -60,7 +60,7 @@ const DemandaGerencia = (props) => {
         <ModalHistoricoDemanda
           open={modalHistorico}
           setOpen={setModalHistorico}
-          historico={props.dados.historicoDemanda}
+          historico={props.dados.historicoDemanda || props.dados.historicoProposta}
         />
       )}
       <Paper

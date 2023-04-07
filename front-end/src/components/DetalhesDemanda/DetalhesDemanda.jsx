@@ -1165,7 +1165,7 @@ const DetalhesDemanda = (props) => {
       >
         {props.usuario?.tipoUsuario == "ANALISTA" &&
           props.botao == "sim" &&
-          !editar && (
+          !editar && props.dados.status == "BACKLOG_REVISAO" && (
             <Box className="flex justify-around w-full">
               <Button
                 sx={{
