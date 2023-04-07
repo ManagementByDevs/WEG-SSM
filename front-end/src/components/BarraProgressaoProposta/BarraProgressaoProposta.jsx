@@ -319,7 +319,7 @@ const BarraProgressaoProposta = (props) => {
   const formatarResponsaveisNegocio = () => {
     let listaNova = [];
     for (const responsavelNegocio of gerais.responsaveisNegocio) {
-      listaNova.push({ nome: responsavelNegocio.nome, area: responsavelNegocio.area });
+      listaNova.push({ id: responsavelNegocio.id, nome: responsavelNegocio.nome, area: responsavelNegocio.area });
     }
     return listaNova;
   }

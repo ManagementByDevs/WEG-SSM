@@ -3964,6 +3964,13 @@ public class PropostaController {
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
 
+        Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
+        List<Historico> historicoProposta = new ArrayList<>();
+        for (Historico historico : demanda.getHistoricoDemanda()) {
+            historicoProposta.add(historicoService.save(historico));
+        }
+        proposta.setHistoricoProposta(historicoProposta);
+
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
 

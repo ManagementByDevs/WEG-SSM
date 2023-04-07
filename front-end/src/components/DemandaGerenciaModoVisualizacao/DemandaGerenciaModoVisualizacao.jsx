@@ -63,7 +63,8 @@ const DemandaTable = ({
       status: "",
       data: "",
       solicitante: {},
-      historicoDemanda: []
+      historicoDemanda: [],
+      historicoProposta: []
     },
   ],
   onDemandaClick,
@@ -264,7 +265,7 @@ const DemandaTable = ({
                         size="small"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setHistoricoSelecionado(row.historicoDemanda);
+                          setHistoricoSelecionado(row.historicoDemanda || row.historicoProposta);
                           abrirModalHistorico();
                         }}
                         className="delay-120 hover:scale-110 duration-300"
@@ -279,7 +280,7 @@ const DemandaTable = ({
                         <ChatOutlinedIcon
                           onClick={(e) => {
                             e.stopPropagation();
-                            setHistoricoSelecionado(row.historicoDemanda);
+                            setHistoricoSelecionado(row.historicoDemanda || row.historicoProposta);
                             abrirModalHistorico();
                           }}
                           className="delay-120 hover:scale-110 duration-300"

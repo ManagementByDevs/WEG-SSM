@@ -53,7 +53,7 @@ const ContainerHistorico = (props) => {
       sx={{ borderLeft: "8px solid", borderColor: "primary.main", width: "90%", height: "4.5rem", borderRadius: "5px", p: 2, margin: "1%" }}
     >
       {/* Nome do autor */}
-      <Typography fontWeight={650} fontSize={FontConfig.veryBig}>
+      <Typography sx={{width: "40%"}} fontWeight={650} fontSize={FontConfig.veryBig}>
         {props.historico?.autor.nome}
       </Typography>
       <Box
