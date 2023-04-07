@@ -22,7 +22,8 @@ import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
-import InputPesquisa from "../../components/InputPesquisa/InputPesquisa";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+// import InputPesquisa from "../../components/InputPesquisa/InputPesquisa";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -601,20 +602,20 @@ const HomeGerencia = () => {
     switch (valorAba) {
       case "1":
         if (usuario.id != 0) {
-          arrangeParams();
+          // arrangeParams();
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
             setListaItens([...response.content]);
             setTotalPaginas(response.totalPages);
-            arrangeParams();
-            DemandaService.getPage(
-              params,
-              ordenacao + "size=" + 50 + "&page=" + paginaAtual
-            ).then((response) => {
-              setListaAutocomplete(response.content);
-            });
+            // arrangeParams();
+            // DemandaService.getPage(
+            //   params,
+            //   ordenacao + "size=" + 50 + "&page=" + paginaAtual
+            // ).then((response) => {
+            //   setListaAutocomplete(response.content);
+            // });
           });
         }
         break;
@@ -1227,7 +1228,7 @@ const HomeGerencia = () => {
               {/* Container para o input e botão de filtrar */}
               <Box className="flex gap-2 w-2/4 items-center">
                 {/* Input de pesquisa */}
-                <InputPesquisa
+                {/* <InputPesquisa
                   eventoTeclado={eventoTeclado}
                   pesquisaTitulo={pesquisaTitulo}
                   salvarPesquisa={salvarPesquisa}
@@ -1240,8 +1241,8 @@ const HomeGerencia = () => {
                   setListaItens={setListaItens}
                   setTotalPaginas={setTotalPaginas}
                   listaAutocomplete={listaAutocomplete}
-                />
-                {/* <Box
+                /> */}
+                <Box
                   className="flex justify-between items-center border px-3 py-1"
                   sx={{
                     backgroundColor: "input.main",
@@ -1250,8 +1251,8 @@ const HomeGerencia = () => {
                   }}
                   id="primeiroDemandas"
                 >
-                  {/* Input de pesquisa */}
-                {/* <Box
+                  {/* Input de pesquisa*/}
+                  <Box
                     className="w-full"
                     component="input"
                     sx={{
@@ -1268,13 +1269,13 @@ const HomeGerencia = () => {
                       pesquisaTitulo();
                     }}
                     onChange={(e) => {
-                      salvarPesquisa(e);
+                      salvarPesquisa(e.target.value);
                     }}
-                  /> */}
-                {/* Container para os ícones */}
-                {/* <Box className="flex gap-2"> */}
-                {/* Ícone de pesquisa */}
-                {/* <Tooltip
+                  />
+                  {/* Container para os ícones */}
+                  <Box className="flex gap-2">
+                    {/* Ícone de pesquisa */}
+                    <Tooltip
                       className="hover:cursor-pointer"
                       title={texts.homeGerencia.pesquisar}
                       onClick={() => {
@@ -1282,10 +1283,10 @@ const HomeGerencia = () => {
                       }}
                     >
                       <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
-                    </Tooltip> */}
+                    </Tooltip>
 
-                {/* Ícone de ordenação */}
-                {/* <Tooltip title={texts.homeGerencia.ordenacao}>
+                    {/* Ícone de ordenação */}
+                    <Tooltip title={texts.homeGerencia.ordenacao}>
                       <SwapVertIcon
                         id="segundoDemandas"
                         onClick={() => {
@@ -1296,10 +1297,9 @@ const HomeGerencia = () => {
                       />
                     </Tooltip>
                   </Box>
-                </Box> */}
+                </Box>
 
-                {/* Modal de ordenação */}
-                <Tooltip title={texts.homeGerencia.ordenacao}>
+                {/* <Tooltip title={texts.homeGerencia.ordenacao}>
                   <SwapVertIcon
                     id="segundoDemandas"
                     onClick={() => {
@@ -1308,7 +1308,8 @@ const HomeGerencia = () => {
                     className="cursor-pointer"
                     sx={{ color: "text.secondary" }}
                   />
-                </Tooltip>
+                </Tooltip> */}
+                {/* Modal de ordenação */}
                 {abrirOrdenacao && (
                   <ModalOrdenacao
                     tipoComponente="demanda"

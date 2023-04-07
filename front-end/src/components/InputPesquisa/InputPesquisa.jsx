@@ -6,7 +6,7 @@ import { styled } from "@mui/system";
 import DemandaService from "../../service/demandaService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-import debounce from 'lodash/debounce';
+import debounce from "lodash/debounce";
 
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 
@@ -77,7 +77,7 @@ export default function UseAutocomplete(props) {
   };
 
   const handleInputChange = (valorInput) => {
-    console.log('O valor de entrada é:', valorInput);
+    console.log("O valor de entrada é:", valorInput);
   };
 
   const handleInputChangeDebounced = debounce(handleInputChange, 5000);
@@ -99,15 +99,18 @@ export default function UseAutocomplete(props) {
         />
       </div>
       {groupedOptions.length > 0 ? (
-        <Listbox
-          {...getListboxProps()}
-        >
+        <Listbox {...getListboxProps()}>
           {groupedOptions.map((option, index) => {
             return (
               option.titulo.includes(props.valorPesquisa) && (
-                <li {...getOptionProps({ option, index })} onClick={() => {
-                  props.setValorPesquisa(option.titulo);
-                }}>{option.titulo}</li>
+                <li
+                  {...getOptionProps({ option, index })}
+                  onClick={() => {
+                    props.setValorPesquisa(option.titulo);
+                  }}
+                >
+                  {option.titulo}
+                </li>
               )
             );
           })}
