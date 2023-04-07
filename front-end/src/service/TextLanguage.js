@@ -690,7 +690,16 @@ const TextLanguage = (linguagem) => {
             semParecer: "Sem parecer",
             publicada: "Publicada",
             naoPublicada: "Não publicada",
-            secaoTi: "Seção TI"
+            secaoTi: "Seção TI",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelada",
+                done: "Concluída",
+            }
         },
         modalAddPropostaPauta: {
             feedbacks: {

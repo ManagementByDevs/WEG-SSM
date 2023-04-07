@@ -4,6 +4,7 @@ import {
   Box,
   Divider,
   IconButton,
+  Menu,
   MenuItem,
   Paper,
   Table,
@@ -18,6 +19,8 @@ import {
 import LogoWEG from "../../assets/logo-weg.png";
 
 import DownloadIcon from "@mui/icons-material/Download";
+import EditIcon from "@mui/icons-material/Edit";
+import EditOffIcon from "@mui/icons-material/EditOff";
 
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
@@ -39,6 +42,17 @@ const DetalhesProposta = ({
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Referência do elemento de status
+  const statusElement = useRef(null);
+
+  // Estado do modal de trocar status
+  const [modalStatus, setModalStatus] = useState(false);
+
+  // UseState para poder visualizar e alterar o menu do idioma
+  const [anchorElModalStatus, setAnchorElModalStatus] = useState(null);
+
+  const [confirmEditStatus, setConfirmEditStatus] = useState(false);
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -70,14 +84,182 @@ const DetalhesProposta = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
+  // Retorna o texto do status da proposta
+  const getStatusFormatted = () => {
+    switch (proposta.status) {
+      case "ASSESSMENT_APROVACAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_EDICAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_COMISSAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_DG": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "BUSINESS_CASE": // #C8CA5F
+        return texts.detalhesProposta.statusRejeitada;
+      case "CANCELLED": //#DA0303
+        return texts.detalhesProposta.statusCancelada;
+      case "DONE": //#62A265
+        return texts.detalhesProposta.statusEmAndamento;
+      default:
+        return "";
+    }
+  };
+
+  // Retorna a cor hexadecimal do status da proposta
+  const getCorStatus = (status) => {
+    switch (status) {
+      case "ASSESSMENT_APROVACAO":
+        return "#F7DC6F";
+      case "ASSESSMENT_EDICAO":
+        return "#F7DC6F";
+      case "ASSESSMENT_COMISSAO":
+        return "#F7DC6F";
+      case "ASSESSMENT_DG":
+        return "#F7DC6F";
+      case "BUSINESS_CASE":
+        return "#C8CA5F";
+      case "CANCELLED":
+        return "#DA0303";
+      case "DONE":
+        return "#62A265";
+      default:
+        return "";
+    }
+  };
+
+  // Abre o modal para alterar o status da proposta
+  const handleOpenModalStatus = () => {
+    setModalStatus(true);
+  };
+
+  // Fecha o modal para alterar o status da proposta
+  const handleCloseModalStataus = () => {
+    setModalStatus(false);
+  };
+
+  // Verifica se o status selecionado é o mesmo da proposta
+  const isSameStatus = (status) => {
+    switch (status) {
+      case "ASSESSMENT":
+        return (
+          proposta.status == "ASSESSMENT_APROVACAO" ||
+          "ASSESSMENT_EDICAO" ||
+          "ASSESSMENT_COMISSAO"
+        );
+      case "BUSINESS_CASE":
+        return proposta.status == "BUSINESS_CASE";
+      case "CANCELLED":
+        return proposta.status == "CANCELLED";
+      case "DONE":
+        return proposta.status == "DONE";
+    }
+
+    return false;
+  };
+
+  const confirmSelectStatus = (status) => {
+    if (isSameStatus(status)) {
+      console.log("Status é o mesmo!");
+      return;
+    }
+
+    setConfirmEditStatus(true);
+
+    // switch (status) {
+    //   case "ASSESSMENT":
+    //     break;
+    //   case "BUSINESS_CASE":
+    //     break;
+    //   case "CANCELLED":
+    //     break;
+    //   case "DONE":
+    //     break;
+    // }
+  };
+
+  useEffect(() => {
+    // Adiciona o elemento do status para poder configurar a posição do modal
+    if (statusElement.current) {
+      setAnchorElModalStatus(statusElement.current);
+    }
+  }, []);
+
   return (
     <Box className="flex justify-center">
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorElModalStatus}
+        open={modalStatus}
+        onClose={handleCloseModalStataus}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("ASSESSMENT")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("ASSESSMENT_APROVACAO") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.assessment}
+          </Typography>
+        </MenuItem>
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("BUSINESS_CASE")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("BUSINESS_CASE") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.bussinessCase}
+          </Typography>
+        </MenuItem>
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("CANCELLED")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("CANCELLED") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.cancelled}
+          </Typography>
+        </MenuItem>
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("DONE")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("DONE") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.done}
+          </Typography>
+        </MenuItem>
+      </Menu>
+
       <Box
-        className="border rounded px-10 py-4 border-t-6"
+        className="border rounded px-10 py-4 border-t-6 relative"
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
       >
+        <Tooltip title={getStatusFormatted()}>
+          <Box
+            className="w-5 h-6 absolute right-2 top-0 rounded-b cursor-pointer"
+            sx={{ backgroundColor: getCorStatus("ASSESSMENT_APROVACAO") }}
+            onClick={handleOpenModalStatus}
+            ref={statusElement}
+          />
+        </Tooltip>
         {/* Box header */}
-        <Box className="w-full flex justify-between">
+        <Box className="w-full flex justify-between ">
           <Box className="flex gap-4">
             <Typography
               color="primary"
@@ -108,15 +290,15 @@ const DetalhesProposta = ({
                 : ""}
             </Typography>
           </Box>
-          <Box className="w-16">
-            <img src={LogoWEG} alt="Logo WEG" />
+          <Box className="flex w-16">
+            <img src={LogoWEG} className="w-16 h-11" alt="Logo WEG" />
           </Box>
         </Box>
 
         {/* Box Conteudo */}
         <Box className="w-full">
           {/* Titulo */}
-          <Box>
+          <Box flex>
             <Typography color={"primary.main"} fontSize={FontConfig.smallTitle}>
               {proposta.titulo}
             </Typography>
@@ -124,7 +306,15 @@ const DetalhesProposta = ({
           <Divider />
 
           {/* Box Informações gerais */}
-          <Box>
+          <Box className="relative">
+            <Tooltip title={texts.detalhesProposta.editar}>
+              <Box className="absolute -right-8 -top-2">
+                <IconButton sx={{ color: "primary.main" }}>
+                  <EditIcon />
+                  <EditOffIcon />
+                </IconButton>
+              </Box>
+            </Tooltip>
             {/* Solicitante */}
             <Box className="flex mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
@@ -407,7 +597,12 @@ const DetalhesProposta = ({
                     />
 
                     {/* Parecer da Diretoria */}
-                    {["ASSESSMENT_DG", "DONE", "ASSESSMENT_EDICAO", "CANCELLED"].includes(proposta.status) && (
+                    {[
+                      "ASSESSMENT_DG",
+                      "DONE",
+                      "ASSESSMENT_EDICAO",
+                      "CANCELLED",
+                    ].includes(proposta.status) && (
                       <ParecerDG
                         proposta={proposta}
                         setProposta={setProposta}
