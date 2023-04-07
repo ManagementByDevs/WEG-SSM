@@ -21,17 +21,18 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ExcelGeneratorService {
 
+    private DemandaService demandaService;
+    private PropostaService propostaService;
     private PautaService pautaService;
     private AtaService ataService;
 
-    public void exportDemandasBackLogToExcel(HttpServletResponse response, List<String> listaDemandas) throws IOException {
-        DemandaUtil demandaUtil = new DemandaUtil();
-        ArrayList<Demanda> listDemandas = new ArrayList<>();
+    public void exportDemandasBackLogToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
+        ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
 
         // Convertendo para demanda e adicioando na lista das demandas
         for (int i = 0; i < listaDemandas.size(); i++) {
-            String demandaJSON = listaDemandas.get(i);
-            Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
+            Long idDemanda = listaDemandas.get(i);
+            Optional<Demanda> demanda = demandaService.findById(idDemanda);
             listDemandas.add(demanda);
         }
 
@@ -81,53 +82,57 @@ public class ExcelGeneratorService {
         int rowNum = 1;
         int contadorDemanda = 1;
 
-        for (Demanda demanda : listDemandas) {
-            // Criando uma nova linha
+        for (Optional<Demanda> demandaOp : listDemandas) {
             XSSFRow row = sheet.createRow(rowNum++);
-
-            // Adicionando informações nas respectivas colunas
-            row.createCell(0).setCellValue(contadorDemanda);
-            row.createCell(1).setCellValue(demanda.getTitulo());
-            row.createCell(2).setCellValue(demanda.getProblema());
-            row.createCell(3).setCellValue(demanda.getProposta());
 
             int rowIndex = rowNum;
 
-            for (Beneficio beneficio : demanda.getBeneficios()) {
-                Row roww = sheet.createRow(rowIndex);
-                roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
-                rowIndex++;
-            }
+            if (demandaOp.isPresent()) {
+                Demanda demanda = demandaOp.get();
 
-            row.createCell(5).setCellValue(demanda.getFrequencia());
+                // Adicionando informações nas respectivas colunas
+                row.createCell(0).setCellValue(contadorDemanda);
+                row.createCell(1).setCellValue(demanda.getTitulo());
+                row.createCell(2).setCellValue(demanda.getProblema());
+                row.createCell(3).setCellValue(demanda.getProposta());
 
-            for (Anexo anexo : demanda.getAnexo()) {
-                row.createCell(6).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                row.getCell(6).setCellStyle(alignLeft);
-            }
 
-            // Setando os estilos para as colunas
-
-            int[] colunasStyle = {1, 2, 3, 4, 5, 6};
-
-            for (int colunaStyle : colunasStyle) {
-                if (row.getCell(colunaStyle) != null) {
-                    row.getCell(colunaStyle).setCellStyle(alignLeft);
+                for (Beneficio beneficio : demanda.getBeneficios()) {
+                    Row roww = sheet.createRow(rowIndex);
+                    roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                    rowIndex++;
                 }
+
+                row.createCell(5).setCellValue(demanda.getFrequencia());
+
+                for (Anexo anexo : demanda.getAnexo()) {
+                    row.createCell(6).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
+                    row.getCell(6).setCellStyle(alignLeft);
+                }
+
+                // Setando os estilos para as colunas
+
+                int[] colunasStyle = {1, 2, 3, 4, 5, 6};
+
+                for (int colunaStyle : colunasStyle) {
+                    if (row.getCell(colunaStyle) != null) {
+                        row.getCell(colunaStyle).setCellStyle(alignLeft);
+                    }
+                }
+
+                row.getCell(0).setCellStyle(style);
+
+                // Auto ajustando o tamanho das colunas de acordo com as informações
+
+                int[] colunasAutoSize = {1, 2, 3, 4, 5, 6};
+
+                for (int coluna : colunasAutoSize) {
+                    sheet.autoSizeColumn(coluna);
+                }
+
+                rowNum = rowIndex;
+                contadorDemanda++;
             }
-
-            row.getCell(0).setCellStyle(style);
-
-            // Auto ajustando o tamanho das colunas de acordo com as informações
-
-            int[] colunasAutoSize = {1, 2, 3, 4, 5, 6};
-
-            for (int coluna : colunasAutoSize) {
-                sheet.autoSizeColumn(coluna);
-            }
-
-            rowNum = rowIndex;
-            contadorDemanda++;
         }
 
         // Escreve o workbook no response
@@ -137,14 +142,13 @@ public class ExcelGeneratorService {
         outputStream.close();
     }
 
-    public void exportDemandasAssessmentToExcel(HttpServletResponse response, List<String> listaDemandas) throws IOException {
-        DemandaUtil demandaUtil = new DemandaUtil();
-        ArrayList<Demanda> listDemandas = new ArrayList<>();
+    public void exportDemandasAssessmentToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
+        ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
 
         // Convertendo para demanda e adicioando na lista das demandas
         for (int i = 0; i < listaDemandas.size(); i++) {
-            String demandaJSON = listaDemandas.get(i);
-            Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
+            Long idDemanda = listaDemandas.get(i);
+            Optional<Demanda> demanda = demandaService.findById(idDemanda);
             listDemandas.add(demanda);
         }
 
@@ -198,60 +202,67 @@ public class ExcelGeneratorService {
         // Preenchendo informações das demandas
         int rowNum = 1;
         int contadorDemanda = 1;
-        for (Demanda demanda : listDemandas) {
-            // Criando uma nova linha
-            XSSFRow row = sheet.createRow(rowNum++);
 
-            // Adicionando informações nas respectivas colunas
-            row.createCell(0).setCellValue(contadorDemanda);
-            row.createCell(1).setCellValue(demanda.getTitulo());
-            row.createCell(2).setCellValue(demanda.getProblema());
-            row.createCell(3).setCellValue(demanda.getProposta());
+        for (Optional<Demanda> demandaOp : listDemandas) {
+            XSSFRow row = sheet.createRow(rowNum++);
 
             int rowIndex = rowNum;
 
-            for (Beneficio beneficio : demanda.getBeneficios()) {
-                Row roww = sheet.createRow(rowIndex);
-                roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
-                rowIndex++;
-            }
+            if (demandaOp.isPresent()) {
+                Demanda demanda = demandaOp.get();
 
-            row.createCell(5).setCellValue(demanda.getFrequencia());
-            row.createCell(6).setCellValue(demanda.getTamanho());
-            row.createCell(7).setCellValue(demanda.getSecaoTI().getSiglaSecao() + " - " + demanda.getSecaoTI().getNomeSecao());
-            row.createCell(8).setCellValue(demanda.getBuSolicitante().getSiglaBu() + " - " + demanda.getBuSolicitante().getNomeBu());
+                // Adicionando informações nas respectivas colunas
+                row.createCell(0).setCellValue(contadorDemanda);
+                row.createCell(1).setCellValue(demanda.getTitulo());
+                row.createCell(2).setCellValue(demanda.getProblema());
+                row.createCell(3).setCellValue(demanda.getProposta());
 
-            for (Bu bu : demanda.getBusBeneficiadas()) {
-                row.createCell(9).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                row.getCell(9).setCellStyle(alignLeft);
-            }
 
-            row.createCell(10).setCellValue(demanda.getForum().getSiglaForum() + " - " + demanda.getForum().getNomeForum());
-
-            for (Anexo anexo : demanda.getAnexo()) {
-                row.createCell(11).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                row.getCell(11).setCellStyle(alignLeft);
-            }
-
-            // Setando os estilos para as colunas
-
-            int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
-            for (int colunaStyle : colunasStyle) {
-                if (row.getCell(colunaStyle) != null) {
-                    row.getCell(colunaStyle).setCellStyle(alignLeft);
+                for (Beneficio beneficio : demanda.getBeneficios()) {
+                    Row roww = sheet.createRow(rowIndex);
+                    roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                    rowIndex++;
                 }
+
+                row.createCell(5).setCellValue(demanda.getFrequencia());
+                row.createCell(6).setCellValue(demanda.getTamanho());
+                row.createCell(7).setCellValue(demanda.getSecaoTI().getSiglaSecao() + " - " + demanda.getSecaoTI().getNomeSecao());
+                row.createCell(8).setCellValue(demanda.getBuSolicitante().getSiglaBu() + " - " + demanda.getBuSolicitante().getNomeBu());
+
+                for (Bu bu : demanda.getBusBeneficiadas()) {
+                    row.createCell(9).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
+                    row.getCell(9).setCellStyle(alignLeft);
+                }
+
+                row.createCell(10).setCellValue(demanda.getForum().getSiglaForum() + " - " + demanda.getForum().getNomeForum());
+
+                for (Anexo anexo : demanda.getAnexo()) {
+                    row.createCell(11).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
+                    row.getCell(11).setCellStyle(alignLeft);
+                }
+
+                // Setando os estilos para as colunas
+
+                int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+                for (int colunaStyle : colunasStyle) {
+                    if (row.getCell(colunaStyle) != null) {
+                        row.getCell(colunaStyle).setCellStyle(alignLeft);
+                    }
+                }
+
+                // Auto ajustando o tamanho das colunas de acordo com as informações
+                int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+
+                for (int colunaAuto : colunasAutoSize) {
+                    sheet.autoSizeColumn(colunaAuto);
+                }
+
+                rowNum = rowIndex;
+                contadorDemanda++;
+
             }
 
-            // Auto ajustando o tamanho das colunas de acordo com as informações
-            int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-
-            for (int colunaAuto : colunasAutoSize) {
-                sheet.autoSizeColumn(colunaAuto);
-            }
-
-            rowNum = rowIndex;
-            contadorDemanda++;
         }
 
         // Escreve o workbook no response
@@ -261,14 +272,13 @@ public class ExcelGeneratorService {
         outputStream.close();
     }
 
-    public void exportPropostasToExcel(HttpServletResponse response, List<String> listaPropostas) throws IOException {
-        PropostaUtil propostaUtil = new PropostaUtil();
-        ArrayList<Proposta> listPropostas = new ArrayList<>();
+    public void exportPropostasToExcel(HttpServletResponse response, List<Long> listaPropostas) throws IOException {
+        ArrayList<Optional<Proposta>> listPropostas = new ArrayList<>();
 
         // Convertendo para proposta e adicioando na lista das propostas
         for (int i = 0; i < listaPropostas.size(); i++) {
-            String propostaJSON = listaPropostas.get(i);
-            Proposta proposta = propostaUtil.convertJsonToModelDirect(propostaJSON);
+            Long idProposta = listaPropostas.get(i);
+            Optional<Proposta> proposta = propostaService.findById(idProposta);
             listPropostas.add(proposta);
         }
 
@@ -332,80 +342,86 @@ public class ExcelGeneratorService {
         // Preenchendo informações das demandas
         int rowNum = 1;
         int contadorProposta = 1;
-        for (Proposta proposta : listPropostas) {
-            // Criando uma nova linha
-            XSSFRow row = sheet.createRow(rowNum++);
 
-            // Adicionando informações nas respectivas colunas
-            row.createCell(0).setCellValue(contadorProposta);
-            row.createCell(1).setCellValue(proposta.getCodigoPPM());
-            row.createCell(2).setCellValue(proposta.getData());
-            row.createCell(3).setCellValue(proposta.getTitulo());
-            row.createCell(4).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
-            row.createCell(5).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-            row.createCell(6).setCellValue(proposta.getProblema());
-            row.createCell(7).setCellValue(proposta.getProposta());
+        for (Optional<Proposta> propostaOp : listPropostas) {
+            XSSFRow row = sheet.createRow(rowNum++);
 
             int rowIndex = rowNum;
 
-            for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
-                for (Custo custo : tbCusto.getCustos()) {
-                    Row rowCusto = sheet.createRow(rowIndex);
-                    rowCusto.createCell(9).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+            if (propostaOp.isPresent()) {
+                Proposta proposta = propostaOp.get();
+
+                // Adicionando informações nas respectivas colunas
+                row.createCell(0).setCellValue(contadorProposta);
+                row.createCell(1).setCellValue(proposta.getCodigoPPM());
+                row.createCell(2).setCellValue(proposta.getData());
+                row.createCell(3).setCellValue(proposta.getTitulo());
+                row.createCell(4).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
+                row.createCell(5).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
+                row.createCell(6).setCellValue(proposta.getProblema());
+                row.createCell(7).setCellValue(proposta.getProposta());
+
+
+                for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
+                    for (Custo custo : tbCusto.getCustos()) {
+                        Row rowCusto = sheet.createRow(rowIndex);
+                        rowCusto.createCell(9).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                    }
                 }
-            }
 
-            for (Beneficio beneficio : proposta.getBeneficios()) {
-                Row roww = sheet.createRow(rowIndex);
-                roww.createCell(10).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + beneficio.getMemoriaCalculo());
-                rowIndex++;
-            }
-
-            row.createCell(11).setCellValue(proposta.getFrequencia());
-            row.createCell(12).setCellValue(proposta.getLinkJira());
-            row.createCell(13).setCellValue(proposta.getInicioExecucao() + " à " + proposta.getFimExecucao());
-            row.createCell(14).setCellValue(proposta.getPaybackValor() + "  " + proposta.getPaybackTipo());
-            row.createCell(15).setCellValue(proposta.getTamanho());
-            row.createCell(16).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
-            row.createCell(17).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
-
-            for (Bu bu : proposta.getBusBeneficiadas()) {
-                row.createCell(18).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                row.getCell(18).setCellStyle(alignLeft);
-            }
-
-            row.createCell(19).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
-
-            for (ResponsavelNegocio rn : proposta.getResponsavelNegocio()) {
-                row.createCell(20).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
-                row.getCell(20).setCellStyle(alignLeft);
-            }
-
-            for (Anexo anexo : proposta.getAnexo()) {
-                row.createCell(21).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                row.getCell(21).setCellStyle(alignLeft);
-            }
-
-            // Setando os estilos para as colunas
-            int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
-
-            for (int colunaStyle : colunasStyle) {
-                if (row.getCell(colunaStyle) != null) {
-                    row.getCell(colunaStyle).setCellStyle(alignLeft);
+                for (Beneficio beneficio : proposta.getBeneficios()) {
+                    Row roww = sheet.createRow(rowIndex);
+                    roww.createCell(10).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                    rowIndex++;
                 }
+
+                row.createCell(11).setCellValue(proposta.getFrequencia());
+                row.createCell(12).setCellValue(proposta.getLinkJira());
+                row.createCell(13).setCellValue(proposta.getInicioExecucao() + " à " + proposta.getFimExecucao());
+                row.createCell(14).setCellValue(proposta.getPaybackValor() + "  " + proposta.getPaybackTipo());
+                row.createCell(15).setCellValue(proposta.getTamanho());
+                row.createCell(16).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
+                row.createCell(17).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
+
+                for (Bu bu : proposta.getBusBeneficiadas()) {
+                    row.createCell(18).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
+                    row.getCell(18).setCellStyle(alignLeft);
+                }
+
+                row.createCell(19).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
+
+                for (ResponsavelNegocio rn : proposta.getResponsavelNegocio()) {
+                    row.createCell(20).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
+                    row.getCell(20).setCellStyle(alignLeft);
+                }
+
+                for (Anexo anexo : proposta.getAnexo()) {
+                    row.createCell(21).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
+                    row.getCell(21).setCellStyle(alignLeft);
+                }
+
+                // Setando os estilos para as colunas
+                int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+
+                for (int colunaStyle : colunasStyle) {
+                    if (row.getCell(colunaStyle) != null) {
+                        row.getCell(colunaStyle).setCellStyle(alignLeft);
+                    }
+                }
+
+                row.getCell(0).setCellStyle(style);
+
+                // Auto ajustando o tamanho das colunas de acordo com as informações
+                int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+
+                for (int colunaAuto : colunasAutoSize) {
+                    sheet.autoSizeColumn(colunaAuto);
+                }
+
+                rowNum = rowIndex;
+                contadorProposta++;
+
             }
-
-            row.getCell(0).setCellStyle(style);
-
-            // Auto ajustando o tamanho das colunas de acordo com as informações
-            int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
-
-            for (int colunaAuto : colunasAutoSize) {
-                sheet.autoSizeColumn(colunaAuto);
-            }
-
-            rowNum = rowIndex;
-            contadorProposta++;
         }
 
         // Escreve o workbook no response

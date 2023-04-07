@@ -7,6 +7,7 @@ import FormularioPropostaProposta from "../FormularioPropostaProposta/Formulario
 import FormularioCustosProposta from "../FormularioCustosProposta/FormularioCustosProposta";
 import FormularioGeralProposta from "../FormularioGeralProposta/FormularioGeralProposta";
 import FormularioEscopoProposta from "../FormularioEscopoProposta/FormularioEscopoProposta";
+import Feedback from "../Feedback/Feedback";
 
 import ForumService from "../../service/forumService";
 import BUService from "../../service/buService";
@@ -20,10 +21,10 @@ import ExportPdfService from "../../service/exportPdfService";
 import SecaoTIService from "../../service/secaoTIService";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
+import BeneficiosDetalheDemanda from "../BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -34,7 +35,12 @@ const BarraProgressaoProposta = (props) => {
   const [activeStep, setActiveStep] = useState(0);
 
   /** Lista de etapas usadas na criação de proposta */
-  const etapasProposta = [texts.barraProgressaoProposta.proposta, texts.barraProgressaoProposta.escopo, texts.barraProgressaoProposta.custo, texts.barraProgressaoProposta.gerais];
+  const etapasProposta = [
+    texts.barraProgressaoProposta.proposta,
+    texts.barraProgressaoProposta.escopo,
+    texts.barraProgressaoProposta.custo,
+    texts.barraProgressaoProposta.gerais,
+  ];
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
@@ -76,7 +82,7 @@ const BarraProgressaoProposta = (props) => {
     forum: null,
     secaoTI: null,
     tamanho: "",
-    historicoDemanda: []
+    historicoDemanda: [],
   });
 
   // Variável utilizada para armazenar a lista de benefícios
@@ -85,7 +91,7 @@ const BarraProgressaoProposta = (props) => {
   // Variável utilizada para armazenar a lista de benefícios excluídos
   const [listaBeneficiosExcluidos, setListaBeneficiosExcluidos] = useState([]);
 
-  // Variável para guardar os custos 
+  // Variável para guardar os custos
   const [custos, setCustos] = useState([]);
 
   // UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML)
@@ -99,7 +105,7 @@ const BarraProgressaoProposta = (props) => {
     unidadePaybackSimples: "",
     ppm: "",
     linkJira: "",
-    responsaveisNegocio: []
+    responsaveisNegocio: [],
   });
 
   const [mudancasFeitas, setMudancasFeitas] = useState(false);
@@ -118,23 +124,25 @@ const BarraProgressaoProposta = (props) => {
         if (mudancasFeitas) {
           idEscopo = 1;
 
-          EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then((data) => {
-            if (data.length == 0) {
-              receberBeneficios();
-              let escopo = retornaObjetoProposta();
-              delete escopo.historicoProposta;
-              delete escopo.status;
-              EscopoPropostaService.post(escopo).then((response) => {
-                idEscopo = response.id;
-                setUltimoEscopo(response);
-                criarDadosIniciais();
-              });
-            } else {
-              idEscopo = data[0].id;
-              setUltimoEscopo(data[0]);
-              carregarEscopoSalvo(data[0]);
+          EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
+            (data) => {
+              if (data.length == 0) {
+                receberBeneficios();
+                let escopo = retornaObjetoProposta();
+                delete escopo.historicoProposta;
+                delete escopo.status;
+                EscopoPropostaService.post(escopo).then((response) => {
+                  idEscopo = response.id;
+                  setUltimoEscopo(response);
+                  criarDadosIniciais();
+                });
+              } else {
+                idEscopo = data[0].id;
+                setUltimoEscopo(data[0]);
+                carregarEscopoSalvo(data[0]);
+              }
             }
-          });
+          );
         }
       }
     }
@@ -144,7 +152,7 @@ const BarraProgressaoProposta = (props) => {
     if (listaBeneficios && dadosDemanda && gerais && custos) {
       setTimeout(() => {
         setMudancasFeitas(true);
-      }, 1000)
+      }, 1000);
     }
   }, [dadosDemanda, gerais, custos, listaBeneficios]);
 
@@ -176,24 +184,28 @@ const BarraProgressaoProposta = (props) => {
       forum: escopo.forum,
       secaoTI: escopo.secaoTI,
       tamanho: escopo.tamanho,
-      historicoDemanda: escopo.historicoDemanda
+      historicoDemanda: escopo.historicoDemanda,
     });
 
     setGerais({
-      periodoExecucacaoInicio: new Date(escopo.inicioExecucao).toISOString().slice(0, 10),
-      periodoExecucacaoFim: new Date(escopo.fimExecucao).toISOString().slice(0, 10),
+      periodoExecucacaoInicio: new Date(escopo.inicioExecucao)
+        .toISOString()
+        .slice(0, 10),
+      periodoExecucacaoFim: new Date(escopo.fimExecucao)
+        .toISOString()
+        .slice(0, 10),
       qtdPaybackSimples: escopo.paybackValor,
       unidadePaybackSimples: escopo.paybackTipo,
       ppm: escopo.codigoPPM,
       linkJira: escopo.linkJira,
-      responsaveisNegocio: escopo.responsavelNegocio
+      responsaveisNegocio: escopo.responsavelNegocio,
     });
 
     setListaBeneficios(escopo.beneficios);
     setCustos(escopo.tabelaCustos);
-    
+
     setCarregamento(false);
-  }
+  };
 
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = () => {
@@ -202,10 +214,12 @@ const BarraProgressaoProposta = (props) => {
       delete escopo.historicoProposta;
       delete escopo.status;
       escopo.id = ultimoEscopo.id;
-      EscopoPropostaService.salvarDados(escopo, receberIdsAnexos()).then((response) => {
-        setUltimoEscopo(response);
-      });
-    } catch (error) { }
+      EscopoPropostaService.salvarDados(escopo, receberIdsAnexos()).then(
+        (response) => {
+          setUltimoEscopo(response);
+        }
+      );
+    } catch (error) {}
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -214,31 +228,40 @@ const BarraProgressaoProposta = (props) => {
       variaveisIniciais = true;
 
       if (gerais.responsaveisNegocio.length == 0) {
-        ResponsavelNegocioService.post({ nome: "", area: "" }).then((response) => {
-          setGerais({ ...gerais, responsaveisNegocio: [...gerais.responsaveisNegocio, response] });
-        });
+        ResponsavelNegocioService.post({ nome: "", area: "" }).then(
+          (response) => {
+            setGerais({
+              ...gerais,
+              responsaveisNegocio: [...gerais.responsaveisNegocio, response],
+            });
+          }
+        );
       }
 
       if (custos.length == 0) {
         CustosService.postTabela({
-          custos: [{
-            tipoDespesa: "",
-            perfilDespesa: "",
-            periodoExecucao: "",
-            horas: "",
-            valorHora: ""
-          }],
-          ccs: [{
-            codigo: "",
-            porcentagem: ""
-          }]
+          custos: [
+            {
+              tipoDespesa: "",
+              perfilDespesa: "",
+              periodoExecucao: "",
+              horas: "",
+              valorHora: "",
+            },
+          ],
+          ccs: [
+            {
+              codigo: "",
+              porcentagem: "",
+            },
+          ],
         }).then((response) => {
           setCustos([...custos, response]);
           setCarregamento(false);
-        })
+        });
       }
     }
-  }
+  };
 
   const receberBeneficios = () => {
     const aux = dadosDemanda?.beneficios?.map((beneficio) => {
@@ -246,9 +269,9 @@ const BarraProgressaoProposta = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || "Real",
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -256,11 +279,66 @@ const BarraProgressaoProposta = (props) => {
       };
     });
     setListaBeneficios(aux);
-  }
+  };
 
   // Função para passar para próxima página
   const proximaEtapa = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    let dadosFaltantes = false;
+    switch (activeStep) {
+      case 0:
+        if (
+          dadosDemanda.titulo == "" ||
+          dadosDemanda.problema == "" ||
+          dadosDemanda.proposta == "" ||
+          dadosDemanda.frequencia == "" ||
+          dadosDemanda.buSolicitante == "" ||
+          dadosDemanda.busBeneficiadas == "" ||
+          dadosDemanda.forum == "" ||
+          dadosDemanda.secaoTI == "" ||
+          dadosDemanda.tamanho == ""
+        ) {
+          dadosFaltantes = true;
+          setFeedbackFaltante(true);
+        } else {
+          listaBeneficios.map((beneficio) => {
+            if (
+              beneficio.tipoBeneficio == "" ||
+              beneficio.valor_mensal == "" ||
+              beneficio.moeda == "" ||
+              beneficio.memoriaCalculo == ""
+            ) {
+              dadosFaltantes = true;
+              setFeedbackFaltante(true);
+            }
+          });
+        }
+        break;
+      case 2:
+        custos.map((custo) => {
+          custo.custos.map((custolinha) => {
+            if (
+              custolinha.tipoDespesa == "" ||
+              custolinha.perfilDespesa == "" ||
+              custolinha.periodoExecucao == "" ||
+              custolinha.horas == "" ||
+              custolinha.valorHora == ""
+            ) {
+              dadosFaltantes = true;
+              setFeedbackFaltante(true);
+            }
+          });
+          custo.ccs.map((cc) => {
+            if (cc.codigo == "" || cc.porcentagem == "") {
+              dadosFaltantes = true;
+              setFeedbackFaltante(true);
+            }
+          });
+        });
+        break;
+    }
+    if (dadosFaltantes == false) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   // Função para voltar para página anterior
@@ -272,22 +350,22 @@ const BarraProgressaoProposta = (props) => {
   const pesquisarForuns = () => {
     ForumService.getAll().then((response) => {
       setListaForuns(response);
-    })
-  }
+    });
+  };
 
   // Função para pesquisar as BUs do banco e salvar na lista para o select
   const pesquisarBUs = () => {
     BUService.getAll().then((response) => {
       setListaBU(response);
-    })
-  }
+    });
+  };
 
   /** Função para pesquisar as seções de TI do banco para uso no select */
   const pesquisarSecoesTI = () => {
     SecaoTIService.getAll().then((response) => {
       setListaSecoesTI(response);
-    })
-  }
+    });
+  };
 
   // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
   const formatarBeneficios = () => {
@@ -299,7 +377,7 @@ const BarraProgressaoProposta = (props) => {
           tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
           valor_mensal: beneficio.valor_mensal,
           moeda: beneficio.moeda,
-          memoriaCalculo: beneficio.memoriaCalculo
+          memoriaCalculo: beneficio.memoriaCalculo,
         });
       }
       return listaNova;
@@ -311,18 +389,22 @@ const BarraProgressaoProposta = (props) => {
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
     for (const beneficio of listaBeneficiosExcluidos) {
-      beneficioService.delete(beneficio.id).then((response) => { })
+      beneficioService.delete(beneficio.id).then((response) => {});
     }
-  }
+  };
 
   /** Função para formatar a lista de responsáveis do negócio, retirando o atributo "visible" */
   const formatarResponsaveisNegocio = () => {
     let listaNova = [];
     for (const responsavelNegocio of gerais.responsaveisNegocio) {
-      listaNova.push({ nome: responsavelNegocio.nome, area: responsavelNegocio.area });
+      listaNova.push({
+        id: responsavelNegocio.id,
+        nome: responsavelNegocio.nome,
+        area: responsavelNegocio.area,
+      });
     }
     return listaNova;
-  }
+  };
 
   /** Função para formatar os custos dentro de cadas tabela de custos (retirar o atributo "total") */
   const formatarCustos = () => {
@@ -330,14 +412,24 @@ const BarraProgressaoProposta = (props) => {
     for (const tabelaCustos of custos) {
       let listaCustos = [];
       for (const custo of tabelaCustos.custos) {
-        listaCustos.push({ tipoDespesa: custo.tipoDespesa, perfilDespesa: custo.perfilDespesa, periodoExecucao: custo.periodoExecucao, horas: custo.horas, valorHora: custo.valorHora })
+        listaCustos.push({
+          tipoDespesa: custo.tipoDespesa,
+          perfilDespesa: custo.perfilDespesa,
+          periodoExecucao: custo.periodoExecucao,
+          horas: custo.horas,
+          valorHora: custo.valorHora,
+        });
       }
 
       let listaCCs = [...tabelaCustos.ccs];
-      listaNova.push({ custos: listaCustos, ccs: listaCCs });
+      listaNova.push({
+        id: tabelaCustos.id,
+        custos: listaCustos,
+        ccs: listaCCs,
+      });
     }
     return listaNova;
-  }
+  };
 
   /** Função que retorna os IDs de todos os anexos da proposta */
   const receberIdsAnexos = () => {
@@ -346,7 +438,7 @@ const BarraProgressaoProposta = (props) => {
       listaIds.push(anexo.id);
     }
     return listaIds;
-  }
+  };
 
   /** Função para montar um objeto de proposta para salvamento de escopos e propostas */
   const retornaObjetoProposta = () => {
@@ -376,34 +468,75 @@ const BarraProgressaoProposta = (props) => {
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
       historicoProposta: dadosDemanda.historicoDemanda,
-    }
+    };
     return objeto;
-  }
+  };
 
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = () => {
-    excluirBeneficios();
+    if (
+      gerais.periodoExecucacaoInicio == "" ||
+      gerais.periodoExecucacaoFim == "" ||
+      gerais.qtdPaybackSimples == "" ||
+      gerais.unidadePaybackSimples == "" ||
+      gerais.ppm == "" ||
+      gerais.linkJira == ""
+    ) {
+      setFeedbackFaltante(true);
+    } else {
+      if (gerais.responsaveisNegocio.length != 0) {
+        gerais.responsaveisNegocio.map((responsavel) => {
+          if (responsavel.nome == "" || responsavel.area == "") {
+            setFeedbackFaltante(true);
+          } else {
+            excluirBeneficios();
 
-    propostaService.post(retornaObjetoProposta(), receberIdsAnexos()).then((response) => {
-      // DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
-        EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
+            propostaService
+              .post(retornaObjetoProposta(), receberIdsAnexos())
+              .then((response) => {
+                DemandaService.atualizarStatus(
+                  dadosDemanda.id,
+                  "ASSESSMENT_APROVACAO"
+                ).then(() => {
+                  EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
+                    () => {
+                      // Salvamento de histórico
+                      ExportPdfService.exportProposta(response.id).then(
+                        (file) => {
+                          let arquivo = new Blob([file], {
+                            type: "application/pdf",
+                          });
+                          propostaService
+                            .addHistorico(
+                              response.id,
+                              "Proposta Criada",
+                              arquivo,
+                              parseInt(localStorage.getItem("usuarioId"))
+                            )
+                            .then(() => {
+                              localStorage.setItem("tipoFeedback", "5");
+                              navigate("/");
+                            });
+                        }
+                      );
+                    }
+                  );
+                });
+              });
+          }
+        });
+      } else {
+        setFeedbackFaltante(true);
+      }
+    }
+  };
 
-          // Salvamento de histórico
-          ExportPdfService.exportProposta(response.id).then((file) => {
-            let arquivo = new Blob([file], { type: "application/pdf" });
-            propostaService.addHistorico(response.id, "Proposta Criada", arquivo, parseInt(localStorage.getItem("usuarioId"))).then(() => {
-              localStorage.setItem("tipoFeedback", "5");
-              navigate("/");
-            })
-          });
-        })
-      // });
-    });
-  }
+  /** Variável utilizada para abrir o modal de feedback de dados faltantes */
+  const [feedbackFaltante, setFeedbackFaltante] = useState(false);
 
   return (
     <>
-      <Stepper activeStep={activeStep} sx={{minWidth: "60rem"}}>
+      <Stepper activeStep={activeStep} sx={{ minWidth: "60rem" }}>
         {etapasProposta.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
@@ -419,12 +552,10 @@ const BarraProgressaoProposta = (props) => {
           carregamento={carregamento}
           dados={dadosDemanda}
           setDadosDemanda={setDadosDemanda}
-
           beneficios={listaBeneficios}
           setBeneficios={setListaBeneficios}
           beneficiosExcluidos={listaBeneficiosExcluidos}
           setBeneficiosExcluidos={setListaBeneficiosExcluidos}
-
           listaForuns={listaForuns}
           listaBU={listaBU}
           listaSecoesTI={listaSecoesTI}
@@ -434,10 +565,7 @@ const BarraProgressaoProposta = (props) => {
         <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />
       )}
       {activeStep == 2 && (
-        <FormularioCustosProposta
-          custos={custos}
-          setCustos={setCustos}
-        />
+        <FormularioCustosProposta custos={custos} setCustos={setCustos} />
       )}
       {activeStep == 3 && (
         <FormularioGeralProposta
@@ -479,6 +607,15 @@ const BarraProgressaoProposta = (props) => {
           {texts.barraProgressaoProposta.botaoProximo}
         </Button>
       )}
+      {/* Feedback de dados faltantes */}
+      <Feedback
+        open={feedbackFaltante}
+        handleClose={() => {
+          setFeedbackFaltante(false);
+        }}
+        status={"erro"}
+        mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
+      />
     </>
   );
 };

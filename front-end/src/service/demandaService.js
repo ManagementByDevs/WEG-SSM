@@ -16,7 +16,6 @@ class DemandaService {
     }
 
     async getPage(params, page) {
-
         if (params.departamento != null) {
             params.departamento = JSON.stringify(params.departamento);
         }
