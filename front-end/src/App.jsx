@@ -99,10 +99,24 @@ const App = () => {
                   <Route path="*" element={<NotFound />} />
                 </Route>
                 <Route
-                  path="/"
+                  path="/home"
                   element={
-                    <ProtectedRoute>
-                      {DetermineHomeUser()}
+                    <ProtectedRoute
+                      tiposUsuarioAllowed={["SOLICITANTE"]}
+                      redirectPath="/login"
+                    >
+                      <Home />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/home-gerencia"
+                  element={
+                    <ProtectedRoute
+                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                      redirectPath="/login"
+                    >
+                      <Home />
                     </ProtectedRoute>
                   }
                 />
@@ -111,7 +125,7 @@ const App = () => {
                   element={
                     <ProtectedRoute
                       tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/"
+                      redirectPath="/home-gerencia"
                     >
                       <CriarProposta />
                     </ProtectedRoute>
@@ -122,7 +136,7 @@ const App = () => {
                   element={
                     <ProtectedRoute
                       tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/"
+                      redirectPath="/home-gerencia"
                     >
                       <DetalhesPropostaPagina />
                     </ProtectedRoute>
@@ -133,7 +147,7 @@ const App = () => {
                   element={
                     <ProtectedRoute
                       tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/"
+                      redirectPath="/home-gerencia"
                     >
                       <DetalhesAta />
                     </ProtectedRoute>
@@ -144,7 +158,7 @@ const App = () => {
                   element={
                     <ProtectedRoute
                       tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/"
+                      redirectPath="/home-gerencia"
                     >
                       <DetalhesPauta />
                     </ProtectedRoute>
@@ -167,40 +181,10 @@ const ProtectedRoute = ({
 
   const cookie = CookieService.getCookie();
   if (cookie != null) {
-    UsuarioService.getUsuarioByEmail(cookie.sub)
-      .then((user) => {
-        return children ? children : <Outlet />;
-      })
-      .catch((error) => {
-        console.error("Failed to load user data: ", error);
-      });
+    return children ? children : <Outlet />;
   } else {
     return <Navigate to={redirectPath} replace />;
   }
 };
-
-const DetermineHomeUser = () => {
-
-  const user = returnUsuario();
-  console.log(user);
-  if (user != null) {
-    if (user.tipoUsuario == "SOLICITANTE") {
-      return <Home />
-    } else {
-      return <HomeGerencia />
-    }
-  } else {
-    return null;
-  }
-};
-
-const returnUsuario = async () => {
-  const cookie = CookieService.getCookie();
-  if (cookie != null) {
-    return await UsuarioService.getUsuarioByEmail(cookie.sub);
-  } else {
-    return null;
-  }
-}
 
 export default App;
