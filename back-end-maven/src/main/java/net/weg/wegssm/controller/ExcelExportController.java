@@ -36,17 +36,17 @@ public class ExcelExportController {
     private ExcelGeneratorService excelGeneratorService;
 
     @PostMapping("/excel/demandas_backlog")
-    public void exportDemandasBackLogToExcel(HttpServletResponse response, @RequestParam("demandas_backlog") List<String> listaDemandas) throws IOException {
+    public void exportDemandasBackLogToExcel(HttpServletResponse response, @RequestParam("demandas_backlog") List<Long> listaDemandas) throws IOException {
         excelGeneratorService.exportDemandasBackLogToExcel(response, listaDemandas);
     }
 
     @PostMapping("/excel/demandas_assessment")
-    public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<String> listaDemandas) throws IOException {
+    public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<Long> listaDemandas) throws IOException {
         excelGeneratorService.exportDemandasAssessmentToExcel(response, listaDemandas);
     }
 
     @PostMapping("/excel/propostas")
-    public void exportPropostasToExcel(HttpServletResponse response, @RequestParam("propostas") List<String> listaPropostas) throws IOException {
+    public void exportPropostasToExcel(HttpServletResponse response, @RequestParam("propostas") List<Long> listaPropostas) throws IOException {
         excelGeneratorService.exportPropostasToExcel(response, listaPropostas);
     }
 
