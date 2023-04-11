@@ -6,7 +6,6 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 import ColorModeContext from "../../service/TemaContext";
 import FontContext from "../../service/FontContext";
-import TextLanguage from "../../service/TextLanguage";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente para criar uma linha da tabela de CCs
@@ -37,7 +36,7 @@ const LinhaTabelaCCs = (props) => {
     <TableRow className="border-b">
       <td align="center" className="pb-5 relative">
         <Box className="flex w-full justify-end absolute" sx={{ width: "98%" }}>
-          <Tooltip title={texts?.linhaTabelaCCs?.titleExcluirLinha}>
+          <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
             <DeleteOutlineOutlinedIcon
               fontSize="medium"
               className="mt-1 delay-120 hover:scale-110 duration-300"
@@ -50,15 +49,15 @@ const LinhaTabelaCCs = (props) => {
         </Box>
         <Box
           className="flex w-full justify-around pr-10 pl-4"
-          sx={{ marginTop: "2.8rem" }}
+          sx={{ marginTop: "2rem" }}
         >
           <Input
             className="border rounded drop-shadow-sm outline-none"
             fontSize={FontConfig.medium}
-            placeholder={texts?.linhaTabelaCCs?.digiteCodigo}
+            placeholder={texts.linhaTabelaCCs.digiteCodigo}
             size="small"
             style={{
-              width: "70%",
+              width: "60%",
               height: "2.4rem",
               backgroundColor: corFundoTextArea,
               paddingLeft: "10px",
@@ -81,7 +80,8 @@ const LinhaTabelaCCs = (props) => {
             fontSize={FontConfig.medium}
             size="small"
             style={{
-              width: "22%",
+              width: "32%",
+              minWidth: "73px",
               backgroundColor: corFundoTextArea,
               padding: "0 10px",
             }}

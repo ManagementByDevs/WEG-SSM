@@ -26,7 +26,7 @@ const TextLanguage = (linguagem) => {
             botaoCriar: "Criar",
             botaoProximo: "Próximo",
             mensagemFeedbackCamposObrigatorios: "Preencha todos os campos obrigatórios!",
-            mensagemFeedbackCcsFaltando: "A porcentagem deve fechar 100%!"
+            mensagemFeedbackCcsFaltando: "A porcentagem deve fechar 100% em cada CCs!",
         },
         beneficios: {
             beneficios: "Benefícios",
@@ -250,7 +250,7 @@ const TextLanguage = (linguagem) => {
         idiomaModal: {
             idiomas: "Idiomas",
         },
-        linhaTabelaCcs: {
+        linhaTabelaCCs: {
             titleExcluirLinha: "Excluir linha",
             digiteCodigo: "Digite o código...",
         },
@@ -762,7 +762,7 @@ const TextLanguage = (linguagem) => {
             botaoCriar: "Create",
             botaoProximo: "Next",
             mensagemFeedbackCamposObrigatorios: "You must fill in all the fields!",
-            mensagemFeedbackCcsFaltando: "The percentage must close 100%!"
+            mensagemFeedbackCcsFaltando: "The percentage must close 100% in each CCs!",
         },
         beneficios: {
             beneficios: "Benefits",
@@ -983,7 +983,7 @@ const TextLanguage = (linguagem) => {
         idiomaModal: {
             idiomas: "Languages",
         },
-        linhaTabelaCcs: {
+        linhaTabelaCCs: {
             titleExcluirLinha: "Delete line",
             digiteCodigo: "Enter the code...",
         },
@@ -1482,7 +1482,7 @@ const TextLanguage = (linguagem) => {
             botaoCriar: "创建",
             botaoProximo: "下一个",
             mensagemFeedbackCamposObrigatorios: "您必须填写所有字段！",
-            mensagemFeedbackCcsFaltando: "百分比必须为100％！",
+            mensagemFeedbackCcsFaltando: "每个CCs的百分比必须为100%！",
         },
         beneficios: {
             beneficios: "好处",
@@ -1702,7 +1702,7 @@ const TextLanguage = (linguagem) => {
         idiomaModal: {
             idiomas: "语言",
         },
-        linhaTabelaCcs: {
+        linhaTabelaCCs: {
             titleExcluirLinha: "删除行",
             digiteCodigo: "输入代码...",
         },
@@ -2200,7 +2200,7 @@ const TextLanguage = (linguagem) => {
             botaoCriar: "Crear",
             botaoProximo: "Siguiente",
             mensagemFeedbackCamposObrigatorios: "¡Rellena todos los campos obligatorios!",
-            mensagemFeedbackCcsFaltando: "¡La porcentaje debe cerrar 100%!"
+            mensagemFeedbackCcsFaltando: "¡La porcentaje debe cerrar 100% en cada CCs!",
         },
         beneficios: {
             beneficios: "Beneficios",
@@ -2424,7 +2424,7 @@ const TextLanguage = (linguagem) => {
         idiomaModal: {
             idiomas: "Idiomas",
         },
-        linhaTabelaCcs: {
+        linhaTabelaCCs: {
             titleExcluir: "Eliminar",
             digiteCodigo: "Escribe el código...",
         },

@@ -28,7 +28,7 @@ const TextLanguageContext = createContext({
       botaoCriar: "Criar",
       botaoProximo: "Próximo",
       mensagemFeedbackCamposObrigatorios: "Preencha todos os campos obrigatórios!",
-      mensagemFeedbackCcsFaltando: "A porcentagem deve fechar 100%!"
+      mensagemFeedbackCcsFaltando: "A porcentagem deve fechar 100% em cada CCs!",
     },
     beneficios: {
       beneficios: "Benefícios",
