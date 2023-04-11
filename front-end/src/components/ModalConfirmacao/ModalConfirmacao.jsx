@@ -39,6 +39,8 @@ const ModalConfirmacao = (props) => {
         return texts.modalConfirmacao.mensagensModal.fecharChat;
       case "tirarPropostaDePauta":
         return texts.modalConfirmacao.mensagensModal.tirarPropostaDePauta;
+      case "alterarStatusProposta":
+        return texts.modalConfirmacao.mensagensModal.alterarStatusProposta;
     }
   };
 
@@ -79,7 +81,11 @@ const ModalConfirmacao = (props) => {
           }}
         >
           <ErrorOutlineIcon sx={{ fontSize: "100px", color: "primary.main" }} />
-          <Typography fontSize={FontConfig.veryBig} className="text-center" sx={{ mt: 2 }}>
+          <Typography
+            fontSize={FontConfig.veryBig}
+            className="text-center"
+            sx={{ mt: 2 }}
+          >
             {mensagemModal(props.textoModal)}
           </Typography>
           <Box className="flex justify-center items-center mt-5">

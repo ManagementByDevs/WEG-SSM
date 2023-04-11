@@ -26,6 +26,7 @@ import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
@@ -42,17 +43,6 @@ const DetalhesProposta = ({
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
-
-  // Referência do elemento de status
-  const statusElement = useRef(null);
-
-  // Estado do modal de trocar status
-  const [modalStatus, setModalStatus] = useState(false);
-
-  // UseState para poder visualizar e alterar o menu do idioma
-  const [anchorElModalStatus, setAnchorElModalStatus] = useState(null);
-
-  const [confirmEditStatus, setConfirmEditStatus] = useState(false);
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -75,13 +65,6 @@ const DetalhesProposta = ({
         URL.revokeObjectURL(url);
       }
     }
-  };
-
-  // Função para transformar uma string em base64 para um ArrayBuffer
-  const base64ToArrayBuffer = (base64) => {
-    const binaryString = window.atob(base64);
-    const bytes = new Uint8Array(binaryString.length);
-    return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
   // Retorna o texto do status da proposta
@@ -110,13 +93,13 @@ const DetalhesProposta = ({
   const getCorStatus = (status) => {
     switch (status) {
       case "ASSESSMENT_APROVACAO":
-        return "#F7DC6F";
+        return "#8862A2";
       case "ASSESSMENT_EDICAO":
-        return "#F7DC6F";
+        return "#8862A2";
       case "ASSESSMENT_COMISSAO":
-        return "#F7DC6F";
+        return "#8862A2";
       case "ASSESSMENT_DG":
-        return "#F7DC6F";
+        return "#8862A2";
       case "BUSINESS_CASE":
         return "#C8CA5F";
       case "CANCELLED":
@@ -128,136 +111,25 @@ const DetalhesProposta = ({
     }
   };
 
-  // Abre o modal para alterar o status da proposta
-  const handleOpenModalStatus = () => {
-    setModalStatus(true);
+  // Função para transformar uma string em base64 para um ArrayBuffer
+  const base64ToArrayBuffer = (base64) => {
+    const binaryString = window.atob(base64);
+    const bytes = new Uint8Array(binaryString.length);
+    return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
-
-  // Fecha o modal para alterar o status da proposta
-  const handleCloseModalStataus = () => {
-    setModalStatus(false);
-  };
-
-  // Verifica se o status selecionado é o mesmo da proposta
-  const isSameStatus = (status) => {
-    switch (status) {
-      case "ASSESSMENT":
-        return (
-          proposta.status == "ASSESSMENT_APROVACAO" ||
-          "ASSESSMENT_EDICAO" ||
-          "ASSESSMENT_COMISSAO"
-        );
-      case "BUSINESS_CASE":
-        return proposta.status == "BUSINESS_CASE";
-      case "CANCELLED":
-        return proposta.status == "CANCELLED";
-      case "DONE":
-        return proposta.status == "DONE";
-    }
-
-    return false;
-  };
-
-  const confirmSelectStatus = (status) => {
-    if (isSameStatus(status)) {
-      console.log("Status é o mesmo!");
-      return;
-    }
-
-    setConfirmEditStatus(true);
-
-    // switch (status) {
-    //   case "ASSESSMENT":
-    //     break;
-    //   case "BUSINESS_CASE":
-    //     break;
-    //   case "CANCELLED":
-    //     break;
-    //   case "DONE":
-    //     break;
-    // }
-  };
-
-  useEffect(() => {
-    // Adiciona o elemento do status para poder configurar a posição do modal
-    if (statusElement.current) {
-      setAnchorElModalStatus(statusElement.current);
-    }
-  }, []);
 
   return (
     <Box className="flex justify-center">
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorElModalStatus}
-        open={modalStatus}
-        onClose={handleCloseModalStataus}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem
-          className="gap-2"
-          onClick={() => confirmSelectStatus("ASSESSMENT")}
-        >
-          <Box
-            className="w-4 h-4 rounded"
-            sx={{ backgroundColor: getCorStatus("ASSESSMENT_APROVACAO") }}
-          />
-          <Typography fontSize={FontConfig.default}>
-            {texts.detalhesProposta.statusText.assessment}
-          </Typography>
-        </MenuItem>
-        <MenuItem
-          className="gap-2"
-          onClick={() => confirmSelectStatus("BUSINESS_CASE")}
-        >
-          <Box
-            className="w-4 h-4 rounded"
-            sx={{ backgroundColor: getCorStatus("BUSINESS_CASE") }}
-          />
-          <Typography fontSize={FontConfig.default}>
-            {texts.detalhesProposta.statusText.bussinessCase}
-          </Typography>
-        </MenuItem>
-        <MenuItem
-          className="gap-2"
-          onClick={() => confirmSelectStatus("CANCELLED")}
-        >
-          <Box
-            className="w-4 h-4 rounded"
-            sx={{ backgroundColor: getCorStatus("CANCELLED") }}
-          />
-          <Typography fontSize={FontConfig.default}>
-            {texts.detalhesProposta.statusText.cancelled}
-          </Typography>
-        </MenuItem>
-        <MenuItem
-          className="gap-2"
-          onClick={() => confirmSelectStatus("DONE")}
-        >
-          <Box
-            className="w-4 h-4 rounded"
-            sx={{ backgroundColor: getCorStatus("DONE") }}
-          />
-          <Typography fontSize={FontConfig.default}>
-            {texts.detalhesProposta.statusText.done}
-          </Typography>
-        </MenuItem>
-      </Menu>
-
       <Box
         className="border rounded px-10 py-4 border-t-6 relative"
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
       >
-        <Tooltip title={getStatusFormatted()}>
-          <Box
-            className="w-5 h-6 absolute right-2 top-0 rounded-b cursor-pointer"
-            sx={{ backgroundColor: getCorStatus("ASSESSMENT_APROVACAO") }}
-            onClick={handleOpenModalStatus}
-            ref={statusElement}
-          />
-        </Tooltip>
+        <StatusProposta
+          proposta={proposta}
+          setProposta={setProposta}
+          getCorStatus={getCorStatus}
+          getStatusFormatted={getStatusFormatted}
+        />
         {/* Box header */}
         <Box className="w-full flex justify-between ">
           <Box className="flex gap-4">
@@ -1134,6 +1006,188 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
         sx={{ borderColor: "primary.main" }}
       />
     </Box>
+  );
+};
+
+const StatusProposta = ({
+  proposta = propostaExample,
+  setProposta = () => {},
+  getCorStatus = () => {},
+  getStatusFormatted = () => {},
+}) => {
+  // Context para obter as configurações das fontes do sistema
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
+  // UseState para poder visualizar e alterar o menu do idioma
+  const [anchorElModalStatus, setAnchorElModalStatus] = useState(null);
+
+  // Referência do elemento de status
+  const statusElement = useRef(null);
+
+  // Estado do modal de trocar status
+  const [modalStatus, setModalStatus] = useState(false);
+
+  // Estado do modal de confirmação de troca de status
+  const [confirmEditStatus, setConfirmEditStatus] = useState(false);
+
+  // Estado do novo status
+  const [newStatus, setNewStatus] = useState("");
+
+  // Abre o modal para alterar o status da proposta
+  const handleOpenModalStatus = () => {
+    setModalStatus(true);
+  };
+
+  // Fecha o modal para alterar o status da proposta
+  const handleCloseModalStataus = () => {
+    setModalStatus(false);
+  };
+
+  const confirmSelectStatus = (status) => {
+    if (isSameStatus(status)) {
+      console.log("Status é o mesmo!");
+      return;
+    }
+
+    setModalStatus(false);
+    setConfirmEditStatus(true);
+    setNewStatus(status);
+  };
+
+  // Verifica se o status selecionado é o mesmo da proposta
+  const isSameStatus = (status) => {
+    switch (status) {
+      case "ASSESSMENT_APROVACAO":
+        return proposta.status.startsWith("ASSESSMENT");
+      case "BUSINESS_CASE":
+        return proposta.status == "BUSINESS_CASE";
+      case "CANCELLED":
+        return proposta.status == "CANCELLED";
+      case "DONE":
+        return proposta.status == "DONE";
+    }
+
+    return false;
+  };
+
+  const editarStatus = () => {
+    if (newStatus == "") {
+      console.log("Status não pode ser vazio!");
+      return;
+    }
+
+    console.log("status: ", newStatus);
+    setProposta({ ...proposta, status: newStatus });
+    setConfirmEditStatus(false);
+  };
+
+  useEffect(() => {
+    // Adiciona o elemento do status para poder configurar a posição do modal
+    if (statusElement.current) {
+      setAnchorElModalStatus(statusElement.current);
+    }
+
+
+    console.log("location status") // Verificar se o location está sendo atualizado
+
+
+  }, []);
+
+  return (
+    <>
+
+      <ModalConfirmacao
+        open={confirmEditStatus}
+        setOpen={setConfirmEditStatus}
+        textoModal={"alterarStatusProposta"}
+        textoBotao={"sim"}
+        onConfirmClick={editarStatus}
+        onCancelClick={() => {}}
+      />
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorElModalStatus}
+        open={modalStatus}
+        onClose={handleCloseModalStataus}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("ASSESSMENT_APROVACAO")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("ASSESSMENT_APROVACAO") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.assessment}
+          </Typography>
+        </MenuItem>
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("BUSINESS_CASE")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("BUSINESS_CASE") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.bussinessCase}
+          </Typography>
+        </MenuItem>
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("CANCELLED")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("CANCELLED") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.cancelled}
+          </Typography>
+        </MenuItem>
+        <MenuItem className="gap-2" onClick={() => confirmSelectStatus("DONE")}>
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("DONE") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.done}
+          </Typography>
+        </MenuItem>
+      </Menu>
+
+      <Tooltip title={getStatusFormatted()}>
+        <Box
+          className="flex absolute right-2 top-0 cursor-pointer"
+          onClick={handleOpenModalStatus}
+          ref={statusElement}
+        >
+          <Box
+            className="w-0 h-0 relative left-4"
+            sx={{
+              borderTop: `1.8rem solid ${getCorStatus(proposta.status)}`,
+              borderRight: "1.1rem solid transparent",
+              borderLeft: "0px solid transparent",
+            }}
+          />
+          <Box
+            className="w-0 h-0 relative"
+            sx={{
+              borderTop: `1.8rem solid ${getCorStatus(proposta.status)}`,
+              borderRight: "0rem solid transparent",
+              borderLeft: "1.1rem solid transparent",
+            }}
+          />
+        </Box>
+      </Tooltip>
+    </>
   );
 };
 

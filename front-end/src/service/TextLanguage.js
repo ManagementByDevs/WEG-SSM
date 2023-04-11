@@ -293,6 +293,7 @@ const TextLanguage = (linguagem) => {
                 confirmarExclusao: "Tem certeza que deseja excluir?",
                 fecharChat: "Deseja realmente fechar este chat?",
                 tirarPropostaDePauta: "Deseja realmente tirar a proposta da pauta?",
+                alterarStatusProposta: "Essa ação pode excluir dados da proposta! Deseja mesmo alterar seu status?",
             },
             mensagensBotao: {
                 sim: "Sim",
