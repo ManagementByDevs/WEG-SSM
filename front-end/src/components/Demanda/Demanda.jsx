@@ -89,7 +89,7 @@ const Demanda = (props) => {
       >
         <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
           {/* Título da demanda */}
-          <Typography fontSize={FontConfig.veryBig} sx={{ fontWeight: "600" }} color="text.primary">
+          <Typography fontSize={FontConfig.veryBig} sx={{ fontWeight: "600", maxWidth: "80%" }} color="text.primary">
             {props.demanda.titulo}
           </Typography>
 
