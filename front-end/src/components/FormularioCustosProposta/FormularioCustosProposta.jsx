@@ -96,6 +96,7 @@ const FormularioCustosProposta = (props) => {
         </Box>
         <Button
           sx={{
+            minWidth: "179px",
             backgroundColor: "primary.main",
             color: "text.white",
             fontSize: FontConfig.default,

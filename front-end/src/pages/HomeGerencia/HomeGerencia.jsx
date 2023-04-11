@@ -1375,21 +1375,23 @@ const HomeGerencia = () => {
                 )}
 
                 {/* Botão de exportar */}
-                <Button
-                  id="quartoDemandas"
-                  className="flex gap-1"
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "text.white",
-                    fontSize: FontConfig.default,
-                    minWidth: "6rem",
-                  }}
-                  onClick={exportarExcel}
-                  variant="contained"
-                  disableElevation
-                >
-                  {texts.homeGerencia.exportar} <FileDownloadIcon />
-                </Button>
+                {valorAba != 1 &&
+                  <Button
+                    id="quartoDemandas"
+                    className="flex gap-1"
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                      minWidth: "6rem",
+                    }}
+                    onClick={exportarExcel}
+                    variant="contained"
+                    disableElevation
+                  >
+                    {texts.homeGerencia.exportar} <FileDownloadIcon />
+                  </Button>
+                }
               </Box>
 
               {/* Botão de criar demanda */}

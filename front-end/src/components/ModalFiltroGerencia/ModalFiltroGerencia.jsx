@@ -231,7 +231,7 @@ const ModalFiltroGerencia = (props) => {
                   </MenuItem>
                   <MenuItem value={"Muito Pequeno"}>{texts.modalFiltroGerencia.muitoPequeno}</MenuItem>
                   <MenuItem value={"Pequeno"}>{texts.modalFiltroGerencia.pequeno}</MenuItem>
-                  <MenuItem value={"Médio"}>{texts.modalAceitarDemanda.pequeno}</MenuItem>
+                  <MenuItem value={"Médio"}>{texts.modalAceitarDemanda.medio}</MenuItem>
                   <MenuItem value={"Grande"}>{texts.modalAceitarDemanda.grande}</MenuItem>
                   <MenuItem value={"Muito Grande"}>{texts.modalAceitarDemanda.muitoGrande}</MenuItem>
                 </Select>

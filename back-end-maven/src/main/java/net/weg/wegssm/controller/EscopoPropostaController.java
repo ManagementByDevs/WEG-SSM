@@ -106,9 +106,13 @@ public class EscopoPropostaController {
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
         escopoProposta.setUltimaModificacao(new Date());
 
+        List<ResponsavelNegocio> listaResponsaveis = new ArrayList<>();
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
-            responsavelNegocioService.save(responsavelNegocio);
+            if(responsavelNegocioService.existsById(responsavelNegocio.getId())) {
+                listaResponsaveis.add(responsavelNegocioService.save(responsavelNegocio));
+            }
         }
+        escopoProposta.setResponsavelNegocio(listaResponsaveis);
 
         ArrayList<Beneficio> listaNovaBeneficios = new ArrayList<>();
         for (Beneficio beneficio : escopoProposta.getBeneficios()) {
@@ -118,15 +122,30 @@ public class EscopoPropostaController {
         }
         escopoProposta.setBeneficios(listaNovaBeneficios);
 
+        ArrayList<TabelaCusto> tabelaCustos = new ArrayList<>();
         for (TabelaCusto tabelaCusto : escopoProposta.getTabelaCustos()) {
-            for (Custo custo : tabelaCusto.getCustos()) {
-                custoService.save(custo);
+            if(tabelaCusto.getId() != null && tabelaCustoService.existsById(tabelaCusto.getId())) {
+
+                ArrayList<Custo> listaCustos = new ArrayList<>();
+                for (Custo custo : tabelaCusto.getCustos()) {
+                    if(custo.getId() != null || custoService.existsById(custo.getId())) {
+                        listaCustos.add(custoService.save(custo));
+                    }
+                }
+                tabelaCusto.setCustos(listaCustos);
+
+                ArrayList<CC> listaCCs = new ArrayList<>();
+                for (CC cc : tabelaCusto.getCcs()) {
+                    if(cc.getId() != null && ccsService.existsById(cc.getId())) {
+                        listaCCs.add(ccsService.save(cc));
+                    }
+                }
+                tabelaCusto.setCcs(listaCCs);
+
+                tabelaCustos.add(tabelaCustoService.save(tabelaCusto));
             }
-            for (CC cc : tabelaCusto.getCcs()) {
-                ccsService.save(cc);
-            }
-            tabelaCustoService.save(tabelaCusto);
         }
+        escopoProposta.setTabelaCustos(tabelaCustos);
 
         ArrayList<Anexo> listaAnexos = new ArrayList<>();
         if(listaIdsAnexos != null) {

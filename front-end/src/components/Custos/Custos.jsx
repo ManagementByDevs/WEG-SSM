@@ -132,7 +132,7 @@ const Custos = (props) => {
                         {texts.custos.perfilDaDespesa}
                       </Typography>
                     </th>
-                    <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
+                    <th align="center" className="p-4 w-0" style={{ width: "10%", minWidth: "135px" }}>
                       <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
                         {texts.custos.periodoDeExecucao}
                       </Typography>
@@ -204,7 +204,7 @@ const Custos = (props) => {
           </Paper>
         </Box>
       </Box>
-      <Paper className="h-full pb-1" sx={{ width: "25%" }}>
+      <Paper className="h-full pb-1" sx={{ width: "25%", minWidth: "263px" }}>
         {/* Outra tabela para os CCs */}
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">

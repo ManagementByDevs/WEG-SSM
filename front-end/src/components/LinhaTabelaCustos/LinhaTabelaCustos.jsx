@@ -58,6 +58,9 @@ const LinhaTabelaCustos = (props) => {
             textAlign: "center",
             backgroundColor: corFundoTextArea,
             marginTop: "0.8rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
           }}
           fontSize={FontConfig.medium}
           className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
@@ -96,6 +99,7 @@ const LinhaTabelaCustos = (props) => {
         <TextareaAutosize
           style={{
             width: "95%",
+            minWidth: "155px",
             resize: "none",
             textAlign: "center",
             backgroundColor: corFundoTextArea,

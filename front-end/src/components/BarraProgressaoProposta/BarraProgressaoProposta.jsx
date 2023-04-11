@@ -127,6 +127,7 @@ const BarraProgressaoProposta = (props) => {
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
             (data) => {
               if (data.length == 0) {
+                 console.log("aaaaaaa")
                 receberBeneficios();
                 let escopo = retornaObjetoProposta();
                 delete escopo.historicoProposta;
@@ -166,6 +167,7 @@ const BarraProgressaoProposta = (props) => {
   }, [ultimoEscopo]);
 
   const carregarEscopoSalvo = (escopo) => {
+    console.log(escopo);
     setDadosDemanda({
       id: escopo.demanda.id,
       titulo: escopo.titulo,
@@ -284,6 +286,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para passar para próxima página
   const proximaEtapa = () => {
     let dadosFaltantes = false;
+    let fechar100porcentoCcs = false;
     switch (activeStep) {
       case 0:
         if (
@@ -314,14 +317,18 @@ const BarraProgressaoProposta = (props) => {
         }
         break;
       case 2:
+        let porcentagemCcs = 0;
         custos.map((custo) => {
           custo.custos.map((custolinha) => {
             if (
               custolinha.tipoDespesa == "" ||
               custolinha.perfilDespesa == "" ||
               custolinha.periodoExecucao == "" ||
+              custolinha.periodoExecucao == null ||
               custolinha.horas == "" ||
-              custolinha.valorHora == ""
+              custolinha.horas == null ||
+              custolinha.valorHora == "" ||
+              custolinha.valorHora == null
             ) {
               dadosFaltantes = true;
               setFeedbackFaltante(true);
@@ -332,11 +339,18 @@ const BarraProgressaoProposta = (props) => {
               dadosFaltantes = true;
               setFeedbackFaltante(true);
             }
+            porcentagemCcs += cc.porcentagem;
           });
+          if (dadosFaltantes == false && porcentagemCcs != 100) {
+            fechar100porcentoCcs = true;
+            setFeedback100porcentoCcs(true);
+          } else {
+            porcentagemCcs = 0;
+          }
         });
         break;
     }
-    if (dadosFaltantes == false) {
+    if (dadosFaltantes == false && fechar100porcentoCcs == false) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
@@ -413,6 +427,7 @@ const BarraProgressaoProposta = (props) => {
       let listaCustos = [];
       for (const custo of tabelaCustos.custos) {
         listaCustos.push({
+          id: custo.id,
           tipoDespesa: custo.tipoDespesa,
           perfilDespesa: custo.perfilDespesa,
           periodoExecucao: custo.periodoExecucao,
@@ -474,6 +489,7 @@ const BarraProgressaoProposta = (props) => {
 
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = () => {
+    let feedbackFaltante = false;
     if (
       gerais.periodoExecucacaoInicio == "" ||
       gerais.periodoExecucacaoFim == "" ||
@@ -487,44 +503,46 @@ const BarraProgressaoProposta = (props) => {
       if (gerais.responsaveisNegocio.length != 0) {
         gerais.responsaveisNegocio.map((responsavel) => {
           if (responsavel.nome == "" || responsavel.area == "") {
+            feedbackFaltante = true;
             setFeedbackFaltante(true);
-          } else {
-            excluirBeneficios();
-
-            propostaService
-              .post(retornaObjetoProposta(), receberIdsAnexos())
-              .then((response) => {
-                DemandaService.atualizarStatus(
-                  dadosDemanda.id,
-                  "ASSESSMENT_APROVACAO"
-                ).then(() => {
-                  EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
-                    () => {
-                      // Salvamento de histórico
-                      ExportPdfService.exportProposta(response.id).then(
-                        (file) => {
-                          let arquivo = new Blob([file], {
-                            type: "application/pdf",
-                          });
-                          propostaService
-                            .addHistorico(
-                              response.id,
-                              "Proposta Criada",
-                              arquivo,
-                              parseInt(localStorage.getItem("usuarioId"))
-                            )
-                            .then(() => {
-                              localStorage.setItem("tipoFeedback", "5");
-                              navigate("/");
-                            });
-                        }
-                      );
-                    }
-                  );
-                });
-              });
           }
         });
+        if (feedbackFaltante != true) {
+          excluirBeneficios();
+
+          propostaService
+            .post(retornaObjetoProposta(), receberIdsAnexos())
+            .then((response) => {
+              DemandaService.atualizarStatus(
+                dadosDemanda.id,
+                "ASSESSMENT_APROVACAO"
+              ).then(() => {
+                EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
+                  () => {
+                    // Salvamento de histórico
+                    ExportPdfService.exportProposta(response.id).then(
+                      (file) => {
+                        let arquivo = new Blob([file], {
+                          type: "application/pdf",
+                        });
+                        propostaService
+                          .addHistorico(
+                            response.id,
+                            "Proposta Criada",
+                            arquivo,
+                            parseInt(localStorage.getItem("usuarioId"))
+                          )
+                          .then(() => {
+                            localStorage.setItem("tipoFeedback", "5");
+                            navigate("/");
+                          });
+                      }
+                    );
+                  }
+                );
+              });
+            });
+        }
       } else {
         setFeedbackFaltante(true);
       }
@@ -533,6 +551,7 @@ const BarraProgressaoProposta = (props) => {
 
   /** Variável utilizada para abrir o modal de feedback de dados faltantes */
   const [feedbackFaltante, setFeedbackFaltante] = useState(false);
+  const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
 
   return (
     <>
@@ -614,7 +633,18 @@ const BarraProgressaoProposta = (props) => {
           setFeedbackFaltante(false);
         }}
         status={"erro"}
-        mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
+        mensagem={
+          texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
+        }
+      />
+      {/* Feedback de que não fechou 100% de CCs */}
+      <Feedback
+        open={feedback100porcentoCcs}
+        handleClose={() => {
+          setFeedback100porcentoCcs(false);
+        }}
+        status={"erro"}
+        mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
       />
     </>
   );
