@@ -25,6 +25,8 @@ const TextLanguage = (linguagem) => {
             botaoVoltar: "Voltar",
             botaoCriar: "Criar",
             botaoProximo: "Próximo",
+            mensagemFeedbackCamposObrigatorios: "Preencha todos os campos obrigatórios!",
+            mensagemFeedbackCcsFaltando: "A porcentagem deve fechar 100%!"
         },
         beneficios: {
             beneficios: "Benefícios",
@@ -759,6 +761,8 @@ const TextLanguage = (linguagem) => {
             botaoVoltar: "Back",
             botaoCriar: "Create",
             botaoProximo: "Next",
+            mensagemFeedbackCamposObrigatorios: "You must fill in all the fields!",
+            mensagemFeedbackCcsFaltando: "The percentage must close 100%!"
         },
         beneficios: {
             beneficios: "Benefits",
@@ -1477,6 +1481,8 @@ const TextLanguage = (linguagem) => {
             botaoVoltar: "背部",
             botaoCriar: "创建",
             botaoProximo: "下一个",
+            mensagemFeedbackCamposObrigatorios: "您必须填写所有字段！",
+            mensagemFeedbackCcsFaltando: "百分比必须为100％！",
         },
         beneficios: {
             beneficios: "好处",
@@ -2193,6 +2199,8 @@ const TextLanguage = (linguagem) => {
             botaoVoltar: "Volver",
             botaoCriar: "Crear",
             botaoProximo: "Siguiente",
+            mensagemFeedbackCamposObrigatorios: "¡Rellena todos los campos obligatorios!",
+            mensagemFeedbackCcsFaltando: "¡La porcentaje debe cerrar 100%!"
         },
         beneficios: {
             beneficios: "Beneficios",

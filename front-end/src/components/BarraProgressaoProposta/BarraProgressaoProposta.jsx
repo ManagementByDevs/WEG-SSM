@@ -284,6 +284,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para passar para próxima página
   const proximaEtapa = () => {
     let dadosFaltantes = false;
+    let fechar100porcentoCcs = false;
     switch (activeStep) {
       case 0:
         if (
@@ -314,14 +315,18 @@ const BarraProgressaoProposta = (props) => {
         }
         break;
       case 2:
+        let somaPorcentagemCcs = 0;
         custos.map((custo) => {
           custo.custos.map((custolinha) => {
             if (
               custolinha.tipoDespesa == "" ||
               custolinha.perfilDespesa == "" ||
               custolinha.periodoExecucao == "" ||
+              custolinha.periodoExecucao == null ||
               custolinha.horas == "" ||
-              custolinha.valorHora == ""
+              custolinha.horas == null ||
+              custolinha.valorHora == "" ||
+              custolinha.valorHora == null
             ) {
               dadosFaltantes = true;
               setFeedbackFaltante(true);
@@ -331,12 +336,17 @@ const BarraProgressaoProposta = (props) => {
             if (cc.codigo == "" || cc.porcentagem == "") {
               dadosFaltantes = true;
               setFeedbackFaltante(true);
+              somaPorcentagemCcs += cc.porcentagem;
             }
           });
+          if (dadosFaltantes == false && somaPorcentagemCcs != 100) {
+            fechar100porcentoCcs = true;
+            setFeedback100porcentoCcs(true);
+          }
         });
         break;
     }
-    if (dadosFaltantes == false) {
+    if (dadosFaltantes == false && fechar100porcentoCcs == false) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
@@ -533,6 +543,7 @@ const BarraProgressaoProposta = (props) => {
 
   /** Variável utilizada para abrir o modal de feedback de dados faltantes */
   const [feedbackFaltante, setFeedbackFaltante] = useState(false);
+  const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
 
   return (
     <>
@@ -614,7 +625,16 @@ const BarraProgressaoProposta = (props) => {
           setFeedbackFaltante(false);
         }}
         status={"erro"}
-        mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
+        mensagem={texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios}
+      />
+      {/* Feedback de que não fechou 100% de CCs */}
+      <Feedback
+        open={feedback100porcentoCcs}
+        handleClose={() => {
+          setFeedback100porcentoCcs(false);
+        }}
+        status={"erro"}
+        mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
       />
     </>
   );
