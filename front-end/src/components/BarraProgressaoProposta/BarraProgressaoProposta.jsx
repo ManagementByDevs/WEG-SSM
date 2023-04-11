@@ -127,6 +127,7 @@ const BarraProgressaoProposta = (props) => {
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
             (data) => {
               if (data.length == 0) {
+                 console.log("aaaaaaa")
                 receberBeneficios();
                 let escopo = retornaObjetoProposta();
                 delete escopo.historicoProposta;
@@ -166,6 +167,7 @@ const BarraProgressaoProposta = (props) => {
   }, [ultimoEscopo]);
 
   const carregarEscopoSalvo = (escopo) => {
+    console.log(escopo);
     setDadosDemanda({
       id: escopo.demanda.id,
       titulo: escopo.titulo,
@@ -413,6 +415,7 @@ const BarraProgressaoProposta = (props) => {
       let listaCustos = [];
       for (const custo of tabelaCustos.custos) {
         listaCustos.push({
+          id: custo.id,
           tipoDespesa: custo.tipoDespesa,
           perfilDespesa: custo.perfilDespesa,
           periodoExecucao: custo.periodoExecucao,
