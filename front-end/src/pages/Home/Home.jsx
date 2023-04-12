@@ -28,6 +28,8 @@ import Demanda from "../../components/Demanda/Demanda";
 import Tour from "reactour";
 import ClipLoader from 'react-spinners/ClipLoader';
 
+import CookieService from "../../service/cookieService";
+
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
 
 /** Página principal do solicitante */
@@ -195,9 +197,10 @@ const Home = () => {
 
   /** Função para buscar o usuário logado no sistema pelo localStorage assim que ele entrar na página */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioById(
-      parseInt(localStorage.getItem("usuarioId"))
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie().sub
     ).then((e) => {
+      console.log(e);
       setUsuario(e);
       setParams({ ...params, solicitante: e });
     });

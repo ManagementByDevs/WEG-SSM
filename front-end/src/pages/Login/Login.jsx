@@ -67,7 +67,6 @@ const Login = () => {
     if (dados.email && dados.senha) {
       try {
         const response = await AutenticacaoService.login(dados);
-        console.log(response);
         if(response.data.tipoUsuario == "SOLICITANTE") {
           navigate("/home");
         } else {

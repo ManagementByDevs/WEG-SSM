@@ -116,7 +116,7 @@ const App = () => {
                       tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
                       redirectPath="/login"
                     >
-                      <Home />
+                      <HomeGerencia />
                     </ProtectedRoute>
                   }
                 />
