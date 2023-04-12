@@ -72,12 +72,11 @@ const ModalConfirmacao = (props) => {
           sx={{
             transform: "translate(-50%, -50%)",
             width: 450,
-            height: 300,
             bgcolor: "background.paper",
             borderRadius: "5px",
             borderTop: "10px solid #00579D",
             boxShadow: 24,
-            p: 4,
+            p: 2,
           }}
         >
           <ErrorOutlineIcon sx={{ fontSize: "100px", color: "primary.main" }} />
