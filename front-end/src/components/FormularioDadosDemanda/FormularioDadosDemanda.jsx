@@ -6,6 +6,7 @@ import InputComLabel from "../InputComLabel/InputComLabel";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
@@ -27,6 +28,7 @@ const FormularioDadosDemanda = (props) => {
   /** Função para salvar o problema da demanda */
   const salvarProblema = (texto) => {
     props.setDados({ ...props.dados, problema: texto });
+    console.log(props.dados.problema);
   };
 
   /** Função para salvar a proposta da demanda */
@@ -42,9 +44,10 @@ const FormularioDadosDemanda = (props) => {
   return (
     <>
       <Box className="flex justify-center items-center" sx={{ height: "45rem", minWidth: "50rem" }} >
-        <Box className="w-3/4 flex flex-col justify-evenly" sx={{ height: "85%"}} >
+        <Box className="w-3/4 flex flex-col justify-evenly" sx={{ height: "85%" }} >
 
           {/* Input de título */}
+
           <InputComLabel
             texto={props.dados.titulo}
             saveInputValue={salvarTitulo}
@@ -55,7 +58,7 @@ const FormularioDadosDemanda = (props) => {
           />
 
           {/* Input de problema */}
-          <InputComLabel
+          {/* <InputComLabel
             texto={props.dados.problema}
             saveInputValue={salvarProblema}
             component="textarea"
@@ -63,10 +66,16 @@ const FormularioDadosDemanda = (props) => {
             placeholder={texts.formularioDadosDemanda.digiteProblema}
             fontConfig={FontConfig.default}
             rows="5"
+          /> */}
+
+          <CaixaTextoQuill
+            placeholder={texts.formularioDadosDemanda.digiteProblema}
+            texto={props.dados.problema}
+            setTexto={(e) => salvarProblema(e)}
           />
 
           {/* Input de proposta */}
-          <InputComLabel
+          {/* <InputComLabel
             texto={props.dados.proposta}
             saveInputValue={salvarProposta}
             component="textarea"
@@ -74,6 +83,10 @@ const FormularioDadosDemanda = (props) => {
             placeholder={texts.formularioDadosDemanda.digiteProposta}
             fontConfig={FontConfig.default}
             rows="8"
+          /> */}
+
+          <CaixaTextoQuill
+
           />
 
           <Box sx={{ width: "40%" }}>
