@@ -132,7 +132,7 @@ const Custos = (props) => {
                         {texts.custos.perfilDaDespesa}
                       </Typography>
                     </th>
-                    <th align="center" className="p-4 w-0" style={{ width: "10%", minWidth: "135px" }}>
+                    <th align="center" className="p-4 w-0" style={{ width: "10%", minWidth: "200px" }}>
                       <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
                         {texts.custos.periodoDeExecucao}
                       </Typography>
