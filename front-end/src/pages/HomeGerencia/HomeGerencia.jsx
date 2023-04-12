@@ -22,7 +22,7 @@ import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 // import InputPesquisa from "../../components/InputPesquisa/InputPesquisa";
 
 import UsuarioService from "../../service/usuarioService";
@@ -675,6 +675,7 @@ const HomeGerencia = () => {
 
   // Função para alterar a aba selecionada
   const handleChange = (event, novoValor) => {
+    setListaItens([]);
     setValorAba(novoValor);
   };
 
@@ -813,7 +814,9 @@ const HomeGerencia = () => {
           listaIdDemandasBacklog.push(listaItens[object].id);
         }
 
-        ExportExcelService.exportDemandasBacklogToExcel(listaIdDemandasBacklog).then((response) => {
+        ExportExcelService.exportDemandasBacklogToExcel(
+          listaIdDemandasBacklog
+        ).then((response) => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
@@ -828,7 +831,9 @@ const HomeGerencia = () => {
           listaIdDemandasAssessment.push(listaItens[object].id);
         }
 
-        ExportExcelService.exportDemandasAssessmentToExcel(listaIdDemandasAssessment).then((response) => {
+        ExportExcelService.exportDemandasAssessmentToExcel(
+          listaIdDemandasAssessment
+        ).then((response) => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
@@ -843,14 +848,15 @@ const HomeGerencia = () => {
           listaIdPropostas.push(listaItens[object].id);
         }
 
-        ExportExcelService.exportPropostasToExcel(listaIdPropostas).then((response) => {
-          let blob = new Blob([response], { type: "application/excel" });
-          let url = URL.createObjectURL(blob);
-          let link = document.createElement("a");
-          link.href = url;
-          link.download = "propostas.xlsx";
-          link.click();
-        }
+        ExportExcelService.exportPropostasToExcel(listaIdPropostas).then(
+          (response) => {
+            let blob = new Blob([response], { type: "application/excel" });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = url;
+            link.download = "propostas.xlsx";
+            link.click();
+          }
         );
       } else if (valorAba == 5) {
         let listaIdPautas = [];
@@ -1375,7 +1381,7 @@ const HomeGerencia = () => {
                 )}
 
                 {/* Botão de exportar */}
-                {valorAba != 1 &&
+                {valorAba != 1 && (
                   <Button
                     id="quartoDemandas"
                     className="flex gap-1"
@@ -1391,7 +1397,7 @@ const HomeGerencia = () => {
                   >
                     {texts.homeGerencia.exportar} <FileDownloadIcon />
                   </Button>
-                }
+                )}
               </Box>
 
               {/* Botão de criar demanda */}
@@ -1474,7 +1480,7 @@ const HomeGerencia = () => {
                 </TabPanel>
                 {isGerente && (
                   <>
-                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
                       <Ajuda
                         onClick={() => setIsTourCriarPropostasOpen(true)}
                       />
@@ -1493,7 +1499,7 @@ const HomeGerencia = () => {
                         />
                       </Box>
                     </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
                       <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                       <Box
                         sx={{
