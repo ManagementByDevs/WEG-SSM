@@ -274,9 +274,13 @@ const DetalhesPauta = (props) => {
   };
 
   // Função que cria uma ata
-  const criarAta = () => {
+  const criarAta = (numeroSequencial, dataReuniao) => {
      // Criação do obj ata
-    let ata = { ...pauta };
+    let ata = { 
+      ...pauta,
+      numeroSequencial: numeroSequencial,
+      dataReuniao: dataReuniao,
+    };
 
     // Se o parecere da comissão não for aprovado, a proposta não é adicionada na ata
     ata.propostas = ata.propostas.filter((proposta) => {

@@ -27,8 +27,10 @@ const TextLanguageContext = createContext({
       botaoVoltar: "Voltar",
       botaoCriar: "Criar",
       botaoProximo: "Próximo",
-      mensagemFeedbackCamposObrigatorios: "Preencha todos os campos obrigatórios!",
-      mensagemFeedbackCcsFaltando: "A porcentagem deve fechar 100% em cada CCs!",
+      mensagemFeedbackCamposObrigatorios:
+        "Preencha todos os campos obrigatórios!",
+      mensagemFeedbackCcsFaltando:
+        "A porcentagem deve fechar 100% em cada CCs!",
     },
     beneficios: {
       beneficios: "Benefícios",
@@ -131,7 +133,7 @@ const TextLanguageContext = createContext({
         emAprovacao: "Em Aprovação",
         aprovada: "Aprovada",
         emAndamento: "Em Andamento",
-    },
+      },
       codigo: "Código",
       titulo: "Titulo",
       statusString: "Status",
@@ -306,6 +308,14 @@ const TextLanguageContext = createContext({
         aceitar: "Aceitar",
       },
       cancelar: "Cancelar",
+    },
+    modalCriarAta: {
+      feedback: "Preencha todos os campos obrigatórios!",
+      criacaoDaAta: "Criação da Ata",
+      digiteNumeroSequencial: "Digite o número sequencial...",
+      dataDaReuniao: "Data da reunião:",
+      botaoCancelar: "Cancelar",
+      botaoCriar: "Criar",
     },
     modalFiltro: {
       status: "Status",

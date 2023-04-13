@@ -1,17 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import { Modal, Fade, Divider, Typography, Box, Button } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 
 import Feedback from "../Feedback/Feedback";
+import InputComLabel from "../InputComLabel/InputComLabel";
 
+import ColorModeContext from "../../service/TemaContext";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-import InputComLabel from "../InputComLabel/InputComLabel";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalCriarAta = (props) => {
+  // Variável para alterar o tema
+  const { mode } = useContext(ColorModeContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -63,9 +67,13 @@ const ModalCriarAta = (props) => {
 
   const [numeroSequencial, setNumeroSequencial] = useState("");
 
+  const [dataReuniao, setDataReuniao] = useState("");
+
   const criarAta = () => {
-    if(numeroSequencial == "" || numeroSequencial == null){
+    if (numeroSequencial == "" || numeroSequencial == null || dataReuniao == "" || dataReuniao == null) {
       setFeedbackCamposFaltantes(true);
+    } else {
+      props.criarAta(numeroSequencial, dataReuniao);
     }
   };
 
@@ -78,7 +86,7 @@ const ModalCriarAta = (props) => {
           setFeedbackCamposFaltantes(false);
         }}
         status={"erro"}
-        mensagem={texts.detalhesPauta.feedbacks.feedback2}
+        mensagem={texts.modalCriarAta.feedback}
       />
       <Modal
         open={open}
@@ -97,7 +105,7 @@ const ModalCriarAta = (props) => {
                   fontSize={FontConfig.smallTitle}
                   color={"primary.main"}
                 >
-                  Criação da Ata
+                  {texts.modalCriarAta.criacaoDaAta}
                 </Typography>
                 {/* Botao fechar modal */}
                 <CloseIcon
@@ -122,16 +130,56 @@ const ModalCriarAta = (props) => {
             <Box className="w-full flex justify-center">
               <Box
                 className="flex flex-col mt-8"
-                sx={{ width: "80%", height: "12rem" }}
+                sx={{ width: "80%", height: "10rem" }}
               >
                 <InputComLabel
                   label={"Número Sequencial: "}
                   component={"input"}
-                  placeholder={"Digite o número sequencial..."}
+                  placeholder={texts.modalCriarAta.digiteNumeroSequencial}
                   texto={numeroSequencial}
                   saveInputValue={setNumeroSequencial}
                 />
                 {/* input de data */}
+                <Box className="mt-4">
+                  <Box className="flex">
+                    <Typography
+                      fontSize={props.fontConfig}
+                      sx={{ fontWeight: "600", cursor: "default" }}
+                      gutterBottom
+                    >
+                      {texts.modalCriarAta.dataDaReuniao}
+                    </Typography>
+                    <Typography
+                      fontSize={props.fontConfig}
+                      sx={{
+                        fontWeight: "800",
+                        cursor: "default",
+                        margin: "0 .2% .2% .2%",
+                      }}
+                      className="text-red-600"
+                      gutterBottom
+                    >
+                      *
+                    </Typography>
+                  </Box>
+                  <Box
+                    fontSize={FontConfig.medium}
+                    color="text.primary"
+                    className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+                    sx={{
+                      width: "100%;",
+                      height: "30px",
+                      backgroundColor: "background.default",
+                      borderLeftColor: "primary.main",
+                      colorScheme: mode,
+                    }}
+                    component="input"
+                    type="datetime-local"
+                    placeholder={texts.formularioGeralProposta.digiteCodigo}
+                    value={dataReuniao || ""}
+                    onChange={(e) => setDataReuniao(e.target.value)}
+                  />
+                </Box>
               </Box>
             </Box>
             {/* Parte debaixo do modal */}
@@ -151,7 +199,7 @@ const ModalCriarAta = (props) => {
                   onClick={handleClose}
                 >
                   <Typography fontSize={FontConfig.default}>
-                    Cancelar
+                    {texts.modalCriarAta.botaoCancelar}
                   </Typography>
                 </Button>
                 <Button
@@ -160,7 +208,7 @@ const ModalCriarAta = (props) => {
                   variant="contained"
                   onClick={criarAta}
                 >
-                  Criar
+                  {texts.modalCriarAta.botaoCriar}
                 </Button>
               </Box>
             </Box>

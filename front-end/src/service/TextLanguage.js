@@ -305,6 +305,14 @@ const TextLanguage = (linguagem) => {
             },
             cancelar: "Cancelar",
         },
+        modalCriarAta: {
+            feedback: "Preencha todos os campos obrigatórios!",
+            criacaoDaAta: "Criação da Ata",
+            digiteNumeroSequencial: "Digite o número sequencial...",
+            dataDaReuniao: "Data da reunião:",
+            botaoCancelar: "Cancelar",
+            botaoCriar: "Criar",
+          },
         modalFiltro: {
             status: "Status",
             labels: {
@@ -1038,6 +1046,14 @@ const TextLanguage = (linguagem) => {
             },
             cancelar: "Cancel",
         },
+        modalCriarAta: {
+            feedback: "Fill in all required fields!",
+            criacaoDaAta: "Creation of the Minute",
+            digiteNumeroSequencial: "Enter the sequential number...",
+            dataDaReuniao: "Meeting date:",
+            botaoCancelar: "Cancel",
+            botaoCriar: "Create",
+        },
         modalFiltro: {
             status: "Status",
             labels: {
@@ -1424,6 +1440,15 @@ const TextLanguage = (linguagem) => {
             secaoTi: "TI Section",
             comissao: "Comission",
             direcaoGeral: "General Direction",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelled",
+                done: "Done",
+            },
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -1756,6 +1781,14 @@ const TextLanguage = (linguagem) => {
                 aceitar: "接受",
             },
             cancelar: "取消",
+        },
+        modalCriarAta: {
+            feedback: "请填写所有必填字段！",
+            criacaoDaAta: "创建会议记录",
+            digiteNumeroSequencial: "输入序列号...",
+            dataDaReuniao: "会议日期：",
+            botaoCancelar: "取消",
+            botaoCriar: "创建",
         },
         modalFiltro: {
             status: "状态",
@@ -2142,6 +2175,15 @@ const TextLanguage = (linguagem) => {
             secaoTi: "TI 部分",
             comissao: "佣金",
             direcaoGeral: "总方向",
+            status: {
+                assessmentAprovacao: "评估",
+            },
+            statusText: {
+                assessment: "评估",
+                bussinessCase: "商业案例",
+                cancelled: "取消",
+                done: "完成",
+            },
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -2478,6 +2520,14 @@ const TextLanguage = (linguagem) => {
                 aceitar: "Aceptar",
             },
             cancelar: "Cancelar",
+        },
+        modalCriarAta: {
+            feedback: "¡Rellene todos los campos obligatorios!",
+            criacaoDaAta: "Creación de la Ata",
+            digiteNumeroSequencial: "Escribe el número secuencial...",
+            dataDaReuniao: "Fecha de la reunión:",
+            botaoCancelar: "Cancelar",
+            botaoCriar: "Crear",
         },
         modalFiltro: {
             status: "Status",
@@ -2868,6 +2918,15 @@ const TextLanguage = (linguagem) => {
             naoPublicada: "No publicado",
             secaoTi: "Sección TI",
             direcaoGeral: "Direccion General",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelada",
+                done: "Concluída",
+            }
         },
         modalAddPropostaPauta: {
             feedbacks: {
