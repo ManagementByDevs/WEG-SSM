@@ -24,27 +24,35 @@ import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOffIcon from "@mui/icons-material/EditOff";
 
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
-import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
-
-import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+import PropostaService from "../../service/propostaService";
 
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
 
 // Componente  para mostrar os detalhes de uma proposta e suas respectivas funções
 const DetalhesProposta = ({
-  proposta = propostaExample,
-  setProposta = () => {},
+  propostaId = 0,
+  // proposta = propostaExample,
+  // setProposta = () => {},
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
+  const location = useLocation();
+
+
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Estado da proposta
+  const [proposta, setProposta] = useState(propostaExample);
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -120,6 +128,24 @@ const DetalhesProposta = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
+  useEffect(() => {
+    PropostaService.getById(propostaId).then((proposal) => {
+      setProposta(proposal);
+    });
+    console.log("location autal: ", location)
+
+  }, []);
+  console.log("proposta: ", proposta);
+  if (Object.values(proposta).some((value) => value === undefined)) {
+    return <></>;
+  }
+
+  const click = () => {
+    console.log("a")
+    location.state = { teste: "teste" }
+    console.log("location: ", location)
+  }
+
   return (
     <Box className="flex justify-center">
       <Box
@@ -133,7 +159,7 @@ const DetalhesProposta = ({
           getStatusFormatted={getStatusFormatted}
         />
         {/* Box header */}
-        <Box className="w-full flex justify-between ">
+        <Box className="w-full flex justify-between" onClick={click}>
           <Box className="flex gap-4">
             <Typography
               color="primary"
@@ -683,20 +709,14 @@ const CustosRow = ({
 };
 
 // Mostrar os benefícios da proposta
-const Beneficio = ({
-  beneficio = {
-    id: 0,
-    tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
-    valor_mensal: 0,
-    moeda: "",
-    memoriaCalculo: "",
-  },
-}) => {
+const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  if (beneficio.id === 0) return null;
 
   return (
     <Paper
@@ -704,7 +724,6 @@ const Beneficio = ({
       sx={{ borderTopColor: "primary.main" }}
       square
     >
-      {/*  */}
       <Table>
         <TableBody>
           <TableRow>
@@ -1087,14 +1106,18 @@ const StatusProposta = ({
     let propostaAux = { ...proposta, status: newStatus };
 
     console.log("status: ", newStatus);
-    setProposta({ ...propostaAux });
+    // setProposta({ ...propostaAux });
     setConfirmEditStatus(false);
 
     // Requisição para atualizar a proposta com o novo status
-
-    // Atualiza o location status
-    location.state = { ...propostaAux };
-    console.log("location status 2", location)
+    PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
+      (newProposta) => {
+        console.log("put: ", newProposta);
+        // Atualiza a proposta com o novo status
+        setProposta(newProposta);
+        location.state = { proposta: newProposta };
+      }
+    );
   };
 
   useEffect(() => {
@@ -1102,8 +1125,6 @@ const StatusProposta = ({
     if (statusElement.current) {
       setAnchorElModalStatus(statusElement.current);
     }
-
-    console.log("location status", location.state); // Verificar se o location está sendo atualizado
   }, []);
 
   return (

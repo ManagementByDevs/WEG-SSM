@@ -20,30 +20,56 @@ class EntitiesObjectService {
     };
   }
 
+  responsavelNegocio() {
+    return {
+      id: 0,
+      nome: "",
+      area: "",
+    };
+  }
+
+  secaoTI() {
+    return { idSecao: 0, nomeSecao: "", siglaSecao: "" };
+  }
+
+  forum() {
+    return { idForum: 0, nomeForum: "", siglaForum: "" };
+  }
+
+  bu() {
+    return { idBu: 0, siglaBu: "", nomeBu: "" };
+  }
+
+  anexo() {
+    return { id: 0, nome: "", tipo: "", dados: "" };
+  }
+
+  beneficio() {
+    return {
+      id: 0,
+      tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
+      valor_mensal: 0,
+      moeda: "",
+      memoriaCalculo: "",
+    };
+  }
+
   proposta() {
     return {
-      analista: {},
-      anexo: [{ id: 0, nome: "", tipo: "", dados: "" }],
-      beneficios: [
-        {
-          id: 0,
-          tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
-          valor_mensal: 0,
-          moeda: "",
-          memoriaCalculo: "",
-        },
-      ],
-      buSolicitante: { idBu: 0, nomeBu: "", siglaBu: "" },
-      busBeneficiadas: [{ idBu: 0, nomeBu: "", siglaBu: "" }],
+      analista: this.usuario(),
+      anexo: [this.anexo()],
+      beneficios: [this.beneficio()],
+      buSolicitante: this.bu(),
+      busBeneficiadas: [this.bu()],
       codigoPPM: 0,
       data: "",
       demanda: 0,
-      departamento: 0,
+      departamento: this.departamento(),
       escopo: 0,
       fimExecucao: "",
-      forum: { idForum: 0, nomeForum: "", siglaForum: "" },
+      forum: this.forum(),
       frequencia: "",
-      gerente: 0,
+      gerente: this.usuario(),
       historicoProposta: [],
       id: 0,
       inicioExecucao: "",
@@ -58,9 +84,9 @@ class EntitiesObjectService {
       problema: "",
       proposta: "",
       publicada: false,
-      responsavelNegocio: [],
-      secaoTI: { idSecao: 0, nomeSecao: "", siglaSecao: "" },
-      solicitante: {},
+      responsavelNegocio: [this.responsavelNegocio()],
+      secaoTI: this.secaoTI(),
+      solicitante: this.usuario(),
       status: "",
       tabelaCustos: [
         {
@@ -82,7 +108,7 @@ class EntitiesObjectService {
       titulo: "",
       visibilidade: true,
       emPauta: false,
-      emAta: false
+      emAta: false,
     };
   }
 
