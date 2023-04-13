@@ -80,6 +80,12 @@ public class Proposta {
     @Column(nullable = false, length = 20)
     private String tamanho;
 
+    @Column(nullable = false)
+    private Boolean emPauta;
+
+    @Column(nullable = false)
+    private Boolean emAta;
+
     @ManyToOne
     @JoinColumn(nullable = false, name = "secao_ti_id")
     private SecaoTI secaoTI;

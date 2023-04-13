@@ -31,8 +31,6 @@ const DemandaGerenciaModoVisualizacao = ({
   nextModoVisualizacao,
   isProposta = false,
 }) => {
-  console.log("lista: ", listaDemandas);
-
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
   }
