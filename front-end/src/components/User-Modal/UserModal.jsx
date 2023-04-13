@@ -11,7 +11,9 @@ import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlin
 import FontContext from "../../service/FontContext";
 import ColorModeContext from "../../service/TemaContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+
 import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
 
 // Adiciona estilos personalizados para a aparência do Switch, incluindo tamanho, cores, imagens e animações
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -64,8 +66,9 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 const UserModal = (props) => {
   // UseEffect para pegar o usuário e arrumar as preferências dele ao carregar a tela
   useEffect(() => {
-    UsuarioService.getUsuarioById(
-      parseInt(localStorage.getItem("usuarioId"))
+    if (!CookieService.getCookie()) return;
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie().sub
     ).then((e) => {
       setUsuario(e);
       arrangePreferences();
@@ -92,16 +95,16 @@ const UserModal = (props) => {
    * Pega as preferências do usuário e as aplica no sistema
    */
   const arrangePreferences = () => {
-    let theme = UsuarioService.getPreferencias().themeMode;
-    let fontSizeDefault = UsuarioService.getPreferencias().fontSizeDefault;
+    if (!CookieService.getCookie()) return;
+    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+      if (preferencias.themeMode != mode) {
+        setTemaDark(!temaDark);
+      }
 
-    if (theme != mode) {
-      setTemaDark(!temaDark);
-    }
-
-    if (fontSizeDefault != FontConfig.default) {
-      setFontConfig(getUserFontSizePreference());
-    }
+      if (preferencias.fontSizeDefault != FontConfig.default) {
+        setFontConfig(getUserFontSizePreference());
+      }
+    })
   };
 
   /**
@@ -110,23 +113,23 @@ const UserModal = (props) => {
    * @param {String} newPreference
    */
   const saveNewPreference = (preference, newPreference) => {
-    let user = UsuarioService.getUser();
-    let preferencias = UsuarioService.getPreferencias();
+    if (!CookieService.getCookie()) return;
+    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+      switch (preference) {
+        case "themeMode":
+          preferencias.themeMode = newPreference;
+          break;
+        case "fontSizeDefault":
+          preferencias.fontSizeDefault = newPreference;
+          break;
+      }
 
-    switch (preference) {
-      case "themeMode":
-        preferencias.themeMode = newPreference;
-        break;
-      case "fontSizeDefault":
-        preferencias.fontSizeDefault = newPreference;
-        break;
-    }
+      usuario.preferencias = JSON.stringify(preferencias);
 
-    user.preferencias = JSON.stringify(preferencias);
-
-    UsuarioService.updateUser(user.id, user).then((e) => {
-      UsuarioService.updateUserInLocalStorage();
-    });
+      UsuarioService.updateUser(usuario.id, usuario).then((e) => {
+        UsuarioService.updateUserInLocalStorage();
+      });
+    })
   };
 
   /**
@@ -134,45 +137,11 @@ const UserModal = (props) => {
    * @returns {{verySmall: "", small: "", default: "", medium: "", big: "", veryBig: "", smallTitle: "", title: ""} | {verySmall: "10px", small: "12px", default: "14px", medium: "16px", big: "18px", veryBig: "20px", smallTitle: "30px", title: "36px"}}
    */
   const getUserFontSizePreference = () => {
-    let fontDefaultSize = UsuarioService.getPreferencias().fontSizeDefault;
+    if (!CookieService.getCookie()) return;
+    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+      let fontDefaultSize = preferencias.fontSizeDefault;
 
-    if (!fontDefaultSize) {
-      return {
-        verySmall: "10px",
-        small: "12px",
-        default: "14px",
-        medium: "16px",
-        big: "18px",
-        veryBig: "20px",
-        smallTitle: "30px",
-        title: "36px",
-      };
-    }
-
-    switch (fontDefaultSize) {
-      case "10px":
-        return {
-          verySmall: "6px",
-          small: "8px",
-          default: "10px",
-          medium: "12px",
-          big: "14px",
-          veryBig: "16px",
-          smallTitle: "26px",
-          title: "32px",
-        };
-      case "12px":
-        return {
-          verySmall: "8px",
-          small: "10px",
-          default: "12px",
-          medium: "14px",
-          big: "16px",
-          veryBig: "18px",
-          smallTitle: "28px",
-          title: "34px",
-        };
-      case "14px":
+      if (!fontDefaultSize) {
         return {
           verySmall: "10px",
           small: "12px",
@@ -183,40 +152,77 @@ const UserModal = (props) => {
           smallTitle: "30px",
           title: "36px",
         };
-      case "16px":
-        return {
-          verySmall: "12px",
-          small: "14px",
-          default: "16px",
-          medium: "18px",
-          big: "20px",
-          veryBig: "22px",
-          smallTitle: "32px",
-          title: "38px",
-        };
-      case "18px":
-        return {
-          verySmall: "14px",
-          small: "16px",
-          default: "18px",
-          medium: "20px",
-          big: "22px",
-          veryBig: "24px",
-          smallTitle: "34px",
-          title: "40px",
-        };
-      default:
-        return {
-          verySmall: "10px",
-          small: "12px",
-          default: "14px",
-          medium: "16px",
-          big: "18px",
-          veryBig: "20px",
-          smallTitle: "30px",
-          title: "36px",
-        };
-    }
+      }
+
+      switch (fontDefaultSize) {
+        case "10px":
+          return {
+            verySmall: "6px",
+            small: "8px",
+            default: "10px",
+            medium: "12px",
+            big: "14px",
+            veryBig: "16px",
+            smallTitle: "26px",
+            title: "32px",
+          };
+        case "12px":
+          return {
+            verySmall: "8px",
+            small: "10px",
+            default: "12px",
+            medium: "14px",
+            big: "16px",
+            veryBig: "18px",
+            smallTitle: "28px",
+            title: "34px",
+          };
+        case "14px":
+          return {
+            verySmall: "10px",
+            small: "12px",
+            default: "14px",
+            medium: "16px",
+            big: "18px",
+            veryBig: "20px",
+            smallTitle: "30px",
+            title: "36px",
+          };
+        case "16px":
+          return {
+            verySmall: "12px",
+            small: "14px",
+            default: "16px",
+            medium: "18px",
+            big: "20px",
+            veryBig: "22px",
+            smallTitle: "32px",
+            title: "38px",
+          };
+        case "18px":
+          return {
+            verySmall: "14px",
+            small: "16px",
+            default: "18px",
+            medium: "20px",
+            big: "22px",
+            veryBig: "24px",
+            smallTitle: "34px",
+            title: "40px",
+          };
+        default:
+          return {
+            verySmall: "10px",
+            small: "12px",
+            default: "14px",
+            medium: "16px",
+            big: "18px",
+            veryBig: "20px",
+            smallTitle: "30px",
+            title: "36px",
+          };
+      }
+    });
   };
 
   // UseEffect para alternar o tema quando o usuário clicar no botão de alternar o tema
@@ -363,9 +369,7 @@ const UserModal = (props) => {
   };
 
   // UseState para poder visualizar e alterar o value do slider
-  const [valueSlider, setValueSlider] = useState(
-    getValueByContext(UsuarioService.getPreferencias().fontSizeDefault)
-  );
+  const [valueSlider, setValueSlider] = useState(2);
 
   // Função para mudar o value do slider
   const handleChange = (event, newValue) => {

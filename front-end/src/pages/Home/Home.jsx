@@ -200,7 +200,6 @@ const Home = () => {
     UsuarioService.getUsuarioByEmail(
       CookieService.getCookie().sub
     ).then((e) => {
-      console.log(e);
       setUsuario(e);
       setParams({ ...params, solicitante: e });
     });
@@ -363,30 +362,31 @@ const Home = () => {
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
   const arrangePreferences = () => {
-    let itemsVisualizationMode =
-      UsuarioService.getPreferencias().itemsVisualizationMode.toUpperCase();
+    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+      let itemsVisualizationMode = preferencias?.itemsVisualizationMode?.toUpperCase();
 
-    // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
-    if (itemsVisualizationMode == nextModoVisualizacao) {
-      setNextModoVisualizacao("GRID");
-    }
+      // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+      if (itemsVisualizationMode == nextModoVisualizacao) {
+        setNextModoVisualizacao("GRID");
+      }
+    })
   };
 
   /**
    * Função que salva a nova preferência do usuário
    */
   const saveNewPreference = () => {
-    let user = UsuarioService.getUser();
-    let preferencias = UsuarioService.getPreferencias();
+    if (!CookieService.getCookie()) return;
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((user) => {
+      let preferencias = JSON.parse(user.preferencias);
 
-    preferencias.itemsVisualizationMode =
-      nextModoVisualizacao == "TABLE" ? "grid" : "table";
+      preferencias.itemsVisualizationMode =
+        nextModoVisualizacao == "TABLE" ? "grid" : "table";
 
-    user.preferencias = JSON.stringify(preferencias);
+      user.preferencias = JSON.stringify(preferencias);
 
-    UsuarioService.updateUser(user.id, user).then((e) => {
-      UsuarioService.updateUserInLocalStorage();
-    });
+      UsuarioService.updateUser(user.id, user).then((e) => { });
+    })
   };
 
   // UseEffect para salvar as novas preferências do usuário

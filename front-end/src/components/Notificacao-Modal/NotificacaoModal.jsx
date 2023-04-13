@@ -10,7 +10,10 @@ import Feedback from "../Feedback/Feedback";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+
 import NotificacaoService from "../../service/notificacaoService";
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
 
 // Modal de notificações do sistema
 const NotificacaoModal = (props) => {
@@ -50,14 +53,18 @@ const NotificacaoModal = (props) => {
 
   // Função para buscar as notificações não lidas do usuário
   const buscarNotificacoes = () => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    NotificacaoService.getByUserIdAndNotVisualizado(user.id)
-      .then((response) => {
-        setNotificacoes(response.content);
-        setContNaoLidas(response.totalElements);
-      })
-      .catch((error) => {
-      });
+    if(!CookieService.getCookie()) return;
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie().sub
+    ).then((user) => {
+      NotificacaoService.getByUserIdAndNotVisualizado(user.id)
+        .then((response) => {
+          setNotificacoes(response.content);
+          setContNaoLidas(response.totalElements);
+        })
+        .catch((error) => {
+        });
+    });
   };
 
   // UseEffect para buscar as informações assim que entra na página

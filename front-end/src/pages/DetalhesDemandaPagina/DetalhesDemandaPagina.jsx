@@ -15,6 +15,7 @@ import UsuarioService from "../../service/usuarioService";
 import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
+import CookieService from "../../service/cookieService";
 
 /** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
 const DetalhesDemandaPagina = () => {
@@ -46,8 +47,8 @@ const DetalhesDemandaPagina = () => {
 
   // Função utilizada para buscar o usuário que está logado no sistema
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioById(
-      parseInt(localStorage.getItem("usuarioId"))
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie().sub
     ).then((e) => {
       setUsuario(e);
     });

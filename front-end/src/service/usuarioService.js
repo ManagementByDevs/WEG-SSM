@@ -48,42 +48,27 @@ class UsuarioService {
    * Pega as preferências do usuário logado ou retorna as preferências padrão se não estiver logado
    * @returns {{themeMode: "dark" | "light", fontSizeDefault: "14px" | "12px" | "16px" | "18px", itemsVisualizationMode: "grid" | "table", lang: "pt" | "en" | "ch",}} Preferências do usuário
    */
-  getPreferencias() {
-    let user = JSON.parse(localStorage.getItem("user"));
-    let preferencias = "";
-
-    if (user) {
-      preferencias = user.preferencias;
+  getPreferencias(email) {
+    if(email) {
+      return this.getUsuarioByEmail(email).then((user) => {
+        let preferencias = "";
+  
+        if (user) {
+          preferencias = user.preferencias;
+        }
+  
+        if (!preferencias) {
+          return {
+            themeMode: "light",
+            fontSizeDefault: "14px",
+            itemsVisualizationMode: "grid",
+            lang: "pt",
+          };
+        }
+  
+        return JSON.parse(preferencias);
+      });
     }
-
-    if (!preferencias) {
-      return {
-        themeMode: "light",
-        fontSizeDefault: "14px",
-        itemsVisualizationMode: "grid",
-        lang: "pt",
-      };
-    }
-
-    return JSON.parse(preferencias);
-  }
-
-  /**
-   * Retorna o usuário logado
-   * @returns {Object} Usuário logado
-   */
-  getUser() {
-    return JSON.parse(localStorage.getItem("user"));
-  }
-
-  /**
-   * Atualiza o usuário logado no localStorages
-   */
-  updateUserInLocalStorage() {
-    let user = this.getUser();
-    this.getUsuarioById(user.id).then((response) => {
-      localStorage.setItem("user", JSON.stringify(response));
-    });
   }
 }
 
