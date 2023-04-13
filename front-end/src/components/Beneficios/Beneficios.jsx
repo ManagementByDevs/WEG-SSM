@@ -11,6 +11,7 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -114,7 +115,7 @@ const Beneficios = (props) => {
           </FormControl>
         </Box>
         {dadosBeneficio.tipoBeneficio === "Real" ||
-        dadosBeneficio.tipoBeneficio === "Potencial" ? (
+          dadosBeneficio.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -169,11 +170,11 @@ const Beneficios = (props) => {
         ) : null}
       </Box>
       {dadosBeneficio.tipoBeneficio === "Real" ||
-      dadosBeneficio.tipoBeneficio === "Potencial" ||
-      dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
-        <Box className="flex items-end" sx={{ width: "65%" }}>
+        dadosBeneficio.tipoBeneficio === "Potencial" ||
+        dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
+        <Box className="flex items-center" sx={{ width: "65%", overflow: 'auto' }}>
           {/* Input de memória de cálculo */}
-          <InputComLabel
+          {/* <InputComLabel
             saveInputValue={salvarMemoriaCalculo}
             component="textarea"
             label={texts.beneficios.memoriaCalculo}
@@ -182,7 +183,15 @@ const Beneficios = (props) => {
             rows="4"
             sx={{ width: "100%" }}
             texto={dadosBeneficio.memoriaCalculo}
-          />
+          /> */}
+
+          <Box sx={{ borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
+            <CaixaTextoQuill
+              placeholder={texts.beneficios.digiteMemoriaCalculo}
+              setTexto={(e) => salvarMemoriaCalculo(e)}
+              texto={dadosBeneficio.memoriaCalculo}
+            />
+          </Box>
         </Box>
       ) : null}
       <Box

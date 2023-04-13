@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para formatação em campos de texto durante o sistema
-function CaixaTextoQuill({ texto, setTexto, placeholder = "" }) {
+function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false, setScroll = false }) {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -37,6 +37,7 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "" }) {
         ],
       }}
       placeholder={placeholder}
+      style={useScroll ? { height: '10rem', overflowY: 'scroll' } : setScroll ? { height: '5rem', overflowY: 'scroll' } : {}}
     />
   );
 }
