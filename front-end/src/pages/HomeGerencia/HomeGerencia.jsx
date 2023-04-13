@@ -696,7 +696,7 @@ const HomeGerencia = () => {
 
   // Função para ir na tela de detalhes da proposta, salvando a proposta no localStorage
   const verProposta = (proposta) => {
-    navigate("/detalhes-proposta", { state: proposta });
+    navigate("/detalhes-proposta/" + proposta.id, { state: proposta });
   };
 
   const isGerente = !(
