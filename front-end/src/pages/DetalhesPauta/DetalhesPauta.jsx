@@ -213,25 +213,24 @@ const DetalhesPauta = (props) => {
     const propostasDeleted = pauta.propostas.splice(indexProposta, 1);
     const propostaDeleted = propostasDeleted[0];
 
-    // Anulando os campos da proposta
+    // Anulando os campos da proposta que não devem ter valor após ser tirada da pauta
     propostaDeleted.publicada = null;
     propostaDeleted.status = "ASSESSMENT_APROVACAO";
     propostaDeleted.parecerInformacao = null;
     propostaDeleted.parecerComissao = null;
     propostaDeleted.parecerDG = null;
-    console.log("new pauta", pauta);
+    
     PautaService.put(pauta).then((newPauta) => {
       setFeedbackPropostaDeletada(true);
       PropostaService.putWithoutArquivos(
         propostaDeleted,
         propostaDeleted.id
       ).then((newProposta) => {});
-      console.log("pauta nova: ", newPauta);
-      location.state = { pauta: newPauta };
-      setPauta(newPauta);
-      setProposta(false);
-      setListaProposta(newPauta.propostas);
-      setDadosProposta(null);
+      location.state = { pauta: newPauta }; // Atualizando a pauta na página
+      setPauta(newPauta); // Atualizando a pauta na variável do front
+      setProposta(false); // Anulando a proposta que estava sendo exibida
+      setListaProposta(newPauta.propostas); // Atualizando a lista de propostas
+      setDadosProposta(null); // Anulando os dados da proposta que estava sendo exibido
     });
   };
 
@@ -277,33 +276,34 @@ const DetalhesPauta = (props) => {
   // Função que cria uma ata
   const criarAta = () => {
      // Criação do obj ata
-     let ata = { ...pauta };
-     for (let proposta of ata.propostas) {
-       if (proposta.parecerComissao != "APROVADO") {
-         ata.propostas.splice(proposta, 1);
-       }
-     }
- 
-     // Caso não haja propostas aprovadas, não cria a ata
-     if (ata.propostas.length == 0) {
-       handlePautaWithNoApprovedProposals();
-       return;
-     }
- 
-     // Cria a ata caso tenha propostas aprovadas
-     if (ata.propostas.length > 0) {
-       for (let proposta of ata.propostas) {
-         proposta.status = "ASSESSMENT_DG";
-       }
- 
-       updatePropostas(pauta.propostas);
- 
-       AtaService.post(ata).then((response) => {
-         PautaService.delete(pauta.id).then((response) => {
-           feedbackAta();
-         });
-       });
-     }
+    let ata = { ...pauta };
+
+    // Se o parecere da comissão não for aprovado, a proposta não é adicionada na ata
+    ata.propostas = ata.propostas.filter((proposta) => {
+      return proposta.parecerComissao == "APROVADO";
+    });
+
+    // Caso não haja propostas aprovadas, não cria a ata
+    if (ata.propostas.length == 0) {
+      handlePautaWithNoApprovedProposals();
+      return;
+    }
+
+    // Cria a ata caso tenha propostas aprovadas
+    if (ata.propostas.length > 0) {
+      for (let proposta of ata.propostas) {
+        proposta.status = "ASSESSMENT_DG";
+        proposta.emAta = true;
+      }
+
+      updatePropostas(pauta.propostas);
+
+      AtaService.post(ata).then((response) => {
+        PautaService.delete(pauta.id).then((response) => {
+          feedbackAta();
+        });
+      });
+    }
   }
 
   const handlePautaWithNoApprovedProposals = () => {

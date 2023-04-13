@@ -73,7 +73,7 @@ const FormularioBeneficiosDemanda = (props) => {
       beneficios.map((beneficio, index) => {
         if (index === desiredIndex) {
           beneficio.visible = false;
-          BeneficioService.delete(beneficio.id).then((response) => {});
+          BeneficioService.delete(beneficio.id).then((response) => { });
         }
         return beneficio;
       })
@@ -82,7 +82,7 @@ const FormularioBeneficiosDemanda = (props) => {
 
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
-      <Box className= "flex flex-col" sx={{ height: "85%", width: "48rem" }}>
+      <Box className="flex flex-col" sx={{ height: "85%", width: "48rem" }}>
         <Box>
           {/* Botão para adicionar novo benefício */}
           <Button

@@ -1,5 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 
+import { useLocation } from "react-router-dom";
+
 import {
   Box,
   Divider,
@@ -1021,6 +1023,9 @@ const StatusProposta = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Variável que contém os dados da url
+  const location = useLocation();
+
   // UseState para poder visualizar e alterar o menu do idioma
   const [anchorElModalStatus, setAnchorElModalStatus] = useState(null);
 
@@ -1053,8 +1058,8 @@ const StatusProposta = ({
     }
 
     setModalStatus(false);
-    setConfirmEditStatus(true);
     setNewStatus(status);
+    setConfirmEditStatus(true);
   };
 
   // Verifica se o status selecionado é o mesmo da proposta
@@ -1079,9 +1084,17 @@ const StatusProposta = ({
       return;
     }
 
+    let propostaAux = { ...proposta, status: newStatus };
+
     console.log("status: ", newStatus);
-    setProposta({ ...proposta, status: newStatus });
+    setProposta({ ...propostaAux });
     setConfirmEditStatus(false);
+
+    // Requisição para atualizar a proposta com o novo status
+
+    // Atualiza o location status
+    location.state = { ...propostaAux };
+    console.log("location status 2", location)
   };
 
   useEffect(() => {
@@ -1090,15 +1103,11 @@ const StatusProposta = ({
       setAnchorElModalStatus(statusElement.current);
     }
 
-
-    console.log("location status") // Verificar se o location está sendo atualizado
-
-
+    console.log("location status", location.state); // Verificar se o location está sendo atualizado
   }, []);
 
   return (
     <>
-
       <ModalConfirmacao
         open={confirmEditStatus}
         setOpen={setConfirmEditStatus}

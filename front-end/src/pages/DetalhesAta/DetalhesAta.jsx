@@ -197,12 +197,18 @@ const DetalhesAta = (props) => {
     }
   };
 
-  // Função de criar ata e enviar feedback
-  const publicarAta = () => {
+  const confirmarPublicarAta = () => {
     if (!isAllFieldsFilled()) {
       setFeedbackCamposFaltantes(true);
       return;
     }
+
+    
+  }
+
+  // Função de criar ata e enviar feedback
+  const publicarAta = () => {
+    
 
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };

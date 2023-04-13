@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
@@ -42,9 +43,10 @@ const FormularioDadosDemanda = (props) => {
   return (
     <>
       <Box className="flex justify-center items-center" sx={{ height: "45rem", minWidth: "50rem" }} >
-        <Box className="w-3/4 flex flex-col justify-evenly" sx={{ height: "85%"}} >
+        <Box className="w-3/4 flex flex-col justify-evenly" sx={{ height: "85%" }} >
 
           {/* Input de título */}
+
           <InputComLabel
             texto={props.dados.titulo}
             saveInputValue={salvarTitulo}
@@ -54,27 +56,31 @@ const FormularioDadosDemanda = (props) => {
             fontConfig={FontConfig.default}
           />
 
-          {/* Input de problema */}
-          <InputComLabel
-            texto={props.dados.problema}
-            saveInputValue={salvarProblema}
-            component="textarea"
-            label={texts.formularioDadosDemanda.problema}
-            placeholder={texts.formularioDadosDemanda.digiteProblema}
-            fontConfig={FontConfig.default}
-            rows="5"
-          />
+          <Box>
+            <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.formularioDadosDemanda.problema}</Typography>
 
-          {/* Input de proposta */}
-          <InputComLabel
-            texto={props.dados.proposta}
-            saveInputValue={salvarProposta}
-            component="textarea"
-            label={texts.formularioDadosDemanda.proposta}
-            placeholder={texts.formularioDadosDemanda.digiteProposta}
-            fontConfig={FontConfig.default}
-            rows="8"
-          />
+            <Box sx={{ marginTop: '0.5%', borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
+              <CaixaTextoQuill
+                placeholder={texts.formularioDadosDemanda.digiteProblema}
+                texto={props.dados.problema}
+                setTexto={(e) => salvarProblema(e)}
+                useScroll={true}
+              />
+            </Box>
+          </Box>
+
+          <Box>
+            <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.formularioDadosDemanda.proposta}</Typography>
+
+            <Box sx={{ marginTop: '0.5%', borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
+              <CaixaTextoQuill
+                placeholder={texts.formularioDadosDemanda.digiteProposta}
+                texto={props.dados.proposta}
+                setTexto={(e) => salvarProposta(e)}
+                useScroll={true}
+              />
+            </Box>
+          </Box>
 
           <Box sx={{ width: "40%" }}>
             {/* Input de frequência */}
