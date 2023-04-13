@@ -57,7 +57,18 @@ const FormularioDadosDemanda = (props) => {
           />
 
           <Box>
-            <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.formularioDadosDemanda.problema}</Typography>
+            <Box className="flex">
+              <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.formularioDadosDemanda.problema}</Typography>
+
+              <Typography
+                fontSize={props.fontConfig}
+                sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
+                className="text-red-600"
+                gutterBottom
+              >
+                *
+              </Typography>
+            </Box>
 
             <Box sx={{ marginTop: '0.5%', borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
               <CaixaTextoQuill
@@ -70,7 +81,18 @@ const FormularioDadosDemanda = (props) => {
           </Box>
 
           <Box>
-            <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.formularioDadosDemanda.proposta}</Typography>
+            <Box className="flex">
+              <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.formularioDadosDemanda.proposta}</Typography>
+
+              <Typography
+                fontSize={props.fontConfig}
+                sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
+                className="text-red-600"
+                gutterBottom
+              >
+                *
+              </Typography>
+            </Box>
 
             <Box sx={{ marginTop: '0.5%', borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
               <CaixaTextoQuill

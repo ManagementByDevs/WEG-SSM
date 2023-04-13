@@ -172,25 +172,29 @@ const Beneficios = (props) => {
       {dadosBeneficio.tipoBeneficio === "Real" ||
         dadosBeneficio.tipoBeneficio === "Potencial" ||
         dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
-        <Box className="flex items-center" sx={{ width: "65%", overflow: 'auto' }}>
-          {/* Input de memória de cálculo */}
-          {/* <InputComLabel
-            saveInputValue={salvarMemoriaCalculo}
-            component="textarea"
-            label={texts.beneficios.memoriaCalculo}
-            placeholder={texts.beneficios.digiteMemoriaCalculo}
-            fontConfig={FontConfig.default}
-            rows="4"
-            sx={{ width: "100%" }}
-            texto={dadosBeneficio.memoriaCalculo}
-          /> */}
+        <Box className="flex items-center" sx={{ width: "65%" }}>
+          {/* Input que permite estilização para a memória de cálculo do benefício */}
+          <Box className="flex flex-col overflow-auto w-full h-full">
+            <Box className="flex">
+              <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.beneficios.memoriaCalculo}</Typography>
 
-          <Box sx={{ borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
-            <CaixaTextoQuill
-              placeholder={texts.beneficios.digiteMemoriaCalculo}
-              setTexto={(e) => salvarMemoriaCalculo(e)}
-              texto={dadosBeneficio.memoriaCalculo}
-            />
+              <Typography
+                fontSize={props.fontConfig}
+                sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
+                className="text-red-600"
+                gutterBottom
+              >
+                *
+              </Typography>
+            </Box>
+
+            <Box sx={{ borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
+              <CaixaTextoQuill
+                placeholder={texts.beneficios.digiteMemoriaCalculo}
+                setTexto={(e) => salvarMemoriaCalculo(e)}
+                texto={dadosBeneficio.memoriaCalculo}
+              />
+            </Box>
           </Box>
         </Box>
       ) : null}
