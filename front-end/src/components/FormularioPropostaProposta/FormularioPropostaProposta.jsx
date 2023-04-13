@@ -1,5 +1,17 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Box, Typography, Divider, TextareaAutosize, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  TextareaAutosize,
+  Paper,
+  IconButton,
+  Tooltip,
+  MenuItem,
+  TextField,
+  Autocomplete,
+  Checkbox,
+} from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -17,7 +29,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 import AnexoService from "../../service/anexoService";
 
-import ClipLoader from 'react-spinners/ClipLoader';
+import ClipLoader from "react-spinners/ClipLoader";
 
 // Ícone selecionado e não selecionado, para o checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -25,7 +37,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 /** Fase de criação de proposta em que os dados da demanda poderão ser editados */
 const FormularioPropostaProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -98,8 +109,11 @@ const FormularioPropostaProposta = (props) => {
     for (let file of inputFile.current.files) {
       if (!verificaAnexoExistente(file)) {
         AnexoService.save(file).then((response) => {
-          props.setDadosDemanda({ ...props.dados, anexo: [...props.dados.anexo, response] });
-        })
+          props.setDadosDemanda({
+            ...props.dados,
+            anexo: [...props.dados.anexo, response],
+          });
+        });
       } else {
         setFeedbackAnexoExistente(true);
       }
@@ -112,8 +126,8 @@ const FormularioPropostaProposta = (props) => {
     AnexoService.deleteById(arquivo.id).then((response) => {
       let listaNova = [...props.dados.anexo];
       listaNova.splice(index, 1);
-      props.setDadosDemanda({ ...props.dados, anexo: listaNova })
-    })
+      props.setDadosDemanda({ ...props.dados, anexo: listaNova });
+    });
   };
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
@@ -160,12 +174,12 @@ const FormularioPropostaProposta = (props) => {
   /** Função para excluir um benefício da lista e do banco de dados, recebendo seu index na lista */
   const deleteBeneficio = (indexBeneficio) => {
     let listaNova = [...props.beneficios];
-    let beneficioExcluido = (listaNova.splice(indexBeneficio, 1))[0];
+    let beneficioExcluido = listaNova.splice(indexBeneficio, 1)[0];
 
     BeneficioService.delete(beneficioExcluido.id).then((response) => {
       props.setBeneficiosExcluidos([
         ...props.beneficiosExcluidos,
-        beneficioExcluido
+        beneficioExcluido,
       ]);
       props.setBeneficios(listaNova);
     });
@@ -261,8 +275,18 @@ const FormularioPropostaProposta = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  className="flex"
                 >
                   {texts.formularioPropostaProposta.problema}:
+                  <Typography
+                    sx={{
+                      fontSize: FontConfig.big,
+                      color: "red",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    *
+                  </Typography>
                 </Typography>
                 <TextareaAutosize
                   style={{
@@ -285,8 +309,18 @@ const FormularioPropostaProposta = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  className="flex"
                 >
                   {texts.formularioPropostaProposta.proposta}:
+                  <Typography
+                    sx={{
+                      fontSize: FontConfig.big,
+                      color: "red",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    *
+                  </Typography>
                 </Typography>
                 <TextareaAutosize
                   style={{
@@ -341,8 +375,18 @@ const FormularioPropostaProposta = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  className="flex"
                 >
                   {texts.formularioPropostaProposta.frequenciaDeUso}:
+                  <Typography
+                    sx={{
+                      fontSize: FontConfig.big,
+                      color: "red",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    *
+                  </Typography>
                 </Typography>
                 <Box
                   value={props.dados.frequencia}
@@ -357,7 +401,9 @@ const FormularioPropostaProposta = (props) => {
                     marginLeft: "30px",
                   }}
                   component="input"
-                  placeholder={texts.formularioPropostaProposta.digiteFrequencia}
+                  placeholder={
+                    texts.formularioPropostaProposta.digiteFrequencia
+                  }
                 />
               </Box>
               <Box
@@ -367,7 +413,7 @@ const FormularioPropostaProposta = (props) => {
                 <TextField
                   sx={{ width: "45%" }}
                   select
-                  label={texts.formularioPropostaProposta.labelTamanho}
+                  label={texts.formularioPropostaProposta.labelTamanho + " *"}
                   value={props.dados.tamanho}
                   onChange={(e) => alterarTexto(e, "tamanho")}
                   variant="standard"
@@ -412,7 +458,9 @@ const FormularioPropostaProposta = (props) => {
                     <TextField
                       variant="standard"
                       {...params}
-                      label={texts.formularioPropostaProposta.labelSecaoTi}
+                      label={
+                        texts.formularioPropostaProposta.labelSecaoTi + " *"
+                      }
                     />
                   )}
                 />
@@ -443,7 +491,9 @@ const FormularioPropostaProposta = (props) => {
                     <TextField
                       variant="standard"
                       {...params}
-                      label={texts.formularioPropostaProposta.buSolicitante}
+                      label={
+                        texts.formularioPropostaProposta.buSolicitante + " *"
+                      }
                     />
                   )}
                 />
@@ -478,7 +528,10 @@ const FormularioPropostaProposta = (props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={texts.formularioPropostaProposta.labelBusBeneficiadas}
+                      label={
+                        texts.formularioPropostaProposta.labelBusBeneficiadas +
+                        " *"
+                      }
                       variant="standard"
                       placeholder={
                         texts.formularioPropostaProposta.selecioneUmaOuMaisBus
@@ -513,7 +566,7 @@ const FormularioPropostaProposta = (props) => {
                     <TextField
                       variant="standard"
                       {...params}
-                      label={texts.formularioPropostaProposta.labelForum}
+                      label={texts.formularioPropostaProposta.labelForum+" *"}
                     />
                   )}
                 />
@@ -576,7 +629,9 @@ const FormularioPropostaProposta = (props) => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip
-                            title={texts.formularioPropostaProposta.titleRemover}
+                            title={
+                              texts.formularioPropostaProposta.titleRemover
+                            }
                           >
                             <IconButton
                               onClick={() => {

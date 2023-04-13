@@ -31,6 +31,7 @@ import PropostaService from "../../service/propostaService";
 import ExportPdfService from "../../service/exportPdfService";
 import AtaService from "../../service/ataService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import ModalCriarAta from "../../components/ModalCriarAta/ModalCriarAta";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
@@ -264,43 +265,46 @@ const DetalhesPauta = (props) => {
 
     return isFilled;
   };
-
-  // Função que cria uma ata
-  const criarAta = () => {
+  
+  const abrirModalCriarAta = () => {
     if (!isAllFieldsFilled()) {
       setFeedbackCamposFaltantes(true);
       return;
     }
-
-    // Criação do obj ata
-    let ata = { ...pauta };
-    for (let proposta of ata.propostas) {
-      if (proposta.parecerComissao != "APROVADO") {
-        ata.propostas.splice(proposta, 1);
-      }
-    }
-
-    // Caso não haja propostas aprovadas, não cria a ata
-    if (ata.propostas.length == 0) {
-      handlePautaWithNoApprovedProposals();
-      return;
-    }
-
-    // Cria a ata caso tenha propostas aprovadas
-    if (ata.propostas.length > 0) {
-      for (let proposta of ata.propostas) {
-        proposta.status = "ASSESSMENT_DG";
-      }
-
-      updatePropostas(pauta.propostas);
-
-      AtaService.post(ata).then((response) => {
-        PautaService.delete(pauta.id).then((response) => {
-          feedbackAta();
-        });
-      });
-    }
+    setOpenModalCriarAta(true);
   };
+
+  // Função que cria uma ata
+  const criarAta = () => {
+     // Criação do obj ata
+     let ata = { ...pauta };
+     for (let proposta of ata.propostas) {
+       if (proposta.parecerComissao != "APROVADO") {
+         ata.propostas.splice(proposta, 1);
+       }
+     }
+ 
+     // Caso não haja propostas aprovadas, não cria a ata
+     if (ata.propostas.length == 0) {
+       handlePautaWithNoApprovedProposals();
+       return;
+     }
+ 
+     // Cria a ata caso tenha propostas aprovadas
+     if (ata.propostas.length > 0) {
+       for (let proposta of ata.propostas) {
+         proposta.status = "ASSESSMENT_DG";
+       }
+ 
+       updatePropostas(pauta.propostas);
+ 
+       AtaService.post(ata).then((response) => {
+         PautaService.delete(pauta.id).then((response) => {
+           feedbackAta();
+         });
+       });
+     }
+  }
 
   const handlePautaWithNoApprovedProposals = () => {
     for (let proposta of pauta.propostas) {
@@ -353,8 +357,16 @@ const DetalhesPauta = (props) => {
     setIsSummaryVisible(true);
   }, [dadosProposta]);
 
+  // useState utilizado para abrir e fechar o modal de adicionar a pauta
+  const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
+
   return (
     <FundoComHeader>
+      <ModalCriarAta
+        open={openModalCriarAta}
+        setOpen={setOpenModalCriarAta}
+        criarAta={criarAta}
+      />
       {/* Feedback proposta deletada da pauta */}
       <Feedback
         open={feedbackPropostaDeletada}
@@ -611,7 +623,7 @@ const DetalhesPauta = (props) => {
             <Tooltip title={texts.detalhesPauta.criarAta}>
               <Box
                 // onClick={feedbackAta}
-                onClick={criarAta}
+                onClick={abrirModalCriarAta}
                 className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                 sx={{
                   backgroundColor: "primary.main",

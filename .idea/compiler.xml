@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="weg-ssm" target="16" />
+      <module name="weg-ssm" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

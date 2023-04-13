@@ -60,7 +60,9 @@ const DemandaGerencia = (props) => {
         <ModalHistoricoDemanda
           open={modalHistorico}
           setOpen={setModalHistorico}
-          historico={props.dados.historicoDemanda || props.dados.historicoProposta}
+          historico={
+            props.dados.historicoDemanda || props.dados.historicoProposta
+          }
         />
       )}
       <Paper
@@ -101,7 +103,7 @@ const DemandaGerencia = (props) => {
 
           {/* Status do componente */}
           <Box className="w-1/4 h-full">
-            <Box className="flex items-center justify-end">
+            <Box className="flex items-end flex-col">
               <Box id="segundoCriarPropostas">
                 <Box id="oitavoDemandas" className="flex items-center gap-2">
                   <Typography fontSize={FontConfig.medium} fontWeight="600">
@@ -117,6 +119,25 @@ const DemandaGerencia = (props) => {
                   ></Box>
                 </Box>
               </Box>
+              {
+                // Se a demanda estiver em pauta, exibe o ícone de em pauta
+                tipo === "proposta" && (
+                  <Box>
+                    <Typography
+                      fontSize={FontConfig.small}
+                      fontWeight="600"
+                      sx={{
+                        color: "text.primary",
+                        backgroundColor: "divider.claro",
+                        borderRadius: "5px",
+                        padding: "2px 15px",
+                      }}
+                    >
+                      Em Pauta!
+                    </Typography>
+                  </Box>
+                )
+              }
             </Box>
           </Box>
         </Box>
@@ -210,7 +231,7 @@ const DemandaGerencia = (props) => {
               </Box>
               <Box>
                 {/* Icon de histórico  e chat*/}
-                <Box id="terceiroCriarPropostas" className="flex flex-col">
+                <Box id="terceiroCriarPropostas" className="flex">
                   {
                     // Se for uma proposta, mostra o icone de chat
                     tipo === "proposta" && (
