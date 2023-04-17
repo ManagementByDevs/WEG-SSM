@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip,} from "@mui/material";
+import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip, } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -23,6 +23,7 @@ import AnexoService from "../../service/anexoService";
 import NotificacaoService from "../../service/notificacaoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
@@ -627,6 +628,20 @@ const DetalhesDemanda = (props) => {
     navigate("/");
   };
 
+  const problemaDaDemanda = useRef(null);
+
+  useEffect(() => {
+    if (problemaDaDemanda.current) {
+      console.log("entrou " + problemaDaDemanda.current)
+      problemaDaDemanda.current.innerHTML = props.dados.problema
+    }
+    console.log()
+  }, []);
+
+  const getProblemaFomartted = (problema) => {
+    return problema[0].toUpperCase() + problema.substring(1).toLowerCase();
+  };
+
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10">
       <Feedback
@@ -717,6 +732,7 @@ const DetalhesDemanda = (props) => {
               </Typography>
             </Box>
             <Divider />
+
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -725,15 +741,17 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.problema}:
               </Typography>
+
               <Typography
                 fontSize={FontConfig.medium}
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
               >
-                {props.dados.problema}
+                {getProblemaFomartted(props.dados.problema)}
               </Typography>
             </Box>
+
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
