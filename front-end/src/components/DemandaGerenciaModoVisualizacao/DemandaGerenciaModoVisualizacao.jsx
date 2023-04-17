@@ -16,6 +16,8 @@ import "./DemandaGerenciaModoVisualizacao.css";
 import DemandaGerencia from "../DemandaGerencia/DemandaGerencia";
 import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemanda";
 
+import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
+import BeenhereOutlinedIcon from "@mui/icons-material/BeenhereOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 
@@ -65,6 +67,8 @@ const DemandaTable = ({
       gerente: {},
       tamanho: "",
       id: 0,
+      emAta: false,
+      emPauta: false,
       titulo: "",
       problema: "",
       proposta: "",
@@ -187,12 +191,33 @@ const DemandaTable = ({
                   onDemandaClick(row);
                 }}
               >
-                <td className="text-center p-3 width-1/10" title={row.id}>
+                <td
+                  className="text-center p-3 width-1/10"
+                  title={row.codigoPPM}
+                >
                   <Typography className="truncate" fontSize={FontConfig.medium}>
                     {!isProposta ? row.id : row.codigoPPM}
                   </Typography>
                 </td>
-                <td className="text-left p-3 width-4/10" title={row.titulo}>
+                <td
+                  className="text-left p-3 width-4/12 flex"
+                  title={row.titulo}
+                >
+                  {(row.emPauta == true || row.emAta == true) && (
+                    <Box className="mr-4">
+                      {row.emPauta == true ? (
+                        <Box title="Em pauta">
+                          <ContentPasteOutlinedIcon
+                            sx={{ color: "icon.main" }}
+                          />
+                        </Box>
+                      ) : (
+                        <Box title="Em ata">
+                          <BeenhereOutlinedIcon sx={{ color: "icon.main" }} />
+                        </Box>
+                      )}
+                    </Box>
+                  )}
                   <Typography className="truncate" fontSize={FontConfig.medium}>
                     {row.titulo}
                   </Typography>
