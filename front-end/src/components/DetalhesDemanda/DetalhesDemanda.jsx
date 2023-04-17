@@ -629,17 +629,26 @@ const DetalhesDemanda = (props) => {
   };
 
   const problemaDaDemanda = useRef(null);
+  const propostaDaDemanda = useRef(null);
 
   useEffect(() => {
     if (problemaDaDemanda.current) {
-      console.log("entrou " + problemaDaDemanda.current)
       problemaDaDemanda.current.innerHTML = props.dados.problema
     }
-    console.log()
+  }, []);
+
+  useEffect(() => {
+    if (propostaDaDemanda.current) {
+      propostaDaDemanda.current.innerHTML = props.dados.proposta
+    }
   }, []);
 
   const getProblemaFomartted = (problema) => {
     return problema[0].toUpperCase() + problema.substring(1).toLowerCase();
+  };
+
+  const getPropostaFomartted = (proposta) => {
+    return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
   return (
@@ -747,6 +756,7 @@ const DetalhesDemanda = (props) => {
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
+                ref={problemaDaDemanda}
               >
                 {getProblemaFomartted(props.dados.problema)}
               </Typography>
@@ -765,8 +775,9 @@ const DetalhesDemanda = (props) => {
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
+                ref={propostaDaDemanda}
               >
-                {props.dados.proposta}
+                {getPropostaFomartted(props.dados.proposta)}
               </Typography>
             </Box>
             <Box>
@@ -787,7 +798,7 @@ const DetalhesDemanda = (props) => {
                         editavel={false}
                         key={index}
                         index={index}
-                        beneficio={beneficio}
+                        beneficio={beneficio} 
                       />
                     );
                   }
