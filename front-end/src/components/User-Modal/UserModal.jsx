@@ -64,6 +64,21 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const UserModal = (props) => {
+
+  //useContext para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // UseState com as informações do usuário, recebidas no useEffect ao criar o componente
+  const [usuario, setUsuario] = useState({
+    id: 0,
+    email: "",
+    nome: "",
+    senha: "",
+    tipo_usuario: 0,
+    visibilidade: 1,
+    departamento: null,
+  });
+
   // UseEffect para pegar o usuário e arrumar as preferências dele ao carregar a tela
   useEffect(() => {
     if (!CookieService.getCookie()) return;
@@ -74,9 +89,6 @@ const UserModal = (props) => {
       arrangePreferences();
     });
   }, []);
-
-  //useContext para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // useContext que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -97,15 +109,37 @@ const UserModal = (props) => {
   const arrangePreferences = () => {
     if (!CookieService.getCookie()) return;
     UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+
       if (preferencias.themeMode != mode) {
         setTemaDark(!temaDark);
       }
 
       if (preferencias.fontSizeDefault != FontConfig.default) {
-        setFontConfig(getUserFontSizePreference());
+        setFontConfig(getUserFontSizePreference(preferencias));
       }
+      alterarValorSlider(preferencias);
     })
   };
+
+  const alterarValorSlider = (preferencias) => {
+    switch(preferencias.fontSizeDefault) {
+      case "18px":
+        setValueSlider(2);
+        break;
+      case "16px":
+        setValueSlider(1);
+        break;
+      case "14px":
+        setValueSlider(0);
+        break;
+      case "12px":
+        setValueSlider(-1);
+        break;
+      default:
+        setValueSlider(-2);
+        break;
+    }
+  }
 
   /**
    * Salva as novas preferências do usuário no banco de dados
@@ -126,9 +160,9 @@ const UserModal = (props) => {
 
       usuario.preferencias = JSON.stringify(preferencias);
 
-      UsuarioService.updateUser(usuario.id, usuario).then((e) => {
-        UsuarioService.updateUserInLocalStorage();
-      });
+      if (usuario.id) {
+        UsuarioService.updateUser(usuario.id, usuario).then((e) => { });
+      }
     })
   };
 
@@ -136,12 +170,33 @@ const UserModal = (props) => {
    * Retorna o objeto de FontConfig que condiz com o valor de fontSizeDefault do usuário salvo nas preferências do usuário
    * @returns {{verySmall: "", small: "", default: "", medium: "", big: "", veryBig: "", smallTitle: "", title: ""} | {verySmall: "10px", small: "12px", default: "14px", medium: "16px", big: "18px", veryBig: "20px", smallTitle: "30px", title: "36px"}}
    */
-  const getUserFontSizePreference = () => {
-    if (!CookieService.getCookie()) return;
-    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
-      let fontDefaultSize = preferencias.fontSizeDefault;
+  const getUserFontSizePreference = (preferencias) => {
+    let fontDefaultSize = preferencias.fontSizeDefault;
 
-      if (!fontDefaultSize) {
+    switch (fontDefaultSize) {
+      case "10px":
+        return {
+          verySmall: "6px",
+          small: "8px",
+          default: "10px",
+          medium: "12px",
+          big: "14px",
+          veryBig: "16px",
+          smallTitle: "26px",
+          title: "32px",
+        };
+      case "12px":
+        return {
+          verySmall: "8px",
+          small: "10px",
+          default: "12px",
+          medium: "14px",
+          big: "16px",
+          veryBig: "18px",
+          smallTitle: "28px",
+          title: "34px",
+        };
+      case "14px":
         return {
           verySmall: "10px",
           small: "12px",
@@ -152,77 +207,40 @@ const UserModal = (props) => {
           smallTitle: "30px",
           title: "36px",
         };
-      }
-
-      switch (fontDefaultSize) {
-        case "10px":
-          return {
-            verySmall: "6px",
-            small: "8px",
-            default: "10px",
-            medium: "12px",
-            big: "14px",
-            veryBig: "16px",
-            smallTitle: "26px",
-            title: "32px",
-          };
-        case "12px":
-          return {
-            verySmall: "8px",
-            small: "10px",
-            default: "12px",
-            medium: "14px",
-            big: "16px",
-            veryBig: "18px",
-            smallTitle: "28px",
-            title: "34px",
-          };
-        case "14px":
-          return {
-            verySmall: "10px",
-            small: "12px",
-            default: "14px",
-            medium: "16px",
-            big: "18px",
-            veryBig: "20px",
-            smallTitle: "30px",
-            title: "36px",
-          };
-        case "16px":
-          return {
-            verySmall: "12px",
-            small: "14px",
-            default: "16px",
-            medium: "18px",
-            big: "20px",
-            veryBig: "22px",
-            smallTitle: "32px",
-            title: "38px",
-          };
-        case "18px":
-          return {
-            verySmall: "14px",
-            small: "16px",
-            default: "18px",
-            medium: "20px",
-            big: "22px",
-            veryBig: "24px",
-            smallTitle: "34px",
-            title: "40px",
-          };
-        default:
-          return {
-            verySmall: "10px",
-            small: "12px",
-            default: "14px",
-            medium: "16px",
-            big: "18px",
-            veryBig: "20px",
-            smallTitle: "30px",
-            title: "36px",
-          };
-      }
-    });
+      case "16px":
+        return {
+          verySmall: "12px",
+          small: "14px",
+          default: "16px",
+          medium: "18px",
+          big: "20px",
+          veryBig: "22px",
+          smallTitle: "32px",
+          title: "38px",
+        };
+      case "18px":
+        return {
+          verySmall: "14px",
+          small: "16px",
+          default: "18px",
+          medium: "20px",
+          big: "22px",
+          veryBig: "24px",
+          smallTitle: "34px",
+          title: "40px",
+        };
+      default:
+        return {
+          verySmall: "10px",
+          small: "12px",
+          default: "14px",
+          medium: "16px",
+          big: "18px",
+          veryBig: "20px",
+          smallTitle: "30px",
+          title: "36px",
+        };
+    }
   };
 
   // UseEffect para alternar o tema quando o usuário clicar no botão de alternar o tema
@@ -232,7 +250,9 @@ const UserModal = (props) => {
 
   // UseEffect para salvar a nova preferência de fonte do usuário no banco de dados
   useEffect(() => {
-    saveNewPreference("fontSizeDefault", FontConfig.default);
+    if (FontConfig) {
+      saveNewPreference("fontSizeDefault", FontConfig.default);
+    }
   }, [FontConfig]);
   // ********************************************** Fim Preferências **********************************************
 
@@ -240,17 +260,6 @@ const UserModal = (props) => {
 
   // UseState para poder visualizar e alterar o chat icon
   const [chatIcon, setChatIcon] = useState(ChatBubbleOutlineOutlinedIcon);
-
-  // UseState com as informações do usuário, recebidas no useEffect ao criar o componente
-  const [usuario, setUsuario] = useState({
-    id: 0,
-    email: "",
-    nome: "",
-    senha: "",
-    tipo_usuario: 0,
-    visibilidade: 1,
-    departamento: null,
-  });
 
   // UseState para poder visualizar e alterar a visibilidade do menu
   const [anchorEl, setAnchorEl] = useState(null);
@@ -493,7 +502,7 @@ const UserModal = (props) => {
           <Typography
             className="px-4 pt-1.5"
             color={"text.primary"}
-            fontSize={FontConfig.medium}
+            fontSize={FontConfig?.medium}
             sx={{ fontWeight: 600 }}
           >
             {usuario.nome}
@@ -502,7 +511,7 @@ const UserModal = (props) => {
             <Typography
               className="px-4"
               color={"text.secondary"}
-              fontSize={FontConfig.medium}
+              fontSize={FontConfig?.medium}
             >
               {usuario.departamento.nome}
             </Typography>
@@ -518,7 +527,7 @@ const UserModal = (props) => {
             <BorderColorOutlinedIcon />
             <Typography
               color={"text.primary"}
-              fontSize={FontConfig.medium}
+              fontSize={FontConfig?.medium}
               sx={{ fontWeight: 500 }}
             >
               {texts.userModal.escopos}
@@ -544,7 +553,7 @@ const UserModal = (props) => {
             )}
             <Typography
               color={"text.primary"}
-              fontSize={FontConfig.medium}
+              fontSize={FontConfig?.medium}
               sx={{ fontWeight: 500 }}
             >
               {texts.userModal.chats}
@@ -561,7 +570,7 @@ const UserModal = (props) => {
               <Tooltip title={texts.userModal.diminuirFonte}>
                 <IconButton onClick={diminuirValue} size="small">
                   <Typography
-                    fontSize={FontConfig.default}
+                    fontSize={FontConfig?.default}
                     sx={{ cursor: "pointer" }}
                   >
                     {texts.userModal.A}
@@ -572,7 +581,7 @@ const UserModal = (props) => {
               <Box className="w-24 h-8">
                 <SliderMark
                   aria-label="Small steps"
-                  defaultValue={getValueByContext(FontConfig.default)}
+                  defaultValue={getValueByContext(FontConfig?.default)}
                   step={1}
                   value={valueSlider}
                   onChange={handleChange}
@@ -587,7 +596,7 @@ const UserModal = (props) => {
               <Tooltip title={texts.userModal.aumentarFonte}>
                 <IconButton onClick={aumentarValue} size="small">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig?.veryBig}
                     sx={{ cursor: "pointer" }}
                   >
                     {texts.userModal.A}
@@ -622,7 +631,7 @@ const UserModal = (props) => {
             className="px-4 pt-1.5"
             color={"icon.main"}
             variant="body2"
-            fontSize={FontConfig.medium}
+            fontSize={FontConfig?.medium}
             align="right"
             sx={{ fontWeight: 600, mt: "-16px" }}
           >

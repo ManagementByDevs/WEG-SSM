@@ -136,7 +136,7 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(EstadosUnidos)}>
           <img className="h-5 w-7" src={EstadosUnidos} />
-          <Typography fontSize={FontConfig.default}>English</Typography>
+          <Typography fontSize={FontConfig?.default}>English</Typography>
         </MenuItem>
 
         {/* Divisor entre um item de idioma e outro */}
@@ -147,7 +147,7 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(Brasil)}>
           <img className="h-5 w-7" src={Brasil} />
-          <Typography fontSize={FontConfig.default}>
+          <Typography fontSize={FontConfig?.default}>
             Português (Brasil)
           </Typography>
         </MenuItem>
@@ -160,7 +160,7 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(China)}>
           <img className="h-5 w-7" src={China} />
-          <Typography fontSize={FontConfig.default}>中国人</Typography>
+          <Typography fontSize={FontConfig?.default}>中国人</Typography>
         </MenuItem>
 
         {/* Divisor entre um item de idioma e outro */}
@@ -171,7 +171,7 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(Espanha)}>
           <img className="h-6 w-7" src={Espanha} />
-          <Typography fontSize={FontConfig.default}>Español</Typography>
+          <Typography fontSize={FontConfig?.default}>Español</Typography>
         </MenuItem>
       </Menu>
     </div>

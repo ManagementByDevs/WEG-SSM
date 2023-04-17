@@ -89,7 +89,7 @@ const Demanda = (props) => {
       >
         <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
           {/* Título da demanda */}
-          <Typography fontSize={FontConfig.veryBig} sx={{ fontWeight: "600" }} color="text.primary">
+          <Typography fontSize={FontConfig?.veryBig} sx={{ fontWeight: "600" }} color="text.primary">
             {props.demanda.titulo}
           </Typography>
 
@@ -97,7 +97,7 @@ const Demanda = (props) => {
           {parseInt(localStorage.getItem("usuarioId")) ==
             props.demanda?.solicitante?.id && (
               <Box id="oitavo" className={`items-center text-justify flex`}>
-                <Typography fontSize={FontConfig.default} sx={{ fontWeight: "600" }}>
+                <Typography fontSize={FontConfig?.default} sx={{ fontWeight: "600" }}>
                   {formatarNomeStatus()}
                 </Typography>
                 <Box
@@ -115,14 +115,14 @@ const Demanda = (props) => {
         </Box>
 
         {/* Proposta da demanda */}
-        <Typography gutterBottom fontSize={FontConfig.default} color="text.secondary">
+        <Typography gutterBottom fontSize={FontConfig?.default} color="text.secondary">
           {props.demanda.proposta}
         </Typography>
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {parseInt(localStorage.getItem("usuarioId")) != props.demanda?.solicitante?.id ? (
             <Typography
-              fontSize={FontConfig.default}
+              fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
               color="text.primary"
             >

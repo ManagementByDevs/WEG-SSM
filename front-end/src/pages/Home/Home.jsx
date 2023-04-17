@@ -34,11 +34,12 @@ import CookieService from "../../service/cookieService";
 
 /** Página principal do solicitante */
 const Home = () => {
-  // useContext para alterar a linguagem do sistema
-  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // useContext para alterar a linguagem do sistema
+  const { texts } = useContext(TextLanguageContext);
 
   // Lista de demandas presentes
   const [listaDemandas, setListaDemandas] = useState([]);
@@ -434,12 +435,12 @@ const Home = () => {
                 aria-label="lab API tabs example"
               >
                 <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                  sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
                   label={texts.home.minhasDemandas}
                   value="1"
                 />
                 <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                  sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
                   label={texts.home.meuDepartamento}
                   value="2"
                 />
@@ -492,7 +493,7 @@ const Home = () => {
                       backgroundColor: "input.main",
                       outline: "none",
                       color: "text.primary",
-                      fontSize: FontConfig.medium,
+                      fontSize: FontConfig?.medium,
                     }}
                     contentEditable
                     placeholder={texts.home.pesquisarPorTitulo}
@@ -551,7 +552,7 @@ const Home = () => {
                       sx={{
                         backgroundColor: "primary.main",
                         color: "text.white",
-                        fontSize: FontConfig.default,
+                        fontSize: FontConfig?.default,
                         minWidth: "5rem",
                       }}
                       onClick={abrirModalFiltro}
@@ -581,7 +582,7 @@ const Home = () => {
                 sx={{
                   backgroundColor: "primary.main",
                   color: "text.white",
-                  fontSize: FontConfig.default,
+                  fontSize: FontConfig?.default,
                   maxHeight: "2.5rem",
                   minWidth: "10.5rem",
                 }}

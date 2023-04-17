@@ -29,7 +29,7 @@ public class TokenUtils {
                 .setIssuer("WEG SSM")
                 .setSubject(userJpa.getUsuario().getEmail())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + 1800000))
+                .setExpiration(new Date(new Date().getTime() + 36000000))
                 .signWith(SignatureAlgorithm.HS256, senhaForte)
                 .compact();
     }

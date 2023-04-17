@@ -39,6 +39,7 @@ import AtaService from "../../service/ataService";
 
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
+import CookieService from "../../service/cookieService";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
@@ -553,8 +554,8 @@ const HomeGerencia = () => {
 
   // Função para buscar o usuário logado no sistema
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioById(
-      parseInt(localStorage.getItem("usuarioId"))
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie().sub
     ).then((e) => {
       setUsuario(e);
       setParams({ ...params, solicitante: e });

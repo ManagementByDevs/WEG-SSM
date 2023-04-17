@@ -142,7 +142,7 @@ const NotificacaoModal = (props) => {
             {contNaoLidas === 0 && (
               <Box className="flex items-center justify-center text-center w-full pt-1">
                 <Typography
-                  fontSize={FontConfig.default}
+                  fontSize={FontConfig?.default}
                   color={"text.secondary"}
                   sx={{
                     fontWeight: 600,
@@ -156,7 +156,7 @@ const NotificacaoModal = (props) => {
           {/* Ver Tudo */}
           <Box className="flex justify-center w-full py-1 mt-2">
             <Typography
-              fontSize={FontConfig.default}
+              fontSize={FontConfig?.default}
               color={"link.main"}
               sx={{
                 fontWeight: 600,

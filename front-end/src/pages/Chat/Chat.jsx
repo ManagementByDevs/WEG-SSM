@@ -28,6 +28,8 @@ import SockJS from "sockjs-client";
 
 import Tour from "reactour";
 
+import CookieService from "../../service/cookieService";
+
 var stompClient = null;
 
 // Chat para conversa entre usuários do sistema
@@ -240,8 +242,8 @@ const Chat = () => {
   });
 
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioById(
-      parseInt(localStorage.getItem("usuarioId"))
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie().sub
     ).then((e) => {
       setUsuarioId(e);
     });

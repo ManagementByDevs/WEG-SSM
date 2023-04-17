@@ -22,10 +22,16 @@ import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
+
 /** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
  * salvando a demanda e escopos no banco de dados
  */
 const BarraProgressaoDemanda = () => {
+
+  const [usuario, setUsuario] = useState(null);
+
   // Contexto para alterar o idioma
   const { texts } = useContext(TextLanguageContext);
 
@@ -75,6 +81,10 @@ const BarraProgressaoDemanda = () => {
     `${texts.barraProgressaoDemanda.steps.anexos}`,
   ];
 
+  useEffect(() => {
+    buscarUsuario();
+  }, [])
+
   // UseEffect utilizado para criar um escopo ou receber um escopo do banco ao entrar na página
   useEffect(() => {
     if (!idEscopo) {
@@ -111,9 +121,16 @@ const BarraProgressaoDemanda = () => {
     }
   }, [ultimoEscopo]);
 
+  const buscarUsuario = () => {
+    if(!CookieService.getCookie()) navigate("/login");
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((user) => {
+      setUsuario(user);
+    })
+  }
+
   /** Função para criar um novo escopo ativada quando alguma alteração for feita (caso não seja um escopo já existente) */
   const criarNovoEscopo = () => {
-    EscopoService.postNew(parseInt(localStorage.getItem("usuarioId"))).then(
+    EscopoService.postNew(usuario?.id).then(
       (response) => {
         idEscopo = response.id;
         setUltimoEscopo({ id: idEscopo });
@@ -245,7 +262,7 @@ const BarraProgressaoDemanda = () => {
     DemandaService.post(
       demandaFinal,
       paginaArquivos,
-      parseInt(localStorage.getItem("usuarioId"))
+      usuario?.id
     ).then((e) => {
       ExportPdfService.exportDemanda(e.id).then((file) => {
         // Salvamento do histórico número 1 da demanda
@@ -254,7 +271,7 @@ const BarraProgressaoDemanda = () => {
           e.id,
           "Demanda Criada",
           arquivo,
-          parseInt(localStorage.getItem("usuarioId"))
+          usuario?.id
         ).then((response) => {
           direcionarHome();
           excluirEscopo();

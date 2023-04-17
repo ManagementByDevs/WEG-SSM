@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Paper, Tooltip } from "@mui/material/";
@@ -13,9 +13,20 @@ import ChatMinimizado from "../ChatMinimizado/ChatMinimizado";
 
 import ChatContext from "../../service/ChatContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import UsuarioService from "../../service/usuarioService";
+import cookieService from "../../service/cookieService";
 
 /** Header padrão usado no topo de todas as páginas do sistema */
 const Header = () => {
+
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    if (!cookieService.getCookie()) return;
+    UsuarioService.getUsuarioByEmail(cookieService.getCookie().sub).then((user) => {
+      setUsuario(user);
+    })
+  }, []);
 
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
@@ -42,7 +53,7 @@ const Header = () => {
       )}
 
       {/* Link para página inicial */}
-      <Link to={"/"}>
+      <Link to={usuario?.tipoUsuario == "SOLICITANTE" ? "/home" : "/home-gerencia"}>
         {/* Title */}
         <Tooltip title={texts.Header.paginaInicial}>
           {/* Parte esquerda do header */}
