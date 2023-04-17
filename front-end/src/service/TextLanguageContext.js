@@ -107,6 +107,8 @@ const TextLanguageContext = createContext({
       gerenteResponsavel: "Gerente Responsável",
       chat: "Chat",
       historico: "Histórico",
+      emPauta: "Em Pauta!",
+      emAta: "Em Ata!",
     },
     demandaGerenciaModoVisualizacao: {
       backlog: "Backlog",
@@ -492,6 +494,8 @@ const TextLanguageContext = createContext({
       ataCriadaComSucesso: "Ata criada com sucesso!",
       ata: "Ata",
       numeroSequencial: "Número Sequencial",
+      dataReuniao: "Data da Reunião",
+      horaReuniao: "Hora da Reunião",
       data: "Data",
       inicio: "Início",
       fim: "Fim",
@@ -578,6 +582,10 @@ const TextLanguageContext = createContext({
       nomeDoSolicitante: "Nome do Solicitante",
     },
     homeGerencia: {
+      toursMinhasDemandas: {
+        tour6:
+          "Nesta parte fica as suas demandas, podendo clicar em uma demanda para ver mais detalhes",
+      },
       toursDemandas: {
         tour1:
           "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",

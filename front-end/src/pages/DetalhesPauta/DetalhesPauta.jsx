@@ -48,16 +48,6 @@ const DetalhesPauta = (props) => {
   const location = useLocation();
 
   // Variáveis de estilo para o componente
-  const tituloProposta = {
-    textDecoration: "underline",
-    cursor: "pointer",
-    color: "primary.main",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-    textAlign: "center",
-  };
-
   const informacoesAta = {
     fontWeight: "600",
     cursor: "default",
@@ -219,7 +209,7 @@ const DetalhesPauta = (props) => {
     propostaDeleted.parecerInformacao = null;
     propostaDeleted.parecerComissao = null;
     propostaDeleted.parecerDG = null;
-    
+
     PautaService.put(pauta).then((newPauta) => {
       setFeedbackPropostaDeletada(true);
       PropostaService.putWithoutArquivos(
@@ -264,7 +254,7 @@ const DetalhesPauta = (props) => {
 
     return isFilled;
   };
-  
+
   const abrirModalCriarAta = () => {
     if (!isAllFieldsFilled()) {
       setFeedbackCamposFaltantes(true);
@@ -275,8 +265,8 @@ const DetalhesPauta = (props) => {
 
   // Função que cria uma ata
   const criarAta = (numeroSequencial, dataReuniao) => {
-     // Criação do obj ata
-    let ata = { 
+    // Criação do obj ata
+    let ata = {
       ...pauta,
       numeroSequencial: numeroSequencial,
       dataReuniao: dataReuniao,
@@ -308,7 +298,7 @@ const DetalhesPauta = (props) => {
         });
       });
     }
-  }
+  };
 
   const handlePautaWithNoApprovedProposals = () => {
     for (let proposta of pauta.propostas) {
@@ -478,8 +468,45 @@ const DetalhesPauta = (props) => {
                 >
                   {texts.detalhesPauta.sumario}
                 </Typography>
-
-                <Box
+                <Box className="flex flex-col items-center justify-center">
+                  {isSummaryVisible ? (
+                    pauta.propostas?.map((proposta, index) => {
+                      return (
+                        <Box
+                          className="w-full border-solid border border-l-4 px-4 drop-shadow-sm rounded flex items-center mt-4"
+                          sx={{
+                            height: "2.5rem",
+                            borderLeftColor: "primary.main",
+                            backgroundColor: "background.default",
+                            fontWeight: "300",
+                            cursor: "pointer",
+                            '&:hover': {
+                              backgroundColor: 'component.main',
+                            }
+                          }}
+                          onClick={() => onClickProposta(index)}
+                        >
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            sx={{
+                              color: "primary.main",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {index + 1} - {proposta.titulo}
+                          </Typography>
+                        </Box>
+                      );
+                    })
+                  ) : (
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesPauta.nenhumaPropostaAdicionada}
+                    </Typography>
+                  )}
+                </Box>
+                {/* <Box
                   sx={{
                     display: "grid",
                     textAlign: "center",
@@ -487,9 +514,9 @@ const DetalhesPauta = (props) => {
                     gap: "1rem",
                     gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
                   }}
-                >
-                  {/* Lista utilizada para mostrar os títulos no sumário */}
-                  {isSummaryVisible ? (
+                > */}
+                {/* Lista utilizada para mostrar os títulos no sumário */}
+                {/* {isSummaryVisible ? (
                     pauta.propostas?.map((proposta, index) => {
                       return (
                         <Typography
@@ -507,7 +534,7 @@ const DetalhesPauta = (props) => {
                       {texts.detalhesPauta.nenhumaPropostaAdicionada}
                     </Typography>
                   )}
-                </Box>
+                </Box> */}
               </Box>
             ) : (
               // Mostrar uma proposta e seus dados

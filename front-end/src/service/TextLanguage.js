@@ -103,6 +103,8 @@ const TextLanguage = (linguagem) => {
             gerenteResponsavel: "Gerente Responsável",
             chat: "Chat",
             historico: "Histórico",
+            emPauta: "Em Pauta!",
+            emAta: "Em Ata!",
         },
         demandaGerenciaModoVisualizacao: {
             backlog: "Backlog",
@@ -485,6 +487,8 @@ const TextLanguage = (linguagem) => {
             ataCriadaComSucesso: "Ata criada com sucesso!",
             ata: "Ata",
             numeroSequencial: "Número Sequencial",
+            dataReuniao: "Data da Reunião",
+            horaReuniao: "Hora da Reunião",
             data: "Data",
             inicio: "Início",
             fim: "Fim",
@@ -566,6 +570,9 @@ const TextLanguage = (linguagem) => {
             nomeDoSolicitante: "Nome do Solicitante",
         },
         homeGerencia: {
+            toursMinhasDemandas: {
+                tour6: "Nesta parte fica as suas demandas, podendo clicar em uma demanda para ver mais detalhes",
+            },
             toursDemandas: {
                 tour1: "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",
                 tour2: "Esse é icone de ordenação, onde poderá ordenar os itens por ordem alfabética, por score ou por data de criação",
@@ -847,6 +854,8 @@ const TextLanguage = (linguagem) => {
             gerenteResponsavel: "Responsible Manager",
             chat: "Chat",
             historico: "History",
+            emPauta: "In Agenda!",
+            emAta: "In Minutes!",
         },
         demandaGerenciaModoVisualizacao: {
             backlog: "Backlog",
@@ -1224,6 +1233,8 @@ const TextLanguage = (linguagem) => {
             ataCriadaComSucesso: "Minutes created successfully!",
             ata: "Minutes",
             numeroSequencial: "Seq. Num.",
+            dataReuniao: "Meeting Date",
+            horaReuniao: "Meeting Time",
             data: "Date",
             inicio: "Start",
             fim: "End",
@@ -1306,6 +1317,9 @@ const TextLanguage = (linguagem) => {
             nomeDoSolicitante: "Requester Name",
         },
         homeGerencia: {
+            toursMinhasDemandas: {
+                tour6: "In this area are your demands, where you can click on a demand to see more details.",
+            },
             toursDemandas: {
                 tour1: "Here is the search bar, where you can search by a title of a demand.",
                 tour2: "This is the sorting icon, where you can order the items alphabetically, by score or by creation date.",
@@ -1584,6 +1598,8 @@ const TextLanguage = (linguagem) => {
             gerenteResponsavel: "负责经理",
             chat: "聊天",
             historico: "历史",
+            emPauta: "在议程上！",
+            emAta: "在议程上！",
         },
         demandaGerenciaModoVisualizacao: {
             backlog: "待办事项",
@@ -1960,6 +1976,8 @@ const TextLanguage = (linguagem) => {
             ataCriadaComSucesso: "会议记录创建成功！",
             ata: "会议记录",
             numeroSequencial: "序列号",
+            dataReuniao: "会议日期",
+            horaReuniao: "会议时间",
             data: "日期",
             inicio: "开始",
             fim: "结束",
@@ -2041,6 +2059,9 @@ const TextLanguage = (linguagem) => {
             nomeDoSolicitante: "请求者名称",
         },
         homeGerencia: {
+            toursMinhasDemandas: {
+                tour6: "這部分是您的需求，可以點擊需求查看更多詳情"
+            },
             toursDemandas: {
                 tour1: "这是搜索栏，在这里您可以按标题搜索。",
                 tour2: "在这个图标中，您可以按标题（A-Z或Z-A）、分数（从高到低或从低到高）和日期（从新到旧或从旧到新）对需求进行排序。",
@@ -2320,6 +2341,8 @@ const TextLanguage = (linguagem) => {
             gerenteResponsavel: "Gerente responsable",
             chat: "Chat",
             historico: "Historial",
+            emPauta: "¡En la agenda!",
+            emAta: "¡En la acta!",
         },
         demandaGerenciaModoVisualizacao: {
             backlog: "Backlog",
@@ -2700,6 +2723,8 @@ const TextLanguage = (linguagem) => {
             ataCriadaComSucesso: "Ata creada con éxito!",
             ata: "Ata",
             numeroSequencial: "Num. Seq.",
+            dataReuniao: "Fecha de la reunión",
+            horaReuniao: "Hora de la reunión",
             data: "Data",
             inicio: "Inicio",
             fim: "Fin",
@@ -2781,6 +2806,9 @@ const TextLanguage = (linguagem) => {
             nomeDoSolicitante: "Nombre del Solicitante",
         },
         homeGerencia: {
+            toursMinhasDemandas: {
+                tour6: "En esta área puede observar sus demandas. Puede hacer clic en una demanda para ver sus detalles.",
+            },
             toursDemandas: {
                 tour1: "Aquí está la barra de búsqueda, donde puede buscar por un título de alguna demanda.",
                 tour2: "Este es el ícono de ordenación, donde puede ordenar sus demandas por título (A-Z o Z-A), Score (Mayor a menor o menor a mayor) y por fecha (Más nueva a más vieja o más vieja a más nueva).",

@@ -28,6 +28,7 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import ExportPdfService from "../../service/exportPdfService";
 import PropostaService from "../../service/propostaService";
 import AtaService from "../../service/ataService";
+import DateService from "../../service/dateService";
 
 // Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
 const DetalhesAta = (props) => {
@@ -254,6 +255,14 @@ const DetalhesAta = (props) => {
     console.log("ata: ", ata);
   }, [ata]);
 
+  const trazerHoraData = (data) => {
+    let dataHora = new Date(data);
+    let hora = dataHora.getHours();
+    let minuto = dataHora.getMinutes();
+
+    return hora+":"+minuto;
+  };
+
   return (
     // Começo com o header da página
     <FundoComHeader>
@@ -307,6 +316,14 @@ const DetalhesAta = (props) => {
               <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {props.numeroSequencial} */}
                 {texts.detalhesAta.numeroSequencial}: {ata.numeroSequencial}
+              </Typography>
+              <Typography className="cursor-default mt-2" fontWeight={600}>
+                {/* {data reunião} */}
+                {texts.detalhesAta.dataReuniao}: {DateService.getTodaysDateUSFormat(ata.dataReuniao)}
+              </Typography>
+              <Typography className="cursor-default mt-2" fontWeight={600}>
+                {/* {Hora reunião} */}
+                {texts.detalhesAta.horaReuniao}: {trazerHoraData(ata.dataReuniao)}
               </Typography>
               <Typography className="cursor-default mt-2" fontWeight={600}>
                 {/* {analista responsavel} */}

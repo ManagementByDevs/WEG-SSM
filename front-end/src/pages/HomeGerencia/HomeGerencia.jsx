@@ -11,6 +11,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
+import Pauta from "../../components/Pauta/Pauta";
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
@@ -46,6 +47,8 @@ const HomeGerencia = () => {
   const { texts } = useContext(TextLanguageContext);
 
   //UseState utilizado para controlar o tour, se ele está aberto ou fechado
+  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] =
+    useState(false);
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
   const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
     useState(false);
@@ -67,10 +70,9 @@ const HomeGerencia = () => {
     id: null,
   });
 
-  //JSONs que contém as informações do tour
-  const stepsDemandas = [
+  const stepsMinhasDemandas = [
     {
-      selector: "#primeiroDemandas",
+      selector: "#primeiroMinhasDemandas",
       content: texts.homeGerencia.toursDemandas.tour1,
       style: {
         backgroundColor: "#DCDCDC",
@@ -94,14 +96,6 @@ const HomeGerencia = () => {
       },
     },
     {
-      selector: "#quartoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour4,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
       selector: "#nonoDemandas",
       content: texts.homeGerencia.toursDemandas.tour9,
       style: {
@@ -118,8 +112,8 @@ const HomeGerencia = () => {
       },
     },
     {
-      selector: "#sextoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour6,
+      selector: "#sextoMinhasDemandas",
+      content: texts.homeGerencia.toursMinhasDemandas.tour6,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -128,6 +122,26 @@ const HomeGerencia = () => {
     {
       selector: "#oitavoDemandas",
       content: texts.homeGerencia.toursDemandas.tour8,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  //JSONs que contém as informações do tour
+  const stepsDemandas = [
+    {
+      selector: "#quartoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#primeiroDemandas",
+      content: texts.homeGerencia.toursDemandas.tour6,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -147,22 +161,6 @@ const HomeGerencia = () => {
     {
       selector: "#primeiroCriarPropostas",
       content: texts.homeGerencia.toursCriarPropostas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoCriarPropostas",
-      content: texts.homeGerencia.toursCriarPropostas.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiroCriarPropostas",
-      content: texts.homeGerencia.toursCriarPropostas.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -1003,6 +1001,14 @@ const HomeGerencia = () => {
       )} */}
       {/* Help Tour's */}
       <Tour
+        steps={stepsMinhasDemandas}
+        isOpen={isTourMinhasDemandasOpen}
+        onRequestClose={() => setIsTourMinhasDemandasOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+      <Tour
         steps={stepsDemandas}
         isOpen={isTourDemandasOpen}
         onRequestClose={() => setIsTourDemandasOpen(false)}
@@ -1268,7 +1274,7 @@ const HomeGerencia = () => {
                     width: "50%",
                     minWidth: "10rem",
                   }}
-                  id="primeiroDemandas"
+                  id="primeiroMinhasDemandas"
                 >
                   {/* Input de pesquisa*/}
                   <Box
@@ -1427,121 +1433,242 @@ const HomeGerencia = () => {
                 <ClipLoader color="#00579D" size={110} />
               </Box>
             ) : (
-              <Box className="mt-6" id="sextoDemandas">
+              <Box className="mt-6" id="sextoMinhasDemandas">
                 <Box>
                   <TabPanel sx={{ padding: 0 }} value="1">
-                    <Ajuda />
+                    <Ajuda onClick={() => setIsTourMinhasDemandasOpen(true)} />
                     <Box>
-                      <DemandaModoVisualizacao
-                        listaDemandas={listaItens}
-                        onDemandaClick={verDemanda}
-                        myDemandas={true}
-                        nextModoVisualizacao={nextModoVisualizacao}
-                      />
+                      {isTourMinhasDemandasOpen ? (
+                        <DemandaGerencia
+                          key={1}
+                          isTourDemandasOpen={isTourDemandasOpen}
+                          dados={{
+                            analista: {},
+                            beneficios: [{}],
+                            buSolicitante: {},
+                            busBeneficiados: [{}],
+                            departamento: {},
+                            frequencia: "",
+                            gerente: {},
+                            tamanho: "",
+                            id: 0,
+                            titulo: texts.homeGerencia.demandaParaTour,
+                            problema: "",
+                            proposta: "",
+                            motivoRecusa: "",
+                            status: "ASSESSMENT",
+                            data: "",
+                            solicitante: {
+                              nome: texts.homeGerencia.demandaParaTour,
+                            },
+                          }}
+                          semHistorico={true}
+                          tipo="demanda"
+                        />
+                      ) : (
+                        <DemandaModoVisualizacao
+                          listaDemandas={listaItens}
+                          onDemandaClick={verDemanda}
+                          myDemandas={true}
+                          nextModoVisualizacao={nextModoVisualizacao}
+                        />
+                      )}
                     </Box>
                   </TabPanel>
                 </Box>
                 {/* Valores para as abas selecionadas */}
-                <TabPanel sx={{ padding: 0 }} value="2">
-                  <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
-                  {isTourDemandasOpen ? (
-                    <DemandaGerencia
-                      key={1}
-                      isTourDemandasOpen={isTourDemandasOpen}
-                      dados={{
-                        analista: {},
-                        beneficios: [{}],
-                        buSolicitante: {},
-                        busBeneficiados: [{}],
-                        departamento: {},
-                        frequencia: "",
-                        gerente: {},
-                        tamanho: "",
-                        id: 0,
-                        titulo: texts.homeGerencia.demandaParaTour,
-                        problema: "",
-                        proposta: "",
-                        motivoRecusa: "",
-                        status: "BACKLOG_REVISAO",
-                        data: "",
-                        solicitante: {
-                          nome: texts.homeGerencia.demandaParaTour,
-                        },
-                      }}
-                      tipo="demanda"
-                    />
-                  ) : (
-                    <DemandaGerenciaModoVisualizacao
-                      listaDemandas={listaItens}
-                      onDemandaClick={verDemanda}
-                      nextModoVisualizacao={nextModoVisualizacao}
-                    />
-                  )}
-                </TabPanel>
+                <Box id="primeiroDemandas">
+                  <TabPanel sx={{ padding: 0 }} value="2">
+                    <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
+                    {isTourDemandasOpen ? (
+                      <DemandaGerencia
+                        key={1}
+                        isTourDemandasOpen={isTourDemandasOpen}
+                        dados={{
+                          analista: {},
+                          beneficios: [{}],
+                          buSolicitante: {},
+                          busBeneficiados: [{}],
+                          departamento: {},
+                          frequencia: "",
+                          gerente: {},
+                          tamanho: "",
+                          id: 0,
+                          titulo: texts.homeGerencia.demandaParaTour,
+                          problema: "",
+                          proposta: "",
+                          motivoRecusa: "",
+                          status: "BACKLOG_REVISAO",
+                          data: "",
+                          solicitante: {
+                            nome: texts.homeGerencia.demandaParaTour,
+                          },
+                        }}
+                        tipo="demanda"
+                      />
+                    ) : (
+                      <DemandaGerenciaModoVisualizacao
+                        listaDemandas={listaItens}
+                        onDemandaClick={verDemanda}
+                        nextModoVisualizacao={nextModoVisualizacao}
+                      />
+                    )}
+                  </TabPanel>
+                </Box>
                 {isGerente && (
                   <>
-                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
-                      <Ajuda
-                        onClick={() => setIsTourCriarPropostasOpen(true)}
-                      />
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gap: "1rem",
-                          gridTemplateColumns:
-                            "repeat(auto-fit, minmax(720px, 1fr))",
-                        }}
-                      >
-                        <DemandaGerenciaModoVisualizacao
-                          listaDemandas={listaItens}
-                          onDemandaClick={verDemanda}
-                          nextModoVisualizacao={nextModoVisualizacao}
+                    <Box id="primeiroCriarPropostas">
+                      <TabPanel sx={{ padding: 0 }} value="3">
+                        <Ajuda
+                          onClick={() => setIsTourCriarPropostasOpen(true)}
                         />
-                      </Box>
-                    </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
-                      <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gap: "1rem",
-                          gridTemplateColumns:
-                            "repeat(auto-fit, minmax(720px, 1fr))",
-                        }}
+                        {isTourCriarPropostasOpen ? (
+                          <DemandaGerencia
+                            key={1}
+                            isTourDemandasOpen={isTourDemandasOpen}
+                            dados={{
+                              analista: {},
+                              beneficios: [{}],
+                              buSolicitante: {},
+                              busBeneficiados: [{}],
+                              departamento: {},
+                              frequencia: "",
+                              gerente: {},
+                              tamanho: "",
+                              id: 0,
+                              titulo: texts.homeGerencia.demandaParaTour,
+                              problema: "",
+                              proposta: "",
+                              motivoRecusa: "",
+                              status: "ASSESSMENT",
+                              data: "",
+                              solicitante: {
+                                nome: texts.homeGerencia.demandaParaTour,
+                              },
+                            }}
+                            tipo="demanda"
+                          />
+                        ) : (
+                          <Box
+                            sx={{
+                              display: "grid",
+                              gap: "1rem",
+                              gridTemplateColumns:
+                                "repeat(auto-fit, minmax(720px, 1fr))",
+                            }}
+                          >
+                            <DemandaGerenciaModoVisualizacao
+                              listaDemandas={listaItens}
+                              onDemandaClick={verDemanda}
+                              nextModoVisualizacao={nextModoVisualizacao}
+                            />
+                          </Box>
+                        )}
+                      </TabPanel>
+                    </Box>
+                    <Box id="primeiroPropostas">
+                      <TabPanel
+                        sx={{ padding: 0 }}
+                        value="4"
+                        onClick={() => {}}
                       >
-                        <DemandaGerenciaModoVisualizacao
-                          listaDemandas={listaItens}
-                          onDemandaClick={verProposta}
+                        <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
+                        {isTourPropostasOpen ? (
+                          <DemandaGerencia
+                            key={1}
+                            isTourDemandasOpen={isTourDemandasOpen}
+                            dados={{
+                              analista: {},
+                              beneficios: [{}],
+                              buSolicitante: {},
+                              busBeneficiados: [{}],
+                              departamento: {},
+                              frequencia: "",
+                              gerente: {},
+                              tamanho: "",
+                              id: 0,
+                              titulo: texts.homeGerencia.demandaParaTour,
+                              problema: "",
+                              proposta: "",
+                              motivoRecusa: "",
+                              status: "ASSESSMENT",
+                              data: "",
+                              solicitante: {
+                                nome: texts.homeGerencia.demandaParaTour,
+                              },
+                            }}
+                            tipo="proposta"
+                          />
+                        ) : (
+                          <Box
+                            sx={{
+                              display: "grid",
+                              gap: "1rem",
+                              gridTemplateColumns:
+                                "repeat(auto-fit, minmax(720px, 1fr))",
+                            }}
+                          >
+                            <DemandaGerenciaModoVisualizacao
+                              listaDemandas={listaItens}
+                              onDemandaClick={verProposta}
+                              nextModoVisualizacao={nextModoVisualizacao}
+                              isProposta={true}
+                            />
+                          </Box>
+                        )}
+                      </TabPanel>
+                    </Box>
+                    <Box id="primeiroPautas">
+                      <TabPanel sx={{ padding: 0 }} value="5">
+                        <Ajuda onClick={() => setIsTourPautasOpen(true)} />
+                        {isTourPautasOpen ? (
+                          <Pauta
+                            key={1}
+                            isTourDemandasOpen={isTourDemandasOpen}
+                            dados={{
+                              numeroSequencial: "Pauta para Tour",
+                            }}
+                            tipo="pauta"
+                          />
+                        ) : (
+                          <PautaAtaModoVisualizacao
+                            listaPautas={listaItens}
+                            onItemClick={(pauta) => {
+                              navigate("/detalhes-pauta", {
+                                state: { pauta },
+                              });
+                            }}
+                            nextModoVisualizacao={nextModoVisualizacao}
+                            setPautaSelecionada={setPautaSelecionada}
+                          />
+                        )}
+                      </TabPanel>
+                    </Box>
+                    <Box id="primeiroAtas">
+                      <TabPanel sx={{ padding: 0 }} value="6">
+                        <Ajuda onClick={() => setIsTourAtasOpen(true)} />
+                        {isTourAtasOpen ? (
+                          <Pauta
+                            key={1}
+                            isTourDemandasOpen={isTourDemandasOpen}
+                            dados={{
+                              numeroSequencial: "Ata para Tour",
+                            }}
+                            tipo="ata"
+                          />
+                        ) : (
+                        <PautaAtaModoVisualizacao
+                          listaPautas={listaItens}
+                          onItemClick={(ata) => {
+                            navigate("/detalhes-ata", { state: { ata } });
+                          }}
                           nextModoVisualizacao={nextModoVisualizacao}
-                          isProposta={true}
+                          setPautaSelecionada={setPautaSelecionada}
+                          isAta={true}
                         />
-                      </Box>
-                    </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="5">
-                      <Ajuda onClick={() => setIsTourPautasOpen(true)} />
-                      <PautaAtaModoVisualizacao
-                        listaPautas={listaItens}
-                        onItemClick={(pauta) => {
-                          navigate("/detalhes-pauta", {
-                            state: { pauta },
-                          });
-                        }}
-                        nextModoVisualizacao={nextModoVisualizacao}
-                        setPautaSelecionada={setPautaSelecionada}
-                      />
-                    </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="6">
-                      <Ajuda onClick={() => setIsTourAtasOpen(true)} />
-                      <PautaAtaModoVisualizacao
-                        listaPautas={listaItens}
-                        onItemClick={(ata) => {
-                          navigate("/detalhes-ata", { state: { ata } });
-                        }}
-                        nextModoVisualizacao={nextModoVisualizacao}
-                        setPautaSelecionada={setPautaSelecionada}
-                        isAta={true}
-                      />
-                    </TabPanel>
+                        )}
+                      </TabPanel>
+                    </Box>
                   </>
                 )}
               </Box>
