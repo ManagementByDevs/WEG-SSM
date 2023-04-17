@@ -30,6 +30,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import AnexoService from "../../service/anexoService";
 
 import ClipLoader from "react-spinners/ClipLoader";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 // Ícone selecionado e não selecionado, para o checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -55,6 +56,8 @@ const FormularioPropostaProposta = (props) => {
   /** Variável de referência para ativar a escolha de anexos */
   const inputFile = useRef(null);
 
+  const mostrarEdicao = false;
+
   // UseEffect para alterar a cor do textArea (modo escuro / claro)
   useEffect(() => {
     if (mode === "dark") {
@@ -69,6 +72,7 @@ const FormularioPropostaProposta = (props) => {
     if (input === "titulo") {
       props.setDadosDemanda({ ...props.dados, titulo: e.target.value });
     } else if (input === "problema") {
+      console.log("Entrou")
       props.setDadosDemanda({ ...props.dados, problema: e.target.value });
     } else if (input === "proposta") {
       props.setDadosDemanda({ ...props.dados, proposta: e.target.value });
@@ -85,6 +89,9 @@ const FormularioPropostaProposta = (props) => {
     } else if (input == "forum") {
       props.setDadosDemanda({ ...props.dados, forum: e });
     }
+
+    console.log("Problema mudanddo: " + props.dados.problema);
+
   };
 
   /** Função para acionar o botão do tipo file */
@@ -223,6 +230,18 @@ const FormularioPropostaProposta = (props) => {
     }
   };
 
+  const [problemaEdicao, setProblemaEdicao] = useState();
+  const [propostaEdicao, setPropostaEdicao] = useState();
+
+  useEffect(() => {
+    setProblemaEdicao(props.dados.problema);
+  }, [props.dados.problema]);
+
+
+  useEffect(() => {
+    setPropostaEdicao(props.dados.proposta);
+  }, [props.dados.proposta])
+
   return (
     <>
       {/* Feedback anexos existente */}
@@ -288,7 +307,7 @@ const FormularioPropostaProposta = (props) => {
                     *
                   </Typography>
                 </Typography>
-                <TextareaAutosize
+                {/* <TextareaAutosize
                   style={{
                     width: 775,
                     marginLeft: "26px",
@@ -302,7 +321,16 @@ const FormularioPropostaProposta = (props) => {
                   }}
                   className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
                   placeholder={texts.formularioPropostaProposta.digiteProblema}
-                />
+                /> */}
+                <Box sx={{ marginTop: '1%' }}>
+                  <CaixaTextoQuill
+                    texto={problemaEdicao}
+                    setTexto={setProblemaEdicao}
+                    onBlur={(e) => {
+                      alterarTexto(e.target.innerHTML, "problema");
+                    }}
+                  />
+                </Box>
               </Box>
               <Box>
                 <Typography
@@ -322,7 +350,7 @@ const FormularioPropostaProposta = (props) => {
                     *
                   </Typography>
                 </Typography>
-                <TextareaAutosize
+                {/* <TextareaAutosize
                   style={{
                     width: 775,
                     marginLeft: "26px",
@@ -336,7 +364,17 @@ const FormularioPropostaProposta = (props) => {
                   }}
                   className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
                   placeholder={texts.formularioPropostaProposta.digiteProposta}
-                />
+                /> */}
+
+                <Box sx={{ marginTop: '1%' }}>
+                  <CaixaTextoQuill
+                    texto={propostaEdicao}
+                    setTexto={setPropostaEdicao}
+                    onBlur={(e) => {
+                      alterarTexto(e.target.innerHTML, "proposta");
+                    }}
+                  />
+                </Box>
               </Box>
               <Box>
                 <Box className="flex items-center">
@@ -566,7 +604,7 @@ const FormularioPropostaProposta = (props) => {
                     <TextField
                       variant="standard"
                       {...params}
-                      label={texts.formularioPropostaProposta.labelForum+" *"}
+                      label={texts.formularioPropostaProposta.labelForum + " *"}
                     />
                   )}
                 />

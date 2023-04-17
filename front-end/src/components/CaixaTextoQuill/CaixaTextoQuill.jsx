@@ -18,6 +18,10 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
     placeholder = texts.detalhesProposta.maisInformacoes;
   }
 
+  function handleBlur() {
+    console.log("ddd")
+  }
+
   return (
     <ReactQuill
       value={texto}
@@ -38,6 +42,7 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
       }}
       placeholder={placeholder}
       style={useScroll ? { height: '10rem', overflowY: 'scroll' } : setScroll ? { height: '5rem', overflowY: 'scroll' } : {}}
+      onBlur={handleBlur}
     />
   );
 }

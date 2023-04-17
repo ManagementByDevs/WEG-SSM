@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 
 import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, TextareaAutosize, FormControl, Select, MenuItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -42,6 +42,18 @@ const BeneficiosDetalheDemanda = (props) => {
       border: 0,
     },
   }));
+
+  const memoriaCalculo = useRef(null);
+
+  useEffect(() => {
+    if (memoriaCalculo.current &&  props.beneficio.memoriaCalculo !== undefined) {
+      memoriaCalculo.current.innerHTML = props.beneficio.memoriaCalculo
+    }
+  }, [props.beneficio]);
+
+  const getMemoriaCalculoFomartted = (memoria) => {
+    return memoria[0].toUpperCase() + memoria.substring(1).toLowerCase();
+  };
 
   return (
     <Box className="flex items-center">
@@ -267,13 +279,15 @@ const BeneficiosDetalheDemanda = (props) => {
                 <td align="center" className="p-3 pl-5 pr-5 flex justify-center">
 
                   {/* Memória de cálculo */}
+
                   <Typography
                     className="text-center"
                     fontSize={FontConfig.medium}
                     color="text.primary"
                     sx={{ width: "100%" }}
+                    ref={memoriaCalculo}
                   >
-                    {props.beneficio.memoriaCalculo}
+                    {getMemoriaCalculoFomartted(props.beneficio.memoriaCalculo)}
                   </Typography>
                 </td>
               </StyledTableRow>
