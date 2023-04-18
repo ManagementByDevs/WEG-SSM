@@ -26,6 +26,7 @@ import EditOffIcon from "@mui/icons-material/EditOff";
 
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+import DetalhesPropostaEditMode from "../DetalhesPropostaEditMode/DetalhesPropostaEditMode";
 
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
@@ -33,26 +34,27 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import PropostaService from "../../service/propostaService";
 
+import ClipLoader from "react-spinners/ClipLoader";
+
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
 
 // Componente  para mostrar os detalhes de uma proposta e suas respectivas funções
-const DetalhesProposta = ({
-  propostaId = 0,
-  // proposta = propostaExample,
-  // setProposta = () => {},
-}) => {
+const DetalhesProposta = ({ propostaId = 0 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
-
-  const location = useLocation();
-
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
   // Estado da proposta
   const [proposta, setProposta] = useState(propostaExample);
+
+  // Estado para mostrar o carregamento enquanto é feito a requisição para pegar os dados da prospota
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Estado para saber qual estado da proposta mostrar, a estática ou editável
+  const [isEditing, setIsEditing] = useState(false);
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -128,22 +130,54 @@ const DetalhesProposta = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
+  // Função acionada quando o usúario clica no ícone de editar
+  const handleOnEditClick = () => {
+    setIsEditing(!isEditing);
+  };
+
   useEffect(() => {
     PropostaService.getById(propostaId).then((proposal) => {
       setProposta(proposal);
+      setIsLoading(false);
     });
-    console.log("location autal: ", location)
-
   }, []);
-  console.log("proposta: ", proposta);
-  if (Object.values(proposta).some((value) => value === undefined)) {
-    return <></>;
-  }
 
-  const click = () => {
-    console.log("a")
-    location.state = { teste: "teste" }
-    console.log("location: ", location)
+  if (Object.values(proposta).some((value) => value === undefined))
+    return <></>;
+
+  if (isLoading)
+    return (
+      <Box className="flex justify-center">
+        <Box
+          className="flex justify-center border rounded px-10 py-4 border-t-6 relative"
+          sx={{ width: "55rem", borderTopColor: "primary.main" }}
+        >
+          <ClipLoader className="mt-2" color="#00579D" size={110} />
+        </Box>
+      </Box>
+    );
+
+  if (isEditing) {
+    return (
+      <Box className="flex justify-center">
+        <Box
+          className="border rounded px-10 py-4 border-t-6 relative"
+          sx={{ width: "55rem", borderTopColor: "primary.main" }}
+        >
+          <StatusProposta
+            proposta={proposta}
+            setProposta={setProposta}
+            getCorStatus={getCorStatus}
+            getStatusFormatted={getStatusFormatted}
+          />
+          <DetalhesPropostaEditMode
+            proposta={proposta}
+            setProposta={setProposta}
+            setIsEditing={setIsEditing}
+          />
+        </Box>
+      </Box>
+    );
   }
 
   return (
@@ -159,7 +193,7 @@ const DetalhesProposta = ({
           getStatusFormatted={getStatusFormatted}
         />
         {/* Box header */}
-        <Box className="w-full flex justify-between" onClick={click}>
+        <Box className="w-full flex justify-between">
           <Box className="flex gap-4">
             <Typography
               color="primary"
@@ -198,7 +232,7 @@ const DetalhesProposta = ({
         {/* Box Conteudo */}
         <Box className="w-full">
           {/* Titulo */}
-          <Box flex>
+          <Box>
             <Typography color={"primary.main"} fontSize={FontConfig.smallTitle}>
               {proposta.titulo}
             </Typography>
@@ -209,9 +243,11 @@ const DetalhesProposta = ({
           <Box className="relative">
             <Tooltip title={texts.detalhesProposta.editar}>
               <Box className="absolute -right-8 -top-2">
-                <IconButton sx={{ color: "primary.main" }}>
-                  <EditIcon />
-                  <EditOffIcon />
+                <IconButton
+                  sx={{ color: "primary.main" }}
+                  onClick={handleOnEditClick}
+                >
+                  {!isEditing ? <EditIcon /> : <EditOffIcon />}
                 </IconButton>
               </Box>
             </Tooltip>
@@ -1105,8 +1141,6 @@ const StatusProposta = ({
 
     let propostaAux = { ...proposta, status: newStatus };
 
-    console.log("status: ", newStatus);
-    // setProposta({ ...propostaAux });
     setConfirmEditStatus(false);
 
     // Requisição para atualizar a proposta com o novo status
@@ -1115,7 +1149,6 @@ const StatusProposta = ({
         console.log("put: ", newProposta);
         // Atualiza a proposta com o novo status
         setProposta(newProposta);
-        location.state = { proposta: newProposta };
       }
     );
   };

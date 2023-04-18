@@ -694,6 +694,8 @@ const TextLanguage = (linguagem) => {
             publicada: "Publicada",
             naoPublicada: "Não publicada",
             secaoTi: "Seção TI",
+            cancelarEdicao: "Cancelar Edição",
+            salvarEdicao: "Salvar Edição",
             status: {
                 assessmentAprovacao: "Assessment",
             },
@@ -1424,6 +1426,22 @@ const TextLanguage = (linguagem) => {
             secaoTi: "TI Section",
             comissao: "Comission",
             direcaoGeral: "General Direction",
+            semInformacoesAdicionais: "No additional information",
+            semParecer: "No opinion",
+            publicada: "Published",
+            naoPublicada: "Not published",
+            secaoTi: "TI Section",
+            cancelarEdicao: "Cancel Edit",
+            salvarEdicao: "Save Edit",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelled",
+                done: "Done",
+            }
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -2142,6 +2160,22 @@ const TextLanguage = (linguagem) => {
             secaoTi: "TI 部分",
             comissao: "佣金",
             direcaoGeral: "总方向",
+            semInformacoesAdicionais: "没有附加信息",
+            semParecer: "没意见",
+            publicada: "发表",
+            naoPublicada: "未发表",
+            secaoTi: "TI 部分",
+            cancelarEdicao: "取消编辑",
+            salvarEdicao: "保存编辑",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelled",
+                done: "Done",
+            }
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -2868,6 +2902,22 @@ const TextLanguage = (linguagem) => {
             naoPublicada: "No publicado",
             secaoTi: "Sección TI",
             direcaoGeral: "Direccion General",
+            semInformacoesAdicionais: "Sin información adicional",
+            semParecer: "Sin opinión",
+            publicada: "Publicada",
+            naoPublicada: "No publicada",
+            secaoTi: "Sección TI",
+            cancelarEdicao: "Cancelar Editar",
+            salvarEdicao: "Guardar Editar",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelled",
+                done: "Done",
+            }
         },
         modalAddPropostaPauta: {
             feedbacks: {
