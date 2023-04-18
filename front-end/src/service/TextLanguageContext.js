@@ -122,7 +122,7 @@ const TextLanguageContext = createContext({
       tenteNovamenteMaisTarde: "Tente novamente mais tarde",
     },
     demandaModoVisualizacao: {
-      status: {
+      statusDemanda: {
         reprovada: "Reprovada",
         aguardandoRevisao: "Aguardando Revisão",
         aguardandoEdicao: "Aguardando Edição",

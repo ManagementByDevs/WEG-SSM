@@ -196,7 +196,7 @@ const Home = () => {
     }
   };
 
-  /** Função para buscar o usuário logado no sistema pelo localStorage assim que ele entrar na página */
+  /** Função para buscar o usuário logado no sistema pelos cookies assim que ele entrar na página */
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(
       CookieService.getCookie().sub
@@ -209,13 +209,15 @@ const Home = () => {
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
   const buscarDemandas = () => {
     setCarregamento(true);
-    DemandaService.getPage(
-      params,
-      stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
-    ).then((e) => {
-      setTotalPaginas(e.totalPages);
-      setListaDemandas(e.content);
-    });
+    if(params.titulo || params.solicitante || params.gerente || params.forum || params.departamento || params.tamanho || params.status) {
+      DemandaService.getPage(
+        params,
+        stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+      ).then((e) => {
+        setTotalPaginas(e.totalPages);
+        setListaDemandas(e.content);
+      });
+    }
   };
 
   /** Função para atualizar o filtro de status quando modificado no modal de filtros */
@@ -619,6 +621,7 @@ const Home = () => {
                           solicitante: {
                             id: 1,
                             nome: texts.home.nomeDoSolicitante,
+                            tour: true
                           },
                         }}
                       />

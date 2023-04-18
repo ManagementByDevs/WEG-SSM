@@ -120,7 +120,7 @@ const TextLanguage = (linguagem) => {
             tenteNovamenteMaisTarde: "Tente novamente mais tarde",
         },
         demandaModoVisualizacao: {
-            status: {
+            statusDemanda: {
                 reprovada: "Reprovada",
                 aguardandoRevisao: "Aguardando Revisão",
                 aguardandoEdicao: "Aguardando Edição",
@@ -843,7 +843,7 @@ const TextLanguage = (linguagem) => {
             tenteNovamenteMaisTarde: "Try again later",
         },
         demandaModoVisualizacao: {
-            status: {
+            statusDemanda: {
                 reprovada: "Rejected",
                 aguardandoRevisao: "Awaiting Review",
                 aguardandoEdicao: "Awaiting Edition",
@@ -1561,7 +1561,7 @@ const TextLanguage = (linguagem) => {
             tenteNovamenteMaisTarde: "稍后再试",
         },
         demandaModoVisualizacao: {
-            status: {
+            statusDemanda: {
                 reprovada: "拒绝",
                 aguardandoRevisao: "等待审查",
                 aguardandoEdicao: "等待编辑",
@@ -2279,7 +2279,7 @@ const TextLanguage = (linguagem) => {
             tenteNovamenteMaisTarde: "Tente novamente mais tarde",
         },
         demandaModoVisualizacao: {
-            status: {
+            statusDemanda: {
                 reprovada: "Rechazada",
                 aguardandoRevisao: "Esperando revisión",
                 aguardandoEdicao: "Esperando edición",

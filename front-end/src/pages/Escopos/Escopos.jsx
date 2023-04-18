@@ -19,10 +19,16 @@ import EscopoService from "../../service/escopoService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
+
 import Tour from "reactour";
 
 // Tela para mostrar os escopos de demandas/propostas não finalizadas
 const Escopos = () => {
+
+  const [usuario, setUsuario] = useState(null);
+
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -45,16 +51,28 @@ const Escopos = () => {
 
   // useEffect utilizado para buscar os escopos assim que a página é carregada
   useEffect(() => {
+    if (!usuario) {
+      buscarUsuario();
+    }
+  }, []);
+
+  useEffect(() => {
     if (!escopos) {
       buscarEscopos();
     }
-  }, []);
+  }, [usuario]);
+
+  const buscarUsuario = () => {
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((user) => {
+      setUsuario(user);
+    });
+  }
 
   // função integrada com a barra de pesquisa para buscar os escopos
   const buscarEscopos = () => {
     if (inputPesquisa == "") {
       EscopoService.buscarPorUsuario(
-        parseInt(localStorage.getItem("usuarioId")),
+        usuario.id,
         "sort=id,asc&"
       ).then((response) => {
         let listaEscopos = [];

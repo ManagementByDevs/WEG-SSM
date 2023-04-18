@@ -7,6 +7,8 @@ import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+import CookieService from "../../service/cookieService";
+
 /** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
@@ -94,8 +96,7 @@ const Demanda = (props) => {
           </Typography>
 
           {/* Lógica para mostrar o status da demanda somente caso o usuário seja o dono dela */}
-          {parseInt(localStorage.getItem("usuarioId")) ==
-            props.demanda?.solicitante?.id && (
+          {(props.demanda?.solicitante?.email == CookieService.getCookie().sub || props.demanda?.solicitante?.tour) && (
               <Box id="oitavo" className={`items-center text-justify flex`}>
                 <Typography fontSize={FontConfig?.default} sx={{ fontWeight: "600" }}>
                   {formatarNomeStatus()}
@@ -120,7 +121,7 @@ const Demanda = (props) => {
         </Typography>
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
-          {parseInt(localStorage.getItem("usuarioId")) != props.demanda?.solicitante?.id ? (
+          {props.demanda?.solicitante?.email != CookieService.getCookie().sub ? (
             <Typography
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
@@ -129,7 +130,7 @@ const Demanda = (props) => {
               {props.demanda.solicitante?.nome}
             </Typography>
           ) : (props.demanda?.status == "CANCELLED" || props.demanda?.status == "BACKLOG_EDICAO") &&
-            props.demanda?.solicitante?.id === parseInt(localStorage.getItem("usuarioId")) ? (
+            props.demanda?.solicitante?.email == CookieService.getCookie().sub ? (
             <Button
               id="setimo"
               onClick={(e) => {

@@ -180,6 +180,7 @@ const ProtectedRoute = ({
 }) => {
 
   const cookie = CookieService.getCookie();
+  console.log(cookie);
   if (cookie != null) {
     return children ? children : <Outlet />;
   } else {

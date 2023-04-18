@@ -88,17 +88,17 @@ const DemandaTable = ({
   // Função para formatar o nome do status da demanda
   const formatarNomeStatus = (status) => {
     if (status == "CANCELLED") {
-      return texts.demandaModoVisualizacao.status.reprovada;
+      return texts.demandaModoVisualizacao.statusDemanda?.reprovada;
     } else if (status == "BACKLOG_REVISAO") {
-      return texts.demandaModoVisualizacao.status.aguardandoRevisao;
+      return texts.demandaModoVisualizacao.statusDemanda?.aguardandoRevisao;
     } else if (status == "BACKLOG_EDICAO") {
-      return texts.demandaModoVisualizacao.status.aguardandoEdicao;
+      return texts.demandaModoVisualizacao.statusDemanda?.aguardandoEdicao;
     } else if (status == "BACKLOG_APROVACAO") {
-      return texts.demandaModoVisualizacao.status.emAprovacao;
+      return texts.demandaModoVisualizacao.statusDemanda?.emAprovacao;
     } else if (status == "ASSESSMENT") {
-      return texts.demandaModoVisualizacao.status.aprovada;
+      return texts.demandaModoVisualizacao.statusDemanda?.aprovada;
     } else if (status == "ASSESSMENT_APROVACAO") {
-      return texts.demandaModoVisualizacao.status.emAndamento;
+      return texts.demandaModoVisualizacao.statusDemanda?.emAndamento;
     }
   };
 
