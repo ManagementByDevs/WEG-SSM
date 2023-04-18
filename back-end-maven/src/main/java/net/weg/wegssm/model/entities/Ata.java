@@ -22,7 +22,7 @@ public class Ata {
     @Column(nullable = false)
     private Date dataReuniao;
 
-    @Column(nullable = false, length = 14)
+    @Column(nullable = false, length = 14, unique = true)
     private String numeroSequencial;
 
     @ManyToOne

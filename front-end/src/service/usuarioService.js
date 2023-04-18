@@ -48,6 +48,7 @@ class UsuarioService {
     let user = JSON.parse(localStorage.getItem("user"));
     let preferencias = "";
 
+
     if (user) {
       preferencias = user.preferencias;
     }

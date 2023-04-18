@@ -35,7 +35,7 @@ public class Proposta {
     @Column(nullable = false, length = 45)
     private String paybackTipo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Long codigoPPM;
 
     @Column(nullable = false, length = 100)
