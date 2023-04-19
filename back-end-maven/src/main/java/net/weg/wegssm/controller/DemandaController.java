@@ -1,15 +1,12 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
 import net.weg.wegssm.util.DemandaUtil;
 import net.weg.wegssm.util.DepartamentoUtil;
 import net.weg.wegssm.util.ForumUtil;
 import net.weg.wegssm.util.UsuarioUtil;
-import org.apache.coyote.Response;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,14 +16,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe controller da demanda
+ */
 @AllArgsConstructor
 @Controller
 @CrossOrigin(origins = "*")
@@ -3455,10 +3453,6 @@ public class DemandaController {
 
     /**
      * Método POST para criar uma demanda adicionado um ou vários anexos
-     *
-     * @param files
-     * @param demandaJSON
-     * @return
      */
     @PostMapping("/{usuarioId}")
     public ResponseEntity<Object> save(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("demanda") String demandaJSON, @PathVariable(value = "usuarioId") Long usuarioId) {

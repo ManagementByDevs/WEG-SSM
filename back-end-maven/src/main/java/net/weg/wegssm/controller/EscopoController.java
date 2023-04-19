@@ -20,28 +20,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe controller do escopo de uma demanda
+ */
 @Controller
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/escopo")
 public class EscopoController {
 
+    /** Service dos escopos */
     private EscopoService escopoService;
+
+    /** Service dos usuários */
     private UsuarioService usuarioService;
+
+    /** Service dos benefícios */
     private BeneficioService beneficioService;
 
     /**
-     * Método GET para listar todos os escopos
+     * Método GET para listar todos os escopos salvos no banco
      *
-     * @return
+     * @return Lista com todos os escopos do sistema
      */
     @GetMapping
     public ResponseEntity<List<Escopo>> findAll() {
@@ -51,26 +57,34 @@ public class EscopoController {
     /**
      * Método GET para listar um escopo específico através de um id
      *
-     * @param id
-     * @return
+     * @param id ID do escopo a procurar
+     * @return Escopo com o ID recebido
      */
     @GetMapping("/id/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
-        if (!escopoService.existsById(id)) {
+        Optional<Escopo> escopoOptional = escopoService.findById(id);
+        if (escopoOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(escopoOptional.get());
     }
 
     /**
-     * Método GET para listar um escopo específico através do id do usuário
+     * Método para procurar os escopos de um usuário pelo seu ID
+     *
+     * @param pageable Objeto para paginação
+     * @param idUsuario ID do usuário
+     * @return Página com os escopos do usuário recebido
      */
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<Page<Escopo>> findByUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<Object> findByUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                       @PathVariable(value = "idUsuario") Long idUsuario) {
-        Usuario usuario = usuarioService.findById(idUsuario).get();
-        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuario(usuario, pageable));
+        Optional<Usuario> usuarioOptional = usuarioService.findById(idUsuario);
+        if(usuarioOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuario(usuarioOptional.get(), pageable));
     }
 
     @GetMapping("/titulo/{idUsuario}/{titulo}")

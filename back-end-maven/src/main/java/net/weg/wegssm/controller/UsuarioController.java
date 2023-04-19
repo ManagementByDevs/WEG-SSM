@@ -2,7 +2,6 @@ package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.UsuarioDTO;
-import net.weg.wegssm.model.entities.Departamento;
 import net.weg.wegssm.model.entities.TipoUsuario;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.UsuarioService;
@@ -12,10 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -84,7 +80,6 @@ public class UsuarioController {
         Usuario usuario = new Usuario();
         usuario.setVisibilidade(true);
         BeanUtils.copyProperties(usuarioDTO, usuario);
-//
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 //        usuario.setSenha(encoder.encode(usuario.getSenha()));
 

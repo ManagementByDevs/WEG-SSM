@@ -57,7 +57,7 @@ const Escopos = () => {
   }, []);
 
   useEffect(() => {
-    if (!escopos) {
+    if (!escopos && usuario) {
       buscarEscopos();
     }
   }, [usuario]);

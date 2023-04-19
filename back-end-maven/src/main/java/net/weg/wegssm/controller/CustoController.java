@@ -38,7 +38,7 @@ public class CustoController {
 
 
     /**
-     * Função para excluir un custo pelo seu ID, recebido como variável
+     * Função para excluir um custo pelo seu ID, recebido como variável
      */
     @Transactional
     @DeleteMapping("/{id}")

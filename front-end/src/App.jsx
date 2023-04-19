@@ -180,8 +180,7 @@ const ProtectedRoute = ({
 }) => {
 
   const cookie = CookieService.getCookie();
-  console.log(cookie);
-  if (cookie != null) {
+  if (cookie != null && cookie.exp > Math.floor(Date.now() / 1000)) {
     return children ? children : <Outlet />;
   } else {
     return <Navigate to={redirectPath} replace />;
