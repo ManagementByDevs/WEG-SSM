@@ -194,8 +194,8 @@ const TextLanguage = (linguagem) => {
             digiteProblema: "Digite o problema...",
             proposta: "Proposta:",
             digiteProposta: "Digite a proposta...",
-            frequenciaDeUso: "Frequencia de uso:",
-            digiteFrequenciaDeUso: "Digite a frequencia de uso...",
+            frequenciaDeUso: "Frequência de uso:",
+            digiteFrequenciaDeUso: "Digite a frequência de uso...",
         },
         formularioGeralProposta: {
             periodoDeExecucao: "Período de execução",

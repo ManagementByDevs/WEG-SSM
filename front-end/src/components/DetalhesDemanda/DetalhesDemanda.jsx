@@ -652,7 +652,7 @@ const DetalhesDemanda = (props) => {
   };
 
   return (
-    <Box className="flex flex-col justify-center relative items-center mt-10">
+    <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
       <Feedback
         open={feedbackFacaAlteracao}
         handleClose={() => setFeedbackFacaAlteracao(false)}
@@ -1178,10 +1178,9 @@ const DetalhesDemanda = (props) => {
           </>
         )}
       </Box>
-      <Box className="w-full p-10"></Box>
       <Box
         className="flex fixed justify-end"
-        sx={{ width: "20rem", bottom: "20px", right: "20px" }}
+        sx={{ width: "15rem", bottom: "20px", right: "20px" }}
       >
         {props.usuario?.tipoUsuario == "ANALISTA" &&
           props.botao == "sim" &&
@@ -1232,7 +1231,7 @@ const DetalhesDemanda = (props) => {
         {props.usuario?.tipoUsuario == "GERENTE" &&
           props.botao == "sim" &&
           !editar && (
-            <Box className="flex justify-around w-full">
+            <Box className=" w-full flex justify-around">
               <Button
                 sx={{
                   backgroundColor: "primary.main",

@@ -80,7 +80,7 @@ const DemandaGerencia = (props) => {
         {/* Container titulo e status */}
         <Box className="flex w-full justify-between">
           {/* Título */}
-          <Box className="flex w-3/4 mt-1">
+          <Box className="flex w-4/5 mt-1">
             <Typography
               variant="h1"
               fontSize={FontConfig.veryBig}

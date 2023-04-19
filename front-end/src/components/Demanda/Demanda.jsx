@@ -94,7 +94,7 @@ const Demanda = (props) => {
           <Typography
             className="overflow-hidden text-ellipsis whitespace-nowrap"
             fontSize={FontConfig.veryBig}
-            sx={{ fontWeight: "600", maxWidth: "80%" }}
+            sx={{ fontWeight: "600", maxWidth: "77%" }}
             color="text.primary"
             title={props.demanda.titulo}
           >
