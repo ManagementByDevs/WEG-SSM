@@ -7,6 +7,7 @@ import {
   Input,
   MenuItem,
   Paper,
+  Select,
   Table,
   TableBody,
   TableHead,
@@ -15,6 +16,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import ClipLoader from "react-spinners/ClipLoader";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -36,8 +39,8 @@ import SecaoTIService from "../../service/secaoTIService";
 const propostaExample = EntitiesObjectService.proposta();
 
 const DetalhesPropostaEditMode = ({
-  proposta = propostaExample,
-  setProposta = () => {},
+  propostaData = propostaExample,
+  setPropostaData = () => {},
   setIsEditing = () => {},
 }) => {
   // Context para alterar o tamanho da fonte
@@ -45,6 +48,9 @@ const DetalhesPropostaEditMode = ({
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Estado da proposta editável
+  const [proposta, setProposta] = useState(propostaData);
 
   // Estado para mostrar tela de loading
   const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +67,12 @@ const DetalhesPropostaEditMode = ({
   const [listaSecoesTI, setListaSecoesTI] = useState([
     EntitiesObjectService.secaoTI(),
   ]);
+
+  // Referência para o texto do problema
+  const problemaText = useRef(null);
+
+  // Referência para o texto da proposta
+  const propostaText = useRef(null);
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -92,20 +104,77 @@ const DetalhesPropostaEditMode = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
-  const handleOnCancelEditClick = () => {
-    setIsEditing(false);
-  };
-
-  const handleOnSaveEditClick = () => {
-    setIsEditing(false);
-  };
-
   useEffect(() => {
     console.log("update proposta: ", proposta);
   }, [proposta]);
 
   // Função para saber se as listas necessárias para a edição da proposta fizeram a requisição
-  const isAllsListsPopulated = () => {};
+  const isAllsListsPopulated = () => {
+    return (
+      listaBus.length > 1 && listaForuns.length > 1 && listaSecoesTI.length > 1
+    );
+  };
+
+  // ***************************************** Handlers ***************************************** //
+
+  // Handler para quando for selecionado uma nova BU
+  const handleOnBuSolicitanteSelect = (event) => {
+    setProposta({
+      ...proposta,
+      buSolicitante: listaBus.find((bu) => bu.idBu == event.target.value),
+    });
+  };
+
+  // Handler cancelar edição
+  const handleOnCancelEditClick = () => {
+    setIsEditing(false);
+  };
+
+  // Handler salvar edição
+  const handleOnSaveEditClick = () => {
+    setIsEditing(false);
+  };
+
+  // Handler para quando for selecionado um novo fórum
+  const handleOnForumSelect = (event) => {
+    setProposta({
+      ...proposta,
+      forum: listaForuns.find((forum) => forum.idForum == event.target.value),
+    });
+  };
+
+  // Handler para quando for selecionado um novo tamanho
+  const handlerOnTamanhoSelect = (event) => {
+    setProposta({
+      ...proposta,
+      tamanho: event.target.value,
+    });
+  };
+
+  const handleOnSecaoTISelect = (event) => {
+    setProposta({
+      ...proposta,
+      secaoTI: listaSecoesTI.find(
+        (secaoTI) => secaoTI.idSecao == event.target.value
+      ),
+    });
+  };
+
+  // ***************************************** Fim Handlers ***************************************** //
+
+  // ***************************************** UseEffects ***************************************** //
+
+  useEffect(() => {
+    // Colocando o texto do problema em seu elemento
+    if (problemaText.current) {
+      problemaText.current.innerHTML = proposta.problema;
+    }
+
+    // Colocando o texto da proposta em seu elemento
+    if (propostaText.current) {
+      propostaText.current.innerHTML = proposta.proposta;
+    }
+  }, [proposta]);
 
   useEffect(() => {
     if (isAllsListsPopulated()) {
@@ -114,14 +183,32 @@ const DetalhesPropostaEditMode = ({
   }, [listaBus, listaForuns, listaSecoesTI]);
 
   useEffect(() => {
-    let listaBusAux = BuService.getAll();
-    let listaForunsAux = ForumService.getAll();
-    let listaSecoesTIAux = SecaoTIService.getAll();
+    BuService.getAll().then((busReponse) => {
+      setListaBus(busReponse);
+    });
 
-    setListaBus(listaBusAux);
-    setListaForuns(listaForunsAux);
-    setListaSecoesTI(listaSecoesTIAux);
+    ForumService.getAll().then((forunsResponse) => {
+      setListaForuns(forunsResponse);
+    });
+
+    SecaoTIService.getAll().then((secoesTIResponse) => {
+      setListaSecoesTI(secoesTIResponse);
+    });
   }, []);
+
+  // ***************************************** Fim UseEffects ***************************************** //
+
+  if (isLoading)
+    return (
+      <Box className="flex justify-center">
+        <Box
+          className="flex justify-center border rounded px-10 py-4 border-t-6 relative"
+          sx={{ width: "55rem", borderTopColor: "primary.main" }}
+        >
+          <ClipLoader className="mt-2" color="#00579D" size={110} />
+        </Box>
+      </Box>
+    );
 
   return (
     <>
@@ -250,14 +337,29 @@ const DetalhesPropostaEditMode = ({
           </Box>
 
           {/* Bu solicitante */}
-          <Box className="flex mt-4">
+          <Box className="flex mt-4 gap-2">
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.buSolicitante}:&nbsp;
             </Typography>
-            <Typography fontSize={FontConfig.medium}>
-              {proposta.buSolicitante?.siglaBu} -{" "}
-              {proposta.buSolicitante?.nomeBu}
-            </Typography>
+            {/* Select de BU solicitante */}
+            <Select
+              value={proposta.buSolicitante.idBu}
+              onChange={handleOnBuSolicitanteSelect}
+              variant="standard"
+              size="small"
+            >
+              {listaBus.length > 1 ? (
+                listaBus.map((bu, index) => (
+                  <MenuItem key={index} value={bu.idBu}>
+                    {bu.siglaBu} - {bu.nomeBu}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem selected>
+                  {texts.demandaGerenciaModoVisualizacao.nadaEncontrado}
+                </MenuItem>
+              )}
+            </Select>
           </Box>
 
           {/* Gerente */}
@@ -273,35 +375,88 @@ const DetalhesPropostaEditMode = ({
           {/* Fórum e Tamanho*/}
           <Box className="flex w-full justify-between mt-4">
             {/* Fórum */}
-            <Box className="flex flex-row w-3/4">
+            <Box className="flex flex-row w-3/4 gap-2">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.forum}:&nbsp;
               </Typography>
 
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.forum?.siglaForum} - {proposta.forum?.nomeForum}
-              </Typography>
+              {/* Select de Fórum */}
+              <Select
+                value={proposta.forum.idForum}
+                onChange={handleOnForumSelect}
+                variant="standard"
+                size="small"
+              >
+                {listaForuns.length > 1 ? (
+                  listaForuns.map((forum, index) => (
+                    <MenuItem key={index} value={forum.idForum}>
+                      {forum.siglaForum} - {forum.nomeForum}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem selected>
+                    {texts.demandaGerenciaModoVisualizacao.nadaEncontrado}
+                  </MenuItem>
+                )}
+              </Select>
             </Box>
             {/* Tamanho */}
-            <Box className="flex flex-row">
+            <Box className="flex flex-row gap-2">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
                 {texts.detalhesProposta.tamanho}:&nbsp;
               </Typography>
 
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.tamanho}
-              </Typography>
+              {/* Select de tamanho */}
+              <Select
+                value={proposta.tamanho}
+                onChange={handlerOnTamanhoSelect}
+                variant="standard"
+                size="small"
+              >
+                <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>
+                  {texts.modalAceitarDemanda.muitoPequeno}
+                </MenuItem>
+                <MenuItem key={"Pequeno"} value={"Pequeno"}>
+                  {texts.modalAceitarDemanda.pequeno}
+                </MenuItem>
+                <MenuItem key={"Médio"} value={"Médio"}>
+                  {texts.modalAceitarDemanda.medio}
+                </MenuItem>
+                <MenuItem key={"Grande"} value={"Grande"}>
+                  {texts.modalAceitarDemanda.grande}
+                </MenuItem>
+                <MenuItem key={"Muito Grande"} value={"Muito Grande"}>
+                  {texts.modalAceitarDemanda.muitoGrande}
+                </MenuItem>
+              </Select>
             </Box>
           </Box>
 
           {/* Secao TI */}
-          <Box className="flex mt-4">
+          <Box className="flex mt-4 gap-2">
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.secaoTi}:&nbsp;
             </Typography>
-            <Typography fontSize={FontConfig.medium}>
-              {proposta.secaoTI.siglaSecao} - {proposta.secaoTI.nomeSecao}
-            </Typography>
+
+            {/* Select de Seção TI */}
+            <Select
+              value={proposta.secaoTI.idSecao}
+              onChange={handleOnSecaoTISelect}
+              variant="standard"
+              size="small"
+            >
+              {listaSecoesTI.length > 1 ? (
+                listaSecoesTI.map((secaoTI, index) => (
+                  <MenuItem key={index} value={secaoTI.idSecao}>
+                    {secaoTI.siglaSecao} - {secaoTI.nomeSecao}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem selected>
+                  {texts.demandaGerenciaModoVisualizacao.nadaEncontrado}
+                </MenuItem>
+              )}
+            </Select>
           </Box>
 
           {/* Proposta / Objetivo */}
@@ -310,9 +465,7 @@ const DetalhesPropostaEditMode = ({
               {texts.detalhesProposta.proposta}:&nbsp;
             </Typography>
             <Box className="mx-4">
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.proposta}
-              </Typography>
+              <Typography fontSize={FontConfig.medium} ref={propostaText} />
             </Box>
           </Box>
 
@@ -322,9 +475,7 @@ const DetalhesPropostaEditMode = ({
               {texts.detalhesProposta.problema}:&nbsp;
             </Typography>
             <Box className="mx-4">
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.problema}
-              </Typography>
+              <Typography fontSize={FontConfig.medium} ref={problemaText} />
             </Box>
           </Box>
 

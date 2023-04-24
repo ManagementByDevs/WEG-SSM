@@ -56,6 +56,12 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
   // Estado para saber qual estado da proposta mostrar, a estática ou editável
   const [isEditing, setIsEditing] = useState(false);
 
+  // Referência para o texto do problema
+  const problemaText = useRef(null);
+
+  // Referência para o texto da proposta
+  const propostaText = useRef(null);
+
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
     const file = anexo;
@@ -136,6 +142,19 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
   };
 
   useEffect(() => {
+    // Colocando o texto do problema em seu elemento
+    if (problemaText.current) {
+      problemaText.current.innerHTML = proposta.problema;
+    }
+
+    // Colocando o texto da proposta em seu elemento
+    if (propostaText.current) {
+      propostaText.current.innerHTML = proposta.proposta;
+    }
+  }, [proposta, isEditing]);
+
+  useEffect(() => {
+    // Buscando os dados da proposta usando o propostaId
     PropostaService.getById(propostaId).then((proposal) => {
       setProposta(proposal);
       setIsLoading(false);
@@ -171,8 +190,8 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
             getStatusFormatted={getStatusFormatted}
           />
           <DetalhesPropostaEditMode
-            proposta={proposta}
-            setProposta={setProposta}
+            propostaData={proposta}
+            setPropostaData={setProposta}
             setIsEditing={setIsEditing}
           />
         </Box>
@@ -323,9 +342,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                 {texts.detalhesProposta.proposta}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium}>
-                  {proposta.proposta}
-                </Typography>
+                <Typography fontSize={FontConfig.medium} ref={propostaText} />
               </Box>
             </Box>
 
@@ -335,9 +352,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                 {texts.detalhesProposta.problema}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium}>
-                  {proposta.problema}
-                </Typography>
+                <Typography fontSize={FontConfig.medium} ref={problemaText} />
               </Box>
             </Box>
 

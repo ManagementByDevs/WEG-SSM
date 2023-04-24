@@ -1,6 +1,19 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Typography, MenuItem, Checkbox, Autocomplete, Box, IconButton } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+  MenuItem,
+  Checkbox,
+  Autocomplete,
+  Box,
+  IconButton,
+} from "@mui/material";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -19,7 +32,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 /** Modal de aceitar demanda na revisão inicial (analista), preenchendo informações adicionais */
 const ModalAceitarDemanda = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -61,19 +73,19 @@ const ModalAceitarDemanda = (props) => {
     if (listaBus.length == 0) {
       BuService.getAll().then((response) => {
         setListaBus([...response]);
-      })
+      });
     }
 
     if (listaSecoesTI.length == 0) {
       SecaoTIService.getAll().then((response) => {
         setListaSecoesTI([...response]);
-      })
+      });
     }
 
     if (listaForum.length == 0) {
       ForumService.getAll().then((response) => {
         setListaForum([...response]);
-      })
+      });
     }
   }, []);
 
@@ -89,19 +101,24 @@ const ModalAceitarDemanda = (props) => {
 
   return (
     <Dialog
-      PaperProps={{ sx: { backgroundColor: "background.default", backgroundImage: "none" } }}
+      PaperProps={{
+        sx: { backgroundColor: "background.default", backgroundImage: "none" },
+      }}
       open={props.open}
       onClose={props.handleClose}
     >
       <DialogTitle
-        sx={{ color: "primary.main", fontSize: FontConfig.veryBig, borderColor: "primary.main", }}
+        sx={{
+          color: "primary.main",
+          fontSize: FontConfig.veryBig,
+          borderColor: "primary.main",
+        }}
         fontWeight="bold"
         className="border-t-8 border-solid text-center"
       >
         {texts.modalAceitarDemanda.informacoes}
       </DialogTitle>
       <DialogContent className="flex flex-col gap-4" sx={{ width: 500 }}>
-
         {/* Select de tamanho */}
         <TextField
           select
@@ -111,11 +128,21 @@ const ModalAceitarDemanda = (props) => {
           variant="standard"
           fullWidth
         >
-          <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>{texts.modalAceitarDemanda.muitoPequeno}</MenuItem>
-          <MenuItem key={"Pequeno"} value={"Pequeno"}>{texts.modalAceitarDemanda.pequeno}</MenuItem>
-          <MenuItem key={"Médio"} value={"Médio"}>{texts.modalAceitarDemanda.medio}</MenuItem>
-          <MenuItem key={"Grande"} value={"Grande"}>{texts.modalAceitarDemanda.grande}</MenuItem>
-          <MenuItem key={"Muito Grande"} value={"Muito Grande"}>{texts.modalAceitarDemanda.muitoGrande}</MenuItem>
+          <MenuItem key={"Muito Pequeno"} value={"Muito Pequeno"}>
+            {texts.modalAceitarDemanda.muitoPequeno}
+          </MenuItem>
+          <MenuItem key={"Pequeno"} value={"Pequeno"}>
+            {texts.modalAceitarDemanda.pequeno}
+          </MenuItem>
+          <MenuItem key={"Médio"} value={"Médio"}>
+            {texts.modalAceitarDemanda.medio}
+          </MenuItem>
+          <MenuItem key={"Grande"} value={"Grande"}>
+            {texts.modalAceitarDemanda.grande}
+          </MenuItem>
+          <MenuItem key={"Muito Grande"} value={"Muito Grande"}>
+            {texts.modalAceitarDemanda.muitoGrande}
+          </MenuItem>
         </TextField>
 
         {/* Select de BU solicitante */}
@@ -133,7 +160,15 @@ const ModalAceitarDemanda = (props) => {
             </MenuItem>
           ))}
           {listaBus.length == 0 ? (
-            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>{texts.modalAceitarDemanda.nenhumaBuEncontrada}</Typography>
+            <Typography
+              sx={{
+                color: "text.primary",
+                fontSize: FontConfig.medium,
+                marginLeft: "10px",
+              }}
+            >
+              {texts.modalAceitarDemanda.nenhumaBuEncontrada}
+            </Typography>
           ) : null}
         </TextField>
 
@@ -142,7 +177,9 @@ const ModalAceitarDemanda = (props) => {
           multiple
           options={listaBus}
           disableCloseOnSelect
-          onChange={(event, newValue) => { setBusBeneficiadas(newValue); }}
+          onChange={(event, newValue) => {
+            setBusBeneficiadas(newValue);
+          }}
           getOptionLabel={(option) => option.siglaBu}
           renderOption={(props, option, { selected }) => (
             <li {...props} title={option.nomeBu}>
@@ -177,13 +214,26 @@ const ModalAceitarDemanda = (props) => {
           variant="standard"
         >
           {listaSecoesTI.map((option) => (
-            <MenuItem key={option.idSecao} value={option} title={option.nomeSecao}>
+            <MenuItem
+              key={option.idSecao}
+              value={option}
+              title={option.nomeSecao}
+            >
               {option.siglaSecao}
             </MenuItem>
           ))}
           {listaSecoesTI.length == 0 ? (
-            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>{texts.modalAceitarDemanda.nenhumaSecaoEncontrada}</Typography>
-          ) : null}</TextField>
+            <Typography
+              sx={{
+                color: "text.primary",
+                fontSize: FontConfig.medium,
+                marginLeft: "10px",
+              }}
+            >
+              {texts.modalAceitarDemanda.nenhumaSecaoEncontrada}
+            </Typography>
+          ) : null}
+        </TextField>
 
         {/* Select de fóruns */}
         <TextField
@@ -195,12 +245,24 @@ const ModalAceitarDemanda = (props) => {
           fullWidth
         >
           {listaForum.map((option) => (
-            <MenuItem key={option.idForum} value={option} title={option.nomeForum}>
+            <MenuItem
+              key={option.idForum}
+              value={option}
+              title={option.nomeForum}
+            >
               {option.siglaForum}
             </MenuItem>
           ))}
           {listaForum.length == 0 ? (
-            <Typography sx={{ color: "text.primary", fontSize: FontConfig.medium, marginLeft: '10px' }}>{texts.modalAceitarDemanda.nenhumForumEncontrado}</Typography>
+            <Typography
+              sx={{
+                color: "text.primary",
+                fontSize: FontConfig.medium,
+                marginLeft: "10px",
+              }}
+            >
+              {texts.modalAceitarDemanda.nenhumForumEncontrado}
+            </Typography>
           ) : null}
         </TextField>
 
@@ -253,12 +315,21 @@ const ModalAceitarDemanda = (props) => {
 
       {/* Botão para confirmar aceite */}
       <DialogActions>
-        <Button onClick={props.handleClose}>{texts.modalAceitarDemanda.cancelar}</Button>
+        <Button onClick={props.handleClose}>
+          {texts.modalAceitarDemanda.cancelar}
+        </Button>
         <Button
           variant="contained"
           disableElevation
           onClick={() => {
-            props.confirmAceitarDemanda({ tamanho, buSolicitante, busBeneficiadas, secaoTI, anexos, forum });
+            props.confirmAceitarDemanda({
+              tamanho,
+              buSolicitante,
+              busBeneficiadas,
+              secaoTI,
+              anexos,
+              forum,
+            });
             props.handleClose();
           }}
         >
