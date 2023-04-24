@@ -6,6 +6,8 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+import DateService from "../../service/dateService";
+
 /** Componente de representação de um histórico da demanda, sendo repetido dentro de uma lista no componente ModalHistoricoDemanda
  * Objeto de histórico recebido pelo props (props.historico)
  */
@@ -61,7 +63,7 @@ const ContainerHistorico = (props) => {
       >
         {/* Data do histórico */}
         <Typography fontSize={FontConfig.small}>
-          {props.historico?.data}
+          {DateService.getFullDateUSFormat(props.historico?.data)}
         </Typography>
 
         {/* Texto da ação feita */}

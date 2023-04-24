@@ -199,8 +199,8 @@ const Home = () => {
   const ativarFeedback = () => {
     //Feedback de demanda criada
     if (localStorage.getItem("tipoFeedback") == "1") {
-      localStorage.removeItem("tipoFeedback");
       setFeedbackDemandaCriada(true);
+      localStorage.removeItem("tipoFeedback");
     }
   };
 
@@ -224,7 +224,7 @@ const Home = () => {
     if (isParamsNull()) {
       return;
     }
-    
+
     // Verifica o solicitante está em JSON, se está, transforma para um objeto
     if (typeof params.solicitante == "string") {
       params.solicitante = JSON.parse(params.solicitante);
