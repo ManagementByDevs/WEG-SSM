@@ -422,6 +422,7 @@ const HomeGerencia = () => {
 
   // feedbacks para o gerenciamento das demandas por parte do analista
 
+  const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
   const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
     useState(false);
@@ -429,7 +430,9 @@ const HomeGerencia = () => {
   const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("tipoFeedback") == "2") {
+    if (localStorage.getItem("tipoFeedback") == "1") {
+      setFeedbackDemandaCriada(true);
+    } else if (localStorage.getItem("tipoFeedback") == "2") {
       setFeedbackDemandaAceita(true);
     } else if (localStorage.getItem("tipoFeedback") == "3") {
       setFeedbackDemandaDevolvida(true);
@@ -1095,6 +1098,16 @@ const HomeGerencia = () => {
           mensagem={texts.homeGerencia.feedback.feedback9}
         />
 
+        {/* Feedback demanda criada  */}
+        <Feedback
+          open={feedbackDemandaCriada}
+          handleClose={() => {
+            setFeedbackDemandaCriada(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback10}
+        />
+
         <Feedback
           open={feedbackDemandaAceita}
           handleClose={() => {
@@ -1657,15 +1670,15 @@ const HomeGerencia = () => {
                             tipo="ata"
                           />
                         ) : (
-                        <PautaAtaModoVisualizacao
-                          listaPautas={listaItens}
-                          onItemClick={(ata) => {
-                            navigate("/detalhes-ata", { state: { ata } });
-                          }}
-                          nextModoVisualizacao={nextModoVisualizacao}
-                          setPautaSelecionada={setPautaSelecionada}
-                          isAta={true}
-                        />
+                          <PautaAtaModoVisualizacao
+                            listaPautas={listaItens}
+                            onItemClick={(ata) => {
+                              navigate("/detalhes-ata", { state: { ata } });
+                            }}
+                            nextModoVisualizacao={nextModoVisualizacao}
+                            setPautaSelecionada={setPautaSelecionada}
+                            isAta={true}
+                          />
                         )}
                       </TabPanel>
                     </Box>

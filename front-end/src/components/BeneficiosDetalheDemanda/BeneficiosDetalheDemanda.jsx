@@ -31,6 +31,7 @@ const BeneficiosDetalheDemanda = (props) => {
     } else {
       setCorFundoTextArea("#FFFF");
     }
+    console.log(props.beneficio.tipoBeneficio);
   }, [mode]);
 
   /** Função responsável por estilizar as linhas da tabela de benefícios */
@@ -149,7 +150,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     </FormControl>
                   </td>
                   <td align="center">
-                    {props.beneficio.tipoBeneficio != "Qualitativo" && (
+                    {props.beneficio.tipoBeneficio != "QUALITATIVO" && props.beneficio.tipoBeneficio != "Qualitativo" && (
 
                       // Input de valor mensal
                       <Box
@@ -167,7 +168,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     )}
                   </td>
                   <td align="center">
-                    {props.beneficio.tipoBeneficio != "Qualitativo" && (
+                    {props.beneficio.tipoBeneficio != "QUALITATIVO" && props.beneficio.tipoBeneficio != "Qualitativo" && (
                       <FormControl
                         variant="standard"
                         sx={{ marginRight: "10px", minWidth: 90 }}
