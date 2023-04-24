@@ -72,10 +72,9 @@ const FormularioPropostaProposta = (props) => {
     if (input === "titulo") {
       props.setDadosDemanda({ ...props.dados, titulo: e.target.value });
     } else if (input === "problema") {
-      console.log("Entrou")
-      props.setDadosDemanda({ ...props.dados, problema: e.target.value });
+      props.setDadosDemanda({ ...props.dados, problema: e });
     } else if (input === "proposta") {
-      props.setDadosDemanda({ ...props.dados, proposta: e.target.value });
+      props.setDadosDemanda({ ...props.dados, proposta: e });
     } else if (input === "frequencia") {
       props.setDadosDemanda({ ...props.dados, frequencia: e.target.value });
     } else if (input === "tamanho") {
@@ -89,8 +88,6 @@ const FormularioPropostaProposta = (props) => {
     } else if (input == "forum") {
       props.setDadosDemanda({ ...props.dados, forum: e });
     }
-
-    console.log("Problema mudando: " + props.dados.problema);
 
   };
 
@@ -326,9 +323,8 @@ const FormularioPropostaProposta = (props) => {
                   <CaixaTextoQuill
                     texto={problemaEdicao}
                     setTexto={setProblemaEdicao} 
-                    onBlur={(e) => {
-                      console.log("Entrou aqui")
-                      alterarTexto(e.target.innerHTML, "problema");
+                    onChange={(value) => {
+                      alterarTexto(value, "problema");
                     }}
                   />
                 </Box>
@@ -371,8 +367,8 @@ const FormularioPropostaProposta = (props) => {
                   <CaixaTextoQuill
                     texto={propostaEdicao}
                     setTexto={setPropostaEdicao}
-                    onBlur={(e) => {
-                      alterarTexto(e.target.innerHTML, "proposta");
+                    onChange={(value) => {
+                      alterarTexto(value, "proposta");
                     }}
                   />
                 </Box>
