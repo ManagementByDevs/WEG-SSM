@@ -8,6 +8,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import ColorModeContext from "../../service/TemaContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
@@ -46,10 +47,10 @@ const BeneficiosDetalheDemanda = (props) => {
   const memoriaCalculo = useRef(null);
 
   useEffect(() => {
-    if (memoriaCalculo.current &&  props.beneficio.memoriaCalculo !== undefined) {
+    if (memoriaCalculo.current && props.beneficio.memoriaCalculo !== undefined) {
       memoriaCalculo.current.innerHTML = props.beneficio.memoriaCalculo
     }
-  }, [props.beneficio]);
+  });
 
   const getMemoriaCalculoFomartted = (memoria) => {
     return memoria[0].toUpperCase() + memoria.substring(1).toLowerCase();
@@ -205,6 +206,12 @@ const BeneficiosDetalheDemanda = (props) => {
                       className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
                       placeholder={texts.BeneficiosDetalheDemanda.digiteMemoriaCalculo}
                     />
+
+                    {/* <CaixaTextoQuill
+                      texto={props.beneficio.memoriaCalculo}
+
+                    /> */}
+
                   </td>
                 </TableRow>
               </TableBody>

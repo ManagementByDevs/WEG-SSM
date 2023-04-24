@@ -90,7 +90,7 @@ const FormularioPropostaProposta = (props) => {
       props.setDadosDemanda({ ...props.dados, forum: e });
     }
 
-    console.log("Problema mudanddo: " + props.dados.problema);
+    console.log("Problema mudando: " + props.dados.problema);
 
   };
 
@@ -325,8 +325,9 @@ const FormularioPropostaProposta = (props) => {
                 <Box sx={{ marginTop: '1%' }}>
                   <CaixaTextoQuill
                     texto={problemaEdicao}
-                    setTexto={setProblemaEdicao}
+                    setTexto={setProblemaEdicao} 
                     onBlur={(e) => {
+                      console.log("Entrou aqui")
                       alterarTexto(e.target.innerHTML, "problema");
                     }}
                   />

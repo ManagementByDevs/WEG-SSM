@@ -19,7 +19,7 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
   }
 
   function handleBlur() {
-    console.log("ddd")
+    console.log("onBlur caixaTextoQuill")
   }
 
   return (
@@ -39,6 +39,9 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
           [{ script: "sub" }, { script: "super" }],
           ["clean"],
         ],
+        onBlur: () => {
+          handleBlur();
+        },
       }}
       placeholder={placeholder}
       style={useScroll ? { height: '10rem', overflowY: 'scroll' } : setScroll ? { height: '5rem', overflowY: 'scroll' } : {}}
