@@ -41,38 +41,16 @@ class NotificacaoService {
    * @returns Notificação Object
    */
   createNotificationObject(tipoNotificacao, demanda) {
-    let statusNotificacao = this.fillStatusNotification(tipoNotificacao);
-    let titulo =
-      "A demanda de número sequencial " +
-      demanda.id +
-      " foi " +
-      statusNotificacao;
+    let numeroSequencial = demanda.id;
     return {
-      titulo,
+      numeroSequencial,
       data: DateService.getTodaysDateMySQL(),
       tipoNotificacao: tipoNotificacao,
       visualizado: false,
       usuario: { id: demanda.solicitante.id },
     };
   }
-
-  /**
-   * Retorna o status da notificação formatado
-   * @param {APROVADO, REPROVADO, MAIS_INFORMACOES, MENSAGENS} tipoNotificacao
-   * @returns
-   */
-  fillStatusNotification(tipoNotificacao) {
-    switch (tipoNotificacao) {
-      case "APROVADO":
-        return "aprovada";
-      case "REPROVADO":
-        return "reprovada";
-      case "MAIS_INFORMACOES":
-        return "reprovada por falta de informações";
-      case "MENSAGENS":
-        return "você possui novas mensagens";
-    }
-  }
+  
 }
 
 export default new NotificacaoService();

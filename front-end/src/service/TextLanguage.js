@@ -373,7 +373,12 @@ const TextLanguage = (linguagem) => {
             informeMotivo: "Informe o motivo...",
             enviar: "Enviar",
         },
-        notificacao: {
+        notificacaoComponente: {
+            demandaDeNumero: "A demanda de número",
+            foi: "foi",
+            aprovada: "aprovada",
+            reprovada: "reprovada",
+            reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
             diasAtras: "dias atrás",
             hoje: "hoje",
             umaSemanaAtras: "1 semana atrás",
@@ -1121,7 +1126,12 @@ const TextLanguage = (linguagem) => {
             informeMotivo: "Enter the reason...",
             enviar: "Send",
         },
-        notificacao: {
+        notificacaoComponente: {
+            demandaDeNumero: "The demand number",
+            foi: "was",
+            aprovada: "approved",
+            reprovada: "disapproved",
+            reprovadaPorFaltaDeInformacoes: "disapproved for lack of information",
             diasAtras: "days ago",
             hoje: "today",
             umaSemanaAtras: "1 week ago",
@@ -1865,7 +1875,12 @@ const TextLanguage = (linguagem) => {
             informeMotivo: "输入原因...",
             enviar: "发送",
         },
-        notificacao: {
+        notificacaoComponente: {
+            demandaDeNumero: "需求编号",
+            foi: "已",
+            aprovada: "批准",
+            reprovada: "未批准",
+            reprovadaPorFaltaDeInformacoes: "因缺乏信息而被拒绝",
             diasAtras: "天前",
             hoje: "今天",
             umaSemanaAtras: "1周前",
@@ -2612,7 +2627,12 @@ const TextLanguage = (linguagem) => {
             informeMotivo: "Informar el motivo...",
             enviar: "Enviar",
         },
-        notificacao: {
+        notificacaoComponente: {
+            demandaDeNumero: "La demanda de número",
+            foi: "fue",
+            aprovada: "aprobada",
+            reprovada: "rechazada",
+            reprovadaPorFaltaDeInformacoes: "rechazada por falta de información",
             diasAtras: "días atrás",
             hoje: "hoy",
             umaSemanaAtras: "1 semana atrás",

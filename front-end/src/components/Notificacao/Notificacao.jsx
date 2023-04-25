@@ -37,11 +37,28 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
     });
   };
 
+  const retornaTitulo = () => {
+    if(notificacao.numeroSequencial){
+      return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${formataStatus()}!` 
+    }
+  }
+
+  const formataStatus = () => {
+    switch (notificacao.tipoNotificacao) {
+      case "APROVADO":
+        return texts.notificacaoComponente.aprovada;
+      case "REPROVADO":
+        return texts.notificacaoComponente.reprovada;
+      case "MAIS_INFORMACOES":
+        return texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes;
+    }
+  }
+
   return (
     // Container da natificacao
     <Box
       className="notificacao-item-componente flex items-center border rounded px-2 py-1 my-1 delay-120 hover:scale-105 duration-300"
-      title={notificacao.titulo}
+      title={retornaTitulo()}
       onClick={handleClick}
       sx={{
         width: "92%",
@@ -65,7 +82,7 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
           color={"text.primary"}
           sx={{ fontWeight: 600 }}
         >
-          {notificacao.titulo}
+          {retornaTitulo()}
         </Typography>
         {/* O tempo da notificação */}
         <Typography
@@ -76,20 +93,20 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
         >
           {diferencaDias < 7 && diferencaDias > 1
             ? `${diferencaDias.toFixed(0) * 1 - 1} ${
-                texts.notificacao.diasAtras
+                (texts.notificacaoComponente.diasAtras)
               }`
             : diferencaDias < 1 && diferencaDias > 0
-            ? texts.notificacao.hoje
+            ? texts.notificacaoComponente.hoje
             : diferencaDias > 7 && diferencaDias < 14
-            ? texts.notificacao.umaSemanaAtras
+            ? texts.notificacaoComponente.umaSemanaAtras
             : diferencaDias > 14 && diferencaDias < 21
-            ? texts.notificacao.duasSemanasAtras
+            ? texts.notificacaoComponente.duasSemanasAtras
             : diferencaDias > 21 && diferencaDias < 28
-            ? texts.notificacao.tresSemanasAtras
+            ? texts.notificacaoComponente.tresSemanasAtras
             : diferencaDias > 28 && diferencaDias < 30
-            ? texts.notificacao.quatroSemanasAtras
+            ? texts.notificacaoComponente.quatroSemanasAtras
             : diferencaDias > 31
-            ? texts.notificacao.maisDeUmMesAtras
+            ? texts.notificacaoComponente.maisDeUmMesAtras
             : null}
         </Typography>
       </Box>

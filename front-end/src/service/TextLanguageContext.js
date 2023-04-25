@@ -377,7 +377,12 @@ const TextLanguageContext = createContext({
       informeMotivo: "Informe o motivo...",
       enviar: "Enviar",
     },
-    notificacao: {
+    notificacaoComponente: {
+      demandaDeNumero: "A demanda de número",
+      foi: "foi",
+      aprovada: "aprovada",
+      reprovada: "reprovada",
+      reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
       diasAtras: "dias atrás",
       hoje: "hoje",
       umaSemanaAtras: "1 semana atrás",
