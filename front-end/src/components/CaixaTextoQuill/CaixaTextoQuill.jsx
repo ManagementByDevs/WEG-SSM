@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para formatação em campos de texto durante o sistema
-function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false, setScroll = false, onChange }) {
+function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false, setScroll = false, useScrollEdit = false, onChange }) {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -13,23 +13,26 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
 
   // Função para armazenar o texto a cada modificação
   function handleChange(value) {
-    setTexto(value);
-
-    if(onChange) {
-      onChange(value);
-    }
+    setTexto(prevTexto => {
+      const novoTexto = value;
+      if (onChange) {
+        onChange(novoTexto);
+      }
+      return novoTexto;
+    });
   }
 
   useEffect(() => {
     if (quillRef.current) {
       const quill = quillRef.current.getEditor();
       quill.on("text-change", () => {
-        if (onChange) {
-          onChange(quillRef.current.getEditor().root.innerHTML);
+        const value = quillRef.current.getEditor().root.innerHTML;
+        if (value !== texto && onChange) {
+          onChange(value);
         }
       });
     }
-  }, [quillRef, onChange]);
+  }, [quillRef, onChange, texto]);
 
   if (placeholder == null || placeholder == "") {
     placeholder = texts.detalhesProposta.maisInformacoes;
@@ -55,7 +58,8 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
         ],
       }}
       placeholder={placeholder}
-      style={useScroll ? { height: '10rem', overflowY: 'scroll' } : setScroll ? { height: '5rem', overflowY: 'scroll' } : {}}
+      readOnly={false}
+      style={useScroll ? { height: '10rem', overflowY: 'scroll' } : setScroll ? { height: '5rem', overflowY: 'scroll' } : useScrollEdit ? {height: '8rem', overflowY: 'scroll'} : {}}
     />
   );
 }

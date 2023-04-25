@@ -7,6 +7,8 @@ import InputComLabel from "../InputComLabel/InputComLabel";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+import { useState } from "react";
+import { useEffect } from "react";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
@@ -39,6 +41,17 @@ const FormularioDadosDemanda = (props) => {
   const salvarFrequencia = (texto) => {
     props.setDados({ ...props.dados, frequencia: texto });
   };
+
+  const [problemaCaixa, setProblemaCaixa] = useState();
+  const [propostaCaixa, setPropostaCaixa] = useState();
+
+  useEffect (() => {
+    setProblemaCaixa(props.dados.problema);
+  }, [props.dados.problema]);
+
+  useEffect (() => {
+    setPropostaCaixa(props.dados.proposta);
+  }, [props.dados.proposta]);
 
   return (
     <>
@@ -73,8 +86,11 @@ const FormularioDadosDemanda = (props) => {
             <Box sx={{ marginTop: '0.5%', borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProblema}
-                texto={props.dados.problema}
-                setTexto={(e) => salvarProblema(e)}
+                texto={problemaCaixa}
+                setTexto={setProblemaCaixa}
+                onChange={(value) => {
+                  salvarProblema(value);
+                }}
                 useScroll={true}
               />
             </Box>
@@ -97,8 +113,11 @@ const FormularioDadosDemanda = (props) => {
             <Box sx={{ marginTop: '0.5%', borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProposta}
-                texto={props.dados.proposta}
-                setTexto={(e) => salvarProposta(e)}
+                texto={propostaCaixa}
+                setTexto={setPropostaCaixa}
+                onChange={(value) => {
+                  salvarProposta(value);
+                }}
                 useScroll={true}
               />
             </Box>

@@ -88,7 +88,6 @@ const FormularioPropostaProposta = (props) => {
     } else if (input == "forum") {
       props.setDadosDemanda({ ...props.dados, forum: e });
     }
-
   };
 
   /** Função para acionar o botão do tipo file */
@@ -234,10 +233,9 @@ const FormularioPropostaProposta = (props) => {
     setProblemaEdicao(props.dados.problema);
   }, [props.dados.problema]);
 
-
   useEffect(() => {
     setPropostaEdicao(props.dados.proposta);
-  }, [props.dados.proposta])
+  }, [props.dados.proposta]);
 
   return (
     <>
@@ -304,21 +302,6 @@ const FormularioPropostaProposta = (props) => {
                     *
                   </Typography>
                 </Typography>
-                {/* <TextareaAutosize
-                  style={{
-                    width: 775,
-                    marginLeft: "26px",
-                    resize: "none",
-                    backgroundColor: corFundoTextArea,
-                  }}
-                  value={props.dados.problema}
-                  fontSize={FontConfig.medium}
-                  onChange={(e) => {
-                    alterarTexto(e, "problema");
-                  }}
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-                  placeholder={texts.formularioPropostaProposta.digiteProblema}
-                /> */}
                 <Box sx={{ marginTop: '1%' }}>
                   <CaixaTextoQuill
                     texto={problemaEdicao}
@@ -347,22 +330,6 @@ const FormularioPropostaProposta = (props) => {
                     *
                   </Typography>
                 </Typography>
-                {/* <TextareaAutosize
-                  style={{
-                    width: 775,
-                    marginLeft: "26px",
-                    resize: "none",
-                    backgroundColor: corFundoTextArea,
-                  }}
-                  value={props.dados.proposta}
-                  fontSize={FontConfig.medium}
-                  onChange={(e) => {
-                    alterarTexto(e, "proposta");
-                  }}
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-                  placeholder={texts.formularioPropostaProposta.digiteProposta}
-                /> */}
-
                 <Box sx={{ marginTop: '1%' }}>
                   <CaixaTextoQuill
                     texto={propostaEdicao}

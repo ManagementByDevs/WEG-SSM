@@ -70,6 +70,13 @@ const Beneficios = (props) => {
     props.removerBeneficio(props.index);
   };
 
+
+  const [memoriaCaixa, setMemoriaCaixa] = useState();
+
+  useEffect(() => {
+    setMemoriaCaixa(dadosBeneficio.memoriaCalculo);
+  }, [dadosBeneficio.memoriaCalculo]);
+
   return (
     <Box
       className="flex rounded max-h-52 border-2 drop-shadow-md"
@@ -191,8 +198,11 @@ const Beneficios = (props) => {
             <Box sx={{ borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
               <CaixaTextoQuill
                 placeholder={texts.beneficios.digiteMemoriaCalculo}
-                setTexto={(e) => salvarMemoriaCalculo(e)}
-                texto={dadosBeneficio.memoriaCalculo}
+                texto={memoriaCaixa}
+                setTexto={setMemoriaCaixa}
+                onChange={(value) => {
+                  salvarMemoriaCalculo(value);
+                }}
               />
             </Box>
           </Box>

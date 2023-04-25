@@ -32,7 +32,6 @@ const BeneficiosDetalheDemanda = (props) => {
     } else {
       setCorFundoTextArea("#FFFF");
     }
-    console.log(props.beneficio.tipoBeneficio);
   }, [mode]);
 
   /** Função responsável por estilizar as linhas da tabela de benefícios */
@@ -56,6 +55,16 @@ const BeneficiosDetalheDemanda = (props) => {
   const getMemoriaCalculoFomartted = (memoria) => {
     return memoria[0].toUpperCase() + memoria.substring(1).toLowerCase();
   };
+
+  const alterarTexto = (e) => {
+    props.setBeneficio({ ...props.beneficio, memoriaCalculo: e, }, props.index);
+  }
+
+  const [memoriaEdicao, setMemoriaEdicao] = useState(props.beneficio.memoriaCalculo);
+
+  useEffect(() => {
+    setMemoriaEdicao(props.beneficio.memoriaCalculo);
+  }, [props.beneficio]);
 
   return (
     <Box className="flex items-center">
@@ -195,23 +204,15 @@ const BeneficiosDetalheDemanda = (props) => {
                     align="center"
                     className="p-3 pl-5 pr-5 flex justify-center"
                   >
-
-                    {/* Textarea da memória de cálculo */}
-                    <TextareaAutosize
-                      style={{ width: "100%", resize: "none", textAlign: "center", backgroundColor: corFundoTextArea, }}
-                      value={props.beneficio.memoriaCalculo}
-                      fontSize={FontConfig.medium}
-                      onChange={(e) => {
-                        props.setBeneficio({ ...props.beneficio, memoriaCalculo: e.target.value, }, props.index);
+                    <CaixaTextoQuill
+                      texto={memoriaEdicao}
+                      setTexto={setMemoriaEdicao}
+                      onChange={(value) => {
+                        console.log("Valor editado: ", value);
+                        alterarTexto(value)
                       }}
-                      className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                      placeholder={texts.BeneficiosDetalheDemanda.digiteMemoriaCalculo}
+                      useScrollEdit={true}
                     />
-
-                    {/* <CaixaTextoQuill
-                      texto={props.beneficio.memoriaCalculo}
-
-                    /> */}
 
                   </td>
                 </TableRow>
