@@ -73,10 +73,6 @@ const Beneficios = (props) => {
 
   const [memoriaCaixa, setMemoriaCaixa] = useState();
 
-  useEffect(() => {
-    setMemoriaCaixa(dadosBeneficio.memoriaCalculo);
-  }, [dadosBeneficio.memoriaCalculo]);
-
   return (
     <Box
       className="flex rounded max-h-52 border-2 drop-shadow-md"

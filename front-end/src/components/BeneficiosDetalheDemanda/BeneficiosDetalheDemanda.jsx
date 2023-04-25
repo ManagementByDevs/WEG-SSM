@@ -208,7 +208,6 @@ const BeneficiosDetalheDemanda = (props) => {
                       texto={memoriaEdicao}
                       setTexto={setMemoriaEdicao}
                       onChange={(value) => {
-                        console.log("Valor editado: ", value);
                         alterarTexto(value)
                       }}
                       useScrollEdit={true}

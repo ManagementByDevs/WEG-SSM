@@ -28,13 +28,6 @@ const FormularioDadosDemanda = (props) => {
 
   /** Função para salvar o problema da demanda */
   const salvarProblema = (texto) => {
-    let textoAux = texto
-      .replace(/<\/?ul>/g, "") // Remove tags <ul> e </ul>
-      .replace(/<\/?li>/g, "") // Remove tags <li> e </li>
-      .replace(/<\/?strong>/g, "") // Remove tags <strong> e </strong>
-      .replace(/<\/?p>/g, "") // Remove tags <p> e </p>
-      .replace(/<br\s?\/?>/g, "") // Remove tags <br /> e <br>
-      .replace(/<\/?em>/g, ""); // Remove tags <em> e </em>
     props.setDados({ ...props.dados, problema: texto });
   };
 
@@ -50,14 +43,6 @@ const FormularioDadosDemanda = (props) => {
 
   const [problemaCaixa, setProblemaCaixa] = useState();
   const [propostaCaixa, setPropostaCaixa] = useState();
-
-  useEffect (() => {
-    setProblemaCaixa(props.dados.problema);
-  }, [props.dados.problema]);
-
-  useEffect (() => {
-    setPropostaCaixa(props.dados.proposta);
-  }, [props.dados.proposta]);
 
   return (
     <>
