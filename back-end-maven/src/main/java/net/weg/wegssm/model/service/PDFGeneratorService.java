@@ -50,6 +50,8 @@ public class PDFGeneratorService {
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
 
         // Criando a logo da weg para modelo pdf
@@ -107,9 +109,9 @@ public class PDFGeneratorService {
         document.add(paragraphData);
         document.add(paragraphTitulo);
         document.add(paragraphProblema);
-        document.add(paragraphInfoProblema);
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(demanda.getProblema().getBytes()));
         document.add(paragraphProposta);
-        document.add(paragraphInfoProposta);
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(demanda.getProposta().getBytes()));
         document.add(paragraphBeneficios);
 
         // Criando tabela para os benefícios
