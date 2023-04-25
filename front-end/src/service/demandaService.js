@@ -17,22 +17,26 @@ class DemandaService {
 
     async getPage(params, page) {
 
+        let newParams = {};
+        if (params.titulo != "") {
+            newParams.titulo = params.titulo;
+        }
         if (params.departamento != null) {
-            params.departamento = JSON.stringify(params.departamento);
+            newParams.departamento = JSON.stringify(params.departamento);
         }
         if (params.forum != null) {
-            params.forum = JSON.stringify(params.forum);
+            newParams.forum = JSON.stringify(params.forum);
         }
         if (params.gerente != null) {
-            params.gerente = JSON.stringify(params.gerente);
+            newParams.gerente = JSON.stringify(params.gerente);
         }
         if (params.solicitante != null) {
-            params.solicitante = JSON.stringify(params.solicitante);
+            newParams.solicitante = JSON.stringify(params.solicitante);
         }
         if (params.analista != null) {
-            params.analista = JSON.stringify(params.analista);
+            newParams.analista = JSON.stringify(params.analista);
         }
-        return (await axios.get(demanda + `/page?${page}`, { params: params, headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+        return (await axios.get(demanda + `/page?${page}`, { params: newParams, headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async post(demanda, arquivos, usuarioId) {

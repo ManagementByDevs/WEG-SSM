@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Box, Button, IconButton, Tab, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AddIcon from "@mui/icons-material/Add";
@@ -33,7 +32,6 @@ import PropostaService from "../../service/propostaService";
 import ExportExcelService from "../../service/exportExcelService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-import ColorModeContext from "../../service/TemaContext";
 import PautaService from "../../service/pautaService";
 import AtaService from "../../service/ataService";
 
@@ -43,16 +41,30 @@ import CookieService from "../../service/cookieService";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
-  // Context que contém os textos do sistema
+
+  /** Context que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
-  //UseState utilizado para controlar o tour, se ele está aberto ou fechado
+  /** Variável para determinar se a tour de demandas está aberta */
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
-    useState(false);
+
+  /** Variável para determinar se a tour de criar proposta está aberta */
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
+
+  /** Variável para determinar se a tour de propostas está aberta */
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
+
+  /** Variável para determinar se a tour de pautas está aberta */
   const [isTourPautasOpen, setIsTourPautasOpen] = useState(false);
+
+  /** Variável para determinar se a tour de atas está aberta */
   const [isTourAtasOpen, setIsTourAtasOpen] = useState(false);
+
+  /** Variável usada para receber a localização atual */
+  const location = useLocation();
+
+  /** Variável usada para navegação entre as páginas */
+  const navigate = useNavigate();
 
   /** Parâmetros para pesquisa das demandas e propostas (filtros e pesquisa por título) */
   const [params, setParams] = useState({
@@ -228,9 +240,6 @@ const HomeGerencia = () => {
     },
   ];
 
-  // Context para alterar o tema do sistema
-  const { mode, toggleColorMode } = useContext(ColorModeContext);
-
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -282,6 +291,9 @@ const HomeGerencia = () => {
   /** Variável booleana que determina se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
 
+  /** Variável para definir se o modal filtro está aberto */
+  const [modalFiltro, setModalFiltro] = useState(false);
+
   /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
   const [filtrosAtuais, setFiltrosAtuais] = useState({
     solicitante: null,
@@ -327,37 +339,43 @@ const HomeGerencia = () => {
   /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamento, setCarregamento] = useState(false);
 
-  const handleOnVisualizationModeClick = () => {
-    setNextModoVisualizacao((prevMode) => {
-      if (prevMode === "GRID") {
-        return "TABLE";
-      }
-      return "GRID";
-    });
-  };
+  /** Variável para o feedback de demanda aceita */
+  const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
+
+  /** Variável para o feedback de demanda devolvida */
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+
+  /** Variável para o feedback de demanda recusada */
+  const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
+
+  /** Variável para o feedback de proposta criada */
+  const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
+
+  // Feedback ata publicada
+  const [feedbackAta, setOpenFeedbackAta] = useState(false);
+
+  // Feedback ata criada
+  const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
+
+  // Feedback propostas atualizadas
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
+
+  /** Feedback deletar pauta */
+  const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
+
+  /** Feedback atualizar proposta */
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
+
+  // useState para fechar o chat minimizado
+  const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
   // UseEffect para buscar o usuário assim que entrar na página
   useEffect(() => {
+    verificarFeedbacks();
     buscarUsuario();
     buscarFiltros();
     arrangePreferences();
   }, []);
-
-  // UseEffect para redefinir os parâmteros quando a ordenação for modificada
-  useEffect(() => {
-    setParams({
-      titulo: valorPesquisa,
-      solicitante: JSON.parse(params.solicitante),
-      gerente: JSON.parse(params.gerente),
-      analista: JSON.parse(params.analista),
-      forum: JSON.parse(params.forum),
-      tamanho: params.tamanho,
-      status: params.status,
-      departamento: JSON.parse(params.departamento),
-      codigoPPM: params.codigoPPM,
-      id: params.id,
-    });
-  }, [ordenacao]);
 
   useEffect(() => {
     let paramsTemp = {
@@ -410,71 +428,24 @@ const HomeGerencia = () => {
     });
   }, [filtrosAtuais]);
 
-  // feedbacks para o gerenciamento das demandas por parte do analista
-
-  const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
-    useState(false);
-  const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
-  const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
-
+  // UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada
   useEffect(() => {
-    if (localStorage.getItem("tipoFeedback") == "2") {
-      setFeedbackDemandaAceita(true);
-    } else if (localStorage.getItem("tipoFeedback") == "3") {
-      setFeedbackDemandaDevolvida(true);
-    } else if (localStorage.getItem("tipoFeedback") == "4") {
-      setFeedbackDemandaRecusada(true);
-    } else if (localStorage.getItem("tipoFeedback") == "5") {
-      setFeedbackPropostaCriada(true);
-    }
-
-    localStorage.removeItem("tipoFeedback");
-  }, []);
-
-  useEffect(() => {
-    setCarregamento(true);
     switch (valorAba) {
       case "1":
-        setParams({
-          ...params,
-          gerente: null,
-          status: null,
-          solicitante: usuario,
-        });
+        setParams({ ...params, gerente: null, status: null, solicitante: usuario });
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
-          setParams({
-            ...params,
-            gerente: usuario,
-            solicitante: null,
-            status: "BACKLOG_APROVACAO",
-          });
+          setParams({ ...params, gerente: usuario, solicitante: null, status: "BACKLOG_APROVACAO" });
         } else {
-          setParams({
-            ...params,
-            gerente: null,
-            solicitante: null,
-            status: "BACKLOG_REVISAO",
-          });
+          setParams({ ...params, gerente: null, solicitante: null, status: "BACKLOG_REVISAO" });
         }
         break;
       case "3":
-        setParams({
-          ...params,
-          gerente: null,
-          solicitante: null,
-          status: "ASSESSMENT",
-        });
+        setParams({ ...params, gerente: null, solicitante: null, status: "ASSESSMENT" });
         break;
       case "4":
-        setParams({
-          ...params,
-          gerente: null,
-          solicitante: null,
-          status: "ASSESSMENT_APROVACAO",
-        });
+        setParams({ ...params, gerente: null, solicitante: null, status: "ASSESSMENT_APROVACAO" });
         break;
       case "5":
         setParamsPautas({ ...paramsPautas });
@@ -497,7 +468,7 @@ const HomeGerencia = () => {
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
   useEffect(() => {
     buscarItens();
-  }, [params, paginaAtual, tamanhoPagina, paramsPautas, paramsAtas]);
+  }, [params, paginaAtual, tamanhoPagina, paramsPautas, paramsAtas, ordenacao]);
 
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
   useEffect(() => {
@@ -526,7 +497,34 @@ const HomeGerencia = () => {
     setCarregamento(false);
   }, [listaItens]);
 
-  // Função para buscar a lista de fóruns e departamentos para o modal de filtros
+  /** Função para ativar feedbacks vindos de outras páginas, chamada quando entrar na página */
+  const verificarFeedbacks = () => {
+    if (localStorage.getItem("tipoFeedback") == "2") {
+      setFeedbackDemandaAceita(true);
+    } else if (localStorage.getItem("tipoFeedback") == "3") {
+      setFeedbackDemandaDevolvida(true);
+    } else if (localStorage.getItem("tipoFeedback") == "4") {
+      setFeedbackDemandaRecusada(true);
+    } else if (localStorage.getItem("tipoFeedback") == "5") {
+      setFeedbackPropostaCriada(true);
+    }
+    localStorage.removeItem("tipoFeedback");
+  }
+
+  /** Função para buscar o usuário logado no sistema pelo cookie salvo no navegador */
+  const buscarUsuario = () => {
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie().sub
+    ).then((e) => {
+      if (e.tipoUsuario == "SOLICITANTE") {
+        navigate("/home");
+      } else {
+        setUsuario(e);
+      }
+    });
+  };
+
+  /** Função para buscar a lista de fóruns e departamentos do sistema para o modal de filtros */
   const buscarFiltros = () => {
     if (listaForum.length == 0) {
       ForumService.getAll().then((response) => {
@@ -549,16 +547,6 @@ const HomeGerencia = () => {
   const buscarPorPPM = (ppm) => {
     DemandaService.getByPPM(ppm).then((response) => {
       setListaItens([response]);
-    });
-  };
-
-  // Função para buscar o usuário logado no sistema
-  const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie().sub
-    ).then((e) => {
-      setUsuario(e);
-      setParams({ ...params, solicitante: e });
     });
   };
 
@@ -630,19 +618,19 @@ const HomeGerencia = () => {
     }
   };
 
-  const [pautas, setPautas] = useState([]);
-
-  const [atas, setAtas] = useState([]);
-
   // Função para alterar a aba selecionada
   const handleChange = (event, novoValor) => {
     setValorAba(novoValor);
   };
 
-  const [modalFiltro, setModalFiltro] = useState(false);
-
-  const abrirModalFiltro = () => {
-    setModalFiltro(true);
+  /** Função para trocar o modo de visualização dos itens (bloco / lista) */
+  const trocarModoVisualizacao = () => {
+    setNextModoVisualizacao((modoAnterior) => {
+      if (modoAnterior === "GRID") {
+        return "TABLE";
+      }
+      return "GRID";
+    });
   };
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
@@ -660,7 +648,7 @@ const HomeGerencia = () => {
   };
 
   const isGerente = !(
-    JSON.parse(localStorage.getItem("user")).tipoUsuario == "GERENTE"
+    usuario.tipoUsuario == "GERENTE"
   );
 
   // Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter"
@@ -679,67 +667,18 @@ const HomeGerencia = () => {
     }
   };
 
-  // Função para modificar os parâmetros da demanda ao pesquisar no campo de texto
+  /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto */
   const pesquisaTitulo = () => {
     if (!parseInt(valorPesquisa)) {
-      setParams({
-        titulo: valorPesquisa,
-        solicitante: JSON.parse(params.solicitante),
-        gerente: JSON.parse(params.gerente),
-        analista: JSON.parse(params.analista),
-        forum: JSON.parse(params.forum),
-        tamanho: params.tamanho,
-        status: params.status,
-        departamento: JSON.parse(params.departamento),
-        codigoPPM: null,
-        id: null,
-      });
+      setParams({ ...params, titulo: valorPesquisa, codigoPPM: null, id: null });
     } else {
       if (valorAba < 3) {
-        setParams({
-          titulo: params.titulo,
-          solicitante: JSON.parse(params.solicitante),
-          gerente: JSON.parse(params.gerente),
-          analista: JSON.parse(params.analista),
-          forum: JSON.parse(params.forum),
-          tamanho: params.tamanho,
-          status: params.status,
-          departamento: JSON.parse(params.departamento),
-          codigoPPM: params.codigoPPM,
-          id: valorPesquisa,
-        });
+        setParams({ ...params, id: valorPesquisa, titulo: null, codigoPPM: null });
       } else {
-        setParams({
-          titulo: params.titulo,
-          solicitante: JSON.parse(params.solicitante),
-          gerente: JSON.parse(params.gerente),
-          analista: JSON.parse(params.analista),
-          forum: JSON.parse(params.forum),
-          tamanho: params.tamanho,
-          status: params.status,
-          departamento: JSON.parse(params.departamento),
-          codigoPPM: valorPesquisa,
-          id: params.id,
-        });
+        setParams({ ...params, codigoPPM: valorPesquisa, titulo: null, id: null });
       }
     }
   };
-
-  const abrirModalOrdenacao = () => {
-    setOpenOrdenacao(true);
-  };
-
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  // Feedback ata publicada
-  const [feedbackAta, setOpenFeedbackAta] = useState(false);
-
-  // Feedback ata criada
-  const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
-
-  // Feedback propostas atualizadas
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
 
   useEffect(() => {
     if (location.state?.feedback) {
@@ -756,9 +695,6 @@ const HomeGerencia = () => {
       }
     }
   }, [location.state?.feedback]);
-
-  // useState para fechar o chat minimizado
-  const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
   // Função para exportar para excel
   const exportarExcel = () => {
@@ -844,10 +780,6 @@ const HomeGerencia = () => {
     }
   };
 
-  const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
-    useState(false);
-
   // Função que deleta uma pauta
   const deletePauta = () => {
     // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
@@ -884,39 +816,36 @@ const HomeGerencia = () => {
     }
   }, [pautaSelecionada]);
 
-  // String para ordenação das demandas
-  const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
-
   // ********************************************** Preferências **********************************************
   /**
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
   const arrangePreferences = () => {
-    let itemsVisualizationMode =
-      UsuarioService.getPreferencias().itemsVisualizationMode.toUpperCase();
+    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+      let itemsVisualizationMode = preferencias?.itemsVisualizationMode?.toUpperCase();
 
-    // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o
-    // próximo modo para o qual será trocado a visualização
-    if (itemsVisualizationMode == nextModoVisualizacao) {
-      setNextModoVisualizacao("GRID");
-    }
+      // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+      if (itemsVisualizationMode == nextModoVisualizacao) {
+        setNextModoVisualizacao("GRID");
+      }
+    })
   };
 
   /**
    * Função que salva a nova preferência do usuário
    */
   const saveNewPreference = () => {
-    let user = UsuarioService.getUser();
-    let preferencias = UsuarioService.getPreferencias();
+    if (!CookieService.getCookie()) return;
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((user) => {
+      let preferencias = JSON.parse(user.preferencias);
 
-    preferencias.itemsVisualizationMode =
-      nextModoVisualizacao == "TABLE" ? "grid" : "table";
+      preferencias.itemsVisualizationMode =
+        nextModoVisualizacao == "TABLE" ? "grid" : "table";
 
-    user.preferencias = JSON.stringify(preferencias);
+      user.preferencias = JSON.stringify(preferencias);
 
-    UsuarioService.updateUser(user.id, user).then((e) => {
-      UsuarioService.updateUserInLocalStorage();
-    });
+      UsuarioService.updateUser(user.id, user).then((e) => { });
+    })
   };
 
   // UseEffect para salvar as novas preferências do usuário
@@ -1149,8 +1078,7 @@ const HomeGerencia = () => {
                   <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
                     <IconButton
                       onClick={() => {
-                        handleOnVisualizationModeClick();
-                        // setNextModoVisualizacao("GRID");
+                        trocarModoVisualizacao();
                       }}
                     >
                       <ViewListIcon color="primary" />
@@ -1160,8 +1088,7 @@ const HomeGerencia = () => {
                   <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
                     <IconButton
                       onClick={() => {
-                        handleOnVisualizationModeClick();
-                        // setNextModoVisualizacao("TABLE");
+                        trocarModoVisualizacao();
                       }}
                     >
                       <ViewModuleIcon color="primary" />
@@ -1243,7 +1170,7 @@ const HomeGerencia = () => {
                   <SwapVertIcon
                     id="segundoDemandas"
                     onClick={() => {
-                      abrirModalOrdenacao();
+                      setOpenOrdenacao(true);
                     }}
                     className="cursor-pointer"
                     sx={{ color: "text.secondary" }}
@@ -1273,7 +1200,9 @@ const HomeGerencia = () => {
                       fontSize: FontConfig.default,
                       minWidth: "5rem",
                     }}
-                    onClick={abrirModalFiltro}
+                    onClick={() => {
+                      setModalFiltro(true);
+                    }}
                     variant="contained"
                     disableElevation
                   >
@@ -1398,7 +1327,7 @@ const HomeGerencia = () => {
                 </TabPanel>
                 {isGerente && (
                   <>
-                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => {}}>
+                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
                       <Ajuda
                         onClick={() => setIsTourCriarPropostasOpen(true)}
                       />
@@ -1417,7 +1346,7 @@ const HomeGerencia = () => {
                         />
                       </Box>
                     </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => {}}>
+                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
                       <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                       <Box
                         sx={{

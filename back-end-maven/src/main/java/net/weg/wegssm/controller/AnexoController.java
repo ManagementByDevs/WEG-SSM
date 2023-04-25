@@ -17,7 +17,6 @@ import java.io.IOException;
  */
 @Controller
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/anexo")
 public class AnexoController {
 

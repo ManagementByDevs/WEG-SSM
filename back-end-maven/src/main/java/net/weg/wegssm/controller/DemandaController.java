@@ -27,7 +27,6 @@ import java.util.Optional;
  */
 @AllArgsConstructor
 @Controller
-@CrossOrigin(origins = "*")
 @RequestMapping("/weg_ssm/demanda")
 public class DemandaController {
 

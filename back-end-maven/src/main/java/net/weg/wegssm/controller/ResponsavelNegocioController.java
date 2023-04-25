@@ -19,7 +19,6 @@ import javax.validation.Valid;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/responsavel_negocio")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ResponsavelNegocioController {
 
     /**

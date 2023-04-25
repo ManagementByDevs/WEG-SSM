@@ -21,7 +21,6 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/weg_ssm/tabela-custo")
-@CrossOrigin(origins = "http://localhost:3000")
 public class TabelaCustoController {
 
     /**

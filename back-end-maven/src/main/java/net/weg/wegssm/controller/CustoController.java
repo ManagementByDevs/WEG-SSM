@@ -18,7 +18,6 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/weg_ssm/custo")
-@CrossOrigin(origins = "http://localhost:3000")
 public class CustoController {
 
     /**

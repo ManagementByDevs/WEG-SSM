@@ -279,8 +279,7 @@ const UserModal = (props) => {
 
   // Função para sair da conta do usuário
   const sair = () => {
-    localStorage.removeItem("usuarioId");
-    localStorage.removeItem("user");
+    CookieService.limparCookie('jwt');
   };
 
   // Personalizar o slider da fonte

@@ -13,9 +13,6 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
-import UsuarioService from "../../service/usuarioService";
-import DemandaService from "../../service/demandaService";
-
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
@@ -28,6 +25,8 @@ import Demanda from "../../components/Demanda/Demanda";
 import Tour from "reactour";
 import ClipLoader from 'react-spinners/ClipLoader';
 
+import UsuarioService from "../../service/usuarioService";
+import DemandaService from "../../service/demandaService";
 import CookieService from "../../service/cookieService";
 
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
@@ -41,27 +40,28 @@ const Home = () => {
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  // Lista de demandas presentes
-  const [listaDemandas, setListaDemandas] = useState([]);
-
-  // Variável que determina o total de páginas de demandas, para o componente de paginação
-  const [totalPaginas, setTotalPaginas] = useState(1);
-
-  // Variável com a página atual das demandas, usada na paginação
-  const [paginaAtual, setPaginaAtual] = useState(0);
-
-  // Variável que salva o tamanho da página determinada pela paginação para pesquisa de demandas
-  const [tamanhoPagina, setTamanhoPagina] = useState(20);
-
-  // Mostra o próximo modo de visualização
-  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
-
+  /** Variável para navegação entre páginas */
   const navigate = useNavigate();
 
-  // Abrir modal feedback de demanda criada
+  /** Lista de demandas usadas para a listagem */
+  const [listaDemandas, setListaDemandas] = useState([]);
+
+  /** Variável que determina o total de páginas de demandas, para o componente de paginação */
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
+  /** Variável com a página atual das demandas, usada na paginação */
+  const [paginaAtual, setPaginaAtual] = useState(0);
+
+  /** Variável que salva o tamanho da página determinada pela paginação para pesquisa de demandas */
+  const [tamanhoPagina, setTamanhoPagina] = useState(20);
+
+  /** Mostra o próximo modo de visualização */
+  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
+
+  /** Abrir modal feedback de demanda criada */
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
-  // Objeto do usuário que está logado no sistema
+  /** Objeto do usuário que está logado no sistema */
   const [usuario, setUsuario] = useState({
     id: 0,
     email: "",
@@ -72,7 +72,7 @@ const Home = () => {
     departamento: null,
   });
 
-  // Parâmetros para pesquisa das demandas (filtros)
+  /** Parâmetros para pesquisa das demandas (filtros) */
   const [params, setParams] = useState({
     titulo: null,
     solicitante: null,
@@ -83,38 +83,38 @@ const Home = () => {
     status: null,
   });
 
-  // String para ordenação das demandas
+  /** String para ordenação das demandas */
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
-  // Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado
-  const [listaFiltros, setListaFiltros] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  /** Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado */
+  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
 
-  // Valores dos checkboxes no modal de ordenação
+  /** Valores dos checkboxes de Score no modal de ordenação */
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
+
+  /** Valores dos checkboxes de Titulo no modal de ordenação */
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
+
+  /** Valores dos checkboxes de Data no modal de ordenação */
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
-  // UseState para poder visualizar e alterar a aba selecionada
+  /** UseState para poder visualizar e alterar a aba selecionada */
   const [valorAba, setValorAba] = useState("1");
 
-  // Valor do input de pesquisa por título da demanda
+  /** Valor do input de pesquisa por título da demanda */
   const [valorPesquisa, setValorPesquisa] = useState("");
 
-  // Variável para determinar se o modal de ordenação está aberto
+  /** Variável para determinar se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
 
-  // Variável para determinar se o modal de filtragem está aberto
+  /** Variável para determinar se o modal de filtragem está aberto */
   const [filtroAberto, setFiltroAberto] = useState(false);
 
-  // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
+  /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamento, setCarregamento] = useState(false);
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
 
   // UseEffect para buscar o usuário e ativar possíveis filtros assim que entrar na página
   useEffect(() => {
@@ -123,23 +123,10 @@ const Home = () => {
     arrangePreferences();
   }, []);
 
-  // UseEffect para buscar as demandas sempre que os parâmetros (filtros e ordenação) forem modificados
+  // UseEffect para buscar as demandas sempre que os parâmetros (filtros, ordenação ou páginas) forem modificados
   useEffect(() => {
     buscarDemandas();
-  }, [params]);
-
-  // UseEffect para redefinir os parâmetros quando a ordenação ou a paginação for modificada, consequentemente buscando as demandas
-  useEffect(() => {
-    setParams({
-      titulo: params.titulo,
-      solicitante: JSON.parse(params.solicitante),
-      gerente: JSON.parse(params.gerente),
-      forum: JSON.parse(params.forum),
-      departamento: JSON.parse(params.departamento),
-      tamanho: params.tamanho,
-      status: params.status,
-    });
-  }, [stringOrdenacao, tamanhoPagina, paginaAtual]);
+  }, [params, stringOrdenacao, tamanhoPagina, paginaAtual]);
 
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal de ordenação
   useEffect(() => {
@@ -201,15 +188,19 @@ const Home = () => {
     UsuarioService.getUsuarioByEmail(
       CookieService.getCookie().sub
     ).then((e) => {
-      setUsuario(e);
-      setParams({ ...params, solicitante: e });
+      if (e.tipoUsuario != "SOLICITANTE") {
+        navigate("/home-gerencia");
+      } else {
+        setUsuario(e);
+        setParams({ ...params, solicitante: e });
+      }
     });
   };
 
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
   const buscarDemandas = () => {
     setCarregamento(true);
-    if(params.titulo || params.solicitante || params.gerente || params.forum || params.departamento || params.tamanho || params.status) {
+    if (params.titulo || params.solicitante || params.gerente || params.forum || params.departamento || params.tamanho || params.status) {
       DemandaService.getPage(
         params,
         stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -222,15 +213,7 @@ const Home = () => {
 
   /** Função para atualizar o filtro de status quando modificado no modal de filtros */
   const atualizarFiltro = (status) => {
-    setParams({
-      titulo: params.titulo,
-      solicitante: JSON.parse(params.solicitante),
-      gerente: JSON.parse(params.gerente),
-      forum: JSON.parse(params.forum),
-      departamento: JSON.parse(params.departamento),
-      tamanho: params.tamanho,
-      status: status,
-    });
+    setParams({ ...params, status: status });
   };
 
   /** Função para pesquisar novas demandas quando a aba for modificada */
@@ -241,22 +224,8 @@ const Home = () => {
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });
     } else {
-      setParams({
-        ...params,
-        solicitante: null,
-        departamento: usuario?.departamento,
-      });
+      setParams({ ...params, solicitante: null, departamento: usuario?.departamento });
     }
-  };
-
-  /** Função para abrir o modal de ordenação */
-  const abrirModalOrdenacao = () => {
-    setOpenOrdenacao(true);
-  };
-
-  /** Função para abrir o modal de filtragem */
-  const abrirModalFiltro = () => {
-    setFiltroAberto(true);
   };
 
   /** Função para ir para a tela de detalhes de uma demanda selecionada */
@@ -271,26 +240,8 @@ const Home = () => {
 
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto, consequentemente buscando as demandas */
   const pesquisaTitulo = () => {
-    setParams({
-      titulo: valorPesquisa,
-      solicitante: JSON.parse(params.solicitante),
-      gerente: JSON.parse(params.gerente),
-      forum: JSON.parse(params.forum),
-      departamento: JSON.parse(params.departamento),
-      tamanho: params.tamanho,
-      status: params.status,
-    });
+    setParams({ ...params, titulo: valorPesquisa });
   };
-
-  /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter" */
-  const eventoTeclado = (e) => {
-    if (e.key == "Enter") {
-      pesquisaTitulo();
-    }
-  };
-
-  // useState para abrir e fechar o tour
-  const [isTourOpen, setIsTourOpen] = useState(false);
 
   // Passos do tour
   const stepsTour = [
@@ -500,7 +451,9 @@ const Home = () => {
                     contentEditable
                     placeholder={texts.home.pesquisarPorTitulo}
                     onKeyDown={(e) => {
-                      eventoTeclado(e);
+                      if (e.key == "Enter") {
+                        pesquisaTitulo();
+                      }
                     }}
                     onBlur={() => {
                       pesquisaTitulo();
@@ -525,7 +478,7 @@ const Home = () => {
                     <Tooltip title={texts.home.ordenacao}>
                       <SwapVertIcon
                         id="segundo"
-                        onClick={abrirModalOrdenacao}
+                        onClick={() => { setOpenOrdenacao(true); }}
                         className="cursor-pointer"
                         sx={{ color: "text.secondary" }}
                       />
@@ -557,7 +510,7 @@ const Home = () => {
                         fontSize: FontConfig?.default,
                         minWidth: "5rem",
                       }}
-                      onClick={abrirModalFiltro}
+                      onClick={() => { setFiltroAberto(true); }}
                       variant="contained"
                       disableElevation
                     >

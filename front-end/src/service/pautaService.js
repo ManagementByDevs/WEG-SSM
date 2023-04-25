@@ -8,7 +8,7 @@ class PautaService {
   }
 
   async getPage(params, page) {
-    return (await axios.get(pautaPath + `/page?${page}`, { params }, { withCredentials: true })).data;
+    return (await axios.get(pautaPath + `/page?${page}`, { params: params, withCredentials: true })).data;
   }
 
   async getById(id) {

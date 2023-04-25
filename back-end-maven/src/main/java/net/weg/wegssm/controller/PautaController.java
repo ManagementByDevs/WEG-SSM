@@ -25,7 +25,6 @@ import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/pauta")
 public class PautaController {
     private PautaService pautaService;

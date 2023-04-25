@@ -15,7 +15,6 @@ import java.util.List;
  */
 @Controller
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/forum")
 public class ForumController {
 

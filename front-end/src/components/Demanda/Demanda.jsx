@@ -8,6 +8,7 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 import CookieService from "../../service/cookieService";
+import { useEffect } from "react";
 
 /** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
@@ -25,7 +26,7 @@ const Demanda = (props) => {
 
   /** Função para receber a altura da div principal da demanda (é maior caso o solicitante seja o usuário logado) */
   const retornaAlturaDemanda = () => {
-    if (parseInt(localStorage.getItem("userId")) != props.demanda?.solicitante?.id) {
+    if (props.demanda?.solicitante?.email != CookieService.getCookie().sub) {
       return "8rem";
     } else {
       return "10rem";

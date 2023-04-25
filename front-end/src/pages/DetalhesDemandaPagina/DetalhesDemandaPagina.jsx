@@ -78,7 +78,7 @@ const DetalhesDemandaPagina = () => {
         },
       ]);
     }
-  }, []);
+  }, [dados]);
 
   // Lista de mensagens utilizadas no tour
   const [steps, setSteps] = useState([
@@ -147,8 +147,8 @@ const DetalhesDemandaPagina = () => {
             dados={dados}
             usuario={usuario}
             setDados={setDados}
-            botao="sim"
-            salvar="sim"
+            botao={true}
+            salvar={true}
             updateDemandaProps={updateDemandaProps}
           />
         </Box>
