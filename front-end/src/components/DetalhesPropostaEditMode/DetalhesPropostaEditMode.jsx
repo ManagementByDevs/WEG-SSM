@@ -17,6 +17,8 @@ import {
   Typography,
 } from "@mui/material";
 
+// import "./DetalhesPropostaEditMode.css"
+
 import ClipLoader from "react-spinners/ClipLoader";
 
 import LogoWEG from "../../assets/logo-weg.png";
@@ -35,6 +37,7 @@ import DateService from "../../service/dateService";
 import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
+import ReactQuill from "react-quill";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -73,6 +76,22 @@ const DetalhesPropostaEditMode = ({
 
   // Referência para o texto da proposta
   const propostaText = useRef(null);
+
+  // Modules usados para o React Quill
+  const modulesQuill = {
+    toolbar: [
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      [{ script: "sub" }, { script: "super" }],
+      ["clean"],
+    ],
+  };
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -117,14 +136,6 @@ const DetalhesPropostaEditMode = ({
 
   // ***************************************** Handlers ***************************************** //
 
-  // Handler para quando for selecionado uma nova BU
-  const handleOnBuSolicitanteSelect = (event) => {
-    setProposta({
-      ...proposta,
-      buSolicitante: listaBus.find((bu) => bu.idBu == event.target.value),
-    });
-  };
-
   // Handler cancelar edição
   const handleOnCancelEditClick = () => {
     setIsEditing(false);
@@ -133,6 +144,30 @@ const DetalhesPropostaEditMode = ({
   // Handler salvar edição
   const handleOnSaveEditClick = () => {
     setIsEditing(false);
+  };
+
+  const handleOnPPMChange = (event) => {
+    setProposta({ ...proposta, codigoPPM: event.target.value });
+  };
+
+  const handleOnDataChange = (event) => {
+    setProposta({ ...proposta, data: event.target.value });
+  };
+
+  const handleOnPublicadaClick = () => {
+    setProposta({ ...proposta, publicada: !proposta.publicada });
+  };
+
+  const handleOnTituloChange = (event) => {
+    setProposta({ ...proposta, titulo: event.target.value });
+  };
+
+  // Handler para quando for selecionado uma nova BU
+  const handleOnBuSolicitanteSelect = (event) => {
+    setProposta({
+      ...proposta,
+      buSolicitante: listaBus.find((bu) => bu.idBu == event.target.value),
+    });
   };
 
   // Handler para quando for selecionado um novo fórum
@@ -144,7 +179,7 @@ const DetalhesPropostaEditMode = ({
   };
 
   // Handler para quando for selecionado um novo tamanho
-  const handlerOnTamanhoSelect = (event) => {
+  const handleOnTamanhoSelect = (event) => {
     setProposta({
       ...proposta,
       tamanho: event.target.value,
@@ -157,6 +192,34 @@ const DetalhesPropostaEditMode = ({
       secaoTI: listaSecoesTI.find(
         (secaoTI) => secaoTI.idSecao == event.target.value
       ),
+    });
+  };
+
+  const handleOnPropostaChange = (event) => {
+    setProposta({
+      ...proposta,
+      proposta: event,
+    });
+  };
+
+  const handleOnProblemaChange = (event) => {
+    setProposta({
+      ...proposta,
+      problema: event,
+    });
+  };
+
+  const handleOnEscopoChange = (event) => {
+    setProposta({
+      ...proposta,
+      escopo: event,
+    });
+  };
+
+  const handleOnFrequenciaChange = (event) => {
+    setProposta({
+      ...proposta,
+      frequencia: event,
     });
   };
 
@@ -174,7 +237,7 @@ const DetalhesPropostaEditMode = ({
     if (propostaText.current) {
       propostaText.current.innerHTML = proposta.proposta;
     }
-  }, [proposta]);
+  });
 
   useEffect(() => {
     if (isAllsListsPopulated()) {
@@ -228,9 +291,7 @@ const DetalhesPropostaEditMode = ({
               variant="standard"
               size="small"
               value={proposta.codigoPPM}
-              onChange={(e) => {
-                setProposta({ ...proposta, codigoPPM: e.target.value });
-              }}
+              onChange={handleOnPPMChange}
               sx={{ width: "7rem" }}
             />
           </Box>
@@ -246,9 +307,7 @@ const DetalhesPropostaEditMode = ({
               variant="standard"
               size="small"
               value={DateService.getTodaysDateUSFormat(proposta.data)}
-              onChange={(e) => {
-                setProposta({ ...proposta, data: e.target.value });
-              }}
+              onChange={handleOnDataChange}
               type="date"
               sx={{ width: "8rem" }}
             />
@@ -265,9 +324,7 @@ const DetalhesPropostaEditMode = ({
                   : texts.detalhesProposta.naoPublicada.toUpperCase()}
               </Typography>
               <IconButton
-                onClick={() => {
-                  setProposta({ ...proposta, publicada: !proposta.publicada });
-                }}
+                onClick={handleOnPublicadaClick}
                 className="relative -top-1"
               >
                 <SyncAltIcon
@@ -290,9 +347,7 @@ const DetalhesPropostaEditMode = ({
           <Input
             size="small"
             value={proposta.titulo}
-            onChange={(e) => {
-              setProposta({ ...proposta, titulo: e.target.value });
-            }}
+            onChange={handleOnTituloChange}
             type="text"
             fullWidth
             sx={{ color: "primary.main", fontSize: FontConfig.smallTitle }}
@@ -386,6 +441,7 @@ const DetalhesPropostaEditMode = ({
                 onChange={handleOnForumSelect}
                 variant="standard"
                 size="small"
+                sx={{ maxWidth: "25rem" }}
               >
                 {listaForuns.length > 1 ? (
                   listaForuns.map((forum, index) => (
@@ -409,7 +465,7 @@ const DetalhesPropostaEditMode = ({
               {/* Select de tamanho */}
               <Select
                 value={proposta.tamanho}
-                onChange={handlerOnTamanhoSelect}
+                onChange={handleOnTamanhoSelect}
                 variant="standard"
                 size="small"
               >
@@ -460,22 +516,30 @@ const DetalhesPropostaEditMode = ({
           </Box>
 
           {/* Proposta / Objetivo */}
-          <Box className="mt-4">
+          <Box className="flex flex-col gap-2 mt-4">
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.proposta}:&nbsp;
             </Typography>
             <Box className="mx-4">
-              <Typography fontSize={FontConfig.medium} ref={propostaText} />
+              <ReactQuill
+                value={proposta.proposta}
+                onChange={handleOnPropostaChange}
+                modules={modulesQuill}
+              />
             </Box>
           </Box>
 
           {/* Problema / Situação atual */}
-          <Box className="mt-4">
+          <Box className="flex flex-col gap-2 mt-4">
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.problema}:&nbsp;
             </Typography>
             <Box className="mx-4">
-              <Typography fontSize={FontConfig.medium} ref={problemaText} />
+              <ReactQuill
+                value={proposta.problema}
+                onChange={handleOnProblemaChange}
+                modules={modulesQuill}
+              />
             </Box>
           </Box>
 
@@ -485,20 +549,30 @@ const DetalhesPropostaEditMode = ({
               {texts.detalhesProposta.escopoDaProposta}:&nbsp;
             </Typography>
             <Box className="mx-4">
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.escopo}
-              </Typography>
+              <ReactQuill
+                value={proposta.escopo}
+                onChange={handleOnEscopoChange}
+                modules={modulesQuill}
+              />
             </Box>
           </Box>
 
           {/* Frequência */}
-          <Box className="flex mt-4">
+          <Box className="flex flex-col mt-4">
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.frequencia}:&nbsp;
             </Typography>
-            <Typography fontSize={FontConfig.medium}>
-              {proposta.frequencia}
-            </Typography>
+            <Box className="mx-4">
+              <Input
+                size="small"
+                value={proposta.frequencia}
+                onChange={handleOnFrequenciaChange}
+                type="text"
+                fullWidth
+                sx={{ fontSize: FontConfig.medium }}
+                multiline={true}
+              />
+            </Box>
           </Box>
 
           {/* Tabela de custos */}
