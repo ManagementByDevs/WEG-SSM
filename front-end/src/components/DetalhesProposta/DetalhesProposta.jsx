@@ -120,6 +120,31 @@ const DetalhesProposta = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
+  // Formatação do html dos campos maiores
+
+  const propostaDaProposta = useRef(null);
+  const problemaDaProposta = useRef(null);
+
+  useEffect(() => {
+    if (propostaDaProposta.current) {
+      propostaDaProposta.current.innerHTML = proposta.proposta
+    }
+  }, []);
+
+  useEffect(() => {
+    if (problemaDaProposta.current) {
+      problemaDaProposta.current.innerHTML = proposta.problema
+    }
+  }, []);
+
+  const getProblemaFomartted = (problema) => {
+    return problema[0].toUpperCase() + problema.substring(1).toLowerCase();
+  };
+
+  const getPropostaFomartted = (proposta) => {
+    return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
+  };
+
   return (
     <Box className="flex justify-center">
       <Box
@@ -261,8 +286,8 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.proposta}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium}>
-                  {proposta.proposta}
+                <Typography fontSize={FontConfig.medium} ref={propostaDaProposta}>
+                  {getPropostaFomartted(proposta.proposta)}
                 </Typography>
               </Box>
             </Box>
@@ -273,8 +298,8 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.problema}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium}>
-                  {proposta.problema}
+                <Typography fontSize={FontConfig.medium} ref={problemaDaProposta}>
+                  {getProblemaFomartted(proposta.problema)}
                 </Typography>
               </Box>
             </Box>
