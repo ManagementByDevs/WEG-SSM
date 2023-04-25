@@ -12,7 +12,6 @@ import { useEffect } from "react";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -29,6 +28,13 @@ const FormularioDadosDemanda = (props) => {
 
   /** Função para salvar o problema da demanda */
   const salvarProblema = (texto) => {
+    let textoAux = texto
+      .replace(/<\/?ul>/g, "") // Remove tags <ul> e </ul>
+      .replace(/<\/?li>/g, "") // Remove tags <li> e </li>
+      .replace(/<\/?strong>/g, "") // Remove tags <strong> e </strong>
+      .replace(/<\/?p>/g, "") // Remove tags <p> e </p>
+      .replace(/<br\s?\/?>/g, "") // Remove tags <br /> e <br>
+      .replace(/<\/?em>/g, ""); // Remove tags <em> e </em>
     props.setDados({ ...props.dados, problema: texto });
   };
 
@@ -55,9 +61,14 @@ const FormularioDadosDemanda = (props) => {
 
   return (
     <>
-      <Box className="flex justify-center items-center" sx={{ height: "45rem", minWidth: "50rem" }} >
-        <Box className="w-3/4 flex flex-col justify-evenly" sx={{ height: "85%" }} >
-
+      <Box
+        className="flex justify-center items-center"
+        sx={{ height: "45rem", minWidth: "50rem" }}
+      >
+        <Box
+          className="w-3/4 flex flex-col justify-evenly"
+          sx={{ height: "85%" }}
+        >
           {/* Input de título */}
 
           <InputComLabel
@@ -71,11 +82,17 @@ const FormularioDadosDemanda = (props) => {
 
           <Box>
             <Box className="flex">
-              <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.formularioDadosDemanda.problema}</Typography>
+              <Typography fontSize={FontConfig.default} fontWeight={600}>
+                {texts.formularioDadosDemanda.problema}
+              </Typography>
 
               <Typography
                 fontSize={props.fontConfig}
-                sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
+                sx={{
+                  fontWeight: "800",
+                  cursor: "default",
+                  margin: "0 .2% .2% .2%",
+                }}
                 className="text-red-600"
                 gutterBottom
               >
@@ -83,7 +100,13 @@ const FormularioDadosDemanda = (props) => {
               </Typography>
             </Box>
 
-            <Box sx={{ marginTop: '0.5%', borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
+            <Box
+              sx={{
+                marginTop: "0.5%",
+                borderLeft: "solid 4px",
+                borderColor: "primary.main",
+              }}
+            >
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProblema}
                 texto={problemaCaixa}
@@ -98,11 +121,17 @@ const FormularioDadosDemanda = (props) => {
 
           <Box>
             <Box className="flex">
-              <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.formularioDadosDemanda.proposta}</Typography>
+              <Typography fontSize={FontConfig.default} fontWeight={600}>
+                {texts.formularioDadosDemanda.proposta}
+              </Typography>
 
               <Typography
                 fontSize={props.fontConfig}
-                sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
+                sx={{
+                  fontWeight: "800",
+                  cursor: "default",
+                  margin: "0 .2% .2% .2%",
+                }}
                 className="text-red-600"
                 gutterBottom
               >
@@ -110,7 +139,13 @@ const FormularioDadosDemanda = (props) => {
               </Typography>
             </Box>
 
-            <Box sx={{ marginTop: '0.5%', borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
+            <Box
+              sx={{
+                marginTop: "0.5%",
+                borderLeft: "solid 4px",
+                borderColor: "primary.main",
+              }}
+            >
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProposta}
                 texto={propostaCaixa}

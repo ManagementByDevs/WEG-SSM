@@ -22,6 +22,7 @@ import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 import NotFound from "./pages/NotFound/NotFound";
 import DetalhesPropostaPagina from "./pages/DetalhesPropostaPagina/DetalhesPropostaPagina";
+import Test from "./pages/Test/test";
 
 import ToggleColorMode from "./service/TemaProvedor";
 import TextLanguage from "./service/TextLanguage";
@@ -94,6 +95,7 @@ const App = () => {
                   <Route path="/editar-escopo" element={<EditarEscopo />} />
                   <Route path="/escopos" element={<Escopos />} />
                   <Route path="*" element={<NotFound />} />
+                  <Route path="/test" element={<Test />} />
                 </Route>
                 <Route
                   path="/"
