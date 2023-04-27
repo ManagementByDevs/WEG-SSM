@@ -70,7 +70,6 @@ const Beneficios = (props) => {
     props.removerBeneficio(props.index);
   };
 
-
   const [memoriaCaixa, setMemoriaCaixa] = useState();
 
   return (

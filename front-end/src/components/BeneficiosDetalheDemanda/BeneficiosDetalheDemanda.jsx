@@ -63,8 +63,10 @@ const BeneficiosDetalheDemanda = (props) => {
   const [memoriaEdicao, setMemoriaEdicao] = useState(props.beneficio.memoriaCalculo);
 
   useEffect(() => {
-    setMemoriaEdicao(props.beneficio.memoriaCalculo);
-  }, [props.beneficio]);
+    if (!props.carregamento) {
+      setMemoriaEdicao(props.beneficio.memoriaCalculo);
+    }
+  }, [props.carregamento]);
 
   return (
     <Box className="flex items-center">
@@ -210,7 +212,6 @@ const BeneficiosDetalheDemanda = (props) => {
                       onChange={(value) => {
                         alterarTexto(value)
                       }}
-                      useScrollEdit={true}
                     />
 
                   </td>

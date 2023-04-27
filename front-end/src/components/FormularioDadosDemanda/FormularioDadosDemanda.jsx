@@ -48,11 +48,11 @@ const FormularioDadosDemanda = (props) => {
     <>
       <Box
         className="flex justify-center items-center"
-        sx={{ height: "45rem", minWidth: "50rem" }}
+        sx={{ minHeight: "45rem", minWidth: "50rem", overflowY: "auto" }}
       >
         <Box
           className="w-3/4 flex flex-col justify-evenly"
-          sx={{ height: "85%" }}
+          sx={{ height: "85%" , marginBottom: "1rem", marginTop: "1rem"}}
         >
           {/* Input de título */}
 
@@ -87,7 +87,7 @@ const FormularioDadosDemanda = (props) => {
 
             <Box
               sx={{
-                marginTop: "0.5%",
+                margin: "0 .2% .2% .2%",
                 borderLeft: "solid 4px",
                 borderColor: "primary.main",
               }}
@@ -125,7 +125,7 @@ const FormularioDadosDemanda = (props) => {
 
             <Box
               sx={{
-                marginTop: "0.5%",
+                margin: "0 .2% .2% .2%",
                 borderLeft: "solid 4px",
                 borderColor: "primary.main",
               }}
@@ -141,7 +141,7 @@ const FormularioDadosDemanda = (props) => {
             </Box>
           </Box>
 
-          <Box sx={{ width: "40%" }}>
+          <Box sx={{ width: "40%", margin: "0 .2% .2% .2%" }}>
             {/* Input de frequência */}
             <InputComLabel
               texto={props.dados.frequencia}

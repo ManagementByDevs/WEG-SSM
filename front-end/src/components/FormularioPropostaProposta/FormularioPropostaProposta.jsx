@@ -230,12 +230,11 @@ const FormularioPropostaProposta = (props) => {
   const [propostaEdicao, setPropostaEdicao] = useState();
 
   useEffect(() => {
-    setProblemaEdicao(props.dados.problema);
-  }, [props.dados.problema]);
-
-  useEffect(() => {
-    setPropostaEdicao(props.dados.proposta);
-  }, [props.dados.proposta]);
+    if (!props.carregamento) {
+      setProblemaEdicao(props.dados.problema);
+      setPropostaEdicao(props.dados.proposta);
+    }
+  }, [props.carregamento]);
 
   return (
     <>
@@ -305,7 +304,7 @@ const FormularioPropostaProposta = (props) => {
                 <Box sx={{ marginTop: '1%' }}>
                   <CaixaTextoQuill
                     texto={problemaEdicao}
-                    setTexto={setProblemaEdicao} 
+                    setTexto={setProblemaEdicao}
                     onChange={(value) => {
                       alterarTexto(value, "problema");
                     }}
@@ -367,6 +366,7 @@ const FormularioPropostaProposta = (props) => {
                         delete={deleteBeneficio}
                         beneficio={beneficio}
                         setBeneficio={alterarTextoBeneficio}
+                        carregamento={props.carregamento}
                       />
                     );
                   })}
