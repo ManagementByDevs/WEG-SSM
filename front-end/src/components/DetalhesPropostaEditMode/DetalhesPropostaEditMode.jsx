@@ -17,7 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 
-// import "./DetalhesPropostaEditMode.css"
+import { findIndex } from "lodash";
 
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -27,8 +27,11 @@ import DownloadIcon from "@mui/icons-material/Download";
 import CheckIcon from "@mui/icons-material/Check";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import ClearIcon from "@mui/icons-material/Clear";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CloseIcon from "@mui/icons-material/Close";
 
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+import Feedback from "../Feedback/Feedback";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -71,11 +74,18 @@ const DetalhesPropostaEditMode = ({
     EntitiesObjectService.secaoTI(),
   ]);
 
+  // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
+    useState(false);
+
   // Referência para o texto do problema
   const problemaText = useRef(null);
 
   // Referência para o texto da proposta
   const propostaText = useRef(null);
+
+  // Referênica para o input de arquivo
+  const inputFile = useRef(null);
 
   // Modules usados para o React Quill
   const modulesQuill = {
@@ -91,29 +101,6 @@ const DetalhesPropostaEditMode = ({
       [{ script: "sub" }, { script: "super" }],
       ["clean"],
     ],
-  };
-
-  // Função para baixar um anexo
-  const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
-    const file = anexo;
-    let blob = new Blob([base64ToArrayBuffer(file.dados)]);
-    let fileName = `${file.nome}`;
-
-    if (navigator.msSaveBlob) {
-      navigator.msSaveBlob(blob, fileName);
-    } else {
-      const link = document.createElement("a");
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        link.setAttribute("download", fileName);
-        link.style.visibility = "hidden";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
-    }
   };
 
   // Função para transformar uma string em base64 para um ArrayBuffer
@@ -134,6 +121,28 @@ const DetalhesPropostaEditMode = ({
     );
   };
 
+  // Função para verificar se o nome do anexo selecionado já existe dentro da proposta
+  const existsInAnexos = (jsFiles) => {
+    let exists = false;
+
+    for (let file of jsFiles) {
+      for (let anexo of proposta.anexo) {
+        if (anexo.nome == file.name || anexo.name == file.name) {
+          exists = true;
+        }
+      }
+    }
+
+    return exists;
+  };
+
+  // Função que retorna o nome do anexo formatado a ser mostrado para o usuário
+  const getAnexoNome = (file) => {
+    return file.nome
+      ? file.nome + " - " + file.tipo
+      : file.name + " - " + file.type;
+  };
+
   // ***************************************** Handlers ***************************************** //
 
   // Handler cancelar edição
@@ -146,18 +155,22 @@ const DetalhesPropostaEditMode = ({
     setIsEditing(false);
   };
 
+  // Handler do códigoPPM
   const handleOnPPMChange = (event) => {
     setProposta({ ...proposta, codigoPPM: event.target.value });
   };
 
+  // Handler da data da proposta
   const handleOnDataChange = (event) => {
     setProposta({ ...proposta, data: event.target.value });
   };
 
+  // Handler do isPublicada da proposta
   const handleOnPublicadaClick = () => {
     setProposta({ ...proposta, publicada: !proposta.publicada });
   };
 
+  // Handler do título da proposta
   const handleOnTituloChange = (event) => {
     setProposta({ ...proposta, titulo: event.target.value });
   };
@@ -186,6 +199,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
+  // Handler para a seção de TI
   const handleOnSecaoTISelect = (event) => {
     setProposta({
       ...proposta,
@@ -195,6 +209,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
+  // Handler da proposta da proposta
   const handleOnPropostaChange = (event) => {
     setProposta({
       ...proposta,
@@ -202,6 +217,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
+  // Handler do problema da proposta
   const handleOnProblemaChange = (event) => {
     setProposta({
       ...proposta,
@@ -209,6 +225,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
+  // Handler do escopo da proposta
   const handleOnEscopoChange = (event) => {
     setProposta({
       ...proposta,
@@ -216,11 +233,101 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
+  // Handler da frequência da proposta
   const handleOnFrequenciaChange = (event) => {
     setProposta({
       ...proposta,
-      frequencia: event,
+      frequencia: event.target.value,
     });
+  };
+
+  // Handler do link do jira da proposta
+  const handleOnLinkJiraChange = (event) => {
+    setProposta({
+      ...proposta,
+      linkJira: event.target.value,
+    });
+  };
+
+  // Handler do início de execução da proposta
+  const handleOnInicioExecucaoChange = (event) => {
+    setProposta({
+      ...proposta,
+      inicioExecucao: event.target.value,
+    });
+  };
+
+  // Handler do fim de execução da proposta
+  const handleOnFimExecucaoChange = (event) => {
+    setProposta({
+      ...proposta,
+      fimExecucao: event.target.value,
+    });
+  };
+
+  // Handler do payback valor da proposta
+  const handleOnPaybackValorChange = (event) => {
+    setProposta({
+      ...proposta,
+      paybackValor: event.target.value,
+    });
+  };
+
+  // Handler do payback tipo da proposta
+  const handlePaybackTIpoSelect = (event) => {
+    setProposta({
+      ...proposta,
+      paybackTipo: event.target.value,
+    });
+  };
+
+  // Handler para quando clicar no ícone de add anexo
+  const handleAnexosAddOnClick = () => {
+    inputFile.current.click();
+  };
+
+  // Handler para quando for selecionado um ou mais arquivos
+  const handleOnFilesSelect = () => {
+    if (!existsInAnexos(inputFile.current.files)) {
+      setProposta({
+        ...proposta,
+        anexo: [...proposta.anexo, ...inputFile.current.files],
+      });
+      inputFile.current.value = "";
+    } else {
+      // feedback de anexo já existente
+      setFeedbackComAnexoMesmoNome(true);
+    }
+  };
+
+  // Função para baixar um anexo
+  const handleOnDownloadAnexo = (anexo = EntitiesObjectService.anexo()) => {
+    const file = anexo;
+    let blob = new Blob([base64ToArrayBuffer(file.dados)]);
+    let fileName = `${file.nome}`;
+
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, fileName);
+    } else {
+      const link = document.createElement("a");
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", fileName);
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    }
+  };
+
+  // Função para deletar um anexo
+  const handleOnDeleteAnexo = (file) => {
+    let anexosAux = [...proposta.anexo];
+    anexosAux.splice(file, 1);
+    setProposta({ ...proposta, anexo: [...anexosAux] });
   };
 
   // ***************************************** Fim Handlers ***************************************** //
@@ -239,10 +346,10 @@ const DetalhesPropostaEditMode = ({
     }
   });
 
+  // Carregamento enquanto as requisições
   useEffect(() => {
     if (isAllsListsPopulated()) {
       setIsLoading(false);
-      
     }
   }, [listaBus, listaForuns, listaSecoesTI]);
 
@@ -276,10 +383,17 @@ const DetalhesPropostaEditMode = ({
 
   return (
     <>
+      <Feedback
+        open={feedbackComAnexoMesmoNome}
+        handleClose={() => setFeedbackComAnexoMesmoNome(false)}
+        status={"erro"}
+        mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
+      />
       {/* Box header */}
       <Box className="w-full flex justify-between">
         <Box className="flex gap-4">
           <Box className="flex gap-2">
+            {/* Código PPM */}
             <Typography
               color="primary"
               fontWeight="bold"
@@ -287,7 +401,6 @@ const DetalhesPropostaEditMode = ({
             >
               {texts.detalhesProposta.ppm}:
             </Typography>
-
             <TextField
               variant="standard"
               size="small"
@@ -297,6 +410,7 @@ const DetalhesPropostaEditMode = ({
             />
           </Box>
           <Box className="flex gap-2">
+            {/* Data */}
             <Typography
               color="primary"
               fontWeight="bold"
@@ -313,6 +427,8 @@ const DetalhesPropostaEditMode = ({
               sx={{ width: "8rem" }}
             />
           </Box>
+
+          {/* Publicada */}
           {proposta.publicada != null && (
             <Box className="flex gap items-start">
               <Typography
@@ -381,6 +497,7 @@ const DetalhesPropostaEditMode = ({
               </Box>
             </Tooltip>
           </Box>
+
           {/* Solicitante */}
           <Box className="flex mt-4">
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
@@ -639,13 +756,21 @@ const DetalhesPropostaEditMode = ({
           </Box>
 
           {/* Link do Jira */}
-          <Box className="flex mt-4">
+          <Box className="mt-4">
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.linkJira}:&nbsp;
             </Typography>
-            <Typography fontSize={FontConfig.medium}>
-              {proposta.linkJira}
-            </Typography>
+            <Box className="mx-4">
+              <Input
+                size="small"
+                value={proposta.linkJira}
+                onChange={handleOnLinkJiraChange}
+                type="text"
+                fullWidth
+                sx={{ fontSize: FontConfig.medium }}
+                multiline={true}
+              />
+            </Box>
           </Box>
 
           {/* Período de execução */}
@@ -653,35 +778,80 @@ const DetalhesPropostaEditMode = ({
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.periodoDeExecucao}:&nbsp;
             </Typography>
-
-            <Typography fontSize={FontConfig.medium}>
-              {DateService.getTodaysDateUSFormat(
-                DateService.getDateByMySQLFormat(proposta.inicioExecucao)
-              )}{" "}
+            <Box className="flex gap-2 mx-4">
+              <TextField
+                variant="standard"
+                size="small"
+                value={DateService.getTodaysDateUSFormat(
+                  proposta.inicioExecucao
+                )}
+                onChange={handleOnInicioExecucaoChange}
+                type="date"
+              />
               {texts.detalhesProposta.ate}{" "}
-              {DateService.getTodaysDateUSFormat(
-                DateService.getDateByMySQLFormat(proposta.fimExecucao)
-              )}
-            </Typography>
+              <TextField
+                variant="standard"
+                size="small"
+                value={DateService.getTodaysDateUSFormat(proposta.fimExecucao)}
+                onChange={handleOnFimExecucaoChange}
+                type="date"
+              />
+            </Box>
           </Box>
 
           {/* Payback */}
-          <Box className="flex mt-4">
+          <Box className="flex gap-2 mt-4">
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.payback}:&nbsp;
             </Typography>
-            <Box>
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.paybackValor} {proposta.paybackTipo.toLowerCase()}
-              </Typography>
-            </Box>
+
+            {/* Payback Valor */}
+            <TextField
+              size="small"
+              variant="standard"
+              value={proposta.paybackValor}
+              onChange={handleOnPaybackValorChange}
+              sx={{ fontSize: FontConfig.medium, width: "3rem" }}
+            />
+
+            {/* Select de payback tipo */}
+            <Select
+              value={proposta.paybackTipo}
+              onChange={handlePaybackTIpoSelect}
+              variant="standard"
+              size="small"
+            >
+              <MenuItem value={"DIAS"}>
+                {texts.formularioGeralProposta.dias}
+              </MenuItem>
+              <MenuItem value={"SEMANAS"}>
+                {texts.formularioGeralProposta.semanas}
+              </MenuItem>
+              <MenuItem value={"MESES"}>
+                {texts.formularioGeralProposta.meses}
+              </MenuItem>
+            </Select>
           </Box>
 
           {/* Anexos */}
           <Box className="mt-4">
-            <Typography fontSize={FontConfig.medium} fontWeight="bold">
-              {texts.detalhesProposta.anexos}:&nbsp;
-            </Typography>
+            <Box className="flex items-center">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.anexos}:&nbsp;
+              </Typography>
+              <Tooltip title={texts.formularioGeralProposta.adicionarNovoAnexo}>
+                <IconButton onClick={handleAnexosAddOnClick}>
+                  <AddCircleIcon color="primary" />
+                </IconButton>
+              </Tooltip>
+              <input
+                onChange={handleOnFilesSelect}
+                ref={inputFile}
+                type="file"
+                multiple
+                hidden
+              />
+            </Box>
             <Box className="mx-4">
               {proposta.anexo.length > 0 ? (
                 proposta.anexo.map((anexo, index) => {
@@ -694,13 +864,24 @@ const DetalhesPropostaEditMode = ({
                       square
                     >
                       <Typography fontSize={FontConfig.medium}>
-                        {anexo.nome} - {anexo.tipo}
+                        {getAnexoNome(anexo)}
                       </Typography>
-                      <Tooltip title={texts.detalhesProposta.download}>
-                        <IconButton onClick={() => downloadAnexo(anexo)}>
-                          <DownloadIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <Box className="flex gap-2">
+                        <Tooltip title={texts.detalhesProposta.download}>
+                          <IconButton
+                            onClick={() => handleOnDownloadAnexo(anexo)}
+                          >
+                            <DownloadIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={texts.formularioAnexosDemanda.remover}>
+                          <IconButton
+                            onClick={() => handleOnDeleteAnexo(anexo)}
+                          >
+                            <CloseIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
                     </Paper>
                   );
                 })
