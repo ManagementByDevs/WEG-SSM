@@ -99,7 +99,6 @@ const FormularioDadosDemanda = (props) => {
                 onChange={(value) => {
                   salvarProblema(value);
                 }}
-                useScroll={true}
               />
             </Box>
           </Box>
@@ -138,7 +137,6 @@ const FormularioDadosDemanda = (props) => {
                 onChange={(value) => {
                   salvarProposta(value);
                 }}
-                useScroll={true}
               />
             </Box>
           </Box>
