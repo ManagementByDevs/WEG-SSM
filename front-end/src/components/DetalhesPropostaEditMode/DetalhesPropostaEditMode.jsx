@@ -242,6 +242,7 @@ const DetalhesPropostaEditMode = ({
   useEffect(() => {
     if (isAllsListsPopulated()) {
       setIsLoading(false);
+      
     }
   }, [listaBus, listaForuns, listaSecoesTI]);
 
