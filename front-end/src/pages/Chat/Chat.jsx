@@ -28,11 +28,14 @@ import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
-import MensagemService from "../../service/MensagemService";
+import {MensagemService} from "../../service/MensagemService";
 import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ChatContext from "../../service/ChatContext";
+import {useParams} from "react-router-dom";
+import {WebSocketContext} from "../../service/WebSocketService";
+import Cookies from 'js-cookie';
 
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
@@ -189,18 +192,18 @@ const Chat = () => {
     },
   ]);
 
-  const [indexUsuario, setIndexUsuario] = useState();
+  // const [indexUsuario, setIndexUsuario] = useState();
 
-  function abrirChat(index) {
-    setIndexUsuario(index);
-    setTab(usuarios[index].nome);
-  }
+  // function abrirChat(index) {
+  //   setIndexUsuario(index);
+  //   setTab(usuarios[index].nome);
+  // }
 
   const [texto, setTexto] = useState();
 
-  const save = (e) => {
-    setUserData({ ...userData, message: e.target.value });
-  };
+  // const save = (e) => {
+  //   setUserData({ ...userData, message: e.target.value });
+  // };
 
   const salvarTexto = () => {
     // aqui é o salvar (utiliza a variavel texto para pegar o valor do texto)
@@ -220,6 +223,16 @@ const Chat = () => {
     fecharModalCancelarChat();
     // aqui é o deletar
   };
+
+
+
+
+
+
+
+
+
+
 
   // --------------------------------------------------------------------------------------------------
 
@@ -577,9 +590,9 @@ const Chat = () => {
                 {isTourOpen ? (
                   <Contato
                     key={0}
-                    onClick={() => {
-                      abrirChat(0);
-                    }}
+                    // onClick={() => {
+                    //   abrirChat(0);
+                    // }}
                     usuario={{
                       foto: "",
                       nome: texts.chat.usuarioTour.tour,
@@ -616,11 +629,12 @@ const Chat = () => {
                       <Contato
                         key={index}
                         onClick={() => {
-                          abrirChat(index);
+                          console.log("Clicou");
+                          // abrirChat(index);
                         }}
                         usuario={resultado}
                         index={index}
-                        usuarioAtual={indexUsuario}
+                        // usuarioAtual={indexUsuario}
                       />
                     );
                   })
@@ -653,7 +667,7 @@ const Chat = () => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                        src={usuarios[indexUsuario].foto}
+                        // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -667,7 +681,7 @@ const Chat = () => {
                           {texts.chat.usuarioTour.tour}
                         </Typography>
                         <Typography fontSize={FontConfig.small}>
-                          {usuarios[indexUsuario].cargo}
+                          {/* {usuarios[indexUsuario].cargo} */}Cargo
                         </Typography>
                       </Box>
                     </Box>
@@ -757,7 +771,8 @@ const Chat = () => {
                   >
                     <Box
                       onChange={(e) => {
-                        save(e);
+                        // save(e);
+                        console.log("OnChange", e.target.value);
                       }}
                       className="w-full"
                       component="input"
@@ -813,7 +828,7 @@ const Chat = () => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                        src={usuarios[indexUsuario].foto}
+                        // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -824,10 +839,10 @@ const Chat = () => {
                           fontSize={FontConfig.veryBig}
                           fontWeight="600"
                         >
-                          {usuarios[indexUsuario].nome}
+                          {/* {usuarios[indexUsuario].nome} */} Nome
                         </Typography>
                         <Typography fontSize={FontConfig.small}>
-                          {usuarios[indexUsuario].cargo}
+                          {/* {usuarios[indexUsuario].cargo} */} Cargo
                         </Typography>
                       </Box>
                     </Box>
@@ -931,7 +946,8 @@ const Chat = () => {
                   >
                     <Box
                       onChange={(e) => {
-                        save(e);
+                        // save(e);
+                        console.log("OnChange2: ", e.target.value);
                       }}
                       className="w-full"
                       component="input"
