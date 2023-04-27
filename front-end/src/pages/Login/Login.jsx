@@ -65,21 +65,15 @@ const Login = () => {
    */
   const fazerLogin = async () => {
     if (dados.email && dados.senha) {
-      UsuarioService.login(dados.email, dados.senha).then((e) => {
-        if (e != null && e != "") {
-          // Salvar token recebido no localstorage
-          localStorage.setItem("usuarioId", e.id);
-          localStorage.setItem("user", JSON.stringify(e));
-          navigate("/");
+      try {
+        const response = await AutenticacaoService.login(dados);
+        if(response.data.tipoUsuario == "SOLICITANTE") {
+          navigate("/home");
         } else {
-          // Abrir modal de feedback de usuário ou senha inválidos
-          setDadosInvalidos(true);
+          navigate("/home-gerencia");
         }
-      });
-      // try {
-      //   const response = await AutenticacaoService.login(dados);
-      // } catch (error) {
-      // }
+      } catch (error) {
+      }
     } else {
       // Abrir modal de feedback de dados não preenchidos
       setDadosFaltantes(true);

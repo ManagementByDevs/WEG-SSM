@@ -5,7 +5,7 @@ class ForumService {
 
     /** Função para buscar todos os fóruns salvos */
     async getAll() {
-        return (await axios.get(`/forum`)).data;
+        return (await axios.get(`/forum`, { withCredentials: true })).data;
     }
 }
 

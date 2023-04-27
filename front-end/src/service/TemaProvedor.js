@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
@@ -7,9 +7,20 @@ import getDesignTokens from "./TemaConfig";
 import ColorModeContext from "./TemaContext";
 
 import UsuarioService from "./usuarioService";
+import CookieService from "./cookieService";
 
 const ToggleColorMode = (props) => {
-  const prefersDarkMode = UsuarioService.getPreferencias().themeMode;
+
+  const [preferencias, setPreferencias] = useState(null);
+
+  useEffect(() => {
+    if(!CookieService.getCookie()) return;
+    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((prefs) => {
+      setPreferencias(prefs);
+    });
+  }, []);
+
+  const prefersDarkMode = preferencias?.themeMode;
   
   const [mode, setMode] = useState(prefersDarkMode == "dark" ? "dark" : "light");
   const colorMode = useMemo(

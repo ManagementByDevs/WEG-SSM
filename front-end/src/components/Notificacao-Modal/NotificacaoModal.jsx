@@ -10,7 +10,10 @@ import Feedback from "../Feedback/Feedback";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+
 import NotificacaoService from "../../service/notificacaoService";
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
 
 // Modal de notificações do sistema
 const NotificacaoModal = (props) => {
@@ -50,14 +53,18 @@ const NotificacaoModal = (props) => {
 
   // Função para buscar as notificações não lidas do usuário
   const buscarNotificacoes = () => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    NotificacaoService.getByUserIdAndNotVisualizado(user.id)
-      .then((response) => {
-        setNotificacoes(response.content);
-        setContNaoLidas(response.totalElements);
-      })
-      .catch((error) => {
-      });
+    if(!CookieService.getCookie("jwt")) return;
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie("jwt").sub
+    ).then((user) => {
+      NotificacaoService.getByUserIdAndNotVisualizado(user.id)
+        .then((response) => {
+          setNotificacoes(response.content);
+          setContNaoLidas(response.totalElements);
+        })
+        .catch((error) => {
+        });
+    });
   };
 
   // UseEffect para buscar as informações assim que entra na página
@@ -135,7 +142,7 @@ const NotificacaoModal = (props) => {
             {contNaoLidas === 0 && (
               <Box className="flex items-center justify-center text-center w-full pt-1">
                 <Typography
-                  fontSize={FontConfig.default}
+                  fontSize={FontConfig?.default}
                   color={"text.secondary"}
                   sx={{
                     fontWeight: 600,
@@ -149,7 +156,7 @@ const NotificacaoModal = (props) => {
           {/* Ver Tudo */}
           <Box className="flex justify-center w-full py-1 mt-2">
             <Typography
-              fontSize={FontConfig.default}
+              fontSize={FontConfig?.default}
               color={"link.main"}
               sx={{
                 fontWeight: 600,

@@ -1,11 +1,11 @@
-import {Axios} from "./Axios";
+import api from "./api";
 
 const url = "/chat";
 
 export const MensagemService = {
     getMensagensChat: async (id) => {
         try {
-            const response = await Axios.get(url + "/" + id);
+            const response = await api.get(url + "/" + id);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -15,7 +15,7 @@ export const MensagemService = {
 
     postMensagem: async (mensagem) => {
         try {
-            const response = await Axios.post(url, mensagem);
+            const response = await api.post(url, mensagem);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -23,5 +23,3 @@ export const MensagemService = {
         }
     }
 };
-
-export default new MensagemService();

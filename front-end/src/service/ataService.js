@@ -12,16 +12,17 @@ class AtaService {
       await axios.get(`${ataPath}/page?${page}`, {
         params,
         headers: { "Content-Type": "application/json" },
+        withCredentials: true
       })
     ).data;
   }
 
   async post(pauta) {
-    return (await axios.post(`${ataPath}`, pauta)).data;
+    return (await axios.post(`${ataPath}`, pauta, {withCredentials: true})).data;
   }
 
   async put(ata, idAta) {
-    return (await axios.put(`${ataPath}/${idAta}`, ata)).data;
+    return (await axios.put(`${ataPath}/${idAta}`, ata, {withCredentials: true})).data;
   }
 }
 

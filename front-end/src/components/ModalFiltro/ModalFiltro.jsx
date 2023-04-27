@@ -106,6 +106,9 @@ const ModalFiltro = (props) => {
         alignItems: "center",
         justifyContent: "center",
         width: "10rem",
+        position: "absolute",
+        left: "35%",
+        top: "2%"
       }}
     >
       <Fade in={true}>

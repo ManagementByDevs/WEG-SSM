@@ -1,8 +1,6 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.PautaDTO;
-import net.weg.wegssm.dto.PropostaDTO;
 import net.weg.wegssm.dto.PropostaJaCriadaDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,7 +27,6 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/proposta")
 public class PropostaController {
 

@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -30,6 +30,10 @@ import TextLanguage from "./service/TextLanguage";
 import FontContext from "./service/FontContext";
 import TextLanguageContext from "./service/TextLanguageContext";
 import ChatContext from "./service/ChatContext";
+import { WebSocketService } from "./service/WebSocketService";
+
+import UsuarioService from "./service/usuarioService";
+import CookieService from "./service/cookieService";
 
 const App = () => {
   const [FontConfig, setFontConfig] = useState({
@@ -81,76 +85,97 @@ const App = () => {
       <FontContext.Provider value={fontSize}>
         <TextLanguageContext.Provider value={textLanguage}>
           <ChatContext.Provider value={miniChat}>
-            <Router>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/criar-demanda" element={<CriarDemanda />} />
-                  <Route path="/notificacao" element={<Notificacao />} />
-                  <Route path="/chat/{id}" element={<Chat />} />
-                  <Route
-                    path="/detalhes-demanda"
-                    element={<DetalhesDemandaPagina />}
-                  />
+            <WebSocketService>
+              <Router>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="/criar-demanda" element={<CriarDemanda />} />
+                    <Route path="/notificacao" element={<Notificacao />} />
+                    <Route path="/chat" element={<Chat />} />
+                    <Route path="/chat/{id}" element={<Chat />} />
+                    <Route
+                      path="/detalhes-demanda"
+                      element={<DetalhesDemandaPagina />}
+                    />
+                    <Route path="/editar-escopo" element={<EditarEscopo />} />
+                    <Route path="/escopos" element={<Escopos />} />
+                    <Route path="*" element={<NotFound />} />
+                    <Route path="/test" element={<Test />} />
+                  </Route>
                   <Route path="/editar-escopo" element={<EditarEscopo />} />
                   <Route path="/escopos" element={<Escopos />} />
                   <Route path="*" element={<NotFound />} />
                   <Route path="/test" element={<Test />} />
-                </Route>
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <DetermineHomeUser />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/criar-proposta"
-                  element={
-                    <ProtectedRoute
-                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/"
-                    >
-                      <CriarProposta />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/detalhes-proposta"
-                  element={
-                    <ProtectedRoute
-                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/"
-                    >
-                      <DetalhesPropostaPagina />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="detalhes-ata"
-                  element={
-                    <ProtectedRoute
-                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/"
-                    >
-                      <DetalhesAta />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="detalhes-pauta"
-                  element={
-                    <ProtectedRoute
-                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/"
-                    >
-                      <DetalhesPauta />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
-            </Router>
+                  <Route
+                    path="/home"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["SOLICITANTE"]}
+                        redirectPath="/login"
+                      >
+                        <Home />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/home-gerencia"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/login"
+                      >
+                        <HomeGerencia />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/criar-proposta"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/home-gerencia"
+                      >
+                        <CriarProposta />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/detalhes-proposta"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/home-gerencia"
+                      >
+                        <DetalhesPropostaPagina />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="detalhes-ata"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/home-gerencia"
+                      >
+                        <DetalhesAta />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="detalhes-pauta"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/home-gerencia"
+                      >
+                        <DetalhesPauta />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </Router>
+            </WebSocketService>
           </ChatContext.Provider>
         </TextLanguageContext.Provider>
       </FontContext.Provider>
@@ -163,39 +188,15 @@ const ProtectedRoute = ({
   children,
   redirectPath = "/login",
 }) => {
-  // Quando formos retirar o user do localstorage,
-  // lembrar de deletar no Login.jsx a linha de adicionar o user no localstorage na função login;
-  // Lembrar de deletar no UserModal.jsx a linha de deletar o user do localstorage na função sair;
-  const [user, setUser] = useState(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
-  );
 
-  // Caso não tenha usuário logado ou o usuário não possua um tipo que possa acessar tal
-  // página, redireciona para o redirectPath (Valor padrão é login)
-  if (
-    !user ||
-    (tiposUsuarioAllowed && !tiposUsuarioAllowed.includes(user.tipoUsuario))
-  ) {
-    return <Navigate to={redirectPath} replace />;
-  }
+  const cookie = CookieService.getCookie("jwt");
+  const userJpa = CookieService.getCookie("user");
 
-  // Caso o componente esteja sendo usado como Layout Route, não possuirá um children, retornando o Outlet
-  return children ? children : <Outlet />;
-};
-
-const DetermineHomeUser = () => {
-  const [user, setUser] = useState(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
-  );
-
-  if (user.tipoUsuario === "SOLICITANTE") {
-    return <Home />;
+  if (cookie != null && cookie.exp > Math.floor(Date.now() / 1000) &&
+    (tiposUsuarioAllowed.includes(userJpa.authorities[0].authority) || tiposUsuarioAllowed == "")) {
+    return children ? children : <Outlet />;
   } else {
-    return <HomeGerencia />;
+    return <Navigate to={redirectPath} replace />;
   }
 };
 

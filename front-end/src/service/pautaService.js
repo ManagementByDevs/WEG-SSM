@@ -4,15 +4,15 @@ const pautaPath = "/pauta";
 
 class PautaService {
   async get() {
-    return (await axios.get(pautaPath)).data;
+    return (await axios.get(pautaPath, { withCredentials: true })).data;
   }
 
   async getPage(params, page) {
-    return (await axios.get(pautaPath + `/page?${page}`, { params })).data;
+    return (await axios.get(pautaPath + `/page?${page}`, { params: params, withCredentials: true })).data;
   }
 
   async getById(id) {
-    return (await axios.get(pautaPath + `/id/${id}`)).data;
+    return (await axios.get(pautaPath + `/id/${id}`, { withCredentials: true })).data;
   }
 
   async put(pauta) {
@@ -21,6 +21,7 @@ class PautaService {
         headers: {
           "content-type": "application/json",
         },
+        withCredentials: true
       })
     ).data;
   }
@@ -30,13 +31,13 @@ class PautaService {
       await axios.post(pautaPath, JSON.stringify(pauta), {
         headers: {
           "content-type": "application/json",
-        },
+        }, withCredentials: true
       })
     ).data;
   }
 
   async delete(id) {
-    return (await axios.delete(pautaPath + `/${id}`)).data;
+    return (await axios.delete(pautaPath + `/${id}`, { withCredentials: true })).data;
   }
 
   /**

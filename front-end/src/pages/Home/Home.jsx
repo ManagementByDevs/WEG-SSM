@@ -13,9 +13,6 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
-import UsuarioService from "../../service/usuarioService";
-import DemandaService from "../../service/demandaService";
-
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
@@ -28,37 +25,43 @@ import Demanda from "../../components/Demanda/Demanda";
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 
+import UsuarioService from "../../service/usuarioService";
+import DemandaService from "../../service/demandaService";
+import CookieService from "../../service/cookieService";
+
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
 
 /** Página principal do solicitante */
 const Home = () => {
-  // useContext para alterar a linguagem do sistema
-  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
-  // Lista de demandas presentes
-  const [listaDemandas, setListaDemandas] = useState([]);
+  // useContext para alterar a linguagem do sistema
+  const { texts } = useContext(TextLanguageContext);
 
-  // Variável que determina o total de páginas de demandas, para o componente de paginação
-  const [totalPaginas, setTotalPaginas] = useState(1);
-
-  // Variável com a página atual das demandas, usada na paginação
-  const [paginaAtual, setPaginaAtual] = useState(0);
-
-  // Variável que salva o tamanho da página determinada pela paginação para pesquisa de demandas
-  const [tamanhoPagina, setTamanhoPagina] = useState(20);
-
-  // Mostra o próximo modo de visualização
-  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
-
+  /** Variável para navegação entre páginas */
   const navigate = useNavigate();
 
-  // Abrir modal feedback de demanda criada
+  /** Lista de demandas usadas para a listagem */
+  const [listaDemandas, setListaDemandas] = useState([]);
+
+  /** Variável que determina o total de páginas de demandas, para o componente de paginação */
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
+  /** Variável com a página atual das demandas, usada na paginação */
+  const [paginaAtual, setPaginaAtual] = useState(0);
+
+  /** Variável que salva o tamanho da página determinada pela paginação para pesquisa de demandas */
+  const [tamanhoPagina, setTamanhoPagina] = useState(20);
+
+  /** Mostra o próximo modo de visualização */
+  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
+
+  /** Abrir modal feedback de demanda criada */
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
-  // Objeto do usuário que está logado no sistema
+  /** Objeto do usuário que está logado no sistema */
   const [usuario, setUsuario] = useState({
     id: 0,
     email: "",
@@ -69,7 +72,7 @@ const Home = () => {
     departamento: null,
   });
 
-  // Parâmetros para pesquisa das demandas (filtros)
+  /** Parâmetros para pesquisa das demandas (filtros) */
   const [params, setParams] = useState({
     titulo: null,
     solicitante: null,
@@ -80,40 +83,38 @@ const Home = () => {
     status: null,
   });
 
-  // String para ordenação das demandas
+  /** String para ordenação das demandas */
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
-  // Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado
-  const [listaFiltros, setListaFiltros] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  /** Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado */
+  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
 
-  // Valores dos checkboxes no modal de ordenação
+  /** Valores dos checkboxes de Score no modal de ordenação */
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
+
+  /** Valores dos checkboxes de Titulo no modal de ordenação */
   const [ordenacaoTitulo, setOrdenacaoTitulo] = useState([false, false]);
+
+  /** Valores dos checkboxes de Data no modal de ordenação */
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
-  // UseState para poder visualizar e alterar a aba selecionada
-  const [valorAba, setValorAba] = useState(
-    UsuarioService.getPreferencias().abaPadrao
-  );
+  /** UseState para poder visualizar e alterar a aba selecionada */
+  const [valorAba, setValorAba] = useState("1");
 
-  // Valor do input de pesquisa por título da demanda
+  /** Valor do input de pesquisa por título da demanda */
   const [valorPesquisa, setValorPesquisa] = useState("");
 
-  // Variável para determinar se o modal de ordenação está aberto
+  /** Variável para determinar se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
 
-  // Variável para determinar se o modal de filtragem está aberto
+  /** Variável para determinar se o modal de filtragem está aberto */
   const [filtroAberto, setFiltroAberto] = useState(false);
 
-  // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
+  /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamento, setCarregamento] = useState(false);
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
 
   // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
   const [isFirstTime, setIsFirstTime] = useState(false);
@@ -124,30 +125,14 @@ const Home = () => {
     buscarUsuario();
   }, []);
 
-  // UseEffect para arrumar as preferências do usuário
   useEffect(() => {
-    if (Object.values(usuario).every((value) => value != null)) {
-      arrangePreferences();
-    }
-  }, [usuario]);
+    arrangePreferences();
+  }, [usuario])
 
-  // UseEffect para buscar as demandas sempre que os parâmetros (filtros e ordenação) forem modificados
+  // UseEffect para buscar as demandas sempre que os parâmetros (filtros, ordenação ou páginas) forem modificados
   useEffect(() => {
     buscarDemandas();
-  }, [params, isFirstTime]);
-
-  // UseEffect para redefinir os parâmetros quando a ordenação ou a paginação for modificada, consequentemente buscando as demandas
-  useEffect(() => {
-    setParams({
-      titulo: params.titulo,
-      solicitante: JSON.parse(params.solicitante),
-      gerente: JSON.parse(params.gerente),
-      forum: JSON.parse(params.forum),
-      departamento: JSON.parse(params.departamento),
-      tamanho: params.tamanho,
-      status: params.status,
-    });
-  }, [stringOrdenacao, tamanhoPagina, paginaAtual]);
+  }, [params, stringOrdenacao, tamanhoPagina, paginaAtual]);
 
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal de ordenação
   useEffect(() => {
@@ -204,12 +189,13 @@ const Home = () => {
     }
   };
 
-  /** Função para buscar o usuário logado no sistema pelo localStorage assim que ele entrar na página */
+  /** Função para buscar o usuário logado no sistema pelos cookies assim que ele entrar na página */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioById(
-      parseInt(localStorage.getItem("usuarioId"))
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie("jwt").sub
     ).then((e) => {
       setUsuario(e);
+      setParams({ ...params, solicitante: e });
     });
   };
 
@@ -236,26 +222,20 @@ const Home = () => {
     }
 
     setCarregamento(true);
-    DemandaService.getPage(
-      params,
-      stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
-    ).then((e) => {
-      setTotalPaginas(e.totalPages);
-      setListaDemandas(e.content);
-    });
+    if (params.titulo || params.solicitante || params.gerente || params.forum || params.departamento || params.tamanho || params.status) {
+      DemandaService.getPage(
+        params,
+        stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+      ).then((e) => {
+        setTotalPaginas(e.totalPages);
+        setListaDemandas(e.content);
+      });
+    }
   };
 
   /** Função para atualizar o filtro de status quando modificado no modal de filtros */
   const atualizarFiltro = (status) => {
-    setParams({
-      titulo: params.titulo,
-      solicitante: JSON.parse(params.solicitante),
-      gerente: JSON.parse(params.gerente),
-      forum: JSON.parse(params.forum),
-      departamento: JSON.parse(params.departamento),
-      tamanho: params.tamanho,
-      status: status,
-    });
+    setParams({ ...params, status: status });
   };
 
   /** Função para pesquisar novas demandas quando a aba for modificada */
@@ -266,22 +246,8 @@ const Home = () => {
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });
     } else {
-      setParams({
-        ...params,
-        solicitante: null,
-        departamento: usuario?.departamento,
-      });
+      setParams({ ...params, solicitante: null, departamento: usuario?.departamento });
     }
-  };
-
-  /** Função para abrir o modal de ordenação */
-  const abrirModalOrdenacao = () => {
-    setOpenOrdenacao(true);
-  };
-
-  /** Função para abrir o modal de filtragem */
-  const abrirModalFiltro = () => {
-    setFiltroAberto(true);
   };
 
   /** Função para ir para a tela de detalhes de uma demanda selecionada */
@@ -296,26 +262,8 @@ const Home = () => {
 
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto, consequentemente buscando as demandas */
   const pesquisaTitulo = () => {
-    setParams({
-      titulo: valorPesquisa,
-      solicitante: JSON.parse(params.solicitante),
-      gerente: JSON.parse(params.gerente),
-      forum: JSON.parse(params.forum),
-      departamento: JSON.parse(params.departamento),
-      tamanho: params.tamanho,
-      status: params.status,
-    });
+    setParams({ ...params, titulo: valorPesquisa });
   };
-
-  /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter" */
-  const eventoTeclado = (e) => {
-    if (e.key == "Enter") {
-      pesquisaTitulo();
-    }
-  };
-
-  // useState para abrir e fechar o tour
-  const [isTourOpen, setIsTourOpen] = useState(false);
 
   // Passos do tour
   const stepsTour = [
@@ -390,42 +338,32 @@ const Home = () => {
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
   const arrangePreferences = () => {
-    let preferencias = UsuarioService.getPreferencias();
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
+      let itemsVisualizationMode = preferencias?.itemsVisualizationMode?.toUpperCase();
 
-    // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
-    if (preferencias.itemsVisualizationMode == nextModoVisualizacao) {
-      setNextModoVisualizacao("GRID");
-    }
-
-    atualizarAba(null, preferencias.abaPadrao);
-    setIsFirstTime(true);
+      setValorAba(preferencias?.abaPadrao);
+      // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+      if (itemsVisualizationMode == nextModoVisualizacao) {
+        setNextModoVisualizacao("GRID");
+      }
+    })
   };
 
   /**
    * Função que salva a nova preferência do usuário
    */
-  const saveNewPreference = (preferenciaTipo) => {
-    let user = UsuarioService.getUser();
-    let preferencias = UsuarioService.getPreferencias();
+  const saveNewPreference = () => {
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
+      let preferencias = JSON.parse(user.preferencias);
 
-    switch (preferenciaTipo) {
-      case "itemsVisualizationMode":
-        // Nova preferência do modo de visualização
-        preferencias.itemsVisualizationMode =
-          nextModoVisualizacao == "TABLE" ? "grid" : "table";
-        break;
-      case "abaPadrao":
-        // Nova preferência da aba padrão
-        preferencias.abaPadrao = valorAba;
-        atualizarAba(null, preferencias.abaPadrao);
-        break;
-    }
+      preferencias.itemsVisualizationMode =
+        nextModoVisualizacao == "TABLE" ? "grid" : "table";
 
-    user.preferencias = JSON.stringify(preferencias);
+      user.preferencias = JSON.stringify(preferencias);
 
-    UsuarioService.updateUser(user.id, user).then((e) => {
-      UsuarioService.updateUserInLocalStorage();
-    });
+      UsuarioService.updateUser(user.id, user).then((e) => { });
+    })
   };
 
   // UseEffect para salvar as novas preferências do usuário
@@ -477,12 +415,12 @@ const Home = () => {
                 aria-label="lab API tabs example"
               >
                 <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                  sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
                   label={texts.home.minhasDemandas}
                   value="1"
                 />
                 <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                  sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
                   label={texts.home.meuDepartamento}
                   value="2"
                 />
@@ -535,12 +473,14 @@ const Home = () => {
                       backgroundColor: "input.main",
                       outline: "none",
                       color: "text.primary",
-                      fontSize: FontConfig.medium,
+                      fontSize: FontConfig?.medium,
                     }}
                     contentEditable
                     placeholder={texts.home.pesquisarPorTitulo}
                     onKeyDown={(e) => {
-                      eventoTeclado(e);
+                      if (e.key == "Enter") {
+                        pesquisaTitulo();
+                      }
                     }}
                     onBlur={() => {
                       pesquisaTitulo();
@@ -565,7 +505,7 @@ const Home = () => {
                     <Tooltip title={texts.home.ordenacao}>
                       <SwapVertIcon
                         id="segundo"
-                        onClick={abrirModalOrdenacao}
+                        onClick={() => { setOpenOrdenacao(true); }}
                         className="cursor-pointer"
                         sx={{ color: "text.secondary" }}
                       />
@@ -594,10 +534,10 @@ const Home = () => {
                       sx={{
                         backgroundColor: "primary.main",
                         color: "text.white",
-                        fontSize: FontConfig.default,
+                        fontSize: FontConfig?.default,
                         minWidth: "5rem",
                       }}
-                      onClick={abrirModalFiltro}
+                      onClick={() => { setFiltroAberto(true); }}
                       variant="contained"
                       disableElevation
                     >
@@ -624,7 +564,7 @@ const Home = () => {
                 sx={{
                   backgroundColor: "primary.main",
                   color: "text.white",
-                  fontSize: FontConfig.default,
+                  fontSize: FontConfig?.default,
                   maxHeight: "2.5rem",
                   minWidth: "10.5rem",
                 }}
@@ -661,6 +601,7 @@ const Home = () => {
                           solicitante: {
                             id: 1,
                             nome: texts.home.nomeDoSolicitante,
+                            tour: true
                           },
                         }}
                       />

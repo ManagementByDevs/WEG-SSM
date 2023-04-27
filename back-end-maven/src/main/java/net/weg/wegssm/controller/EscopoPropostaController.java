@@ -1,6 +1,5 @@
 package net.weg.wegssm.controller;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ import java.util.List;
 /** Classe controller para os escopos de propostas */
 @AllArgsConstructor
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/escopo-proposta")
 public class EscopoPropostaController {
 

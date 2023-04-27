@@ -27,7 +27,6 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/notificacoes")
 public class NotificacaoController {
 

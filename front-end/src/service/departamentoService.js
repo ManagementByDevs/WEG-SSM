@@ -5,7 +5,7 @@ class DepartamentoService {
 
     /** Função para buscar todos os departamentos salvos */
     async getAll() {
-        return (await axios.get(`/departamento`)).data;
+        return (await axios.get(`/departamento`, { withCredentials: true })).data;
     }
 }
 
