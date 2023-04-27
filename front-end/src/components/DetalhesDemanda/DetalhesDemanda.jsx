@@ -1,16 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  TextareaAutosize,
-  Paper,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip, } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -32,6 +23,7 @@ import AnexoService from "../../service/anexoService";
 import NotificacaoService from "../../service/notificacaoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
@@ -636,8 +628,31 @@ const DetalhesDemanda = (props) => {
     navigate("/");
   };
 
+  const problemaDaDemanda = useRef(null);
+  const propostaDaDemanda = useRef(null);
+
+  useEffect(() => {
+    if (problemaDaDemanda.current) {
+      problemaDaDemanda.current.innerHTML = props.dados.problema
+    }
+  }, []);
+
+  useEffect(() => {
+    if (propostaDaDemanda.current) {
+      propostaDaDemanda.current.innerHTML = props.dados.proposta
+    }
+  }, []);
+
+  const getProblemaFomartted = (problema) => {
+    return problema[0].toUpperCase() + problema.substring(1).toLowerCase();
+  };
+
+  const getPropostaFomartted = (proposta) => {
+    return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
+  };
+
   return (
-    <Box className="flex flex-col justify-center relative items-center mt-10">
+    <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
       <Feedback
         open={feedbackFacaAlteracao}
         handleClose={() => setFeedbackFacaAlteracao(false)}
@@ -726,6 +741,7 @@ const DetalhesDemanda = (props) => {
               </Typography>
             </Box>
             <Divider />
+
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -734,15 +750,18 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.problema}:
               </Typography>
+
               <Typography
                 fontSize={FontConfig.medium}
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
+                ref={problemaDaDemanda}
               >
-                {props.dados.problema}
+                {getProblemaFomartted(props.dados.problema)}
               </Typography>
             </Box>
+
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -756,8 +775,9 @@ const DetalhesDemanda = (props) => {
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
+                ref={propostaDaDemanda}
               >
-                {props.dados.proposta}
+                {getPropostaFomartted(props.dados.proposta)}
               </Typography>
             </Box>
             <Box>
@@ -778,7 +798,7 @@ const DetalhesDemanda = (props) => {
                         editavel={false}
                         key={index}
                         index={index}
-                        beneficio={beneficio}
+                        beneficio={beneficio} 
                       />
                     );
                   }
@@ -1158,10 +1178,9 @@ const DetalhesDemanda = (props) => {
           </>
         )}
       </Box>
-      <Box className="w-full p-10"></Box>
       <Box
         className="flex fixed justify-end"
-        sx={{ width: "20rem", bottom: "20px", right: "20px" }}
+        sx={{ width: "15rem", bottom: "20px", right: "20px" }}
       >
         {props.usuario?.tipoUsuario == "ANALISTA" && props.botao &&
           !editar && (
@@ -1210,7 +1229,7 @@ const DetalhesDemanda = (props) => {
         {/* caso o usuário seja um gerente */}
         {props.usuario?.tipoUsuario == "GERENTE" && props.botao &&
           !editar && (
-            <Box className="flex justify-around w-full">
+            <Box className=" w-full flex justify-around">
               <Button
                 sx={{
                   backgroundColor: "primary.main",

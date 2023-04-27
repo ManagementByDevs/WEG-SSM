@@ -15,7 +15,7 @@ import javax.validation.Valid;
  * Classe controller para as CCs
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/weg_ssm/cc")
 public class CCsController {
 

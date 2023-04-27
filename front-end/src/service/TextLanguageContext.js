@@ -27,6 +27,10 @@ const TextLanguageContext = createContext({
       botaoVoltar: "Voltar",
       botaoCriar: "Criar",
       botaoProximo: "Próximo",
+      mensagemFeedbackCamposObrigatorios:
+        "Preencha todos os campos obrigatórios!",
+      mensagemFeedbackCcsFaltando:
+        "A porcentagem deve fechar 100% em cada CCs!",
     },
     beneficios: {
       beneficios: "Benefícios",
@@ -103,6 +107,8 @@ const TextLanguageContext = createContext({
       gerenteResponsavel: "Gerente Responsável",
       chat: "Chat",
       historico: "Histórico",
+      emPauta: "Em Pauta!",
+      emAta: "Em Ata!",
     },
     demandaGerenciaModoVisualizacao: {
       backlog: "Backlog",
@@ -132,7 +138,7 @@ const TextLanguageContext = createContext({
       },
       codigo: "Código",
       titulo: "Titulo",
-      status: "Status",
+      statusString: "Status",
       data: "Data",
       motivo: "Motivo",
       nadaEncontrado: "Nada encontrado",
@@ -194,8 +200,8 @@ const TextLanguageContext = createContext({
       digiteProblema: "Digite o problema...",
       proposta: "Proposta:",
       digiteProposta: "Digite a proposta...",
-      frequenciaDeUso: "Frequencia de uso:",
-      digiteFrequenciaDeUso: "Digite a frequencia de uso...",
+      frequenciaDeUso: "Frequência de uso:",
+      digiteFrequenciaDeUso: "Digite a frequência de uso...",
     },
     formularioGeralProposta: {
       periodoDeExecucao: "Período de execução",
@@ -305,6 +311,14 @@ const TextLanguageContext = createContext({
       },
       cancelar: "Cancelar",
     },
+    modalCriarAta: {
+      feedback: "Preencha todos os campos obrigatórios!",
+      criacaoDaAta: "Criação da Ata",
+      digiteNumeroSequencial: "Digite o número sequencial...",
+      dataDaReuniao: "Data da reunião:",
+      botaoCancelar: "Cancelar",
+      botaoCriar: "Criar",
+    },
     modalFiltro: {
       status: "Status",
       labels: {
@@ -363,7 +377,12 @@ const TextLanguageContext = createContext({
       informeMotivo: "Informe o motivo...",
       enviar: "Enviar",
     },
-    notificacao: {
+    notificacaoComponente: {
+      demandaDeNumero: "A demanda de número",
+      foi: "foi",
+      aprovada: "aprovada",
+      reprovada: "reprovada",
+      reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
       diasAtras: "dias atrás",
       hoje: "hoje",
       umaSemanaAtras: "1 semana atrás",
@@ -480,6 +499,8 @@ const TextLanguageContext = createContext({
       ataCriadaComSucesso: "Ata criada com sucesso!",
       ata: "Ata",
       numeroSequencial: "Número Sequencial",
+      dataReuniao: "Data da Reunião",
+      horaReuniao: "Hora da Reunião",
       data: "Data",
       inicio: "Início",
       fim: "Fim",
@@ -566,6 +587,10 @@ const TextLanguageContext = createContext({
       nomeDoSolicitante: "Nome do Solicitante",
     },
     homeGerencia: {
+      toursMinhasDemandas: {
+        tour6:
+          "Nesta parte fica as suas demandas, podendo clicar em uma demanda para ver mais detalhes",
+      },
       toursDemandas: {
         tour1:
           "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",
@@ -615,6 +640,9 @@ const TextLanguageContext = createContext({
         feedback5: "Proposta criada com sucesso!",
         feedback6: "Pauta deletada com sucesso!",
         feedback7: "Proposta atualizada com sucesso!",
+        feedback8: "Ata criada com sucesso!",
+        feedback9: "Propostas atualizadas com sucesso!",
+        feedback10: "Demanda criada com sucesso!",
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",

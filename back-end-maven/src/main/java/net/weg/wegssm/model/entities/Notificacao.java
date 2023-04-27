@@ -21,7 +21,7 @@ public class Notificacao {
     private Long id;
 
     @Column(nullable = false)
-    private String titulo;
+    private String numeroSequencial;
 
     @Column(nullable = false)
     private Boolean visualizado;

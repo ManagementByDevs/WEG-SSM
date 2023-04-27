@@ -16,7 +16,7 @@ import javax.validation.Valid;
 /**
  * Classe controller para os responsáveis de negócio
  */
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/responsavel_negocio")
 public class ResponsavelNegocioController {

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
@@ -79,8 +80,9 @@ public class UsuarioController {
         Usuario usuario = new Usuario();
         usuario.setVisibilidade(true);
         BeanUtils.copyProperties(usuarioDTO, usuario);
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        usuario.setSenha(encoder.encode(usuario.getSenha()));
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
@@ -97,7 +99,7 @@ public class UsuarioController {
         }
 
         Usuario usuario = usuarioOptional.get();
-        BeanUtils.copyProperties(usuarioDTO, usuario, "id");
+        BeanUtils.copyProperties(usuarioDTO, usuario, "id", "senha");
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }

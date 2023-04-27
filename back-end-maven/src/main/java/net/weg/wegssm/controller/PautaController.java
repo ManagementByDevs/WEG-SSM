@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/pauta")
 public class PautaController {

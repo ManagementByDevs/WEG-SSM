@@ -1,9 +1,12 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 
+import { useLocation } from "react-router-dom";
+
 import {
   Box,
   Divider,
   IconButton,
+  Menu,
   MenuItem,
   Paper,
   Table,
@@ -18,11 +21,14 @@ import {
 import LogoWEG from "../../assets/logo-weg.png";
 
 import DownloadIcon from "@mui/icons-material/Download";
+import EditIcon from "@mui/icons-material/Edit";
+import EditOffIcon from "@mui/icons-material/EditOff";
 
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
@@ -63,6 +69,50 @@ const DetalhesProposta = ({
     }
   };
 
+  // Retorna o texto do status da proposta
+  const getStatusFormatted = () => {
+    switch (proposta.status) {
+      case "ASSESSMENT_APROVACAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_EDICAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_COMISSAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_DG": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "BUSINESS_CASE": // #C8CA5F
+        return texts.detalhesProposta.statusRejeitada;
+      case "CANCELLED": //#DA0303
+        return texts.detalhesProposta.statusCancelada;
+      case "DONE": //#62A265
+        return texts.detalhesProposta.statusEmAndamento;
+      default:
+        return "";
+    }
+  };
+
+  // Retorna a cor hexadecimal do status da proposta
+  const getCorStatus = (status) => {
+    switch (status) {
+      case "ASSESSMENT_APROVACAO":
+        return "#8862A2";
+      case "ASSESSMENT_EDICAO":
+        return "#8862A2";
+      case "ASSESSMENT_COMISSAO":
+        return "#8862A2";
+      case "ASSESSMENT_DG":
+        return "#8862A2";
+      case "BUSINESS_CASE":
+        return "#C8CA5F";
+      case "CANCELLED":
+        return "#DA0303";
+      case "DONE":
+        return "#62A265";
+      default:
+        return "";
+    }
+  };
+
   // Função para transformar uma string em base64 para um ArrayBuffer
   const base64ToArrayBuffer = (base64) => {
     const binaryString = window.atob(base64);
@@ -70,14 +120,45 @@ const DetalhesProposta = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
+  // Formatação do html dos campos maiores
+
+  const propostaDaProposta = useRef(null);
+  const problemaDaProposta = useRef(null);
+
+  useEffect(() => {
+    if (propostaDaProposta.current) {
+      propostaDaProposta.current.innerHTML = proposta.proposta
+    }
+  }, []);
+
+  useEffect(() => {
+    if (problemaDaProposta.current) {
+      problemaDaProposta.current.innerHTML = proposta.problema
+    }
+  }, []);
+
+  const getProblemaFomartted = (problema) => {
+    return problema[0].toUpperCase() + problema.substring(1).toLowerCase();
+  };
+
+  const getPropostaFomartted = (proposta) => {
+    return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
+  };
+
   return (
     <Box className="flex justify-center">
       <Box
-        className="border rounded px-10 py-4 border-t-6"
+        className="border rounded px-10 py-4 border-t-6 relative"
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
       >
+        <StatusProposta
+          proposta={proposta}
+          setProposta={setProposta}
+          getCorStatus={getCorStatus}
+          getStatusFormatted={getStatusFormatted}
+        />
         {/* Box header */}
-        <Box className="w-full flex justify-between">
+        <Box className="w-full flex justify-between ">
           <Box className="flex gap-4">
             <Typography
               color="primary"
@@ -108,15 +189,15 @@ const DetalhesProposta = ({
                 : ""}
             </Typography>
           </Box>
-          <Box className="w-16">
-            <img src={LogoWEG} alt="Logo WEG" />
+          <Box className="flex w-16">
+            <img src={LogoWEG} className="w-16 h-11" alt="Logo WEG" />
           </Box>
         </Box>
 
         {/* Box Conteudo */}
         <Box className="w-full">
           {/* Titulo */}
-          <Box>
+          <Box flex>
             <Typography color={"primary.main"} fontSize={FontConfig.smallTitle}>
               {proposta.titulo}
             </Typography>
@@ -124,7 +205,15 @@ const DetalhesProposta = ({
           <Divider />
 
           {/* Box Informações gerais */}
-          <Box>
+          <Box className="relative">
+            <Tooltip title={texts.detalhesProposta.editar}>
+              <Box className="absolute -right-8 -top-2">
+                <IconButton sx={{ color: "primary.main" }}>
+                  <EditIcon />
+                  <EditOffIcon />
+                </IconButton>
+              </Box>
+            </Tooltip>
             {/* Solicitante */}
             <Box className="flex mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">
@@ -197,8 +286,8 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.proposta}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium}>
-                  {proposta.proposta}
+                <Typography fontSize={FontConfig.medium} ref={propostaDaProposta}>
+                  {getPropostaFomartted(proposta.proposta)}
                 </Typography>
               </Box>
             </Box>
@@ -209,8 +298,8 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.problema}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium}>
-                  {proposta.problema}
+                <Typography fontSize={FontConfig.medium} ref={problemaDaProposta}>
+                  {getProblemaFomartted(proposta.problema)}
                 </Typography>
               </Box>
             </Box>
@@ -407,7 +496,12 @@ const DetalhesProposta = ({
                     />
 
                     {/* Parecer da Diretoria */}
-                    {["ASSESSMENT_DG", "DONE", "ASSESSMENT_EDICAO", "CANCELLED"].includes(proposta.status) && (
+                    {[
+                      "ASSESSMENT_DG",
+                      "DONE",
+                      "ASSESSMENT_EDICAO",
+                      "CANCELLED",
+                    ].includes(proposta.status) && (
                       <ParecerDG
                         proposta={proposta}
                         setProposta={setProposta}
@@ -939,6 +1033,195 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
         sx={{ borderColor: "primary.main" }}
       />
     </Box>
+  );
+};
+
+const StatusProposta = ({
+  proposta = propostaExample,
+  setProposta = () => {},
+  getCorStatus = () => {},
+  getStatusFormatted = () => {},
+}) => {
+  // Context para obter as configurações das fontes do sistema
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
+  // Variável que contém os dados da url
+  const location = useLocation();
+
+  // UseState para poder visualizar e alterar o menu do idioma
+  const [anchorElModalStatus, setAnchorElModalStatus] = useState(null);
+
+  // Referência do elemento de status
+  const statusElement = useRef(null);
+
+  // Estado do modal de trocar status
+  const [modalStatus, setModalStatus] = useState(false);
+
+  // Estado do modal de confirmação de troca de status
+  const [confirmEditStatus, setConfirmEditStatus] = useState(false);
+
+  // Estado do novo status
+  const [newStatus, setNewStatus] = useState("");
+
+  // Abre o modal para alterar o status da proposta
+  const handleOpenModalStatus = () => {
+    setModalStatus(true);
+  };
+
+  // Fecha o modal para alterar o status da proposta
+  const handleCloseModalStataus = () => {
+    setModalStatus(false);
+  };
+
+  const confirmSelectStatus = (status) => {
+    if (isSameStatus(status)) {
+      console.log("Status é o mesmo!");
+      return;
+    }
+
+    setModalStatus(false);
+    setNewStatus(status);
+    setConfirmEditStatus(true);
+  };
+
+  // Verifica se o status selecionado é o mesmo da proposta
+  const isSameStatus = (status) => {
+    switch (status) {
+      case "ASSESSMENT_APROVACAO":
+        return proposta.status.startsWith("ASSESSMENT");
+      case "BUSINESS_CASE":
+        return proposta.status == "BUSINESS_CASE";
+      case "CANCELLED":
+        return proposta.status == "CANCELLED";
+      case "DONE":
+        return proposta.status == "DONE";
+    }
+
+    return false;
+  };
+
+  const editarStatus = () => {
+    if (newStatus == "") {
+      console.log("Status não pode ser vazio!");
+      return;
+    }
+
+    let propostaAux = { ...proposta, status: newStatus };
+
+    console.log("status: ", newStatus);
+    setProposta({ ...propostaAux });
+    setConfirmEditStatus(false);
+
+    // Requisição para atualizar a proposta com o novo status
+
+    // Atualiza o location status
+    location.state = { ...propostaAux };
+    console.log("location status 2", location)
+  };
+
+  useEffect(() => {
+    // Adiciona o elemento do status para poder configurar a posição do modal
+    if (statusElement.current) {
+      setAnchorElModalStatus(statusElement.current);
+    }
+
+    console.log("location status", location.state); // Verificar se o location está sendo atualizado
+  }, []);
+
+  return (
+    <>
+      <ModalConfirmacao
+        open={confirmEditStatus}
+        setOpen={setConfirmEditStatus}
+        textoModal={"alterarStatusProposta"}
+        textoBotao={"sim"}
+        onConfirmClick={editarStatus}
+        onCancelClick={() => {}}
+      />
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorElModalStatus}
+        open={modalStatus}
+        onClose={handleCloseModalStataus}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("ASSESSMENT_APROVACAO")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("ASSESSMENT_APROVACAO") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.assessment}
+          </Typography>
+        </MenuItem>
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("BUSINESS_CASE")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("BUSINESS_CASE") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.bussinessCase}
+          </Typography>
+        </MenuItem>
+        <MenuItem
+          className="gap-2"
+          onClick={() => confirmSelectStatus("CANCELLED")}
+        >
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("CANCELLED") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.cancelled}
+          </Typography>
+        </MenuItem>
+        <MenuItem className="gap-2" onClick={() => confirmSelectStatus("DONE")}>
+          <Box
+            className="w-4 h-4 rounded"
+            sx={{ backgroundColor: getCorStatus("DONE") }}
+          />
+          <Typography fontSize={FontConfig.default}>
+            {texts.detalhesProposta.statusText.done}
+          </Typography>
+        </MenuItem>
+      </Menu>
+
+      <Tooltip title={getStatusFormatted()}>
+        <Box
+          className="flex absolute right-2 top-0 cursor-pointer"
+          onClick={handleOpenModalStatus}
+          ref={statusElement}
+        >
+          <Box
+            className="w-0 h-0 relative left-4"
+            sx={{
+              borderTop: `1.8rem solid ${getCorStatus(proposta.status)}`,
+              borderRight: "1.1rem solid transparent",
+              borderLeft: "0px solid transparent",
+            }}
+          />
+          <Box
+            className="w-0 h-0 relative"
+            sx={{
+              borderTop: `1.8rem solid ${getCorStatus(proposta.status)}`,
+              borderRight: "0rem solid transparent",
+              borderLeft: "1.1rem solid transparent",
+            }}
+          />
+        </Box>
+      </Tooltip>
+    </>
   );
 };
 

@@ -26,7 +26,7 @@ import java.util.Optional;
  * Classe controller da demanda
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/weg_ssm/demanda")
 public class DemandaController {
 

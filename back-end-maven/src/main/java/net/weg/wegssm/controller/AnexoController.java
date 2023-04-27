@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Classe Controller para as funções dos anexos
  */
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/anexo")
 public class AnexoController {

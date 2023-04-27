@@ -1,5 +1,17 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Box, Typography, Divider, TextareaAutosize, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  TextareaAutosize,
+  Paper,
+  IconButton,
+  Tooltip,
+  MenuItem,
+  TextField,
+  Autocomplete,
+  Checkbox,
+} from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -17,7 +29,8 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 import AnexoService from "../../service/anexoService";
 
-import ClipLoader from 'react-spinners/ClipLoader';
+import ClipLoader from "react-spinners/ClipLoader";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 // Ícone selecionado e não selecionado, para o checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -25,7 +38,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 /** Fase de criação de proposta em que os dados da demanda poderão ser editados */
 const FormularioPropostaProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -44,6 +56,8 @@ const FormularioPropostaProposta = (props) => {
   /** Variável de referência para ativar a escolha de anexos */
   const inputFile = useRef(null);
 
+  const mostrarEdicao = false;
+
   // UseEffect para alterar a cor do textArea (modo escuro / claro)
   useEffect(() => {
     if (mode === "dark") {
@@ -58,9 +72,9 @@ const FormularioPropostaProposta = (props) => {
     if (input === "titulo") {
       props.setDadosDemanda({ ...props.dados, titulo: e.target.value });
     } else if (input === "problema") {
-      props.setDadosDemanda({ ...props.dados, problema: e.target.value });
+      props.setDadosDemanda({ ...props.dados, problema: e });
     } else if (input === "proposta") {
-      props.setDadosDemanda({ ...props.dados, proposta: e.target.value });
+      props.setDadosDemanda({ ...props.dados, proposta: e });
     } else if (input === "frequencia") {
       props.setDadosDemanda({ ...props.dados, frequencia: e.target.value });
     } else if (input === "tamanho") {
@@ -98,8 +112,11 @@ const FormularioPropostaProposta = (props) => {
     for (let file of inputFile.current.files) {
       if (!verificaAnexoExistente(file)) {
         AnexoService.save(file).then((response) => {
-          props.setDadosDemanda({ ...props.dados, anexo: [...props.dados.anexo, response] });
-        })
+          props.setDadosDemanda({
+            ...props.dados,
+            anexo: [...props.dados.anexo, response],
+          });
+        });
       } else {
         setFeedbackAnexoExistente(true);
       }
@@ -112,8 +129,8 @@ const FormularioPropostaProposta = (props) => {
     AnexoService.deleteById(arquivo.id).then((response) => {
       let listaNova = [...props.dados.anexo];
       listaNova.splice(index, 1);
-      props.setDadosDemanda({ ...props.dados, anexo: listaNova })
-    })
+      props.setDadosDemanda({ ...props.dados, anexo: listaNova });
+    });
   };
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
@@ -160,12 +177,12 @@ const FormularioPropostaProposta = (props) => {
   /** Função para excluir um benefício da lista e do banco de dados, recebendo seu index na lista */
   const deleteBeneficio = (indexBeneficio) => {
     let listaNova = [...props.beneficios];
-    let beneficioExcluido = (listaNova.splice(indexBeneficio, 1))[0];
+    let beneficioExcluido = listaNova.splice(indexBeneficio, 1)[0];
 
     BeneficioService.delete(beneficioExcluido.id).then((response) => {
       props.setBeneficiosExcluidos([
         ...props.beneficiosExcluidos,
-        beneficioExcluido
+        beneficioExcluido,
       ]);
       props.setBeneficios(listaNova);
     });
@@ -208,6 +225,17 @@ const FormularioPropostaProposta = (props) => {
       }
     }
   };
+
+  const [problemaEdicao, setProblemaEdicao] = useState();
+  const [propostaEdicao, setPropostaEdicao] = useState();
+
+  useEffect(() => {
+    setProblemaEdicao(props.dados.problema);
+  }, [props.dados.problema]);
+
+  useEffect(() => {
+    setPropostaEdicao(props.dados.proposta);
+  }, [props.dados.proposta]);
 
   return (
     <>
@@ -261,48 +289,56 @@ const FormularioPropostaProposta = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  className="flex"
                 >
                   {texts.formularioPropostaProposta.problema}:
+                  <Typography
+                    sx={{
+                      fontSize: FontConfig.big,
+                      color: "red",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    *
+                  </Typography>
                 </Typography>
-                <TextareaAutosize
-                  style={{
-                    width: 775,
-                    marginLeft: "26px",
-                    resize: "none",
-                    backgroundColor: corFundoTextArea,
-                  }}
-                  value={props.dados.problema}
-                  fontSize={FontConfig.medium}
-                  onChange={(e) => {
-                    alterarTexto(e, "problema");
-                  }}
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-                  placeholder={texts.formularioPropostaProposta.digiteProblema}
-                />
+                <Box sx={{ marginTop: '1%' }}>
+                  <CaixaTextoQuill
+                    texto={problemaEdicao}
+                    setTexto={setProblemaEdicao} 
+                    onChange={(value) => {
+                      alterarTexto(value, "problema");
+                    }}
+                  />
+                </Box>
               </Box>
               <Box>
                 <Typography
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  className="flex"
                 >
                   {texts.formularioPropostaProposta.proposta}:
+                  <Typography
+                    sx={{
+                      fontSize: FontConfig.big,
+                      color: "red",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    *
+                  </Typography>
                 </Typography>
-                <TextareaAutosize
-                  style={{
-                    width: 775,
-                    marginLeft: "26px",
-                    resize: "none",
-                    backgroundColor: corFundoTextArea,
-                  }}
-                  value={props.dados.proposta}
-                  fontSize={FontConfig.medium}
-                  onChange={(e) => {
-                    alterarTexto(e, "proposta");
-                  }}
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-                  placeholder={texts.formularioPropostaProposta.digiteProposta}
-                />
+                <Box sx={{ marginTop: '1%' }}>
+                  <CaixaTextoQuill
+                    texto={propostaEdicao}
+                    setTexto={setPropostaEdicao}
+                    onChange={(value) => {
+                      alterarTexto(value, "proposta");
+                    }}
+                  />
+                </Box>
               </Box>
               <Box>
                 <Box className="flex items-center">
@@ -341,8 +377,18 @@ const FormularioPropostaProposta = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  className="flex"
                 >
                   {texts.formularioPropostaProposta.frequenciaDeUso}:
+                  <Typography
+                    sx={{
+                      fontSize: FontConfig.big,
+                      color: "red",
+                      marginLeft: "5px",
+                    }}
+                  >
+                    *
+                  </Typography>
                 </Typography>
                 <Box
                   value={props.dados.frequencia}
@@ -357,7 +403,9 @@ const FormularioPropostaProposta = (props) => {
                     marginLeft: "30px",
                   }}
                   component="input"
-                  placeholder={texts.formularioPropostaProposta.digiteFrequencia}
+                  placeholder={
+                    texts.formularioPropostaProposta.digiteFrequencia
+                  }
                 />
               </Box>
               <Box
@@ -367,7 +415,7 @@ const FormularioPropostaProposta = (props) => {
                 <TextField
                   sx={{ width: "45%" }}
                   select
-                  label={texts.formularioPropostaProposta.labelTamanho}
+                  label={texts.formularioPropostaProposta.labelTamanho + " *"}
                   value={props.dados.tamanho}
                   onChange={(e) => alterarTexto(e, "tamanho")}
                   variant="standard"
@@ -412,7 +460,9 @@ const FormularioPropostaProposta = (props) => {
                     <TextField
                       variant="standard"
                       {...params}
-                      label={texts.formularioPropostaProposta.labelSecaoTi}
+                      label={
+                        texts.formularioPropostaProposta.labelSecaoTi + " *"
+                      }
                     />
                   )}
                 />
@@ -443,7 +493,9 @@ const FormularioPropostaProposta = (props) => {
                     <TextField
                       variant="standard"
                       {...params}
-                      label={texts.formularioPropostaProposta.buSolicitante}
+                      label={
+                        texts.formularioPropostaProposta.buSolicitante + " *"
+                      }
                     />
                   )}
                 />
@@ -478,7 +530,10 @@ const FormularioPropostaProposta = (props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={texts.formularioPropostaProposta.labelBusBeneficiadas}
+                      label={
+                        texts.formularioPropostaProposta.labelBusBeneficiadas +
+                        " *"
+                      }
                       variant="standard"
                       placeholder={
                         texts.formularioPropostaProposta.selecioneUmaOuMaisBus
@@ -513,7 +568,7 @@ const FormularioPropostaProposta = (props) => {
                     <TextField
                       variant="standard"
                       {...params}
-                      label={texts.formularioPropostaProposta.labelForum}
+                      label={texts.formularioPropostaProposta.labelForum + " *"}
                     />
                   )}
                 />
@@ -576,7 +631,9 @@ const FormularioPropostaProposta = (props) => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip
-                            title={texts.formularioPropostaProposta.titleRemover}
+                            title={
+                              texts.formularioPropostaProposta.titleRemover
+                            }
                           >
                             <IconButton
                               onClick={() => {

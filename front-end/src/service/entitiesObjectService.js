@@ -81,6 +81,8 @@ class EntitiesObjectService {
       tamanho: "",
       titulo: "",
       visibilidade: true,
+      emPauta: false,
+      emAta: false
     };
   }
 
@@ -90,7 +92,7 @@ class EntitiesObjectService {
       comissao: "",
       dataReuniao: "",
       id: 0,
-      numeroSequencial: 0,
+      numeroSequencial: "",
       propostas: [this.proposta()],
     };
   }
@@ -99,7 +101,7 @@ class EntitiesObjectService {
     return {
       id: 0,
       dataReuniao: "",
-      numeroSequencial: "1/2022",
+      numeroSequencial: "",
       comissao: this.forum(),
       visibilidade: true,
       propostas: [this.proposta()],

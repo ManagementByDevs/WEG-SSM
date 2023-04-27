@@ -14,12 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe controller para as tabelas de custos
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/weg_ssm/tabela-custo")
 public class TabelaCustoController {
 
@@ -43,13 +45,18 @@ public class TabelaCustoController {
      */
     @PostMapping
     public ResponseEntity<TabelaCusto> save(@RequestBody @Valid TabelaCustoDTO tabelaCustoDTO) {
-        for (Custo custo : tabelaCustoDTO.getCustos()) {
-            custoService.save(custo);
-        }
 
-        for (CC cc : tabelaCustoDTO.getCcs()) {
-            ccsService.save(cc);
+        List<Custo> listaCustos = new ArrayList<>();
+        for (Custo custo : tabelaCustoDTO.getCustos()) {
+            listaCustos.add(custoService.save(custo));
         }
+        tabelaCustoDTO.setCustos(listaCustos);
+
+        List<CC> listaCCs = new ArrayList<>();
+        for (CC cc : tabelaCustoDTO.getCcs()) {
+            listaCCs.add(ccsService.save(cc));
+        }
+        tabelaCustoDTO.setCcs(listaCCs);
 
         TabelaCusto tabelaCusto = new TabelaCusto();
         BeanUtils.copyProperties(tabelaCustoDTO, tabelaCusto);

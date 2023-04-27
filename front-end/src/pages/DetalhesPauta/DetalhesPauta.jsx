@@ -31,6 +31,7 @@ import PropostaService from "../../service/propostaService";
 import ExportPdfService from "../../service/exportPdfService";
 import AtaService from "../../service/ataService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import ModalCriarAta from "../../components/ModalCriarAta/ModalCriarAta";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
@@ -47,16 +48,6 @@ const DetalhesPauta = (props) => {
   const location = useLocation();
 
   // Variáveis de estilo para o componente
-  const tituloProposta = {
-    textDecoration: "underline",
-    cursor: "pointer",
-    color: "primary.main",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-    textAlign: "center",
-  };
-
   const informacoesAta = {
     fontWeight: "600",
     cursor: "default",
@@ -212,25 +203,24 @@ const DetalhesPauta = (props) => {
     const propostasDeleted = pauta.propostas.splice(indexProposta, 1);
     const propostaDeleted = propostasDeleted[0];
 
-    // Anulando os campos da proposta
+    // Anulando os campos da proposta que não devem ter valor após ser tirada da pauta
     propostaDeleted.publicada = null;
     propostaDeleted.status = "ASSESSMENT_APROVACAO";
     propostaDeleted.parecerInformacao = null;
     propostaDeleted.parecerComissao = null;
     propostaDeleted.parecerDG = null;
-    console.log("new pauta", pauta);
+
     PautaService.put(pauta).then((newPauta) => {
       setFeedbackPropostaDeletada(true);
       PropostaService.putWithoutArquivos(
         propostaDeleted,
         propostaDeleted.id
       ).then((newProposta) => {});
-      console.log("pauta nova: ", newPauta);
-      location.state = { pauta: newPauta };
-      setPauta(newPauta);
-      setProposta(false);
-      setListaProposta(newPauta.propostas);
-      setDadosProposta(null);
+      location.state = { pauta: newPauta }; // Atualizando a pauta na página
+      setPauta(newPauta); // Atualizando a pauta na variável do front
+      setProposta(false); // Anulando a proposta que estava sendo exibida
+      setListaProposta(newPauta.propostas); // Atualizando a lista de propostas
+      setDadosProposta(null); // Anulando os dados da proposta que estava sendo exibido
     });
   };
 
@@ -265,20 +255,27 @@ const DetalhesPauta = (props) => {
     return isFilled;
   };
 
-  // Função que cria uma ata
-  const criarAta = () => {
+  const abrirModalCriarAta = () => {
     if (!isAllFieldsFilled()) {
       setFeedbackCamposFaltantes(true);
       return;
     }
+    setOpenModalCriarAta(true);
+  };
 
+  // Função que cria uma ata
+  const criarAta = (numeroSequencial, dataReuniao) => {
     // Criação do obj ata
-    let ata = { ...pauta };
-    for (let proposta of ata.propostas) {
-      if (proposta.parecerComissao != "APROVADO") {
-        ata.propostas.splice(proposta, 1);
-      }
-    }
+    let ata = {
+      ...pauta,
+      numeroSequencial: numeroSequencial,
+      dataReuniao: dataReuniao,
+    };
+
+    // Se o parecere da comissão não for aprovado, a proposta não é adicionada na ata
+    ata.propostas = ata.propostas.filter((proposta) => {
+      return proposta.parecerComissao == "APROVADO";
+    });
 
     // Caso não haja propostas aprovadas, não cria a ata
     if (ata.propostas.length == 0) {
@@ -290,6 +287,7 @@ const DetalhesPauta = (props) => {
     if (ata.propostas.length > 0) {
       for (let proposta of ata.propostas) {
         proposta.status = "ASSESSMENT_DG";
+        proposta.emAta = true;
       }
 
       updatePropostas(pauta.propostas);
@@ -353,8 +351,16 @@ const DetalhesPauta = (props) => {
     setIsSummaryVisible(true);
   }, [dadosProposta]);
 
+  // useState utilizado para abrir e fechar o modal de adicionar a pauta
+  const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
+
   return (
     <FundoComHeader>
+      <ModalCriarAta
+        open={openModalCriarAta}
+        setOpen={setOpenModalCriarAta}
+        criarAta={criarAta}
+      />
       {/* Feedback proposta deletada da pauta */}
       <Feedback
         open={feedbackPropostaDeletada}
@@ -462,8 +468,45 @@ const DetalhesPauta = (props) => {
                 >
                   {texts.detalhesPauta.sumario}
                 </Typography>
-
-                <Box
+                <Box className="flex flex-col items-center justify-center">
+                  {isSummaryVisible ? (
+                    pauta.propostas?.map((proposta, index) => {
+                      return (
+                        <Box
+                          className="w-full border-solid border border-l-4 px-4 drop-shadow-sm rounded flex items-center mt-4"
+                          sx={{
+                            height: "2.5rem",
+                            borderLeftColor: "primary.main",
+                            backgroundColor: "background.default",
+                            fontWeight: "300",
+                            cursor: "pointer",
+                            '&:hover': {
+                              backgroundColor: 'component.main',
+                            }
+                          }}
+                          onClick={() => onClickProposta(index)}
+                        >
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            sx={{
+                              color: "primary.main",
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {index + 1} - {proposta.titulo}
+                          </Typography>
+                        </Box>
+                      );
+                    })
+                  ) : (
+                    <Typography fontSize={FontConfig.medium}>
+                      {texts.detalhesPauta.nenhumaPropostaAdicionada}
+                    </Typography>
+                  )}
+                </Box>
+                {/* <Box
                   sx={{
                     display: "grid",
                     textAlign: "center",
@@ -471,9 +514,9 @@ const DetalhesPauta = (props) => {
                     gap: "1rem",
                     gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
                   }}
-                >
-                  {/* Lista utilizada para mostrar os títulos no sumário */}
-                  {isSummaryVisible ? (
+                > */}
+                {/* Lista utilizada para mostrar os títulos no sumário */}
+                {/* {isSummaryVisible ? (
                     pauta.propostas?.map((proposta, index) => {
                       return (
                         <Typography
@@ -491,7 +534,7 @@ const DetalhesPauta = (props) => {
                       {texts.detalhesPauta.nenhumaPropostaAdicionada}
                     </Typography>
                   )}
-                </Box>
+                </Box> */}
               </Box>
             ) : (
               // Mostrar uma proposta e seus dados
@@ -611,7 +654,7 @@ const DetalhesPauta = (props) => {
             <Tooltip title={texts.detalhesPauta.criarAta}>
               <Box
                 // onClick={feedbackAta}
-                onClick={criarAta}
+                onClick={abrirModalCriarAta}
                 className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                 sx={{
                   backgroundColor: "primary.main",

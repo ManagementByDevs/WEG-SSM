@@ -11,7 +11,7 @@ import java.util.Date;
 public class NotificacaoDTO {
 
     private Long id;
-    private String titulo;
+    private String numeroSequencial;
     private Boolean visualizado;
     private Date data;
     private TipoNotificacao tipoNotificacao;

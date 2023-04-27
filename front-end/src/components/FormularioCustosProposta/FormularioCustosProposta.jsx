@@ -11,7 +11,6 @@ import CustosService from "../../service/custosService";
 
 // Etapa de criação de proposta para adicionar as tabelas de custos
 const FormularioCustosProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -25,7 +24,7 @@ const FormularioCustosProposta = (props) => {
       custosNovos.splice(index, 1);
       props.setCustos(custosNovos);
     });
-  }
+  };
 
   /** Função para criar uma tabela de custos no banco de dados e adicionar na lista */
   const criarTabelaCusto = () => {
@@ -36,13 +35,13 @@ const FormularioCustosProposta = (props) => {
           perfilDespesa: "",
           periodoExecucao: "",
           horas: "",
-          valorHora: ""
+          valorHora: "",
         },
       ],
       ccs: [
         {
           codigo: "",
-          porcentagem: ""
+          porcentagem: "",
         },
       ],
     }).then((response) => {
@@ -84,17 +83,24 @@ const FormularioCustosProposta = (props) => {
             {texts.formularioCustosProposta.total}:
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
-            {horasTotais}{texts.formularioCustosProposta.horas}
+            {horasTotais}
+            {texts.formularioCustosProposta.horas}
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
             -
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
-            {texts.formularioCustosProposta.moeda}{valorTotal}
+            {texts.formularioCustosProposta.moeda}
+            {valorTotal}
           </Typography>
         </Box>
         <Button
-          sx={{ backgroundColor: "primary.main", color: "text.white", fontSize: FontConfig.default, }}
+          sx={{
+            minWidth: "179px",
+            backgroundColor: "primary.main",
+            color: "text.white",
+            fontSize: FontConfig.default,
+          }}
           variant="contained"
           disableElevation
           onClick={criarTabelaCusto}

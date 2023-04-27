@@ -16,7 +16,7 @@ import javax.validation.Valid;
  * Classe controller para os benefícios
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/weg_ssm/beneficio")
 public class BeneficioController {
 

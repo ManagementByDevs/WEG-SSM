@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/weg_ssm/notificacoes")
 public class NotificacaoController {
 

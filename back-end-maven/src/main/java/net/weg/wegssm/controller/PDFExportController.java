@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/weg_ssm")
 public class PDFExportController {
 

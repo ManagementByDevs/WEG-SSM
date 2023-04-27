@@ -16,7 +16,7 @@ import javax.validation.Valid;
  * Classe controller para os custos
  */
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/weg_ssm/custo")
 public class CustoController {
 

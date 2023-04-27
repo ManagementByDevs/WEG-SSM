@@ -1,27 +1,38 @@
 import React, { useContext, useState } from "react";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
 import DemandaGerencia from "../DemandaGerencia/DemandaGerencia";
 import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemanda";
 
+import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
+import BeenhereOutlinedIcon from "@mui/icons-material/BeenhereOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Componente para mudar o modo de visualização das demandas (Grid, tabela ou nenhuma demanda encontrada) - Gerência
 const DemandaGerenciaModoVisualizacao = ({
-  listaDemandas,
+  listaDemandas = [EntitiesObjectService.proposta()],
   onDemandaClick,
   nextModoVisualizacao,
   isProposta = false,
 }) => {
-
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
   }
@@ -56,6 +67,8 @@ const DemandaTable = ({
       gerente: {},
       tamanho: "",
       id: 0,
+      emAta: false,
+      emPauta: false,
       titulo: "",
       problema: "",
       proposta: "",
@@ -63,13 +76,13 @@ const DemandaTable = ({
       status: "",
       data: "",
       solicitante: {},
-      historicoDemanda: []
+      historicoDemanda: [],
+      historicoProposta: [],
     },
   ],
   onDemandaClick,
   isProposta = false,
 }) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -118,7 +131,11 @@ const DemandaTable = ({
         <Table sx={{ width: "100%" }} className="table-fixed">
           <TableHead sx={{ width: "100%" }}>
             <TableRow
-              sx={{ backgroundColor: "primary.main", minWidth: "75rem", width: "100%", }}
+              sx={{
+                backgroundColor: "primary.main",
+                minWidth: "75rem",
+                width: "100%",
+              }}
             >
               <th className="text-white p-2 width-75/1000">
                 <Typography fontSize={FontConfig.big}>
@@ -174,12 +191,33 @@ const DemandaTable = ({
                   onDemandaClick(row);
                 }}
               >
-                <td className="text-center p-3 width-1/10" title={row.id}>
+                <td
+                  className="text-center p-3 width-1/10"
+                  title={row.codigoPPM}
+                >
                   <Typography className="truncate" fontSize={FontConfig.medium}>
                     {!isProposta ? row.id : row.codigoPPM}
                   </Typography>
                 </td>
-                <td className="text-left p-3 width-4/10" title={row.titulo}>
+                <td
+                  className="text-left p-3 width-4/12 flex"
+                  title={row.titulo}
+                >
+                  {(row.emPauta == true || row.emAta == true) && (
+                    <Box className="mr-4">
+                      {row.emPauta == true ? (
+                        <Box title="Em pauta">
+                          <ContentPasteOutlinedIcon
+                            sx={{ color: "icon.main" }}
+                          />
+                        </Box>
+                      ) : (
+                        <Box title="Em ata">
+                          <BeenhereOutlinedIcon sx={{ color: "icon.main" }} />
+                        </Box>
+                      )}
+                    </Box>
+                  )}
                   <Typography className="truncate" fontSize={FontConfig.medium}>
                     {row.titulo}
                   </Typography>
@@ -264,11 +302,13 @@ const DemandaTable = ({
                         size="small"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setHistoricoSelecionado(row.historicoDemanda);
+                          setHistoricoSelecionado(
+                            row.historicoDemanda || row.historicoProposta
+                          );
                           abrirModalHistorico();
                         }}
                         className="delay-120 hover:scale-110 duration-300"
-                        sx={{ color: "icon.main", cursor: "pointer", }}
+                        sx={{ color: "icon.main", cursor: "pointer" }}
                       />
                     </Tooltip>
                     {isProposta && (
@@ -279,11 +319,13 @@ const DemandaTable = ({
                         <ChatOutlinedIcon
                           onClick={(e) => {
                             e.stopPropagation();
-                            setHistoricoSelecionado(row.historicoDemanda);
+                            setHistoricoSelecionado(
+                              row.historicoDemanda || row.historicoProposta
+                            );
                             abrirModalHistorico();
                           }}
                           className="delay-120 hover:scale-110 duration-300"
-                          sx={{ color: "icon.main", cursor: "pointer", }}
+                          sx={{ color: "icon.main", cursor: "pointer" }}
                         />
                       </Tooltip>
                     )}
@@ -326,7 +368,6 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
 
 // Componente para exibição de nada encontrado
 const NadaEncontrado = () => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 

@@ -50,6 +50,8 @@ public class PDFGeneratorService {
 
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, baos);
         document.open();
 
         // Criando a logo da weg para modelo pdf
@@ -107,9 +109,9 @@ public class PDFGeneratorService {
         document.add(paragraphData);
         document.add(paragraphTitulo);
         document.add(paragraphProblema);
-        document.add(paragraphInfoProblema);
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(demanda.getProblema().getBytes()));
         document.add(paragraphProposta);
-        document.add(paragraphInfoProposta);
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(demanda.getProposta().getBytes()));
         document.add(paragraphBeneficios);
 
         // Criando tabela para os benefícios
@@ -506,8 +508,10 @@ public class PDFGeneratorService {
             tableValorTotal.addCell(cell2);
 
             for(Custo custos : tableCusto.getCustos()){
-                tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
-                tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                if(custos.getValorHora() != null) {
+                    tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
+                    tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                }
             }
 
             PdfPTable tableCC = new PdfPTable(2);
@@ -731,17 +735,41 @@ public class PDFGeneratorService {
         paragraphPauta.setSpacingBefore(22);
         paragraphPauta.setAlignment(Element.ALIGN_CENTER);
 
-        Paragraph paragraphNumeroSequencial = new Paragraph("Número Sequencial: " + pauta.getNumeroSequencial(), fontInfoHeaderProposta);
+        Chunk numeroSequencial = new Chunk("Número Sequencial: ", fontInfoHeaderProposta);
+        Chunk numeroSequencialValor = new Chunk(pauta.getNumeroSequencial(), fontHeader);
+        Paragraph paragraphNumeroSequencial = new Paragraph();
+        paragraphNumeroSequencial.add(numeroSequencial);
+        paragraphNumeroSequencial.add(numeroSequencialValor);
         paragraphNumeroSequencial.setSpacingBefore(20);
 
-        Paragraph paragraphAno = new Paragraph("Ano: 2023", fontInfoHeaderProposta);
-        paragraphAno.setSpacingBefore(5);
+        Chunk comissao = new Chunk("Comissão: ", fontInfoHeaderProposta);
+        Chunk comissaoValor = new Chunk(pauta.getComissao().getSiglaForum() + " - " + pauta.getComissao().getNomeForum(), fontHeader);
+        Paragraph paragraphComissaoHeader = new Paragraph();
+        paragraphComissaoHeader.add(comissao);
+        paragraphComissaoHeader.add(comissaoValor);
+        paragraphComissaoHeader.setSpacingBefore(5);
+
+        Chunk reuniaoForum = new Chunk("Reunião Fórum: ", fontInfoHeaderProposta);
+        Chunk reuniaoForumValor = new Chunk(pauta.getDataReuniao().toString(), fontHeader);
+        Paragraph paragraphReuniaoForum = new Paragraph();
+        paragraphReuniaoForum.add(reuniaoForum);
+        paragraphReuniaoForum.add(reuniaoForumValor);
+        paragraphReuniaoForum.setSpacingBefore(5);
+
+        Chunk analista = new Chunk("Analista Responsável: ", fontInfoHeaderProposta);
+        Chunk analistaValor = new Chunk(pauta.getAnalistaResponsavel().getNome(), fontHeader);
+        Paragraph paragraphAnalista = new Paragraph();
+        paragraphAnalista.add(analista);
+        paragraphAnalista.add(analistaValor);
+        paragraphAnalista.setSpacingBefore(5);
 
         document.add(img);
         document.add(paragraphData);
         document.add(paragraphPauta);
         document.add(paragraphNumeroSequencial);
-        document.add(paragraphAno);
+        document.add(paragraphComissaoHeader);
+        document.add(paragraphReuniaoForum);
+        document.add(paragraphAnalista);
 
         int contadorProposta = 1;
 
@@ -1120,6 +1148,8 @@ public class PDFGeneratorService {
                 document.add(paragraphParecerComissao);
                 XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacao().getBytes()));
             }
+
+            document.newPage();
 
         }
 
@@ -1607,6 +1637,8 @@ public class PDFGeneratorService {
                 document.add(paragraphParecerDG);
                 XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacaoDG().getBytes()));
             }
+
+            document.newPage();
 
         }
 

@@ -1,6 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { Box, Typography, Divider, Table, TableBody, TableHead, TableRow, Paper, Checkbox, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Paper,
+  Checkbox,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import "./notificacaoStyle.css";
 
@@ -39,7 +51,8 @@ const Notificacao = () => {
   const [openModalConfirmDelete, setOpenModalConfirmDelete] = useState(false);
 
   // Modal de confirmação de exclusão múltipla
-  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] = useState(false);
+  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] =
+    useState(false);
 
   // UseState para saber qual notificação deletar ao usar o botão de delete individual
   const [indexDelete, setIndexDelete] = useState(null);
@@ -79,14 +92,40 @@ const Notificacao = () => {
   // Linhas da tabela
   const [rows, setRows] = useState([]);
 
+  const [dadosNotificacao, setDadosNotificacao] = useState([]);
+
+  useEffect(() => {
+    setRows(createRows(dadosNotificacao));
+  }, [texts]);
+
   // Cria uma linha da tabela retornando um objeto
   const createRows = (dataset) => {
-    let rows = [];
+    let rowsAux = [];
 
     for (let data of dataset) {
-      rows.push({
+      // para ter o "titulo da notificação"
+      const retornaTitulo = () => {
+        if (data.numeroSequencial) {
+          return `${texts.notificacaoComponente.demandaDeNumero} ${
+            data.numeroSequencial
+          } ${texts.notificacaoComponente.foi} ${formataStatus()}!`;
+        }
+      };
+
+      const formataStatus = () => {
+        switch (data.tipoNotificacao) {
+          case "APROVADO":
+            return texts.notificacaoComponente.aprovada;
+          case "REPROVADO":
+            return texts.notificacaoComponente.reprovada;
+          case "MAIS_INFORMACOES":
+            return texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes;
+        }
+      };
+
+      rowsAux.push({
         checked: false,
-        title: data.titulo,
+        titulo: retornaTitulo(),
         date: formatDate(data.data),
         visualizado: data.visualizado,
         tipo_icone: data.tipoNotificacao,
@@ -95,11 +134,11 @@ const Notificacao = () => {
       });
     }
 
-    return rows;
+    return rowsAux;
   };
 
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((user) => {
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
       setUsuario(user);
     });
   }
@@ -174,7 +213,11 @@ const Notificacao = () => {
     let aux = [...rows];
     aux[index].visualizado = !aux[index].visualizado;
     updateNotificacao(aux[index]);
-    openFeedback(!aux[index].visualizado ? texts.notificacao.notificacaoMArcadasComoNaoLidasComSucesso : texts.notificacao.notificacaoMArcadasComoLidasComSucesso);
+    openFeedback(
+      !aux[index].visualizado
+        ? texts.notificacao.notificacaoMArcadasComoNaoLidasComSucesso
+        : texts.notificacao.notificacaoMArcadasComoLidasComSucesso
+    );
   };
 
   // Deleta linha selecionada
@@ -227,7 +270,7 @@ const Notificacao = () => {
   const updateNotificacao = (notificacao) => {
     NotificacaoService.put({
       id: notificacao.id,
-      titulo: notificacao.title,
+      numeroSequencial: notificacao.numeroSequencial,
       data: convertDateToSQLDate(notificacao.date),
       tipoNotificacao: convertTipoIconeToEnum(notificacao.tipo_icone),
       visualizado: notificacao.visualizado,
@@ -258,7 +301,7 @@ const Notificacao = () => {
         setOpen={setOpenModalConfirmDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onDeleteClick}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         textoBotao={"sim"}
       />
 
@@ -267,7 +310,7 @@ const Notificacao = () => {
         setOpen={setOpenModalConfirmMultiDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onMultiDeleteRowClick}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         textoBotao={"sim"}
       />
 

@@ -35,7 +35,7 @@ public class Proposta {
     @Column(nullable = false, length = 45)
     private String paybackTipo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Long codigoPPM;
 
     @Column(nullable = false, length = 100)
@@ -79,6 +79,12 @@ public class Proposta {
 
     @Column(nullable = false, length = 20)
     private String tamanho;
+
+    @Column(nullable = false)
+    private Boolean emPauta;
+
+    @Column(nullable = false)
+    private Boolean emAta;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "secao_ti_id")

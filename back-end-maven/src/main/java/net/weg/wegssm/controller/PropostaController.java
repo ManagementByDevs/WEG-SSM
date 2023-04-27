@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/proposta")
 public class PropostaController {
@@ -3960,6 +3960,13 @@ public class PropostaController {
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
 
+        Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
+        List<Historico> historicoProposta = new ArrayList<>();
+        for (Historico historico : demanda.getHistoricoDemanda()) {
+            historicoProposta.add(historicoService.save(historico));
+        }
+        proposta.setHistoricoProposta(historicoProposta);
+
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
 
@@ -3988,7 +3995,6 @@ public class PropostaController {
             }
         }
         proposta.setAnexo(listaAnexos);
-        System.out.println(proposta.getAnexo());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
     }
@@ -4033,7 +4039,12 @@ public class PropostaController {
         documentoHistorico.setNome(proposta.getTitulo() + " - Versão " + (listaHistorico.size() + 1));
         historico.setDocumento(documentoHistoricoService.save(documentoHistorico));
 
-        listaHistorico.add(historicoService.save(historico));
+        if(listaHistorico != null) {
+            listaHistorico.add(historicoService.save(historico));
+        } else {
+            listaHistorico = new ArrayList<>();
+            listaHistorico.add(historicoService.save(historico));
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }

@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.service;
 
+import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Historico;
 import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.Usuario;
@@ -46,5 +47,4 @@ public class HistoricoService {
     public void deleteById(Long id) {
         historicoRepository.deleteById(id);
     }
-
 }

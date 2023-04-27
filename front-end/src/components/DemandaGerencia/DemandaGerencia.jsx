@@ -60,7 +60,9 @@ const DemandaGerencia = (props) => {
         <ModalHistoricoDemanda
           open={modalHistorico}
           setOpen={setModalHistorico}
-          historico={props.dados.historicoDemanda}
+          historico={
+            props.dados.historicoDemanda || props.dados.historicoProposta
+          }
         />
       )}
       <Paper
@@ -78,7 +80,7 @@ const DemandaGerencia = (props) => {
         {/* Container titulo e status */}
         <Box className="flex w-full justify-between">
           {/* Título */}
-          <Box className="flex w-3/4 mt-1">
+          <Box className="flex w-4/5 mt-1">
             <Typography
               variant="h1"
               fontSize={FontConfig.veryBig}
@@ -101,7 +103,7 @@ const DemandaGerencia = (props) => {
 
           {/* Status do componente */}
           <Box className="w-1/4 h-full">
-            <Box className="flex items-center justify-end">
+            <Box className="flex items-end flex-col">
               <Box id="segundoCriarPropostas">
                 <Box id="oitavoDemandas" className="flex items-center gap-2">
                   <Typography fontSize={FontConfig.medium} fontWeight="600">
@@ -117,6 +119,28 @@ const DemandaGerencia = (props) => {
                   ></Box>
                 </Box>
               </Box>
+              {
+                // Se a demanda estiver em pauta, exibe o ícone de em pauta
+                (tipo === "proposta" && props.dados.emPauta) ||
+                props.dados.emAta ? (
+                  <Box>
+                    <Typography
+                      fontSize={FontConfig.small}
+                      fontWeight="600"
+                      sx={{
+                        color: "text.primary",
+                        backgroundColor: "divider.claro",
+                        borderRadius: "5px",
+                        padding: "2px 15px",
+                      }}
+                    >
+                      {props.dados.emPauta
+                        ? texts.demandaGerencia.emPauta
+                        : texts.demandaGerencia.emAta}
+                    </Typography>
+                  </Box>
+                ) : null
+              }
             </Box>
           </Box>
         </Box>
@@ -210,7 +234,7 @@ const DemandaGerencia = (props) => {
               </Box>
               <Box>
                 {/* Icon de histórico  e chat*/}
-                <Box id="terceiroCriarPropostas" className="flex flex-col">
+                <Box id="terceiroCriarPropostas" className="flex">
                   {
                     // Se for uma proposta, mostra o icone de chat
                     tipo === "proposta" && (
@@ -229,30 +253,32 @@ const DemandaGerencia = (props) => {
                       </Tooltip>
                     )
                   }
-                  <Tooltip title={texts.demandaGerencia.historico}>
-                    <IconButton
-                      onClick={(e) => {
-                        if (
-                          !props.isTourPropostasOpen &&
-                          !props.isTourDemandasOpen &&
-                          !props.isTourCriarPropostasOpen
-                        ) {
-                          e.stopPropagation();
-                          abrirModalHistorico();
-                        }
-                      }}
-                    >
-                      <HistoryOutlinedIcon
-                        id="setimoDemandas"
-                        className="delay-120 hover:scale-110 duration-300"
-                        sx={{
-                          color: "icon.main",
-                          cursor: "pointer",
-                          fontSize: "30px",
+                  {props.semHistorico == false || props.semHistorico == null &&(
+                    <Tooltip title={texts.demandaGerencia.historico}>
+                      <IconButton
+                        onClick={(e) => {
+                          if (
+                            !props.isTourPropostasOpen &&
+                            !props.isTourDemandasOpen &&
+                            !props.isTourCriarPropostasOpen
+                          ) {
+                            e.stopPropagation();
+                            abrirModalHistorico();
+                          }
                         }}
-                      />
-                    </IconButton>
-                  </Tooltip>
+                      >
+                        <HistoryOutlinedIcon
+                          id="setimoDemandas"
+                          className="delay-120 hover:scale-110 duration-300"
+                          sx={{
+                            color: "icon.main",
+                            cursor: "pointer",
+                            fontSize: "30px",
+                          }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 </Box>
               </Box>
             </Box>

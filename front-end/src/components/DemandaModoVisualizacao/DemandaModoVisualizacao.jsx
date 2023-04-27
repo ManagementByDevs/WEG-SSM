@@ -101,6 +101,7 @@ const DemandaTable = ({
     } else if (status == "ASSESSMENT_APROVACAO") {
       return texts.demandaModoVisualizacao.statusDemanda?.emAndamento;
     }
+
   };
 
   //Abre o modal de motivo recusa
@@ -135,7 +136,7 @@ const DemandaTable = ({
             {myDemandas && (
               <th className="text-left text-white p-3 w-1/6">
                 <Typography fontSize={FontConfig.big}>
-                  {texts.demandaModoVisualizacao.status}
+                  {texts.demandaModoVisualizacao.statusString}
                 </Typography>
               </th>
             )}

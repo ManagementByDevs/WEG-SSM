@@ -23,7 +23,7 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 import Demanda from "../../components/Demanda/Demanda";
 
 import Tour from "reactour";
-import ClipLoader from 'react-spinners/ClipLoader';
+import ClipLoader from "react-spinners/ClipLoader";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -35,7 +35,7 @@ import CookieService from "../../service/cookieService";
 const Home = () => {
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -116,12 +116,18 @@ const Home = () => {
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
 
+  // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
+  const [isFirstTime, setIsFirstTime] = useState(false);
+
   // UseEffect para buscar o usuário e ativar possíveis filtros assim que entrar na página
   useEffect(() => {
     ativarFeedback();
     buscarUsuario();
-    arrangePreferences();
   }, []);
+
+  useEffect(() => {
+    arrangePreferences();
+  }, [usuario])
 
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros, ordenação ou páginas) forem modificados
   useEffect(() => {
@@ -178,27 +184,43 @@ const Home = () => {
   const ativarFeedback = () => {
     //Feedback de demanda criada
     if (localStorage.getItem("tipoFeedback") == "1") {
-      localStorage.removeItem("tipoFeedback");
       setFeedbackDemandaCriada(true);
+      localStorage.removeItem("tipoFeedback");
     }
   };
 
   /** Função para buscar o usuário logado no sistema pelos cookies assim que ele entrar na página */
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie().sub
+      CookieService.getCookie("jwt").sub
     ).then((e) => {
-      if (e.tipoUsuario != "SOLICITANTE") {
-        navigate("/home-gerencia");
-      } else {
-        setUsuario(e);
-        setParams({ ...params, solicitante: e });
-      }
+      setUsuario(e);
+      setParams({ ...params, solicitante: e });
     });
+  };
+
+  // Função que verifica se os parâmetros estão nulos
+  const isParamsNull = () => {
+    return Object.values(params).every((e) => e == null);
   };
 
   /** Função para buscar as demandas com os parâmetros e ordenação salvos */
   const buscarDemandas = () => {
+    // Verifica se os parâmetros estão nulos, se estiverem, não faz nada
+    if (isParamsNull()) {
+      return;
+    }
+
+    // Verifica o solicitante está em JSON, se está, transforma para um objeto
+    if (typeof params.solicitante == "string") {
+      params.solicitante = JSON.parse(params.solicitante);
+    }
+
+    // Verifica se tem um solicitante, senão ele busca as demandas com um usuário vazio
+    if (params.solicitante && params.solicitante.id == 0) {
+      return;
+    }
+
     setCarregamento(true);
     if (params.titulo || params.solicitante || params.gerente || params.forum || params.departamento || params.tamanho || params.status) {
       DemandaService.getPage(
@@ -316,9 +338,10 @@ const Home = () => {
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
   const arrangePreferences = () => {
-    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
       let itemsVisualizationMode = preferencias?.itemsVisualizationMode?.toUpperCase();
 
+      setValorAba(preferencias?.abaPadrao);
       // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
       if (itemsVisualizationMode == nextModoVisualizacao) {
         setNextModoVisualizacao("GRID");
@@ -330,8 +353,8 @@ const Home = () => {
    * Função que salva a nova preferência do usuário
    */
   const saveNewPreference = () => {
-    if (!CookieService.getCookie()) return;
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((user) => {
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
       let preferencias = JSON.parse(user.preferencias);
 
       preferencias.itemsVisualizationMode =
@@ -345,8 +368,12 @@ const Home = () => {
 
   // UseEffect para salvar as novas preferências do usuário
   useEffect(() => {
-    saveNewPreference();
+    saveNewPreference("itemsVisualizationMode");
   }, [nextModoVisualizacao]);
+
+  useEffect(() => {
+    saveNewPreference("abaPadrao");
+  }, [valorAba]);
   // ********************************************** Fim Preferências **********************************************
 
   return (

@@ -20,10 +20,6 @@ const DetalhesPropostaPagina = () => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
 
-  useEffect(() => {
-    console.log(location.state);
-  }, []);
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 

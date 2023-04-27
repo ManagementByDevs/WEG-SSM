@@ -8,13 +8,11 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 import CookieService from "../../service/cookieService";
-import { useEffect } from "react";
 
 /** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -26,12 +24,12 @@ const Demanda = (props) => {
 
   /** Função para receber a altura da div principal da demanda (é maior caso o solicitante seja o usuário logado) */
   const retornaAlturaDemanda = () => {
-    if (props.demanda?.solicitante?.email != CookieService.getCookie().sub) {
+    if (props.demanda?.solicitante?.email != CookieService.getCookie("jwt").sub) {
       return "8rem";
     } else {
       return "10rem";
     }
-  }
+  };
 
   /** Função para receber a cor do status da demanda de acordo com o status */
   const getStatusColor = () => {
@@ -48,7 +46,7 @@ const Demanda = (props) => {
     } else if (props.demanda.status == "ASSESSMENT_APROVACAO") {
       return "#F7DC6F";
     }
-  }
+  };
 
   /** Função para formatar o nome do status da demanda para o solicitante */
   const formatarNomeStatus = () => {
@@ -80,7 +78,7 @@ const Demanda = (props) => {
       <Paper
         onClick={props.onClick}
         sx={{
-          "&:hover": { backgroundColor: "hover.main", },
+          "&:hover": { backgroundColor: "hover.main" },
           borderColor: "primary.main",
           minWidth: "550px",
           maxWidth: "100%",
@@ -91,29 +89,36 @@ const Demanda = (props) => {
         className={`items-center h-30 text-justify border-t-4 pt-2 pb-3 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
       >
         <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
+
           {/* Título da demanda */}
-          <Typography fontSize={FontConfig?.veryBig} sx={{ fontWeight: "600" }} color="text.primary">
+          <Typography
+            className="overflow-hidden text-ellipsis whitespace-nowrap"
+            fontSize={FontConfig.veryBig}
+            sx={{ fontWeight: "600", maxWidth: "77%" }}
+            color="text.primary"
+            title={props.demanda.titulo}
+          >
             {props.demanda.titulo}
           </Typography>
 
           {/* Lógica para mostrar o status da demanda somente caso o usuário seja o dono dela */}
-          {(props.demanda?.solicitante?.email == CookieService.getCookie().sub || props.demanda?.solicitante?.tour) && (
-              <Box id="oitavo" className={`items-center text-justify flex`}>
-                <Typography fontSize={FontConfig?.default} sx={{ fontWeight: "600" }}>
-                  {formatarNomeStatus()}
-                </Typography>
-                <Box
-                  sx={{
-                    backgroundColor: getStatusColor(),
-                    width: "12px",
-                    height: "12px",
-                    borderRadius: "10px",
-                    marginLeft: "10px",
-                  }}
-                  className={`items-center h-30 text-justify`}
-                />
-              </Box>
-            )}
+          {(props.demanda?.solicitante?.email == CookieService.getCookie("jwt").sub || props.demanda?.solicitante?.tour) && (
+            <Box id="oitavo" className={`items-center text-justify flex`}>
+              <Typography fontSize={FontConfig?.default} sx={{ fontWeight: "600" }}>
+                {formatarNomeStatus()}
+              </Typography>
+              <Box
+                sx={{
+                  backgroundColor: getStatusColor(),
+                  width: "12px",
+                  height: "12px",
+                  borderRadius: "10px",
+                  marginLeft: "10px",
+                }}
+                className={`items-center h-30 text-justify`}
+              />
+            </Box>
+          )}
         </Box>
 
         {/* Proposta da demanda */}
@@ -122,7 +127,7 @@ const Demanda = (props) => {
         </Typography>
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
-          {props.demanda?.solicitante?.email != CookieService.getCookie().sub ? (
+          {props.demanda?.solicitante?.email != CookieService.getCookie("jwt").sub ? (
             <Typography
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
@@ -131,7 +136,7 @@ const Demanda = (props) => {
               {props.demanda.solicitante?.nome}
             </Typography>
           ) : (props.demanda?.status == "CANCELLED" || props.demanda?.status == "BACKLOG_EDICAO") &&
-            props.demanda?.solicitante?.email == CookieService.getCookie().sub ? (
+            props.demanda?.solicitante?.email == CookieService.getCookie("jwt").sub ? (
             <Button
               id="setimo"
               onClick={(e) => {

@@ -2,8 +2,10 @@ package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.HistoricoDTO;
+import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Historico;
 import net.weg.wegssm.model.entities.Usuario;
+import net.weg.wegssm.model.service.DemandaService;
 import net.weg.wegssm.model.service.DocumentoHistoricoService;
 import net.weg.wegssm.model.service.HistoricoService;
 import net.weg.wegssm.model.service.UsuarioService;
@@ -17,7 +19,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/historico")
 public class HistoricoController {
@@ -25,6 +27,7 @@ public class HistoricoController {
     private HistoricoService historicoService;
     private UsuarioService usuarioService;
     private DocumentoHistoricoService documentoHistoricoService;
+    private DemandaService demandaService;
 
     /**
      * Método GET para listar todos os históricos

@@ -25,6 +25,8 @@ const TextLanguage = (linguagem) => {
             botaoVoltar: "Voltar",
             botaoCriar: "Criar",
             botaoProximo: "Próximo",
+            mensagemFeedbackCamposObrigatorios: "Preencha todos os campos obrigatórios!",
+            mensagemFeedbackCcsFaltando: "A porcentagem deve fechar 100% em cada CCs!",
         },
         beneficios: {
             beneficios: "Benefícios",
@@ -101,6 +103,8 @@ const TextLanguage = (linguagem) => {
             gerenteResponsavel: "Gerente Responsável",
             chat: "Chat",
             historico: "Histórico",
+            emPauta: "Em Pauta!",
+            emAta: "Em Ata!",
         },
         demandaGerenciaModoVisualizacao: {
             backlog: "Backlog",
@@ -130,7 +134,7 @@ const TextLanguage = (linguagem) => {
             },
             codigo: "Código",
             titulo: "Titulo",
-            status: "Status",
+            statusString: "Status",
             data: "Data",
             motivo: "Motivo",
             nadaEncontrado: "Nada encontrado",
@@ -190,8 +194,8 @@ const TextLanguage = (linguagem) => {
             digiteProblema: "Digite o problema...",
             proposta: "Proposta:",
             digiteProposta: "Digite a proposta...",
-            frequenciaDeUso: "Frequencia de uso:",
-            digiteFrequenciaDeUso: "Digite a frequencia de uso...",
+            frequenciaDeUso: "Frequência de uso:",
+            digiteFrequenciaDeUso: "Digite a frequência de uso...",
         },
         formularioGeralProposta: {
             periodoDeExecucao: "Período de execução",
@@ -248,7 +252,7 @@ const TextLanguage = (linguagem) => {
         idiomaModal: {
             idiomas: "Idiomas",
         },
-        linhaTabelaCcs: {
+        linhaTabelaCCs: {
             titleExcluirLinha: "Excluir linha",
             digiteCodigo: "Digite o código...",
         },
@@ -293,6 +297,7 @@ const TextLanguage = (linguagem) => {
                 confirmarExclusao: "Tem certeza que deseja excluir?",
                 fecharChat: "Deseja realmente fechar este chat?",
                 tirarPropostaDePauta: "Deseja realmente tirar a proposta da pauta?",
+                alterarStatusProposta: "Essa ação pode excluir dados da proposta! Deseja mesmo alterar seu status?",
             },
             mensagensBotao: {
                 sim: "Sim",
@@ -302,6 +307,14 @@ const TextLanguage = (linguagem) => {
             },
             cancelar: "Cancelar",
         },
+        modalCriarAta: {
+            feedback: "Preencha todos os campos obrigatórios!",
+            criacaoDaAta: "Criação da Ata",
+            digiteNumeroSequencial: "Digite o número sequencial...",
+            dataDaReuniao: "Data da reunião:",
+            botaoCancelar: "Cancelar",
+            botaoCriar: "Criar",
+          },
         modalFiltro: {
             status: "Status",
             labels: {
@@ -360,7 +373,12 @@ const TextLanguage = (linguagem) => {
             informeMotivo: "Informe o motivo...",
             enviar: "Enviar",
         },
-        notificacao: {
+        notificacaoComponente: {
+            demandaDeNumero: "A demanda de número",
+            foi: "foi",
+            aprovada: "aprovada",
+            reprovada: "reprovada",
+            reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
             diasAtras: "dias atrás",
             hoje: "hoje",
             umaSemanaAtras: "1 semana atrás",
@@ -474,6 +492,8 @@ const TextLanguage = (linguagem) => {
             ataCriadaComSucesso: "Ata criada com sucesso!",
             ata: "Ata",
             numeroSequencial: "Número Sequencial",
+            dataReuniao: "Data da Reunião",
+            horaReuniao: "Hora da Reunião",
             data: "Data",
             inicio: "Início",
             fim: "Fim",
@@ -555,6 +575,9 @@ const TextLanguage = (linguagem) => {
             nomeDoSolicitante: "Nome do Solicitante",
         },
         homeGerencia: {
+            toursMinhasDemandas: {
+                tour6: "Nesta parte fica as suas demandas, podendo clicar em uma demanda para ver mais detalhes",
+            },
             toursDemandas: {
                 tour1: "Aqui é a barra de pesquisa, você pode pesquisar por algum título de alguma demanda",
                 tour2: "Esse é icone de ordenação, onde poderá ordenar os itens por ordem alfabética, por score ou por data de criação",
@@ -593,6 +616,7 @@ const TextLanguage = (linguagem) => {
                 feedback7: "Proposta atualizada com sucesso!",
                 feedback8: "Ata criada com sucesso!",
                 feedback9: "Propostas atualizadas com sucesso!",
+                feedback10: "Demanda criada com sucesso!",
             },
             demandas: "Demandas",
             criarPropostas: "Criar Propostas",
@@ -690,7 +714,16 @@ const TextLanguage = (linguagem) => {
             semParecer: "Sem parecer",
             publicada: "Publicada",
             naoPublicada: "Não publicada",
-            secaoTi: "Seção TI"
+            secaoTi: "Seção TI",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelada",
+                done: "Concluída",
+            }
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -750,6 +783,8 @@ const TextLanguage = (linguagem) => {
             botaoVoltar: "Back",
             botaoCriar: "Create",
             botaoProximo: "Next",
+            mensagemFeedbackCamposObrigatorios: "You must fill in all the fields!",
+            mensagemFeedbackCcsFaltando: "The percentage must close 100% in each CCs!",
         },
         beneficios: {
             beneficios: "Benefits",
@@ -825,6 +860,8 @@ const TextLanguage = (linguagem) => {
             gerenteResponsavel: "Responsible Manager",
             chat: "Chat",
             historico: "History",
+            emPauta: "In Agenda!",
+            emAta: "In Minutes!",
         },
         demandaGerenciaModoVisualizacao: {
             backlog: "Backlog",
@@ -853,7 +890,7 @@ const TextLanguage = (linguagem) => {
             },
             codigo: "Code",
             titulo: "Title",
-            status: "Status",
+            statusString: "Status",
             data: "Date",
             motivo: "Reason",
             nadaEncontrado: "Nothing found",
@@ -970,7 +1007,7 @@ const TextLanguage = (linguagem) => {
         idiomaModal: {
             idiomas: "Languages",
         },
-        linhaTabelaCcs: {
+        linhaTabelaCCs: {
             titleExcluirLinha: "Delete line",
             digiteCodigo: "Enter the code...",
         },
@@ -1023,6 +1060,14 @@ const TextLanguage = (linguagem) => {
                 aceitar: "Accept",
             },
             cancelar: "Cancel",
+        },
+        modalCriarAta: {
+            feedback: "Fill in all required fields!",
+            criacaoDaAta: "Creation of the Minute",
+            digiteNumeroSequencial: "Enter the sequential number...",
+            dataDaReuniao: "Meeting date:",
+            botaoCancelar: "Cancel",
+            botaoCriar: "Create",
         },
         modalFiltro: {
             status: "Status",
@@ -1081,7 +1126,12 @@ const TextLanguage = (linguagem) => {
             informeMotivo: "Enter the reason...",
             enviar: "Send",
         },
-        notificacao: {
+        notificacaoComponente: {
+            demandaDeNumero: "The demand number",
+            foi: "was",
+            aprovada: "approved",
+            reprovada: "disapproved",
+            reprovadaPorFaltaDeInformacoes: "disapproved for lack of information",
             diasAtras: "days ago",
             hoje: "today",
             umaSemanaAtras: "1 week ago",
@@ -1194,6 +1244,8 @@ const TextLanguage = (linguagem) => {
             ataCriadaComSucesso: "Minutes created successfully!",
             ata: "Minutes",
             numeroSequencial: "Seq. Num.",
+            dataReuniao: "Meeting Date",
+            horaReuniao: "Meeting Time",
             data: "Date",
             inicio: "Start",
             fim: "End",
@@ -1276,6 +1328,9 @@ const TextLanguage = (linguagem) => {
             nomeDoSolicitante: "Requester Name",
         },
         homeGerencia: {
+            toursMinhasDemandas: {
+                tour6: "In this area are your demands, where you can click on a demand to see more details.",
+            },
             toursDemandas: {
                 tour1: "Here is the search bar, where you can search by a title of a demand.",
                 tour2: "This is the sorting icon, where you can order the items alphabetically, by score or by creation date.",
@@ -1314,6 +1369,7 @@ const TextLanguage = (linguagem) => {
                 feedback7: "Proposal updated successfully!",
                 feedback8: "Guideline created successfully!",
                 feedback9: "Proposals successfully updated!",
+                feedback10: "Demand created successfully!",
             },
             demandas: "Demands",
             criarPropostas: "Create Proposals",
@@ -1410,6 +1466,15 @@ const TextLanguage = (linguagem) => {
             secaoTi: "TI Section",
             comissao: "Comission",
             direcaoGeral: "General Direction",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelled",
+                done: "Done",
+            },
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -1468,6 +1533,8 @@ const TextLanguage = (linguagem) => {
             botaoVoltar: "背部",
             botaoCriar: "创建",
             botaoProximo: "下一个",
+            mensagemFeedbackCamposObrigatorios: "您必须填写所有字段！",
+            mensagemFeedbackCcsFaltando: "每个CCs的百分比必须为100%！",
         },
         beneficios: {
             beneficios: "好处",
@@ -1543,6 +1610,8 @@ const TextLanguage = (linguagem) => {
             gerenteResponsavel: "负责经理",
             chat: "聊天",
             historico: "历史",
+            emPauta: "在议程上！",
+            emAta: "在议程上！",
         },
         demandaGerenciaModoVisualizacao: {
             backlog: "待办事项",
@@ -1571,7 +1640,7 @@ const TextLanguage = (linguagem) => {
             },
             codigo: "代码",
             titulo: "标题",
-            status: "状态",
+            statusString: "状态",
             data: "日期",
             motivo: "原因",
             nadaEncontrado: "没有找到",
@@ -1687,7 +1756,7 @@ const TextLanguage = (linguagem) => {
         idiomaModal: {
             idiomas: "语言",
         },
-        linhaTabelaCcs: {
+        linhaTabelaCCs: {
             titleExcluirLinha: "删除行",
             digiteCodigo: "输入代码...",
         },
@@ -1740,6 +1809,14 @@ const TextLanguage = (linguagem) => {
                 aceitar: "接受",
             },
             cancelar: "取消",
+        },
+        modalCriarAta: {
+            feedback: "请填写所有必填字段！",
+            criacaoDaAta: "创建会议记录",
+            digiteNumeroSequencial: "输入序列号...",
+            dataDaReuniao: "会议日期：",
+            botaoCancelar: "取消",
+            botaoCriar: "创建",
         },
         modalFiltro: {
             status: "状态",
@@ -1798,7 +1875,12 @@ const TextLanguage = (linguagem) => {
             informeMotivo: "输入原因...",
             enviar: "发送",
         },
-        notificacao: {
+        notificacaoComponente: {
+            demandaDeNumero: "需求编号",
+            foi: "已",
+            aprovada: "批准",
+            reprovada: "未批准",
+            reprovadaPorFaltaDeInformacoes: "因缺乏信息而被拒绝",
             diasAtras: "天前",
             hoje: "今天",
             umaSemanaAtras: "1周前",
@@ -1911,6 +1993,8 @@ const TextLanguage = (linguagem) => {
             ataCriadaComSucesso: "会议记录创建成功！",
             ata: "会议记录",
             numeroSequencial: "序列号",
+            dataReuniao: "会议日期",
+            horaReuniao: "会议时间",
             data: "日期",
             inicio: "开始",
             fim: "结束",
@@ -1992,6 +2076,9 @@ const TextLanguage = (linguagem) => {
             nomeDoSolicitante: "请求者名称",
         },
         homeGerencia: {
+            toursMinhasDemandas: {
+                tour6: "這部分是您的需求，可以點擊需求查看更多詳情"
+            },
             toursDemandas: {
                 tour1: "这是搜索栏，在这里您可以按标题搜索。",
                 tour2: "在这个图标中，您可以按标题（A-Z或Z-A）、分数（从高到低或从低到高）和日期（从新到旧或从旧到新）对需求进行排序。",
@@ -2030,6 +2117,7 @@ const TextLanguage = (linguagem) => {
                 feedback7: "议程创建成功！",
                 feedback8: "指南创建成功！",
                 feedback9: "提案已成功更新！",
+                feedback10: "需求创建成功！",
             },
             demandas: "需求",
             criarPropostas: "创建提案",
@@ -2126,6 +2214,15 @@ const TextLanguage = (linguagem) => {
             secaoTi: "TI 部分",
             comissao: "佣金",
             direcaoGeral: "总方向",
+            status: {
+                assessmentAprovacao: "评估",
+            },
+            statusText: {
+                assessment: "评估",
+                bussinessCase: "商业案例",
+                cancelled: "取消",
+                done: "完成",
+            },
         },
         modalAddPropostaPauta: {
             feedbacks: {
@@ -2184,6 +2281,8 @@ const TextLanguage = (linguagem) => {
             botaoVoltar: "Volver",
             botaoCriar: "Crear",
             botaoProximo: "Siguiente",
+            mensagemFeedbackCamposObrigatorios: "¡Rellena todos los campos obligatorios!",
+            mensagemFeedbackCcsFaltando: "¡La porcentaje debe cerrar 100% en cada CCs!",
         },
         beneficios: {
             beneficios: "Beneficios",
@@ -2260,6 +2359,8 @@ const TextLanguage = (linguagem) => {
             gerenteResponsavel: "Gerente responsable",
             chat: "Chat",
             historico: "Historial",
+            emPauta: "¡En la agenda!",
+            emAta: "¡En la acta!",
         },
         demandaGerenciaModoVisualizacao: {
             backlog: "Backlog",
@@ -2289,7 +2390,7 @@ const TextLanguage = (linguagem) => {
             },
             codigo: "Código",
             titulo: "Título",
-            status: "Status",
+            statusString: "Status",
             data: "Data",
             motivo: "Motivo",
             nadaEncontrado: "Nada encontrado",
@@ -2407,7 +2508,7 @@ const TextLanguage = (linguagem) => {
         idiomaModal: {
             idiomas: "Idiomas",
         },
-        linhaTabelaCcs: {
+        linhaTabelaCCs: {
             titleExcluir: "Eliminar",
             digiteCodigo: "Escribe el código...",
         },
@@ -2460,6 +2561,14 @@ const TextLanguage = (linguagem) => {
                 aceitar: "Aceptar",
             },
             cancelar: "Cancelar",
+        },
+        modalCriarAta: {
+            feedback: "¡Rellene todos los campos obligatorios!",
+            criacaoDaAta: "Creación de la Ata",
+            digiteNumeroSequencial: "Escribe el número secuencial...",
+            dataDaReuniao: "Fecha de la reunión:",
+            botaoCancelar: "Cancelar",
+            botaoCriar: "Crear",
         },
         modalFiltro: {
             status: "Status",
@@ -2518,7 +2627,12 @@ const TextLanguage = (linguagem) => {
             informeMotivo: "Informar el motivo...",
             enviar: "Enviar",
         },
-        notificacao: {
+        notificacaoComponente: {
+            demandaDeNumero: "La demanda de número",
+            foi: "fue",
+            aprovada: "aprobada",
+            reprovada: "rechazada",
+            reprovadaPorFaltaDeInformacoes: "rechazada por falta de información",
             diasAtras: "días atrás",
             hoje: "hoy",
             umaSemanaAtras: "1 semana atrás",
@@ -2632,6 +2746,8 @@ const TextLanguage = (linguagem) => {
             ataCriadaComSucesso: "Ata creada con éxito!",
             ata: "Ata",
             numeroSequencial: "Num. Seq.",
+            dataReuniao: "Fecha de la reunión",
+            horaReuniao: "Hora de la reunión",
             data: "Data",
             inicio: "Inicio",
             fim: "Fin",
@@ -2713,6 +2829,9 @@ const TextLanguage = (linguagem) => {
             nomeDoSolicitante: "Nombre del Solicitante",
         },
         homeGerencia: {
+            toursMinhasDemandas: {
+                tour6: "En esta área puede observar sus demandas. Puede hacer clic en una demanda para ver sus detalles.",
+            },
             toursDemandas: {
                 tour1: "Aquí está la barra de búsqueda, donde puede buscar por un título de alguna demanda.",
                 tour2: "Este es el ícono de ordenación, donde puede ordenar sus demandas por título (A-Z o Z-A), Score (Mayor a menor o menor a mayor) y por fecha (Más nueva a más vieja o más vieja a más nueva).",
@@ -2751,6 +2870,7 @@ const TextLanguage = (linguagem) => {
                 feedback7: "Propuesta actualizada con éxito!",
                 feedback8: "¡Pauta creada con éxito!",
                 feedback9: "¡Propuestas actualizadas con éxito!",
+                feedback10: "Demanda creada con éxito!",
             },
             demandas: "Demandas",
             criarPropostas: "Crear Propuestas",
@@ -2850,6 +2970,15 @@ const TextLanguage = (linguagem) => {
             naoPublicada: "No publicado",
             secaoTi: "Sección TI",
             direcaoGeral: "Direccion General",
+            status: {
+                assessmentAprovacao: "Assessment",
+            },
+            statusText: {
+                assessment: "Assessment",
+                bussinessCase: "Business Case",
+                cancelled: "Cancelada",
+                done: "Concluída",
+            }
         },
         modalAddPropostaPauta: {
             feedbacks: {

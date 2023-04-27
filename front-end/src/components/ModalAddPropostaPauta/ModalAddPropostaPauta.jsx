@@ -273,6 +273,11 @@ const ModalAddPropostaPauta = (props) => {
         return;
       }
 
+      // Cria uma proposta aux e altera o valor de emPauta para true
+      let propostaAux = EntitiesObjectService.proposta();
+      propostaAux = { ...props.proposta };
+      propostaAux.emPauta = true;
+
       pauta = PautaService.createPautaObjectWithPropostas(
         numSequencial,
         inputDataReuniao,
@@ -284,13 +289,12 @@ const ModalAddPropostaPauta = (props) => {
       PautaService.post(pauta).then((res) => {
         PropostaService.putWithoutArquivos(
           {
-            ...props.proposta,
+            ...propostaAux,
             publicada: check[0],
             status: "ASSESSMENT_COMISSAO",
           },
-          props.proposta.id
-        ).then((res) => {
-        });
+          propostaAux.id
+        ).then((res) => {});
       });
     } else {
       if (!check.includes(true)) {
@@ -299,15 +303,21 @@ const ModalAddPropostaPauta = (props) => {
       }
 
       pauta = listaPautas[indexPautaSelecionada];
-      pauta.propostas.push(props.proposta);
+
+      // Cria uma proposta aux e altera o valor de emPauta para true
+      let propostaAux = EntitiesObjectService.proposta();
+      propostaAux = { ...props.proposta };
+      propostaAux.emPauta = true;
+      
+      pauta.propostas.push(propostaAux);
       PautaService.put(pauta).then((res) => {
         PropostaService.putWithoutArquivos(
           {
-            ...props.proposta,
+            ...propostaAux,
             publicada: check[0],
             status: "ASSESSMENT_COMISSAO",
           },
-          props.proposta.id
+          propostaAux.id
         ).then((res) => {
           setFeedbackPautaAtualizada(true);
         });

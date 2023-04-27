@@ -29,7 +29,7 @@ import java.util.Optional;
 /**
  * Classe controller do escopo de uma demanda
  */
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/escopo")
 public class EscopoController {

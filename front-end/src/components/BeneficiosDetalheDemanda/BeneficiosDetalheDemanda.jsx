@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 
 import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, TextareaAutosize, FormControl, Select, MenuItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -8,6 +8,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import ColorModeContext from "../../service/TemaContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
@@ -42,6 +43,28 @@ const BeneficiosDetalheDemanda = (props) => {
       border: 0,
     },
   }));
+
+  const memoriaCalculo = useRef(null);
+
+  useEffect(() => {
+    if (memoriaCalculo.current && props.beneficio.memoriaCalculo !== undefined) {
+      memoriaCalculo.current.innerHTML = props.beneficio.memoriaCalculo
+    }
+  });
+
+  const getMemoriaCalculoFomartted = (memoria) => {
+    return memoria[0].toUpperCase() + memoria.substring(1).toLowerCase();
+  };
+
+  const alterarTexto = (e) => {
+    props.setBeneficio({ ...props.beneficio, memoriaCalculo: e, }, props.index);
+  }
+
+  const [memoriaEdicao, setMemoriaEdicao] = useState(props.beneficio.memoriaCalculo);
+
+  useEffect(() => {
+    setMemoriaEdicao(props.beneficio.memoriaCalculo);
+  }, [props.beneficio]);
 
   return (
     <Box className="flex items-center">
@@ -137,7 +160,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     </FormControl>
                   </td>
                   <td align="center">
-                    {props.beneficio.tipoBeneficio != "Qualitativo" && (
+                    {props.beneficio.tipoBeneficio != "QUALITATIVO" && props.beneficio.tipoBeneficio != "Qualitativo" && (
 
                       // Input de valor mensal
                       <Box
@@ -155,7 +178,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     )}
                   </td>
                   <td align="center">
-                    {props.beneficio.tipoBeneficio != "Qualitativo" && (
+                    {props.beneficio.tipoBeneficio != "QUALITATIVO" && props.beneficio.tipoBeneficio != "Qualitativo" && (
                       <FormControl
                         variant="standard"
                         sx={{ marginRight: "10px", minWidth: 90 }}
@@ -181,18 +204,16 @@ const BeneficiosDetalheDemanda = (props) => {
                     align="center"
                     className="p-3 pl-5 pr-5 flex justify-center"
                   >
-
-                    {/* Textarea da memória de cálculo */}
-                    <TextareaAutosize
-                      style={{ width: "100%", resize: "none", textAlign: "center", backgroundColor: corFundoTextArea, }}
-                      value={props.beneficio.memoriaCalculo}
-                      fontSize={FontConfig.medium}
-                      onChange={(e) => {
-                        props.setBeneficio({ ...props.beneficio, memoriaCalculo: e.target.value, }, props.index);
+                    <CaixaTextoQuill
+                      texto={memoriaEdicao}
+                      setTexto={setMemoriaEdicao}
+                      onChange={(value) => {
+                        console.log("Valor editado: ", value);
+                        alterarTexto(value)
                       }}
-                      className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                      placeholder={texts.BeneficiosDetalheDemanda.digiteMemoriaCalculo}
+                      useScrollEdit={true}
                     />
+
                   </td>
                 </TableRow>
               </TableBody>
@@ -267,13 +288,15 @@ const BeneficiosDetalheDemanda = (props) => {
                 <td align="center" className="p-3 pl-5 pr-5 flex justify-center">
 
                   {/* Memória de cálculo */}
+
                   <Typography
                     className="text-center"
                     fontSize={FontConfig.medium}
                     color="text.primary"
                     sx={{ width: "100%" }}
+                    ref={memoriaCalculo}
                   >
-                    {props.beneficio.memoriaCalculo}
+                    {getMemoriaCalculoFomartted(props.beneficio.memoriaCalculo)}
                   </Typography>
                 </td>
               </StyledTableRow>

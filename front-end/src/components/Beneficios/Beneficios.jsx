@@ -11,6 +11,7 @@ import {
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -69,6 +70,13 @@ const Beneficios = (props) => {
     props.removerBeneficio(props.index);
   };
 
+
+  const [memoriaCaixa, setMemoriaCaixa] = useState();
+
+  useEffect(() => {
+    setMemoriaCaixa(dadosBeneficio.memoriaCalculo);
+  }, [dadosBeneficio.memoriaCalculo]);
+
   return (
     <Box
       className="flex rounded max-h-52 border-2 drop-shadow-md"
@@ -114,7 +122,7 @@ const Beneficios = (props) => {
           </FormControl>
         </Box>
         {dadosBeneficio.tipoBeneficio === "Real" ||
-        dadosBeneficio.tipoBeneficio === "Potencial" ? (
+          dadosBeneficio.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -169,20 +177,35 @@ const Beneficios = (props) => {
         ) : null}
       </Box>
       {dadosBeneficio.tipoBeneficio === "Real" ||
-      dadosBeneficio.tipoBeneficio === "Potencial" ||
-      dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
-        <Box className="flex items-end" sx={{ width: "65%" }}>
-          {/* Input de memória de cálculo */}
-          <InputComLabel
-            saveInputValue={salvarMemoriaCalculo}
-            component="textarea"
-            label={texts.beneficios.memoriaCalculo}
-            placeholder={texts.beneficios.digiteMemoriaCalculo}
-            fontConfig={FontConfig.default}
-            rows="4"
-            sx={{ width: "100%" }}
-            texto={dadosBeneficio.memoriaCalculo}
-          />
+        dadosBeneficio.tipoBeneficio === "Potencial" ||
+        dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
+        <Box className="flex items-center" sx={{ width: "65%" }}>
+          {/* Input que permite estilização para a memória de cálculo do benefício */}
+          <Box className="flex flex-col overflow-auto w-full h-full">
+            <Box className="flex">
+              <Typography fontSize={FontConfig.default} fontWeight={600}>{texts.beneficios.memoriaCalculo}</Typography>
+
+              <Typography
+                fontSize={props.fontConfig}
+                sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
+                className="text-red-600"
+                gutterBottom
+              >
+                *
+              </Typography>
+            </Box>
+
+            <Box sx={{ borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
+              <CaixaTextoQuill
+                placeholder={texts.beneficios.digiteMemoriaCalculo}
+                texto={memoriaCaixa}
+                setTexto={setMemoriaCaixa}
+                onChange={(value) => {
+                  salvarMemoriaCalculo(value);
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
       ) : null}
       <Box

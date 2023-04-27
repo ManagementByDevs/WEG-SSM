@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Classe controller para os fóruns
  */
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/forum")
 public class ForumController {
