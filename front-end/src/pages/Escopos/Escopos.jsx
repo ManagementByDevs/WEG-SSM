@@ -63,7 +63,7 @@ const Escopos = () => {
   }, [usuario]);
 
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((user) => {
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
       setUsuario(user);
     });
   }

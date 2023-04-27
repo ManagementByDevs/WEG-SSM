@@ -19,7 +19,12 @@ import java.io.IOException;
 public class AutenticacaoFiltro extends OncePerRequestFilter {
 
     /**
-     * TokenUtils usado para a validação dos tokens e busca de cookies
+     * CookieUtils usado para a busca de cookies
+     */
+    private CookieUtils cookieUtils;
+
+    /**
+     * CookieUtils usado para a validação dos tokens
      */
     private TokenUtils tokenUtils;
 
@@ -39,19 +44,20 @@ public class AutenticacaoFiltro extends OncePerRequestFilter {
             return;
         }
 
-        String token = tokenUtils.buscarCookie(request);
-        Boolean valido = tokenUtils.validarToken(token);
+        try {
+            String token = cookieUtils.getTokenCookie(request);
+            tokenUtils.validarToken(token);
+            UserJpa user = cookieUtils.getUserCookie(request);
 
-        if (valido) {
-            String usuarioEmail = tokenUtils.getUsuarioEmail(token);
-            UserDetails usuario = jpaService.loadUserByUsername(usuarioEmail);
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(usuario.getUsername(), null, usuario.getAuthorities());
+            cookieUtils.renovarCookie(request,"jwt");
+            cookieUtils.renovarCookie(request, "user");
+
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             filterChain.doFilter(request, response);
-            return;
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
-
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
 }

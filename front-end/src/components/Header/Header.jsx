@@ -22,8 +22,8 @@ const Header = () => {
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
-    if (!cookieService.getCookie()) return;
-    UsuarioService.getUsuarioByEmail(cookieService.getCookie().sub).then((user) => {
+    if (!cookieService.getCookie("jwt")) return;
+    UsuarioService.getUsuarioByEmail(cookieService.getCookie("jwt").sub).then((user) => {
       setUsuario(user);
     })
   }, []);

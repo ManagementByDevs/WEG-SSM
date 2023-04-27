@@ -81,9 +81,8 @@ const UserModal = (props) => {
 
   // UseEffect para pegar o usuário e arrumar as preferências dele ao carregar a tela
   useEffect(() => {
-    if (!CookieService.getCookie()) return;
     UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie().sub
+      CookieService.getCookie("jwt").sub
     ).then((e) => {
       setUsuario(e);
       arrangePreferences();
@@ -107,8 +106,8 @@ const UserModal = (props) => {
    * Pega as preferências do usuário e as aplica no sistema
    */
   const arrangePreferences = () => {
-    if (!CookieService.getCookie()) return;
-    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
 
       if (preferencias.themeMode != mode) {
         setTemaDark(!temaDark);
@@ -147,8 +146,8 @@ const UserModal = (props) => {
    * @param {String} newPreference
    */
   const saveNewPreference = (preference, newPreference) => {
-    if (!CookieService.getCookie()) return;
-    UsuarioService.getPreferencias(CookieService.getCookie().sub).then((preferencias) => {
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
       switch (preference) {
         case "themeMode":
           preferencias.themeMode = newPreference;

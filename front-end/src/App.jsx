@@ -181,8 +181,11 @@ const ProtectedRoute = ({
   redirectPath = "/login",
 }) => {
 
-  const cookie = CookieService.getCookie();
-  if (cookie != null && cookie.exp > Math.floor(Date.now() / 1000)) {
+  const cookie = CookieService.getCookie("jwt");
+  const userJpa = CookieService.getCookie("user");
+
+  if (cookie != null && cookie.exp > Math.floor(Date.now() / 1000) &&
+    (tiposUsuarioAllowed.includes(userJpa.authorities[0].authority) || tiposUsuarioAllowed == "")) {
     return children ? children : <Outlet />;
   } else {
     return <Navigate to={redirectPath} replace />;

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -36,7 +37,7 @@ public class AutenticacaoConfig {
      */
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jpaService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+        auth.userDetailsService(jpaService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     /**
@@ -83,7 +84,7 @@ public class AutenticacaoConfig {
 
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        httpSecurity.addFilterBefore(new AutenticacaoFiltro(new TokenUtils(), jpaService), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new AutenticacaoFiltro(new CookieUtils(), new TokenUtils(), jpaService), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

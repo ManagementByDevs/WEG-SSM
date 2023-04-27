@@ -48,7 +48,7 @@ const DetalhesDemandaPagina = () => {
   // Função utilizada para buscar o usuário que está logado no sistema
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie().sub
+      CookieService.getCookie("jwt").sub
     ).then((e) => {
       setUsuario(e);
     });

@@ -29,6 +29,7 @@ public class Usuario {
     private String nome;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String senha;
 
     @Column(nullable = false, length = 100, unique = true)

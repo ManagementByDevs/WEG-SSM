@@ -1,5 +1,6 @@
 package net.weg.wegssm.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
@@ -7,6 +8,8 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -22,12 +25,10 @@ public class TokenUtils {
     /**
      * Função que gera os tokens de autenticação, com o email usuário sendo o "subject" principal do token
      */
-    public String gerarToken(Authentication authentication) {
-        UserJpa userJpa = (UserJpa) authentication.getPrincipal();
-
+    public String gerarToken(UserJpa usuario) {
         return Jwts.builder()
                 .setIssuer("WEG SSM")
-                .setSubject(userJpa.getUsuario().getEmail())
+                .setSubject(usuario.getUsuario().getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + 36000000))
                 .signWith(SignatureAlgorithm.HS256, senhaForte)
@@ -35,24 +36,13 @@ public class TokenUtils {
     }
 
     /**
-     * Função para gerar um cookie de autenticação a partir de um token criado na função "gerarToken"
-     */
-    public Cookie gerarCookie(Authentication authentication) {
-        Cookie cookie = new Cookie("jwt", gerarToken(authentication));
-        cookie.setPath("/");
-        cookie.setMaxAge(64800);
-        return cookie;
-    }
-
-    /**
      * Função que valida se um token recebido é válido para autenticação do usuário
      */
-    public Boolean validarToken(String token) {
+    public void validarToken(String token) {
         try {
             Jwts.parser().setSigningKey(senhaForte).parseClaimsJws(token);
-            return true;
         } catch (Exception e) {
-            return false;
+            throw new RuntimeException("Token Inválido!");
         }
     }
 
@@ -65,18 +55,5 @@ public class TokenUtils {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-    }
-
-    /**
-     * Função para buscar o cookie de autenticação salvo na requisição
-     */
-    public String buscarCookie(HttpServletRequest request) {
-        Cookie cookie = WebUtils.getCookie(request, "jwt");
-
-        if (cookie != null) {
-            return cookie.getValue();
-        }
-
-        throw new RuntimeException("Cookie não encontrado!");
     }
 }

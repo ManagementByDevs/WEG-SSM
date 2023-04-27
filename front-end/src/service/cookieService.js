@@ -4,9 +4,14 @@ import Cookies from 'js-cookie';
 class CookieService {
 
     /** Função para buscar o cookie salvo no navegador e chamar "decriptarToken" para decriptá-lo */
-    getCookie() {
-        const cookieEncriptado = Cookies.get('jwt');
-        const cookieDecriptado = this.decriptarToken(cookieEncriptado);
+    getCookie(nome) {
+        const cookieEncriptado = Cookies.get(nome);
+        let cookieDecriptado = null;
+        if (nome == "jwt") {
+            cookieDecriptado = this.decriptarToken(cookieEncriptado);
+        } else {
+            cookieDecriptado = this.decriptarUser(cookieEncriptado);
+        }
         return cookieDecriptado;
     }
 
@@ -15,6 +20,7 @@ class CookieService {
         try {
             const parts = cookieEncriptado.split('.');
             if (parts.length !== 3) {
+                console.log('errp')
                 throw new Error('Invalid JWT token');
             }
             const payload = parts[1];
@@ -22,6 +28,19 @@ class CookieService {
         } catch (error) {
             return null;
         }
+    }
+
+    decriptarUser(cookieEncriptado) {
+        try {
+            return JSON.parse(decodeURIComponent(cookieEncriptado));
+        } catch (error) {
+            return null;
+        }
+    }
+
+    getUser() {
+        const cookie = this.getCookie("user");
+        return cookie.usuario;
     }
 
     /** Função para retirar um cookie salvo, recebendo seu nome como parâmetro */

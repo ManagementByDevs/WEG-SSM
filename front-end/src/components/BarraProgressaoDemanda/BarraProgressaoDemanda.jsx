@@ -122,8 +122,8 @@ const BarraProgressaoDemanda = () => {
   }, [ultimoEscopo]);
 
   const buscarUsuario = () => {
-    if(!CookieService.getCookie()) navigate("/login");
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((user) => {
+    if(!CookieService.getCookie("jwt")) navigate("/login");
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
       setUsuario(user);
     })
   }

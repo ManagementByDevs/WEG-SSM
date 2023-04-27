@@ -243,7 +243,7 @@ const Chat = () => {
 
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie().sub
+      CookieService.getCookie("jwt").sub
     ).then((e) => {
       setUsuarioId(e);
     });

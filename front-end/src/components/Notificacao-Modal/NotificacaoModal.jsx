@@ -53,9 +53,9 @@ const NotificacaoModal = (props) => {
 
   // Função para buscar as notificações não lidas do usuário
   const buscarNotificacoes = () => {
-    if(!CookieService.getCookie()) return;
+    if(!CookieService.getCookie("jwt")) return;
     UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie().sub
+      CookieService.getCookie("jwt").sub
     ).then((user) => {
       NotificacaoService.getByUserIdAndNotVisualizado(user.id)
         .then((response) => {
