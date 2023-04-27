@@ -15,9 +15,11 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
   function handleChange(value) {
     setTexto(prevTexto => {
       const novoTexto = value;
+      
       if (onChange) {
         onChange(novoTexto);
       }
+
       return novoTexto;
     });
   }
@@ -25,6 +27,7 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
   useEffect(() => {
     if (quillRef.current) {
       const quill = quillRef.current.getEditor();
+      
       quill.on("text-change", () => {
         const value = quillRef.current.getEditor().root.innerHTML;
         if (value !== texto && onChange) {
