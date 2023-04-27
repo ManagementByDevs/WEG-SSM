@@ -47,12 +47,12 @@ const FormularioDadosDemanda = (props) => {
   return (
     <>
       <Box
-        className="flex justify-center items-center"
-        sx={{ minHeight: "45rem", minWidth: "50rem", overflowY: "auto" }}
+        className="flex h-full justify-center items-center"
+        sx={{ minWidth: "50rem", overflowY: "auto" }}
       >
         <Box
           className="w-3/4 flex flex-col justify-evenly"
-          sx={{ height: "85%" , marginBottom: "1rem", marginTop: "1rem"}}
+          sx={{ marginBottom: "1rem", marginTop: "3rem" }}
         >
           {/* Input de título */}
 
@@ -66,7 +66,7 @@ const FormularioDadosDemanda = (props) => {
           />
 
           <Box>
-            <Box className="flex">
+            <Box className="flex" sx={{marginTop: "3rem"}}>
               <Typography fontSize={FontConfig.default} fontWeight={600}>
                 {texts.formularioDadosDemanda.problema}
               </Typography>
@@ -76,7 +76,6 @@ const FormularioDadosDemanda = (props) => {
                 sx={{
                   fontWeight: "800",
                   cursor: "default",
-                  margin: "0 .2% .2% .2%",
                 }}
                 className="text-red-600"
                 gutterBottom
@@ -87,7 +86,6 @@ const FormularioDadosDemanda = (props) => {
 
             <Box
               sx={{
-                margin: "0 .2% .2% .2%",
                 borderLeft: "solid 4px",
                 borderColor: "primary.main",
               }}
@@ -104,7 +102,7 @@ const FormularioDadosDemanda = (props) => {
           </Box>
 
           <Box>
-            <Box className="flex">
+            <Box className="flex" sx={{marginTop: "3rem"}}>
               <Typography fontSize={FontConfig.default} fontWeight={600}>
                 {texts.formularioDadosDemanda.proposta}
               </Typography>
@@ -114,7 +112,6 @@ const FormularioDadosDemanda = (props) => {
                 sx={{
                   fontWeight: "800",
                   cursor: "default",
-                  margin: "0 .2% .2% .2%",
                 }}
                 className="text-red-600"
                 gutterBottom
@@ -125,7 +122,6 @@ const FormularioDadosDemanda = (props) => {
 
             <Box
               sx={{
-                margin: "0 .2% .2% .2%",
                 borderLeft: "solid 4px",
                 borderColor: "primary.main",
               }}
@@ -141,7 +137,7 @@ const FormularioDadosDemanda = (props) => {
             </Box>
           </Box>
 
-          <Box sx={{ width: "40%", margin: "0 .2% .2% .2%" }}>
+          <Box sx={{ width: "40%", marginTop: "3rem" }}>
             {/* Input de frequência */}
             <InputComLabel
               texto={props.dados.frequencia}
