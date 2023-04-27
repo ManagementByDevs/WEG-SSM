@@ -1,10 +1,8 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.AnexoDTO;
 import net.weg.wegssm.model.entities.Anexo;
 import net.weg.wegssm.model.service.AnexoService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,6 @@ import java.io.IOException;
  */
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/anexo")
 public class AnexoController {
 

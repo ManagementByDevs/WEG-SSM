@@ -11,7 +11,7 @@ class ExportExcelService {
             form.append("demandas_backlog", demanda);
         }
 
-        return (await axios.post(`${excel}/demandas_backlog`, form, { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.post(`${excel}/demandas_backlog`, form, { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async exportDemandasAssessmentToExcel(listaDemandas) {
@@ -22,7 +22,7 @@ class ExportExcelService {
             form.append("demandas_assessment", demanda);
         }
 
-        return (await axios.post(`${excel}/demandas_assessment`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.post(`${excel}/demandas_assessment`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async exportPropostasToExcel(listaPropostas) {
@@ -33,7 +33,7 @@ class ExportExcelService {
             form.append("propostas", proposta);
         }
 
-        return (await axios.post(`${excel}/propostas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.post(`${excel}/propostas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async exportPautasToExcel(listaPautas) {
@@ -44,7 +44,7 @@ class ExportExcelService {
             form.append("pautas", pauta);
         }
 
-        return (await axios.post(`${excel}/pautas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.post(`${excel}/pautas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async exportAtasToExcel(listaAtas) {
@@ -55,7 +55,7 @@ class ExportExcelService {
             form.append("atas", ata);
         }
 
-        return (await axios.post(`${excel}/atas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" } })).data;
+        return (await axios.post(`${excel}/atas`, form,  { responseType: 'arraybuffer', headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
 }

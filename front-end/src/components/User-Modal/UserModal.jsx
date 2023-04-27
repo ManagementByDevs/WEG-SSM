@@ -11,7 +11,9 @@ import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlin
 import FontContext from "../../service/FontContext";
 import ColorModeContext from "../../service/TemaContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+
 import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
 
 // Adiciona estilos personalizados para a aparência do Switch, incluindo tamanho, cores, imagens e animações
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -62,18 +64,30 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const UserModal = (props) => {
+
+  //useContext para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // UseState com as informações do usuário, recebidas no useEffect ao criar o componente
+  const [usuario, setUsuario] = useState({
+    id: 0,
+    email: "",
+    nome: "",
+    senha: "",
+    tipo_usuario: 0,
+    visibilidade: 1,
+    departamento: null,
+  });
+
   // UseEffect para pegar o usuário e arrumar as preferências dele ao carregar a tela
   useEffect(() => {
-    UsuarioService.getUsuarioById(
-      parseInt(localStorage.getItem("usuarioId"))
+    UsuarioService.getUsuarioByEmail(
+      CookieService.getCookie("jwt").sub
     ).then((e) => {
       setUsuario(e);
       arrangePreferences();
     });
   }, []);
-
-  //useContext para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // useContext que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -92,17 +106,39 @@ const UserModal = (props) => {
    * Pega as preferências do usuário e as aplica no sistema
    */
   const arrangePreferences = () => {
-    let theme = UsuarioService.getPreferencias().themeMode;
-    let fontSizeDefault = UsuarioService.getPreferencias().fontSizeDefault;
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
 
-    if (theme != mode) {
-      setTemaDark(!temaDark);
-    }
+      if (preferencias.themeMode != mode) {
+        setTemaDark(!temaDark);
+      }
 
-    if (fontSizeDefault != FontConfig.default) {
-      setFontConfig(getUserFontSizePreference());
-    }
+      if (preferencias.fontSizeDefault != FontConfig.default) {
+        setFontConfig(getUserFontSizePreference(preferencias));
+      }
+      alterarValorSlider(preferencias);
+    })
   };
+
+  const alterarValorSlider = (preferencias) => {
+    switch(preferencias.fontSizeDefault) {
+      case "18px":
+        setValueSlider(2);
+        break;
+      case "16px":
+        setValueSlider(1);
+        break;
+      case "14px":
+        setValueSlider(0);
+        break;
+      case "12px":
+        setValueSlider(-1);
+        break;
+      default:
+        setValueSlider(-2);
+        break;
+    }
+  }
 
   /**
    * Salva as novas preferências do usuário no banco de dados
@@ -110,44 +146,31 @@ const UserModal = (props) => {
    * @param {String} newPreference
    */
   const saveNewPreference = (preference, newPreference) => {
-    let user = UsuarioService.getUser();
-    let preferencias = UsuarioService.getPreferencias();
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
+      switch (preference) {
+        case "themeMode":
+          preferencias.themeMode = newPreference;
+          break;
+        case "fontSizeDefault":
+          preferencias.fontSizeDefault = newPreference;
+          break;
+      }
 
-    switch (preference) {
-      case "themeMode":
-        preferencias.themeMode = newPreference;
-        break;
-      case "fontSizeDefault":
-        preferencias.fontSizeDefault = newPreference;
-        break;
-    }
+      usuario.preferencias = JSON.stringify(preferencias);
 
-    user.preferencias = JSON.stringify(preferencias);
-
-    UsuarioService.updateUser(user.id, user).then((e) => {
-      UsuarioService.updateUserInLocalStorage();
-    });
+      if (usuario.id) {
+        UsuarioService.updateUser(usuario.id, usuario).then((e) => { });
+      }
+    })
   };
 
   /**
    * Retorna o objeto de FontConfig que condiz com o valor de fontSizeDefault do usuário salvo nas preferências do usuário
    * @returns {{verySmall: "", small: "", default: "", medium: "", big: "", veryBig: "", smallTitle: "", title: ""} | {verySmall: "10px", small: "12px", default: "14px", medium: "16px", big: "18px", veryBig: "20px", smallTitle: "30px", title: "36px"}}
    */
-  const getUserFontSizePreference = () => {
-    let fontDefaultSize = UsuarioService.getPreferencias().fontSizeDefault;
-
-    if (!fontDefaultSize) {
-      return {
-        verySmall: "10px",
-        small: "12px",
-        default: "14px",
-        medium: "16px",
-        big: "18px",
-        veryBig: "20px",
-        smallTitle: "30px",
-        title: "36px",
-      };
-    }
+  const getUserFontSizePreference = (preferencias) => {
+    let fontDefaultSize = preferencias.fontSizeDefault;
 
     switch (fontDefaultSize) {
       case "10px":
@@ -226,7 +249,9 @@ const UserModal = (props) => {
 
   // UseEffect para salvar a nova preferência de fonte do usuário no banco de dados
   useEffect(() => {
-    saveNewPreference("fontSizeDefault", FontConfig.default);
+    if (FontConfig) {
+      saveNewPreference("fontSizeDefault", FontConfig.default);
+    }
   }, [FontConfig]);
   // ********************************************** Fim Preferências **********************************************
 
@@ -234,17 +259,6 @@ const UserModal = (props) => {
 
   // UseState para poder visualizar e alterar o chat icon
   const [chatIcon, setChatIcon] = useState(ChatBubbleOutlineOutlinedIcon);
-
-  // UseState com as informações do usuário, recebidas no useEffect ao criar o componente
-  const [usuario, setUsuario] = useState({
-    id: 0,
-    email: "",
-    nome: "",
-    senha: "",
-    tipo_usuario: 0,
-    visibilidade: 1,
-    departamento: null,
-  });
 
   // UseState para poder visualizar e alterar a visibilidade do menu
   const [anchorEl, setAnchorEl] = useState(null);
@@ -264,8 +278,7 @@ const UserModal = (props) => {
 
   // Função para sair da conta do usuário
   const sair = () => {
-    localStorage.removeItem("usuarioId");
-    localStorage.removeItem("user");
+    CookieService.limparCookie('jwt');
   };
 
   // Personalizar o slider da fonte
@@ -363,9 +376,7 @@ const UserModal = (props) => {
   };
 
   // UseState para poder visualizar e alterar o value do slider
-  const [valueSlider, setValueSlider] = useState(
-    getValueByContext(UsuarioService.getPreferencias().fontSizeDefault)
-  );
+  const [valueSlider, setValueSlider] = useState(2);
 
   // Função para mudar o value do slider
   const handleChange = (event, newValue) => {
@@ -489,7 +500,7 @@ const UserModal = (props) => {
           <Typography
             className="px-4 pt-1.5"
             color={"text.primary"}
-            fontSize={FontConfig.medium}
+            fontSize={FontConfig?.medium}
             sx={{ fontWeight: 600 }}
           >
             {usuario.nome}
@@ -498,7 +509,7 @@ const UserModal = (props) => {
             <Typography
               className="px-4"
               color={"text.secondary"}
-              fontSize={FontConfig.medium}
+              fontSize={FontConfig?.medium}
             >
               {usuario.departamento.nome}
             </Typography>
@@ -514,7 +525,7 @@ const UserModal = (props) => {
             <BorderColorOutlinedIcon />
             <Typography
               color={"text.primary"}
-              fontSize={FontConfig.medium}
+              fontSize={FontConfig?.medium}
               sx={{ fontWeight: 500 }}
             >
               {texts.userModal.escopos}
@@ -540,7 +551,7 @@ const UserModal = (props) => {
             )}
             <Typography
               color={"text.primary"}
-              fontSize={FontConfig.medium}
+              fontSize={FontConfig?.medium}
               sx={{ fontWeight: 500 }}
             >
               {texts.userModal.chats}
@@ -557,7 +568,7 @@ const UserModal = (props) => {
               <Tooltip title={texts.userModal.diminuirFonte}>
                 <IconButton onClick={diminuirValue} size="small">
                   <Typography
-                    fontSize={FontConfig.default}
+                    fontSize={FontConfig?.default}
                     sx={{ cursor: "pointer" }}
                   >
                     {texts.userModal.A}
@@ -568,7 +579,7 @@ const UserModal = (props) => {
               <Box className="w-24 h-8">
                 <SliderMark
                   aria-label="Small steps"
-                  defaultValue={getValueByContext(FontConfig.default)}
+                  defaultValue={getValueByContext(FontConfig?.default)}
                   step={1}
                   value={valueSlider}
                   onChange={handleChange}
@@ -583,7 +594,7 @@ const UserModal = (props) => {
               <Tooltip title={texts.userModal.aumentarFonte}>
                 <IconButton onClick={aumentarValue} size="small">
                   <Typography
-                    fontSize={FontConfig.veryBig}
+                    fontSize={FontConfig?.veryBig}
                     sx={{ cursor: "pointer" }}
                   >
                     {texts.userModal.A}
@@ -618,7 +629,7 @@ const UserModal = (props) => {
             className="px-4 pt-1.5"
             color={"icon.main"}
             variant="body2"
-            fontSize={FontConfig.medium}
+            fontSize={FontConfig?.medium}
             align="right"
             sx={{ fontWeight: 600, mt: "-16px" }}
           >

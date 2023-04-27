@@ -9,8 +9,10 @@ import Espanha from "../../assets/espanha.png";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-import UsuarioService from "../../service/usuarioService";
 import TextLanguage from "../../service/TextLanguage";
+
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
 
 // Modal para selecionar o idioma do sistema
 const IdiomaModal = () => {
@@ -59,47 +61,45 @@ const IdiomaModal = () => {
    * Pega as preferências do usuário e as aplica no sistema
    */
   const arrangePreferences = () => {
-    let lang = UsuarioService.getPreferencias().lang;
-
-    if (lang == "pt" && idioma != Brasil) setIdioma(Brasil);
-    else if (lang == "ch" && idioma != China) setIdioma(China);
-    else if (lang == "en" && idioma != EstadosUnidos) setIdioma(EstadosUnidos);
-    else if (lang == "es" && idioma != Espanha) setIdioma(Espanha);
+    if (!CookieService.getCookie()) return;
+    UsuarioService.getPreferencias(CookieService.getCookie()?.sub).then((preferencias) => {
+      if (preferencias.lang == "pt" && idioma != Brasil) setIdioma(Brasil);
+      else if (preferencias.lang == "ch" && idioma != China) setIdioma(China);
+      else if (preferencias.lang == "en" && idioma != EstadosUnidos) setIdioma(EstadosUnidos);
+      else if (preferencias.lang == "es" && idioma != Espanha) setIdioma(Espanha);
+    });
   };
 
   /**
    * Salva as novas preferências do usuário no banco de dados
    */
   const saveNewPreference = () => {
-    let user = UsuarioService.getUser();
+    if (!CookieService.getCookie()) return;
 
-    toggleLanguage();
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie()?.sub).then((user) => {
+      toggleLanguage();
+      let preferencias = JSON.parse(user.preferencias);
 
-    if (!user) return;
+      switch (idioma) {
+        case Brasil:
+          preferencias.lang = "pt";
+          break;
+        case China:
+          preferencias.lang = "ch";
+          break;
+        case EstadosUnidos:
+          preferencias.lang = "en";
+          break;
+        case Espanha:
+          preferencias.lang = "es";
+          break;
+        default:
+          preferencias.lang = "en";
+      }
 
-    let preferencias = UsuarioService.getPreferencias();
+      user.preferencias = JSON.stringify(preferencias);
 
-    switch (idioma) {
-      case Brasil:
-        preferencias.lang = "pt";
-        break;
-      case China:
-        preferencias.lang = "ch";
-        break;
-      case EstadosUnidos:
-        preferencias.lang = "en";
-        break;
-      case Espanha:
-        preferencias.lang = "es";
-        break;
-      default:
-        preferencias.lang = "en";
-    }
-
-    user.preferencias = JSON.stringify(preferencias);
-
-    UsuarioService.updateUser(user.id, user).then((e) => {
-      UsuarioService.updateUserInLocalStorage();
+      UsuarioService.updateUser(user.id, user).then((e) => { });
     });
   };
 
@@ -136,7 +136,7 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(EstadosUnidos)}>
           <img className="h-5 w-7" src={EstadosUnidos} />
-          <Typography fontSize={FontConfig.default}>English</Typography>
+          <Typography fontSize={FontConfig?.default}>English</Typography>
         </MenuItem>
 
         {/* Divisor entre um item de idioma e outro */}
@@ -147,7 +147,7 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(Brasil)}>
           <img className="h-5 w-7" src={Brasil} />
-          <Typography fontSize={FontConfig.default}>
+          <Typography fontSize={FontConfig?.default}>
             Português (Brasil)
           </Typography>
         </MenuItem>
@@ -160,7 +160,7 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(China)}>
           <img className="h-5 w-7" src={China} />
-          <Typography fontSize={FontConfig.default}>中国人</Typography>
+          <Typography fontSize={FontConfig?.default}>中国人</Typography>
         </MenuItem>
 
         {/* Divisor entre um item de idioma e outro */}
@@ -171,7 +171,7 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(Espanha)}>
           <img className="h-6 w-7" src={Espanha} />
-          <Typography fontSize={FontConfig.default}>Español</Typography>
+          <Typography fontSize={FontConfig?.default}>Español</Typography>
         </MenuItem>
       </Menu>
     </div>

@@ -7,6 +7,8 @@ import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutl
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
 
 // Componente utilizado para mostrar o caminho atual do usuário no sistema
 const Caminho = (props) => {
@@ -54,7 +56,14 @@ const Caminho = (props) => {
           className="cursor-pointer"
           sx={{ fontSize: "32px" }}
           onClick={() => {
-            navigate("/");
+            if(!CookieService.getCookie()) navigate("/");
+            UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((usuario) => {
+              if(usuario.tipoUsuario == "SOLICITANTE") {
+                navigate("/home");
+              } else {
+                navigate("/home-gerencia");
+              }
+            })
           }}
         />
       </Tooltip>

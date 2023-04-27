@@ -111,7 +111,7 @@ const ModalOrdenacao = (props) => {
           </Grid>
           {/* Checkboxes de Data */}
           <Grid container spacing={0}>
-            <Grid item xs={11.4}>
+            <Grid item xs={'auto'}>
               <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
                 <Typography
                   sx={{ color: "secundary.main", fontSize: FontConfig.big, fontWeight: "600", }}

@@ -31,9 +31,16 @@ import FontContext from "../../service/FontContext";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
+import ClipLoader from 'react-spinners/ClipLoader';
+
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
 
 // Tela para mostrar as notificações do usuário no sistema
 const Notificacao = () => {
+
+  const [usuario, setUsuario] = useState(null);
+
   // useContext para alterar o idioma do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -62,6 +69,9 @@ const Notificacao = () => {
   // Total de páginas do componente de paginação
   const [totalPaginas, setTotalPaginas] = useState(1);
 
+  // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
+  const [carregamento, setCarregamento] = useState(false);
+
   // UseState para controlar o estado do feedback de lido/não lido
   const [feedback, setFeedback] = useState({
     visibilidade: false,
@@ -69,10 +79,15 @@ const Notificacao = () => {
     mensagem: "sfd",
   });
 
+  useEffect(() => {
+    setCarregamento(true);
+    buscarUsuario();
+  }, [])
+
   // UseEffect utilizado para buscar as notificações do usuário
   useEffect(() => {
     buscarNotificacoes();
-  }, [page, paginaAtual, tamanhoPagina]);
+  }, [usuario]);
 
   // Linhas da tabela
   const [rows, setRows] = useState([]);
@@ -121,6 +136,12 @@ const Notificacao = () => {
 
     return rowsAux;
   };
+
+  const buscarUsuario = () => {
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
+      setUsuario(user);
+    });
+  }
 
   // Formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd
   const formatDate = (fullDate) => {
@@ -207,15 +228,16 @@ const Notificacao = () => {
 
   // Busca as notificações do usuário no banco de dados
   const buscarNotificacoes = () => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    NotificacaoService.getByUserId(
-      parseInt(user.id),
-      "size=" + tamanhoPagina + "&page=" + paginaAtual
-    ).then((data) => {
-      setDadosNotificacao(data.content);
-      setRows(createRows(data.content));
-      setTotalPaginas(data.totalPages);
-    });
+    if (usuario) {
+      NotificacaoService.getByUserId(
+        parseInt(usuario?.id),
+        "size=" + tamanhoPagina + "&page=" + paginaAtual
+      ).then((data) => {
+        setRows(createRows(data.content));
+        setTotalPaginas(data.totalPages);
+        setCarregamento(false);
+      });
+    }
   };
 
   // Delete uma notificação no banco de dados
@@ -309,170 +331,176 @@ const Notificacao = () => {
           </Box>
           {totalPaginas >= 1 ? (
             <>
-              <Box className="w-full flex justify-center">
-                <Box
-                  className="w-10/12 h-10 flex justify-between "
-                  color={"icon.main"}
-                  sx={{ margin: "5px" }}
-                >
-                  {rows.find((row) => row.checked) ? (
-                    <Box className="w-1/12 flex justify-center">
-                      <Tooltip title={texts.notificacao.deletar}>
-                        <IconButton
-                          onClick={() => {
-                            setOpenModalConfirmMultiDelete(true);
-                          }}
-                        >
-                          <DeleteOutlineOutlinedIcon
-                            sx={{ color: "primary.main" }}
-                          />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={texts.notificacao.marcarComoLido}>
-                        <IconButton onClick={onMultiReadOrUnreadClick}>
-                          {rows.every((row) => row.visualizado) ? (
-                            <MarkEmailUnreadOutlinedIcon
-                              sx={{ color: "primary.main" }}
-                            />
-                          ) : (
-                            <MarkEmailReadOutlinedIcon
-                              sx={{ color: "primary.main" }}
-                            />
-                          )}
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  ) : (
-                    <Box />
-                  )}
+              {carregamento ? (
+                <Box className="mt-6 w-full h-full flex justify-center items-center">
+                  <ClipLoader color="#00579D" size={110} />
                 </Box>
-              </Box>
-              <Box className="w-10/12 flex justify-center">
-                <Paper sx={{ width: "100%" }} square>
-                  <Table className="mb-8" sx={{ width: "100%" }}>
-                    <TableHead>
-                      <TableRow sx={{ backgroundColor: "primary.main" }}>
-                        <th className="w-1/12">
-                          <Checkbox
-                            sx={{
-                              color: "white",
-                              "&.Mui-checked": {
-                                color: "white",
-                              },
-                            }}
-                            checked={
-                              rows.every((row) => row.checked) &&
-                              rows.length > 0
-                            }
-                            onChange={(e) => {
-                              onSelectAllClick(e.target.checked);
-                            }}
-                          />
-                        </th>
-                        <th className="text-white">
-                          <Typography fontSize={FontConfig.big}>
-                            {texts.notificacao.tipo}
-                          </Typography>
-                        </th>
-                        <th className="text-white">
-                          <Typography fontSize={FontConfig.big}>
-                            {texts.notificacao.titulo}
-                          </Typography>
-                        </th>
-                        <th className="w-1/10 text-white">
-                          <Typography fontSize={FontConfig.big}>
-                            {texts.notificacao.data}
-                          </Typography>
-                        </th>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row, index) => (
-                        <TableRow
-                          className="drop-shadow-lg noticacao-table-row"
-                          selected={!row.visualizado}
-                          hover
-                          key={index}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <td className="text-center">
-                            <Checkbox
-                              checked={row.checked}
-                              onChange={(e) => {
-                                onSelectRowClick(e, index);
+              ) : (
+                <>
+                  <Box className="w-full flex justify-center">
+                    <Box
+                      className="w-10/12 h-10 flex justify-between "
+                      color={"icon.main"}
+                      sx={{ margin: "5px" }}
+                    >
+                      {rows.find((row) => row.checked) ? (
+                        <Box className="w-1/12 flex justify-center">
+                          <Tooltip title={texts.notificacao.deletar}>
+                            <IconButton
+                              onClick={() => {
+                                setOpenModalConfirmMultiDelete(true);
                               }}
-                            />
-                          </td>
-                          <td className="text-center">
-                            <NotificacaoDetermineIcon
-                              tipoIcone={row.tipo_icone}
-                            />
-                          </td>
-                          <td className="text-left">
-                            <Typography fontSize={FontConfig.medium}>
-                              {row.titulo}
-                            </Typography>
-                          </td>
-                          <td className="text-center">
-                            <Typography
-                              className="notificacao-table-row-td"
-                              fontSize={FontConfig.default}
                             >
-                              {row.date}
-                            </Typography>
-                            <Typography className="notificacao-table-row-td-action">
-                              {row.visualizado ? (
-                                <Tooltip title={texts.login.marcarComoNaoLido}>
-                                  <MarkEmailUnreadOutlinedIcon
-                                    onClick={() => onReadOrUnreadClick(index)}
-                                    className="cursor-pointer"
-                                    sx={{ color: "primary.main" }}
-                                  />
-                                </Tooltip>
-                              ) : (
-                                <Tooltip
-                                  title={texts.notificacao.marcarComoLido}
-                                >
-                                  <MarkEmailReadOutlinedIcon
-                                    onClick={() => onReadOrUnreadClick(index)}
-                                    className="cursor-pointer"
-                                    sx={{ color: "primary.main" }}
-                                  />
-                                </Tooltip>
-                              )}
-                              <Tooltip
-                                title={texts.notificacao.deletar}
-                                className="cursor-pointer ml-4"
-                              >
-                                <DeleteOutlineOutlinedIcon
-                                  onClick={() => {
-                                    setIndexDelete(index);
-                                    setOpenModalConfirmDelete(true);
-                                  }}
+                              <DeleteOutlineOutlinedIcon
+                                sx={{ color: "primary.main" }}
+                              />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title={texts.notificacao.marcarComoLido}>
+                            <IconButton onClick={onMultiReadOrUnreadClick}>
+                              {rows.every((row) => row.visualizado) ? (
+                                <MarkEmailUnreadOutlinedIcon
                                   sx={{ color: "primary.main" }}
                                 />
-                              </Tooltip>
-                            </Typography>
-                          </td>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  {totalPaginas >= 1 && (
-                    <Box className="flex justify-end">
-                      <Paginacao
-                        totalPaginas={totalPaginas}
-                        setPage={setPage}
-                        setTamanho={setTamanhoPagina}
-                        tamanhoPagina={tamanhoPagina}
-                        setPaginaAtual={setPaginaAtual}
-                      />
+                              ) : (
+                                <MarkEmailReadOutlinedIcon
+                                  sx={{ color: "primary.main" }}
+                                />
+                              )}
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      ) : (
+                        <Box />
+                      )}
                     </Box>
-                  )}
-                </Paper>
-              </Box>
+                  </Box>
+                  <Box className="w-10/12 flex justify-center">
+                    <Paper sx={{ width: "100%" }} square>
+                      <Table className="mb-8" sx={{ width: "100%" }}>
+                        <TableHead>
+                          <TableRow sx={{ backgroundColor: "primary.main" }}>
+                            <th className="w-1/12">
+                              <Checkbox
+                                sx={{
+                                  color: "white",
+                                  "&.Mui-checked": {
+                                    color: "white",
+                                  },
+                                }}
+                                checked={
+                                  rows.every((row) => row.checked) &&
+                                  rows.length > 0
+                                }
+                                onChange={(e) => {
+                                  onSelectAllClick(e.target.checked);
+                                }}
+                              />
+                            </th>
+                            <th className="text-white">
+                              <Typography fontSize={FontConfig.big}>
+                                {texts.notificacao.tipo}
+                              </Typography>
+                            </th>
+                            <th className="text-white">
+                              <Typography fontSize={FontConfig.big}>
+                                {texts.notificacao.titulo}
+                              </Typography>
+                            </th>
+                            <th className="w-1/10 text-white">
+                              <Typography fontSize={FontConfig.big}>
+                                {texts.notificacao.data}
+                              </Typography>
+                            </th>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {rows.map((row, index) => (
+                            <TableRow
+                              className="drop-shadow-lg noticacao-table-row"
+                              selected={!row.visualizado}
+                              hover
+                              key={index}
+                              sx={{
+                                "&:last-child td, &:last-child th": { border: 0 },
+                              }}
+                            >
+                              <td className="text-center">
+                                <Checkbox
+                                  checked={row.checked}
+                                  onChange={(e) => {
+                                    onSelectRowClick(e, index);
+                                  }}
+                                />
+                              </td>
+                              <td className="text-center">
+                                <NotificacaoDetermineIcon
+                                  tipoIcone={row.tipo_icone}
+                                />
+                              </td>
+                              <td className="text-left">
+                                <Typography fontSize={FontConfig.medium}>
+                                  {row.title}
+                                </Typography>
+                              </td>
+                              <td className="text-center">
+                                <Typography
+                                  className="notificacao-table-row-td"
+                                  fontSize={FontConfig.default}
+                                >
+                                  {row.date}
+                                </Typography>
+                                <Typography className="notificacao-table-row-td-action">
+                                  {row.visualizado ? (
+                                    <Tooltip title={texts.login.marcarComoNaoLido}>
+                                      <MarkEmailUnreadOutlinedIcon
+                                        onClick={() => onReadOrUnreadClick(index)}
+                                        className="cursor-pointer"
+                                        sx={{ color: "primary.main" }}
+                                      />
+                                    </Tooltip>
+                                  ) : (
+                                    <Tooltip title={texts.notificacao.marcarComoLido}>
+                                      <MarkEmailReadOutlinedIcon
+                                        onClick={() => onReadOrUnreadClick(index)}
+                                        className="cursor-pointer"
+                                        sx={{ color: "primary.main" }}
+                                      />
+                                    </Tooltip>
+                                  )}
+                                  <Tooltip
+                                    title={texts.notificacao.deletar}
+                                    className="cursor-pointer ml-4"
+                                  >
+                                    <DeleteOutlineOutlinedIcon
+                                      onClick={() => {
+                                        setIndexDelete(index);
+                                        setOpenModalConfirmDelete(true);
+                                      }}
+                                      sx={{ color: "primary.main" }}
+                                    />
+                                  </Tooltip>
+                                </Typography>
+                              </td>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                      {totalPaginas >= 1 && (
+                        <Box className="flex justify-end">
+                          <Paginacao
+                            totalPaginas={totalPaginas}
+                            setPage={setPage}
+                            setTamanho={setTamanhoPagina}
+                            tamanhoPagina={tamanhoPagina}
+                            setPaginaAtual={setPaginaAtual}
+                          />
+                        </Box>
+                      )}
+                    </Paper>
+                  </Box>
+                </>
+              )}
             </>
           ) : (
             <Box className="flex justify-center items-center h-32">

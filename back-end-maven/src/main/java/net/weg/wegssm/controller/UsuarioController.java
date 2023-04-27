@@ -2,7 +2,6 @@ package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.UsuarioDTO;
-import net.weg.wegssm.model.entities.Departamento;
 import net.weg.wegssm.model.entities.TipoUsuario;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.UsuarioService;
@@ -12,22 +11,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-/** Classe controller para o usuário */
+/**
+ * Classe controller para o usuário
+ */
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/usuario")
 public class UsuarioController {
 
-    /** Classe service dos usuários */
+    /**
+     * Classe service dos usuários
+     */
     private UsuarioService usuarioService;
 
     /**
@@ -36,6 +36,14 @@ public class UsuarioController {
     @GetMapping("/login/{email}/{senha}")
     public ResponseEntity<Usuario> findByEmailAndSenha(@PathVariable String email, @PathVariable String senha) {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByEmailAndSenha(email, senha));
+    }
+
+    /**
+     * Função para buscar um usuário pelo seu email, usado na conversão do cookie de autenticação
+     */
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Usuario> findByEmail(@PathVariable(value = "email") String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByEmail(email));
     }
 
     /**
@@ -50,7 +58,9 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findById(id).get());
     }
 
-    /** Função para buscar uma lista de usuários pelo nome e tipo de usuário, necessária para filtragem */
+    /**
+     * Função para buscar uma lista de usuários pelo nome e tipo de usuário, necessária para filtragem
+     */
     @GetMapping("/filtragem/{nome}/{tipo_usuario}")
     public ResponseEntity<List<Usuario>> findByNomeAndTipoUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                   @PathVariable(value = "nome") String nome,
@@ -70,9 +80,9 @@ public class UsuarioController {
         Usuario usuario = new Usuario();
         usuario.setVisibilidade(true);
         BeanUtils.copyProperties(usuarioDTO, usuario);
-//
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        usuario.setSenha(encoder.encode(usuario.getSenha()));
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }
@@ -89,7 +99,7 @@ public class UsuarioController {
         }
 
         Usuario usuario = usuarioOptional.get();
-        BeanUtils.copyProperties(usuarioDTO, usuario, "id");
+        BeanUtils.copyProperties(usuarioDTO, usuario, "id", "senha");
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }

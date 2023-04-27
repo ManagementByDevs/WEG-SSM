@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -31,6 +31,9 @@ import FontContext from "./service/FontContext";
 import TextLanguageContext from "./service/TextLanguageContext";
 import ChatContext from "./service/ChatContext";
 import { WebSocketService } from "./service/WebSocketService";
+
+import UsuarioService from "./service/usuarioService";
+import CookieService from "./service/cookieService";
 
 const App = () => {
   const [FontConfig, setFontConfig] = useState({
@@ -100,11 +103,29 @@ const App = () => {
                     <Route path="*" element={<NotFound />} />
                     <Route path="/test" element={<Test />} />
                   </Route>
+                  <Route path="/editar-escopo" element={<EditarEscopo />} />
+                  <Route path="/escopos" element={<Escopos />} />
+                  <Route path="*" element={<NotFound />} />
+                  <Route path="/test" element={<Test />} />
                   <Route
-                    path="/"
+                    path="/home"
                     element={
-                      <ProtectedRoute>
-                        <DetermineHomeUser />
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["SOLICITANTE"]}
+                        redirectPath="/login"
+                      >
+                        <Home />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/home-gerencia"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/login"
+                      >
+                        <HomeGerencia />
                       </ProtectedRoute>
                     }
                   />
@@ -113,7 +134,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/"
+                        redirectPath="/home-gerencia"
                       >
                         <CriarProposta />
                       </ProtectedRoute>
@@ -124,7 +145,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/"
+                        redirectPath="/home-gerencia"
                       >
                         <DetalhesPropostaPagina />
                       </ProtectedRoute>
@@ -135,7 +156,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/"
+                        redirectPath="/home-gerencia"
                       >
                         <DetalhesAta />
                       </ProtectedRoute>
@@ -146,7 +167,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/"
+                        redirectPath="/home-gerencia"
                       >
                         <DetalhesPauta />
                       </ProtectedRoute>
@@ -167,39 +188,15 @@ const ProtectedRoute = ({
   children,
   redirectPath = "/login",
 }) => {
-  // Quando formos retirar o user do localstorage,
-  // lembrar de deletar no Login.jsx a linha de adicionar o user no localstorage na função login;
-  // Lembrar de deletar no UserModal.jsx a linha de deletar o user do localstorage na função sair;
-  const [user, setUser] = useState(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
-  );
 
-  // Caso não tenha usuário logado ou o usuário não possua um tipo que possa acessar tal
-  // página, redireciona para o redirectPath (Valor padrão é login)
-  if (
-    !user ||
-    (tiposUsuarioAllowed && !tiposUsuarioAllowed.includes(user.tipoUsuario))
-  ) {
-    return <Navigate to={redirectPath} replace />;
-  }
+  const cookie = CookieService.getCookie("jwt");
+  const userJpa = CookieService.getCookie("user");
 
-  // Caso o componente esteja sendo usado como Layout Route, não possuirá um children, retornando o Outlet
-  return children ? children : <Outlet />;
-};
-
-const DetermineHomeUser = () => {
-  const [user, setUser] = useState(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
-  );
-
-  if (user.tipoUsuario === "SOLICITANTE") {
-    return <Home />;
+  if (cookie != null && cookie.exp > Math.floor(Date.now() / 1000) &&
+    (tiposUsuarioAllowed.includes(userJpa.authorities[0].authority) || tiposUsuarioAllowed == "")) {
+    return children ? children : <Outlet />;
   } else {
-    return <HomeGerencia />;
+    return <Navigate to={redirectPath} replace />;
   }
 };
 

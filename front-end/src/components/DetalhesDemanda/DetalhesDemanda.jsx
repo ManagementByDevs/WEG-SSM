@@ -1182,9 +1182,8 @@ const DetalhesDemanda = (props) => {
         className="flex fixed justify-end"
         sx={{ width: "15rem", bottom: "20px", right: "20px" }}
       >
-        {props.usuario?.tipoUsuario == "ANALISTA" &&
-          props.botao == "sim" &&
-          !editar && props.dados.status == "BACKLOG_REVISAO" && (
+        {props.usuario?.tipoUsuario == "ANALISTA" && props.botao &&
+          !editar && (
             <Box className="flex justify-around w-full">
               <Button
                 sx={{
@@ -1228,8 +1227,7 @@ const DetalhesDemanda = (props) => {
           )}
 
         {/* caso o usuário seja um gerente */}
-        {props.usuario?.tipoUsuario == "GERENTE" &&
-          props.botao == "sim" &&
+        {props.usuario?.tipoUsuario == "GERENTE" && props.botao &&
           !editar && (
             <Box className=" w-full flex justify-around">
               <Button

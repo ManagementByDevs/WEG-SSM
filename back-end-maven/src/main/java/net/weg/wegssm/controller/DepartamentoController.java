@@ -14,7 +14,6 @@ import java.util.List;
  */
 @AllArgsConstructor
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/departamento")
 public class DepartamentoController {
 

@@ -16,7 +16,6 @@ import java.util.List;
 /** Classe controller para as seções de TI */
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/weg_ssm/secao_ti")
 public class SecaoTIController {
 
