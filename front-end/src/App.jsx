@@ -87,7 +87,7 @@ const App = () => {
                 <Route element={<ProtectedRoute />}>
                   <Route path="/criar-demanda" element={<CriarDemanda />} />
                   <Route path="/notificacao" element={<Notificacao />} />
-                  <Route path="/chat" element={<Chat />} />
+                  <Route path="/chat/{id}" element={<Chat />} />
                   <Route
                     path="/detalhes-demanda"
                     element={<DetalhesDemandaPagina />}

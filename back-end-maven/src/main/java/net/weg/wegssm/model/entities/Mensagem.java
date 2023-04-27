@@ -42,7 +42,7 @@ public class Mensagem {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "id_chat", nullable = false)
     private Chat idChat;
 

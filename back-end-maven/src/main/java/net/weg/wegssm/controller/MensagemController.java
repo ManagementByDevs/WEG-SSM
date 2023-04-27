@@ -12,7 +12,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,22 +35,26 @@ public class MensagemController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/weg_ssm/mensagem")
-    public ResponseEntity<Object> receiveMessage(@RequestBody MensagemDTO mensagemDTO){
+    @MessageMapping("/weg_ssm/mensagem/{id}")
+    @SendTo("/weg_ssm/mensagem/{id}/chat")
+    public ResponseEntity<Object> receiveMessage(@DestinationVariable Long id, @Payload MensagemDTO mensagemDTO){
         Mensagem mensagem = new Mensagem();
-        BeanUtils.copyProperties(mensagemDTO, mensagem);
 
-        Chat chat = chatService.findById(mensagemDTO.getChat().getId()).get();
+        BeanUtils.copyProperties(mensagemDTO, mensagem,"id");
+//
+//        Chat chat = chatService.findById(mensagemDTO.getChat().getId()).get();
+//
+//        simpMessagingTemplate.convertAndSendToUser(chat.getIdDemanda().getId().toString(), mensagem.getIdChat().getId().toString(), mensagem);
+//
+//        try {
+//            mensagemService.save(mensagem);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("A mensagem não foi salva!");
+//        }
+//
+//        return ResponseEntity.ok().body("Mensagem enviada!");
 
-        simpMessagingTemplate.convertAndSendToUser(chat.getIdDemanda().getId().toString(), mensagem.getIdChat().getId().toString(), mensagem);
-
-        try {
-            mensagemService.save(mensagem);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("A mensagem não foi salva!");
-        }
-
-        return ResponseEntity.ok().body("Mensagem enviada!");
+        return ResponseEntity.ok().body(mensagemService.save(mensagem));
     }
 
 

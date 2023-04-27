@@ -25,7 +25,7 @@ const Mensagem = (props) => {
             <Box className="flex flex-col w-full">
               <Box className="flex">
                 <Typography fontSize={FontConfig.default} fontWeight="400">
-                  {props.usuario.mensagens[props.index].texto}
+                  {props.mensagem.texto}
                 </Typography>
               </Box>
 
@@ -35,7 +35,7 @@ const Mensagem = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginRight: "0.2rem" }}
                 >
-                  {props.usuario.mensagens[props.index].hora}
+                  {props.mensagem.data}
                 </Typography>
                 <DoneAllIcon fontSize="small" sx={{ color: "#FFFF" }} />
               </Box>

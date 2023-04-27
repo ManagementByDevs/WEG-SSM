@@ -1,7 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Box, Avatar, Typography, Divider, Tooltip, IconButton, Menu, MenuItem, FormControlLabel } from "@mui/material";
+import {
+  Box,
+  Avatar,
+  Typography,
+  Divider,
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+  FormControlLabel,
+} from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -18,6 +28,7 @@ import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
+import MensagemService from "../../service/MensagemService";
 import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -210,182 +221,245 @@ const Chat = () => {
     // aqui é o deletar
   };
 
-  // Começo da integração do chat
+  // --------------------------------------------------------------------------------------------------
 
-  // Map para salvar os chats privados
-  const [privateChats, setPrivateChats] = useState(new Map());
-
-  // Lista para armazenar os chats públicos
-  const [publicChats, setPublicChats] = useState([]);
-
-  // tab para setar o nome do usuário selecionado
-  const [tab, setTab] = useState("CHATROOM");
-
-  const [solicitanteTab, setSolicitanteTab] = useState();
-
-  const [listaNomes, setListaNomes] = useState([]);
-
-  // Pegar o usuario
-  const [usuarioId, setUsuarioId] = useState();
-
-  let nomeUsuario;
-
-  nomeUsuario = JSON.parse(localStorage.getItem("user"));
-
-  const [userData, setUserData] = useState({
-    username: nomeUsuario?.nome,
-    receivername: "",
-    connected: false,
-    message: "",
-  });
-
-  const buscarUsuario = () => {
-    UsuarioService.getUsuarioById(
-      parseInt(localStorage.getItem("usuarioId"))
-    ).then((e) => {
-      setUsuarioId(e);
-    });
-  };
-
-  const buscarSolicitante = () => {
-    UsuarioService.getUsuarioById(parseInt(tab)).then((e) => {
-      setSolicitanteTab(e);
-    });
-  };
-
-  const buscarNomeLista = (id) => {
-    for (let usuario of listaNomes) {
-      if (usuario.id === id) {
-        return usuario.nome;
-      }
-    }
-  };
+  const idChat = useParams().id;
+  const [mensagens, setMensagens] = useState([]);
+  const [mensagem, setMensagem] = useState({});
+  const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
 
   useEffect(() => {
-    buscarUsuario();
+    async function carregar() {
+      await MensagemService.getMensagensChat(idChat)
+        .then((response) => {
+          console.log(response);
+          setMensagens(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      setDefaultMensagem();
+    }
+    carregar();
   }, []);
 
   useEffect(() => {
-    connect();
-  }, [usuarioId]);
-
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
-
-  useEffect(() => {
-    buscarSolicitante();
-  }, [tab]);
-
-  const connect = () => {
-    let Sock = new SockJS("http://localhost:8081/ws");
-    stompClient = over(Sock);
-    stompClient.connect({}, onConnected, onError);
-  };
-
-  const onConnected = () => {
-    setUserData({ ...userData, connected: true });
-    stompClient.subscribe("/chat/public", onMessageReceived);
-    stompClient.subscribe(
-      "/user/" + userData.username + "/private",
-      onPrivateMessage
-    );
-    userJoin();
-  };
-
-  const userJoin = () => {
-    const usuario = usuarioId;
-
-    var chatMessage = {
-      usuario: usuario,
-      status: "JOIN",
+    const acaoNovaMensagem = (response) => {
+      const mensagemRecebida = JSON.parse(response.body);
+      console.log("Mensagem Recebida: ", mensagemRecebida);
+      setMensagens([...mensagens, mensagemRecebida]);
     };
-
-    stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-  };
-
-  const onMessageReceived = (payload) => {
-    var payloadData = JSON.parse(payload.body);
-
-    console.log("Aqui vem o payload: ", payloadData);
-
-    switch (payloadData.status) {
-      case "JOIN":
-        if (!privateChats.get(payloadData.usuario.nome)) {
-          console.log("seila: ", payloadData.usuario.nome);
-          privateChats.set(payloadData.usuario.id, []);
-          listaNomes.push({
-            nome: payloadData.usuario.nome,
-            id: payloadData.usuario.id,
-          });
-          setPrivateChats(new Map(privateChats));
-        }
-        break;
-      case "MESSAGE":
-        publicChats.push(payloadData);
-        setPublicChats([...publicChats]);
-        console.log("Public chatssssss: ", publicChats);
-        break;
-    }
-  };
-
-  const onPrivateMessage = (payload) => {
-    var payloadData = JSON.parse(payload.body);
-
-    console.log("Aqui vem o payload 2: ", payloadData);
-    console.log("Private chatss: ", privateChats);
-
-    if (privateChats.get(payloadData.usuario.nome)) {
-      privateChats.get(payloadData.usuario.id).push(payloadData);
-      setPrivateChats(new Map(privateChats));
-      console.log("Private chats 1: ", privateChats);
-    } else {
-      let list = [];
-      list.push(payloadData);
-      privateChats.set(payloadData.usuario.id, list);
-      listaNomes.push({
-        nome: payloadData.usuario.nome,
-        id: payloadData.usuario.id,
-      });
-      setPrivateChats(new Map(privateChats));
-      console.log("Private chats 2: ", privateChats);
-    }
-  };
-
-  const onError = (err) => {
-    console.log(err);
-  };
-
-  const handleMessage = (event) => {
-    const { value } = event.target;
-    setUserData({ ...userData, message: value });
-  };
-
-  const sendPrivateValue = () => {
-    var dataAtual = new Date();
-
-    const usuario = usuarioId;
-
     if (stompClient) {
-      var chatMessage = {
-        id: 1,
-        data: dataAtual,
-        visto: true,
-        texto: userData.message,
-        status: "MESSAGE",
-        usuario: usuario,
-        solicitante: solicitanteTab,
-      };
-
-      if (userData.username != solicitanteTab.nome) {
-        privateChats.get(tab).push(chatMessage);
-        setPrivateChats(new Map(privateChats));
-      }
-
-      stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
-      setUserData({ ...userData, message: "" });
+      inscrever(`/chat/${idChat}`, acaoNovaMensagem);
     }
+  });
+
+  const setDefaultMensagem = () => {
+    const userCookie = Cookies.get("user");
+    const userDecode = decodeURIComponent(userCookie);
+    const user = JSON.parse(userDecode);
+    const { pessoa } = user;
+    const { cpf } = pessoa;
+    setMensagem({
+      livro: { idChat: idChat },
+      remetente: { cpf: cpf },
+      mensagem: null,
+    });
+    console.log(mensagem);
   };
+
+  const atualizaMensagem = (event) => {
+    event.preventDefault();
+    const { value } = event.target;
+    setMensagem({ ...mensagem, mensagem: value });
+  };
+
+  const submit = async (event) => {
+    event.preventDefault();
+    enviar(`/chat/${idChat}`, mensagem);
+    setDefaultMensagem();
+  };
+
+  // --------------------------------------------------------------------------------------------------
+
+  // Começo da integração do chat
+
+  // Map para salvar os chats privados
+  // const [privateChats, setPrivateChats] = useState(new Map());
+
+  // Lista para armazenar os chats públicos
+  // const [publicChats, setPublicChats] = useState([]);
+
+  // tab para setar o nome do usuário selecionado
+  // const [tab, setTab] = useState("CHATROOM");
+
+  // const [solicitanteTab, setSolicitanteTab] = useState();
+
+  // const [listaNomes, setListaNomes] = useState([]);
+
+  // Pegar o usuario
+  // const [usuarioId, setUsuarioId] = useState();
+
+  // let nomeUsuario;
+
+  // nomeUsuario = JSON.parse(localStorage.getItem("user"));
+
+  // const [userData, setUserData] = useState({
+  //   username: nomeUsuario?.nome,
+  //   receivername: "",
+  //   connected: false,
+  //   message: "",
+  // });
+
+  // const buscarUsuario = () => {
+  //   UsuarioService.getUsuarioById(
+  //     parseInt(localStorage.getItem("usuarioId"))
+  //   ).then((e) => {
+  //     setUsuarioId(e);
+  //   });
+  // };
+
+  // const buscarSolicitante = () => {
+  //   UsuarioService.getUsuarioById(parseInt(tab)).then((e) => {
+  //     setSolicitanteTab(e);
+  //   });
+  // };
+
+  // const buscarNomeLista = (id) => {
+  //   for (let usuario of listaNomes) {
+  //     if (usuario.id === id) {
+  //       return usuario.nome;
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   buscarUsuario();
+  // }, []);
+
+  // useEffect(() => {
+  //   connect();
+  // }, [usuarioId]);
+
+  // useEffect(() => {
+  //   console.log(userData);
+  // }, [userData]);
+
+  // useEffect(() => {
+  //   buscarSolicitante();
+  // }, [tab]);
+
+  // const connect = () => {
+  //   let Sock = new SockJS("http://localhost:8081/ws");
+  //   stompClient = over(Sock);
+  //   stompClient.connect({}, onConnected, onError);
+  // };
+
+  // const onConnected = () => {
+  //   setUserData({ ...userData, connected: true });
+  //   stompClient.subscribe("/chat/public", onMessageReceived);
+  //   stompClient.subscribe(
+  //     "/user/" + userData.username + "/private",
+  //     onPrivateMessage
+  //   );
+  //   userJoin();
+  // };
+
+  // const userJoin = () => {
+  //   const usuario = usuarioId;
+
+  //   var chatMessage = {
+  //     usuario: usuario,
+  //     status: "JOIN",
+  //   };
+
+  //   stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+  // };
+
+  // const onMessageReceived = (payload) => {
+  //   var payloadData = JSON.parse(payload.body);
+
+  //   console.log("Aqui vem o payload: ", payloadData);
+
+  //   switch (payloadData.status) {
+  //     case "JOIN":
+  //       if (!privateChats.get(payloadData.usuario.nome)) {
+  //         console.log("seila: ", payloadData.usuario.nome);
+  //         privateChats.set(payloadData.usuario.id, []);
+  //         listaNomes.push({
+  //           nome: payloadData.usuario.nome,
+  //           id: payloadData.usuario.id,
+  //         });
+  //         setPrivateChats(new Map(privateChats));
+  //       }
+  //       break;
+  //     case "MESSAGE":
+  //       publicChats.push(payloadData);
+  //       setPublicChats([...publicChats]);
+  //       console.log("Public chatssssss: ", publicChats);
+  //       break;
+  //   }
+  // };
+
+  // const onPrivateMessage = (payload) => {
+  //   var payloadData = JSON.parse(payload.body);
+
+  //   console.log("Aqui vem o payload 2: ", payloadData);
+  //   console.log("Private chatss: ", privateChats);
+
+  //   if (privateChats.get(payloadData.usuario.nome)) {
+  //     privateChats.get(payloadData.usuario.id).push(payloadData);
+  //     setPrivateChats(new Map(privateChats));
+  //     console.log("Private chats 1: ", privateChats);
+  //   } else {
+  //     let list = [];
+  //     list.push(payloadData);
+  //     privateChats.set(payloadData.usuario.id, list);
+  //     listaNomes.push({
+  //       nome: payloadData.usuario.nome,
+  //       id: payloadData.usuario.id,
+  //     });
+  //     setPrivateChats(new Map(privateChats));
+  //     console.log("Private chats 2: ", privateChats);
+  //   }
+  // };
+
+  // const onError = (err) => {
+  //   console.log(err);
+  // };
+
+  // const handleMessage = (event) => {
+  //   const { value } = event.target;
+  //   setUserData({ ...userData, message: value });
+  // };
+
+  // const sendPrivateValue = () => {
+  //   var dataAtual = new Date();
+
+  //   const usuario = usuarioId;
+
+  //   if (stompClient) {
+  //     var chatMessage = {
+  //       id: 1,
+  //       data: dataAtual,
+  //       visto: true,
+  //       texto: userData.message,
+  //       status: "MESSAGE",
+  //       usuario: usuario,
+  //       solicitante: solicitanteTab,
+  //     };
+
+  //     if (userData.username != solicitanteTab.nome) {
+  //       privateChats.get(tab).push(chatMessage);
+  //       setPrivateChats(new Map(privateChats));
+  //     }
+
+  //     stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
+  //     setUserData({ ...userData, message: "" });
+  //   }
+  // };
+
+  // --------------------------------------------------------------------------------------------------
 
   // UseState para poder visualizar e alterar a visibilidade do menu
   const [anchorEl, setAnchorEl] = useState(null);
@@ -410,8 +484,7 @@ const Chat = () => {
   const stepsTour = [
     {
       selector: "#primeiro",
-      content:
-        texts.chat.tour.tour1,
+      content: texts.chat.tour.tour1,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -419,8 +492,7 @@ const Chat = () => {
     },
     {
       selector: "#segundo",
-      content:
-        texts.chat.tour.tour2,
+      content: texts.chat.tour.tour2,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -428,8 +500,7 @@ const Chat = () => {
     },
     {
       selector: "#terceiro",
-      content:
-        texts.chat.tour.tour3,
+      content: texts.chat.tour.tour3,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -437,8 +508,7 @@ const Chat = () => {
     },
     {
       selector: "#quarto",
-      content:
-        texts.chat.tour.tour4,
+      content: texts.chat.tour.tour4,
       style: {
         backgroundColor: "#DCDCDC",
         color: "#000000",
@@ -524,8 +594,7 @@ const Chat = () => {
                           remetente: texts.chat.usuarioTour.tour,
                         },
                         {
-                          texto:
-                            texts.chat.usuarioTour.tudoSimVoce,
+                          texto: texts.chat.usuarioTour.tudoSimVoce,
                           data: "10/10/2021",
                           hora: "10:01",
                           remetente: texts.chat.usuarioTour.eu,
@@ -557,29 +626,19 @@ const Chat = () => {
                   })
                 )}
               </Box>
-              {indexUsuario == null || (visibilidade && usuarioId) ? (
+              {!useParams().id ? (
                 <Box
                   className="flex flex-col items-center justify-center rounded border"
                   sx={{ width: "75%", height: "95%", cursor: "default" }}
                 >
                   <img src={logoWeg} alt="chat" />
-                  {indexUsuario == null ? (
-                    <Typography
-                      fontSize={FontConfig.title}
-                      color={"text.secondary"}
-                      sx={{ fontWeight: "600" }}
-                    >
-                      {texts.chat.selecioneAlgumaConversa}
-                    </Typography>
-                  ) : (
-                    <Typography
-                      fontSize={FontConfig.title}
-                      color={"text.secondary"}
-                      sx={{ fontWeight: "600" }}
-                    >
-                      {texts.chat.selecioneAlgumaConversa}
-                    </Typography>
-                  )}
+                  <Typography
+                    fontSize={FontConfig.title}
+                    color={"text.secondary"}
+                    sx={{ fontWeight: "600" }}
+                  >
+                    {texts.chat.selecioneAlgumaConversa}
+                  </Typography>
                 </Box>
               ) : isTourOpen ? (
                 <Box
@@ -851,13 +910,13 @@ const Chat = () => {
                     sx={{ width: "95%", height: "85%" }}
                   >
                     {/* Por enquanto está usando um componente mensagens para pegar as mensagens */}
-                    {usuarios[indexUsuario].mensagens.map((mensagem, index) => {
+                    {mensagens.map((mensagem, index) => {
                       return (
                         <Mensagem
                           key={index}
                           mensagem={mensagem}
                           index={index}
-                          usuario={usuarios[indexUsuario]}
+                          usuario={mensagem.usuario}
                         />
                       );
                     })}
