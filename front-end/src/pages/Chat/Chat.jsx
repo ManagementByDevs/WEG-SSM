@@ -236,13 +236,13 @@ const Chat = () => {
 
 
 
-  const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie("jwt").sub
-    ).then((e) => {
-      setUsuarioId(e);
-    });
-  };
+  // const buscarUsuario = () => {
+  //   UsuarioService.getUsuarioByEmail(
+  //     CookieService.getCookie("jwt").sub
+  //   ).then((e) => {
+  //     setUsuario(e);
+  //   });
+  // };
 
   const idChat = useParams().id;
   const [mensagens, setMensagens] = useState([]);
