@@ -15,7 +15,7 @@ const Mensagem = (props) => {
 
   return (
     <>
-      {props.mensagem.remetente.usuario ? (
+      {!props.mensagem.remetente.usuario ? (
         <Box className="flex w-full justify-end">
           <Box
             className="flex items-center border py-2 px-4 my-2"
