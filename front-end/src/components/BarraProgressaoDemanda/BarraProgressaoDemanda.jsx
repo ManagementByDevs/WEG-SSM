@@ -235,23 +235,23 @@ const BarraProgressaoDemanda = () => {
         setUltimoEscopo(response);
         //Confirmação de salvamento (se sobrar tempo)
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para atualizar os anexos de um escopo quando um anexo for adicionado/removido */
   const salvarAnexosEscopo = () => {
     if (paginaArquivos.length > 0) {
       EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
-        (response) => {}
+        (response) => { }
       );
     } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => {});
+      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
     }
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
@@ -318,7 +318,7 @@ const BarraProgressaoDemanda = () => {
             ) {
               precisaFeedback = true;
             }
-            if(beneficio.tipoBeneficio == "") {
+            if (beneficio.tipoBeneficio == "") {
               precisaFeedback = true;
             }
           });
@@ -342,6 +342,27 @@ const BarraProgressaoDemanda = () => {
 
   return (
     <>
+      {/* Feedback de dados faltantes */}
+      <Feedback
+        open={feedbackDadosFaltantes}
+        handleClose={() => {
+          setFeedbackDadosFaltantes(false);
+        }}
+        status={"erro"}
+        mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
+      />
+
+      {/* Modal de confirmação de criar demanda */}
+      {modalConfirmacao && (
+        <ModalConfirmacao
+          open={true}
+          setOpen={setOpenConfirmacao}
+          textoModal={"enviarDemanda"}
+          textoBotao={"enviar"}
+          onConfirmClick={criarDemanda}
+        />
+      )}
+
       {/* Stepper utilizado para os passos da criação e a barra de progressão */}
       <Stepper activeStep={etapaAtiva} sx={{ minWidth: "50rem" }}>
         {steps.map((label, index) => {
@@ -360,7 +381,7 @@ const BarraProgressaoDemanda = () => {
         <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
       )}
       {etapaAtiva == 1 && (
-        <Box className="w-full" sx={{minWidth: "50rem"}}> 
+        <Box className="w-full" sx={{ minWidth: "50rem" }}>
           <FormularioBeneficiosDemanda
             dados={paginaBeneficios}
             setDados={setPaginaBeneficios}
@@ -375,70 +396,50 @@ const BarraProgressaoDemanda = () => {
         />
       )}
 
-      <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-        {/* Botão de voltar à etapa anterior da criação */}
+      {/* Botão de voltar à etapa anterior da criação */}
+      <Button
+        variant="outlined"
+        color="tertiary"
+        disabled={etapaAtiva === 0}
+        onClick={voltarEtapa}
+        sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
+        disableElevation
+      >
+        <Typography fontSize={FontConfig.default}>
+          {texts.barraProgressaoDemanda.botaoVoltar}
+        </Typography>
+      </Button>
+
+      {/* Verificações para mudar texto do botão de Próximo/Criar de acordo com o passo atual */}
+      {etapaAtiva === steps.length - 1 ? (
         <Button
-          variant="outlined"
-          color="tertiary"
-          disabled={etapaAtiva === 0}
-          onClick={voltarEtapa}
-          sx={{ mr: 1 }}
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            setOpenConfirmacao(true);
+          }}
+          sx={{ mr: 1, position: "fixed", bottom: 50, right: 160 }}
+
           disableElevation
         >
           <Typography fontSize={FontConfig.default}>
-            {texts.barraProgressaoDemanda.botaoVoltar}
+            {texts.barraProgressaoDemanda.botaoCriar}
           </Typography>
         </Button>
-        <Box sx={{ flex: "1 1 auto" }} />
+      ) : (
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={proximaEtapa}
+          disableElevation
+          sx={{ mr: 1, position: "fixed", bottom: 50, right: 160 }}
 
-        {/* Verificações para mudar texto do botão de Próximo/Criar de acordo com o passo atual */}
-        {etapaAtiva === steps.length - 1 ? (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-              setOpenConfirmacao(true);
-            }}
-            disableElevation
-          >
-            <Typography fontSize={FontConfig.default}>
-              {texts.barraProgressaoDemanda.botaoCriar}
-            </Typography>
-          </Button>
-        ) : (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={proximaEtapa}
-            disableElevation
-          >
-            <Typography fontSize={FontConfig.default}>
-              {texts.barraProgressaoDemanda.botaoProximo}
-            </Typography>
-          </Button>
-        )}
-
-        {/* Modal de confirmação de criar demanda */}
-        {modalConfirmacao && (
-          <ModalConfirmacao
-            open={true}
-            setOpen={setOpenConfirmacao}
-            textoModal={"enviarDemanda"}
-            textoBotao={"enviar"}
-            onConfirmClick={criarDemanda}
-          />
-        )}
-      </Box>
-
-      {/* Feedback de dados faltantes */}
-      <Feedback
-        open={feedbackDadosFaltantes}
-        handleClose={() => {
-          setFeedbackDadosFaltantes(false);
-        }}
-        status={"erro"}
-        mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
-      />
+        >
+          <Typography fontSize={FontConfig.default}>
+            {texts.barraProgressaoDemanda.botaoProximo}
+          </Typography>
+        </Button>
+      )}
     </>
   );
 };

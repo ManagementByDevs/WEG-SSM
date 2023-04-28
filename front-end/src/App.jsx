@@ -141,7 +141,7 @@ const App = () => {
                     }
                   />
                   <Route
-                    path="/detalhes-proposta"
+                    path="/detalhes-proposta/:id"
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}

@@ -24,27 +24,43 @@ import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOffIcon from "@mui/icons-material/EditOff";
 
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+import DetalhesPropostaEditMode from "../DetalhesPropostaEditMode/DetalhesPropostaEditMode";
+
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
-import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
+import PropostaService from "../../service/propostaService";
 
-import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+import ClipLoader from "react-spinners/ClipLoader";
 
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
 
 // Componente  para mostrar os detalhes de uma proposta e suas respectivas funções
-const DetalhesProposta = ({
-  proposta = propostaExample,
-  setProposta = () => {},
-}) => {
+const DetalhesProposta = ({ propostaId = 0 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Estado da proposta
+  const [proposta, setProposta] = useState(propostaExample);
+
+  // Estado para mostrar o carregamento enquanto é feito a requisição para pegar os dados da prospota
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Estado para saber qual estado da proposta mostrar, a estática ou editável
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Referência para o texto do problema
+  const problemaText = useRef(null);
+
+  // Referência para o texto da proposta
+  const propostaText = useRef(null);
 
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
@@ -120,30 +136,68 @@ const DetalhesProposta = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
-  // Formatação do html dos campos maiores
-
-  const propostaDaProposta = useRef(null);
-  const problemaDaProposta = useRef(null);
-
-  useEffect(() => {
-    if (propostaDaProposta.current) {
-      propostaDaProposta.current.innerHTML = proposta.proposta
-    }
-  }, []);
-
-  useEffect(() => {
-    if (problemaDaProposta.current) {
-      problemaDaProposta.current.innerHTML = proposta.problema
-    }
-  }, []);
-
-  const getProblemaFomartted = (problema) => {
-    return problema[0].toUpperCase() + problema.substring(1).toLowerCase();
+  // Função acionada quando o usúario clica no ícone de editar
+  const handleOnEditClick = () => {
+    setIsEditing(!isEditing);
   };
 
-  const getPropostaFomartted = (proposta) => {
-    return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
-  };
+  useEffect(() => {
+    // Colocando o texto do problema em seu elemento
+    if (problemaText.current) {
+      problemaText.current.innerHTML = proposta.problema;
+    }
+
+    // Colocando o texto da proposta em seu elemento
+    if (propostaText.current) {
+      propostaText.current.innerHTML = proposta.proposta;
+    }
+  }, [proposta, isEditing]);
+
+  useEffect(() => {
+    // Buscando os dados da proposta usando o propostaId
+    PropostaService.getById(propostaId).then((proposal) => {
+      setProposta(proposal);
+      setIsLoading(false);
+    });
+  }, []);
+
+  if (Object.values(proposta).some((value) => value === undefined))
+    return <></>;
+
+  if (isLoading)
+    return (
+      <Box className="flex justify-center">
+        <Box
+          className="flex justify-center border rounded px-10 py-4 border-t-6 relative"
+          sx={{ width: "55rem", borderTopColor: "primary.main" }}
+        >
+          <ClipLoader className="mt-2" color="#00579D" size={110} />
+        </Box>
+      </Box>
+    );
+
+  if (isEditing) {
+    return (
+      <Box className="flex justify-center">
+        <Box
+          className="border rounded px-10 py-4 border-t-6 relative"
+          sx={{ width: "55rem", borderTopColor: "primary.main" }}
+        >
+          <StatusProposta
+            proposta={proposta}
+            setProposta={setProposta}
+            getCorStatus={getCorStatus}
+            getStatusFormatted={getStatusFormatted}
+          />
+          <DetalhesPropostaEditMode
+            propostaData={proposta}
+            setPropostaData={setProposta}
+            setIsEditing={setIsEditing}
+          />
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box className="flex justify-center">
@@ -158,7 +212,7 @@ const DetalhesProposta = ({
           getStatusFormatted={getStatusFormatted}
         />
         {/* Box header */}
-        <Box className="w-full flex justify-between ">
+        <Box className="w-full flex justify-between">
           <Box className="flex gap-4">
             <Typography
               color="primary"
@@ -197,7 +251,7 @@ const DetalhesProposta = ({
         {/* Box Conteudo */}
         <Box className="w-full">
           {/* Titulo */}
-          <Box flex>
+          <Box>
             <Typography color={"primary.main"} fontSize={FontConfig.smallTitle}>
               {proposta.titulo}
             </Typography>
@@ -208,9 +262,11 @@ const DetalhesProposta = ({
           <Box className="relative">
             <Tooltip title={texts.detalhesProposta.editar}>
               <Box className="absolute -right-8 -top-2">
-                <IconButton sx={{ color: "primary.main" }}>
-                  <EditIcon />
-                  <EditOffIcon />
+                <IconButton
+                  sx={{ color: "primary.main" }}
+                  onClick={handleOnEditClick}
+                >
+                  {!isEditing ? <EditIcon /> : <EditOffIcon />}
                 </IconButton>
               </Box>
             </Tooltip>
@@ -286,9 +342,7 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.proposta}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium} ref={propostaDaProposta}>
-                  {getPropostaFomartted(proposta.proposta)}
-                </Typography>
+                <Typography fontSize={FontConfig.medium} ref={propostaText} />
               </Box>
             </Box>
 
@@ -298,9 +352,7 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.problema}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium} ref={problemaDaProposta}>
-                  {getProblemaFomartted(proposta.problema)}
-                </Typography>
+                <Typography fontSize={FontConfig.medium} ref={problemaText} />
               </Box>
             </Box>
 
@@ -708,20 +760,30 @@ const CustosRow = ({
 };
 
 // Mostrar os benefícios da proposta
-const Beneficio = ({
-  beneficio = {
-    id: 0,
-    tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
-    valor_mensal: 0,
-    moeda: "",
-    memoriaCalculo: "",
-  },
-}) => {
+const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Estado se é um beneficio com tipo qualitativo
+  const [isQualitativo, setIsQualitativo] = useState(false);
+
+  const memoriaCalculoText = useRef(null);
+
+  // Verifica se o benefício é do tipo qualitativo
+  useEffect(() => {
+    if (beneficio.tipoBeneficio == "QUALITATIVO") {
+      setIsQualitativo(true);
+    }
+
+    if (memoriaCalculoText.current) {
+      memoriaCalculoText.current.innerHTML = beneficio.memoriaCalculo;
+    }
+  }, []);
+
+  if (beneficio.id === 0) return null;
 
   return (
     <Paper
@@ -729,7 +791,6 @@ const Beneficio = ({
       sx={{ borderTopColor: "primary.main" }}
       square
     >
-      {/*  */}
       <Table>
         <TableBody>
           <TableRow>
@@ -742,24 +803,28 @@ const Beneficio = ({
                 {texts.detalhesProposta.tipoBeneficio}
               </Typography>
             </th>
-            <th className="p-1">
-              <Typography
-                color="primary"
-                fontWeight="bold"
-                fontSize={FontConfig.medium}
-              >
-                {texts.detalhesProposta.valorMensal}
-              </Typography>
-            </th>
-            <th className="p-1">
-              <Typography
-                color="primary"
-                fontWeight="bold"
-                fontSize={FontConfig.medium}
-              >
-                {texts.detalhesProposta.moeda}
-              </Typography>
-            </th>
+            {!isQualitativo && (
+              <>
+                <th className="p-1">
+                  <Typography
+                    color="primary"
+                    fontWeight="bold"
+                    fontSize={FontConfig.medium}
+                  >
+                    {texts.detalhesProposta.valorMensal}
+                  </Typography>
+                </th>
+                <th className="p-1">
+                  <Typography
+                    color="primary"
+                    fontWeight="bold"
+                    fontSize={FontConfig.medium}
+                  >
+                    {texts.detalhesProposta.moeda}
+                  </Typography>
+                </th>
+              </>
+            )}
             <th className="p-1">
               <Typography
                 color="primary"
@@ -779,18 +844,25 @@ const Beneficio = ({
                   beneficio.tipoBeneficio.substring(1).toLowerCase()}
               </Typography>
             </td>
+            {!isQualitativo && (
+              <>
+                <td className="text-center p-1">
+                  <Typography fontSize={FontConfig.default}>
+                    {beneficio.valor_mensal}
+                  </Typography>
+                </td>
+                <td className="text-center p-1">
+                  <Typography fontSize={FontConfig.default}>
+                    {beneficio.moeda}
+                  </Typography>
+                </td>
+              </>
+            )}
             <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
-                {beneficio.valor_mensal}
-              </Typography>
-            </td>
-            <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
-                {beneficio.moeda}
-              </Typography>
-            </td>
-            <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
+              <Typography
+                ref={memoriaCalculoText}
+                fontSize={FontConfig.default}
+              >
                 {beneficio.memoriaCalculo}
               </Typography>
             </td>
@@ -1111,15 +1183,16 @@ const StatusProposta = ({
 
     let propostaAux = { ...proposta, status: newStatus };
 
-    console.log("status: ", newStatus);
-    setProposta({ ...propostaAux });
     setConfirmEditStatus(false);
 
     // Requisição para atualizar a proposta com o novo status
-
-    // Atualiza o location status
-    location.state = { ...propostaAux };
-    console.log("location status 2", location)
+    PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
+      (newProposta) => {
+        console.log("put: ", newProposta);
+        // Atualiza a proposta com o novo status
+        setProposta(newProposta);
+      }
+    );
   };
 
   useEffect(() => {
@@ -1127,8 +1200,6 @@ const StatusProposta = ({
     if (statusElement.current) {
       setAnchorElModalStatus(statusElement.current);
     }
-
-    console.log("location status", location.state); // Verificar se o location está sendo atualizado
   }, []);
 
   return (

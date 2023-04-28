@@ -16,7 +16,7 @@ const FormularioBeneficiosDemanda = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   /** Lista de benefícios adicionados */
   const [beneficios, setBeneficios] = useState([]);
