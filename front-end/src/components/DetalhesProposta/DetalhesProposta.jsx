@@ -767,6 +767,22 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Estado se é um beneficio com tipo qualitativo
+  const [isQualitativo, setIsQualitativo] = useState(false);
+
+  const memoriaCalculoText = useRef(null);
+
+  // Verifica se o benefício é do tipo qualitativo
+  useEffect(() => {
+    if (beneficio.tipoBeneficio == "QUALITATIVO") {
+      setIsQualitativo(true);
+    }
+
+    if (memoriaCalculoText.current) {
+      memoriaCalculoText.current.innerHTML = beneficio.memoriaCalculo;
+    }
+  }, []);
+
   if (beneficio.id === 0) return null;
 
   return (
@@ -787,24 +803,28 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 {texts.detalhesProposta.tipoBeneficio}
               </Typography>
             </th>
-            <th className="p-1">
-              <Typography
-                color="primary"
-                fontWeight="bold"
-                fontSize={FontConfig.medium}
-              >
-                {texts.detalhesProposta.valorMensal}
-              </Typography>
-            </th>
-            <th className="p-1">
-              <Typography
-                color="primary"
-                fontWeight="bold"
-                fontSize={FontConfig.medium}
-              >
-                {texts.detalhesProposta.moeda}
-              </Typography>
-            </th>
+            {!isQualitativo && (
+              <>
+                <th className="p-1">
+                  <Typography
+                    color="primary"
+                    fontWeight="bold"
+                    fontSize={FontConfig.medium}
+                  >
+                    {texts.detalhesProposta.valorMensal}
+                  </Typography>
+                </th>
+                <th className="p-1">
+                  <Typography
+                    color="primary"
+                    fontWeight="bold"
+                    fontSize={FontConfig.medium}
+                  >
+                    {texts.detalhesProposta.moeda}
+                  </Typography>
+                </th>
+              </>
+            )}
             <th className="p-1">
               <Typography
                 color="primary"
@@ -824,18 +844,25 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                   beneficio.tipoBeneficio.substring(1).toLowerCase()}
               </Typography>
             </td>
+            {!isQualitativo && (
+              <>
+                <td className="text-center p-1">
+                  <Typography fontSize={FontConfig.default}>
+                    {beneficio.valor_mensal}
+                  </Typography>
+                </td>
+                <td className="text-center p-1">
+                  <Typography fontSize={FontConfig.default}>
+                    {beneficio.moeda}
+                  </Typography>
+                </td>
+              </>
+            )}
             <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
-                {beneficio.valor_mensal}
-              </Typography>
-            </td>
-            <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
-                {beneficio.moeda}
-              </Typography>
-            </td>
-            <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
+              <Typography
+                ref={memoriaCalculoText}
+                fontSize={FontConfig.default}
+              >
                 {beneficio.memoriaCalculo}
               </Typography>
             </td>

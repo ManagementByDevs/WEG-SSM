@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 
 import {
+  Autocomplete,
   Box,
+  Checkbox,
   Divider,
   IconButton,
   Input,
@@ -17,8 +19,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import { findIndex } from "lodash";
-
 import ClipLoader from "react-spinners/ClipLoader";
 
 import LogoWEG from "../../assets/logo-weg.png";
@@ -29,6 +29,8 @@ import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CloseIcon from "@mui/icons-material/Close";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import Feedback from "../Feedback/Feedback";
@@ -43,6 +45,10 @@ import SecaoTIService from "../../service/secaoTIService";
 import ReactQuill from "react-quill";
 
 const propostaExample = EntitiesObjectService.proposta();
+
+// Variável para armazenar os ícones do checkbox
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
@@ -241,6 +247,20 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
+  // Handler do benefício da proposta
+  const handleOnBeneficioChange = (newBeneficio) => {
+    let beneficiosAux = [...proposta.beneficios];
+    let oldBeneficio = beneficiosAux.find(
+      (beneficio) => beneficio.id == newBeneficio.id
+    );
+
+    beneficiosAux.splice(oldBeneficio, 1, newBeneficio);
+    console.log("beneficiosAuxo :", beneficiosAux);
+    console.log("beneficios: ", proposta.beneficios);
+
+    setProposta({ ...proposta, beneficios: [...beneficiosAux] });
+  };
+
   // Handler do link do jira da proposta
   const handleOnLinkJiraChange = (event) => {
     setProposta({
@@ -278,6 +298,13 @@ const DetalhesPropostaEditMode = ({
     setProposta({
       ...proposta,
       paybackTipo: event.target.value,
+    });
+  };
+
+  const handleOnBuBeneficiadaSelect = (event, newValue) => {
+    setProposta({
+      ...proposta,
+      busBeneficiadas: newValue,
     });
   };
 
@@ -372,12 +399,7 @@ const DetalhesPropostaEditMode = ({
   if (isLoading)
     return (
       <Box className="flex justify-center">
-        <Box
-          className="flex justify-center border rounded px-10 py-4 border-t-6 relative"
-          sx={{ width: "55rem", borderTopColor: "primary.main" }}
-        >
-          <ClipLoader className="mt-2" color="#00579D" size={110} />
-        </Box>
+        <ClipLoader className="mt-2 border-t-6" color="#00579D" size={110} />
       </Box>
     );
 
@@ -713,7 +735,13 @@ const DetalhesPropostaEditMode = ({
             <Box className="mx-4">
               {proposta.beneficios.length > 0 ? (
                 proposta.beneficios.map((beneficio, index) => {
-                  return <Beneficio key={index} beneficio={beneficio} />;
+                  return (
+                    <Beneficio
+                      key={index}
+                      beneficio={beneficio}
+                      handleOnBeneficioChange={handleOnBeneficioChange}
+                    />
+                  );
                 })
               ) : (
                 <Typography
@@ -729,10 +757,48 @@ const DetalhesPropostaEditMode = ({
 
           {/* BUs beneficiadas */}
           <Box className="mt-4">
-            <Typography fontSize={FontConfig.medium} fontWeight="bold">
-              {texts.detalhesProposta.busBeneficiadas}:&nbsp;
-            </Typography>
-            <Box className="mx-8">
+            <Box className="flex items-center gap-4">
+              <Typography
+                className="whitespace-nowrap"
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+              >
+                {texts.detalhesProposta.busBeneficiadas}:&nbsp;
+              </Typography>
+              <Box className="w-full">
+                {/* Select de BUs beneficiadas */}
+                <Autocomplete
+                  multiple
+                  options={listaBus}
+                  disableCloseOnSelect
+                  onChange={handleOnBuBeneficiadaSelect}
+                  getOptionLabel={(option) => option.siglaBu}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props} title={option.nomeBu}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option.siglaBu}
+                    </li>
+                  )}
+                  fullWidth
+                  noOptionsText={texts.modalAceitarDemanda.nenhumaBuEncontrada}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      placeholder={
+                        texts.modalAceitarDemanda.selecioneUmaOuMaisBus
+                      }
+                    />
+                  )}
+                />
+              </Box>
+            </Box>
+            <Box className="mx-8 mt-4">
               {proposta.busBeneficiadas.length > 0 ? (
                 <ol className="list-disc">
                   {proposta.busBeneficiadas.map((bu, index) => {
@@ -1135,12 +1201,38 @@ const CustosRow = ({
 };
 
 // Mostrar os benefícios da proposta
-const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
+const Beneficio = ({
+  beneficio = EntitiesObjectService.beneficio(),
+  handleOnBeneficioChange = () => {},
+}) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Estado se é um beneficio com tipo qualitativo
+  const [isQualitativo, setIsQualitativo] = useState(false);
+
+  // ***************************************** Handlers ***************************************** //
+
+  // Handler do tipo de benefício
+  const handleOnTipoBeneficioSelect = (event) => {
+    console.log("id: ", beneficio);
+    handleOnBeneficioChange({
+      ...beneficio,
+      tipoBeneficio: event.target.value,
+    });
+  };
+
+  // ***************************************** Fim Handlers ***************************************** //
+
+  // Verifica se o benefício é do tipo qualitativo
+  useEffect(() => {
+    if (beneficio.tipoBeneficio == "QUALITATIVO") {
+      setIsQualitativo(true);
+    }
+  }, []);
 
   if (beneficio.id === 0) return null;
 
@@ -1162,24 +1254,28 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 {texts.detalhesProposta.tipoBeneficio}
               </Typography>
             </th>
-            <th className="p-1">
-              <Typography
-                color="primary"
-                fontWeight="bold"
-                fontSize={FontConfig.medium}
-              >
-                {texts.detalhesProposta.valorMensal}
-              </Typography>
-            </th>
-            <th className="p-1">
-              <Typography
-                color="primary"
-                fontWeight="bold"
-                fontSize={FontConfig.medium}
-              >
-                {texts.detalhesProposta.moeda}
-              </Typography>
-            </th>
+            {!isQualitativo && (
+              <>
+                <th className="p-1">
+                  <Typography
+                    color="primary"
+                    fontWeight="bold"
+                    fontSize={FontConfig.medium}
+                  >
+                    {texts.detalhesProposta.valorMensal}
+                  </Typography>
+                </th>
+                <th className="p-1">
+                  <Typography
+                    color="primary"
+                    fontWeight="bold"
+                    fontSize={FontConfig.medium}
+                  >
+                    {texts.detalhesProposta.moeda}
+                  </Typography>
+                </th>
+              </>
+            )}
             <th className="p-1">
               <Typography
                 color="primary"
@@ -1198,17 +1294,45 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 {beneficio.tipoBeneficio[0].toUpperCase() +
                   beneficio.tipoBeneficio.substring(1).toLowerCase()}
               </Typography>
+
+              {/* Select de tipo benefício */}
+              <Select
+                value={beneficio.tipoBeneficio}
+                onChange={handleOnTipoBeneficioSelect}
+                variant="standard"
+                size="small"
+              >
+                <MenuItem value={"REAL"}>
+                  <Typography fontSize={FontConfig.medium}>
+                    {texts.beneficios.real}
+                  </Typography>
+                </MenuItem>
+                <MenuItem value={"POTENCIAL"}>
+                  <Typography fontSize={FontConfig.medium}>
+                    {texts.beneficios.potencial}
+                  </Typography>
+                </MenuItem>
+                <MenuItem value={"QUALITATIVO"}>
+                  <Typography fontSize={FontConfig.medium}>
+                    {texts.beneficios.qualitativo}
+                  </Typography>
+                </MenuItem>
+              </Select>
             </td>
-            <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
-                {beneficio.valor_mensal}
-              </Typography>
-            </td>
-            <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
-                {beneficio.moeda}
-              </Typography>
-            </td>
+            {!isQualitativo && (
+              <>
+                <td className="text-center p-1">
+                  <Typography fontSize={FontConfig.default}>
+                    {beneficio.valor_mensal}
+                  </Typography>
+                </td>
+                <td className="text-center p-1">
+                  <Typography fontSize={FontConfig.default}>
+                    {beneficio.moeda}
+                  </Typography>
+                </td>
+              </>
+            )}
             <td className="text-center p-1">
               <Typography fontSize={FontConfig.default}>
                 {beneficio.memoriaCalculo}
