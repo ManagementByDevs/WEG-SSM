@@ -1,12 +1,12 @@
 package net.weg.wegssm.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter @Setter
+@Data
 public class ResponsavelNegocioDTO {
 
     private String nome;
+
     private String area;
 
 }

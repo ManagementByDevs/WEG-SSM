@@ -1,12 +1,13 @@
 package net.weg.wegssm.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter @Setter
+import javax.validation.constraints.NotNull;
+
+@Data
 public class DepartamentoDTO {
 
-    private Long id;
+    @NotNull
     private String nome;
 
 }

@@ -49,9 +49,9 @@ public class ChatController {
         System.out.println("Criando chat: " + chatDto.getDemanda());
 
         Chat chat = new Chat();
-        chat.setConversa_encerrada(false);
-        chat.setIdDemanda(chatDto.getDemanda());
-        chat.setUsuariosChat(chatDto.getUsuarios());
+//        chat.setConversa_encerrada(false);
+//        chat.setIdDemanda(chatDto.getDemanda());
+//        chat.setUsuariosChat(chatDto.getUsuarios());
         BeanUtils.copyProperties(chatDto, chat);
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.save(chat));

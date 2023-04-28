@@ -97,12 +97,10 @@ public class Demanda {
     @JoinColumn(name = "demanda_id")
     private List<Historico> historicoDemanda;
 
-    // Cadastro de anexos
-
     /**
      * Função para adicionar anexos em uma demanda
      *
-     * @param files
+     * @param files Lista de arquivos a serem transformados em anexos
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();
@@ -116,6 +114,11 @@ public class Demanda {
         }
     }
 
+    /**
+     * Função para adicionar novos anexos a uma lista de anexos já existente
+     * @param files Lista de anexos novos a serem transformados
+     * @param listaAnexos Lista de anexos já existente
+     */
     public void addAnexos(List<MultipartFile> files, List<Anexo> listaAnexos) {
         try {
             for (MultipartFile file : files) {
@@ -127,6 +130,10 @@ public class Demanda {
         }
     }
 
+    /**
+     * Função para setar os anexos da demanda diretamente através de uma lista de Anexos
+     * @param files Lista de anexos
+     */
     public void setAnexosWithoutMultiparFile(List<Anexo> files) {
         this.anexo = files;
     }

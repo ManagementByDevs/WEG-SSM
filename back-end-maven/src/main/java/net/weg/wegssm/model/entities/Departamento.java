@@ -1,7 +1,6 @@
 package net.weg.wegssm.model.entities;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity

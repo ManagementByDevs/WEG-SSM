@@ -1,11 +1,9 @@
 package net.weg.wegssm.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import net.weg.wegssm.model.entities.Demanda;
-import net.weg.wegssm.model.entities.TipoBeneficio;
 
-@Getter @Setter
+@Data
 public class BeneficioDTO {
 
     private Double valor_mensal;

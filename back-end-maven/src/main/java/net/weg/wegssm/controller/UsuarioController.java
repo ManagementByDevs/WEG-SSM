@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -29,14 +30,6 @@ public class UsuarioController {
      * Classe service dos usuários
      */
     private UsuarioService usuarioService;
-
-    /**
-     * Método GET para procurar um usuário por email e senha, necessário para o login
-     */
-    @GetMapping("/login/{email}/{senha}")
-    public ResponseEntity<Usuario> findByEmailAndSenha(@PathVariable String email, @PathVariable String senha) {
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByEmailAndSenha(email, senha));
-    }
 
     /**
      * Função para buscar um usuário pelo seu email, usado na conversão do cookie de autenticação

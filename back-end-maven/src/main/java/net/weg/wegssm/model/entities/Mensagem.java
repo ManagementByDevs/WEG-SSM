@@ -23,29 +23,29 @@ public class Mensagem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, unique = true)
     private Long id;
-
-    @Column(nullable = false)
-    private Date data;
-
-    @Column(nullable = false)
-    private Boolean visto;
-
-    @Column(nullable = false, length = 200)
-    private String texto;
-
-    @Column()
-    private StatusChat status;
-
-    // Foreign keys
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
-
-    @OneToMany
-    @JoinColumn(name = "id_chat", nullable = false)
-    private Chat idChat;
-
+//
+//    @Column(nullable = false)
+//    private Date data;
+//
+//    @Column(nullable = false)
+//    private Boolean visto;
+//
+//    @Column(nullable = false, length = 200)
+//    private String texto;
+//
+//    @Column()
+//    private StatusChat status;
+//
+//    // Foreign keys
+//
+//    @ManyToOne
+//    @JoinColumn(name = "id_usuario")
+//    private Usuario usuario;
+//
+//    @OneToMany
+//    @JoinColumn(name = "id_chat", nullable = false)
+//    private Chat idChat;
+//
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_mensagem")
     private List<Anexo> anexo;
