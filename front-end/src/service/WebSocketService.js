@@ -11,7 +11,7 @@ export const WebSocketService = ({children}) => {
 
   useEffect(() => {
     const conectar = () => {
-      const socket = new SockJS("http://localhost:8081/ws");
+      const socket = new SockJS("http://localhost:8443/ws");
       const stomp = Stomp.over(socket);
       stomp.connect(
         {},
