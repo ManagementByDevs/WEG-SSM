@@ -218,7 +218,7 @@ const DetalhesPauta = (props) => {
     propostaDeleted.parecerInformacao = null;
     propostaDeleted.parecerComissao = null;
     propostaDeleted.parecerDG = null;
-    
+
     PautaService.put(pauta).then((newPauta) => {
       setFeedbackPropostaDeletada(true);
       PropostaService.putWithoutArquivos(
@@ -527,10 +527,7 @@ const DetalhesPauta = (props) => {
                     />
                   </IconButton>
                 </Box>
-                <DetalhesProposta
-                  proposta={dadosProposta}
-                  setProposta={setDadosProposta}
-                />
+                <DetalhesProposta propostaId={dadosProposta.id} />
               </Box>
             )}
           </Box>

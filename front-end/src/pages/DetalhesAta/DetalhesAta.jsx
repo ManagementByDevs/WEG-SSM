@@ -202,14 +202,10 @@ const DetalhesAta = (props) => {
       setFeedbackCamposFaltantes(true);
       return;
     }
-
-    
-  }
+  };
 
   // Função de criar ata e enviar feedback
   const publicarAta = () => {
-    
-
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };
 
@@ -383,10 +379,7 @@ const DetalhesAta = (props) => {
                     {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
                 </Box>
-                <DetalhesProposta
-                  proposta={dadosProposta}
-                  setProposta={setDadosProposta}
-                />
+                <DetalhesProposta propostaId={dadosProposta.id} />
               </Box>
             )}
           </Box>
