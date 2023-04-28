@@ -647,7 +647,7 @@ const HomeGerencia = () => {
     });
   };
 
-  // Função para ir na tela de detalhes da demanda, salvando a demanda no localStorage
+  // Função para ir na tela de detalhes da demanda, salvando a demanda no location state
   const verDemanda = (demanda) => {
     if (demanda.status == "ASSESSMENT" && usuario.tipoUsuario == "ANALISTA") {
       navigate("/criar-proposta", { state: demanda });
@@ -656,9 +656,9 @@ const HomeGerencia = () => {
     }
   };
 
-  // Função para ir na tela de detalhes da proposta, salvando a proposta no localStorage
+  // Função para ir na tela de detalhes da proposta pelo id
   const verProposta = (proposta) => {
-    navigate("/detalhes-proposta", { state: proposta });
+    navigate("/detalhes-proposta/" + proposta.id, { state: proposta });
   };
 
   const isGerente = !(

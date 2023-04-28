@@ -25,7 +25,7 @@ class DateService {
   }
 
   /**
-   * Retona data passada por parâmetro formatada no padrão americano
+   * Retona data passada por parâmetro formatada no padrão americano, não importando se é um Objeto Date ou String MySQL Date, se não passado nada, retorna a data de hoje no mesmo formato
    * @returns Data no padrão americano
    */
   getTodaysDateUSFormat() {
@@ -50,7 +50,7 @@ class DateService {
 
   /**
    * Retorna a data passada por parâmetro com padrão MySQL para o padrão americano
-   * @param {DateMySQL} date 
+   * @param {DateMySQL} date
    * @returns Data no padrão americano com hora
    */
   getFullDateUSFormat(date) {
@@ -73,7 +73,7 @@ class DateService {
     if (!dataMysql) {
       return "";
     }
-    
+
     let date = dataMysql.replace(/[-]/g, "/").replace(/[T]/g, " ");
     date = Date.parse(date);
     return new Date(date);
