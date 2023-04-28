@@ -1,11 +1,17 @@
-package net.weg.wegssm.factory;
+package net.weg.wegssm.model.factory;
 
 import net.weg.wegssm.model.entities.TipoUsuario;
 import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+/**
+ * Classe usada para criar usuários em contextos diferentes do normal
+ */
 public class UsuarioFactory {
 
+    /**
+     * Função para retornar um usuário com o seu tipo definido por uma autoridade (de autenticação)
+     */
     public Usuario getUsuario(SimpleGrantedAuthority authority, Usuario usuario) {
         switch (authority.getAuthority()) {
             case "GESTOR":

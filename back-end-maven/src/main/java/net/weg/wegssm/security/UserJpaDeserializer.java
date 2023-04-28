@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import net.weg.wegssm.factory.UsuarioFactory;
+import net.weg.wegssm.model.factory.UsuarioFactory;
 import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -14,8 +14,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe para deserializar um usuário recebido no cookie de autenticação para a classe Usuario
+ */
 public class UserJpaDeserializer extends JsonDeserializer<UserJpa> {
 
+    /**
+     * Função para transformar o usuário recebido no cookie para a classe Usuario
+     */
     @Override
     public UserJpa deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = (ObjectMapper) p.getCodec();

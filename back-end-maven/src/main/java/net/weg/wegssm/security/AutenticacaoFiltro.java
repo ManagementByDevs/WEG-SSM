@@ -1,11 +1,11 @@
 package net.weg.wegssm.security;
 
 import lombok.AllArgsConstructor;
+import net.weg.wegssm.security.util.CookieUtils;
+import net.weg.wegssm.security.util.TokenUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class AutenticacaoFiltro extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getRequestURI().equals("/weg_ssm/login") || request.getRequestURI().equals("/weg_ssm/login/auth") || request.getRequestURI().equals("/login") || request.getRequestURI().equals("/weg_ssm/usuario/email")) {
+        if (request.getRequestURI().equals("/weg_ssm/login") || request.getRequestURI().equals("/weg_ssm/login/auth") || request.getRequestURI().equals("/login") || request.getRequestURI().equals("/weg_ssm/usuario/email") || request.getRequestURI().equals("/logout")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -49,7 +49,7 @@ public class AutenticacaoFiltro extends OncePerRequestFilter {
             tokenUtils.validarToken(token);
             UserJpa user = cookieUtils.getUserCookie(request);
 
-            cookieUtils.renovarCookie(request,"jwt");
+            cookieUtils.renovarCookie(request, "jwt");
             cookieUtils.renovarCookie(request, "user");
 
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());

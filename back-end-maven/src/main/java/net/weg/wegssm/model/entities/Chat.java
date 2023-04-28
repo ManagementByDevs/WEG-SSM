@@ -19,21 +19,21 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, unique = true)
     private Long id;
-
-    @Column(nullable = false)
-    private Boolean conversa_encerrada;
-
-    // Foreign keys
-
-    @OneToOne
-    @JoinColumn(name = "id_demanda", nullable = false)
-    private Demanda idDemanda;
-
-    @ManyToMany
-    @JoinTable(
-            name = "usuario_chat",
-            joinColumns = @JoinColumn(name = "chat_id"),
-            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
-    private List<Usuario> usuariosChat;
+//
+//    @Column(nullable = false)
+//    private Boolean conversa_encerrada;
+//
+//    // Foreign keys
+//
+//    @OneToOne
+//    @JoinColumn(name = "id_demanda", nullable = false)
+//    private Demanda idDemanda;
+//
+//    @ManyToMany
+//    @JoinTable(
+//            name = "usuario_chat",
+//            joinColumns = @JoinColumn(name = "chat_id"),
+//            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+//    private List<Usuario> usuariosChat;
 
 }

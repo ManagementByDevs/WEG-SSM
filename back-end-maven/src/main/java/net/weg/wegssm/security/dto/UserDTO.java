@@ -1,16 +1,16 @@
-package net.weg.wegssm.security;
+package net.weg.wegssm.security.dto;
 
 import lombok.Data;
-import lombok.NonNull;
+import javax.validation.constraints.NotNull;
 
 /** Classe DTO recebida na autenticação do usuário com os dados necessários */
 @Data
 public class UserDTO {
 
-    @NonNull
+    @NotNull
     private String email;
 
-    @NonNull
+    @NotNull
     private String senha;
 
 }
