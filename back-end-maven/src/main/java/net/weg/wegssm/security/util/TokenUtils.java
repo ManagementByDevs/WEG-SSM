@@ -1,15 +1,9 @@
-package net.weg.wegssm.security;
+package net.weg.wegssm.security.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.util.WebUtils;
+import net.weg.wegssm.security.UserJpa;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -44,16 +38,5 @@ public class TokenUtils {
         } catch (Exception e) {
             throw new RuntimeException("Token Inválido!");
         }
-    }
-
-    /**
-     * Função para buscar o email de um usuário através de um token de autenticação recebido, pegando seu "subject"
-     */
-    public String getUsuarioEmail(String token) {
-        return Jwts.parser()
-                .setSigningKey(senhaForte)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
     }
 }

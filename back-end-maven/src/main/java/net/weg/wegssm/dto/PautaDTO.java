@@ -1,14 +1,10 @@
 package net.weg.wegssm.dto;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import net.weg.wegssm.model.entities.Forum;
 import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.entities.Usuario;
 
-import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 

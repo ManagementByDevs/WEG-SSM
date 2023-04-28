@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 
 import { Box, Typography, Button, Paper } from "@mui/material";
 
@@ -65,6 +65,22 @@ const Demanda = (props) => {
     }
   };
 
+  // Formatando o html para string 
+
+  const propostaDaDemanda = useRef(null);
+
+  useEffect(() => {
+    if (!props.demanda.carregamento) {
+      if (propostaDaDemanda.current && props.demanda.proposta) {
+        propostaDaDemanda.current.innerHTML = getPropostaFomartted(props.demanda.proposta);
+      }
+    }
+  }, [props.demanda.carregamento]);
+
+  const getPropostaFomartted = (proposta) => {
+    return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
+  };
+
   return (
     <>
       {/* Modal de motivo recusa */}
@@ -123,7 +139,7 @@ const Demanda = (props) => {
 
         {/* Proposta da demanda */}
         <Typography gutterBottom fontSize={FontConfig?.default} color="text.secondary">
-          {props.demanda.proposta}
+          {getPropostaFomartted(props.demanda.proposta)}
         </Typography>
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}

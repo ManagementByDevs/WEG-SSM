@@ -1,15 +1,15 @@
-package net.weg.wegssm.security;
+package net.weg.wegssm.security.dto;
 
 import lombok.Data;
-import org.springframework.lang.NonNull;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class TokenDTO {
 
-    @NonNull
+    @NotNull
     private String tipo;
 
-    @NonNull
+    @NotNull
     private String token;
 
 }

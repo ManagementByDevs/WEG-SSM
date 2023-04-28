@@ -154,10 +154,6 @@ public class NotificacaoController {
      */
     @PutMapping
     public ResponseEntity<Object> update(@RequestBody @Valid NotificacaoDTO notificacaoDTO) {
-        if (!notificacaoService.existsById(notificacaoDTO.getId())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não existe uma notificação com o ID fornecido!");
-        }
-
         Notificacao notificacao = new Notificacao();
         BeanUtils.copyProperties(notificacaoDTO, notificacao);
 

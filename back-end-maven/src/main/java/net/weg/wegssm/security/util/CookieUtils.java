@@ -1,6 +1,7 @@
-package net.weg.wegssm.security;
+package net.weg.wegssm.security.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.weg.wegssm.security.UserJpa;
 import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,9 @@ public class CookieUtils {
      */
     private final TokenUtils tokenUtils = new TokenUtils();
 
+    /**
+     * Função para gerar um cookie armazenando o token de autenticação
+     */
     public Cookie gerarTokenCookie(UserJpa userJpa) {
         String token = tokenUtils.gerarToken(userJpa);
         Cookie cookie = new Cookie("jwt", token);
@@ -26,6 +30,9 @@ public class CookieUtils {
         return cookie;
     }
 
+    /**
+     * Função para pegar o cookie com o token de autenticação
+     */
     public String getTokenCookie(HttpServletRequest request) {
         try {
             Cookie cookie = WebUtils.getCookie(request, "jwt");
@@ -35,6 +42,9 @@ public class CookieUtils {
         }
     }
 
+    /**
+     * Função para gerar um cookie armazenando o usuário autenticado
+     */
     public Cookie gerarUserCookie(UserJpa userJpa) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -50,13 +60,9 @@ public class CookieUtils {
         }
     }
 
-    public Cookie renovarCookie(HttpServletRequest request, String nome){
-        Cookie cookie = WebUtils.getCookie(request, nome);
-        cookie.setPath("/");
-        cookie.setMaxAge(1800);
-        return cookie;
-    }
-
+    /**
+     * Função para pegar o cookie com o usuário autenticado
+     */
     public UserJpa getUserCookie(HttpServletRequest request) {
         try {
             Cookie cookie = WebUtils.getCookie(request, "user");
@@ -69,5 +75,15 @@ public class CookieUtils {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Função para renovar o tempo de um cookie, recebendo o nome dele como parâmetro
+     */
+    public Cookie renovarCookie(HttpServletRequest request, String nome) {
+        Cookie cookie = WebUtils.getCookie(request, nome);
+        cookie.setPath("/");
+        cookie.setMaxAge(1800);
+        return cookie;
     }
 }

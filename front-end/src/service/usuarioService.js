@@ -14,10 +14,6 @@ class UsuarioService {
    *   }
    */
 
-  async login(email, senha) {
-    return (await axios.get(usuario + `/login/${email}/${senha}`, { withCredentials: true })).data;
-  }
-
   async getUsuarioById(id) {
     return (await axios.get(usuario + `/${id}`, { withCredentials: true })).data;
   }

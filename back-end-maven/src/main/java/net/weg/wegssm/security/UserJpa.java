@@ -9,6 +9,7 @@ import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -38,7 +39,7 @@ public class UserJpa implements UserDetails {
 
     private String username;
 
-    public UserJpa(Usuario usuario){
+    public UserJpa(Usuario usuario) {
         this.usuario = usuario;
         this.accountNonExpired = true;
         this.accountNonLocked = true;
