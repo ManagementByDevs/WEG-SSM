@@ -5,6 +5,7 @@ import { Box, Typography, Avatar } from "@mui/material";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 import FontContext from "../../service/FontContext";
+import { useEffect } from "react";
 
 // Componnete para utilizar durante uma mensagem no chat
 const Mensagem = (props) => {
@@ -14,7 +15,7 @@ const Mensagem = (props) => {
 
   return (
     <>
-      {props.usuario.mensagens[props.index].remetente === "Eu" ? (
+      {!props.mensagem.remetente.usuario ? (
         <Box className="flex w-full justify-end">
           <Box
             className="flex items-center border py-2 px-4 my-2"
@@ -53,7 +54,7 @@ const Mensagem = (props) => {
             <Box className="flex flex-col w-full">
               <Box className="flex">
                 <Typography fontSize={FontConfig.default} fontWeight="400">
-                  {props.usuario.mensagens[props.index].texto}
+                  {props.mensagem.texto}
                 </Typography>
               </Box>
 
@@ -63,7 +64,7 @@ const Mensagem = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary" }}
                 >
-                  {props.usuario.mensagens[props.index].hora}
+                  {props.mensagem.data}
                 </Typography>
               </Box>
             </Box>

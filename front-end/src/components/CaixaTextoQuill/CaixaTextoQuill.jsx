@@ -62,7 +62,7 @@ function CaixaTextoQuill({ texto, setTexto, placeholder = "", useScroll = false,
       }}
       placeholder={placeholder}
       readOnly={false}
-      style={useScroll ? { height: '10rem', overflowY: 'scroll' } : setScroll ? { height: '5rem', overflowY: 'scroll' } : useScrollEdit ? {height: '8rem', overflowY: 'scroll'} : {}}
+      style={useScroll ? { height: '10rem', overflowY: 'scroll' } : setScroll ? { height: '5rem', overflowY: 'scroll' } : {}}
     />
   );
 }

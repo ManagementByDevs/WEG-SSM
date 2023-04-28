@@ -277,13 +277,12 @@ const Chat = () => {
 
   const setDefaultMensagem = () => {
     const userCookie = Cookies.get("user");
-    const userDecode = decodeURIComponent(userCookie);
-    const user = JSON.parse(userDecode);
-    const { pessoa } = user;
-    const { cpf } = pessoa;
+    const user = JSON.parse(userCookie);
+    // console.log("BEIBEEE: ", user)
+    const { username } = user;
     setMensagem({
       livro: { idChat: idChat },
-      remetente: { cpf: cpf },
+      remetente: { username: username },
       mensagem: null,
     });
     console.log(mensagem);
@@ -934,6 +933,7 @@ const Chat = () => {
                   >
                     {/* Por enquanto está usando um componente mensagens para pegar as mensagens */}
                     {mensagens.map((mensagem, index) => {
+                      console.log("SNDAS", mensagem);
                       return (
                         <Mensagem
                           key={index}
@@ -953,10 +953,7 @@ const Chat = () => {
                     }}
                   >
                     <Box
-                      onChange={(e) => {
-                        // save(e);
-                        console.log("OnChange2: ", e.target.value);
-                      }}
+                      onChange={atualizaMensagem}
                       className="w-full"
                       component="input"
                       sx={{
@@ -986,9 +983,7 @@ const Chat = () => {
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
                       <Tooltip title={texts.chat.enviarMensagem}>
                         <IconButton
-                          onClick={() => {
-                            salvarTexto();
-                          }}
+                          onClick={submit}
                         >
                           <SendOutlinedIcon
                             sx={{ color: "primary.main", cursor: "pointer" }}

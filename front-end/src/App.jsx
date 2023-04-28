@@ -85,15 +85,14 @@ const App = () => {
       <FontContext.Provider value={fontSize}>
         <TextLanguageContext.Provider value={textLanguage}>
           <ChatContext.Provider value={miniChat}>
-            <WebSocketService>
               <Router>
                 <Routes>
                   <Route path="/login" element={<Login />} />
                   <Route element={<ProtectedRoute />}>
                     <Route path="/criar-demanda" element={<CriarDemanda />} />
                     <Route path="/notificacao" element={<Notificacao />} />
-                    <Route path="/chat" element={<Chat />} />
-                    <Route path="/chat/{id}" element={<Chat />} />
+                    <Route path="/chat" element={<WebSocketService><Chat /></WebSocketService>} />
+                    <Route path="/chat/:id" element={<WebSocketService><Chat /></WebSocketService>} />
                     <Route
                       path="/detalhes-demanda"
                       element={<DetalhesDemandaPagina />}
@@ -141,7 +140,7 @@ const App = () => {
                     }
                   />
                   <Route
-                    path="/detalhes-proposta"
+                    path="/detalhes-proposta/:id"
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
@@ -175,7 +174,6 @@ const App = () => {
                   />
                 </Routes>
               </Router>
-            </WebSocketService>
           </ChatContext.Provider>
         </TextLanguageContext.Provider>
       </FontContext.Provider>

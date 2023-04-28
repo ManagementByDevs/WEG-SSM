@@ -202,18 +202,17 @@ const BeneficiosDetalheDemanda = (props) => {
                       </FormControl>
                     )}
                   </td>
-                  <td
-                    align="center"
-                    className="p-3 pl-5 pr-5 flex justify-center"
-                  >
-                    <CaixaTextoQuill
-                      texto={memoriaEdicao}
-                      setTexto={setMemoriaEdicao}
-                      onChange={(value) => {
-                        alterarTexto(value)
-                      }}
-                    />
+                  <td className="p-5 flex justify-center overflow-auto">
+                    <Box sx={{height: '10rem'}}>
+                      <CaixaTextoQuill
+                        texto={memoriaEdicao}
+                        setTexto={setMemoriaEdicao}
+                        onChange={(value) => {
+                          alterarTexto(value)
+                        }}
+                      />
 
+                    </Box>
                   </td>
                 </TableRow>
               </TableBody>

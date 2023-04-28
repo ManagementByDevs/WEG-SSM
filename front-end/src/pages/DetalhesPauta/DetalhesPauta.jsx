@@ -39,7 +39,7 @@ const DetalhesPauta = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Navigate utilizado para navegar para uma determianda página
   const navigate = useNavigate();
@@ -570,10 +570,7 @@ const DetalhesPauta = (props) => {
                     />
                   </IconButton>
                 </Box>
-                <DetalhesProposta
-                  proposta={dadosProposta}
-                  setProposta={setDadosProposta}
-                />
+                <DetalhesProposta propostaId={dadosProposta.id} />
               </Box>
             )}
           </Box>

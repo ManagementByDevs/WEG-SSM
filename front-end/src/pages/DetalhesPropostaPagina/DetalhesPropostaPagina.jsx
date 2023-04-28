@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+
+import { useLocation, useParams } from "react-router-dom";
 
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
@@ -14,17 +15,24 @@ import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ExportPdfService from "../../service/exportPdfService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
+import PropostaService from "../../service/propostaService";
 
 // Página que mostra os detalhes da proposta selecionada, com opção de download para pdf
 const DetalhesPropostaPagina = () => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
 
+  const paramsPath = useParams();
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Estado da proposta
+  const [proposta, setProposta] = useState(EntitiesObjectService.proposta());
 
   // useState utilizado para abrir e fechar o modal de adicionar a pauta
   const [openModalAddPropostaPauta, setOpenModalAddPropostaPauta] =
@@ -54,7 +62,7 @@ const DetalhesPropostaPagina = () => {
         setOpen={setOpenModalAddPropostaPauta}
         proposta={location.state}
       />
-      <Box className="relative p-2" sx={{minWidth: "45rem"}}>
+      <Box className="relative p-2" sx={{ minWidth: "45rem" }}>
         <Box className="flex w-full relative mb-10">
           <Caminho />
           <Box
@@ -73,7 +81,9 @@ const DetalhesPropostaPagina = () => {
           </Box>
         </Box>
         {/* Mostra o conteúdo da proposta */}
-        <DetalhesProposta proposta={location.state} />
+        <DetalhesProposta
+          propostaId={paramsPath.id}
+        />
       </Box>
       <Box className="absolute bottom-4 right-6  p-1">
         {/* Botão de adicionar proposta em pauta */}

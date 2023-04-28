@@ -14,7 +14,7 @@ const CriarDemanda = () => {
       <Box className="p-2">
         <Caminho feedback={true} />
         <Box className="w-full flex justify-center">
-          <Box className="w-5/6">
+          <Box className="w-5/6 relative">
             {/* Chamada do componente principal para criação da demanda */}
             <BarraProgressaoDemanda />
           </Box>
