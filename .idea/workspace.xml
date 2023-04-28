@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_security_2_7_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_config_5_7_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_core_5_7_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_crypto_5_7_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_web_5_7_4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Mensagem.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Mensagem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/Mensagem/Mensagem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Mensagem/Mensagem.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/MensagemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/MensagemController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/service/WebSocketService.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/WebSocketService.js" afterDir="false" />
     </list>
@@ -33,6 +26,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -46,6 +47,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/editora-livros-api-SemWebSocket" />
+    <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">

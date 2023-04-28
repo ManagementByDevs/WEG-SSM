@@ -13,6 +13,11 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
+import Cookies from "js-cookie";
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
+import Tour from "reactour";
+
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import Contato from "../../components/Contato/Contato";
@@ -28,21 +33,15 @@ import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
-import {MensagemService} from "../../service/MensagemService";
+import { MensagemService } from "../../service/MensagemService";
 import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ChatContext from "../../service/ChatContext";
-import {useParams} from "react-router-dom";
-import {WebSocketContext} from "../../service/WebSocketService";
-import Cookies from 'js-cookie';
-
-import { over } from "stompjs";
-import SockJS from "sockjs-client";
-
-import Tour from "reactour";
-
+import { useParams } from "react-router-dom";
+import { WebSocketContext } from "../../service/WebSocketService";
 import CookieService from "../../service/cookieService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 var stompClient = null;
 
@@ -226,16 +225,6 @@ const Chat = () => {
     // aqui é o deletar
   };
 
-
-
-
-
-
-
-
-
-
-
   // const buscarUsuario = () => {
   //   UsuarioService.getUsuarioByEmail(
   //     CookieService.getCookie("jwt").sub
@@ -246,7 +235,7 @@ const Chat = () => {
 
   const idChat = useParams().id;
   const [mensagens, setMensagens] = useState([]);
-  const [mensagem, setMensagem] = useState({});
+  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
 
   useEffect(() => {
@@ -268,10 +257,16 @@ const Chat = () => {
     const acaoNovaMensagem = (response) => {
       const mensagemRecebida = JSON.parse(response.body);
       console.log("Mensagem Recebida: ", mensagemRecebida);
-      setMensagens([...mensagens, mensagemRecebida]);
+      setMensagens((oldMensagens) => [...oldMensagens, mensagemRecebida]);
     };
-    if (stompClient) {
-      inscrever(`/chat/${idChat}`, acaoNovaMensagem);
+
+    let inscricaoId = inscrever(
+      `/weg_ssm/mensagem/${idChat}/chat`,
+      acaoNovaMensagem
+    );
+
+    if (inscricaoId) {
+      inscricaoId.unsubscribe();
     }
   });
 
@@ -281,7 +276,7 @@ const Chat = () => {
     // console.log("BEIBEEE: ", user)
     const { username } = user;
     setMensagem({
-      livro: { idChat: idChat },
+      chat: { idChat: idChat },
       remetente: { username: username },
       mensagem: null,
     });
@@ -296,7 +291,7 @@ const Chat = () => {
 
   const submit = async (event) => {
     event.preventDefault();
-    enviar(`/chat/${idChat}`, mensagem);
+    enviar(`/weg_ssm/mensagem/${idChat}`, mensagem);
     setDefaultMensagem();
   };
 
@@ -982,9 +977,7 @@ const Chat = () => {
                     />
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
                       <Tooltip title={texts.chat.enviarMensagem}>
-                        <IconButton
-                          onClick={submit}
-                        >
+                        <IconButton onClick={submit}>
                           <SendOutlinedIcon
                             sx={{ color: "primary.main", cursor: "pointer" }}
                           />

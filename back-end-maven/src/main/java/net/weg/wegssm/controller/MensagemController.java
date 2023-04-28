@@ -37,10 +37,11 @@ public class MensagemController {
 
     @MessageMapping("/weg_ssm/mensagem/{id}")
     @SendTo("/weg_ssm/mensagem/{id}/chat")
-    public ResponseEntity<Object> receiveMessage(@DestinationVariable Long id, @Payload MensagemDTO mensagemDTO){
+    public ResponseEntity<Object> receiveMessage(@DestinationVariable Long id, @Payload MensagemDTO mensagemDTO) {
+        System.out.println("Mensagem: " + mensagemDTO);
         Mensagem mensagem = new Mensagem();
 
-        BeanUtils.copyProperties(mensagemDTO, mensagem,"id");
+        BeanUtils.copyProperties(mensagemDTO, mensagem, "id");
 //
 //        Chat chat = chatService.findById(mensagemDTO.getChat().getId()).get();
 //

@@ -37,6 +37,7 @@ export const WebSocketService = ({children}) => {
   };
 
   const enviar = (destino, mensagem) => {
+    console.log("chegou aq", destino)
     if (stompClient) {
       stompClient.send(destino, {}, JSON.stringify(mensagem));
     } else {
@@ -45,8 +46,8 @@ export const WebSocketService = ({children}) => {
   };
 
   const inscrever = (caminho, acao) => {
-    if (!stompClient.subscriptions[caminho]) {
-      stompClient.subscribe(caminho, acao);
+    if (stompClient) {
+      return stompClient.subscribe(caminho, acao);
     }
   };
 

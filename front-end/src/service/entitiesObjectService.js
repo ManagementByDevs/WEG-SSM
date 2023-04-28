@@ -138,6 +138,28 @@ class EntitiesObjectService {
   forum() {
     return { idForum: 0, siglaForum: "", nomeForum: "" };
   }
+
+  chat() {
+    return {
+      id: 0,
+      conversa_encerrada: false,
+      idDemanda: this.proposta(),
+      usuariosChat: [this.usuario()],
+    };
+  }
+
+  mensagem() {
+    return {
+      id: 0,
+      data: "",
+      visto: false,
+      texto: "",
+      status: "",
+      usuario: this.usuario(),
+      idChat: this.chat(),
+      anexo: [this.anexo()],
+    };
+  }
 }
 
 export default new EntitiesObjectService();
