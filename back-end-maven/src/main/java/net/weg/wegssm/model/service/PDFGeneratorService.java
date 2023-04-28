@@ -153,6 +153,7 @@ public class PDFGeneratorService {
             tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
             tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
             tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+            tableBeneficios.addCell("");
 //            tableBeneficios.addCell(XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(beneficio.getMemoriaCalculo().getBytes())));
 
             document.add(tableBeneficios);
