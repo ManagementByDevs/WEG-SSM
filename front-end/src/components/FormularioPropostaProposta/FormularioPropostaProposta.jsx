@@ -188,7 +188,7 @@ const FormularioPropostaProposta = (props) => {
     });
   };
 
-  // Função para converter uma string em base64 para um ArrayBuffer
+  /** Função para converter uma string em base64 para um ArrayBuffer */
   function base64ToArrayBuffer(base64) {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);

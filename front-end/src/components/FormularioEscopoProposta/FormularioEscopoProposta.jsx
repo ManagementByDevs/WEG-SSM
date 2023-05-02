@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { Box } from "@mui/material";
 
 import TextEditor from "../TextEditor/TextEditor";
 
+/** Segunda etapa da criação da proposta, com um campo de texto para seu escopo */
 const FormularioEscopoProposta = (props) => {
 
   return (

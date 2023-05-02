@@ -343,7 +343,10 @@ const HomeGerencia = () => {
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
   /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
-  const [carregamento, setCarregamento] = useState(false);
+  const [carregamentoItens, setCarregamentoItens] = useState(true);
+
+  /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
+  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
 
   /** Variável para o feedback de demanda aceita */
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
@@ -502,7 +505,7 @@ const HomeGerencia = () => {
 
   // UseEffect para retirar o ícone de carregamento quando os itens forem buscados do banco de dados
   useEffect(() => {
-    setCarregamento(false);
+    setCarregamentoItens(false);
   }, [listaItens]);
 
   /** Função para ativar feedbacks vindos de outras páginas, chamada quando entrar na página */
@@ -525,7 +528,7 @@ const HomeGerencia = () => {
       CookieService.getCookie("jwt").sub
     ).then((e) => {
       setUsuario(e)
-      setParams({...params, solicitante: e});
+      setParams({ ...params, solicitante: e });
     });
   };
 
@@ -556,7 +559,7 @@ const HomeGerencia = () => {
   };
 
   const buscarItens = () => {
-    setCarregamento(true);
+    setCarregamentoItens(true);
     switch (valorAba) {
       case "1":
         if (usuario.id != 0) {
@@ -856,6 +859,11 @@ const HomeGerencia = () => {
       if (itemsVisualizationMode == nextModoVisualizacao) {
         setNextModoVisualizacao("GRID");
       }
+
+      // Timeout para retirar o carregamento após as preferências serem atualizadas
+      setTimeout(() => {
+        setCarregamentoPreferencias(false);
+      }, 500)
     })
   };
 
@@ -1054,106 +1062,112 @@ const HomeGerencia = () => {
 
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
-          {/* Sistema de abas */}
-          <TabContext value={valorAba}>
-            <Box
-              className="relative mb-4"
-              sx={{
-                borderBottom: 1,
-                borderColor: "divider.main",
-                minWidth: "47rem",
-              }}
-            >
-              <TabList
-                onChange={handleChange}
-                aria-label="lab API tabs example"
-              >
-                <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label={texts.home.minhasDemandas}
-                  value="1"
-                />
-                <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
-                  label={texts.homeGerencia.demandas}
-                  value="2"
-                />
 
-                {isGerente && (
-                  <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig.medium,
-                    }}
-                    label={texts.homeGerencia.criarPropostas}
-                    value="3"
-                  />
-                )}
-
-                {isGerente && (
-                  <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig.medium,
-                    }}
-                    label={texts.homeGerencia.propostas}
-                    value="4"
-                  />
-                )}
-
-                {isGerente && (
-                  <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig.medium,
-                    }}
-                    label={texts.homeGerencia.pautas}
-                    value="5"
-                  />
-                )}
-
-                {isGerente && (
-                  <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig.medium,
-                    }}
-                    label={texts.homeGerencia.atas}
-                    value="6"
-                  />
-                )}
-              </TabList>
-              <Box id="nonoDemandas" className="absolute right-0 top-2">
-                {nextModoVisualizacao == "TABLE" ? (
-                  <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
-                    <IconButton
-                      onClick={() => {
-                        trocarModoVisualizacao();
-                      }}
-                    >
-                      <ViewListIcon color="primary" />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
-                    <IconButton
-                      onClick={() => {
-                        trocarModoVisualizacao();
-                      }}
-                    >
-                      <ViewModuleIcon color="primary" />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </Box>
+          {carregamentoPreferencias ? (
+            <Box className="mt-6 w-full h-full flex justify-center items-center">
+              <ClipLoader color="#00579D" size={110} />
             </Box>
+          ) : (
 
-            {/* Container das ações abaixo das abas (input de pesquisa, filtrar e criar demanda) */}
-            <Box className="flex justify-between w-full">
-              {/* Container para o input e botão de filtrar */}
-              <Box className="flex gap-2 w-2/4 items-center">
-                {/* Input de pesquisa */}
-                {/* <InputPesquisa
+            <TabContext value={valorAba}>
+              <Box
+                className="relative mb-4"
+                sx={{
+                  borderBottom: 1,
+                  borderColor: "divider.main",
+                  minWidth: "47rem",
+                }}
+              >
+                <TabList
+                  onChange={handleChange}
+                  aria-label="lab API tabs example"
+                >
+                  <Tab
+                    sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                    label={texts.home.minhasDemandas}
+                    value="1"
+                  />
+                  <Tab
+                    sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                    label={texts.homeGerencia.demandas}
+                    value="2"
+                  />
+
+                  {isGerente && (
+                    <Tab
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: FontConfig.medium,
+                      }}
+                      label={texts.homeGerencia.criarPropostas}
+                      value="3"
+                    />
+                  )}
+
+                  {isGerente && (
+                    <Tab
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: FontConfig.medium,
+                      }}
+                      label={texts.homeGerencia.propostas}
+                      value="4"
+                    />
+                  )}
+
+                  {isGerente && (
+                    <Tab
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: FontConfig.medium,
+                      }}
+                      label={texts.homeGerencia.pautas}
+                      value="5"
+                    />
+                  )}
+
+                  {isGerente && (
+                    <Tab
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: FontConfig.medium,
+                      }}
+                      label={texts.homeGerencia.atas}
+                      value="6"
+                    />
+                  )}
+                </TabList>
+                <Box id="nonoDemandas" className="absolute right-0 top-2">
+                  {nextModoVisualizacao == "TABLE" ? (
+                    <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
+                      <IconButton
+                        onClick={() => {
+                          trocarModoVisualizacao();
+                        }}
+                      >
+                        <ViewListIcon color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
+                      <IconButton
+                        onClick={() => {
+                          trocarModoVisualizacao();
+                        }}
+                      >
+                        <ViewModuleIcon color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Box>
+              </Box>
+
+              {/* Container das ações abaixo das abas (input de pesquisa, filtrar e criar demanda) */}
+              <Box className="flex justify-between w-full">
+                {/* Container para o input e botão de filtrar */}
+                <Box className="flex gap-2 w-2/4 items-center">
+                  {/* Input de pesquisa */}
+                  {/* <InputPesquisa
                   eventoTeclado={eventoTeclado}
                   pesquisaTitulo={pesquisaTitulo}
                   salvarPesquisa={salvarPesquisa}
@@ -1167,64 +1181,64 @@ const HomeGerencia = () => {
                   setTotalPaginas={setTotalPaginas}
                   listaAutocomplete={listaAutocomplete}
                 /> */}
-                <Box
-                  className="flex justify-between items-center border px-3 py-1"
-                  sx={{
-                    backgroundColor: "input.main",
-                    width: "50%",
-                    minWidth: "10rem",
-                  }}
-                  id="primeiroMinhasDemandas"
-                >
-                  {/* Input de pesquisa*/}
                   <Box
-                    className="w-full"
-                    component="input"
+                    className="flex justify-between items-center border px-3 py-1"
                     sx={{
                       backgroundColor: "input.main",
-                      outline: "none",
-                      color: "text.primary",
-                      fontSize: FontConfig.medium,
+                      width: "50%",
+                      minWidth: "10rem",
                     }}
-                    placeholder={texts.homeGerencia.pesquisarPorTitulo}
-                    onKeyDown={(e) => {
-                      eventoTeclado(e);
-                    }}
-                    onBlur={() => {
-                      pesquisaTitulo();
-                    }}
-                    onChange={(e) => {
-                      salvarPesquisa(e.target.value);
-                    }}
-                  />
-                  {/* Container para os ícones */}
-                  <Box className="flex gap-2">
-                    {/* Ícone de pesquisa */}
-                    <Tooltip
-                      className="hover:cursor-pointer"
-                      title={texts.homeGerencia.pesquisar}
-                      onClick={() => {
+                    id="primeiroMinhasDemandas"
+                  >
+                    {/* Input de pesquisa*/}
+                    <Box
+                      className="w-full"
+                      component="input"
+                      sx={{
+                        backgroundColor: "input.main",
+                        outline: "none",
+                        color: "text.primary",
+                        fontSize: FontConfig.medium,
+                      }}
+                      placeholder={texts.homeGerencia.pesquisarPorTitulo}
+                      onKeyDown={(e) => {
+                        eventoTeclado(e);
+                      }}
+                      onBlur={() => {
                         pesquisaTitulo();
                       }}
-                    >
-                      <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
-                    </Tooltip>
-
-                    {/* Ícone de ordenação */}
-                    <Tooltip title={texts.homeGerencia.ordenacao}>
-                      <SwapVertIcon
-                        id="segundoDemandas"
+                      onChange={(e) => {
+                        salvarPesquisa(e.target.value);
+                      }}
+                    />
+                    {/* Container para os ícones */}
+                    <Box className="flex gap-2">
+                      {/* Ícone de pesquisa */}
+                      <Tooltip
+                        className="hover:cursor-pointer"
+                        title={texts.homeGerencia.pesquisar}
                         onClick={() => {
-                          setOpenOrdenacao(true);
+                          pesquisaTitulo();
                         }}
-                        className="cursor-pointer"
-                        sx={{ color: "text.secondary" }}
-                      />
-                    </Tooltip>
-                  </Box>
-                </Box>
+                      >
+                        <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
+                      </Tooltip>
 
-                {/* <Tooltip title={texts.homeGerencia.ordenacao}>
+                      {/* Ícone de ordenação */}
+                      <Tooltip title={texts.homeGerencia.ordenacao}>
+                        <SwapVertIcon
+                          id="segundoDemandas"
+                          onClick={() => {
+                            setOpenOrdenacao(true);
+                          }}
+                          className="cursor-pointer"
+                          sx={{ color: "text.secondary" }}
+                        />
+                      </Tooltip>
+                    </Box>
+                  </Box>
+
+                  {/* <Tooltip title={texts.homeGerencia.ordenacao}>
                   <SwapVertIcon
                     id="segundoDemandas"
                     onClick={() => {
@@ -1234,221 +1248,113 @@ const HomeGerencia = () => {
                     sx={{ color: "text.secondary" }}
                   />
                 </Tooltip> */}
-                {/* Modal de ordenação */}
-                {abrirOrdenacao && (
-                  <ModalOrdenacao
-                    tipoComponente="demanda"
-                    ordenacaoTitulo={ordenacaoTitulo}
-                    setOrdenacaoTitulo={setOrdenacaoTitulo}
-                    ordenacaoScore={ordenacaoScore}
-                    setOrdenacaoScore={setOrdenacaoScore}
-                    ordenacaoDate={ordenacaoDate}
-                    setOrdenacaoDate={setOrdenacaoDate}
-                    fecharModal={() => setOpenOrdenacao(false)}
-                  />
-                )}
+                  {/* Modal de ordenação */}
+                  {abrirOrdenacao && (
+                    <ModalOrdenacao
+                      tipoComponente="demanda"
+                      ordenacaoTitulo={ordenacaoTitulo}
+                      setOrdenacaoTitulo={setOrdenacaoTitulo}
+                      ordenacaoScore={ordenacaoScore}
+                      setOrdenacaoScore={setOrdenacaoScore}
+                      ordenacaoDate={ordenacaoDate}
+                      setOrdenacaoDate={setOrdenacaoDate}
+                      fecharModal={() => setOpenOrdenacao(false)}
+                    />
+                  )}
 
-                {/* Botão de filtrar */}
-                {valorAba < 5 && (
-                  <Button
-                    id="terceiroDemandas"
-                    className="flex gap-1"
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                      minWidth: "5rem",
-                    }}
-                    onClick={() => {
-                      setModalFiltro(true);
-                    }}
-                    variant="contained"
-                    disableElevation
-                  >
-                    {texts.homeGerencia.filtrar} <FilterAltOutlinedIcon />
-                  </Button>
-                )}
-                {modalFiltro && (
-                  <ModalFiltroGerencia
-                    fecharModal={() => {
-                      setModalFiltro(false);
-                    }}
-                    filtro={filtrosAtuais}
-                    setFiltro={setFiltrosAtuais}
-                    listaForuns={listaForum}
-                    listaDepartamentos={listaDepartamento}
-                    listaSolicitantes={listaSolicitantes}
-                    setListaSolicitantes={setListaSolicitantes}
-                    listaGerentes={listaGerentes}
-                    setListaGerentes={setListaGerentes}
-                    listaAnalistas={listaAnalistas}
-                    setListaAnalistas={setListaAnalistas}
-                    buscarPorNumero={buscarPorNumero}
-                    buscarPorPPM={buscarPorPPM}
-                  />
-                )}
+                  {/* Botão de filtrar */}
+                  {valorAba < 5 && (
+                    <Button
+                      id="terceiroDemandas"
+                      className="flex gap-1"
+                      sx={{
+                        backgroundColor: "primary.main",
+                        color: "text.white",
+                        fontSize: FontConfig.default,
+                        minWidth: "5rem",
+                      }}
+                      onClick={() => {
+                        setModalFiltro(true);
+                      }}
+                      variant="contained"
+                      disableElevation
+                    >
+                      {texts.homeGerencia.filtrar} <FilterAltOutlinedIcon />
+                    </Button>
+                  )}
+                  {modalFiltro && (
+                    <ModalFiltroGerencia
+                      fecharModal={() => {
+                        setModalFiltro(false);
+                      }}
+                      filtro={filtrosAtuais}
+                      setFiltro={setFiltrosAtuais}
+                      listaForuns={listaForum}
+                      listaDepartamentos={listaDepartamento}
+                      listaSolicitantes={listaSolicitantes}
+                      setListaSolicitantes={setListaSolicitantes}
+                      listaGerentes={listaGerentes}
+                      setListaGerentes={setListaGerentes}
+                      listaAnalistas={listaAnalistas}
+                      setListaAnalistas={setListaAnalistas}
+                      buscarPorNumero={buscarPorNumero}
+                      buscarPorPPM={buscarPorPPM}
+                    />
+                  )}
 
-                {/* Botão de exportar */}
-                {valorAba != 1 && (
-                  <Button
-                    id="quartoDemandas"
-                    className="flex gap-1"
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                      minWidth: "6rem",
-                    }}
-                    onClick={exportarExcel}
-                    variant="contained"
-                    disableElevation
-                  >
-                    {texts.homeGerencia.exportar} <FileDownloadIcon />
-                  </Button>
-                )}
+                  {/* Botão de exportar */}
+                  {valorAba != 1 && (
+                    <Button
+                      id="quartoDemandas"
+                      className="flex gap-1"
+                      sx={{
+                        backgroundColor: "primary.main",
+                        color: "text.white",
+                        fontSize: FontConfig.default,
+                        minWidth: "6rem",
+                      }}
+                      onClick={exportarExcel}
+                      variant="contained"
+                      disableElevation
+                    >
+                      {texts.homeGerencia.exportar} <FileDownloadIcon />
+                    </Button>
+                  )}
+                </Box>
+
+                {/* Botão de criar demanda */}
+                <Button
+                  id="quintoDemandas"
+                  className="gap-2"
+                  sx={{
+                    backgroundColor: "primary.main",
+                    color: "text.white",
+                    fontSize: FontConfig.default,
+                    maxHeight: "2.5rem",
+                    minWidth: "10.5rem",
+                  }}
+                  variant="contained"
+                  disableElevation
+                  onClick={() => {
+                    navigate("/criar-demanda");
+                  }}
+                >
+                  {texts.homeGerencia.criarDemanda}
+                  <AddIcon />
+                </Button>
               </Box>
 
-              {/* Botão de criar demanda */}
-              <Button
-                id="quintoDemandas"
-                className="gap-2"
-                sx={{
-                  backgroundColor: "primary.main",
-                  color: "text.white",
-                  fontSize: FontConfig.default,
-                  maxHeight: "2.5rem",
-                  minWidth: "10.5rem",
-                }}
-                variant="contained"
-                disableElevation
-                onClick={() => {
-                  navigate("/criar-demanda");
-                }}
-              >
-                {texts.homeGerencia.criarDemanda}
-                <AddIcon />
-              </Button>
-            </Box>
-
-            {carregamento ? (
-              <Box className="mt-6 w-full h-full flex justify-center items-center">
-                <ClipLoader color="#00579D" size={110} />
-              </Box>
-            ) : (
-              <Box className="mt-6" id="sextoMinhasDemandas">
-                <Box>
-                  <TabPanel sx={{ padding: 0 }} value="1">
-                    <Ajuda onClick={() => setIsTourMinhasDemandasOpen(true)} />
-                    <Box>
-                      {isTourMinhasDemandasOpen ? (
-                        <DemandaGerencia
-                          key={1}
-                          isTourDemandasOpen={isTourDemandasOpen}
-                          dados={{
-                            analista: {},
-                            beneficios: [{}],
-                            buSolicitante: {},
-                            busBeneficiados: [{}],
-                            departamento: {},
-                            frequencia: "",
-                            gerente: {},
-                            tamanho: "",
-                            id: 0,
-                            titulo: texts.homeGerencia.demandaParaTour,
-                            problema: "",
-                            proposta: "",
-                            motivoRecusa: "",
-                            status: "ASSESSMENT",
-                            data: "",
-                            solicitante: {
-                              nome: texts.homeGerencia.demandaParaTour,
-                            },
-                          }}
-                          semHistorico={true}
-                          tipo="demanda"
-                        />
-                      ) : (
-                        <DemandaModoVisualizacao
-                          listaDemandas={listaItens}
-                          onDemandaClick={verDemanda}
-                          myDemandas={true}
-                          nextModoVisualizacao={nextModoVisualizacao}
-                        />
-                      )}
-                    </Box>
-                  </TabPanel>
+              {carregamentoItens ? (
+                <Box className="mt-6 w-full h-full flex justify-center items-center">
+                  <ClipLoader color="#00579D" size={110} />
                 </Box>
-                {/* Valores para as abas selecionadas */}
-                <Box id="primeiroDemandas">
-                  <TabPanel sx={{ padding: 0 }} value="2">
-                    <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
-                    {isTourDemandasOpen ? (
-                      <DemandaGerencia
-                        key={1}
-                        isTourDemandasOpen={isTourDemandasOpen}
-                        dados={{
-                          analista: {},
-                          beneficios: [{}],
-                          buSolicitante: {},
-                          busBeneficiados: [{}],
-                          departamento: {},
-                          frequencia: "",
-                          gerente: {},
-                          tamanho: "",
-                          id: 0,
-                          titulo: texts.homeGerencia.demandaParaTour,
-                          problema: "",
-                          proposta: "",
-                          motivoRecusa: "",
-                          status: "BACKLOG_REVISAO",
-                          data: "",
-                          solicitante: {
-                            nome: texts.homeGerencia.demandaParaTour,
-                          },
-                        }}
-                        tipo="demanda"
-                      />
-                    ) : (
-                      <DemandaGerenciaModoVisualizacao
-                        listaDemandas={listaItens}
-                        onDemandaClick={verDemanda}
-                        nextModoVisualizacao={nextModoVisualizacao}
-                      />
-                    )}
-                  </TabPanel>
-                </Box>
-                {isGerente && (
-                  <>
-                    <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
-                      <Ajuda
-                        onClick={() => setIsTourCriarPropostasOpen(true)}
-                      />
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gap: "1rem",
-                          gridTemplateColumns:
-                            "repeat(auto-fit, minmax(720px, 1fr))",
-                        }}
-                      >
-                        <DemandaGerenciaModoVisualizacao
-                          listaDemandas={listaItens}
-                          onDemandaClick={verDemanda}
-                          nextModoVisualizacao={nextModoVisualizacao}
-                        />
-                      </Box>
-                    </TabPanel>
-                    <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gap: "1rem",
-                          gridTemplateColumns:
-                            "repeat(auto-fit, minmax(720px, 1fr))",
-                        }}
-                      >
-                        <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
-                        {isTourPropostasOpen ? (
+              ) : (
+                <Box className="mt-6" id="sextoMinhasDemandas">
+                  <Box>
+                    <TabPanel sx={{ padding: 0 }} value="1">
+                      <Ajuda onClick={() => setIsTourMinhasDemandasOpen(true)} />
+                      <Box>
+                        {isTourMinhasDemandasOpen ? (
                           <DemandaGerencia
                             key={1}
                             isTourDemandasOpen={isTourDemandasOpen}
@@ -1472,83 +1378,192 @@ const HomeGerencia = () => {
                                 nome: texts.homeGerencia.demandaParaTour,
                               },
                             }}
-                            tipo="proposta"
+                            semHistorico={true}
+                            tipo="demanda"
                           />
                         ) : (
-                          <Box
-                            sx={{
-                              display: "grid",
-                              gap: "1rem",
-                              gridTemplateColumns:
-                                "repeat(auto-fit, minmax(720px, 1fr))",
-                            }}
-                          >
-                            <DemandaGerenciaModoVisualizacao
-                              listaDemandas={listaItens}
-                              onDemandaClick={verProposta}
-                              nextModoVisualizacao={nextModoVisualizacao}
-                              isProposta={true}
-                            />
-                          </Box>
+                          <DemandaModoVisualizacao
+                            listaDemandas={listaItens}
+                            onDemandaClick={verDemanda}
+                            myDemandas={true}
+                            nextModoVisualizacao={nextModoVisualizacao}
+                          />
                         )}
                       </Box>
                     </TabPanel>
-                    <Box id="primeiroPautas">
-                      <TabPanel sx={{ padding: 0 }} value="5">
-                        <Ajuda onClick={() => setIsTourPautasOpen(true)} />
-                        {isTourPautasOpen ? (
-                          <Pauta
-                            key={1}
-                            isTourDemandasOpen={isTourDemandasOpen}
-                            dados={{
-                              numeroSequencial: "Pauta para Tour",
-                            }}
-                            tipo="pauta"
-                          />
-                        ) : (
-                          <PautaAtaModoVisualizacao
-                            listaPautas={listaItens}
-                            onItemClick={(pauta) => {
-                              navigate("/detalhes-pauta", {
-                                state: { pauta },
-                              });
-                            }}
+                  </Box>
+                  {/* Valores para as abas selecionadas */}
+                  <Box id="primeiroDemandas">
+                    <TabPanel sx={{ padding: 0 }} value="2">
+                      <Ajuda onClick={() => setIsTourDemandasOpen(true)} />
+                      {isTourDemandasOpen ? (
+                        <DemandaGerencia
+                          key={1}
+                          isTourDemandasOpen={isTourDemandasOpen}
+                          dados={{
+                            analista: {},
+                            beneficios: [{}],
+                            buSolicitante: {},
+                            busBeneficiados: [{}],
+                            departamento: {},
+                            frequencia: "",
+                            gerente: {},
+                            tamanho: "",
+                            id: 0,
+                            titulo: texts.homeGerencia.demandaParaTour,
+                            problema: "",
+                            proposta: "",
+                            motivoRecusa: "",
+                            status: "BACKLOG_REVISAO",
+                            data: "",
+                            solicitante: {
+                              nome: texts.homeGerencia.demandaParaTour,
+                            },
+                          }}
+                          tipo="demanda"
+                        />
+                      ) : (
+                        <DemandaGerenciaModoVisualizacao
+                          listaDemandas={listaItens}
+                          onDemandaClick={verDemanda}
+                          nextModoVisualizacao={nextModoVisualizacao}
+                        />
+                      )}
+                    </TabPanel>
+                  </Box>
+                  {isGerente && (
+                    <>
+                      <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                        <Ajuda
+                          onClick={() => setIsTourCriarPropostasOpen(true)}
+                        />
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gap: "1rem",
+                            gridTemplateColumns:
+                              "repeat(auto-fit, minmax(720px, 1fr))",
+                          }}
+                        >
+                          <DemandaGerenciaModoVisualizacao
+                            listaDemandas={listaItens}
+                            onDemandaClick={verDemanda}
                             nextModoVisualizacao={nextModoVisualizacao}
-                            setPautaSelecionada={setPautaSelecionada}
                           />
-                        )}
+                        </Box>
                       </TabPanel>
-                    </Box>
-                    <Box id="primeiroAtas">
-                      <TabPanel sx={{ padding: 0 }} value="6">
-                        <Ajuda onClick={() => setIsTourAtasOpen(true)} />
-                        {isTourAtasOpen ? (
-                          <Pauta
-                            key={1}
-                            isTourDemandasOpen={isTourDemandasOpen}
-                            dados={{
-                              numeroSequencial: "Ata para Tour",
-                            }}
-                            tipo="ata"
-                          />
-                        ) : (
-                          <PautaAtaModoVisualizacao
-                            listaPautas={listaItens}
-                            onItemClick={(ata) => {
-                              navigate("/detalhes-ata", { state: { ata } });
-                            }}
-                            nextModoVisualizacao={nextModoVisualizacao}
-                            setPautaSelecionada={setPautaSelecionada}
-                            isAta={true}
-                          />
-                        )}
+                      <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gap: "1rem",
+                            gridTemplateColumns:
+                              "repeat(auto-fit, minmax(720px, 1fr))",
+                          }}
+                        >
+                          <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
+                          {isTourPropostasOpen ? (
+                            <DemandaGerencia
+                              key={1}
+                              isTourDemandasOpen={isTourDemandasOpen}
+                              dados={{
+                                analista: {},
+                                beneficios: [{}],
+                                buSolicitante: {},
+                                busBeneficiados: [{}],
+                                departamento: {},
+                                frequencia: "",
+                                gerente: {},
+                                tamanho: "",
+                                id: 0,
+                                titulo: texts.homeGerencia.demandaParaTour,
+                                problema: "",
+                                proposta: "",
+                                motivoRecusa: "",
+                                status: "ASSESSMENT",
+                                data: "",
+                                solicitante: {
+                                  nome: texts.homeGerencia.demandaParaTour,
+                                },
+                              }}
+                              tipo="proposta"
+                            />
+                          ) : (
+                            <Box
+                              sx={{
+                                display: "grid",
+                                gap: "1rem",
+                                gridTemplateColumns:
+                                  "repeat(auto-fit, minmax(720px, 1fr))",
+                              }}
+                            >
+                              <DemandaGerenciaModoVisualizacao
+                                listaDemandas={listaItens}
+                                onDemandaClick={verProposta}
+                                nextModoVisualizacao={nextModoVisualizacao}
+                                isProposta={true}
+                              />
+                            </Box>
+                          )}
+                        </Box>
                       </TabPanel>
-                    </Box>
-                  </>
-                )}
-              </Box>
-            )}
-          </TabContext>
+                      <Box id="primeiroPautas">
+                        <TabPanel sx={{ padding: 0 }} value="5">
+                          <Ajuda onClick={() => setIsTourPautasOpen(true)} />
+                          {isTourPautasOpen ? (
+                            <Pauta
+                              key={1}
+                              isTourDemandasOpen={isTourDemandasOpen}
+                              dados={{
+                                numeroSequencial: "Pauta para Tour",
+                              }}
+                              tipo="pauta"
+                            />
+                          ) : (
+                            <PautaAtaModoVisualizacao
+                              listaPautas={listaItens}
+                              onItemClick={(pauta) => {
+                                navigate("/detalhes-pauta", {
+                                  state: { pauta },
+                                });
+                              }}
+                              nextModoVisualizacao={nextModoVisualizacao}
+                              setPautaSelecionada={setPautaSelecionada}
+                            />
+                          )}
+                        </TabPanel>
+                      </Box>
+                      <Box id="primeiroAtas">
+                        <TabPanel sx={{ padding: 0 }} value="6">
+                          <Ajuda onClick={() => setIsTourAtasOpen(true)} />
+                          {isTourAtasOpen ? (
+                            <Pauta
+                              key={1}
+                              isTourDemandasOpen={isTourDemandasOpen}
+                              dados={{
+                                numeroSequencial: "Ata para Tour",
+                              }}
+                              tipo="ata"
+                            />
+                          ) : (
+                            <PautaAtaModoVisualizacao
+                              listaPautas={listaItens}
+                              onItemClick={(ata) => {
+                                navigate("/detalhes-ata", { state: { ata } });
+                              }}
+                              nextModoVisualizacao={nextModoVisualizacao}
+                              setPautaSelecionada={setPautaSelecionada}
+                              isAta={true}
+                            />
+                          )}
+                        </TabPanel>
+                      </Box>
+                    </>
+                  )}
+                </Box>
+              )}
+            </TabContext>
+          )}
         </Box>
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
