@@ -74,13 +74,14 @@ public class ChatController {
      * @param id
      * @return
      */
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         if (!chatService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este id.");
         }
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(chatService.findById(id).get());
+        return ResponseEntity.status(HttpStatus.OK).body(chatService.findById(id).get());
     }
 
     /**

@@ -42,6 +42,7 @@ import { useParams } from "react-router-dom";
 import { WebSocketContext } from "../../service/WebSocketService";
 import CookieService from "../../service/cookieService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import dateService from "../../service/dateService";
 
 var stompClient = null;
 
@@ -234,7 +235,9 @@ const Chat = () => {
   // };
 
   const idChat = useParams().id;
-  const [mensagens, setMensagens] = useState([]);
+  const [mensagens, setMensagens] = useState([
+    EntitiesObjectService.mensagem(),
+  ]);
   const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
 
@@ -242,7 +245,7 @@ const Chat = () => {
     async function carregar() {
       await MensagemService.getMensagensChat(idChat)
         .then((response) => {
-          console.log(response);
+          console.log("response de quando entra: ", response);
           setMensagens(response);
         })
         .catch((error) => {
@@ -257,7 +260,7 @@ const Chat = () => {
     const acaoNovaMensagem = (response) => {
       const mensagemRecebida = JSON.parse(response.body);
       console.log("Mensagem Recebida: ", mensagemRecebida);
-      setMensagens((oldMensagens) => [...oldMensagens, mensagemRecebida]);
+      setMensagens((oldMensagens) => [...oldMensagens, mensagemRecebida.body]);
     };
 
     let inscricaoId = inscrever(
@@ -265,33 +268,41 @@ const Chat = () => {
       acaoNovaMensagem
     );
 
-    if (inscricaoId) {
-      inscricaoId.unsubscribe();
-    }
-  });
+    return () => {
+      if (inscricaoId) {
+        inscricaoId.unsubscribe();
+      }
+    };
+  }, [stompClient]);
+
+  useEffect(() => {
+    console.log("PLAYBOY: ", mensagens);
+  }, [mensagens]);
 
   const setDefaultMensagem = () => {
     const userCookie = Cookies.get("user");
     const user = JSON.parse(userCookie);
-    // console.log("BEIBEEE: ", user)
-    const { username } = user;
     setMensagem({
-      chat: { idChat: idChat },
-      remetente: { username: username },
-      mensagem: null,
+      data: dateService.getTodaysDate(),
+      visto: false,
+      texto: null,
+      status: "MESSAGE",
+      usuario: { id: user.usuario.id },
+      idChat: { id: idChat },
+      anexo: [],
     });
-    console.log(mensagem);
   };
 
   const atualizaMensagem = (event) => {
     event.preventDefault();
     const { value } = event.target;
-    setMensagem({ ...mensagem, mensagem: value });
+    setMensagem({ ...mensagem, texto: value });
   };
 
   const submit = async (event) => {
     event.preventDefault();
-    enviar(`/weg_ssm/mensagem/${idChat}`, mensagem);
+    console.log("Mensagem: ", mensagem);
+    enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
     setDefaultMensagem();
   };
 
@@ -927,17 +938,17 @@ const Chat = () => {
                     sx={{ width: "95%", height: "85%" }}
                   >
                     {/* Por enquanto está usando um componente mensagens para pegar as mensagens */}
-                    {mensagens.map((mensagem, index) => {
-                      console.log("SNDAS", mensagem);
-                      return (
-                        <Mensagem
-                          key={index}
-                          mensagem={mensagem}
-                          index={index}
-                          usuario={mensagem.usuario}
-                        />
-                      );
-                    })}
+                    {mensagens.length > 0 &&
+                      mensagens.map((mensagemDoMap, index) => {
+                        return (
+                          <Mensagem
+                            key={index}
+                            mensagem={mensagemDoMap}
+                            index={index}
+                            usuario={mensagemDoMap.usuario}
+                          />
+                        );
+                      })}
                   </Box>
                   <Box
                     className="flex border px-3 py-1 m-4 rounded items-center"

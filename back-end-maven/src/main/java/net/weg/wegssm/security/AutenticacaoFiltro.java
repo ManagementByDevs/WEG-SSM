@@ -39,7 +39,7 @@ public class AutenticacaoFiltro extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getRequestURI().equals("/weg_ssm/login") || request.getRequestURI().equals("/weg_ssm/login/auth") || request.getRequestURI().equals("/login") || request.getRequestURI().equals("/weg_ssm/usuario/email") || request.getRequestURI().equals("/logout")) {
+        if (request.getRequestURI().equals("/weg_ssm/login") || request.getRequestURI().equals("/weg_ssm/login/auth") || request.getRequestURI().equals("/login") || request.getRequestURI().equals("/weg_ssm/usuario/email") || request.getRequestURI().equals("/logout") || request.getRequestURI().startsWith("/weg_ssm/mensagem/chat/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -54,6 +54,9 @@ public class AutenticacaoFiltro extends OncePerRequestFilter {
 
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+            System.out.println("URL: " + request.getRequestURI());
+
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

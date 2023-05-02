@@ -6,6 +6,7 @@ import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Mensagem;
 import net.weg.wegssm.model.service.ChatService;
 import net.weg.wegssm.model.service.MensagemService;
+import net.weg.wegssm.model.service.UsuarioService;
 import net.weg.wegssm.util.MensagemUtil;
 import org.apache.coyote.Response;
 import org.springframework.beans.BeanUtils;
@@ -26,14 +27,16 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 @RequestMapping("/weg_ssm/mensagem")
 public class MensagemController {
 
     private MensagemService mensagemService;
     private ChatService chatService;
+    private UsuarioService usuarioService;
 
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+//    @Autowired
+//    private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/weg_ssm/mensagem/{id}")
     @SendTo("/weg_ssm/mensagem/{id}/chat")
@@ -42,6 +45,9 @@ public class MensagemController {
         Mensagem mensagem = new Mensagem();
 
         BeanUtils.copyProperties(mensagemDTO, mensagem, "id");
+
+
+        mensagem.setUsuario(usuarioService.findById(mensagemDTO.getUsuario().getId()).get());
 //
 //        Chat chat = chatService.findById(mensagemDTO.getChat().getId()).get();
 //
@@ -82,6 +88,22 @@ public class MensagemController {
         }
 
         return ResponseEntity.status(HttpStatus.FOUND).body(mensagemService.findById(id).get());
+    }
+
+    /**
+     * Método GET para buscar várias mensagens através de um id de um chat
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/chat/{id}")
+    public ResponseEntity<Object> findByIdChat(@PathVariable(value = "id") Long id) {
+        Optional<Chat> chat = chatService.findById(id);
+        if (!chat.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma mensagem deste id de chat.");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(mensagemService.findByIdChat(chat.get()));
     }
 
     /**

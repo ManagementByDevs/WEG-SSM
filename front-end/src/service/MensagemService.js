@@ -1,11 +1,11 @@
-import api from "./api";
+import axios from "./api";
 
-const url = "/chat";
+const url = "/mensagem";
 
 export const MensagemService = {
     getMensagensChat: async (id) => {
         try {
-            const response = await api.get(url + "/" + id);
+            const response = await axios.get(url + "/chat/" + id, { withCredentials: true });
             return response.data;
         } catch (error) {
             console.log(error);
@@ -15,7 +15,7 @@ export const MensagemService = {
 
     postMensagem: async (mensagem) => {
         try {
-            const response = await api.post(url, mensagem);
+            const response = await axios.post(url, mensagem, { withCredentials: true });
             return response.data;
         } catch (error) {
             console.log(error);
