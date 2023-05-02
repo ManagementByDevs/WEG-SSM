@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-//    List<Chat> findByUsuario(Usuario usuario);
+    List<Chat> findByUsuariosChatContaining(Usuario usuario);
 
 //    Boolean existsByUsuario(Usuario usuario);
 

@@ -111,7 +111,10 @@ const Home = () => {
   const [filtroAberto, setFiltroAberto] = useState(false);
 
   /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
-  const [carregamento, setCarregamento] = useState(false);
+  const [carregamentoItens, setCarregamentoItens] = useState(true);
+
+  /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
+  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
 
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
@@ -177,7 +180,7 @@ const Home = () => {
 
   // UseEffect para retirar o ícone de carregamento quando as demandas forem atualizadas
   useEffect(() => {
-    setCarregamento(false);
+    setCarregamentoItens(false);
   }, [listaDemandas]);
 
   /** Função para mostrar feedbacks possíveis advindos de outras páginas, utilizando o localStorage */
@@ -221,7 +224,7 @@ const Home = () => {
       return;
     }
 
-    setCarregamento(true);
+    setCarregamentoItens(true);
     if (params.titulo || params.solicitante || params.gerente || params.forum || params.departamento || params.tamanho || params.status) {
       DemandaService.getPage(
         params,
@@ -346,7 +349,12 @@ const Home = () => {
       if (itemsVisualizationMode == nextModoVisualizacao) {
         setNextModoVisualizacao("GRID");
       }
-    })
+
+      // Timeout para retirar o carregamento após as preferências serem atualizadas
+      setTimeout(() => {
+        setCarregamentoPreferencias(false);
+      }, 500)
+    });
   };
 
   /**
@@ -404,228 +412,237 @@ const Home = () => {
 
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
-          {/* Sistema de abas */}
-          <TabContext value={valorAba}>
-            <Box
-              className="mb-4 relative"
-              sx={{ borderBottom: 1, borderColor: "divider.main" }}
-            >
-              <TabList
-                onChange={atualizarAba}
-                aria-label="lab API tabs example"
-              >
-                <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
-                  label={texts.home.minhasDemandas}
-                  value="1"
-                />
-                <Tab
-                  sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
-                  label={texts.home.meuDepartamento}
-                  value="2"
-                />
-              </TabList>
 
-              <Box className="absolute right-0 top-2" id="sexto">
-                {nextModoVisualizacao == "TABLE" ? (
-                  <Tooltip title={texts.home.visualizacaoEmTabela}>
-                    <IconButton
-                      onClick={() => {
-                        setNextModoVisualizacao("GRID");
-                      }}
-                    >
-                      <ViewListIcon color="primary" />
-                    </IconButton>
-                  </Tooltip>
-                ) : (
-                  <Tooltip title={texts.home.visualizacaoEmBloco}>
-                    <IconButton
-                      onClick={() => {
-                        setNextModoVisualizacao("TABLE");
-                      }}
-                    >
-                      <ViewModuleIcon color="primary" />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </Box>
+          {carregamentoPreferencias ? (
+            <Box className="mt-6 w-full h-full flex justify-center items-center">
+              <ClipLoader color="#00579D" size={110} />
             </Box>
+          ) : (
 
-            {/* Container das ações abaixo das abas (input de pesquisa, filtrar e criar demanda) */}
-            <Box className="flex justify-between w-full">
-              {/* Container para o input e botão de filtrar */}
-              <Box className="flex gap-4 w-2/4">
-                {/* Input de pesquisa */}
-                <Box
-                  id="primeiro"
-                  className="flex justify-between items-center border px-3 py-1"
-                  sx={{
-                    backgroundColor: "input.main",
-                    width: "50%",
-                    minWidth: "10rem",
-                  }}
+            <TabContext value={valorAba}>
+              <Box
+                className="mb-4 relative"
+                sx={{ borderBottom: 1, borderColor: "divider.main" }}
+              >
+                <TabList
+                  onChange={atualizarAba}
+                  aria-label="lab API tabs example"
                 >
-                  {/* Input de pesquisa */}
-                  <Box
-                    className="w-full"
-                    component="input"
-                    sx={{
-                      backgroundColor: "input.main",
-                      outline: "none",
-                      color: "text.primary",
-                      fontSize: FontConfig?.medium,
-                    }}
-                    contentEditable
-                    placeholder={texts.home.pesquisarPorTitulo}
-                    onKeyDown={(e) => {
-                      if (e.key == "Enter") {
-                        pesquisaTitulo();
-                      }
-                    }}
-                    onBlur={() => {
-                      pesquisaTitulo();
-                    }}
-                    onChange={(e) => {
-                      salvarPesquisa(e);
-                    }}
+                  <Tab
+                    sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
+                    label={texts.home.minhasDemandas}
+                    value="1"
                   />
+                  <Tab
+                    sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
+                    label={texts.home.meuDepartamento}
+                    value="2"
+                  />
+                </TabList>
 
-                  {/* Container para os ícones */}
-                  <Box className="flex gap-2">
-                    {/* Ícone de pesquisa */}
-                    <Tooltip title={texts.home.pesquisar}>
-                      <SearchOutlinedIcon
-                        onClick={pesquisaTitulo}
-                        className="hover:cursor-pointer"
-                        sx={{ color: "text.secondary" }}
-                      />
-                    </Tooltip>
-
-                    {/* Ícone de ordenação */}
-                    <Tooltip title={texts.home.ordenacao}>
-                      <SwapVertIcon
-                        id="segundo"
-                        onClick={() => { setOpenOrdenacao(true); }}
-                        className="cursor-pointer"
-                        sx={{ color: "text.secondary" }}
-                      />
-                    </Tooltip>
-
-                    {/* Modal de ordenação */}
-                    {abrirOrdenacao && (
-                      <ModalOrdenacao
-                        fecharModal={() => {
-                          setOpenOrdenacao(false);
+                <Box className="absolute right-0 top-2" id="sexto">
+                  {nextModoVisualizacao == "TABLE" ? (
+                    <Tooltip title={texts.home.visualizacaoEmTabela}>
+                      <IconButton
+                        onClick={() => {
+                          setNextModoVisualizacao("GRID");
                         }}
-                        ordenacaoTitulo={ordenacaoTitulo}
-                        setOrdenacaoTitulo={setOrdenacaoTitulo}
-                        ordenacaoScore={ordenacaoScore}
-                        setOrdenacaoScore={setOrdenacaoScore}
-                        ordenacaoDate={ordenacaoDate}
-                        setOrdenacaoDate={setOrdenacaoDate}
-                      />
-                    )}
-                  </Box>
-                </Box>
-                <Box id="terceiro" className="flex gap-2">
-                  {/* Botão de filtrar */}
-                  {valorAba == 1 && (
-                    <Button
-                      sx={{
-                        backgroundColor: "primary.main",
-                        color: "text.white",
-                        fontSize: FontConfig?.default,
-                        minWidth: "5rem",
-                      }}
-                      onClick={() => { setFiltroAberto(true); }}
-                      variant="contained"
-                      disableElevation
-                    >
-                      {texts.home.filtrar} <FilterAltOutlinedIcon />
-                    </Button>
+                      >
+                        <ViewListIcon color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title={texts.home.visualizacaoEmBloco}>
+                      <IconButton
+                        onClick={() => {
+                          setNextModoVisualizacao("TABLE");
+                        }}
+                      >
+                        <ViewModuleIcon color="primary" />
+                      </IconButton>
+                    </Tooltip>
                   )}
                 </Box>
-                {/* Modal de filtro */}
-                {filtroAberto && (
-                  <ModalFiltro
-                    fecharModal={() => {
-                      setFiltroAberto(false);
+              </Box>
+
+              {/* Container das ações abaixo das abas (input de pesquisa, filtrar e criar demanda) */}
+              <Box className="flex justify-between w-full">
+                {/* Container para o input e botão de filtrar */}
+                <Box className="flex gap-4 w-2/4">
+                  {/* Input de pesquisa */}
+                  <Box
+                    id="primeiro"
+                    className="flex justify-between items-center border px-3 py-1"
+                    sx={{
+                      backgroundColor: "input.main",
+                      width: "50%",
+                      minWidth: "10rem",
                     }}
-                    listaFiltros={listaFiltros}
-                    setListaFiltros={setListaFiltros}
-                  />
-                )}
-              </Box>
+                  >
+                    {/* Input de pesquisa */}
+                    <Box
+                      className="w-full"
+                      component="input"
+                      sx={{
+                        backgroundColor: "input.main",
+                        outline: "none",
+                        color: "text.primary",
+                        fontSize: FontConfig?.medium,
+                      }}
+                      contentEditable
+                      placeholder={texts.home.pesquisarPorTitulo}
+                      onKeyDown={(e) => {
+                        if (e.key == "Enter") {
+                          pesquisaTitulo();
+                        }
+                      }}
+                      onBlur={() => {
+                        pesquisaTitulo();
+                      }}
+                      onChange={(e) => {
+                        salvarPesquisa(e);
+                      }}
+                    />
 
-              {/* Botão de criar demanda */}
-              <Button
-                id="quarto"
-                className="gap-2"
-                sx={{
-                  backgroundColor: "primary.main",
-                  color: "text.white",
-                  fontSize: FontConfig?.default,
-                  maxHeight: "2.5rem",
-                  minWidth: "10.5rem",
-                }}
-                variant="contained"
-                disableElevation
-                onClick={() => {
-                  navigate("/criar-demanda");
-                }}
-              >
-                {texts.home.criarDemanda}
-                <AddIcon />
-              </Button>
-            </Box>
+                    {/* Container para os ícones */}
+                    <Box className="flex gap-2">
+                      {/* Ícone de pesquisa */}
+                      <Tooltip title={texts.home.pesquisar}>
+                        <SearchOutlinedIcon
+                          onClick={pesquisaTitulo}
+                          className="hover:cursor-pointer"
+                          sx={{ color: "text.secondary" }}
+                        />
+                      </Tooltip>
 
-            {carregamento ? (
-              <Box className="mt-6 w-full h-full flex justify-center items-center">
-                <ClipLoader color="#00579D" size={110} />
-              </Box>
-            ) : (
-              <Box className="mt-6" id="quinto">
-                <TabPanel sx={{ padding: 0 }} value="1">
-                  <Ajuda onClick={() => setIsTourOpen(true)} />
-                  <Box>
-                    {isTourOpen ? (
-                      <Demanda
-                        demanda={{
-                          id: 0,
-                          titulo: texts.home.demandaTour,
-                          problema: texts.home.esseUmExemploDeDemanda,
-                          proposta: texts.home.esseUmExemploDeDemanda,
-                          motivoRecusa: texts.home.esseUmExemploDeDemanda,
-                          status: "BACKLOG_EDICAO",
-                          data: "10/10/10",
-                          solicitante: {
-                            id: 1,
-                            nome: texts.home.nomeDoSolicitante,
-                            tour: true
-                          },
+                      {/* Ícone de ordenação */}
+                      <Tooltip title={texts.home.ordenacao}>
+                        <SwapVertIcon
+                          id="segundo"
+                          onClick={() => { setOpenOrdenacao(true); }}
+                          className="cursor-pointer"
+                          sx={{ color: "text.secondary" }}
+                        />
+                      </Tooltip>
+
+                      {/* Modal de ordenação */}
+                      {abrirOrdenacao && (
+                        <ModalOrdenacao
+                          fecharModal={() => {
+                            setOpenOrdenacao(false);
+                          }}
+                          ordenacaoTitulo={ordenacaoTitulo}
+                          setOrdenacaoTitulo={setOrdenacaoTitulo}
+                          ordenacaoScore={ordenacaoScore}
+                          setOrdenacaoScore={setOrdenacaoScore}
+                          ordenacaoDate={ordenacaoDate}
+                          setOrdenacaoDate={setOrdenacaoDate}
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                  <Box id="terceiro" className="flex gap-2">
+                    {/* Botão de filtrar */}
+                    {valorAba == 1 && (
+                      <Button
+                        sx={{
+                          backgroundColor: "primary.main",
+                          color: "text.white",
+                          fontSize: FontConfig?.default,
+                          minWidth: "5rem",
                         }}
-                      />
-                    ) : (
+                        onClick={() => { setFiltroAberto(true); }}
+                        variant="contained"
+                        disableElevation
+                      >
+                        {texts.home.filtrar} <FilterAltOutlinedIcon />
+                      </Button>
+                    )}
+                  </Box>
+                  {/* Modal de filtro */}
+                  {filtroAberto && (
+                    <ModalFiltro
+                      fecharModal={() => {
+                        setFiltroAberto(false);
+                      }}
+                      listaFiltros={listaFiltros}
+                      setListaFiltros={setListaFiltros}
+                    />
+                  )}
+                </Box>
+
+                {/* Botão de criar demanda */}
+                <Button
+                  id="quarto"
+                  className="gap-2"
+                  sx={{
+                    backgroundColor: "primary.main",
+                    color: "text.white",
+                    fontSize: FontConfig?.default,
+                    maxHeight: "2.5rem",
+                    minWidth: "10.5rem",
+                  }}
+                  variant="contained"
+                  disableElevation
+                  onClick={() => {
+                    navigate("/criar-demanda");
+                  }}
+                >
+                  {texts.home.criarDemanda}
+                  <AddIcon />
+                </Button>
+              </Box>
+
+              <Box className="mt-6" id="quinto">
+                {carregamentoItens ? (
+                  <Box className="mt-6 w-full h-full flex justify-center items-center">
+                    <ClipLoader color="#00579D" size={110} />
+                  </Box>
+                ) : (
+                  <>
+                    <TabPanel sx={{ padding: 0 }} value="1">
+                      <Ajuda onClick={() => setIsTourOpen(true)} />
+                      <Box>
+                        {isTourOpen ? (
+                          <Demanda
+                            demanda={{
+                              id: 0,
+                              titulo: texts.home.demandaTour,
+                              problema: texts.home.esseUmExemploDeDemanda,
+                              proposta: texts.home.esseUmExemploDeDemanda,
+                              motivoRecusa: texts.home.esseUmExemploDeDemanda,
+                              status: "BACKLOG_EDICAO",
+                              data: "10/10/10",
+                              solicitante: {
+                                id: 1,
+                                nome: texts.home.nomeDoSolicitante,
+                                tour: true
+                              },
+                            }}
+                          />
+                        ) : (
+                          <DemandaModoVisualizacao
+                            listaDemandas={listaDemandas}
+                            onDemandaClick={verDemanda}
+                            myDemandas={true}
+                            nextModoVisualizacao={nextModoVisualizacao}
+                          />
+                        )}
+                      </Box>
+                    </TabPanel>
+                    <TabPanel sx={{ padding: 0 }} value="2">
                       <DemandaModoVisualizacao
                         listaDemandas={listaDemandas}
                         onDemandaClick={verDemanda}
-                        myDemandas={true}
+                        myDemandas={false}
                         nextModoVisualizacao={nextModoVisualizacao}
                       />
-                    )}
-                  </Box>
-                </TabPanel>
-                <TabPanel sx={{ padding: 0 }} value="2">
-                  <DemandaModoVisualizacao
-                    listaDemandas={listaDemandas}
-                    onDemandaClick={verDemanda}
-                    myDemandas={false}
-                    nextModoVisualizacao={nextModoVisualizacao}
-                  />
-                </TabPanel>
+                    </TabPanel>
+                  </>
+                )}
               </Box>
-            )}
-          </TabContext>
+            </TabContext>
+          )}
         </Box>
       </Box>
       <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
@@ -638,7 +655,7 @@ const Home = () => {
           />
         ) : null}
       </Box>
-    </FundoComHeader>
+    </FundoComHeader >
   );
 };
 
