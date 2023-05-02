@@ -19,8 +19,6 @@ const Mensagem = (props) => {
   const userCookie = Cookies.get("user");
   const user = JSON.parse(userCookie);
 
-  console.log("User mensagem: ", props.mensagem);
-
   return (
     <>
       {props.mensagem.usuario.id == user.usuario.id? (

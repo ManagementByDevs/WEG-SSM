@@ -235,10 +235,13 @@ const Chat = () => {
   //   });
   // };
 
+  const userCookie = Cookies.get("user");
+  const user = JSON.parse(userCookie);
+
   const [listaChats, setListaChats] = useState([]);
 
   const buscarChats = () => {
-    ChatService.getByRemetente().then((e) => {
+    ChatService.getByRemetente(user.usuario.id).then((e) => {
       setListaChats(e);
     });
   };
@@ -268,6 +271,10 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
+    console.log("chats: ", listaChats)
+  }, [listaChats]);
+
+  useEffect(() => {
     const acaoNovaMensagem = (response) => {
       const mensagemRecebida = JSON.parse(response.body);
       console.log("Mensagem Recebida: ", mensagemRecebida);
@@ -292,8 +299,6 @@ const Chat = () => {
   }, [mensagens]);
 
   const setDefaultMensagem = () => {
-    const userCookie = Cookies.get("user");
-    const user = JSON.parse(userCookie);
     setMensagem({
       data: dateService.getTodaysDate(),
       visto: false,
@@ -471,6 +476,7 @@ const Chat = () => {
                   />
                 ) : (
                   listaChats.map((resultado, index) => {
+                    console.log("Resultado: ", resultado);
                     return (
                       <Contato
                         key={index}

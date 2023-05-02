@@ -26,8 +26,8 @@ public class Chat {
     // Foreign keys
 
     @OneToOne
-    @JoinColumn(name = "id_demanda", nullable = false)
-    private Demanda idDemanda;
+    @JoinColumn(name = "id_proposta", nullable = false)
+    private Proposta idProposta;
 
     @ManyToMany
     @JoinTable(

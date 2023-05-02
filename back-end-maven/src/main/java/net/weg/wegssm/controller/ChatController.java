@@ -5,7 +5,8 @@ import net.weg.wegssm.dto.ChatDTO;
 import net.weg.wegssm.dto.HistoricoDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.ChatService;
-import net.weg.wegssm.model.service.DemandaService;
+import net.weg.wegssm.model.service.PropostaService;
+import net.weg.wegssm.model.service.PropostaService;
 import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import java.util.Optional;
 public class ChatController {
 
     private UsuarioService usuarioService;
-    private DemandaService demandaService;
+    private PropostaService propostaService;
     private ChatService chatService;
 
 
@@ -42,15 +43,15 @@ public class ChatController {
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid ChatDTO chatDto) {
-        if (!demandaService.existsById(chatDto.getDemanda().getId())) {
+        if (!propostaService.existsById(chatDto.getProposta().getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
         }
 
-        System.out.println("Criando chat: " + chatDto.getDemanda());
+        System.out.println("Criando chat: " + chatDto.getProposta());
 
         Chat chat = new Chat();
 //        chat.setConversa_encerrada(false);
-//        chat.setIdDemanda(chatDto.getDemanda());
+//        chat.setIdDemanda(chatDto.getProposta());
 //        chat.setUsuariosChat(chatDto.getUsuarios());
         BeanUtils.copyProperties(chatDto, chat);
 
@@ -90,7 +91,7 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(chatService.findByUsuariosChatContaining(usuario.get()));
+        return ResponseEntity.status(HttpStatus.OK).body(chatService.findByUsuariosChat(usuario.get()));
     }
 
     /**
