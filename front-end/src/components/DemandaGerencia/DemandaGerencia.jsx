@@ -10,6 +10,8 @@ import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemand
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+// import ChatService from "../../service/chatService";
+
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
   // Contexto para trocar a linguagem
@@ -53,6 +55,13 @@ const DemandaGerencia = (props) => {
       return texts.demandaGerencia.assessment;
     }
   };
+
+
+
+  const entrarChat = () => {
+  //   let existChat = ChatService.getByDemanda(props.dados.id);
+  //   ChatService.post(props.dados.id);
+  }
 
   return (
     <>
@@ -239,7 +248,7 @@ const DemandaGerencia = (props) => {
                     // Se for uma proposta, mostra o icone de chat
                     tipo === "proposta" && (
                       <Tooltip title={texts.demandaGerencia.chat}>
-                        <IconButton>
+                        <IconButton onClick={entrarChat}>
                           <ChatOutlinedIcon
                             id="segundoPropostas"
                             className="delay-120 hover:scale-110 duration-300"

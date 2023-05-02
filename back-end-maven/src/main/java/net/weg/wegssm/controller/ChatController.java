@@ -76,13 +76,14 @@ public class ChatController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         if (!chatService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este id.");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findById(id).get());
     }
+
+
 
     /**
      * Método GET para listar um chat específico através do titulo (usuario da conversa) para admins
