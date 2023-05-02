@@ -440,7 +440,7 @@ const Notificacao = () => {
                               </td>
                               <td className="text-left">
                                 <Typography fontSize={FontConfig.medium}>
-                                  {row.title}
+                                  {row.titulo}
                                 </Typography>
                               </td>
                               <td className="text-center">

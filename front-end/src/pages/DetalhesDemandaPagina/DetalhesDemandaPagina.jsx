@@ -16,9 +16,11 @@ import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
 import CookieService from "../../service/cookieService";
+import { ClipLoader } from "react-spinners";
 
 /** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
 const DetalhesDemandaPagina = () => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -27,6 +29,9 @@ const DetalhesDemandaPagina = () => {
 
   // Variável utilizada para receber os dados de uma demanda
   const [dados, setDados] = useState(location.state);
+
+  /** Variável para esconder os dados da demanda enquanto busca as preferências do usuário */
+  const [carregamento, setCarregamento] = useState(true);
 
   // Usuário que está logado no sistema
   const [usuario, setUsuario] = useState({
@@ -44,6 +49,14 @@ const DetalhesDemandaPagina = () => {
     setDados(location.state);
     buscarUsuario();
   }, []);
+
+  useEffect(() => {
+    if (usuario) {
+      setTimeout(() => {
+        setCarregamento(false);
+      }, 500)
+    }
+  }, [usuario])
 
   // Função utilizada para buscar o usuário que está logado no sistema
   const buscarUsuario = () => {
@@ -124,34 +137,44 @@ const DetalhesDemandaPagina = () => {
         showCloseButton={false}
       />
       <Ajuda onClick={() => setIsTourOpen(true)} />
-      <Box className="p-2 w-full" sx={{minWidth: "58rem"}}>
-        <Box className="flex w-full relative">
-          <Caminho />
-          <Box
-            className=" absolute"
-            sx={{ top: "10px", right: "20px", cursor: "pointer" }}
-          >
-            <IconButton onClick={baixarDemanda}>
-              <SaveAltOutlinedIcon
-                id="segundo"
-                fontSize="large"
-                className="delay-120 hover:scale-110 duration-600"
-                sx={{ color: "icon.main" }}
-              />
-            </IconButton>
+      <Box className="p-2 w-full" sx={{ minWidth: "58rem" }}>
+
+        {carregamento ? (
+          <Box className="mt-6 w-full h-full flex justify-center items-center">
+            <ClipLoader color="#00579D" size={110} />
           </Box>
-        </Box>
-        <Box className="w-full">
-          {/* Mostrar os dados da demanda */}
-          <DetalhesDemanda
-            dados={dados}
-            usuario={usuario}
-            setDados={setDados}
-            botao={true}
-            salvar={true}
-            updateDemandaProps={updateDemandaProps}
-          />
-        </Box>
+        ) : (
+          <>
+            <Box className="flex w-full relative">
+
+              <Caminho />
+              <Box
+                className=" absolute"
+                sx={{ top: "10px", right: "20px", cursor: "pointer" }}
+              >
+                <IconButton onClick={baixarDemanda}>
+                  <SaveAltOutlinedIcon
+                    id="segundo"
+                    fontSize="large"
+                    className="delay-120 hover:scale-110 duration-600"
+                    sx={{ color: "icon.main" }}
+                  />
+                </IconButton>
+              </Box>
+            </Box>
+            <Box className="w-full">
+              {/* Mostrar os dados da demanda */}
+              <DetalhesDemanda
+                dados={dados}
+                usuario={usuario}
+                setDados={setDados}
+                botao={true}
+                salvar={true}
+                updateDemandaProps={updateDemandaProps}
+              />
+            </Box>
+          </>
+        )}
       </Box>
     </FundoComHeader>
   );

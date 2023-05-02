@@ -127,11 +127,13 @@ const BarraProgressaoProposta = (props) => {
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
             (data) => {
               if (data.length == 0) {
-                console.log("aaaaaaa")
                 receberBeneficios();
                 let escopo = retornaObjetoProposta();
                 delete escopo.historicoProposta;
                 delete escopo.status;
+                delete escopo.emPauta;
+                delete escopo.emAta;
+
                 EscopoPropostaService.post(escopo).then((response) => {
                   idEscopo = response.id;
                   setUltimoEscopo(response);
@@ -216,6 +218,7 @@ const BarraProgressaoProposta = (props) => {
     return bytes.map((byte, i) => textoBinario.charCodeAt(i));
   }
 
+  /** Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco */
   const carregarTextoEscopo = (escopo) => {
     let reader = new FileReader();
     reader.onload = function () {
@@ -224,7 +227,6 @@ const BarraProgressaoProposta = (props) => {
 
     if (escopo.escopo) {
       let blob = new Blob([converterBase64(escopo.escopo)]);
-      console.log(blob);
       reader.readAsText(blob);
     }
   }
@@ -235,6 +237,9 @@ const BarraProgressaoProposta = (props) => {
       let escopoFinal = retornaObjetoProposta();
       delete escopoFinal.historicoProposta;
       delete escopoFinal.status;
+      delete escopoFinal.emAta;
+      delete escopoFinal.emPauta;
+      
       escopoFinal.id = ultimoEscopo.id;
       EscopoPropostaService.salvarDados(escopoFinal, receberIdsAnexos(), escopo).then(
         (response) => {
@@ -475,11 +480,6 @@ const BarraProgressaoProposta = (props) => {
     return listaIds;
   };
 
-  const formatarEscopoProposta = () => {
-    let blob = new Blob([escopo], { type: "text/plain" });
-    return blob;
-  }
-
   /** Função para montar um objeto de proposta para salvamento de escopos e propostas */
   const retornaObjetoProposta = () => {
     const objeto = {
@@ -508,6 +508,8 @@ const BarraProgressaoProposta = (props) => {
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
       historicoProposta: dadosDemanda.historicoDemanda,
+      emPauta: false,
+      emAta: false
     };
     return objeto;
   };
