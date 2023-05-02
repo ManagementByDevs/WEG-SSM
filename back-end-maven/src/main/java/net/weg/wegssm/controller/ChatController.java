@@ -76,12 +76,21 @@ public class ChatController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         if (!chatService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este id.");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findById(id).get());
+    }
+
+    @GetMapping("/remetente/{id}")
+    public ResponseEntity<List<Chat>> findByRemetente(@PathVariable(value = "id") Long id) {
+        Optional<Usuario> usuario = usuarioService.findById(id);
+        if (usuario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(chatService.findByUsuariosChatContaining(usuario.get()));
     }
 
     /**

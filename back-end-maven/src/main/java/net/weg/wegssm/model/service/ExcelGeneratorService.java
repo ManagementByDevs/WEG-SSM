@@ -46,20 +46,12 @@ public class ExcelGeneratorService {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Demandas BackLog");
 
-        IndexedColorMap colorMap = new DefaultIndexedColorMap();
-
-        XSSFColor evenRowColor = new XSSFColor(new java.awt.Color(220, 220, 220), colorMap);
-        XSSFColor oddRowColor = new XSSFColor(new java.awt.Color(255, 255, 255), colorMap);
-
         // Informações para o documento
         response.setHeader("Content-Disposition", "attachment; filename=demandas.xlsx");
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
         // Crinado estilos e fontes para o arquivo
         CellStyle style = workbook.createCellStyle();
-        CellStyle styleCorCinza = workbook.createCellStyle();
-
-        styleCorCinza.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 
         Font font = workbook.createFont();
         font.setBold(true);
@@ -99,9 +91,6 @@ public class ExcelGeneratorService {
         for (Optional<Demanda> demandaOp : listDemandas) {
             XSSFRow row = sheet.createRow(rowNum++);
 
-            XSSFColor rowColor = rowNum % 2 == 0 ? evenRowColor : oddRowColor;
-            row.setRowStyle(createRowStyle(workbook, rowColor));
-
             int rowIndex = rowNum;
 
             if (demandaOp.isPresent()) {
@@ -113,6 +102,25 @@ public class ExcelGeneratorService {
                 row.createCell(2).setCellValue(Jsoup.parse(demanda.getProblema()).text());
                 row.createCell(3).setCellValue(Jsoup.parse(demanda.getProposta()).text());
 
+               IndexedColorMap colorMap = new DefaultIndexedColorMap();
+
+                XSSFCellStyle evenRowStyle = workbook.createCellStyle();
+                evenRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                XSSFColor evenRowColor = new XSSFColor(new java.awt.Color(220, 220, 220), colorMap);
+                evenRowStyle.setFillForegroundColor(evenRowColor);
+
+                XSSFCellStyle oddRowStyle = workbook.createCellStyle();
+                oddRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                XSSFColor oddRowColor = new XSSFColor(new java.awt.Color(255, 255, 255), colorMap);
+                oddRowStyle.setFillForegroundColor(oddRowColor);
+
+                if (contadorDemanda % 2 != 0) {
+                    for (int i = 0; i <= 6; i++) {
+                        row.getCell(i).setCellStyle(evenRowStyle);
+                    }
+                }
 
                 for (Beneficio beneficio : demanda.getBeneficios()) {
                     Row roww = sheet.createRow(rowIndex);
@@ -125,7 +133,6 @@ public class ExcelGeneratorService {
                 for (Anexo anexo : demanda.getAnexo()) {
                     row.createCell(6).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
                     row.getCell(6).setCellStyle(alignLeft);
-                    row.getCell(6).setCellStyle(styleCorCinza);
                 }
 
                 // Setando os estilos para as colunas

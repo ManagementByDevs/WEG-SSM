@@ -50,4 +50,7 @@ public class ChatService {
         chatRepository.deleteById(id);
     }
 
+    public List<Chat> findByUsuariosChatContaining(Usuario usuario) {
+        return chatRepository.findByUsuariosChatContaining(usuario);
+    }
 }
