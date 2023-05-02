@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.service;
 
+import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Mensagem;
 import net.weg.wegssm.repository.MensagemRepository;
 import org.springframework.stereotype.Service;
@@ -36,4 +37,7 @@ public class MensagemService {
         mensagemRepository.deleteById(id);
     }
 
+    public List<Mensagem> findByIdChat(Chat chat) {
+        return mensagemRepository.findByIdChat(chat);
+    }
 }

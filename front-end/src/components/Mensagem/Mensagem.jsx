@@ -4,8 +4,11 @@ import { Box, Typography, Avatar } from "@mui/material";
 
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
+import Cookies from "js-cookie";
+
 import FontContext from "../../service/FontContext";
 import { useEffect } from "react";
+import dateService from "../../service/dateService";
 
 // Componnete para utilizar durante uma mensagem no chat
 const Mensagem = (props) => {
@@ -13,9 +16,14 @@ const Mensagem = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
+  const userCookie = Cookies.get("user");
+  const user = JSON.parse(userCookie);
+
+  console.log("User mensagem: ", props.mensagem);
+
   return (
     <>
-      {!props.mensagem.remetente.usuario ? (
+      {props.mensagem.usuario.id == user.usuario.id? (
         <Box className="flex w-full justify-end">
           <Box
             className="flex items-center border py-2 px-4 my-2"
@@ -36,7 +44,7 @@ const Mensagem = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginRight: "0.2rem" }}
                 >
-                  {props.mensagem.data}
+                  {`${dateService.getHorasFormatado(props.mensagem.data)}`}
                 </Typography>
                 <DoneAllIcon fontSize="small" sx={{ color: "#FFFF" }} />
               </Box>

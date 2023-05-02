@@ -37,11 +37,11 @@ export const WebSocketService = ({children}) => {
   };
 
   const enviar = (destino, mensagem) => {
-    console.log("chegou aq", destino)
+    console.log("destino do enviar: ", destino)
     if (stompClient) {
       stompClient.send(destino, {}, JSON.stringify(mensagem));
     } else {
-      alert("Conexão não estabelecida!");
+      console.log("Conexão não estabelecida!");
     }
   };
 
