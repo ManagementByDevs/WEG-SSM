@@ -3,6 +3,7 @@ package net.weg.wegssm.dto;
 import lombok.Data;
 import net.weg.wegssm.model.entities.*;
 
+import javax.persistence.Column;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -78,4 +79,8 @@ public class PropostaDTO {
     private List<TabelaCusto> tabelaCustos;
 
     private List<Historico> historicoProposta;
+
+    private Boolean emPauta;
+
+    private Boolean emAta;
 }
