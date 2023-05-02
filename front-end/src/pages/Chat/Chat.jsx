@@ -253,7 +253,8 @@ const Chat = () => {
         });
       setDefaultMensagem();
     }
-    carregar();
+
+    if (idChat) carregar();
   }, []);
 
   useEffect(() => {
@@ -263,16 +264,18 @@ const Chat = () => {
       setMensagens((oldMensagens) => [...oldMensagens, mensagemRecebida.body]);
     };
 
-    let inscricaoId = inscrever(
-      `/weg_ssm/mensagem/${idChat}/chat`,
-      acaoNovaMensagem
-    );
+    if (idChat) {
+      let inscricaoId = inscrever(
+        `/weg_ssm/mensagem/${idChat}/chat`,
+        acaoNovaMensagem
+      );
 
-    return () => {
-      if (inscricaoId) {
-        inscricaoId.unsubscribe();
-      }
-    };
+      return () => {
+        if (inscricaoId) {
+          inscricaoId.unsubscribe();
+        }
+      };
+    }
   }, [stompClient]);
 
   useEffect(() => {
