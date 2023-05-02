@@ -84,6 +84,16 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findById(id).get());
     }
 
+    @GetMapping("/remetente/{id}")
+    public ResponseEntity<List<Chat>> findByRemetente(@PathVariable(value = "id") Long id) {
+        Optional<Usuario> usuario = usuarioService.findById(id);
+        if (usuario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(chatService.findByUsuariosChatContaining(usuario.get()));
+    }
+
     /**
      * Método GET para listar um chat específico através do titulo (usuario da conversa) para admins
      *
