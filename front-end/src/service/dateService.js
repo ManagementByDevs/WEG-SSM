@@ -78,6 +78,22 @@ class DateService {
     date = Date.parse(date);
     return new Date(date);
   }
+
+  /**
+   * Retorna as horas em String
+   * @param {*} date
+   * @returns
+   */
+  getHorasFormatado = (data) => {
+    let dataFormatada = new Date(this.getDateByMySQLFormat(data));
+
+    return `${dataFormatada.getHours()}:${
+      dataFormatada.getMinutes() < 10
+        ? "0" + dataFormatada.getMinutes()
+        : dataFormatada.getMinutes()
+    }
+    `;
+  };
 }
 
 export default new DateService();

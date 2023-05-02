@@ -19,22 +19,6 @@ const Mensagem = (props) => {
   const userCookie = Cookies.get("user");
   const user = JSON.parse(userCookie);
 
-   // Retorna as horas de início e fim formatadas para melhor leitura
-  //  const getHorasFormatado = (dataInicio, dataFim) => {
-  //   let dateInicio = new Date(DateService.getDateByMySQLFormat(dataInicio));
-  //   let dateFim = new Date(DateService.getDateByMySQLFormat(dataFim));
-
-  //   return `${dateInicio.getHours()}:${
-  //     dateInicio.getMinutes() < 10
-  //       ? "0" + dateInicio.getMinutes()
-  //       : dateInicio.getMinutes()
-  //   } às ${dateFim.getHours()}:${
-  //     dateFim.getMinutes() < 10
-  //       ? "0" + dateFim.getMinutes()
-  //       : dateFim.getMinutes()
-  //   }`;
-  // };
-
   console.log("User mensagem: ", props.mensagem);
 
   return (
@@ -60,7 +44,7 @@ const Mensagem = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginRight: "0.2rem" }}
                 >
-                  {`${dateService.getTodaysDateUSFormat(props.mensagem.data)}`}
+                  {`${dateService.getHorasFormatado(props.mensagem.data)}`}
                 </Typography>
                 <DoneAllIcon fontSize="small" sx={{ color: "#FFFF" }} />
               </Box>
