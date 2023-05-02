@@ -65,18 +65,17 @@ const Demanda = (props) => {
     }
   };
 
-  // Formatando o html para string 
+  /** Variável utilizada para armazenar o valor em html do campo */
+  const descricaoDemanda = useRef(null);
 
-  const propostaDaDemanda = useRef(null);
-
+  /** useEffect utilizado para declarar o campo html na variável */
   useEffect(() => {
-    if (!props.demanda.carregamento) {
-      if (propostaDaDemanda.current && props.demanda.proposta) {
-        propostaDaDemanda.current.innerHTML = getPropostaFomartted(props.demanda.proposta);
-      }
+    if (descricaoDemanda.current) {
+      descricaoDemanda.current.innerHTML = props.demanda.proposta;
     }
-  }, [props.demanda.carregamento]);
+  }, []);
 
+  /** Função para formatar o html em texto */
   const getPropostaFomartted = (proposta) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
@@ -99,7 +98,6 @@ const Demanda = (props) => {
           minWidth: "550px",
           maxWidth: "100%",
           minHeight: retornaAlturaDemanda(),
-          maxHeight: "12rem",
           cursor: "pointer",
         }}
         className={`items-center h-30 text-justify border-t-4 pt-2 pb-3 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
@@ -138,7 +136,8 @@ const Demanda = (props) => {
         </Box>
 
         {/* Proposta da demanda */}
-        <Typography gutterBottom fontSize={FontConfig?.default} color="text.secondary">
+        <Typography gutterBottom fontSize={FontConfig?.default} color="text.secondary" ref={descricaoDemanda}>
+          {/* Chamando a função de formatação html, passando como parâmetro o texto em html */}
           {getPropostaFomartted(props.demanda.proposta)}
         </Typography>
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>

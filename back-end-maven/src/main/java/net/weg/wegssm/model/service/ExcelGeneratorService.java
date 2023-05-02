@@ -5,9 +5,8 @@ import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.util.DemandaUtil;
 import net.weg.wegssm.util.PropostaUtil;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
+import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +25,13 @@ public class ExcelGeneratorService {
     private PautaService pautaService;
     private AtaService ataService;
 
+    private static XSSFCellStyle createRowStyle(XSSFWorkbook workbook, XSSFColor color) {
+        XSSFCellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(color);
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return style;
+    }
+
     public void exportDemandasBackLogToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
         ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
 
@@ -40,12 +46,20 @@ public class ExcelGeneratorService {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Demandas BackLog");
 
+        IndexedColorMap colorMap = new DefaultIndexedColorMap();
+
+        XSSFColor evenRowColor = new XSSFColor(new java.awt.Color(220, 220, 220), colorMap);
+        XSSFColor oddRowColor = new XSSFColor(new java.awt.Color(255, 255, 255), colorMap);
+
         // Informações para o documento
         response.setHeader("Content-Disposition", "attachment; filename=demandas.xlsx");
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
         // Crinado estilos e fontes para o arquivo
         CellStyle style = workbook.createCellStyle();
+        CellStyle styleCorCinza = workbook.createCellStyle();
+
+        styleCorCinza.setFillBackgroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 
         Font font = workbook.createFont();
         font.setBold(true);
@@ -85,6 +99,9 @@ public class ExcelGeneratorService {
         for (Optional<Demanda> demandaOp : listDemandas) {
             XSSFRow row = sheet.createRow(rowNum++);
 
+            XSSFColor rowColor = rowNum % 2 == 0 ? evenRowColor : oddRowColor;
+            row.setRowStyle(createRowStyle(workbook, rowColor));
+
             int rowIndex = rowNum;
 
             if (demandaOp.isPresent()) {
@@ -93,13 +110,13 @@ public class ExcelGeneratorService {
                 // Adicionando informações nas respectivas colunas
                 row.createCell(0).setCellValue(contadorDemanda);
                 row.createCell(1).setCellValue(demanda.getTitulo());
-                row.createCell(2).setCellValue(demanda.getProblema());
-                row.createCell(3).setCellValue(demanda.getProposta());
+                row.createCell(2).setCellValue(Jsoup.parse(demanda.getProblema()).text());
+                row.createCell(3).setCellValue(Jsoup.parse(demanda.getProposta()).text());
 
 
                 for (Beneficio beneficio : demanda.getBeneficios()) {
                     Row roww = sheet.createRow(rowIndex);
-                    roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                    roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
                     rowIndex++;
                 }
 
@@ -108,6 +125,7 @@ public class ExcelGeneratorService {
                 for (Anexo anexo : demanda.getAnexo()) {
                     row.createCell(6).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
                     row.getCell(6).setCellStyle(alignLeft);
+                    row.getCell(6).setCellStyle(styleCorCinza);
                 }
 
                 // Setando os estilos para as colunas
@@ -214,13 +232,13 @@ public class ExcelGeneratorService {
                 // Adicionando informações nas respectivas colunas
                 row.createCell(0).setCellValue(contadorDemanda);
                 row.createCell(1).setCellValue(demanda.getTitulo());
-                row.createCell(2).setCellValue(demanda.getProblema());
-                row.createCell(3).setCellValue(demanda.getProposta());
+                row.createCell(2).setCellValue(Jsoup.parse(demanda.getProblema()).text());
+                row.createCell(3).setCellValue(Jsoup.parse(demanda.getProposta()).text());
 
 
                 for (Beneficio beneficio : demanda.getBeneficios()) {
                     Row roww = sheet.createRow(rowIndex);
-                    roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                    roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
                     rowIndex++;
                 }
 
@@ -358,8 +376,8 @@ public class ExcelGeneratorService {
                 row.createCell(3).setCellValue(proposta.getTitulo());
                 row.createCell(4).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                 row.createCell(5).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                row.createCell(6).setCellValue(proposta.getProblema());
-                row.createCell(7).setCellValue(proposta.getProposta());
+                row.createCell(6).setCellValue(Jsoup.parse(proposta.getProblema()).text());
+                row.createCell(7).setCellValue(Jsoup.parse(proposta.getProposta()).text());
 
 
                 for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
@@ -371,7 +389,7 @@ public class ExcelGeneratorService {
 
                 for (Beneficio beneficio : proposta.getBeneficios()) {
                     Row roww = sheet.createRow(rowIndex);
-                    roww.createCell(10).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                    roww.createCell(10).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
                     rowIndex++;
                 }
 
@@ -523,8 +541,8 @@ public class ExcelGeneratorService {
                     rowProposta.createCell(4).setCellValue(proposta.getData());
                     rowProposta.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                     rowProposta.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                    rowProposta.createCell(7).setCellValue(proposta.getProblema());
-                    rowProposta.createCell(8).setCellValue(proposta.getProposta());
+                    rowProposta.createCell(7).setCellValue(Jsoup.parse(proposta.getProblema()).text());
+                    rowProposta.createCell(8).setCellValue(Jsoup.parse(proposta.getProposta()).text());
 
                     for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                         for (Custo custo : tbCusto.getCustos()) {
@@ -535,7 +553,7 @@ public class ExcelGeneratorService {
 
                     for (Beneficio beneficio : proposta.getBeneficios()) {
                         Row roww = sheet.createRow(rowIndexProposta);
-                        roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                        roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
                         rowIndexProposta++;
                     }
 
@@ -685,8 +703,8 @@ public class ExcelGeneratorService {
                     rowProposta.createCell(4).setCellValue(proposta.getData());
                     rowProposta.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                     rowProposta.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                    rowProposta.createCell(7).setCellValue(proposta.getProblema());
-                    rowProposta.createCell(8).setCellValue(proposta.getProposta());
+                    rowProposta.createCell(7).setCellValue(Jsoup.parse(proposta.getProblema()).text());
+                    rowProposta.createCell(8).setCellValue(Jsoup.parse(proposta.getProposta()).text());
 
                     for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                         for (Custo custo : tbCusto.getCustos()) {
@@ -697,7 +715,7 @@ public class ExcelGeneratorService {
 
                     for (Beneficio beneficio : proposta.getBeneficios()) {
                         Row roww = sheet.createRow(rowIndexProposta);
-                        roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                        roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
                         rowIndexProposta++;
                     }
 

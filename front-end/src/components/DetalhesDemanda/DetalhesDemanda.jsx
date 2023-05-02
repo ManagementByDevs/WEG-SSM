@@ -798,7 +798,7 @@ const DetalhesDemanda = (props) => {
                         editavel={false}
                         key={index}
                         index={index}
-                        beneficio={beneficio} 
+                        beneficio={beneficio}
                       />
                     );
                   }

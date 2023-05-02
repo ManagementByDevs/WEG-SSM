@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import {
-  Box,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Box, Select, FormControl, InputLabel, MenuItem, Typography, } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
@@ -70,6 +63,7 @@ const Beneficios = (props) => {
     props.removerBeneficio(props.index);
   };
 
+  /** Variável para armazenar o valor do mini campo de edição de texto */
   const [memoriaCaixa, setMemoriaCaixa] = useState();
 
   return (
@@ -191,6 +185,7 @@ const Beneficios = (props) => {
             </Box>
 
             <Box sx={{ borderLeft: 'solid 4px', borderColor: 'primary.main' }}>
+              {/* Caixa de edição para o campo memória de cálculo */}
               <CaixaTextoQuill
                 placeholder={texts.beneficios.digiteMemoriaCalculo}
                 texto={memoriaCaixa}
