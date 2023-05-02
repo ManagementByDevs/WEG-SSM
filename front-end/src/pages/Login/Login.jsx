@@ -67,11 +67,7 @@ const Login = () => {
     if (dados.email && dados.senha) {
       try {
         const response = await AutenticacaoService.login(dados);
-        if(response.data.tipoUsuario == "SOLICITANTE") {
-          navigate("/home");
-        } else {
-          navigate("/home-gerencia");
-        }
+        navigate("/");
       } catch (error) {
       }
     } else {

@@ -36,6 +36,9 @@ class DemandaService {
         if (params.analista != null) {
             newParams.analista = JSON.stringify(params.analista);
         }
+        if(params.status != null) {
+            newParams.status = params.status;
+        }
         return (await axios.get(demanda + `/page?${page}`, { params: newParams, headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 

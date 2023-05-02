@@ -97,11 +97,13 @@ public class EscopoPropostaController {
 
     @PutMapping
     public ResponseEntity<EscopoProposta> update(@RequestParam(value = "escopo-proposta") String escopoPropostaJSON,
-                                                 @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos) {
+                                                 @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos,
+                                                 @RequestParam(value = "escopo", required = false) byte[] escopo) {
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
 
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
         escopoProposta.setUltimaModificacao(new Date());
+        escopoProposta.setEscopo(escopo);
 
         List<ResponsavelNegocio> listaResponsaveis = new ArrayList<>();
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
