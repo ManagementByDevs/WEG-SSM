@@ -127,7 +127,7 @@ const BarraProgressaoProposta = (props) => {
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
             (data) => {
               if (data.length == 0) {
-                 console.log("aaaaaaa")
+                console.log("aaaaaaa")
                 receberBeneficios();
                 let escopo = retornaObjetoProposta();
                 delete escopo.historicoProposta;
@@ -221,7 +221,7 @@ const BarraProgressaoProposta = (props) => {
           setUltimoEscopo(response);
         }
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -271,9 +271,9 @@ const BarraProgressaoProposta = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -403,7 +403,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
     for (const beneficio of listaBeneficiosExcluidos) {
-      beneficioService.delete(beneficio.id).then((response) => {});
+      beneficioService.delete(beneficio.id).then((response) => { });
     }
   };
 

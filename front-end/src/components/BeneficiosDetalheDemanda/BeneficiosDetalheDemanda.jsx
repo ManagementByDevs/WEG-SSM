@@ -44,24 +44,30 @@ const BeneficiosDetalheDemanda = (props) => {
     },
   }));
 
+  /** Variável para armazenar o valor html da memória de cálculo */
   const memoriaCalculo = useRef(null);
 
+  /** UseEffect para setar o valor em html na variável */
   useEffect(() => {
     if (memoriaCalculo.current && props.beneficio.memoriaCalculo !== undefined) {
       memoriaCalculo.current.innerHTML = props.beneficio.memoriaCalculo
     }
   });
 
+  /** Função para formatar o texto html */
   const getMemoriaCalculoFomartted = (memoria) => {
     return memoria[0].toUpperCase() + memoria.substring(1).toLowerCase();
   };
 
+  /** Função utilizada para editar um texto do campo de memória de cálculo */
   const alterarTexto = (e) => {
     props.setBeneficio({ ...props.beneficio, memoriaCalculo: e, }, props.index);
   }
 
+  /** Variável utilizada durante uma possível edição de texto na memória cálculo */
   const [memoriaEdicao, setMemoriaEdicao] = useState(props.beneficio.memoriaCalculo);
 
+  /** useEffect para mostrar o texto que poderá ser editado */
   useEffect(() => {
     if (!props.carregamento) {
       setMemoriaEdicao(props.beneficio.memoriaCalculo);
@@ -203,7 +209,8 @@ const BeneficiosDetalheDemanda = (props) => {
                     )}
                   </td>
                   <td className="p-5 flex justify-center overflow-auto">
-                    <Box sx={{height: '10rem'}}>
+                    <Box sx={{ height: '10rem' }}>
+                      {/* Caixa de texto para edição da memória cálculo */}
                       <CaixaTextoQuill
                         texto={memoriaEdicao}
                         setTexto={setMemoriaEdicao}
@@ -211,7 +218,6 @@ const BeneficiosDetalheDemanda = (props) => {
                           alterarTexto(value)
                         }}
                       />
-
                     </Box>
                   </td>
                 </TableRow>
