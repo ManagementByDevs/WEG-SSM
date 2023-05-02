@@ -13,20 +13,9 @@ import ChatMinimizado from "../ChatMinimizado/ChatMinimizado";
 
 import ChatContext from "../../service/ChatContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-import UsuarioService from "../../service/usuarioService";
-import cookieService from "../../service/cookieService";
 
 /** Header padrão usado no topo de todas as páginas do sistema */
 const Header = () => {
-
-  const [usuario, setUsuario] = useState(null);
-
-  useEffect(() => {
-    if (!cookieService.getCookie("jwt")) return;
-    UsuarioService.getUsuarioByEmail(cookieService.getCookie("jwt").sub).then((user) => {
-      setUsuario(user);
-    })
-  }, []);
 
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
@@ -53,7 +42,7 @@ const Header = () => {
       )}
 
       {/* Link para página inicial */}
-      <Link to={usuario?.tipoUsuario == "SOLICITANTE" ? "/home" : "/home-gerencia"}>
+      <Link to={"/"}>
         {/* Title */}
         <Tooltip title={texts.Header.paginaInicial}>
           {/* Parte esquerda do header */}

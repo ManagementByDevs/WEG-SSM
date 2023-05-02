@@ -21,7 +21,6 @@ import ExportPdfService from "../../service/exportPdfService";
 import SecaoTIService from "../../service/secaoTIService";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
-import BeneficiosDetalheDemanda from "../BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
@@ -96,6 +95,7 @@ const BarraProgressaoProposta = (props) => {
 
   // UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML)
   const [escopo, setEscopo] = useState("");
+  const [escopoTemp, setEscopoTemp] = useState("");
 
   // Dados gerais definidos na página de dados gerais da criação de demanda
   const [gerais, setGerais] = useState({
@@ -127,7 +127,7 @@ const BarraProgressaoProposta = (props) => {
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
             (data) => {
               if (data.length == 0) {
-                 console.log("aaaaaaa")
+                console.log("aaaaaaa")
                 receberBeneficios();
                 let escopo = retornaObjetoProposta();
                 delete escopo.historicoProposta;
@@ -167,7 +167,6 @@ const BarraProgressaoProposta = (props) => {
   }, [ultimoEscopo]);
 
   const carregarEscopoSalvo = (escopo) => {
-    console.log(escopo);
     setDadosDemanda({
       id: escopo.demanda.id,
       titulo: escopo.titulo,
@@ -205,23 +204,44 @@ const BarraProgressaoProposta = (props) => {
 
     setListaBeneficios(escopo.beneficios);
     setCustos(escopo.tabelaCustos);
+    setEscopo(carregarTextoEscopo(escopo));
 
     setCarregamento(false);
   };
 
+  /** Função para transformar uma string em base64 para um ArrayBuffer, usada para baixar anexos */
+  function converterBase64(base64) {
+    const textoBinario = window.atob(base64);
+    const bytes = new Uint8Array(textoBinario.length);
+    return bytes.map((byte, i) => textoBinario.charCodeAt(i));
+  }
+
+  const carregarTextoEscopo = (escopo) => {
+    let reader = new FileReader();
+    reader.onload = function () {
+      setEscopo(reader.result);
+    }
+
+    if (escopo.escopo) {
+      let blob = new Blob([converterBase64(escopo.escopo)]);
+      console.log(blob);
+      reader.readAsText(blob);
+    }
+  }
+
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = () => {
     try {
-      let escopo = retornaObjetoProposta();
-      delete escopo.historicoProposta;
-      delete escopo.status;
-      escopo.id = ultimoEscopo.id;
-      EscopoPropostaService.salvarDados(escopo, receberIdsAnexos()).then(
+      let escopoFinal = retornaObjetoProposta();
+      delete escopoFinal.historicoProposta;
+      delete escopoFinal.status;
+      escopoFinal.id = ultimoEscopo.id;
+      EscopoPropostaService.salvarDados(escopoFinal, receberIdsAnexos(), escopo).then(
         (response) => {
           setUltimoEscopo(response);
         }
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -271,9 +291,9 @@ const BarraProgressaoProposta = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || "Real",
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || "Real",
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -403,7 +423,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
     for (const beneficio of listaBeneficiosExcluidos) {
-      beneficioService.delete(beneficio.id).then((response) => {});
+      beneficioService.delete(beneficio.id).then((response) => { });
     }
   };
 
@@ -454,6 +474,11 @@ const BarraProgressaoProposta = (props) => {
     }
     return listaIds;
   };
+
+  const formatarEscopoProposta = () => {
+    let blob = new Blob([escopo], { type: "text/plain" });
+    return blob;
+  }
 
   /** Função para montar um objeto de proposta para salvamento de escopos e propostas */
   const retornaObjetoProposta = () => {
@@ -511,7 +536,7 @@ const BarraProgressaoProposta = (props) => {
           excluirBeneficios();
 
           propostaService
-            .post(retornaObjetoProposta(), receberIdsAnexos())
+            .post(retornaObjetoProposta(), receberIdsAnexos(), escopo)
             .then((response) => {
               DemandaService.atualizarStatus(
                 dadosDemanda.id,
@@ -581,7 +606,7 @@ const BarraProgressaoProposta = (props) => {
         />
       )}
       {activeStep == 1 && (
-        <FormularioEscopoProposta escopo={escopo} setEscopo={setEscopo} />
+        <FormularioEscopoProposta escopoTemp={escopoTemp} escopo={escopo} setEscopo={setEscopo} />
       )}
       {activeStep == 2 && (
         <FormularioCustosProposta custos={custos} setCustos={setCustos} />

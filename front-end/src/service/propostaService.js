@@ -40,13 +40,14 @@ class PropostaService {
     ).data;
   }
 
-  async post(proposta, listaIds) {
+  async post(proposta, listaIds, escopoTexto) {
     let form = new FormData();
 
     form.append("proposta", JSON.stringify(proposta));
     for (let id of listaIds) {
       form.append("idsAnexos", id);
     }
+    form.append("escopo", escopoTexto);
 
     return (await axios.post(`/proposta`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
   }

@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography, Button } from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -122,7 +115,7 @@ const BarraProgressaoDemanda = () => {
   }, [ultimoEscopo]);
 
   const buscarUsuario = () => {
-    if(!CookieService.getCookie("jwt")) navigate("/login");
+    if (!CookieService.getCookie("jwt")) navigate("/login");
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
       setUsuario(user);
     })

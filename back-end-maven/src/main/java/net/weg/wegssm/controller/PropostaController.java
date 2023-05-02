@@ -3956,9 +3956,11 @@ public class PropostaController {
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestParam(value = "proposta") String propostaJSON,
-                                       @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos) {
+                                       @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos,
+                                       @RequestParam(value = "escopo", required = false) byte[] escopoProposta) {
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
+        proposta.setEscopo(escopoProposta);
 
         Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
         List<Historico> historicoProposta = new ArrayList<>();
