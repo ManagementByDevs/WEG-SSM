@@ -26,7 +26,7 @@ public class CookieUtils {
         String token = tokenUtils.gerarToken(userJpa);
         Cookie cookie = new Cookie("jwt", token);
         cookie.setPath("/");
-        cookie.setMaxAge(1800);
+        cookie.setMaxAge(3600);
         return cookie;
     }
 
@@ -53,7 +53,7 @@ public class CookieUtils {
                     StandardCharsets.UTF_8);
             Cookie cookie = new Cookie("user", userJson);
             cookie.setPath("/");
-            cookie.setMaxAge(1800);
+            cookie.setMaxAge(3600);
             return cookie;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -83,7 +83,7 @@ public class CookieUtils {
     public Cookie renovarCookie(HttpServletRequest request, String nome) {
         Cookie cookie = WebUtils.getCookie(request, nome);
         cookie.setPath("/");
-        cookie.setMaxAge(1800);
+        cookie.setMaxAge(3600);
         return cookie;
     }
 }

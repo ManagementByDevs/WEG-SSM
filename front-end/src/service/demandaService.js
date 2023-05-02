@@ -36,7 +36,7 @@ class DemandaService {
         if (params.analista != null) {
             newParams.analista = JSON.stringify(params.analista);
         }
-        if(params.status != null) {
+        if (params.status != null) {
             newParams.status = params.status;
         }
         return (await axios.get(demanda + `/page?${page}`, { params: newParams, headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
@@ -58,7 +58,7 @@ class DemandaService {
     }
 
     async atualizarStatus(idDemanda, statusNovo) {
-        return (await axios.put(`/demanda/status/${idDemanda}/${statusNovo}`, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+        return (await axios.put(`/demanda/status/${idDemanda}/${statusNovo}`, { withCredentials: true })).data;
     }
 
     async put(demanda, arquivos) {
