@@ -21,6 +21,7 @@ import ExportPdfService from "../../service/exportPdfService";
 import SecaoTIService from "../../service/secaoTIService";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
+import CookieService from "../../service/cookieService";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
@@ -557,7 +558,7 @@ const BarraProgressaoProposta = (props) => {
                             response.id,
                             "Proposta Criada",
                             arquivo,
-                            parseInt(localStorage.getItem("usuarioId"))
+                            CookieService.getUser().id
                           )
                           .then(() => {
                             localStorage.setItem("tipoFeedback", "5");
