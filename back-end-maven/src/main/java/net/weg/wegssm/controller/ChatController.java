@@ -43,17 +43,18 @@ public class ChatController {
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid ChatDTO chatDto) {
-        if (!propostaService.existsById(chatDto.getProposta().getId())) {
+        if (!propostaService.existsById(chatDto.getIdProposta().getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
         }
 
-        System.out.println("Criando chat: " + chatDto.getProposta());
+        System.out.println("Criando chat: " + chatDto.getIdProposta());
 
         Chat chat = new Chat();
 //        chat.setConversa_encerrada(false);
 //        chat.setIdDemanda(chatDto.getProposta());
 //        chat.setUsuariosChat(chatDto.getUsuarios());
         BeanUtils.copyProperties(chatDto, chat);
+        chat.setConversa_encerrada(false);
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.save(chat));
     }
@@ -82,6 +83,16 @@ public class ChatController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findById(id).get());
+    }
+
+    @GetMapping("/user/{idUser}/proposta/{idProposta}")
+    public ResponseEntity<List<Chat>> findByPropostaAndUser(@PathVariable(value = "idUser") Long idUser, @PathVariable(value = "idProposta") Long idProposta) {
+        Optional<Usuario> usuario = usuarioService.findById(idUser);
+        Optional<Proposta> proposta = propostaService.findById(idProposta);
+        if (usuario.isEmpty() || proposta.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(chatService.findByIdPropostaAndUsuariosChat(proposta.get(), usuario.get()));
     }
 
     @GetMapping("/remetente/{id}")

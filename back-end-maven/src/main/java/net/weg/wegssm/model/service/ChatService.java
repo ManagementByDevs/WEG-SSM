@@ -1,6 +1,7 @@
 package net.weg.wegssm.model.service;
 
 import net.weg.wegssm.model.entities.Chat;
+import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.ChatRepository;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,9 @@ public class ChatService {
 
     public List<Chat> findByUsuariosChat(Usuario usuario) {
         return chatRepository.findByUsuariosChat(usuario);
+    }
+
+    public List<Chat> findByIdPropostaAndUsuariosChat(Proposta proposta, Usuario usuario) {
+        return chatRepository.findByIdPropostaAndUsuariosChat(proposta, usuario);
     }
 }

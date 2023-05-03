@@ -12,10 +12,10 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 import ChatService from "../../service/chatService";
+import UsuarioService from "../../service/usuarioService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -34,6 +34,8 @@ const DemandaGerencia = (props) => {
 
   // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
+
+  const [user, setUser] = useState(UsuarioService.getUserCookies());
 
   // Função para mudar a cor do status da demanda
   function getCorStatus() {
@@ -63,12 +65,30 @@ const DemandaGerencia = (props) => {
 
   const entrarChat = (e) => {
     e.stopPropagation();
-    let chat = ChatService.getByDemanda(props.dados.id);
-    if (chat) {
-      navigate(`/chat/${chat.id}`);
-    } else {
-      ChatService.post(props.dados.id);
-    }
+    let chat;
+    ChatService.getByPropostaAndUser(props.dados.id, user.usuario.id).then(
+      (response) => {
+        console.log("REPONSAVEL: ", response);
+        chat = response;
+        if (chat.length > 0) {
+          navigate(`/chat/${chat.id}`);
+        } else {
+          let newChat = {
+            idProposta: { id: props.dados.id },
+            usuariosChat: [
+              { id: user.usuario.id },
+              { id: props.dados.solicitante.id },
+            ],
+          };
+          ChatService.post(newChat).then((response) => {
+            console.log("RESPONSE 2: ", response);
+            chat = response;
+            navigate(`/chat/${chat.id}`);
+          });
+        }
+      }
+    );
+    console.log("OTAVIO CHAT: ", chat);
   };
 
   return (

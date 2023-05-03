@@ -7,8 +7,8 @@ class chatService {
     return (await axios.post(url, chat, { withCredentials: true })).data;
   }
 
-  async getByDemanda(id) {
-    return (await axios.get(`${url}/demanda/${id}`, { withCredentials: true })).data;
+  async getByPropostaAndUser(idProposta, idUser) {
+    return (await axios.get(`${url}/user/${idUser}/proposta/${idProposta}`, { withCredentials: true })).data;
   }
 
   async getByRemetente(id) {

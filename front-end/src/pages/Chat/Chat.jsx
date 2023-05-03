@@ -235,8 +235,6 @@ const Chat = () => {
   //   });
   // };
 
-  const userCookie = Cookies.get("user");
-  const user = JSON.parse(userCookie);
 
   const [listaChats, setListaChats] = useState([]);
 
@@ -245,6 +243,8 @@ const Chat = () => {
       setListaChats(e);
     });
   };
+
+  const [user, setUser] = useState(UsuarioService.getUserCookies());
 
   const idChat = useParams().id;
   const [mensagens, setMensagens] = useState([

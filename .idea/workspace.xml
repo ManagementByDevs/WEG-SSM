@@ -11,10 +11,13 @@
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Chat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/ChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/ChatService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/ChatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/ChatRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/Contato/Contato.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Contato/Contato.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/security/AutenticacaoConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/security/AutenticacaoConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/security/AutenticacaoFiltro.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/security/AutenticacaoFiltro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/DemandaGerencia/DemandaGerencia.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/DemandaGerencia/DemandaGerencia.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/Mensagem/Mensagem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Mensagem/Mensagem.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/service/entitiesObjectService.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/entitiesObjectService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/service/chatService.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/chatService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/service/usuarioService.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/usuarioService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { Box, Typography, Avatar } from "@mui/material";
 
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
-import Cookies from "js-cookie";
-
 import FontContext from "../../service/FontContext";
 import { useEffect } from "react";
 import dateService from "../../service/dateService";
+import UsuarioService from "../../service/usuarioService";
 
 // Componnete para utilizar durante uma mensagem no chat
 const Mensagem = (props) => {
@@ -16,8 +15,7 @@ const Mensagem = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  const userCookie = Cookies.get("user");
-  const user = JSON.parse(userCookie);
+  const [user, setUser] = useState(UsuarioService.getUserCookies());
 
   return (
     <>
