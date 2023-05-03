@@ -122,9 +122,12 @@ const DetalhesDemanda = (props) => {
     }
   }
 
+  const [visualizarTexto, setVisualizarTexto] = useState();
+
   // Função de cancelamento da edição da demanda, retornando os dados ao salvamento anterior
   function resetarTextoInput() {
     excluirBeneficiosAdicionados();
+    setVisualizarTexto(true);
     setEditar(false);
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
@@ -640,14 +643,14 @@ const DetalhesDemanda = (props) => {
     if (problemaDaDemanda.current) {
       problemaDaDemanda.current.innerHTML = props.dados.problema
     }
-  }, [props.dados]);
+  }, [props, visualizarTexto]);
 
   // useEffect utilizado para atualizar o valor html do campo
   useEffect(() => {
     if (propostaDaDemanda.current) {
       propostaDaDemanda.current.innerHTML = props.dados.proposta
     }
-  }, [props.dados]);
+  }, [props, visualizarTexto]);
 
   // Função utilizada para formatar o texto do problema
   const getProblemaFomartted = (problema) => {
@@ -706,6 +709,7 @@ const DetalhesDemanda = (props) => {
         onCancelClick={setEditar}
         textoModal="cancelarEdicao"
         textoBotao="sim"
+        atualizarTexto={true}
       />
       <ModalConfirmacao
         open={modalAprovarDemanda}
