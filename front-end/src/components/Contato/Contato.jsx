@@ -7,7 +7,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente contato utilizado para representar os contatos do chat
 const Contato = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -26,19 +25,40 @@ const Contato = (props) => {
     }
   }, [props.usuarioAtual]);
 
+  const [usuario, setUsuario] = useState({});
+
+  useEffect(() => {
+    setaDestinatario();
+  }, []);
+
+  const setaDestinatario = () => {
+    props.chat.usuariosChat.map((usuario) => {
+      if (usuario.id !== props.chat.idProposta.solicitante.id) {
+        setUsuario(usuario);
+      }
+    });
+  };
+
   return (
     <Box
       id="segundo"
       onClick={props.onClick}
       className="flex justify-evenly items-center rounded-lg border delay-120 hover:scale-105 duration-300"
-      sx={{ width: "90%", minWidth: "195px", minHeight: "8%", cursor: "pointer", backgroundColor: corSelecionado, "&:hover": { backgroundColor: "chat.eu", } }}
-      title={props.usuario.demanda}
+      sx={{
+        width: "90%",
+        minWidth: "195px",
+        minHeight: "8%",
+        cursor: "pointer",
+        backgroundColor: corSelecionado,
+        "&:hover": { backgroundColor: "chat.eu" },
+      }}
+      title={props.chat.idProposta.titulo}
     >
       {/* Pegando a foto de perfil do usuário */}
       <Box className="flex justify-content items-center">
         <Avatar
           sx={{ width: "3rem", height: "3rem" }}
-          src={props.usuario.foto}
+          // src={props.usuario.foto}
         />
       </Box>
 
@@ -46,14 +66,14 @@ const Contato = (props) => {
       <Box className="flex justify-content flex-col" sx={{ width: "70%" }}>
         <Box className="flex justify-between">
           <Typography fontSize={FontConfig.medium} fontWeight="600">
-            {props.usuario.nome}
+            {usuario.nome}
           </Typography>
           <Typography
             fontSize={FontConfig.default}
             fontWeight="600"
             sx={{ color: "primary.main" }}
           >
-            {props.usuario.codigoDemanda}
+            {props.chat.idProposta.id}
           </Typography>
         </Box>
         <Typography
@@ -62,7 +82,7 @@ const Contato = (props) => {
           className="overflow-hidden truncate"
           sx={{ width: "100%" }}
         >
-          {texts.contato.demanda}: {props.usuario.demanda}
+          {texts.contato.demanda}: {props.chat.idProposta.titulo}
         </Typography>
       </Box>
     </Box>

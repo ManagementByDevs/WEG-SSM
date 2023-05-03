@@ -1,4 +1,5 @@
 import { React, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Box, Paper, Tooltip, Typography, IconButton } from "@mui/material";
 
@@ -10,10 +11,14 @@ import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemand
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
-// import ChatService from "../../service/chatService";
+import ChatService from "../../service/chatService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
+
+  /** Navigate utilizado para navegar para outras páginas */
+  const navigate = useNavigate();
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -56,12 +61,15 @@ const DemandaGerencia = (props) => {
     }
   };
 
-
-
-  const entrarChat = () => {
-  //   let existChat = ChatService.getByDemanda(props.dados.id);
-  //   ChatService.post(props.dados.id);
-  }
+  const entrarChat = (e) => {
+    e.stopPropagation();
+    let chat = ChatService.getByDemanda(props.dados.id);
+    if (chat) {
+      navigate(`/chat/${chat.id}`);
+    } else {
+      ChatService.post(props.dados.id);
+    }
+  };
 
   return (
     <>
@@ -262,32 +270,33 @@ const DemandaGerencia = (props) => {
                       </Tooltip>
                     )
                   }
-                  {props.semHistorico == false || props.semHistorico == null &&(
-                    <Tooltip title={texts.demandaGerencia.historico}>
-                      <IconButton
-                        onClick={(e) => {
-                          if (
-                            !props.isTourPropostasOpen &&
-                            !props.isTourDemandasOpen &&
-                            !props.isTourCriarPropostasOpen
-                          ) {
-                            e.stopPropagation();
-                            abrirModalHistorico();
-                          }
-                        }}
-                      >
-                        <HistoryOutlinedIcon
-                          id="setimoDemandas"
-                          className="delay-120 hover:scale-110 duration-300"
-                          sx={{
-                            color: "icon.main",
-                            cursor: "pointer",
-                            fontSize: "30px",
+                  {props.semHistorico == false ||
+                    (props.semHistorico == null && (
+                      <Tooltip title={texts.demandaGerencia.historico}>
+                        <IconButton
+                          onClick={(e) => {
+                            if (
+                              !props.isTourPropostasOpen &&
+                              !props.isTourDemandasOpen &&
+                              !props.isTourCriarPropostasOpen
+                            ) {
+                              e.stopPropagation();
+                              abrirModalHistorico();
+                            }
                           }}
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  )}
+                        >
+                          <HistoryOutlinedIcon
+                            id="setimoDemandas"
+                            className="delay-120 hover:scale-110 duration-300"
+                            sx={{
+                              color: "icon.main",
+                              cursor: "pointer",
+                              fontSize: "30px",
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    ))}
                 </Box>
               </Box>
             </Box>

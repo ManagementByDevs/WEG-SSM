@@ -143,7 +143,7 @@ class EntitiesObjectService {
     return {
       id: 0,
       conversa_encerrada: false,
-      idDemanda: this.proposta(),
+      idProposta: this.proposta(),
       usuariosChat: [this.usuario()],
     };
   }

@@ -102,7 +102,7 @@ public class ExcelGeneratorService {
                 row.createCell(2).setCellValue(Jsoup.parse(demanda.getProblema()).text());
                 row.createCell(3).setCellValue(Jsoup.parse(demanda.getProposta()).text());
 
-               IndexedColorMap colorMap = new DefaultIndexedColorMap();
+                IndexedColorMap colorMap = new DefaultIndexedColorMap();
 
                 XSSFCellStyle evenRowStyle = workbook.createCellStyle();
                 evenRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -117,7 +117,7 @@ public class ExcelGeneratorService {
                 oddRowStyle.setFillForegroundColor(oddRowColor);
 
                 if (contadorDemanda % 2 != 0) {
-                    for (int i = 0; i <= 6; i++) {
+                    for (int i = 0; i <= 3; i++) {
                         row.getCell(i).setCellStyle(evenRowStyle);
                     }
                 }
