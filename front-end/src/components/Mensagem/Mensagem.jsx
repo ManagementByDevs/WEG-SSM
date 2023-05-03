@@ -68,7 +68,7 @@ const Mensagem = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary" }}
                 >
-                  {props.mensagem.data}
+                  {`${dateService.getHorasFormatado(props.mensagem.data)}`}
                 </Typography>
               </Box>
             </Box>

@@ -45,9 +45,13 @@ const Contato = (props) => {
     if (usuario.id !== props.chat.idProposta.solicitante.id) {
       setNomeContato(props.chat.idProposta.solicitante.nome);
     } else {
-      setNomeContato(usuario.nome);
+      props.chat.usuariosChat.map((usuarioChat) => {
+        if (usuario.id !== usuarioChat.id) {
+          setNomeContato(usuarioChat.nome);
+        }
+      });
     }
-  }
+  };
 
   return (
     <Box

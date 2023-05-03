@@ -271,13 +271,8 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    console.log("chats: ", listaChats)
-  }, [listaChats]);
-
-  useEffect(() => {
     const acaoNovaMensagem = (response) => {
       const mensagemRecebida = JSON.parse(response.body);
-      console.log("Mensagem Recebida: ", mensagemRecebida);
       setMensagens((oldMensagens) => [...oldMensagens, mensagemRecebida.body]);
     };
 
@@ -294,9 +289,6 @@ const Chat = () => {
       };
     }
   }, [stompClient]);
-
-  useEffect(() => {
-  }, [mensagens]);
 
   const setDefaultMensagem = () => {
     setMensagem({
