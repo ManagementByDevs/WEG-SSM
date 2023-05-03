@@ -6,9 +6,12 @@ export const MensagemService = {
     getMensagensChat: async (id) => {
         try {
             const response = await axios.get(url + "/chat/" + id, { withCredentials: true });
+            console.log("response.data", response.data)
+            response.data.map((mensagem) => {
+                mensagem.texto = mensagem.texto.replace(/%BREAK%/g, "\n")
+            })
             return response.data;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     },
@@ -18,7 +21,6 @@ export const MensagemService = {
             const response = await axios.post(url, mensagem, { withCredentials: true });
             return response.data;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

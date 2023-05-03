@@ -19,9 +19,7 @@ export const WebSocketService = ({children}) => {
           setStompClient(stomp);
         },
         (error) => {
-          console.log("Erro ao conectar: ", error);
           setTimeout(() => {
-            console.log("Tentando reconectar...");
             conectar();
           }, 5000);
         }
@@ -37,11 +35,14 @@ export const WebSocketService = ({children}) => {
   };
 
   const enviar = (destino, mensagem) => {
-    console.log("destino do enviar: ", destino)
     if (stompClient) {
-      stompClient.send(destino, {}, JSON.stringify(mensagem));
+      let auxMensagem
+      auxMensagem = {
+        ...mensagem,
+        texto: mensagem.texto.replace(/\n/g, "%BREAK%")
+      } 
+      stompClient.send(destino, {}, JSON.stringify(auxMensagem));
     } else {
-      console.log("Conexão não estabelecida!");
     }
   };
 

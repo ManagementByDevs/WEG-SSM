@@ -5,6 +5,8 @@ import { Box, Typography, Avatar } from "@mui/material";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+import UsuarioService from "../../service/usuarioService";
+
 // Componente contato utilizado para representar os contatos do chat
 const Contato = (props) => {
   // Contexto para trocar a linguagem
@@ -25,28 +27,19 @@ const Contato = (props) => {
     }
   }, [props.usuarioAtual]);
 
-  const [usuario, setUsuario] = useState({});
+  const [usuarioLogado, setUsuario] = useState(UsuarioService.getUserCookies());
   const [nomeContato, setNomeContato] = useState("");
 
   useEffect(() => {
-    setaDestinatario();
     retornaNomeContato();
   }, []);
 
-  const setaDestinatario = () => {
-    props.chat.usuariosChat.map((usuario) => {
-      if (usuario.id !== props.chat.idProposta.solicitante.id) {
-        setUsuario(usuario);
-      }
-    });
-  };
-
   const retornaNomeContato = () => {
-    if (usuario.id !== props.chat.idProposta.solicitante.id) {
+    if (usuarioLogado.usuario.id !== props.chat.idProposta.solicitante.id) {
       setNomeContato(props.chat.idProposta.solicitante.nome);
     } else {
       props.chat.usuariosChat.map((usuarioChat) => {
-        if (usuario.id !== usuarioChat.id) {
+        if (usuarioLogado.usuario.id !== usuarioChat.id) {
           setNomeContato(usuarioChat.nome);
         }
       });
@@ -82,14 +75,14 @@ const Contato = (props) => {
           <Typography fontSize={FontConfig.medium} fontWeight="600">
             {nomeContato}
           </Typography>
-          <Typography
-            fontSize={FontConfig.default}
-            fontWeight="600"
-            sx={{ color: "primary.main" }}
-          >
-            {props.chat.idProposta.id}
-          </Typography>
         </Box>
+        <Typography
+          fontSize={FontConfig.small}
+          fontWeight="600"
+          sx={{ color: "primary.main" }}
+        >
+          {texts.contato.ppm}: #{props.chat.idProposta.codigoPPM}
+        </Typography>
         <Typography
           fontSize={FontConfig.small}
           fontWeight="400"

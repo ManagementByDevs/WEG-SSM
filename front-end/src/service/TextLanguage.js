@@ -66,6 +66,7 @@ const TextLanguage = (linguagem) => {
             propostas: "Propostas",
         },
         contato: {
+            ppm: "PPM",
             demanda: "Demanda",
         },
         custos: {
@@ -826,6 +827,7 @@ const TextLanguage = (linguagem) => {
             propostas: "Proposals",
         },
         contato: {
+            ppm: "PPM",
             demanda: "Demand",
         },
         custos: {
@@ -1583,6 +1585,7 @@ const TextLanguage = (linguagem) => {
             propostas: "提案",
         },
         contato: {
+            ppm: "PPM",
             demanda: "需求",
         },
         custos: {
@@ -2046,7 +2049,7 @@ const TextLanguage = (linguagem) => {
             nenhumaPropostaAdicionada: "未添加提案",
         },
         detalhesPropostaPagina: {
-            adicionarAPauta: "Add to Minute",
+            adicionarAPauta: "添加到议程",
         },
         escopos: {
             tour: {
@@ -2338,6 +2341,7 @@ const TextLanguage = (linguagem) => {
             propostas: "Propuestas",
         },
         contato: {
+            ppm: "PPM",
             demanda: "Demanda",
         },
         custos: {

@@ -70,6 +70,7 @@ const TextLanguageContext = createContext({
       propostas: "Propostas",
     },
     contato: {
+      ppm: "PPM",
       demanda: "Demanda",
     },
     custos: {

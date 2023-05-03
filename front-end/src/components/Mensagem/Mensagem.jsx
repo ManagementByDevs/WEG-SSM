@@ -11,7 +11,6 @@ import UsuarioService from "../../service/usuarioService";
 
 // Componnete para utilizar durante uma mensagem no chat
 const Mensagem = (props) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -19,18 +18,26 @@ const Mensagem = (props) => {
 
   return (
     <>
-      {props.mensagem.usuario.id == user.usuario.id? (
+      {props.mensagem.usuario.id == user.usuario.id ? (
         <Box className="flex w-full justify-end">
           <Box
             className="flex items-center border py-2 px-4 my-2"
             sx={{
-              backgroundColor: "chat.eu", borderRadius: "10px 10px 0px 10px", maxWidth: "70%",
+              backgroundColor: "chat.eu",
+              borderRadius: "10px 10px 0px 10px",
+              maxWidth: "70%",
+              marginRight: "4%",
             }}
           >
             <Box className="flex flex-col w-full">
               <Box className="flex">
                 <Typography fontSize={FontConfig.default} fontWeight="400">
-                  {props.mensagem.texto}
+                  {props.mensagem.texto.split("\n").map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                  ))}
                 </Typography>
               </Box>
 
@@ -52,7 +59,10 @@ const Mensagem = (props) => {
           <Box
             className="flex items-center rounded-lg border py-2 px-4 my-2"
             sx={{
-              backgroundColor: "chat.outro", borderRadius: "10px 10px 10px 0px", maxWidth: "70%",
+              backgroundColor: "chat.outro",
+              borderRadius: "10px 10px 10px 0px",
+              maxWidth: "70%",
+              marginLeft: "5%",
             }}
           >
             <Box className="flex flex-col w-full">
