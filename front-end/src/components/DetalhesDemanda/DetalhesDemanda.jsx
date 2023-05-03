@@ -25,6 +25,8 @@ import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 
+import CookieService from "../../service/cookieService";
+
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
   // Contexto para trocar a linguagem
@@ -537,7 +539,7 @@ const DetalhesDemanda = (props) => {
         props.dados.id,
         texto,
         arquivo,
-        parseInt(localStorage.getItem("usuarioId"))
+        CookieService.getUser().id
       );
     });
   };
