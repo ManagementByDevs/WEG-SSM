@@ -631,32 +631,39 @@ const DetalhesDemanda = (props) => {
     navigate("/");
   };
 
+  // Variáveis utilizadas para armazenar o valor html do campo
   const problemaDaDemanda = useRef(null);
   const propostaDaDemanda = useRef(null);
 
+  // useEffect utilizado para atualizar o valor html do campo
   useEffect(() => {
     if (problemaDaDemanda.current) {
       problemaDaDemanda.current.innerHTML = props.dados.problema
     }
   }, [props.dados]);
 
+  // useEffect utilizado para atualizar o valor html do campo
   useEffect(() => {
     if (propostaDaDemanda.current) {
       propostaDaDemanda.current.innerHTML = props.dados.proposta
     }
   }, [props.dados]);
 
+  // Função utilizada para formatar o texto do problema
   const getProblemaFomartted = (problema) => {
     return problema[0].toUpperCase() + problema.substring(1).toLowerCase();
   };
 
+  // Função utilizada para formatar o texto da proposta
   const getPropostaFomartted = (proposta) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
+  // Variáveis utilizadas para realizar a edição da demanda
   const [problemaEdicao, setProblemaEdicao] = useState();
   const [propostaEdicao, setPropostaEdicao] = useState();
 
+  // useEffect utilizado para atualizar o valor das variáveis de edição, quando entrar na página
   useEffect(() => {
     if (!props.carregamento) {
       setProblemaEdicao(props.dados.problema);
