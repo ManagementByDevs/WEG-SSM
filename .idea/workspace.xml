@@ -6,18 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/dto/ChatDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/dto/ChatDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Chat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/ChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/service/ChatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/ChatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/repository/ChatRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/security/AutenticacaoConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/security/AutenticacaoConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/security/AutenticacaoFiltro.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/security/AutenticacaoFiltro.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/components/DemandaGerencia/DemandaGerencia.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/DemandaGerencia/DemandaGerencia.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/Mensagem/Mensagem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Mensagem/Mensagem.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/service/chatService.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/chatService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/service/usuarioService.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/usuarioService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

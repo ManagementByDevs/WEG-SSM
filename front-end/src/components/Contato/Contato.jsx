@@ -26,9 +26,11 @@ const Contato = (props) => {
   }, [props.usuarioAtual]);
 
   const [usuario, setUsuario] = useState({});
+  const [nomeContato, setNomeContato] = useState("");
 
   useEffect(() => {
     setaDestinatario();
+    retornaNomeContato();
   }, []);
 
   const setaDestinatario = () => {
@@ -38,6 +40,14 @@ const Contato = (props) => {
       }
     });
   };
+
+  const retornaNomeContato = () => {
+    if (usuario.id !== props.chat.idProposta.solicitante.id) {
+      setNomeContato(props.chat.idProposta.solicitante.nome);
+    } else {
+      setNomeContato(usuario.nome);
+    }
+  }
 
   return (
     <Box
@@ -66,7 +76,7 @@ const Contato = (props) => {
       <Box className="flex justify-content flex-col" sx={{ width: "70%" }}>
         <Box className="flex justify-between">
           <Typography fontSize={FontConfig.medium} fontWeight="600">
-            {usuario.nome}
+            {nomeContato}
           </Typography>
           <Typography
             fontSize={FontConfig.default}

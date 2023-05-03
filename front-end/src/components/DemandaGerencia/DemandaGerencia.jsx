@@ -68,10 +68,9 @@ const DemandaGerencia = (props) => {
     let chat;
     ChatService.getByPropostaAndUser(props.dados.id, user.usuario.id).then(
       (response) => {
-        console.log("REPONSAVEL: ", response);
         chat = response;
         if (chat.length > 0) {
-          navigate(`/chat/${chat.id}`);
+          navigate(`/chat/${chat[0].id}`);
         } else {
           let newChat = {
             idProposta: { id: props.dados.id },
@@ -81,14 +80,12 @@ const DemandaGerencia = (props) => {
             ],
           };
           ChatService.post(newChat).then((response) => {
-            console.log("RESPONSE 2: ", response);
             chat = response;
             navigate(`/chat/${chat.id}`);
           });
         }
       }
-    );
-    console.log("OTAVIO CHAT: ", chat);
+      );
   };
 
   return (
