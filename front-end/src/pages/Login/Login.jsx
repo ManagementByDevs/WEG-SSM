@@ -24,6 +24,7 @@ import UsuarioService from "../../service/usuarioService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import AutenticacaoService from "../../service/autenticacaoService";
+import { WebSocketContext } from "../../service/WebSocketService";
 
 /** Página de login, para que o usuário tenha acesso ao restante do sistema */
 const Login = () => {
@@ -31,6 +32,8 @@ const Login = () => {
   const { texts } = useContext(TextLanguageContext);
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  const { stompClient, inscrever } = useContext(WebSocketContext);
 
   // Variável para usar função de navegação do react-router-dom
   let navigate = useNavigate();
@@ -50,6 +53,13 @@ const Login = () => {
     setSenha(!senha);
   };
 
+  /**
+   * Faz a conexão com o websocket para receber notificações de novas mensagens dos chats
+   */
+  const subscibeToChats = () => {
+
+  }
+
   /** Função usada para atualizar o valor da variável dos inputs após alguma mudança, recebendo um número referenciando a variável
     (1 - Email | 2 - Senha) e o valor do input */
   const atualizarInput = (numero, e) => {
@@ -68,8 +78,8 @@ const Login = () => {
       try {
         const response = await AutenticacaoService.login(dados);
         navigate("/");
-      } catch (error) {
-      }
+        subscibeToChats(); // Faz a conexão para receber notificação de conversas de chat
+      } catch (error) {}
     } else {
       // Abrir modal de feedback de dados não preenchidos
       setDadosFaltantes(true);
