@@ -14,6 +14,7 @@ import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao
 import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceitarDemanda";
 import ModalRecusarDemanda from "../ModalRecusarDemanda/ModalRecusarDemanda";
 import Feedback from "../Feedback/Feedback";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import ColorModeContext from "../../service/TemaContext";
@@ -174,9 +175,9 @@ const DetalhesDemanda = (props) => {
     if (input === "titulo") {
       setTituloDemanda(e.target.value);
     } else if (input === "problema") {
-      setProblema(e.target.value);
+      setProblema(e);
     } else if (input === "proposta") {
-      setProposta(e.target.value);
+      setProposta(e);
     } else if (input === "frequencia") {
       setFrequencia(e.target.value);
     }
@@ -637,13 +638,13 @@ const DetalhesDemanda = (props) => {
     if (problemaDaDemanda.current) {
       problemaDaDemanda.current.innerHTML = props.dados.problema
     }
-  }, []);
+  }, [props.dados]);
 
   useEffect(() => {
     if (propostaDaDemanda.current) {
       propostaDaDemanda.current.innerHTML = props.dados.proposta
     }
-  }, []);
+  }, [props.dados]);
 
   const getProblemaFomartted = (problema) => {
     return problema[0].toUpperCase() + problema.substring(1).toLowerCase();
@@ -652,6 +653,16 @@ const DetalhesDemanda = (props) => {
   const getPropostaFomartted = (proposta) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
+
+  const [problemaEdicao, setProblemaEdicao] = useState();
+  const [propostaEdicao, setPropostaEdicao] = useState();
+
+  useEffect(() => {
+    if (!props.carregamento) {
+      setProblemaEdicao(props.dados.problema);
+      setPropostaEdicao(props.dados.proposta);
+    }
+  }, [props.carregamento]);
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
@@ -1002,19 +1013,12 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.problema}:
               </Typography>
-              <TextareaAutosize
-                style={{
-                  width: 775,
-                  marginLeft: "26px",
-                  resize: "none",
-                  backgroundColor: corFundoTextArea,
+              <CaixaTextoQuill
+                texto={problemaEdicao}
+                setTexto={setProblemaEdicao}
+                onChange={(value) => {
+                  alterarTexto(value, "problema");
                 }}
-                value={problema}
-                fontSize={FontConfig.medium}
-                onChange={(e) => {
-                  alterarTexto(e, "problema");
-                }}
-                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
                 placeholder={texts.DetalhesDemanda.digiteProblema}
               />
             </Box>
@@ -1026,19 +1030,12 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.proposta}:
               </Typography>
-              <TextareaAutosize
-                style={{
-                  width: 775,
-                  marginLeft: "26px",
-                  resize: "none",
-                  backgroundColor: corFundoTextArea,
+              <CaixaTextoQuill
+                texto={propostaEdicao}
+                setTexto={setPropostaEdicao}
+                onChange={(value) => {
+                  alterarTexto(value, "proposta");
                 }}
-                value={proposta}
-                fontSize={FontConfig.medium}
-                onChange={(e) => {
-                  alterarTexto(e, "proposta");
-                }}
-                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
                 placeholder={texts.DetalhesDemanda.digiteProposta}
               />
             </Box>
