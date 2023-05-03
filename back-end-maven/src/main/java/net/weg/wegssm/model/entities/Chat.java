@@ -29,6 +29,10 @@ public class Chat {
     @JoinColumn(name = "id_proposta", nullable = false)
     private Proposta idProposta;
 
+    @OneToOne
+    @JoinColumn(name = "id_demanda", nullable = true)
+    private Demanda idDemanda;
+
     @ManyToMany
     @JoinTable(
             name = "usuario_chat",

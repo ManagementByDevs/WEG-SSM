@@ -1,6 +1,8 @@
 import axios from "./api";
+import Cookies from "js-cookie";
 
 const usuario = "/usuario";
+
 
 /** Classe service do usuário */
 class UsuarioService {
@@ -66,6 +68,11 @@ class UsuarioService {
         return JSON.parse(preferencias);
       });
     }
+  }
+
+  getUserCookies() {
+    const userCookie = Cookies.get("user");
+    return JSON.parse(userCookie);
   }
 }
 

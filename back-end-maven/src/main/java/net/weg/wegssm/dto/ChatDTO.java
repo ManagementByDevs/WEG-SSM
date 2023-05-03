@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class ChatDTO {
 
-    private Proposta proposta;
-    private List<Usuario> usuarios;
+    private Proposta idProposta;
+    private List<Usuario> usuariosChat;
 
 }
