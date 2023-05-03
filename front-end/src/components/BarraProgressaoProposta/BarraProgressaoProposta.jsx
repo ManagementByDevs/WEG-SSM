@@ -128,7 +128,7 @@ const BarraProgressaoProposta = (props) => {
           EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
             (data) => {
               if (data.length == 0) {
-                receberBeneficios();
+                receberBeneficios(dadosDemanda.beneficios);
                 let escopo = retornaObjetoProposta();
                 delete escopo.historicoProposta;
                 delete escopo.status;
@@ -143,7 +143,7 @@ const BarraProgressaoProposta = (props) => {
               } else {
                 idEscopo = data[0].id;
                 setUltimoEscopo(data[0]);
-                carregarEscopoSalvo(data[0]);
+                carregarEscopoSalvo(data[0])
               }
             }
           );
@@ -168,6 +168,28 @@ const BarraProgressaoProposta = (props) => {
       }, 5000);
     }
   }, [ultimoEscopo]);
+
+  /** Função para formatar os benefícios recebidos no banco para a lista da página de edição na edição de um escopo existente */
+  const receberBeneficios = (beneficios) => {
+    let listaNova = [];
+    for (let beneficio of beneficios) {
+      const tipoBeneficioNovo =
+        beneficio.tipoBeneficio.charAt(0) +
+        beneficio.tipoBeneficio
+          .substring(1, beneficio.tipoBeneficio.length)
+          .toLowerCase();
+
+      listaNova.push({
+        id: beneficio.id,
+        tipoBeneficio: tipoBeneficioNovo,
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        visible: true,
+      });
+    }
+    setListaBeneficios(listaNova);
+  };
 
   const carregarEscopoSalvo = (escopo) => {
     setDadosDemanda({
@@ -205,7 +227,7 @@ const BarraProgressaoProposta = (props) => {
       responsaveisNegocio: escopo.responsavelNegocio,
     });
 
-    setListaBeneficios(escopo.beneficios);
+    receberBeneficios(escopo.beneficios);
     setCustos(escopo.tabelaCustos);
     setEscopo(carregarTextoEscopo(escopo));
 
@@ -240,9 +262,9 @@ const BarraProgressaoProposta = (props) => {
       delete escopoFinal.status;
       delete escopoFinal.emAta;
       delete escopoFinal.emPauta;
-      
+
       escopoFinal.id = ultimoEscopo.id;
-      EscopoPropostaService.salvarDados(escopoFinal, receberIdsAnexos(), escopo).then(
+      EscopoPropostaService.salvarDados(escopoFinal, receberIdsAnexos(), formatarHtml(escopo)).then(
         (response) => {
           setUltimoEscopo(response);
         }
@@ -291,24 +313,6 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  const receberBeneficios = () => {
-    const aux = dadosDemanda?.beneficios?.map((beneficio) => {
-      return {
-        id: beneficio.id,
-        tipoBeneficio:
-          beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || "Real",
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true,
-      };
-    });
-    setListaBeneficios(aux);
-  };
-
   // Função para passar para próxima página
   const proximaEtapa = () => {
     let dadosFaltantes = false;
@@ -332,12 +336,12 @@ const BarraProgressaoProposta = (props) => {
           listaBeneficios.map((beneficio) => {
             if (
               beneficio.tipoBeneficio == "" ||
-              beneficio.valor_mensal == "" ||
-              beneficio.moeda == "" ||
               beneficio.memoriaCalculo == ""
             ) {
-              dadosFaltantes = true;
-              setFeedbackFaltante(true);
+              if ((beneficio.tipoBeneficio != "Qualitativo") && (beneficio.valor_mensal == "" || beneficio.moeda == "")) {
+                dadosFaltantes = true;
+                setFeedbackFaltante(true);
+              }
             }
           });
         }
@@ -417,7 +421,7 @@ const BarraProgressaoProposta = (props) => {
           tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
           valor_mensal: beneficio.valor_mensal,
           moeda: beneficio.moeda,
-          memoriaCalculo: beneficio.memoriaCalculo,
+          memoriaCalculo: formatarHtml(beneficio.memoriaCalculo),
         });
       }
       return listaNova;
@@ -487,8 +491,8 @@ const BarraProgressaoProposta = (props) => {
       demanda: dadosDemanda,
       titulo: dadosDemanda.titulo,
       status: "ASSESSMENT_APROVACAO",
-      problema: dadosDemanda.problema,
-      proposta: dadosDemanda.proposta,
+      problema: formatarHtml(dadosDemanda.problema),
+      proposta: formatarHtml(dadosDemanda.proposta),
       frequencia: dadosDemanda.frequencia,
       solicitante: dadosDemanda.solicitante,
       analista: dadosDemanda.analista,
@@ -515,6 +519,12 @@ const BarraProgressaoProposta = (props) => {
     return objeto;
   };
 
+  /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, '<br/>');
+    return texto;
+  }
+
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = () => {
     let feedbackFaltante = false;
@@ -539,7 +549,7 @@ const BarraProgressaoProposta = (props) => {
           excluirBeneficios();
 
           propostaService
-            .post(retornaObjetoProposta(), receberIdsAnexos(), escopo)
+            .post(retornaObjetoProposta(), receberIdsAnexos(), formatarHtml(escopo))
             .then((response) => {
               DemandaService.atualizarStatus(
                 dadosDemanda.id,

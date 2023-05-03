@@ -85,81 +85,83 @@ const App = () => {
       <FontContext.Provider value={fontSize}>
         <TextLanguageContext.Provider value={textLanguage}>
           <ChatContext.Provider value={miniChat}>
-            <Router>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/criar-demanda" element={<CriarDemanda />} />
-                  <Route path="/notificacao" element={<Notificacao />} />
-                  <Route path="/chat" element={<WebSocketService><Chat /></WebSocketService>} />
-                  <Route path="/chat/:id" element={<WebSocketService><Chat /></WebSocketService>} />
-                  <Route
-                    path="/detalhes-demanda"
-                    element={<DetalhesDemandaPagina />}
-                  />
+            <WebSocketService>
+              <Router>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="/criar-demanda" element={<CriarDemanda />} />
+                    <Route path="/notificacao" element={<Notificacao />} />
+                    <Route path="/chat" element={<Chat />} />
+                    <Route path="/chat/:id" element={<Chat />} />
+                    <Route
+                      path="/detalhes-demanda"
+                      element={<DetalhesDemandaPagina />}
+                    />
+                    <Route path="/editar-escopo" element={<EditarEscopo />} />
+                    <Route path="/escopos" element={<Escopos />} />
+                    <Route path="*" element={<NotFound />} />
+                    <Route path="/test" element={<Test />} />
+                  </Route>
                   <Route path="/editar-escopo" element={<EditarEscopo />} />
                   <Route path="/escopos" element={<Escopos />} />
                   <Route path="*" element={<NotFound />} />
                   <Route path="/test" element={<Test />} />
-                </Route>
-                <Route path="/editar-escopo" element={<EditarEscopo />} />
-                <Route path="/escopos" element={<Escopos />} />
-                <Route path="*" element={<NotFound />} />
-                <Route path="/test" element={<Test />} />
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <DetermineHomeUser />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/criar-proposta"
-                  element={
-                    <ProtectedRoute
-                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/home-gerencia"
-                    >
-                      <CriarProposta />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/detalhes-proposta/:id"
-                  element={
-                    <ProtectedRoute
-                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/home-gerencia"
-                    >
-                      <DetalhesPropostaPagina />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="detalhes-ata"
-                  element={
-                    <ProtectedRoute
-                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/home-gerencia"
-                    >
-                      <DetalhesAta />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="detalhes-pauta"
-                  element={
-                    <ProtectedRoute
-                      tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                      redirectPath="/home-gerencia"
-                    >
-                      <DetalhesPauta />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
-            </Router>
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute>
+                        <DetermineHomeUser />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/criar-proposta"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/home-gerencia"
+                      >
+                        <CriarProposta />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/detalhes-proposta/:id"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/home-gerencia"
+                      >
+                        <DetalhesPropostaPagina />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="detalhes-ata"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/home-gerencia"
+                      >
+                        <DetalhesAta />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="detalhes-pauta"
+                    element={
+                      <ProtectedRoute
+                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
+                        redirectPath="/home-gerencia"
+                      >
+                        <DetalhesPauta />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </Router>
+            </WebSocketService>
           </ChatContext.Provider>
         </TextLanguageContext.Provider>
       </FontContext.Provider>
@@ -172,12 +174,15 @@ const ProtectedRoute = ({
   children,
   redirectPath = "/login",
 }) => {
-
   const cookie = CookieService.getCookie("jwt");
   const userJpa = CookieService.getCookie("user");
 
-  if (cookie != null && cookie.exp > Math.floor(Date.now() / 1000) &&
-    (tiposUsuarioAllowed.includes(userJpa.authorities[0].authority) || tiposUsuarioAllowed == "")) {
+  if (
+    cookie != null &&
+    cookie.exp > Math.floor(Date.now() / 1000) &&
+    (tiposUsuarioAllowed.includes(userJpa.authorities[0].authority) ||
+      tiposUsuarioAllowed == "")
+  ) {
     return children ? children : <Outlet />;
   } else {
     return <Navigate to={redirectPath} replace />;

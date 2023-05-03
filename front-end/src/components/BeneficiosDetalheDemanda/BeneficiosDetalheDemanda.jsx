@@ -161,9 +161,9 @@ const BeneficiosDetalheDemanda = (props) => {
                           props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value, }, props.index);
                         }}
                       >
-                        <MenuItem value={"REAL"}>{texts.BeneficiosDetalheDemanda.real}</MenuItem>
-                        <MenuItem value={"POTENCIAL"}>{texts.BeneficiosDetalheDemanda.potencial}</MenuItem>
-                        <MenuItem value={"QUALITATIVO"}>{texts.BeneficiosDetalheDemanda.qualitativo}</MenuItem>
+                        <MenuItem value={"Real"}>{texts.BeneficiosDetalheDemanda.real}</MenuItem>
+                        <MenuItem value={"Potencial"}>{texts.BeneficiosDetalheDemanda.potencial}</MenuItem>
+                        <MenuItem value={"Qualitativo"}>{texts.BeneficiosDetalheDemanda.qualitativo}</MenuItem>
                       </Select>
                     </FormControl>
                   </td>

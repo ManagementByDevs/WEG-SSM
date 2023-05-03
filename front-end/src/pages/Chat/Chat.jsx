@@ -46,8 +46,6 @@ import CookieService from "../../service/cookieService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import dateService from "../../service/dateService";
 
-var stompClient = null;
-
 // Chat para conversa entre usuários do sistema
 const Chat = () => {
   // Context para alterar o idioma

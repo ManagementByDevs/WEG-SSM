@@ -55,8 +55,6 @@ public class AutenticacaoFiltro extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-            System.out.println("URL: " + request.getRequestURI());
-
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             e.printStackTrace();

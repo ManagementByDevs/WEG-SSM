@@ -34,6 +34,11 @@ public class ChatController {
     private PropostaService propostaService;
     private ChatService chatService;
 
+    @MessageMapping("/weg_ssm/chats")
+    @SendTo("/weg_ssm/chats")
+    public ResponseEntity<Object> receiveAnyMessage(@Payload Mensagem mensagem) {
+        return ResponseEntity.ok().body(mensagem);
+    }
 
     /**
      * Método POST para criar um chat no banco de dados
@@ -208,7 +213,7 @@ public class ChatController {
         }
         chatService.deleteById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body("chat deletado com sucesso.");
+        return ResponseEntity.status(HttpStatus.OK).body("Chat deletado com sucesso.");
     }
 
 }

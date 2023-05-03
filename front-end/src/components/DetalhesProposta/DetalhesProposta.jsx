@@ -62,6 +62,9 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
   // Referência para o texto da proposta
   const propostaText = useRef(null);
 
+  /** Referência para o texto de escopo */
+  const textoEscopo = useRef(null);
+
   // Função para baixar um anexo
   const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
     const file = anexo;
@@ -141,15 +144,30 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
     setIsEditing(!isEditing);
   };
 
+  /** Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco */
+  const carregarTextoEscopo = (escopo) => {
+    let reader = new FileReader();
+    reader.onload = function () {
+      textoEscopo.current.innerHTML = reader.result;
+    }
+
+    if (escopo) {
+      let blob = new Blob([base64ToArrayBuffer(escopo)]);
+      reader.readAsText(blob);
+    }
+  }
+
   useEffect(() => {
-    // Colocando o texto do problema em seu elemento
     if (problemaText.current) {
       problemaText.current.innerHTML = proposta.problema;
     }
 
-    // Colocando o texto da proposta em seu elemento
     if (propostaText.current) {
       propostaText.current.innerHTML = proposta.proposta;
+    }
+
+    if (textoEscopo.current) {
+      carregarTextoEscopo(proposta.escopo);
     }
   }, [proposta, isEditing]);
 
@@ -362,9 +380,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                 {texts.detalhesProposta.escopoDaProposta}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium}>
-                  {proposta.escopo}
-                </Typography>
+                <Typography fontSize={FontConfig.medium} ref={textoEscopo} />
               </Box>
             </Box>
 
@@ -554,11 +570,11 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                       "ASSESSMENT_EDICAO",
                       "CANCELLED",
                     ].includes(proposta.status) && (
-                      <ParecerDG
-                        proposta={proposta}
-                        setProposta={setProposta}
-                      />
-                    )}
+                        <ParecerDG
+                          proposta={proposta}
+                          setProposta={setProposta}
+                        />
+                      )}
                   </Box>
                 </Box>
               </>
@@ -719,9 +735,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -876,7 +892,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
@@ -889,7 +905,7 @@ const ParecerComissao = ({
 };
 
 // Chamar o parecer da DG
-const ParecerDG = ({ proposta = propostaExample, setProposta = () => {} }) => {
+const ParecerDG = ({ proposta = propostaExample, setProposta = () => { } }) => {
   if (proposta.status == "ASSESSMENT_DG")
     return (
       <ParecerDGInsertText proposta={proposta} setProposta={setProposta} />
@@ -900,7 +916,7 @@ const ParecerDG = ({ proposta = propostaExample, setProposta = () => {} }) => {
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1011,7 +1027,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1110,9 +1126,9 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  getCorStatus = () => {},
-  getStatusFormatted = () => {},
+  setProposta = () => { },
+  getCorStatus = () => { },
+  getStatusFormatted = () => { },
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1210,7 +1226,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       <Menu
         id="basic-menu"
