@@ -45,9 +45,9 @@ public class Mensagem {
     @JoinColumn(name = "id_chat", nullable = false)
     private Chat idChat;
 
-    @OneToOne
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_mensagem")
-    private Anexo anexo;
+    private List<Anexo> anexo;
 
     /**
      * Função para adicionar anexos a mensagem
@@ -55,12 +55,12 @@ public class Mensagem {
      * @param files
      */
     public void setAnexos(List<MultipartFile> files) {
-        Anexo anexo = new Anexo();
+        List<Anexo> listaAnexos = new ArrayList<>();
         try {
             for (MultipartFile file : files) {
-                anexo = (new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
             }
-            this.anexo = anexo;
+            this.anexo = listaAnexos;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
