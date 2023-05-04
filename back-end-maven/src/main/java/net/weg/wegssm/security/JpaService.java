@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * Classe usada para buscar um usuário no banco para sua autenticação
  */
@@ -27,8 +29,12 @@ public class JpaService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuarioOptional = usuarioRepository.findByEmail(username);
-        return new UserJpa(usuarioOptional);
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(username);
+        if(usuarioOptional.isEmpty()) {
+            throw new UsernameNotFoundException("Usuário não encontrado!");
+        }
+
+        return new UserJpa(usuarioOptional.get());
     }
 
 }

@@ -35,8 +35,12 @@ public class UsuarioController {
      * Função para buscar um usuário pelo seu email, usado na conversão do cookie de autenticação
      */
     @GetMapping("/email/{email}")
-    public ResponseEntity<Usuario> findByEmail(@PathVariable(value = "email") String email) {
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.findByEmail(email));
+    public ResponseEntity<Object> findByEmail(@PathVariable(value = "email") String email) {
+        Optional<Usuario> usuarioOptional = usuarioService.findByEmail(email);
+        if(usuarioOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioOptional.get());
     }
 
     /**
@@ -93,18 +97,6 @@ public class UsuarioController {
 
         Usuario usuario = usuarioOptional.get();
         BeanUtils.copyProperties(usuarioDTO, usuario, "id", "senha");
-
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
-    }
-
-    @PutMapping("{id}/preferencias/{preferencias}")
-    public ResponseEntity<Object> updatePreferencias(@PathVariable(value = "id") Long id, @PathVariable(value = "preferencias") String preferencias) {
-        if (!usuarioService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar um usuário com este id.");
-        }
-
-        Usuario usuario = usuarioService.findById(id).get();
-        usuario.setPreferencias(preferencias);
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.save(usuario));
     }

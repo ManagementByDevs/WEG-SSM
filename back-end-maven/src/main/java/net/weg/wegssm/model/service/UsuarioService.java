@@ -64,13 +64,6 @@ public class UsuarioService {
     }
 
     /**
-     * Função para buscar um usuário pelo seu email e senha
-     */
-    public Usuario findByEmailAndSenha(String email, String senha) {
-        return usuarioRepository.findByEmailAndSenha(email, senha);
-    }
-
-    /**
      * Função para buscar uma lisa de usuários pelo seu nome e tipo de usuário
      */
     public List<Usuario> findByNomeAndTipoUsuario(String nome, TipoUsuario tipo_usuario, Pageable pageable) {
@@ -87,7 +80,7 @@ public class UsuarioService {
     /**
      * Função para buscar um usuário pelo seu email
      */
-    public Usuario findByEmail(String email) {
+    public Optional<Usuario> findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
     }
 }

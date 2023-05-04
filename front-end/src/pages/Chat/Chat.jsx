@@ -11,6 +11,7 @@ import {
   Menu,
   MenuItem,
   FormControlLabel,
+  Input,
 } from "@mui/material";
 
 import Cookies from "js-cookie";
@@ -70,128 +71,15 @@ const Chat = () => {
   };
 
   // UseState para armazenar o contato selecionado
-  useEffect(() => {
-    const resultados = [];
-    usuarios.filter((usuario) => {
-      if (usuario.nome.toLowerCase().includes(pesquisaContato.toLowerCase())) {
-        resultados.push(usuario);
-      }
-    });
-    setresultadosContato(resultados);
-  }, [pesquisaContato]);
-
-  // Lista de exemplo com usuários
-  const [usuarios, setUsuarios] = useState([
-    {
-      foto: "",
-      nome: "Thiago",
-      cargo: "Gerente",
-      demanda: "Colocar pote de bala nas mesas de TI",
-      codigoDemanda: "#123456",
-      mensagens: [
-        {
-          texto: "Olá, tudo bem?",
-          data: "10/10/2021",
-          hora: "10:00",
-          remetente: "Thiago",
-        },
-        {
-          texto:
-            "Tudo sim, e você? Vou testar um texto grande aqui, então vou escrever muito aqui para ter um exemplo de como é um texto grande.",
-          data: "10/10/2021",
-          hora: "10:01",
-          remetente: "Eu",
-        },
-        {
-          texto: "Tudo bem",
-          data: "10/10/2021",
-          hora: "10:02",
-          remetente: "Thiago",
-        },
-      ],
-    },
-    {
-      foto: "https://avatars.githubusercontent.com/u/54643525?v=4",
-      nome: "Kenzo",
-      cargo: "Analista",
-      demanda: "Ver se o Shrek está bem",
-      codigoDemanda: "#654321",
-      mensagens: [
-        {
-          texto: "こんにちは元気ですか？",
-          data: "10/10/2021",
-          hora: "10:00",
-          remetente: "Kenzo",
-        },
-        {
-          texto: "はい、元気です",
-          data: "10/10/2021",
-          hora: "10:01",
-          remetente: "Eu",
-        },
-        {
-          texto: "それは良いですね",
-          data: "10/10/2021",
-          hora: "10:02",
-          remetente: "Kenzo",
-        },
-      ],
-    },
-    {
-      foto: "https://avatars.githubusercontent.com/u/54643525?v=4",
-      nome: "Matheus",
-      cargo: "Solicitante",
-      demanda: "Visitar o futuro",
-      codigoDemanda: "#24783",
-      mensagens: [
-        {
-          texto: "Fala man, bó jogar?",
-          data: "10/10/2021",
-          hora: "10:00",
-          remetente: "Matheus",
-        },
-        {
-          texto: "Vamo sim",
-          data: "10/10/2021",
-          hora: "10:01",
-          remetente: "Eu",
-        },
-        {
-          texto: "Vamo",
-          data: "10/10/2021",
-          hora: "10:02",
-          remetente: "Matheus",
-        },
-      ],
-    },
-    {
-      foto: "https://avatars.githubusercontent.com/u/54643525?v=4",
-      nome: "Vieira",
-      cargo: "Gestor",
-      demanda: "Conhecer o Relampago Marquinhos",
-      codigoDemanda: "#32467",
-      mensagens: [
-        {
-          texto: "Katchau!",
-          data: "10/10/2021",
-          hora: "10:00",
-          remetente: "Vieira",
-        },
-        {
-          texto: "Não sabia que o Relampago Marquinhos era Brasileiro",
-          data: "10/10/2021",
-          hora: "10:01",
-          remetente: "Eu",
-        },
-        {
-          texto: "No soy, I'm from Argentina",
-          data: "10/10/2021",
-          hora: "10:02",
-          remetente: "Vieira",
-        },
-      ],
-    },
-  ]);
+  // useEffect(() => {
+  //   const resultados = [];
+  //   usuarios.filter((usuario) => {
+  //     if (usuario.nome.toLowerCase().includes(pesquisaContato.toLowerCase())) {
+  //       resultados.push(usuario);
+  //     }
+  //   });
+  //   setresultadosContato(resultados);
+  // }, [pesquisaContato]);
 
   // const [indexUsuario, setIndexUsuario] = useState();
 
@@ -233,7 +121,6 @@ const Chat = () => {
   //   });
   // };
 
-
   const [listaChats, setListaChats] = useState([]);
 
   const buscarChats = () => {
@@ -258,20 +145,22 @@ const Chat = () => {
           setMensagens(response);
         })
         .catch((error) => {
-          console.log(error);
         });
       setDefaultMensagem();
     }
 
     if (idChat) carregar();
-
     buscarChats();
   }, []);
 
   useEffect(() => {
     const acaoNovaMensagem = (response) => {
       const mensagemRecebida = JSON.parse(response.body);
-      setMensagens((oldMensagens) => [...oldMensagens, mensagemRecebida.body]);
+      let mensagemNova = {
+        ...mensagemRecebida.body,
+         texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n")
+      }
+      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
     };
 
     if (idChat) {
@@ -292,7 +181,7 @@ const Chat = () => {
     setMensagem({
       data: dateService.getTodaysDate(),
       visto: false,
-      texto: null,
+      texto: "",
       status: "MESSAGE",
       usuario: { id: user.usuario.id },
       idChat: { id: idChat },
@@ -301,14 +190,13 @@ const Chat = () => {
   };
 
   const atualizaMensagem = (event) => {
-    event.preventDefault();
     const { value } = event.target;
     setMensagem({ ...mensagem, texto: value });
   };
 
   const submit = async (event) => {
     event.preventDefault();
-    console.log("Mensagem: ", mensagem);
+    console.log("MENSGAEM", mensagem);
     enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
     setDefaultMensagem();
   };
@@ -367,8 +255,6 @@ const Chat = () => {
       },
     },
   ];
-
-  
 
   return (
     <>
@@ -482,7 +368,7 @@ const Chat = () => {
                   })
                 )}
               </Box>
-              {!useParams().id ? (
+              {!idChat ? (
                 <Box
                   className="flex flex-col items-center justify-center rounded border"
                   sx={{ width: "75%", height: "95%", cursor: "default" }}
@@ -681,10 +567,30 @@ const Chat = () => {
                           fontSize={FontConfig.veryBig}
                           fontWeight="600"
                         >
-                          {/* {usuarios[indexUsuario].nome} */} Nome
+                          {listaChats.map((chat) => {
+                            let nomeChat
+                            if (chat.id == idChat) {
+                              chat.usuariosChat.map((usuarioChat) => {
+                                if (usuarioChat.id != user.usuario.id) {
+                                  nomeChat = usuarioChat.nome
+                                }
+                              })
+                            }
+                            return nomeChat;
+                          })}
                         </Typography>
                         <Typography fontSize={FontConfig.small}>
-                          {/* {usuarios[indexUsuario].cargo} */} Cargo
+                          {listaChats.map((chat) => {
+                            let cargoChat
+                            if (chat.id == idChat) {
+                              if(chat.idProposta.solicitante.id == user.usuario.id){
+                                cargoChat = "Analista"
+                              } else {
+                                cargoChat = "Solicitante"
+                              }
+                            }
+                            return cargoChat;
+                          })}
                         </Typography>
                       </Box>
                     </Box>
@@ -763,10 +669,10 @@ const Chat = () => {
                     </Box>
                   </Box>
                   <Box
-                    className="flex flex-col mt-4"
-                    sx={{ width: "95%", height: "85%" }}
+                    className="flex flex-col"
+                    sx={{ width: "100%", height: "85%", overflowY: "auto", overflowX: "hidden"}}
                   >
-                    {/* Por enquanto está usando um componente mensagens para pegar as mensagens */}
+                    {/* Componente mensagens, é cada mensagem que aparece */}
                     {mensagens.length > 0 &&
                       mensagens.map((mensagemDoMap, index) => {
                         return (
@@ -789,15 +695,24 @@ const Chat = () => {
                   >
                     <Box
                       onChange={atualizaMensagem}
-                      className="w-full"
-                      component="input"
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" && !event.shiftKey) {
+                          event.preventDefault(); // Evita quebra de linha ao enviar mensagem
+                          submit(event); // Função que envia a mensagem
+                        }
+                      }}
+                      className="w-full h-full flex items-center"
+                      component="textarea"
                       sx={{
                         backgroundColor: "input.main",
                         outline: "none",
                         color: "text.primary",
                         fontSize: FontConfig.medium,
+                        paddingTop: "0.4rem",
+                        resize: "none",
                       }}
                       placeholder={texts.chat.escrevaSuaMensagem}
+                      value={mensagem.texto}
                     />
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
                       <Tooltip title={texts.chat.enviarAnexo}>

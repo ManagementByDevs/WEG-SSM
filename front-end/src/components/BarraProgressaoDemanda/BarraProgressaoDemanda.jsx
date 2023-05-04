@@ -196,7 +196,7 @@ const BarraProgressaoDemanda = () => {
       if (beneficio.visible) {
         listaNova.push({
           id: beneficio.id,
-          memoriaCalculo: beneficio.memoriaCalculo,
+          memoriaCalculo: formatarHtml(beneficio.memoriaCalculo),
           moeda: beneficio.moeda,
           valor_mensal: beneficio.valor_mensal,
           tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
@@ -210,13 +210,19 @@ const BarraProgressaoDemanda = () => {
   const retornaObjetoDemanda = () => {
     const objetoDemanda = {
       titulo: paginaDados.titulo,
-      problema: paginaDados.problema,
-      proposta: paginaDados.proposta,
+      problema: formatarHtml(paginaDados.problema),
+      proposta: formatarHtml(paginaDados.proposta),
       frequencia: paginaDados.frequencia,
       beneficios: formatarBeneficios(paginaBeneficios),
     };
     return objetoDemanda;
   };
+
+  /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, '<br/>');
+    return texto;
+  }
 
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = () => {
