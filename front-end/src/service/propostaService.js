@@ -112,29 +112,11 @@ class PropostaService {
 
   async putComNovosDados(
     propostaObj = EntitiesObjectService.proposta(),
-    idProposta
+    idProposta,
+    novasTabelasCusto = [],
+    novosBeneficios = [],
+    listaIdsAnexos = []
   ) {
-    let novasTabelasCusto = propostaObj.tabelaCustos.map((tabelaCusto) => {
-      if (tabelaCusto.id < 0) {
-        // Se o ID for negativo ele foi adicionado
-        return tabelaCusto;
-      }
-    });
-
-    let novosBeneficios = propostaObj.beneficios.map((beneficio) => {
-      if (beneficio.id < 0) {
-        // Se o ID for negativo ele foi adicionado
-        return beneficio;
-      }
-    });
-
-    let novosAnexos = propostaObj.anexo.map((anexo) => {
-      if (!anexo.id) {
-        // Se não tiver ID ele foi adicionado
-        return anexo;
-      }
-    });
-
     let form = new FormData();
 
     form.append("proposta", JSON.stringify(propostaObj));
@@ -143,17 +125,22 @@ class PropostaService {
       form.append("beneficios", JSON.stringify(beneficio));
     }
 
-    for (let anexo of novosAnexos) {
-      form.append("anexos", JSON.stringify(anexo));
-    }
-
     for (let tabelaCusto of novasTabelasCusto) {
       form.append("tabelasCustos", JSON.stringify(tabelaCusto));
     }
 
+    for (let idAnexo of listaIdsAnexos) {
+      form.append("listaIdsAnexos", idAnexo);
+    }
+
     // fazer requisição para salvar novos custos e ccs dentro da tabela de custos já salvas no banco de dados
 
-    // fazer requisição
+    console.log("form", form)
+    return (
+      await axios.put(`${proposta}/update-novos-dados/${idProposta}`, form, {
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async addHistorico(idProposta, texto, documento, usuario) {

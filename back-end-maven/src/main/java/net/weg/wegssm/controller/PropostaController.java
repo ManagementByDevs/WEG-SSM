@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.*;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
-import net.weg.wegssm.util.DepartamentoUtil;
-import net.weg.wegssm.util.ForumUtil;
-import net.weg.wegssm.util.PropostaUtil;
-import net.weg.wegssm.util.UsuarioUtil;
+import net.weg.wegssm.util.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -4002,6 +3999,93 @@ public class PropostaController {
     }
 
     /**
+     * Método PUT para atualizar uma proposta no banco de dados com novos dados, sejam anexos, benefícios ou tabelas de custos a serem salvos
+     *
+     * @param id
+     * @param propostaJSON
+     * @param beneficiosJSON
+     * @param tabelaCustosJSON
+     * @param listaIdsAnexos
+     * @return
+     */
+    @PutMapping("/update-novos-dados/{id}")
+    public ResponseEntity<Object> updateComNovosDados(@PathVariable(value = "id") Long id,
+                                                      @RequestParam(value = "proposta") String propostaJSON,
+                                                      @RequestParam(value = "beneficios", required = false) List<String> beneficiosJSON,
+                                                      @RequestParam(value = "tabelasCustos", required = false) List<String> tabelaCustosJSON,
+                                                      @RequestParam(value = "listIdsAnexos", required = false) List<String> listaIdsAnexos
+    ) {
+        Optional<Proposta> propostaOptional = propostaService.findById(id);
+
+        if (propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar uma proposta com este id.");
+        }
+
+        PropostaUtil propostaUtil = new PropostaUtil();
+        Proposta proposta = propostaUtil.convertJaCriadaJsonToModel(propostaJSON);
+        proposta.setId(id);
+
+        System.out.println("Proposta: " + proposta.toString());
+
+//        BeneficioUtil beneficioUtil = new BeneficioUtil();
+//        List<Beneficio> beneficios = new ArrayList<>();
+//
+//        for (String beneficioJSON : beneficiosJSON) {
+//            Beneficio beneficio = beneficioUtil.convertJsonToModel(beneficioJSON);
+//            beneficios.add(beneficio);
+//        }
+//
+//        TabelaCustoUtil tabelaCustoUtil = new TabelaCustoUtil();
+//        List<TabelaCusto> tabelaCustos = new ArrayList<>();
+//
+//        for (String tabelaCustoJSON : tabelaCustosJSON) {
+//            TabelaCusto tabelaCusto = tabelaCustoUtil.convertJsonToModel(tabelaCustoJSON);
+//            tabelaCustos.add(tabelaCusto);
+//        }
+//
+//        for (Beneficio beneficio : beneficios) {
+//            Beneficio newBeneficio = new Beneficio();
+//            BeanUtils.copyProperties(beneficio, newBeneficio, "id");
+//            proposta.getBeneficios().add(beneficioService.save(beneficio));
+//        }
+//
+//        for (TabelaCusto tabelaCusto : tabelaCustos) {
+//            List<Custo> novosCustos = new ArrayList<>();
+//            List<CC> novosCCs = new ArrayList<>();
+//
+//            for (Custo custo : tabelaCusto.getCustos()) {
+//                Custo newCusto = new Custo();
+//                BeanUtils.copyProperties(custo, newCusto, "id");
+//                novosCustos.add(custoService.save(newCusto));
+//            }
+//
+//            for (CC cc : tabelaCusto.getCcs()) {
+//                CC newCC = new CC();
+//                BeanUtils.copyProperties(cc, newCC, "id");
+//                novosCCs.add(ccsService.save(newCC));
+//            }
+//
+//            tabelaCusto.setCustos(novosCustos);
+//            tabelaCusto.setCcs(novosCCs);
+//
+//            TabelaCusto newTabelaCusto = new TabelaCusto();
+//            BeanUtils.copyProperties(tabelaCusto, newTabelaCusto, "id");
+//            proposta.getTabelaCustos().add(tabelaCustoService.save(tabelaCusto));
+//        }
+//
+//        propostaService.save(proposta);
+//
+//        if (listaIdsAnexos != null) {
+//            for (String idAnexo : listaIdsAnexos) {
+//                proposta.getAnexo().add(anexoService.findById(Long.parseLong(idAnexo)));
+//            }
+//        }
+
+        return null;
+//        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
+    /**
      * Método PUT para atualizar uma proposta no banco de dados, através de um id, recebendo a propostaDTO como JSON
      *
      * @param id
@@ -4021,14 +4105,6 @@ public class PropostaController {
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Object> updateComNovosDados(@PathVariable(value = "id") Long id,
-//                                                      @RequestParam(value = "beneficios", required = false) List<BeneficioDTO> beneficiosDTO,
-//                                                      @RequestParam(value = "anexos", required = false) List<Anexo> anexos,
-//                                                      @RequestParam(value = "tabelasCustos", required = false) List<TabelaCustoDTO> tabelaCustosDTO) {
-//        return null;
-//    }
 
     @PutMapping("/add-historico/{idProposta}")
     public ResponseEntity<Proposta> addHistorico(@PathVariable(value = "idProposta") Long idProposta,

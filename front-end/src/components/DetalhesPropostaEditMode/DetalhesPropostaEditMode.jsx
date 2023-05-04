@@ -33,6 +33,8 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import DeleteIcon from "@mui/icons-material/Delete";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import Feedback from "../Feedback/Feedback";
@@ -93,11 +95,9 @@ const DetalhesPropostaEditMode = ({
   // Texto do modal de confirmação que irá aparecer para o usuário
   const [textoModalConfirmacao, setTextoModalConfirmacao] = useState("");
 
-  // Referência para o texto do problema
-  const problemaText = useRef(null);
+  const [isBeneficiosVisible, setIsBeneficiosVisible] = useState(false);
 
-  // Referência para o texto da proposta
-  const propostaText = useRef(null);
+  const [isTabelaCustosVisile, setIsTabelaCustosVisible] = useState(false);
 
   // Referênica para o input de arquivo
   const inputFile = useRef(null);
@@ -170,7 +170,62 @@ const DetalhesPropostaEditMode = ({
 
   // Salva as edições da proposta no banco de dados
   const saveProposal = () => {
-    PropostaService.put(proposta, proposta.id);
+    // Fazer verificação dos campos
+
+    let propostaAux = { ...proposta };
+
+    let novasTabelasCusto = propostaAux.tabelaCustos.filter((tabelaCusto) => {
+      if (tabelaCusto.id < 0) {
+        // Se o ID for negativo ele foi adicionado
+        propostaAux.tabelaCustos.splice(
+          propostaAux.tabelaCustos.find((element) => element == tabelaCusto),
+          1
+        );
+        return tabelaCusto;
+      }
+    });
+
+    let novosBeneficios = propostaAux.beneficios.filter((beneficio) => {
+      if (beneficio.id < 0) {
+        // Se o ID for negativo ele foi adicionado
+        propostaAux.beneficios.splice(
+          propostaAux.beneficios.find((element) => element == beneficio),
+          1
+        );
+        return beneficio;
+      }
+    });
+
+    let listaIdsAnexos = propostaAux.anexo.filter((anexo) => {
+      if (anexo.id) {
+        // Se o ID for positivo ele já existia
+        propostaAux.anexo.splice(
+          propostaAux.anexo.find((element) => element == anexo),
+          1
+        );
+        return anexo.id;
+      }
+    });
+
+    console.log(
+      "DATA: ",
+      propostaAux,
+      novasTabelasCusto,
+      novosBeneficios,
+      listaIdsAnexos
+    );
+    // return ;
+
+    PropostaService.putComNovosDados(
+      propostaAux,
+      proposta.id,
+      novasTabelasCusto,
+      novosBeneficios,
+      listaIdsAnexos
+    ).then((response) => {
+      console.log("response", response.data);
+      setPropostaData(response.data);
+    });
   };
 
   // ***************************************** Handlers ***************************************** //
@@ -192,7 +247,7 @@ const DetalhesPropostaEditMode = ({
     if (textoModalConfirmacao == "cancelarEdicao") {
       setIsEditing(false);
     } else if (textoModalConfirmacao == "confirmEditar") {
-      setIsLoading(true);
+      // setIsLoading(true);
       saveProposal();
     }
 
@@ -286,14 +341,22 @@ const DetalhesPropostaEditMode = ({
   };
 
   const handleOnBeneficiosAddClick = () => {
-    let newBeneficio = EntitiesObjectService.beneficio();
+    let newBeneficio = { ...EntitiesObjectService.beneficio() };
 
-    // Id negativo para diferenciar dos benefícios já existentes e ter certeza que não existe esse id no banco de dados
-    newBeneficio.id = proposta.beneficios.length * -1 - 1;
+    let ultimoEl = proposta.beneficios[proposta.beneficios.length - 1];
+    // Se o último elemento for novo, o id vai ser o id dele menos 1
+    if (ultimoEl.id < 0) {
+      newBeneficio.id = ultimoEl.id - 1;
+    } else {
+      newBeneficio.id = proposta.beneficios.length * -1 - 1;
+    }
 
+    let beneficiosAux = [...proposta.beneficios, newBeneficio];
+
+    setIsBeneficiosVisible(false);
     setProposta({
       ...proposta,
-      beneficios: [...proposta.beneficios, { ...newBeneficio }],
+      beneficios: [...beneficiosAux],
     });
   };
 
@@ -306,6 +369,18 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
+    setProposta({ ...proposta, beneficios: [...beneficiosAux] });
+  };
+
+  // Handler para deletar um benefício
+  const handleDeleteBeneficio = (idBeneficio) => {
+    let beneficiosAux = [...proposta.beneficios];
+    beneficiosAux.splice(
+      beneficiosAux.findIndex((beneficio) => beneficio.id == idBeneficio),
+      1
+    );
+
+    setIsBeneficiosVisible(false);
     setProposta({ ...proposta, beneficios: [...beneficiosAux] });
   };
 
@@ -409,7 +484,11 @@ const DetalhesPropostaEditMode = ({
   // Handler para deletar um anexo
   const handleOnDeleteAnexo = (file) => {
     let anexosAux = [...proposta.anexo];
-    anexosAux.splice(file, 1);
+    anexosAux.splice(
+      anexosAux.findIndex((oldFile) => oldFile == file),
+      1
+    );
+    
     setProposta({ ...proposta, anexo: [...anexosAux] });
   };
 
@@ -427,13 +506,30 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, tabelaCustos: [...tabelaCustosAux] });
   };
 
+  const handleDeleteTabelaCusto = (idTabela) => {
+    let tabelaCustosAux = proposta.tabelaCustos;
+    tabelaCustosAux.splice(
+      tabelaCustosAux.findIndex((tabelaCusto) => tabelaCusto.id == idTabela),
+      1
+    );
+
+    setIsTabelaCustosVisible(false);
+    setProposta({ ...proposta, tabelaCustos: tabelaCustosAux });
+  };
+
   // Handler para quando clicar no botão de adicionar criar uma nova tabela de custos
   const handleOnTabelaCustosAddClick = () => {
     let newTabelaCustos = EntitiesObjectService.tabelaCustos();
 
-    // Id negativo para diferenciar dos benefícios já existentes e ter certeza que não existe esse id no banco de dados
-    newTabelaCustos.id = proposta.tabelaCustos.length * -1 - 1;
+    let ultimoEl = proposta.tabelaCustos[proposta.tabelaCustos.length - 1];
+    // Se o último elemento for novo, o id vai ser o id dele menos 1
+    if (ultimoEl.id < 0) {
+      newTabelaCustos.id = ultimoEl.id - 1;
+    } else {
+      newTabelaCustos.id = proposta.tabelaCustos.length * -1 - 1;
+    }
 
+    setIsTabelaCustosVisible(false);
     setProposta({
       ...proposta,
       tabelaCustos: [...proposta.tabelaCustos, { ...newTabelaCustos }],
@@ -444,19 +540,7 @@ const DetalhesPropostaEditMode = ({
 
   // ***************************************** UseEffects ***************************************** //
 
-  useEffect(() => {
-    // Colocando o texto do problema em seu elemento
-    if (problemaText.current) {
-      problemaText.current.innerHTML = proposta.problema;
-    }
-
-    // Colocando o texto da proposta em seu elemento
-    if (propostaText.current) {
-      propostaText.current.innerHTML = proposta.proposta;
-    }
-  });
-
-  // Carregamento enquanto as requisições
+  // Carregamento enquanto as requisições são feitas
   useEffect(() => {
     if (isAllsListsPopulated()) {
       setIsLoading(false);
@@ -490,6 +574,16 @@ const DetalhesPropostaEditMode = ({
   useEffect(() => {
     console.log("Update proposta: ", proposta);
   }, [proposta]);
+
+  useEffect(() => {
+    if (!isBeneficiosVisible) {
+      setIsBeneficiosVisible(true);
+    }
+
+    if (!isTabelaCustosVisile) {
+      setIsTabelaCustosVisible(true);
+    }
+  }, [isBeneficiosVisible, isTabelaCustosVisile]);
 
   // ***************************************** Fim UseEffects ***************************************** //
 
@@ -829,15 +923,18 @@ const DetalhesPropostaEditMode = ({
               </Tooltip>
             </Box>
             <Box className="mx-4">
-              {proposta.tabelaCustos?.map((tabela, index) => {
-                return (
-                  <TabelaCustos
-                    key={index}
-                    dados={tabela}
-                    handleOnTabelaCustosChange={handleOnTabelaCustosChange}
-                  />
-                );
-              })}
+              {proposta.tabelaCustos.length > 0 && isTabelaCustosVisile
+                ? proposta.tabelaCustos?.map((tabela, index) => {
+                    return (
+                      <TabelaCustos
+                        key={index}
+                        dados={tabela}
+                        handleOnTabelaCustosChange={handleOnTabelaCustosChange}
+                        handleDeleteTabelaCusto={handleDeleteTabelaCusto}
+                      />
+                    );
+                  })
+                : null}
             </Box>
           </Box>
 
@@ -854,13 +951,14 @@ const DetalhesPropostaEditMode = ({
               </Tooltip>
             </Box>
             <Box className="mx-4">
-              {proposta.beneficios.length > 0 ? (
+              {proposta.beneficios.length > 0 && isBeneficiosVisible ? (
                 proposta.beneficios.map((beneficio, index) => {
                   return (
                     <Beneficio
                       key={index}
                       beneficio={beneficio}
                       handleOnBeneficioChange={handleOnBeneficioChange}
+                      handleDeleteBeneficio={handleDeleteBeneficio}
                     />
                   );
                 })
@@ -1132,6 +1230,7 @@ const TabelaCustos = ({
   handleOnTabelaCustosChange = (
     newTabela = EntitiesObjectService.tabelaCustos()
   ) => {},
+  handleDeleteTabelaCusto = () => {},
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1141,6 +1240,7 @@ const TabelaCustos = ({
 
   // ***************************************** Handlers ***************************************** //
 
+  // Handler para quando for alterado algum custo
   const handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {
     let custosAux = dados.custos.map((custo) => {
       if (custo.id == newCusto.id) {
@@ -1152,6 +1252,21 @@ const TabelaCustos = ({
     handleOnTabelaCustosChange({ ...dados, custos: [...custosAux] });
   };
 
+  // Handler para quando for deletado uma linha de custo
+  const handleOnDeleteCustoClick = () => {
+    let custosAux = [...dados.custos];
+    custosAux.pop();
+    handleOnTabelaCustosChange({ ...dados, custos: [...custosAux] });
+  };
+
+  // Handler para quando for deletado uma linha de cc
+  const handleOnDeleteCCClick = () => {
+    let ccsAux = [...dados.ccs];
+    ccsAux.pop();
+    handleOnTabelaCustosChange({ ...dados, ccs: [...ccsAux] });
+  };
+
+  // Handler para quando for alterado algum cc
   const handleOnCCChange = (newCC = EntitiesObjectService.centroDeCusto()) => {
     let ccsAux = dados.ccs.map((custo) => {
       if (custo.id == newCC.id) {
@@ -1163,10 +1278,22 @@ const TabelaCustos = ({
     handleOnTabelaCustosChange({ ...dados, ccs: [...ccsAux] });
   };
 
+  // Handler para quando for deletado uma tabela inteira
+  const handleOnDeleteTabelaClick = () => {
+    handleDeleteTabelaCusto(dados.id);
+  };
+
   // Handler para quando for clicado no botão de adicionar custo
   const handleOnAddCustoClick = () => {
     let newCusto = EntitiesObjectService.custo();
-    newCusto.id = dados.custos.length * -1 - 1;
+
+    let ultimoEl = dados.custos[dados.custos.length - 1];
+    // Se o último elemento for novo, o id vai ser o id dele menos 1
+    if (ultimoEl.id < 0) {
+      newCusto.id = ultimoEl.id - 1;
+    } else {
+      newCusto.id = dados.custos.length * -1 - 1;
+    }
 
     handleOnTabelaCustosChange({
       ...dados,
@@ -1177,7 +1304,14 @@ const TabelaCustos = ({
   // Função para quando for clicado no botão de adicionar CC
   const handleOnAddCCClick = () => {
     let newCC = EntitiesObjectService.cc();
-    newCC.id = dados.ccs.length * -1 - 1;
+
+    let ultimoEl = dados.ccs[dados.ccs.length - 1];
+    // Se o último elemento for novo, o id vai ser o id dele menos 1
+    if (ultimoEl.id < 0) {
+      newCC.id = ultimoEl.id - 1;
+    } else {
+      newCC.id = dados.ccs.length * -1 - 1;
+    }
 
     handleOnTabelaCustosChange({
       ...dados,
@@ -1238,6 +1372,15 @@ const TabelaCustos = ({
       </Table>
       <Divider />
       <Box className="w-full flex justify-end px-2">
+        <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
+          <IconButton
+            onClick={handleOnDeleteCustoClick}
+            size="small"
+            color="primary"
+          >
+            <RemoveIcon />
+          </IconButton>
+        </Tooltip>
         <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
           <IconButton
             onClick={handleOnAddCustoClick}
@@ -1272,6 +1415,24 @@ const TabelaCustos = ({
         </TableBody>
       </Table>
       <Box className="w-full flex justify-end px-2">
+        <Tooltip title={texts.formularioAnexosDemanda.remover}>
+          <IconButton
+            onClick={handleOnDeleteTabelaClick}
+            size="small"
+            color="primary"
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
+          <IconButton
+            onClick={handleOnDeleteCCClick}
+            size="small"
+            color="primary"
+          >
+            <RemoveIcon />
+          </IconButton>
+        </Tooltip>
         <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
           <IconButton onClick={handleOnAddCCClick} size="small" color="primary">
             <AddIcon />
@@ -1477,6 +1638,7 @@ const CustosRow = ({
 const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
   handleOnBeneficioChange = () => {},
+  handleDeleteBeneficio = () => {},
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1546,6 +1708,10 @@ const Beneficio = ({
     });
   };
 
+  const handleOnDeleteBeneficio = () => {
+    handleDeleteBeneficio(beneficio.id);
+  };
+
   // ***************************************** Fim Handlers ***************************************** //
 
   // ***************************************** UseEffects ***************************************** //
@@ -1564,7 +1730,7 @@ const Beneficio = ({
 
   return (
     <Paper
-      className="flex justify-between items-center mt-2 border-t-4"
+      className="relative flex justify-between mt-2 border-t-4"
       sx={{ borderTopColor: "primary.main" }}
       square
     >
@@ -1686,6 +1852,17 @@ const Beneficio = ({
           </TableRow>
         </TableBody>
       </Table>
+      <Box className="absolute right-0">
+        <Tooltip title={texts.formularioAnexosDemanda.remover}>
+          <IconButton
+            onClick={handleOnDeleteBeneficio}
+            size="small"
+            color="primary"
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
     </Paper>
   );
 };
