@@ -321,6 +321,7 @@ const Chat = () => {
                     }}
                     placeholder={texts.chat.pesquisarPorNome}
                   />
+                  a
                   <Box className="flex gap-2">
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                   </Box>
