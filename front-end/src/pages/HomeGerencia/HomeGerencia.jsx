@@ -734,8 +734,10 @@ const HomeGerencia = () => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
+          let data = new Date();
+          let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
           link.href = url;
-          link.download = "demandas-backlog.xlsx";
+          link.download = "demandas-backlog " + dataFormatada + " .xlsx";
           link.click();
         });
       } else if (valorAba == 3) {
@@ -751,8 +753,10 @@ const HomeGerencia = () => {
           let blob = new Blob([response], { type: "application/excel" });
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
+          let data = new Date();
+          let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
           link.href = url;
-          link.download = "demandas-assessment.xlsx";
+          link.download = "demandas-assessment " + dataFormatada + " .xlsx";
           link.click();
         });
       } else if (valorAba == 4) {
@@ -768,7 +772,9 @@ const HomeGerencia = () => {
             let url = URL.createObjectURL(blob);
             let link = document.createElement("a");
             link.href = url;
-            link.download = "propostas.xlsx";
+            let data = new Date();
+            let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
+            link.download = "propostas " + dataFormatada + " .xlsx";
             link.click();
           }
         );
@@ -785,8 +791,10 @@ const HomeGerencia = () => {
               let blob = new Blob([response], { type: "application/excel" });
               let url = URL.createObjectURL(blob);
               let link = document.createElement("a");
+              let data = new Date();
+              let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
               link.href = url;
-              link.download = "pautas.xlsx";
+              link.download = "pautas " + dataFormatada + " .xlsx";
               link.click();
             }
           );
@@ -804,8 +812,10 @@ const HomeGerencia = () => {
             let blob = new Blob([response], { type: "application/excel" });
             let url = URL.createObjectURL(blob);
             let link = document.createElement("a");
+            let data = new Date();
+            let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
             link.href = url;
-            link.download = "atas.xlsx";
+            link.download = "atas " + dataFormatada + " .xlsx";
             link.click();
           });
         }
@@ -1369,7 +1379,7 @@ const HomeGerencia = () => {
                           <DemandaGerencia
                             key={1}
                             isTourDemandasOpen={isTourDemandasOpen}
-                            setFeedbackAbrirChat={setFeedbackAbrirChat}
+                            setIsTourDemandasOpen={setIsTourDemandasOpen}
                             dados={{
                               analista: {},
                               beneficios: [{}],
@@ -1412,6 +1422,7 @@ const HomeGerencia = () => {
                         <DemandaGerencia
                           key={1}
                           isTourDemandasOpen={isTourDemandasOpen}
+                          setFeedbackAbrirChat={setFeedbackAbrirChat}
                           dados={{
                             analista: {},
                             beneficios: [{}],
@@ -1438,6 +1449,7 @@ const HomeGerencia = () => {
                         <DemandaGerenciaModoVisualizacao
                           listaDemandas={listaItens}
                           onDemandaClick={verDemanda}
+                          setFeedbackAbrirChat={setFeedbackAbrirChat}
                           nextModoVisualizacao={nextModoVisualizacao}
                         />
                       )}
@@ -1460,6 +1472,7 @@ const HomeGerencia = () => {
                           <DemandaGerenciaModoVisualizacao
                             listaDemandas={listaItens}
                             onDemandaClick={verDemanda}
+                            setFeedbackAbrirChat={setFeedbackAbrirChat}
                             nextModoVisualizacao={nextModoVisualizacao}
                           />
                         </Box>
@@ -1478,6 +1491,7 @@ const HomeGerencia = () => {
                             <DemandaGerencia
                               key={1}
                               isTourDemandasOpen={isTourDemandasOpen}
+                              setFeedbackAbrirChat={setFeedbackAbrirChat}
                               dados={{
                                 analista: {},
                                 beneficios: [{}],
@@ -1512,6 +1526,7 @@ const HomeGerencia = () => {
                               <DemandaGerenciaModoVisualizacao
                                 listaDemandas={listaItens}
                                 onDemandaClick={verProposta}
+                                setFeedbackAbrirChat={setFeedbackAbrirChat}
                                 nextModoVisualizacao={nextModoVisualizacao}
                                 isProposta={true}
                               />

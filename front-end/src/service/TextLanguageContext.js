@@ -70,6 +70,7 @@ const TextLanguageContext = createContext({
       propostas: "Propostas",
     },
     contato: {
+      reabrirChat: "Abrir Chat",
       ppm: "PPM",
       demanda: "Demanda",
     },
@@ -475,7 +476,7 @@ const TextLanguageContext = createContext({
         tour4:
           "Aqui pode escrever o que deseja enviar, podendo também anexar algum arquivo.",
       },
-      pesquisarPorNome: "Pesquisar por nome...",
+      pesquisarPorNome: "Pesquisar por usuário...",
       usuarioTour: {
         tour: "Tour",
         gerente: "Gerente",
@@ -492,6 +493,7 @@ const TextLanguageContext = createContext({
       opcoes: "Opções",
       abrirPopUp: "Abrir pop-up",
       encerrarChat: "Encerrar chat",
+      reabrirChat: "Reabrir chat",
       escrevaSuaMensagem: "Escreva sua mensagem...",
       enviarAnexo: "Enviar anexo",
       enviarMensagem: "Enviar mensagem",
@@ -499,6 +501,8 @@ const TextLanguageContext = createContext({
       solicitante: "Solicitante",
       cargo: "Cargo",
       chatEncerrado: "Chat encerrado com sucesso!",
+      chatReaberto: "Chat reaberto com sucesso!",
+      chatEncerradoErro: "Não é possível entrar em um chat encerrado!",
     },
     detalhesAta: {
       ataCriadaComSucesso: "Ata criada com sucesso!",

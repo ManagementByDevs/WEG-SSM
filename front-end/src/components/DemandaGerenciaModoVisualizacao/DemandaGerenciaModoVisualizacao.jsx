@@ -32,6 +32,7 @@ const DemandaGerenciaModoVisualizacao = ({
   onDemandaClick,
   nextModoVisualizacao,
   isProposta = false,
+  setFeedbackAbrirChat
 }) => {
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
@@ -43,6 +44,7 @@ const DemandaGerenciaModoVisualizacao = ({
         listaDemandas={listaDemandas}
         onDemandaClick={onDemandaClick}
         isProposta={isProposta}
+        setFeedbackAbrirChat={setFeedbackAbrirChat}
       />
     );
 
@@ -51,6 +53,7 @@ const DemandaGerenciaModoVisualizacao = ({
       listaDemandas={listaDemandas}
       onDemandaClick={onDemandaClick}
       isProposta={isProposta}
+      setFeedbackAbrirChat={setFeedbackAbrirChat}
     />
   );
 };
@@ -341,7 +344,7 @@ const DemandaTable = ({
 };
 
 // Componente para exibição de demandas em grid
-const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
+const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false, setFeedbackAbrirChat }) => {
   return (
     <Box
       sx={{
@@ -356,6 +359,7 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false }) => {
             key={index}
             dados={demanda}
             tipo={isProposta ? "proposta" : "demanda"}
+            setFeedbackAbrirChat={setFeedbackAbrirChat}
             onClick={() => {
               onDemandaClick(demanda);
             }}

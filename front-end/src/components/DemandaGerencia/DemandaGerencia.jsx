@@ -65,12 +65,21 @@ const DemandaGerencia = (props) => {
 
   const entrarChat = (e) => {
     e.stopPropagation();
-    if(props.dados.solicitante.id !== user.usuario.id) {
+    if (props.dados.solicitante.id !== user.usuario.id) {
       let chat;
       ChatService.getByPropostaAndUser(props.dados.id, user.usuario.id).then(
         (response) => {
           chat = response;
           if (chat.length > 0) {
+            if (chat[0].conversaEncerrada == true) {
+              ChatService.put({
+                ...chat[0],
+                conversaEncerrada: false,
+              }, chat[0].id).then((response) => {
+                console.log("EDITOU", response);
+                chat = response;
+              });
+            }
             navigate(`/chat/${chat[0].id}`);
           } else {
             let newChat = {
@@ -86,7 +95,7 @@ const DemandaGerencia = (props) => {
             });
           }
         }
-        );
+      );
     } else {
       props.setFeedbackAbrirChat(true);
     }
