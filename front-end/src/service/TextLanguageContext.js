@@ -495,6 +495,10 @@ const TextLanguageContext = createContext({
       escrevaSuaMensagem: "Escreva sua mensagem...",
       enviarAnexo: "Enviar anexo",
       enviarMensagem: "Enviar mensagem",
+      analista: "Analista",
+      solicitante: "Solicitante",
+      cargo: "Cargo",
+      chatEncerrado: "Chat encerrado com sucesso!",
     },
     detalhesAta: {
       ataCriadaComSucesso: "Ata criada com sucesso!",
@@ -644,6 +648,7 @@ const TextLanguageContext = createContext({
         feedback8: "Ata criada com sucesso!",
         feedback9: "Propostas atualizadas com sucesso!",
         feedback10: "Demanda criada com sucesso!",
+        feedback11: "Você não pode abrir um chat com você mesmo!",
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",

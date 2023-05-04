@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   Box,
@@ -25,6 +25,7 @@ import Contato from "../../components/Contato/Contato";
 import Mensagem from "../../components/Mensagem/Mensagem";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import Ajuda from "../../components/Ajuda/Ajuda";
+import Feedback from "../../components/Feedback/Feedback";
 
 import logoWeg from "../../assets/logo-weg.png";
 import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
@@ -48,6 +49,9 @@ import dateService from "../../service/dateService";
 
 // Chat para conversa entre usuários do sistema
 const Chat = () => {
+  /** Navigate utilizado para navegar para outras páginas */
+  const navigate = useNavigate();
+
   // Context para alterar o idioma
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -60,42 +64,16 @@ const Chat = () => {
   const location = useLocation();
 
   // UseState para pesquisar um contato da lista
-  const [pesquisaContato, setpesquisaContato] = useState("");
+  const [pesquisaContato, setPesquisaContato] = useState("");
 
   // UseState para armazenar os resultados da pesquisa
   const [resultadosContato, setresultadosContato] = useState([]);
 
+  const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
+
   // UseState para armazenar o contato selecionado
   const onChange = (evt) => {
-    setpesquisaContato(evt.target.value);
-  };
-
-  // UseState para armazenar o contato selecionado
-  // useEffect(() => {
-  //   const resultados = [];
-  //   usuarios.filter((usuario) => {
-  //     if (usuario.nome.toLowerCase().includes(pesquisaContato.toLowerCase())) {
-  //       resultados.push(usuario);
-  //     }
-  //   });
-  //   setresultadosContato(resultados);
-  // }, [pesquisaContato]);
-
-  // const [indexUsuario, setIndexUsuario] = useState();
-
-  // function abrirChat(index) {
-  //   setIndexUsuario(index);
-  //   setTab(usuarios[index].nome);
-  // }
-
-  const [texto, setTexto] = useState();
-
-  // const save = (e) => {
-  //   setUserData({ ...userData, message: e.target.value });
-  // };
-
-  const salvarTexto = () => {
-    // aqui é o salvar (utiliza a variavel texto para pegar o valor do texto)
+    setPesquisaContato(evt.target.value);
   };
 
   const [abrirModal, setOpenModal] = useState(false);
@@ -110,16 +88,19 @@ const Chat = () => {
 
   const deletarChat = () => {
     fecharModalCancelarChat();
-    // aqui é o deletar
+    ChatService.getByIdChat(idChat).then((e) => {
+      ChatService.put(
+        {
+          ...e,
+          conversaEncerrada: true,
+        },
+        idChat
+      ).then((e) => {
+        navigate("/chat");
+        setFeedbackChatEncerrado(true);
+      });
+    });
   };
-
-  // const buscarUsuario = () => {
-  //   UsuarioService.getUsuarioByEmail(
-  //     CookieService.getCookie("jwt").sub
-  //   ).then((e) => {
-  //     setUsuario(e);
-  //   });
-  // };
 
   const [listaChats, setListaChats] = useState([]);
 
@@ -139,27 +120,47 @@ const Chat = () => {
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
 
   useEffect(() => {
-    async function carregar() {
-      await MensagemService.getMensagensChat(idChat)
-        .then((response) => {
-          setMensagens(response);
-        })
-        .catch((error) => {
-        });
-      setDefaultMensagem();
-    }
-
     if (idChat) carregar();
     buscarChats();
   }, []);
+
+  useEffect(() => {
+    if (idChat) carregar();
+  }, [idChat]);
+
+  async function carregar() {
+    await MensagemService.getMensagensChat(idChat)
+      .then((response) => {
+        setMensagens(response);
+      })
+      .catch((error) => {});
+    setDefaultMensagem();
+  }
+
+  // UseState para armazenar o contato selecionado
+  useEffect(() => {
+    const resultados = [];
+    listaChats.filter((chat) => {
+      chat.usuariosChat.map((userChat) => {
+        if (userChat.id != user.usuario.id) {
+          if (
+            userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
+          ) {
+            resultados.push(chat);
+          }
+        }
+      });
+    });
+    setresultadosContato(resultados);
+  }, [pesquisaContato, listaChats, idChat]);
 
   useEffect(() => {
     const acaoNovaMensagem = (response) => {
       const mensagemRecebida = JSON.parse(response.body);
       let mensagemNova = {
         ...mensagemRecebida.body,
-         texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n")
-      }
+        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
+      };
       setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
     };
 
@@ -175,7 +176,9 @@ const Chat = () => {
         }
       };
     }
-  }, [stompClient]);
+  }, [stompClient, idChat]);
+
+  const [contatoSelecionado, setContatoSelecionado] = useState({});
 
   const setDefaultMensagem = () => {
     setMensagem({
@@ -196,7 +199,6 @@ const Chat = () => {
 
   const submit = async (event) => {
     event.preventDefault();
-    console.log("MENSGAEM", mensagem);
     enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
     setDefaultMensagem();
   };
@@ -278,6 +280,15 @@ const Chat = () => {
         />
       )}
       <FundoComHeader>
+        {/* Feedback Chat encerrado com sucesso */}
+        <Feedback
+          open={feedbackChatEncerrado}
+          handleClose={() => {
+            setFeedbackChatEncerrado(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.chat.chatEncerrado}
+        />
         <Box className="p-2">
           <Caminho />
           <Box className="w-full flex justify-center items-center">
@@ -317,52 +328,44 @@ const Chat = () => {
                 {isTourOpen ? (
                   <Contato
                     key={0}
-                    // onClick={() => {
-                    //   abrirChat(0);
-                    // }}
-                    usuario={{
-                      foto: "",
-                      nome: texts.chat.usuarioTour.tour,
-                      cargo: texts.chat.usuarioTour.gerente,
-                      demanda: texts.chat.usuarioTour.mostrarNoTour,
-                      codigoDemanda: "#1",
-                      mensagens: [
-                        {
-                          texto: texts.chat.usuarioTour.olaTudoBem,
-                          data: "10/10/2021",
-                          hora: "10:00",
-                          remetente: texts.chat.usuarioTour.tour,
-                        },
-                        {
-                          texto: texts.chat.usuarioTour.tudoSimVoce,
-                          data: "10/10/2021",
-                          hora: "10:01",
-                          remetente: texts.chat.usuarioTour.eu,
-                        },
-                        {
-                          texto: texts.chat.usuarioTour.bemTambemObrigado,
-                          data: "10/10/2021",
-                          hora: "10:02",
-                          remetente: texts.chat.usuarioTour.tour,
-                        },
-                      ],
+                    contatoSelecionado={contatoSelecionado}
+                    chat={{
+                      conversa_encerrada: false,
+                      id: 0,
+                      idProposta: {
+                        analista: {},
+                        anexo: [{}],
+                        beneficios: [{}],
+                        buSolicitante: {},
+                        busBeneficiadas: [{}],
+                        codigoPPM: "0",
+                        data: "",
+                        demanda: {},
+                        departamento: {},
+                        emAta: false,
+                        emPauta: false,
+                        escopo: "",
+                        fimExecucao: "",
+                        id: 0,
+                        titulo: "Demanda Tour",
+                        solicitante: { id: 0, nome: "Tour", email: "" },
+                      },
+                      usuariosChat: [{ id: 0, nome: "Tour", email: "" }],
                     }}
                     index={0}
-                    usuarioAtual={0}
                   />
                 ) : (
-                  listaChats.map((resultado, index) => {
-                    console.log("Resultado: ", resultado);
+                  resultadosContato.map((resultado, index) => {
                     return (
                       <Contato
                         key={index}
                         onClick={() => {
-                          console.log("Clicou");
-                          // abrirChat(index);
+                          navigate(`/chat/${resultado.id}`);
+                          setContatoSelecionado(resultado.id);
                         }}
+                        contatoSelecionado={contatoSelecionado}
                         chat={resultado}
                         index={index}
-                        // usuarioAtual={indexUsuario}
                       />
                     );
                   })
@@ -409,7 +412,7 @@ const Chat = () => {
                           {texts.chat.usuarioTour.tour}
                         </Typography>
                         <Typography fontSize={FontConfig.small}>
-                          {/* {usuarios[indexUsuario].cargo} */}Cargo
+                          {texts.chat.cargo}
                         </Typography>
                       </Box>
                     </Box>
@@ -500,7 +503,6 @@ const Chat = () => {
                     <Box
                       onChange={(e) => {
                         // save(e);
-                        console.log("OnChange", e.target.value);
                       }}
                       className="w-full"
                       component="input"
@@ -532,7 +534,7 @@ const Chat = () => {
                       <Tooltip title={texts.chat.enviarMensagem}>
                         <IconButton
                           onClick={() => {
-                            salvarTexto();
+                            // salvarTexto();
                           }}
                         >
                           <SendOutlinedIcon
@@ -568,25 +570,28 @@ const Chat = () => {
                           fontWeight="600"
                         >
                           {listaChats.map((chat) => {
-                            let nomeChat
+                            let nomeChat;
                             if (chat.id == idChat) {
                               chat.usuariosChat.map((usuarioChat) => {
                                 if (usuarioChat.id != user.usuario.id) {
-                                  nomeChat = usuarioChat.nome
+                                  nomeChat = usuarioChat.nome;
                                 }
-                              })
+                              });
                             }
                             return nomeChat;
                           })}
                         </Typography>
                         <Typography fontSize={FontConfig.small}>
                           {listaChats.map((chat) => {
-                            let cargoChat
+                            let cargoChat;
                             if (chat.id == idChat) {
-                              if(chat.idProposta.solicitante.id == user.usuario.id){
-                                cargoChat = "Analista"
+                              if (
+                                chat.idProposta.solicitante.id ==
+                                user.usuario.id
+                              ) {
+                                cargoChat = texts.chat.analista;
                               } else {
-                                cargoChat = "Solicitante"
+                                cargoChat = texts.chat.solicitante;
                               }
                             }
                             return cargoChat;
@@ -670,7 +675,12 @@ const Chat = () => {
                   </Box>
                   <Box
                     className="flex flex-col"
-                    sx={{ width: "100%", height: "85%", overflowY: "auto", overflowX: "hidden"}}
+                    sx={{
+                      width: "100%",
+                      height: "85%",
+                      overflowY: "auto",
+                      overflowX: "hidden",
+                    }}
                   >
                     {/* Componente mensagens, é cada mensagem que aparece */}
                     {mensagens.length > 0 &&

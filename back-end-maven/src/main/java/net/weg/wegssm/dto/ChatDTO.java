@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 public class ChatDTO {
-
+    private Boolean conversaEncerrada;
     private Proposta idProposta;
     private List<Usuario> usuariosChat;
 

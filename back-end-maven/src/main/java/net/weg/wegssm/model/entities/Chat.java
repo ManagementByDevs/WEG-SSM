@@ -21,7 +21,7 @@ public class Chat {
     private Long id;
 
     @Column(nullable = false)
-    private Boolean conversa_encerrada;
+    private Boolean conversaEncerrada;
 
     // Foreign keys
 

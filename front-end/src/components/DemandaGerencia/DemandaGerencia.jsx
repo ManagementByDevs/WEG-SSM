@@ -65,27 +65,31 @@ const DemandaGerencia = (props) => {
 
   const entrarChat = (e) => {
     e.stopPropagation();
-    let chat;
-    ChatService.getByPropostaAndUser(props.dados.id, user.usuario.id).then(
-      (response) => {
-        chat = response;
-        if (chat.length > 0) {
-          navigate(`/chat/${chat[0].id}`);
-        } else {
-          let newChat = {
-            idProposta: { id: props.dados.id },
-            usuariosChat: [
-              { id: user.usuario.id },
-              { id: props.dados.solicitante.id },
-            ],
-          };
-          ChatService.post(newChat).then((response) => {
-            chat = response;
-            navigate(`/chat/${chat.id}`);
-          });
+    if(props.dados.solicitante.id !== user.usuario.id) {
+      let chat;
+      ChatService.getByPropostaAndUser(props.dados.id, user.usuario.id).then(
+        (response) => {
+          chat = response;
+          if (chat.length > 0) {
+            navigate(`/chat/${chat[0].id}`);
+          } else {
+            let newChat = {
+              idProposta: { id: props.dados.id },
+              usuariosChat: [
+                { id: user.usuario.id },
+                { id: props.dados.solicitante.id },
+              ],
+            };
+            ChatService.post(newChat).then((response) => {
+              chat = response;
+              navigate(`/chat/${chat.id}`);
+            });
+          }
         }
-      }
-      );
+        );
+    } else {
+      props.setFeedbackAbrirChat(true);
+    }
   };
 
   return (

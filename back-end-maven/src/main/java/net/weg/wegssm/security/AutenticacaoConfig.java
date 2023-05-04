@@ -76,6 +76,8 @@ public class AutenticacaoConfig {
                 .antMatchers(HttpMethod.GET, "/weg_ssm/pdf/pauta/{id}").hasAnyAuthority("ANALISTA", "GESTOR")
                 .antMatchers(HttpMethod.GET, "/weg_ssm/pdf/ata/{id}").hasAnyAuthority("ANALISTA", "GESTOR")
 
+                .antMatchers(HttpMethod.PUT, "/weg_ssm/chat/{id}").hasAnyAuthority("ANALISTA", "GESTOR")
+
                 .anyRequest().authenticated();
 
         httpSecurity.csrf().disable();
