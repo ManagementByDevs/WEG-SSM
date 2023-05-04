@@ -4022,13 +4022,13 @@ public class PropostaController {
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateComNovosDados(@PathVariable(value = "id") Long id,
-                                                      @RequestParam(value = "beneficios", required = false) List<BeneficioDTO> beneficiosDTO,
-                                                      @RequestParam(value = "anexos", required = false) List<Anexo> anexos,
-                                                      @RequestParam(value = "tabelasCustos", required = false) List<TabelaCustoDTO> tabelaCustosDTO) {
-        return null;
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Object> updateComNovosDados(@PathVariable(value = "id") Long id,
+//                                                      @RequestParam(value = "beneficios", required = false) List<BeneficioDTO> beneficiosDTO,
+//                                                      @RequestParam(value = "anexos", required = false) List<Anexo> anexos,
+//                                                      @RequestParam(value = "tabelasCustos", required = false) List<TabelaCustoDTO> tabelaCustosDTO) {
+//        return null;
+//    }
 
     @PutMapping("/add-historico/{idProposta}")
     public ResponseEntity<Proposta> addHistorico(@PathVariable(value = "idProposta") Long idProposta,
