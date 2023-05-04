@@ -377,6 +377,8 @@ const HomeGerencia = () => {
 
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
+  const [feedbackAbrirChat, setFeedbackAbrirChat] = useState(false);
+
   // useState para fechar o chat minimizado
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
@@ -965,6 +967,15 @@ const HomeGerencia = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
+        {/* Feedback Não pode abrir chat com você mesmo */}
+        <Feedback
+          open={feedbackAbrirChat}
+          handleClose={() => {
+            setFeedbackAbrirChat(false);
+          }}
+          status={"erro"}
+          mensagem={texts.homeGerencia.feedback.feedback11}
+        />
         {/* Feedback ata publicada */}
         <Feedback
           open={feedbackAta}
@@ -1358,6 +1369,7 @@ const HomeGerencia = () => {
                           <DemandaGerencia
                             key={1}
                             isTourDemandasOpen={isTourDemandasOpen}
+                            setFeedbackAbrirChat={setFeedbackAbrirChat}
                             dados={{
                               analista: {},
                               beneficios: [{}],

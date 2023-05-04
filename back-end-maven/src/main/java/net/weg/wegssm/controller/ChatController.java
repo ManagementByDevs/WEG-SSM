@@ -59,7 +59,7 @@ public class ChatController {
 //        chat.setIdDemanda(chatDto.getProposta());
 //        chat.setUsuariosChat(chatDto.getUsuarios());
         BeanUtils.copyProperties(chatDto, chat);
-        chat.setConversa_encerrada(false);
+        chat.setConversaEncerrada(false);
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.save(chat));
     }
@@ -108,6 +108,18 @@ public class ChatController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findByUsuariosChat(usuario.get()));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid ChatDTO chatDto) {
+        if (!chatService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum chat com este id.");
+        }
+        Chat chat = new Chat();
+        BeanUtils.copyProperties(chatDto, chat);
+        chat.setId(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(chatService.save(chat));
     }
 
     /**

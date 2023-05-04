@@ -20,12 +20,12 @@ const Contato = (props) => {
 
   // UseEffect para alterar a cor do contato quando ele for selecionado
   useEffect(() => {
-    if (props.usuarioAtual === props.index) {
+    if (props.contatoSelecionado == props.chat.id) {
       setCorSelecionado("chat.eu");
     } else {
       setCorSelecionado("transparent");
     }
-  }, [props.usuarioAtual]);
+  }, [props.contatoSelecionado]);
 
   const [usuarioLogado, setUsuario] = useState(UsuarioService.getUserCookies());
   const [nomeContato, setNomeContato] = useState("");
