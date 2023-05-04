@@ -549,7 +549,18 @@ public class ExcelGeneratorService {
 
                 int rowIndexProposta = rowNum;
 
+                int contadorProposta = 0;
                 for (Proposta proposta : pauta.getPropostas()) {
+                    if(contadorProposta == 0) {
+
+                    } else {
+
+                    }
+
+                    contadorProposta++;
+
+                    System.out.println("Contador Proposta: " + contadorProposta);
+
                     XSSFRow rowProposta = sheet.createRow(rowIndexProposta++);
 
                     rowProposta.createCell(2).setCellValue(proposta.getTitulo());
@@ -725,7 +736,18 @@ public class ExcelGeneratorService {
                 row.createCell(1).setCellValue("Número Sequencial: " + ata.getNumeroSequencial() + "    Analista Responsável: " + ata.getAnalistaResponsavel().getNome() + "    Comissão: " + ata.getComissao().getSiglaForum() + " - " + ata.getComissao().getNomeForum());
 
                 int rowIndexProposta = rowNum;
+                int contadorProposta = 0;
                 for (Proposta proposta : ata.getPropostas()) {
+
+                    if(contadorProposta == 0) {
+
+                    } else {
+
+                    }
+
+                    contadorProposta++;
+
+                    System.out.println("Contador proposta: ");
 
                     XSSFRow rowProposta = sheet.createRow(rowIndexProposta++);
 
