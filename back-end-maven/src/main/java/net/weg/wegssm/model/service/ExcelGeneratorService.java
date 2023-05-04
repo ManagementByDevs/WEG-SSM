@@ -102,30 +102,18 @@ public class ExcelGeneratorService {
                 row.createCell(2).setCellValue(Jsoup.parse(demanda.getProblema()).text());
                 row.createCell(3).setCellValue(Jsoup.parse(demanda.getProposta()).text());
 
-                IndexedColorMap colorMap = new DefaultIndexedColorMap();
-
-                XSSFCellStyle evenRowStyle = workbook.createCellStyle();
-                evenRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-                XSSFColor evenRowColor = new XSSFColor(new java.awt.Color(220, 220, 220), colorMap);
-                evenRowStyle.setFillForegroundColor(evenRowColor);
-
-                XSSFCellStyle oddRowStyle = workbook.createCellStyle();
-                oddRowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-                XSSFColor oddRowColor = new XSSFColor(new java.awt.Color(255, 255, 255), colorMap);
-                oddRowStyle.setFillForegroundColor(oddRowColor);
-
-                if (contadorDemanda % 2 != 0) {
-                    for (int i = 0; i <= 3; i++) {
-                        row.getCell(i).setCellStyle(evenRowStyle);
-                    }
-                }
+                int contadorBeneficios = 0;
 
                 for (Beneficio beneficio : demanda.getBeneficios()) {
-                    Row roww = sheet.createRow(rowIndex);
-                    roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                    rowIndex++;
+                    if (contadorBeneficios == 0) {
+                        row.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                    } else {
+                        Row roww = sheet.createRow(rowIndex);
+                        roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                        rowIndex++;
+                    }
+
+                    contadorBeneficios++;
                 }
 
                 row.createCell(5).setCellValue(demanda.getFrequencia());
@@ -242,11 +230,18 @@ public class ExcelGeneratorService {
                 row.createCell(2).setCellValue(Jsoup.parse(demanda.getProblema()).text());
                 row.createCell(3).setCellValue(Jsoup.parse(demanda.getProposta()).text());
 
+                int contadorBeneficios = 0;
 
                 for (Beneficio beneficio : demanda.getBeneficios()) {
-                    Row roww = sheet.createRow(rowIndex);
-                    roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                    rowIndex++;
+                    if (contadorBeneficios == 0) {
+                        row.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                    } else {
+                        Row roww = sheet.createRow(rowIndex);
+                        roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                        rowIndex++;
+                    }
+
+                    contadorBeneficios++;
                 }
 
                 row.createCell(5).setCellValue(demanda.getFrequencia());
@@ -386,18 +381,32 @@ public class ExcelGeneratorService {
                 row.createCell(6).setCellValue(Jsoup.parse(proposta.getProblema()).text());
                 row.createCell(7).setCellValue(Jsoup.parse(proposta.getProposta()).text());
 
-
+                int contadorCusto = 0;
                 for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                     for (Custo custo : tbCusto.getCustos()) {
-                        Row rowCusto = sheet.createRow(rowIndex);
-                        rowCusto.createCell(9).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                        if (contadorCusto == 0) {
+                            row.createCell(9).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                        } else {
+                            Row rowCusto = sheet.createRow(rowIndex);
+                            rowCusto.createCell(9).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            rowIndex++;
+                        }
+
+                        contadorCusto++;
                     }
                 }
 
+                int contadorBeneficios = 0;
+
                 for (Beneficio beneficio : proposta.getBeneficios()) {
-                    Row roww = sheet.createRow(rowIndex);
-                    roww.createCell(10).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                    rowIndex++;
+                    if (contadorBeneficios == 0) {
+                        row.createCell(10).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                    } else {
+                        Row roww = sheet.createRow(rowIndex);
+                        roww.createCell(10).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                        rowIndex++;
+                    }
+                    contadorBeneficios++;
                 }
 
                 row.createCell(11).setCellValue(proposta.getFrequencia());
@@ -539,6 +548,7 @@ public class ExcelGeneratorService {
                 row.createCell(1).setCellValue("Número Sequencial: " + pauta.getNumeroSequencial() + "    Comissão: " + pauta.getComissao().getSiglaForum() + " - " + pauta.getComissao().getNomeForum() + "    Reunião do Fórum: " + pauta.getDataReuniao() + "    Analista Responsável: " + pauta.getAnalistaResponsavel().getNome());
 
                 int rowIndexProposta = rowNum;
+
                 for (Proposta proposta : pauta.getPropostas()) {
                     XSSFRow rowProposta = sheet.createRow(rowIndexProposta++);
 
@@ -551,17 +561,32 @@ public class ExcelGeneratorService {
                     rowProposta.createCell(7).setCellValue(Jsoup.parse(proposta.getProblema()).text());
                     rowProposta.createCell(8).setCellValue(Jsoup.parse(proposta.getProposta()).text());
 
+                    int contadorCusto = 0;
                     for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                         for (Custo custo : tbCusto.getCustos()) {
-                            Row rowCusto = sheet.createRow(rowIndexProposta);
-                            rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            if(contadorCusto == 0) {
+                                row.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            } else {
+                                Row rowCusto = sheet.createRow(rowIndexProposta);
+                                rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                rowIndexProposta++;
+                            }
+
+                            contadorCusto++;
                         }
                     }
 
+                    int contadorBeneficio = 0;
                     for (Beneficio beneficio : proposta.getBeneficios()) {
-                        Row roww = sheet.createRow(rowIndexProposta);
-                        roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                        rowIndexProposta++;
+                        if(contadorBeneficio == 0) {
+                            row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                        } else {
+                            Row roww = sheet.createRow(rowIndexProposta);
+                            roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                            rowIndexProposta++;
+                        }
+
+                        contadorBeneficio++;
                     }
 
                     rowProposta.createCell(12).setCellValue(proposta.getFrequencia());
@@ -713,17 +738,32 @@ public class ExcelGeneratorService {
                     rowProposta.createCell(7).setCellValue(Jsoup.parse(proposta.getProblema()).text());
                     rowProposta.createCell(8).setCellValue(Jsoup.parse(proposta.getProposta()).text());
 
+                    int contadorCusto = 0;
                     for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                         for (Custo custo : tbCusto.getCustos()) {
-                            Row rowCusto = sheet.createRow(rowIndexProposta);
-                            rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            if(contadorCusto == 0) {
+                                row.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            } else {
+                                Row rowCusto = sheet.createRow(rowIndexProposta);
+                                rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                rowIndexProposta++;
+                            }
+
+                            contadorCusto++;
                         }
                     }
 
+                    int contadorBeneficio = 0;
                     for (Beneficio beneficio : proposta.getBeneficios()) {
-                        Row roww = sheet.createRow(rowIndexProposta);
-                        roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
-                        rowIndexProposta++;
+                        if(contadorBeneficio == 0) {
+                            row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                        } else {
+                            Row roww = sheet.createRow(rowIndexProposta);
+                            roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
+                            rowIndexProposta++;
+                        }
+
+                        contadorBeneficio++;
                     }
 
                     rowProposta.createCell(12).setCellValue(proposta.getFrequencia());

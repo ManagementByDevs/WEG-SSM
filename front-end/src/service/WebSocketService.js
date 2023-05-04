@@ -13,6 +13,8 @@ export const WebSocketService = ({children}) => {
     const conectar = () => {
       const socket = new SockJS("http://localhost:8443/ws");
       const stomp = Stomp.over(socket);
+      stomp.debug = null;
+      
       stomp.connect(
         {},
         () => {

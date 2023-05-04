@@ -66,7 +66,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
   const textoEscopo = useRef(null);
 
   // Função para baixar um anexo
-  const downloadAnexo = (anexo = { id: 0, nome: "", tipo: "", dados: "" }) => {
+  const downloadAnexo = (anexo = EntitiesObjectService.anexo()) => {
     const file = anexo;
     let blob = new Blob([base64ToArrayBuffer(file.dados)]);
     let fileName = `${file.nome}`;
@@ -1135,9 +1135,6 @@ const StatusProposta = ({
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
-
-  // Variável que contém os dados da url
-  const location = useLocation();
 
   // UseState para poder visualizar e alterar o menu do idioma
   const [anchorElModalStatus, setAnchorElModalStatus] = useState(null);
