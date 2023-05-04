@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 
 import ClipLoader from "react-spinners/ClipLoader";
+import ReactQuill from "react-quill";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -28,12 +29,14 @@ import CheckIcon from "@mui/icons-material/Check";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import Feedback from "../Feedback/Feedback";
+import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -42,7 +45,7 @@ import DateService from "../../service/dateService";
 import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
-import ReactQuill from "react-quill";
+import PropostaService from "../../service/propostaService";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -84,6 +87,12 @@ const DetalhesPropostaEditMode = ({
   const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
     useState(false);
 
+  // Modal de confirmação para quando o usuário clicar em cancelar ou salvar edição
+  const [modalConfirmacao, setModalConfirmacao] = useState(false);
+
+  // Texto do modal de confirmação que irá aparecer para o usuário
+  const [textoModalConfirmacao, setTextoModalConfirmacao] = useState("");
+
   // Referência para o texto do problema
   const problemaText = useRef(null);
 
@@ -116,10 +125,6 @@ const DetalhesPropostaEditMode = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
-  useEffect(() => {
-    console.log("update proposta: ", proposta);
-  }, [proposta]);
-
   // Função para saber se as listas necessárias para a edição da proposta fizeram a requisição
   const isAllsListsPopulated = () => {
     return (
@@ -149,16 +154,49 @@ const DetalhesPropostaEditMode = ({
       : file.name + " - " + file.type;
   };
 
+  // Retorna booleano indicando se o parecer da comissão deve aparecer na tela
+  const isParecerGerenciaVisible = () => {
+    let possibleStatus = [
+      "CANCELLED",
+      "TO_DO",
+      "BUSINESS_CASE",
+      "ASSESSMENT_DG",
+      "DONE",
+    ];
+
+    if (possibleStatus.includes(proposta.status)) return true;
+    return false;
+  };
+
+  // Salva as edições da proposta no banco de dados
+  const saveProposal = () => {
+    PropostaService.put(proposta, proposta.id);
+  };
+
   // ***************************************** Handlers ***************************************** //
 
   // Handler cancelar edição
   const handleOnCancelEditClick = () => {
-    setIsEditing(false);
+    setTextoModalConfirmacao("cancelarEdicao");
+    setModalConfirmacao(true);
   };
 
   // Handler salvar edição
   const handleOnSaveEditClick = () => {
-    setIsEditing(false);
+    setTextoModalConfirmacao("confirmEditar");
+    setModalConfirmacao(true);
+  };
+
+  // Função disparada quando clicado em confirmar no modal de confirmação
+  const handleOnConfirmClick = () => {
+    if (textoModalConfirmacao == "cancelarEdicao") {
+      setIsEditing(false);
+    } else if (textoModalConfirmacao == "confirmEditar") {
+      setIsLoading(true);
+      saveProposal();
+    }
+
+    setModalConfirmacao(false);
   };
 
   // Handler do códigoPPM
@@ -247,16 +285,26 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
+  const handleOnBeneficiosAddClick = () => {
+    let newBeneficio = EntitiesObjectService.beneficio();
+
+    // Id negativo para diferenciar dos benefícios já existentes e ter certeza que não existe esse id no banco de dados
+    newBeneficio.id = proposta.beneficios.length * -1 - 1;
+
+    setProposta({
+      ...proposta,
+      beneficios: [...proposta.beneficios, { ...newBeneficio }],
+    });
+  };
+
   // Handler do benefício da proposta
   const handleOnBeneficioChange = (newBeneficio) => {
-    let beneficiosAux = [...proposta.beneficios];
-    let oldBeneficio = beneficiosAux.find(
-      (beneficio) => beneficio.id == newBeneficio.id
-    );
-
-    beneficiosAux.splice(oldBeneficio, 1, newBeneficio);
-    console.log("beneficiosAuxo :", beneficiosAux);
-    console.log("beneficios: ", proposta.beneficios);
+    let beneficiosAux = proposta.beneficios.map((beneficio) => {
+      if (beneficio.id == newBeneficio.id) {
+        return newBeneficio;
+      }
+      return beneficio;
+    });
 
     setProposta({ ...proposta, beneficios: [...beneficiosAux] });
   };
@@ -322,16 +370,24 @@ const DetalhesPropostaEditMode = ({
       });
       inputFile.current.value = "";
     } else {
-      // feedback de anexo já existente
+      // Feedback de anexo já existente
       setFeedbackComAnexoMesmoNome(true);
     }
   };
 
-  // Função para baixar um anexo
-  const handleOnDownloadAnexo = (anexo = EntitiesObjectService.anexo()) => {
+  // Handler para baixar um anexo
+  const handleOnDownloadAnexo = (anexo) => {
     const file = anexo;
-    let blob = new Blob([base64ToArrayBuffer(file.dados)]);
-    let fileName = `${file.nome}`;
+    let blob;
+    let fileName;
+
+    if (anexo instanceof File) {
+      blob = file;
+      fileName = file.name;
+    } else {
+      blob = new Blob([base64ToArrayBuffer(file.dados)]);
+      fileName = `${file.nome}`;
+    }
 
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, fileName);
@@ -350,11 +406,38 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
-  // Função para deletar um anexo
+  // Handler para deletar um anexo
   const handleOnDeleteAnexo = (file) => {
     let anexosAux = [...proposta.anexo];
     anexosAux.splice(file, 1);
     setProposta({ ...proposta, anexo: [...anexosAux] });
+  };
+
+  // Handler para quando a tabela de custos for alterada
+  const handleOnTabelaCustosChange = (
+    newTabelaCustos = EntitiesObjectService.tabelaCustos()
+  ) => {
+    let tabelaCustosAux = proposta.tabelaCustos.map((tabelaCusto) => {
+      if (tabelaCusto.id == newTabelaCustos.id) {
+        return newTabelaCustos;
+      }
+      return tabelaCusto;
+    });
+
+    setProposta({ ...proposta, tabelaCustos: [...tabelaCustosAux] });
+  };
+
+  // Handler para quando clicar no botão de adicionar criar uma nova tabela de custos
+  const handleOnTabelaCustosAddClick = () => {
+    let newTabelaCustos = EntitiesObjectService.tabelaCustos();
+
+    // Id negativo para diferenciar dos benefícios já existentes e ter certeza que não existe esse id no banco de dados
+    newTabelaCustos.id = proposta.tabelaCustos.length * -1 - 1;
+
+    setProposta({
+      ...proposta,
+      tabelaCustos: [...proposta.tabelaCustos, { ...newTabelaCustos }],
+    });
   };
 
   // ***************************************** Fim Handlers ***************************************** //
@@ -392,7 +475,21 @@ const DetalhesPropostaEditMode = ({
     SecaoTIService.getAll().then((secoesTIResponse) => {
       setListaSecoesTI(secoesTIResponse);
     });
+
+    let beneficiosAux = proposta.beneficios.map((beneficio) => {
+      if (beneficio.tipoBeneficio == "QUALITATIVO") {
+        beneficio.moeda = "";
+        beneficio.valor_mensal = "";
+      }
+      return beneficio;
+    });
+
+    setProposta({ ...proposta, beneficios: [...beneficiosAux] });
   }, []);
+
+  useEffect(() => {
+    console.log("Update proposta: ", proposta);
+  }, [proposta]);
 
   // ***************************************** Fim UseEffects ***************************************** //
 
@@ -405,6 +502,14 @@ const DetalhesPropostaEditMode = ({
 
   return (
     <>
+      <ModalConfirmacao
+        open={modalConfirmacao}
+        setOpen={setModalConfirmacao}
+        textoModal={textoModalConfirmacao}
+        textoBotao={"sim"}
+        onConfirmClick={handleOnConfirmClick}
+        onCancelClick={() => {}}
+      />
       <Feedback
         open={feedbackComAnexoMesmoNome}
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}
@@ -498,25 +603,21 @@ const DetalhesPropostaEditMode = ({
         <Box className="relative">
           <Box className="flex absolute -right-8 -top-2">
             <Tooltip title={texts.detalhesProposta.cancelarEdicao}>
-              <Box>
-                <IconButton
-                  sx={{ color: "primary.main" }}
-                  onClick={handleOnCancelEditClick}
-                >
-                  <ClearIcon />
-                </IconButton>
-              </Box>
+              <IconButton
+                sx={{ color: "primary.main" }}
+                onClick={handleOnCancelEditClick}
+              >
+                <ClearIcon />
+              </IconButton>
             </Tooltip>
 
             <Tooltip title={texts.detalhesProposta.salvarEdicao}>
-              <Box>
-                <IconButton
-                  sx={{ color: "primary.main" }}
-                  onClick={handleOnSaveEditClick}
-                >
-                  <CheckIcon />
-                </IconButton>
-              </Box>
+              <IconButton
+                sx={{ color: "primary.main" }}
+                onClick={handleOnSaveEditClick}
+              >
+                <CheckIcon />
+              </IconButton>
             </Tooltip>
           </Box>
 
@@ -717,21 +818,41 @@ const DetalhesPropostaEditMode = ({
 
           {/* Tabela de custos */}
           <Box className="mt-4">
-            <Typography fontSize={FontConfig.medium} fontWeight="bold">
-              {texts.detalhesProposta.tabelaDeCustos}:&nbsp;
-            </Typography>
+            <Box className="flex items-center">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.tabelaDeCustos}:&nbsp;
+              </Typography>
+              <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
+                <IconButton onClick={handleOnTabelaCustosAddClick}>
+                  <AddCircleIcon color="primary" />
+                </IconButton>
+              </Tooltip>
+            </Box>
             <Box className="mx-4">
               {proposta.tabelaCustos?.map((tabela, index) => {
-                return <TabelaCustos key={index} dados={tabela} />;
+                return (
+                  <TabelaCustos
+                    key={index}
+                    dados={tabela}
+                    handleOnTabelaCustosChange={handleOnTabelaCustosChange}
+                  />
+                );
               })}
             </Box>
           </Box>
 
           {/* Benefícios */}
           <Box className="mt-4">
-            <Typography fontSize={FontConfig.medium} fontWeight="bold">
-              {texts.detalhesProposta.beneficios}:&nbsp;
-            </Typography>
+            <Box className="flex items-center">
+              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                {texts.detalhesProposta.beneficios}:&nbsp;
+              </Typography>
+              <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
+                <IconButton onClick={handleOnBeneficiosAddClick}>
+                  <AddCircleIcon color="primary" />
+                </IconButton>
+              </Tooltip>
+            </Box>
             <Box className="mx-4">
               {proposta.beneficios.length > 0 ? (
                 proposta.beneficios.map((beneficio, index) => {
@@ -977,34 +1098,28 @@ const DetalhesPropostaEditMode = ({
             </Typography>
           </Box>
 
-          {!(proposta.status == "ASSESSMENT_APROVACAO") && (
-            <>
-              <Divider />
-              {/* Pareceres */}
-              <Box className="mt-3">
-                <Typography fontSize={FontConfig.big} fontWeight="bold">
-                  {texts.detalhesProposta.pareceres}:&nbsp;
-                </Typography>
-                <Box className="mx-4">
-                  {/* Parecer da Comissão */}
-                  <ParecerComissao
-                    proposta={proposta}
-                    setProposta={setProposta}
-                  />
+          <Divider />
+          {/* Pareceres */}
+          <Box className="mt-3">
+            <Typography fontSize={FontConfig.big} fontWeight="bold">
+              {texts.detalhesProposta.pareceres}:&nbsp;
+            </Typography>
+            <Box className="mx-4">
+              {/* Parecer da Comissão */}
+              <ParecerComissaoInsertText
+                proposta={proposta}
+                setProposta={setProposta}
+              />
 
-                  {/* Parecer da Diretoria */}
-                  {[
-                    "ASSESSMENT_DG",
-                    "DONE",
-                    "ASSESSMENT_EDICAO",
-                    "CANCELLED",
-                  ].includes(proposta.status) && (
-                    <ParecerDG proposta={proposta} setProposta={setProposta} />
-                  )}
-                </Box>
-              </Box>
-            </>
-          )}
+              {/* Parecer da Diretoria */}
+              {isParecerGerenciaVisible() && (
+                <ParecerDGInsertText
+                  proposta={proposta}
+                  setProposta={setProposta}
+                />
+              )}
+            </Box>
+          </Box>
         </Box>
       </Box>
     </>
@@ -1013,26 +1128,64 @@ const DetalhesPropostaEditMode = ({
 
 // Mostrar a tabela de custos
 const TabelaCustos = ({
-  dados = {
-    id: 0,
-    custos: [
-      {
-        id: 0,
-        tipoDespesa: "",
-        perfilDespesa: "",
-        periodoExecucao: 0,
-        horas: 0,
-        valorHora: 0,
-      },
-    ],
-    ccs: [{ id: 0, codigo: 0, porcentagem: 0.0 }],
-  },
+  dados = EntitiesObjectService.tabelaCustos(),
+  handleOnTabelaCustosChange = (
+    newTabela = EntitiesObjectService.tabelaCustos()
+  ) => {},
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // ***************************************** Handlers ***************************************** //
+
+  const handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {
+    let custosAux = dados.custos.map((custo) => {
+      if (custo.id == newCusto.id) {
+        return newCusto;
+      }
+      return custo;
+    });
+
+    handleOnTabelaCustosChange({ ...dados, custos: [...custosAux] });
+  };
+
+  const handleOnCCChange = (newCC = EntitiesObjectService.centroDeCusto()) => {
+    let ccsAux = dados.ccs.map((custo) => {
+      if (custo.id == newCC.id) {
+        return newCC;
+      }
+      return custo;
+    });
+
+    handleOnTabelaCustosChange({ ...dados, ccs: [...ccsAux] });
+  };
+
+  // Handler para quando for clicado no botão de adicionar custo
+  const handleOnAddCustoClick = () => {
+    let newCusto = EntitiesObjectService.custo();
+    newCusto.id = dados.custos.length * -1 - 1;
+
+    handleOnTabelaCustosChange({
+      ...dados,
+      custos: [...dados.custos, { ...newCusto }],
+    });
+  };
+
+  // Função para quando for clicado no botão de adicionar CC
+  const handleOnAddCCClick = () => {
+    let newCC = EntitiesObjectService.cc();
+    newCC.id = dados.ccs.length * -1 - 1;
+
+    handleOnTabelaCustosChange({
+      ...dados,
+      ccs: [...dados.ccs, { ...newCC }],
+    });
+  };
+
+  // ***************************************** Fim Handlers ***************************************** //
 
   return (
     <Paper className="w-full mt-2 mb-6" square>
@@ -1073,60 +1226,113 @@ const TabelaCustos = ({
         </TableHead>
         <TableBody>
           {dados.custos.map((custo, index) => {
-            return <CustosRow key={index} custo={custo} />;
+            return (
+              <CustosRow
+                key={index}
+                custo={custo}
+                handleOnCustoChange={handleOnCustoChange}
+              />
+            );
           })}
         </TableBody>
       </Table>
-      <Box className="mt-2">
-        <Table className="table-fixed w-full">
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "primary.main" }}>
-              <th className="text-white p-1">
-                <Typography fontSize={FontConfig.medium}>
-                  {texts.detalhesProposta.ccs}
-                </Typography>
-              </th>
-              <th className="text-white p-1">
-                <Typography fontSize={FontConfig.medium}>
-                  {texts.detalhesProposta.porcentagem}
-                </Typography>
-              </th>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {dados.ccs.map((cc, index) => {
-              return (
-                <TableRow key={index} className="w-full border rounded">
-                  <td className="text-center p-1">
-                    <Typography fontSize={FontConfig.medium}>
-                      {cc.codigo}
-                    </Typography>
-                  </td>
-                  <td className="text-center p-1">
-                    <Typography fontSize={FontConfig.medium}>
-                      {cc.porcentagem}%
-                    </Typography>
-                  </td>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+      <Divider />
+      <Box className="w-full flex justify-end px-2">
+        <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
+          <IconButton
+            onClick={handleOnAddCustoClick}
+            size="small"
+            color="primary"
+          >
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+      <Table className="table-fixed w-full">
+        <TableHead>
+          <TableRow sx={{ backgroundColor: "primary.main" }}>
+            <th className="text-white p-1">
+              <Typography fontSize={FontConfig.medium}>
+                {texts.detalhesProposta.ccs}
+              </Typography>
+            </th>
+            <th className="text-white p-1 w-1/4">
+              <Typography fontSize={FontConfig.medium}>
+                {texts.detalhesProposta.porcentagem}
+              </Typography>
+            </th>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {dados.ccs.map((cc, index) => {
+            return (
+              <CC key={index} cc={cc} handleOnCCChange={handleOnCCChange} />
+            );
+          })}
+        </TableBody>
+      </Table>
+      <Box className="w-full flex justify-end px-2">
+        <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
+          <IconButton onClick={handleOnAddCCClick} size="small" color="primary">
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
     </Paper>
   );
 };
 
+const CC = ({
+  cc = EntitiesObjectService.cc(),
+  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
+}) => {
+  // Context para obter as configurações de fonte do sistema
+  const { FontConfig } = useContext(FontContext);
+
+  // ***************************************** Handlers ***************************************** //
+
+  const handleOnCodigoChange = (event) => {
+    handleOnCCChange({ ...cc, codigo: event.target.value });
+  };
+
+  const handleOnPorcentagemChange = (event) => {
+    handleOnCCChange({ ...cc, porcentagem: event.target.value });
+  };
+
+  // ***************************************** Fim Handlers ***************************************** //
+
+  return (
+    <TableRow className="w-full border rounded">
+      <td className="text-center p-1">
+        <Input
+          value={cc.codigo}
+          onChange={handleOnCodigoChange}
+          size="small"
+          type="text"
+          multiline
+          fullWidth
+          sx={{ fontConfig: FontConfig.default }}
+        />
+      </td>
+      <td className="text-center p-1">
+        <Input
+          value={cc.porcentagem}
+          onChange={handleOnPorcentagemChange}
+          size="small"
+          type="text"
+          multiline
+          fullWidth
+          sx={{ fontConfig: FontConfig.default }}
+        />
+      </td>
+    </TableRow>
+  );
+};
+
 // Mostrar os custos na proposta
 const CustosRow = ({
-  custo = {
-    id: 0,
-    tipoDespesa: "",
-    perfilDespesa: "",
-    periodoExecucao: 0,
-    horas: 0,
-    valorHora: 0,
-  },
+  custo = EntitiesObjectService.custo(),
+  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1166,32 +1372,99 @@ const CustosRow = ({
       : 0.0;
   };
 
+  // ***************************************** Handlers ***************************************** //
+
+  // Handler para quando o tipo de despesa for alterado
+  const handleOnTipoDespesaChange = (event) => {
+    handleOnCustoChange({ ...custo, tipoDespesa: event.target.value });
+  };
+
+  // Handler para quando o tipo de despesa for alterado
+  const handleOnPerfilDespesaChange = (event) => {
+    handleOnCustoChange({ ...custo, perfilDespesa: event.target.value });
+  };
+
+  // Handler para quando o tipo de despesa for alterado
+  const handleOnPeriodoExecucaoChange = (event) => {
+    handleOnCustoChange({ ...custo, periodoExecucao: event.target.value });
+  };
+
+  // Handler para quando o tipo de despesa for alterado
+  const handleOnHorasChange = (event) => {
+    handleOnCustoChange({ ...custo, horas: event.target.value });
+  };
+
+  // Handler para quando o tipo de despesa for alterado
+  const handleOnValorHoraChange = (event) => {
+    handleOnCustoChange({ ...custo, valorHora: event.target.value });
+  };
+
+  // ***************************************** Fim Handlers ***************************************** //
+
   return (
     <TableRow>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
-          {custo.tipoDespesa}
-        </Typography>
+        {/* Tipo de Despesa */}
+        <Input
+          value={custo.tipoDespesa}
+          onChange={handleOnTipoDespesaChange}
+          fullWidth
+          size="small"
+          type="text"
+          multiline={true}
+          sx={{ fontConfig: FontConfig.default }}
+        />
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
-          {custo.perfilDespesa}
-        </Typography>
+        {/* Perfil da Despesa */}
+        <Input
+          value={custo.perfilDespesa}
+          onChange={handleOnPerfilDespesaChange}
+          fullWidth
+          size="small"
+          type="text"
+          multiline={true}
+          sx={{ fontConfig: FontConfig.default }}
+        />
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
-          {custo.periodoExecucao}
-        </Typography>
+        {/* Período de Execução */}
+        <Input
+          value={custo.periodoExecucao}
+          onChange={handleOnPeriodoExecucaoChange}
+          fullWidth
+          size="small"
+          type="text"
+          multiline={true}
+          sx={{ fontConfig: FontConfig.default }}
+        />
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>{custo.horas}</Typography>
+        {/* Horas */}
+        <Input
+          value={custo.horas}
+          onChange={handleOnHorasChange}
+          fullWidth
+          size="small"
+          type="text"
+          multiline={true}
+          sx={{ fontConfig: FontConfig.default }}
+        />
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
-          {getValorFormatted(custo.valorHora)}
-        </Typography>
+        {/* Valor da Hora */}
+        <Input
+          value={custo.valorHora}
+          onChange={handleOnValorHoraChange}
+          fullWidth
+          size="small"
+          type="text"
+          multiline={true}
+          sx={{ fontConfig: FontConfig.default }}
+        />
       </td>
       <td className="p-2 text-center">
+        {/* Total */}
         <Typography fontSize={FontConfig.default}>
           {getValorFormatted(custo.horas * custo.valorHora)}
         </Typography>
@@ -1214,25 +1487,78 @@ const Beneficio = ({
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
 
+  // Modules usados para o React Quill
+  const modulesQuill = {
+    toolbar: [
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      [{ script: "sub" }, { script: "super" }],
+      ["clean"],
+    ],
+  };
+
+  // Verifica se o benefício é do tipo qualitativo
+  const verifyIsQualitativo = () => {
+    if (beneficio.tipoBeneficio == "QUALITATIVO") {
+      setIsQualitativo(true);
+    } else {
+      setIsQualitativo(false);
+    }
+  };
+
   // ***************************************** Handlers ***************************************** //
 
   // Handler do tipo de benefício
   const handleOnTipoBeneficioSelect = (event) => {
-    console.log("id: ", beneficio);
+    let beneficioAux = { ...beneficio, tipoBeneficio: event.target.value };
+
+    if (event.target.value == "QUALITATIVO") {
+      beneficioAux.moeda = "";
+      beneficioAux.valor_mensal = "";
+    }
+
+    handleOnBeneficioChange({
+      ...beneficioAux,
+    });
+  };
+
+  // Handler do valor mensal do benefício
+  const handleOnValorMensalChange = (event) => {
+    handleOnBeneficioChange({ ...beneficio, valor_mensal: event.target.value });
+  };
+
+  // Handler da moeda do benefício
+  const handleOnMoedaChange = (event) => {
+    handleOnBeneficioChange({ ...beneficio, moeda: event.target.value });
+  };
+
+  // Handler da memória calculo do benefício
+  const handleOnMemoriaCalculoChange = (event) => {
     handleOnBeneficioChange({
       ...beneficio,
-      tipoBeneficio: event.target.value,
+      memoriaCalculo: event,
     });
   };
 
   // ***************************************** Fim Handlers ***************************************** //
 
-  // Verifica se o benefício é do tipo qualitativo
+  // ***************************************** UseEffects ***************************************** //
+
   useEffect(() => {
-    if (beneficio.tipoBeneficio == "QUALITATIVO") {
-      setIsQualitativo(true);
-    }
+    verifyIsQualitativo();
   }, []);
+
+  useEffect(() => {
+    verifyIsQualitativo();
+  }, [beneficio]);
+
+  // ***************************************** Fim UseEffects ***************************************** //
 
   if (beneficio.id === 0) return null;
 
@@ -1289,12 +1615,7 @@ const Beneficio = ({
         </TableBody>
         <TableBody className="border-t">
           <TableRow>
-            <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
-                {beneficio.tipoBeneficio[0].toUpperCase() +
-                  beneficio.tipoBeneficio.substring(1).toLowerCase()}
-              </Typography>
-
+            <td className="text-center p-2">
               {/* Select de tipo benefício */}
               <Select
                 value={beneficio.tipoBeneficio}
@@ -1321,52 +1642,52 @@ const Beneficio = ({
             </td>
             {!isQualitativo && (
               <>
-                <td className="text-center p-1">
-                  <Typography fontSize={FontConfig.default}>
-                    {beneficio.valor_mensal}
-                  </Typography>
+                <td className="text-center p-2">
+                  {/* Input de valor mensal */}
+                  <Input
+                    size="small"
+                    value={beneficio.valor_mensal}
+                    onChange={handleOnValorMensalChange}
+                    type="text"
+                    fullWidth
+                    sx={{ fontSize: FontConfig.default }}
+                    multiline={true}
+                  />
                 </td>
-                <td className="text-center p-1">
-                  <Typography fontSize={FontConfig.default}>
-                    {beneficio.moeda}
-                  </Typography>
+                <td className="text-center p-2">
+                  {/* Select da moeda do benefício */}
+                  <Select
+                    value={beneficio.moeda}
+                    onChange={handleOnMoedaChange}
+                    variant="standard"
+                    size="small"
+                  >
+                    <MenuItem value={"Real"}>
+                      <Typography fontSize={FontConfig.medium}>BRL</Typography>
+                    </MenuItem>
+                    <MenuItem value={"Dolar"}>
+                      <Typography fontSize={FontConfig.medium}>USD</Typography>
+                    </MenuItem>
+                    <MenuItem value={"Euro"}>
+                      <Typography fontSize={FontConfig.medium}>EUR</Typography>
+                    </MenuItem>
+                  </Select>
                 </td>
               </>
             )}
-            <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
-                {beneficio.memoriaCalculo}
-              </Typography>
+            <td className="text-center p-2">
+              {/* Caixa de texto para memória de cálculo */}
+              <ReactQuill
+                value={beneficio.memoriaCalculo}
+                onChange={handleOnMemoriaCalculoChange}
+                modules={modulesQuill}
+              />
             </td>
           </TableRow>
         </TableBody>
       </Table>
     </Paper>
   );
-};
-
-// Chamar o parecer da comissão
-const ParecerComissao = ({
-  proposta = propostaExample,
-  setProposta = () => {},
-}) => {
-  if (proposta.status == "ASSESSMENT_COMISSAO")
-    return (
-      <ParecerComissaoInsertText
-        proposta={proposta}
-        setProposta={setProposta}
-      />
-    );
-  return <ParecerComissaoOnlyRead proposta={proposta} />;
-};
-
-// Chamar o parecer da DG
-const ParecerDG = ({ proposta = propostaExample, setProposta = () => {} }) => {
-  if (proposta.status == "ASSESSMENT_DG")
-    return (
-      <ParecerDGInsertText proposta={proposta} setProposta={setProposta} />
-    );
-  return <ParecerDGOnlyRead proposta={proposta} />;
 };
 
 // Escrever o parecer da comissão

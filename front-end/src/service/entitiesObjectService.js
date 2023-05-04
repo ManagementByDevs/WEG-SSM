@@ -47,8 +47,8 @@ class EntitiesObjectService {
   beneficio() {
     return {
       id: 0,
-      tipoBeneficio: "POTENCIAL" | "QUALITATIVO" | "REAL",
-      valor_mensal: 0,
+      tipoBeneficio: "", // "POTENCIAL" | "QUALITATIVO" | "REAL"
+      valor_mensal: "",
       moeda: "",
       memoriaCalculo: "",
     };
@@ -88,28 +88,36 @@ class EntitiesObjectService {
       secaoTI: this.secaoTI(),
       solicitante: this.usuario(),
       status: "",
-      tabelaCustos: [
-        {
-          id: 0,
-          custos: [
-            {
-              id: 0,
-              tipoDespesa: "",
-              perfilDespesa: "",
-              periodoExecucao: 0,
-              horas: 0,
-              valorHora: 0,
-            },
-          ],
-          ccs: [{ id: 0, codigo: 0, porcentegem: 0.0 }],
-        },
-      ],
+      tabelaCustos: [this.tabelaCustos()],
       tamanho: "",
       titulo: "",
       visibilidade: true,
       emPauta: false,
       emAta: false,
     };
+  }
+
+  tabelaCustos() {
+    return {
+      id: 0,
+      custos: [this.custo()],
+      ccs: [this.cc()],
+    };
+  }
+
+  custo() {
+    return {
+      id: 0,
+      tipoDespesa: "",
+      perfilDespesa: "",
+      periodoExecucao: 0,
+      horas: 0,
+      valorHora: 0,
+    };
+  }
+
+  cc() {
+    return { id: 0, codigo: 0, porcentagem: 0.0 };
   }
 
   pauta() {
@@ -142,7 +150,7 @@ class EntitiesObjectService {
   chat() {
     return {
       id: 0,
-      conversa_encerrada: false,
+      conversaEncerrada: false,
       idProposta: this.proposta(),
       usuariosChat: [this.usuario()],
     };

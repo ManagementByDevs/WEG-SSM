@@ -298,6 +298,7 @@ const TextLanguage = (linguagem) => {
                 fecharChat: "Deseja realmente fechar este chat?",
                 tirarPropostaDePauta: "Deseja realmente tirar a proposta da pauta?",
                 alterarStatusProposta: "Essa ação pode excluir dados da proposta! Deseja mesmo alterar seu status?",
+                confirmEditar: "Deseja realmente editar? Essa ação não pode ser revertida!",
             },
             mensagensBotao: {
                 sim: "Sim",
@@ -1054,6 +1055,8 @@ const TextLanguage = (linguagem) => {
                 confirmarExclusao: "Are you sure you want to delete?",
                 fecharChat: "Do you really want to close this chat?",
                 tirarPropostaDePauta: "Do you really want to remove the proposal from the minute?",
+                alterarStatusProposta: "This action may delete some proposal data! Do you really want to change its status?",
+                confirmEditar: "Do you really want to edit it? This action can't be reversed!",
             },
             mensagensBotao: {
                 sim: "Yes",
@@ -1810,6 +1813,8 @@ const TextLanguage = (linguagem) => {
                 confirmarExclusao: "您确定要删除吗？",
                 fecharChat: "您真的想要关闭这个聊天吗？",
                 tirarPropostaDePauta: "您真的要从议程中删除该提案吗",
+                alterarStatusProposta: "此操作可能会删除一些提案数据！ 您真的要更改其状态吗？",
+                confirmEditar: "您真的要编辑它吗？ 此操作不可逆转！",
             },
             mensagensBotao: {
                 sim: "是",
@@ -2569,6 +2574,8 @@ const TextLanguage = (linguagem) => {
                 confirmarExclusao: "¿Está seguro de que desea eliminar?",
                 fecharChat: "¿Desea realmente cerrar este chat?",
                 tirarPropostaDePauta: "¿De verdad quieres quitar la propuesta del minuto?",
+                alterarStatusProposta: "¡Esta acción puede eliminar algunos datos de la propuesta! ¿Realmente quieres cambiar su estado?",
+                confirmEditar: "¿De verdad quieres editarlo? ¡Esta acción no se puede revertir!",
             },
             mensagensBotao: {
                 sim: "Sí",

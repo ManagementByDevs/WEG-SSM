@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Modal, Typography, Box, Button } from "@mui/material";
 
@@ -41,6 +41,8 @@ const ModalConfirmacao = (props) => {
         return texts.modalConfirmacao.mensagensModal.tirarPropostaDePauta;
       case "alterarStatusProposta":
         return texts.modalConfirmacao.mensagensModal.alterarStatusProposta;
+      case "confirmEditar":
+        return texts.modalConfirmacao.mensagensModal.confirmEditar;
     }
   };
 

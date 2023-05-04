@@ -1,5 +1,7 @@
 import axios from "./api";
 
+import EntitiesObjectService from "./entitiesObjectService";
+
 const proposta = "/proposta";
 
 class PropostaService {
@@ -8,11 +10,14 @@ class PropostaService {
   }
 
   async getById(id) {
-    return (await axios.get(proposta + "/" + id, { withCredentials: true })).data;
+    return (await axios.get(proposta + "/" + id, { withCredentials: true }))
+      .data;
   }
 
   async getByPPM(ppm) {
-    return (await axios.get(proposta + `/ppm/${ppm}`, { withCredentials: true })).data;
+    return (
+      await axios.get(proposta + `/ppm/${ppm}`, { withCredentials: true })
+    ).data;
   }
 
   async getPage(params, page) {
@@ -35,7 +40,8 @@ class PropostaService {
     return (
       await axios.get(proposta + `/page?${page}`, {
         params: params,
-        headers: { "Content-Type": "multipart/form-data" }, withCredentials: true
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
       })
     ).data;
   }
@@ -49,13 +55,19 @@ class PropostaService {
     }
     form.append("escopo", escopoTexto);
 
-    return (await axios.post(`/proposta`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+    return (
+      await axios.post(`/proposta`, form, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async atualizarStatus(idProposta, statusNovo) {
     return (
       await axios.put(`/proposta/status/${idProposta}/${statusNovo}`, {
-        headers: { "Content-Type": "multipart/form-data" }, withCredentials: true
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
       })
     ).data;
   }
@@ -71,13 +83,15 @@ class PropostaService {
     if (arquivos.length > 0) {
       return (
         await axios.put(`/proposta`, form, {
-          headers: { "Content-Type": "multipart/form-data" }, withCredentials: true
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         })
       ).data;
     } else {
       return (
         await axios.put(`/proposta/sem-arquivos`, form, {
-          headers: { "Content-Type": "multipart/form-data" }, withCredentials: true
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         })
       ).data;
     }
@@ -85,10 +99,61 @@ class PropostaService {
 
   async putWithoutArquivos(propostaObj, idProposta) {
     return (
-      await axios.put(`${proposta}/${idProposta}`, JSON.stringify(propostaObj), {
-        headers: { "Content-Type": "application/json" }, withCredentials: true
-      })
+      await axios.put(
+        `${proposta}/${idProposta}`,
+        JSON.stringify(propostaObj),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      )
     ).data;
+  }
+
+  async putComNovosDados(
+    propostaObj = EntitiesObjectService.proposta(),
+    idProposta
+  ) {
+    let novasTabelasCusto = propostaObj.tabelaCustos.map((tabelaCusto) => {
+      if (tabelaCusto.id < 0) {
+        // Se o ID for negativo ele foi adicionado
+        return tabelaCusto;
+      }
+    });
+
+    let novosBeneficios = propostaObj.beneficios.map((beneficio) => {
+      if (beneficio.id < 0) {
+        // Se o ID for negativo ele foi adicionado
+        return beneficio;
+      }
+    });
+
+    let novosAnexos = propostaObj.anexo.map((anexo) => {
+      if (!anexo.id) {
+        // Se não tiver ID ele foi adicionado
+        return anexo;
+      }
+    });
+
+    let form = new FormData();
+
+    form.append("proposta", JSON.stringify(propostaObj));
+
+    for (let beneficio of novosBeneficios) {
+      form.append("beneficios", JSON.stringify(beneficio));
+    }
+
+    for (let anexo of novosAnexos) {
+      form.append("anexos", JSON.stringify(anexo));
+    }
+
+    for (let tabelaCusto of novasTabelasCusto) {
+      form.append("tabelasCustos", JSON.stringify(tabelaCusto));
+    }
+
+    // fazer requisição para salvar novos custos e ccs dentro da tabela de custos já salvas no banco de dados
+
+    // fazer requisição
   }
 
   async addHistorico(idProposta, texto, documento, usuario) {
@@ -97,7 +162,12 @@ class PropostaService {
     form.set("documento", documento);
     form.set("usuarioId", usuario);
 
-    return (await axios.put(`/proposta/add-historico/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+    return (
+      await axios.put(`/proposta/add-historico/${idProposta}`, form, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      })
+    ).data;
   }
 }
 
