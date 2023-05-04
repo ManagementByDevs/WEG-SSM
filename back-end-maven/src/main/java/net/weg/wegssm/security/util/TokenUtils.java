@@ -32,7 +32,7 @@ public class TokenUtils {
     /**
      * Função que valida se um token recebido é válido para autenticação do usuário
      */
-    public void validarToken(String token) { oi
+    public void validarToken(String token) {
         try {
             Jwts.parser().setSigningKey(senhaForte).parseClaimsJws(token);
         } catch (Exception e) {
