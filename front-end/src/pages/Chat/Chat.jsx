@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef  } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -28,6 +28,7 @@ import Ajuda from "../../components/Ajuda/Ajuda";
 import Feedback from "../../components/Feedback/Feedback";
 
 import logoWeg from "../../assets/logo-weg.png";
+import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
@@ -70,20 +71,30 @@ const Chat = () => {
   const [resultadosContato, setresultadosContato] = useState([]);
 
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
+  const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
 
   // UseState para armazenar o contato selecionado
   const onChange = (evt) => {
     setPesquisaContato(evt.target.value);
   };
 
-  const [abrirModal, setOpenModal] = useState(false);
+  const [abrirModalEncerrarChat, setOpenModalEncerrarChat] = useState(false);
+  const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
 
   const abrirModalCancelarChat = () => {
-    setOpenModal(true);
+    setOpenModalEncerrarChat(true);
   };
 
   const fecharModalCancelarChat = () => {
-    setOpenModal(false);
+    setOpenModalEncerrarChat(false);
+  };
+
+  const abrirModalAbrirChat = () => {
+    setOpenModalReabrirChat(true);
+  };
+
+  const fecharModalAbrirChat = () => {
+    setOpenModalReabrirChat(false);
   };
 
   const deletarChat = () => {
@@ -96,8 +107,27 @@ const Chat = () => {
         },
         idChat
       ).then((e) => {
-        navigate("/chat");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
         setFeedbackChatEncerrado(true);
+      });
+    });
+  };
+  const abrirChat = () => {
+    fecharModalAbrirChat();
+    ChatService.getByIdChat(idChat).then((e) => {
+      ChatService.put(
+        {
+          ...e,
+          conversaEncerrada: false,
+        },
+        idChat
+      ).then((e) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        setFeedbackChatAberto(true);
       });
     });
   };
@@ -178,8 +208,6 @@ const Chat = () => {
     }
   }, [stompClient, idChat]);
 
-  const [contatoSelecionado, setContatoSelecionado] = useState({});
-
   const setDefaultMensagem = () => {
     setMensagem({
       data: dateService.getTodaysDate(),
@@ -258,6 +286,27 @@ const Chat = () => {
     },
   ];
 
+  function handleFileUpload(event) {
+    const file = event.target.files[0];
+    event.preventDefault();
+    enviar(`/app/weg_ssm/mensagem/${idChat}`, {...mensagem, anexo: [file]});
+    setDefaultMensagem();
+  }
+
+  const retornaConverdaEncerrada = () => {
+    let valor = false;
+    listaChats.map((chatInput) => {
+      if (chatInput.id == idChat) {
+        if (chatInput.conversaEncerrada == true) {
+          valor = true;
+        }
+      }
+    });
+    return valor;
+  };
+
+  const inputRef = useRef(null);
+
   return (
     <>
       <Ajuda onClick={() => setIsTourOpen(true)} />
@@ -269,13 +318,23 @@ const Chat = () => {
         rounded={10}
         showCloseButton={false}
       />
-      {abrirModal && (
+      {abrirModalEncerrarChat && (
         <ModalConfirmacao
-          open={abrirModal}
-          setOpen={setOpenModal}
+          open={abrirModalEncerrarChat}
+          setOpen={setOpenModalEncerrarChat}
           textoModal={"fecharChat"}
           onConfirmClick={deletarChat}
           onCancelClick={fecharModalCancelarChat}
+          textoBotao={"sim"}
+        />
+      )}
+      {abrirModalReabrirChat && (
+        <ModalConfirmacao
+          open={abrirModalReabrirChat}
+          setOpen={setOpenModalReabrirChat}
+          textoModal={"abrirChat"}
+          onConfirmClick={abrirChat}
+          onCancelClick={fecharModalAbrirChat}
           textoBotao={"sim"}
         />
       )}
@@ -288,6 +347,15 @@ const Chat = () => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
+        />
+        {/* Feedback Chat reaberto com sucesso */}
+        <Feedback
+          open={feedbackChatAberto}
+          handleClose={() => {
+            setFeedbackChatAberto(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.chat.chatReaberto}
         />
         <Box className="p-2">
           <Caminho />
@@ -321,7 +389,6 @@ const Chat = () => {
                     }}
                     placeholder={texts.chat.pesquisarPorNome}
                   />
-                  a
                   <Box className="flex gap-2">
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                   </Box>
@@ -329,7 +396,7 @@ const Chat = () => {
                 {isTourOpen ? (
                   <Contato
                     key={0}
-                    contatoSelecionado={contatoSelecionado}
+                    contatoSelecionado={idChat}
                     chat={{
                       conversa_encerrada: false,
                       id: 0,
@@ -362,9 +429,8 @@ const Chat = () => {
                         key={index}
                         onClick={() => {
                           navigate(`/chat/${resultado.id}`);
-                          setContatoSelecionado(resultado.id);
                         }}
-                        contatoSelecionado={contatoSelecionado}
+                        contatoSelecionado={idChat}
                         chat={resultado}
                         index={index}
                       />
@@ -648,28 +714,53 @@ const Chat = () => {
                             <hr className="w-10/12 my-1.5" />
                           </div>
 
-                          <MenuItem
-                            className="gap-2"
-                            onClick={() => {
-                              handleClose();
-                              abrirModalCancelarChat();
-                            }}
-                          >
-                            <CommentsDisabledOutlinedIcon
-                              sx={{
-                                fontSize: "25px",
-                                color: "tertiary.main",
-                                cursor: "pointer",
+                          {retornaConverdaEncerrada() == true ? (
+                            <MenuItem
+                              className="gap-2"
+                              onClick={() => {
+                                handleClose();
+                                abrirModalAbrirChat();
                               }}
-                            />
-                            <Typography
-                              color={"text.primary"}
-                              fontSize={FontConfig.medium}
-                              sx={{ fontWeight: 500 }}
                             >
-                              {texts.chat.encerrarChat}
-                            </Typography>
-                          </MenuItem>
+                              <CommentOutlinedIcon
+                                sx={{
+                                  fontSize: "25px",
+                                  color: "tertiary.main",
+                                  cursor: "pointer",
+                                }}
+                              />
+                              <Typography
+                                color={"text.primary"}
+                                fontSize={FontConfig.medium}
+                                sx={{ fontWeight: 500 }}
+                              >
+                                {texts.chat.reabrirChat}
+                              </Typography>
+                            </MenuItem>
+                          ) : (
+                            <MenuItem
+                              className="gap-2"
+                              onClick={() => {
+                                handleClose();
+                                abrirModalCancelarChat();
+                              }}
+                            >
+                              <CommentsDisabledOutlinedIcon
+                                sx={{
+                                  fontSize: "25px",
+                                  color: "tertiary.main",
+                                  cursor: "pointer",
+                                }}
+                              />
+                              <Typography
+                                color={"text.primary"}
+                                fontSize={FontConfig.medium}
+                                sx={{ fontWeight: 500 }}
+                              >
+                                {texts.chat.encerrarChat}
+                              </Typography>
+                            </MenuItem>
+                          )}
                         </Box>
                       </Menu>
                     </Box>
@@ -704,52 +795,95 @@ const Chat = () => {
                       height: "6.5%",
                     }}
                   >
-                    <Box
-                      onChange={atualizaMensagem}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" && !event.shiftKey) {
-                          event.preventDefault(); // Evita quebra de linha ao enviar mensagem
-                          submit(event); // Função que envia a mensagem
-                        }
-                      }}
-                      className="w-full h-full flex items-center"
-                      component="textarea"
-                      sx={{
-                        backgroundColor: "input.main",
-                        outline: "none",
-                        color: "text.primary",
-                        fontSize: FontConfig.medium,
-                        paddingTop: "0.4rem",
-                        resize: "none",
-                      }}
-                      placeholder={texts.chat.escrevaSuaMensagem}
-                      value={mensagem.texto}
-                    />
-                    <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                      <Tooltip title={texts.chat.enviarAnexo}>
-                        <IconButton>
-                          <AttachFileOutlinedIcon
-                            sx={{ color: "primary.main", cursor: "pointer" }}
+                    {retornaConverdaEncerrada() == true ? (
+                      <>
+                        <Box
+                          onChange={atualizaMensagem}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" && !event.shiftKey) {
+                              event.preventDefault(); // Evita quebra de linha ao enviar mensagem
+                              submit(event); // Função que envia a mensagem
+                            }
+                          }}
+                          disabled={true}
+                          className="w-full h-full flex items-center"
+                          component="textarea"
+                          sx={{
+                            backgroundColor: "input.main",
+                            outline: "none",
+                            color: "text.primary",
+                            fontSize: FontConfig.medium,
+                            paddingTop: "0.4rem",
+                            resize: "none",
+                          }}
+                          placeholder="Não é possível enviar mensagens, pois o chat foi encerrado."
+                          value={mensagem.texto}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Box
+                          onChange={atualizaMensagem}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" && !event.shiftKey) {
+                              event.preventDefault(); // Evita quebra de linha ao enviar mensagem
+                              submit(event); // Função que envia a mensagem
+                            }
+                          }}
+                          className="w-full h-full flex items-center"
+                          component="textarea"
+                          sx={{
+                            backgroundColor: "input.main",
+                            outline: "none",
+                            color: "text.primary",
+                            fontSize: FontConfig.medium,
+                            paddingTop: "0.4rem",
+                            resize: "none",
+                          }}
+                          placeholder={texts.chat.escrevaSuaMensagem}
+                          value={mensagem.texto}
+                        />
+                        <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
+                          <Tooltip title={texts.chat.enviarAnexo}>
+                            <IconButton onClick={()=> {
+                              inputRef.current.click()
+                            }}>
+                              <AttachFileOutlinedIcon
+                                sx={{
+                                  color: "primary.main",
+                                  cursor: "pointer",
+                                }}
+                              />
+                            </IconButton>
+                          </Tooltip>
+                          <input
+                            ref={inputRef}
+                            type="file"
+                            style={{ display: "none" }}
+                            onChange={handleFileUpload}
                           />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                    <Divider
-                      orientation="vertical"
-                      sx={{
-                        borderColor: "primary.main",
-                        margin: "0 10px 0 10px",
-                      }}
-                    />
-                    <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
-                      <Tooltip title={texts.chat.enviarMensagem}>
-                        <IconButton onClick={submit}>
-                          <SendOutlinedIcon
-                            sx={{ color: "primary.main", cursor: "pointer" }}
-                          />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
+                        </Box>
+                        <Divider
+                          orientation="vertical"
+                          sx={{
+                            borderColor: "primary.main",
+                            margin: "0 10px 0 10px",
+                          }}
+                        />
+                        <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
+                          <Tooltip title={texts.chat.enviarMensagem}>
+                            <IconButton onClick={submit}>
+                              <SendOutlinedIcon
+                                sx={{
+                                  color: "primary.main",
+                                  cursor: "pointer",
+                                }}
+                              />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      </>
+                    )}
                   </Box>
                 </Box>
               )}

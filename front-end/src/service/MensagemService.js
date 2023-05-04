@@ -6,7 +6,6 @@ export const MensagemService = {
     getMensagensChat: async (id) => {
         try {
             const response = await axios.get(url + "/chat/" + id, { withCredentials: true });
-            console.log("response.data", response.data)
             response.data.map((mensagem) => {
                 mensagem.texto = mensagem.texto.replace(/%BREAK%/g, "\n")
             })

@@ -1369,7 +1369,7 @@ const HomeGerencia = () => {
                           <DemandaGerencia
                             key={1}
                             isTourDemandasOpen={isTourDemandasOpen}
-                            setFeedbackAbrirChat={setFeedbackAbrirChat}
+                            setIsTourDemandasOpen={setIsTourDemandasOpen}
                             dados={{
                               analista: {},
                               beneficios: [{}],
@@ -1412,6 +1412,7 @@ const HomeGerencia = () => {
                         <DemandaGerencia
                           key={1}
                           isTourDemandasOpen={isTourDemandasOpen}
+                          setFeedbackAbrirChat={setFeedbackAbrirChat}
                           dados={{
                             analista: {},
                             beneficios: [{}],
@@ -1438,6 +1439,7 @@ const HomeGerencia = () => {
                         <DemandaGerenciaModoVisualizacao
                           listaDemandas={listaItens}
                           onDemandaClick={verDemanda}
+                          setFeedbackAbrirChat={setFeedbackAbrirChat}
                           nextModoVisualizacao={nextModoVisualizacao}
                         />
                       )}
@@ -1460,6 +1462,7 @@ const HomeGerencia = () => {
                           <DemandaGerenciaModoVisualizacao
                             listaDemandas={listaItens}
                             onDemandaClick={verDemanda}
+                            setFeedbackAbrirChat={setFeedbackAbrirChat}
                             nextModoVisualizacao={nextModoVisualizacao}
                           />
                         </Box>
@@ -1478,6 +1481,7 @@ const HomeGerencia = () => {
                             <DemandaGerencia
                               key={1}
                               isTourDemandasOpen={isTourDemandasOpen}
+                              setFeedbackAbrirChat={setFeedbackAbrirChat}
                               dados={{
                                 analista: {},
                                 beneficios: [{}],
@@ -1512,6 +1516,7 @@ const HomeGerencia = () => {
                               <DemandaGerenciaModoVisualizacao
                                 listaDemandas={listaItens}
                                 onDemandaClick={verProposta}
+                                setFeedbackAbrirChat={setFeedbackAbrirChat}
                                 nextModoVisualizacao={nextModoVisualizacao}
                                 isProposta={true}
                               />

@@ -37,6 +37,8 @@ const ModalConfirmacao = (props) => {
         return texts.modalConfirmacao.mensagensModal.confirmarExclusao;
       case "fecharChat":
         return texts.modalConfirmacao.mensagensModal.fecharChat;
+      case "abrirChat":
+        return texts.modalConfirmacao.mensagensModal.abrirChat;
       case "tirarPropostaDePauta":
         return texts.modalConfirmacao.mensagensModal.tirarPropostaDePauta;
       case "alterarStatusProposta":

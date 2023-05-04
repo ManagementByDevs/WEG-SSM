@@ -52,10 +52,10 @@ public class ChatService {
     }
 
     public List<Chat> findByUsuariosChat(Usuario usuario) {
-        return chatRepository.findByUsuariosChatAndConversaEncerradaIsFalse(usuario);
+        return chatRepository.findByUsuariosChat(usuario);
     }
 
     public List<Chat> findByIdPropostaAndUsuariosChat(Proposta proposta, Usuario usuario) {
-        return chatRepository.findByIdPropostaAndUsuariosChatAndConversaEncerradaIsFalse(proposta, usuario);
+        return chatRepository.findByIdPropostaAndUsuariosChat(proposta, usuario);
     }
 }
