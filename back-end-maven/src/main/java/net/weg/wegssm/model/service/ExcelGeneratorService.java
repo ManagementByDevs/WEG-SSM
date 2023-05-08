@@ -548,7 +548,8 @@ public class ExcelGeneratorService {
                 row.createCell(1).setCellValue("Número Sequencial: " + pauta.getNumeroSequencial() + "    Comissão: " + pauta.getComissao().getSiglaForum() + " - " + pauta.getComissao().getNomeForum() + "    Reunião do Fórum: " + pauta.getDataReuniao() + "    Analista Responsável: " + pauta.getAnalistaResponsavel().getNome());
 
                 int rowIndexProposta = rowNum;
-                
+
+                int contadorProposta = 0;
                 for (Proposta proposta : pauta.getPropostas()) {
 
                     XSSFRow rowProposta = sheet.createRow(rowIndexProposta++);
