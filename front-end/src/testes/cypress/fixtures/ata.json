@@ -1,132 +1,16 @@
 {
   "dataReuniao": "2023-07-07",
-  "numeroSequencial": 1,
-  "comissao": { "nome": "Comissão de Finanças e Tributação (CFT)" },
+  "numeroSequencial": 2000,
+  "comissao": {
+    "idForum": 1
+  },
   "visibilidade": true,
   "propostas": [
     {
-      "titulo": "Proposta de algo",
-      "inicioExecucao": "2023-07-07",
-      "fimExecucao": "2023-08-08",
-      "paybackValor": true,
-      "paybackTipo": "Real",
-      "codigoPPM": 123,
-      "linkJira": "http://jira.com",
-      "status": 6,
-      "responsavelNegocio": [
-        {
-          "id": 9,
-          "nome": "Matheus",
-          "area": "TI"
-        }
-      ],
-      "demanda": {},
-      "problema": "Grande",
-      "proposta": "Arrumar",
-      "frequencia": "Sempre",
-      "tamanho": "Grandao",
-      "secaoTI": {
-        "idSecao": 1,
-        "siglaSecao": "SVE",
-        "nomeSecao": "Seção Desenvolvimento Sistemas de Vendas e E-commerce"
-      },
-      "publicada": true,
-      "buSolicitante": {
-        "idBu": 1,
-        "siglaBu": "WMO-I",
-        "nomeBu": "WEG Motores Industrial"
-      },
-      "busBeneficiadas": [
-        {
-          "idBu": 1,
-          "siglaBu": "WMO-I",
-          "nomeBu": "WEG Motores Industrial"
-        }
-      ],
-      "beneficios": [
-        {
-          "id": 2,
-          "tipoBeneficio": 1,
-          "valor_mensal": 200,
-          "moeda": "Real",
-          "memoriaCalculo": "<p>Melhora o desempenho</p>"
-        }
-      ],
-      "solicitante": {
-        "id": 4,
-        "nome": "Thiago",
-        "senha": "123",
-        "email": "thiago@gmail",
-        "visibilidade": true,
-        "tipoUsuario": 3,
-        "preferencias": null,
-        "departamento": 1
-      },
-      "gerente": {
-        "id": 1,
-        "nome": "Matheus Hohmann",
-        "senha": "123",
-        "email": "matheus@gmail",
-        "visibilidade": true,
-        "tipoUsuario": 2,
-        "preferencias": null,
-        "departamento": 1
-      },
-      "analista": {
-        "id": 3,
-        "nome": "Kenzo Sato",
-        "senha": "123",
-        "email": "kenzo@gmail",
-        "visibilidade": true,
-        "tipoUsuario": 1,
-        "preferencias": null,
-        "departamento": 1
-      },
-      "forum": {
-        "idForum": 1,
-        "siglaForum": "CPVM",
-        "nomeForum": "Comissão de Processos de Vendas e Desenvolvimento de produtos"
-      },
-      "departamento": {
-        "id": 1,
-        "nome": "TI",
-        "visibilidade": true
-      },
-      "tabelaCustos": [
-        {
-          "id": 2,
-          "perfilDespesa": "bonito",
-          "periodoExecucao": "4",
-          "horas": "3",
-          "valorHora": "4"
-        }
-      ],
-      "historicoProposta": [
-        {
-          "id": 3,
-          "data": "2023-04-19 15:57:12.004000",
-          "autor": { "id": 4 },
-          "documento": {
-            "id": "1",
-            "nome": "Colocar pote de bala no trabalho - Versão 1",
-            "tipo": "application/pdf",
-            "dados": "..."
-          },
-          "acaoRealizada": "Demanda Criada"
-        }
-      ],
-      "emPauta": true,
-      "emAta": true
+      "id": 1
+    },
+    {
+      "id": 2
     }
-  ],
-  "analistaResponsavel": {
-    "id": 3,
-    "nome": "Kenzo Sato",
-    "senha": "123",
-    "email": "kenzo@gmail",
-    "visibilidade": true,
-    "tipoUsuario": 1,
-    "preferencias": null,
-    "departamento": 1
-  }
+  ]
 }
