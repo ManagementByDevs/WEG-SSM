@@ -1,0 +1,16 @@
+{
+  "dataReuniao": "2023-07-07",
+  "numeroSequencial": 2000,
+  "comissao": {
+    "idForum": 1
+  },
+  "visibilidade": true,
+  "propostas": [
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    }
+  ]
+}
