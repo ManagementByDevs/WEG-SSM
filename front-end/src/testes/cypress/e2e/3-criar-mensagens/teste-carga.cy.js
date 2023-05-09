@@ -9,8 +9,8 @@ describe("Teste de carga do endPoint criar mensagen", () => {
     cy.get("@LoginAnalista");
   });
 
-  it("Criar 100 mensagens", () => {
-    for (let i = 0; i < 100; i++) {
+  it("Criar 300 mensagens", () => {
+    for (let i = 0; i < 300; i++) {
       let form = new FormData();
       form.append(
         "mensagem",
