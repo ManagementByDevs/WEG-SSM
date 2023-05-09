@@ -38,7 +38,17 @@ public class CookieUtils {
             Cookie cookie = WebUtils.getCookie(request, "jwt");
             return cookie.getValue();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            try {
+                Cookie[] cookies = request.getCookies();
+                for (Cookie cookie : cookies) {
+                    if(cookie.getName().equals("jwt")) {
+                        return cookie.getValue();
+                    }
+                }
+                throw new RuntimeException(e);
+            } catch (Exception b) {
+                throw new RuntimeException(b);
+            }
         }
     }
 
