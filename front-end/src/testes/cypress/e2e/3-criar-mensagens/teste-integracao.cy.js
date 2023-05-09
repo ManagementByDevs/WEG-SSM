@@ -8,11 +8,11 @@ describe("Teste de integração do endPoint criar mensagen", () => {
   });
 
   it("Buscar todas as mensagens", () => {
-    cy.request("GET", "http://localhost:8443/weg_ssm/mensagem").as(
-      "BuscarMensagens"
-    );
-    cy.get("@BuscarMensagens").then((response) => {
-      expect(response.status).to.eq(200);
-    });
+    cy.request("GET", "http://localhost:8443/weg_ssm/mensagem")
+      .as("BuscarMensagens")
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.duration).to.be.lessThan(500)
+      });
   });
 });

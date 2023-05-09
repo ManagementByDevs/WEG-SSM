@@ -8,19 +8,22 @@ describe("Teste de carga do endPoint criar mensagen", () => {
     }).as("LoginAnalista");
     cy.get("@LoginAnalista");
   });
-  
-  it("Criar 200 mensagens", () => {
-    let form = new FormData();
 
-    form.append("mensagem", JSON.stringify(mensagem));
+  it("Criar 100 mensagens", () => {
+    for (let i = 0; i < 100; i++) {
+      let form = new FormData();
+      form.append(
+        "mensagem",
+        JSON.stringify({ ...mensagem, texto: mensagem.texto + (i + 1) })
+      );
 
-    for (let i = 0; i < 200; i++) {
       cy.request({
         method: "POST",
         url: "http://localhost:8443/weg_ssm/mensagem",
         body: form,
       }).then((response) => {
         expect(response.status).to.equal(201);
+        expect(response.duration).to.be.lessThan(700)
       });
     }
   });
