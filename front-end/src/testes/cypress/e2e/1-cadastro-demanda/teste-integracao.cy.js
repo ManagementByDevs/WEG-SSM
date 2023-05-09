@@ -7,26 +7,21 @@ describe("Cadastro de Demanda - Integração", () => {
     })
 
     it("Verifica se o cadastro de demanda foi efetuado", () => {
+        let demanda = {
+            titulo: "titulo100",
+            problema: "problema",
+            proposta: "proposta",
+            frequencia: "frequencia",
+            status: "BACKLOG_REVISAO",
+        }
+
         cy.request({
             method: "POST",
-            url: "http://localhost:8443/weg_ssm/demanda",
-            body: {
-                titulo: "titulo",
-                problema: "problema",
-                proposta: "proposta",
-                frequencia: "frequencia",
-                status: "BACKLOG_REVISAO",
-                tamannho: null,
-                secaoTI: null,
-                motivoRecusa: null,
-                solicitante: null,
-                forum: null,
-                departamento: null,
-                beneficios: null
-            }
+            url: `http://localhost:8443/weg_ssm/demanda/sem-arquivos/3?demanda=${JSON.stringify(demanda)}`
         }).as("CadastroDemandaRequest");
 
         cy.get("@CadastroDemandaRequest").then(response => {
+            expect(response.duration).to.be.lessThan(2000)
             expect(response.body).to.be.an("object")
             expect(response.status).to.equal(200)
         })
