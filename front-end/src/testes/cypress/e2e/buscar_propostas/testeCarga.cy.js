@@ -6,7 +6,7 @@ describe("Teste de carga da busca de propostas", () => {
 
     it("Verificar tempo de resposta após várias requisições", () => {
         for(let i = 0; i < 100; i++) {
-            cy.request("GET", "http://localhost:8443/weg_ssm/proposta/page").as("TesteBuscarPropostas");
+            cy.request("GET", "http://localhost:8443/weg_ssm/proposta/page?status=BACKLOG_REVISAO").as("TesteBuscarPropostas");
             cy.get("@TesteBuscarPropostas").then((response) => {
                 expect(response.duration).to.be.lessThan(2000);
             })
