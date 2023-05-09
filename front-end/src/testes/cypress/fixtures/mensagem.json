@@ -1,0 +1,13 @@
+{
+    "data": "2023-12-12",
+    "visto": false,
+    "texto": "Mensagem teste ",
+    "status": 1,
+    "usuario": {
+        "id": 3
+    },
+    "idChat": {
+        "id": 98
+    },
+    "anexo": []
+}
