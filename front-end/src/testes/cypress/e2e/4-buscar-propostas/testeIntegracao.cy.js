@@ -5,7 +5,7 @@ describe("Teste de Integração da busca de propostas", () => {
     })
 
     it("Buscar Propostas retorna status OK", () => {
-        cy.request("GET", "http://localhost:8443/weg_ssm/proposta/page?status=BACKLOG_REVISAO", ).as("TesteBuscarPropostas");
+        cy.request("GET", "http://localhost:8443/weg_ssm/proposta/page?status=ASSESSMENT_APROVACAO", ).as("TesteBuscarPropostas");
         cy.get("@TesteBuscarPropostas").then((response) => {
             expect(response.status).to.eq(200);
         })
