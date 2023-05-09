@@ -3429,9 +3429,9 @@ public class DemandaController {
     /**
      * Método GET para buscar as demandas com um determinado status
      */
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<Demanda>> findByStatus(@PathVariable(value = "status") Status status) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByStatus(status));
+    @GetMapping("/status")
+    public ResponseEntity<List<Demanda>> findByStatus(@RequestParam(value = "status") Status status) {
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.findByStatus(status));
     }
 
     /**
@@ -3454,7 +3454,7 @@ public class DemandaController {
      * Método POST para criar uma demanda adicionado um ou vários anexos
      */
     @PostMapping("/{usuarioId}")
-    public ResponseEntity<Object> save(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("demanda") String demandaJSON, @PathVariable(value = "usuarioId") Long usuarioId) {
+    public ResponseEntity<Object> save(@RequestParam(value= "anexos", required = false) List<MultipartFile> files, @RequestParam("demanda") String demandaJSON, @PathVariable(value = "usuarioId") Long usuarioId) {
 
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
@@ -3471,6 +3471,7 @@ public class DemandaController {
         demanda.setBeneficios(listaBeneficios);
         demanda.setSolicitante(usuario);
         demanda.setGerente(gerente);
+
         demanda.setAnexos(files);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
@@ -3485,8 +3486,11 @@ public class DemandaController {
         Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(usuario.getDepartamento(), TipoUsuario.GERENTE);
 
         ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
-        for (Beneficio beneficio : demanda.getBeneficios()) {
-            listaBeneficios.add(beneficioService.save(beneficio));
+
+        if(demanda.getBeneficios() != null) {
+            for (Beneficio beneficio : demanda.getBeneficios()) {
+                listaBeneficios.add(beneficioService.save(beneficio));
+            }
         }
 
         demanda.setData(new Date());
