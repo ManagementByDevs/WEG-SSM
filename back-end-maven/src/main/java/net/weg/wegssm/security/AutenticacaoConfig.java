@@ -78,6 +78,8 @@ public class AutenticacaoConfig {
 
                 .antMatchers(HttpMethod.PUT, "/weg_ssm/chat/{id}").hasAnyAuthority("ANALISTA", "GESTOR")
 
+                .antMatchers(HttpMethod.POST, "/weg_ssm/mensagem").hasAnyAuthority("ANALISTA", "GESTOR")
+
                 .anyRequest().authenticated();
 
         httpSecurity.csrf().disable();

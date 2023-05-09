@@ -114,11 +114,11 @@ public class MensagemController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestParam("anexos") List<MultipartFile> anexos, @RequestParam("mensagem") String mensagemJSON) {
+    public ResponseEntity<Object> save(@RequestParam(value = "anexos", required = false) List<MultipartFile> anexos, @RequestParam("mensagem") String mensagemJSON) {
         MensagemUtil mensagemUtil = new MensagemUtil();
         Mensagem mensagem = mensagemUtil.convertJsonToModel(mensagemJSON);
 
-        mensagem.setAnexos(anexos);
+//        mensagem.setAnexos(anexos);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mensagemService.save(mensagem));
     }
