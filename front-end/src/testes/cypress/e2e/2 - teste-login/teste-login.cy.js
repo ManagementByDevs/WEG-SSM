@@ -76,7 +76,7 @@ describe("Login", () => {
       somaTempoResposta += response.duration;
       console.log("Tempo de resposta media: ", somaTempoResposta / 100);
       console.log("Tempo de resposta total: ", somaTempoResposta);
-      expect(somaTempoResposta / 100).to.not.be.greaterThan(1000);
+      expect(somaTempoResposta / 100).to.not.be.greaterThan(500);
     });
   });
 });
