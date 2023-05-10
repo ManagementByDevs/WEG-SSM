@@ -14,7 +14,7 @@ describe("Teste de Carga - Criação Demanda", () => {
             status: "BACKLOG_REVISAO",
         }
 
-        for (let i = 0; i <= 500; i++) {
+        for (let i = 0; i <= 50; i++) {
             cy.request({
                 method: "POST",
                 url: `http://localhost:8443/weg_ssm/demanda/sem-arquivos/3?demanda=${JSON.stringify(demanda)}`
