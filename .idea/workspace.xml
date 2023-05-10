@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/testes/cypress/e2e/4 - ata/ata.cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/testes/cypress/e2e/4 - ata/ata.cy.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/testes/cypress/fixtures/ata.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/testes/cypress/fixtures/ata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/MensagemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/MensagemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/dto/MensagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/dto/MensagemDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Mensagem.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Mensagem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

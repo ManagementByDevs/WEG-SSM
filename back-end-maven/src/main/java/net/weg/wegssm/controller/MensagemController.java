@@ -48,18 +48,6 @@ public class MensagemController {
 
 
         mensagem.setUsuario(usuarioService.findById(mensagemDTO.getUsuario().getId()).get());
-//
-//        Chat chat = chatService.findById(mensagemDTO.getChat().getId()).get();
-//
-//        simpMessagingTemplate.convertAndSendToUser(chat.getIdDemanda().getId().toString(), mensagem.getIdChat().getId().toString(), mensagem);
-//
-//        try {
-//            mensagemService.save(mensagem);
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("A mensagem não foi salva!");
-//        }
-//
-//        return ResponseEntity.ok().body("Mensagem enviada!");
 
         return ResponseEntity.ok().body(mensagemService.save(mensagem));
     }
