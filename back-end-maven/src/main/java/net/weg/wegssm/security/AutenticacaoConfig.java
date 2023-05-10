@@ -53,6 +53,7 @@ public class AutenticacaoConfig {
                 .antMatchers(HttpMethod.POST, "/weg_ssm/proposta/sem-arquivos").hasAnyAuthority("ANALISTA", "GESTOR")
                 .antMatchers(HttpMethod.PUT, "/weg_ssm/proposta/{id}").hasAnyAuthority("ANALISTA", "GESTOR")
                 .antMatchers(HttpMethod.PUT, "/weg_ssm/proposta/add-historico/{idProposta}").hasAnyAuthority("ANALISTA", "GESTOR")
+                .antMatchers(HttpMethod.PUT, "/weg_ssm/proposta/update-novos-dados/{idProposta}").hasAnyAuthority("ANALISTA", "GESTOR")
                 .antMatchers(HttpMethod.GET, "/weg_ssm/proposta").hasAnyAuthority("ANALISTA", "GESTOR")
                 .antMatchers(HttpMethod.GET, "/weg_ssm/proposta/page").hasAnyAuthority("ANALISTA", "GESTOR")
 
