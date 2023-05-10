@@ -10,8 +10,8 @@ import java.util.List;
 public class EscopoDTO {
 
     private String titulo;
-    private String problema;
-    private String proposta;
+    private byte[] problema;
+    private byte[] proposta;
     private String frequencia;
     private Long porcentagem;
     private Usuario usuario;

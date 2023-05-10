@@ -17,11 +17,6 @@ class AnexoService {
         return (await axios.delete(`${anexoPath}/${idAnexo}`, { withCredentials: true })).data;
     }
 
-    /** Função para excluir um anexo pelo seu nome */
-    async delete(nomeAnexo) {
-        return (await axios.delete(`${anexoPath}/nome/${nomeAnexo}`, { withCredentials: true })).data;
-    }
-
 }
 
 export default new AnexoService();

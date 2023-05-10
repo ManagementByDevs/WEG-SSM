@@ -42,53 +42,28 @@ class DemandaService {
         return (await axios.get(demanda + `/page?${page}`, { params: newParams, headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
-    async post(demanda, arquivos, usuarioId) {
+    async post(demanda) {
         let form = new FormData();
-
         form.append("demanda", JSON.stringify(demanda));
-        for (let arquivo of arquivos) {
-            form.append("anexos", arquivo);
-        }
 
-        if (arquivos.length > 0) {
-            return (await axios.post(`/demanda/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
-        } else {
-            return (await axios.post(`/demanda/sem-arquivos/${usuarioId}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
-        }
+        return (await axios.post(`/demanda`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
     async atualizarStatus(idDemanda, statusNovo) {
         return (await axios.put(`/demanda/status/${idDemanda}/${statusNovo}`, { withCredentials: true })).data;
     }
 
-    async put(demanda, arquivos) {
+    async put(demanda) {
         let form = new FormData();
-
-        form.append("demanda", JSON.stringify(demanda));
-        for (let arquivo of arquivos) {
-            form.append("anexos", arquivo);
-        }
-
-        if (arquivos.length > 0) {
-            return (await axios.put(`/demanda/aceite`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
-        } else {
-            return (await axios.put(`/demanda/manter-arquivos-velhos`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
-        }
-    }
-
-    async putSemAnexos(demanda) {
-        let form = new FormData();
-
         form.append("demanda", JSON.stringify(demanda));
 
-        return (await axios.put(`/demanda/manter-arquivos-velhos`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+        return (await axios.put(`/demanda`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }
 
-    async addHistorico(idDemanda, texto, documento, usuario) {
+    async addHistorico(idDemanda, historico, arquivo) {
         let form = new FormData();
-        form.set("acao", texto);
-        form.set("documento", documento);
-        form.set("usuarioId", usuario);
+        form.set("historico", JSON.stringify(historico));
+        form.append("documento", arquivo);
 
         return (await axios.put(`/demanda/add-historico/${idDemanda}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
     }

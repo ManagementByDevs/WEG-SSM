@@ -4122,9 +4122,9 @@ public class PropostaController {
         List<Historico> listaHistorico = proposta.getHistoricoProposta();
         historico.setDocumentoMultipart(documento);
 
-        DocumentoHistorico documentoHistorico = historico.getDocumento();
+        DocumentoHistorico documentoHistorico = historico.getDocumentoHistorico();
         documentoHistorico.setNome(proposta.getTitulo() + " - Versão " + (listaHistorico.size() + 1));
-        historico.setDocumento(documentoHistoricoService.save(documentoHistorico));
+        historico.setDocumentoHistorico(documentoHistoricoService.save(documentoHistorico));
 
         if (listaHistorico != null) {
             listaHistorico.add(historicoService.save(historico));

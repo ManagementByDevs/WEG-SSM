@@ -231,10 +231,25 @@ const Home = () => {
         stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
       ).then((e) => {
         setTotalPaginas(e.totalPages);
-        setListaDemandas(e.content);
+        formatarDemandas(e.content);
       });
     }
   };
+
+  /** Função para formatar os campos necessários das demandas para HTML */
+  const formatarDemandas = (listaDemandas) => {
+    let listaNova = [];
+    for (let demanda of listaDemandas) {
+      
+      let listaNovaBeneficios = [];
+      for (let beneficio of demanda.beneficios) {
+        listaNovaBeneficios.push({ ...beneficio, memoriaCalculo: atob(beneficio.memoriaCalculo) });
+      }
+
+      listaNova.push({ ...demanda, problema: atob(demanda.problema), proposta: atob(demanda.proposta), beneficios: listaNovaBeneficios })
+    }
+    setListaDemandas(listaNova);
+  }
 
   /** Função para atualizar o filtro de status quando modificado no modal de filtros */
   const atualizarFiltro = (status) => {

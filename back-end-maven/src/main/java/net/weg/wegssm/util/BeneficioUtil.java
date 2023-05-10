@@ -7,6 +7,7 @@ import net.weg.wegssm.model.entities.Beneficio;
 import javax.validation.Valid;
 
 public class BeneficioUtil {
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public Beneficio convertJsonToModel(String beneficioJSON) {
@@ -14,9 +15,9 @@ public class BeneficioUtil {
         return convertDTOToModel(beneficioDTO);
     }
 
-    private BeneficioDTO convertJsonToDTO(String beneficioJSON) {
+    private BeneficioDTO convertJsonToDTO(String beneficioJson){
         try {
-            return this.objectMapper.readValue(beneficioJSON, BeneficioDTO.class);
+            return this.objectMapper.readValue(beneficioJson, BeneficioDTO.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

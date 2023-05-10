@@ -68,11 +68,13 @@ public class Proposta {
     @Column(nullable = false, length = 100)
     private String titulo;
 
-    @Column(nullable = false, length = 2000)
-    private String problema;
+    @Column(nullable = false)
+    @Lob
+    private byte[] problema;
 
-    @Column(nullable = false, length = 2000)
-    private String proposta;
+    @Column(nullable = false)
+    @Lob
+    private byte[] proposta;
 
     @Column(nullable = false, length = 100)
     private String frequencia;
@@ -146,7 +148,7 @@ public class Proposta {
     @JoinColumn(name = "demanda_id")
     private Demanda demanda;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "id_proposta")
     private List<Anexo> anexo;
 
@@ -161,7 +163,7 @@ public class Proposta {
         List<Anexo> listaAnexos = new ArrayList<>();
         try {
             for (MultipartFile file : files) {
-                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+                listaAnexos.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
             }
             this.anexo = listaAnexos;
         } catch (Exception e) {
@@ -172,7 +174,7 @@ public class Proposta {
     public void addAnexos(List<MultipartFile> files, List<Anexo> listaAnexos) {
         try {
             for (MultipartFile file : files) {
-                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+                listaAnexos.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
             }
             this.anexo = listaAnexos;
         } catch (Exception e) {

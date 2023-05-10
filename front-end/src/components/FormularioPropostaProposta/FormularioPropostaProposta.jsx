@@ -135,12 +135,7 @@ const FormularioPropostaProposta = (props) => {
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
   const adicionarBeneficio = () => {
-    BeneficioService.post({
-      tipoBeneficio: "REAL",
-      valor_mensal: "",
-      moeda: "",
-      memoriaCalculo: "",
-    }).then((response) => {
+    BeneficioService.post().then((response) => {
       let beneficioNovo = {
         id: response.id,
         tipoBeneficio: "REAL",

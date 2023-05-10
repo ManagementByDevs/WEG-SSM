@@ -16,6 +16,7 @@ import CookieService from "../../service/cookieService";
 
 // Modal para selecionar o idioma do sistema
 const IdiomaModal = () => {
+
   useEffect(() => {
     arrangePreferences();
   }, []);
@@ -61,8 +62,8 @@ const IdiomaModal = () => {
    * Pega as preferências do usuário e as aplica no sistema
    */
   const arrangePreferences = () => {
-    if (!CookieService.getCookie()) return;
-    UsuarioService.getPreferencias(CookieService.getCookie()?.sub).then((preferencias) => {
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt")?.sub).then((preferencias) => {
       if (preferencias.lang == "pt" && idioma != Brasil) setIdioma(Brasil);
       else if (preferencias.lang == "ch" && idioma != China) setIdioma(China);
       else if (preferencias.lang == "en" && idioma != EstadosUnidos) setIdioma(EstadosUnidos);
@@ -74,9 +75,9 @@ const IdiomaModal = () => {
    * Salva as novas preferências do usuário no banco de dados
    */
   const saveNewPreference = () => {
-    if (!CookieService.getCookie()) return;
+    if (!CookieService.getCookie("jwt")) return;
 
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie()?.sub).then((user) => {
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt")?.sub).then((user) => {
       toggleLanguage();
       let preferencias = JSON.parse(user.preferencias);
 
@@ -94,7 +95,7 @@ const IdiomaModal = () => {
           preferencias.lang = "es";
           break;
         default:
-          preferencias.lang = "en";
+          preferencias.lang = "pt";
       }
 
       user.preferencias = JSON.stringify(preferencias);

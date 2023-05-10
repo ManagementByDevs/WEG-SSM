@@ -24,7 +24,6 @@ import AnexoService from "../../service/anexoService";
 import NotificacaoService from "../../service/notificacaoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
-import EntitiesObjectService from "../../service/entitiesObjectService";
 
 import CookieService from "../../service/cookieService";
 
@@ -100,7 +99,7 @@ const DetalhesDemanda = (props) => {
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
     setAnexosDemanda(props.dados.anexo);
-  }, [props.dados]);
+  }, []);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // Funções de edição da demanda
@@ -227,12 +226,7 @@ const DetalhesDemanda = (props) => {
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
   const adicionarBeneficio = () => {
-    BeneficioService.post({
-      tipoBeneficio: "",
-      valor_mensal: "",
-      moeda: "",
-      memoriaCalculo: "",
-    }).then((response) => {
+    BeneficioService.post().then((response) => {
       let beneficioNovo = {
         id: response.id,
         tipoBeneficio: "",
@@ -505,6 +499,45 @@ const DetalhesDemanda = (props) => {
     );
   };
 
+  /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
+  const retornarIdsObjetos = (listaObjetos) => {
+    let listaNova = [];
+    for (let objeto of listaObjetos) {
+      listaNova.push({ id: objeto.id });
+    }
+    return listaNova;
+  };
+
+  /** Função para formatar uma demanda para envio para edição da mesma */
+  const formatarDemanda = () => {
+    let demanda = {
+      ...props.dados,
+      problema: btoa(props.dados.problema),
+      proposta: btoa(props.dados.proposta),
+      beneficios: retornarIdsObjetos(props.dados.beneficios),
+      anexo: retornarIdsObjetos(props.dados.anexo)
+    }
+    return demanda;
+  }
+
+  /** Função para criar e retornar um objeto de histórico para salvamento */
+  const retornaObjetoHistorico = (acaoRealizada) => {
+    const historico = {
+      data: new Date(),
+      acaoRealizada: acaoRealizada,
+      autor: { id: CookieService.getUser().id }
+    }
+    return historico;
+  }
+
+  /** Função usada para atualizar o histórico da demanda quando ela for atualizada no banco, recebendo um texto da ação realizada */
+  const salvarHistorico = (texto) => {
+    ExportPdfService.exportDemanda(props.dados.id).then((file) => {
+      let arquivo = new Blob([file], { type: "application/pdf" });
+      DemandaService.addHistorico(props.dados.id, retornaObjetoHistorico(texto), arquivo);
+    });
+  };
+
   /** Função acionada quando o analista recusa uma demanda, tanto devolução quanto reprovação */
   const confirmRecusaDemanda = () => {
     if (!motivoRecusaDemanda) return;
@@ -513,8 +546,7 @@ const DetalhesDemanda = (props) => {
       modoModalRecusa === "devolucao" ? "BACKLOG_EDICAO" : "CANCELLED";
 
     DemandaService.put(
-      { ...props.dados, motivoRecusa: motivoRecusaDemanda, status: status },
-      []
+      { ...formatarDemanda(), motivoRecusa: motivoRecusaDemanda, status: status }
     ).then(() => {
       const tipoNotificacao =
         modoModalRecusa === "devolucao"
@@ -526,25 +558,8 @@ const DetalhesDemanda = (props) => {
           props.dados
         )
       );
-      salvarHistorico(
-        modoModalRecusa === "devolucao"
-          ? "Demanda Devolvida"
-          : "Demanda Reprovada"
-      );
+      salvarHistorico(modoModalRecusa === "devolucao" ? "Demanda Devolvida" : "Demanda Reprovada");
       navegarHome(modoModalRecusa === "devolucao" ? 2 : 3);
-    });
-  };
-
-  /** Função usada para atualizar o histórico da demanda quando ela for atualizada no banco, recebendo um texto da ação realizada */
-  const salvarHistorico = (texto) => {
-    ExportPdfService.exportDemanda(props.dados.id).then((file) => {
-      let arquivo = new Blob([file], { type: "application/pdf" });
-      DemandaService.addHistorico(
-        props.dados.id,
-        texto,
-        arquivo,
-        CookieService.getUser().id
-      );
     });
   };
 
@@ -669,8 +684,8 @@ const DetalhesDemanda = (props) => {
   // useEffect utilizado para atualizar o valor das variáveis de edição, quando entrar na página
   useEffect(() => {
     if (!props.carregamento) {
-      setProblemaEdicao(props.dados.problema);
-      setPropostaEdicao(props.dados.proposta);
+      setProblemaEdicao(atob(props.dados.problema));
+      setPropostaEdicao(atob(props.dados.proposta));
     }
   }, [props.carregamento]);
 
@@ -1193,7 +1208,7 @@ const DetalhesDemanda = (props) => {
         sx={{ width: "15rem", bottom: "20px", right: "20px" }}
       >
         {props.usuario?.tipoUsuario == "ANALISTA" && props.botao &&
-          !editar && (
+          !editar && props.dados.status == "BACKLOG_REVISAO" && (
             <Box className="flex justify-around w-full">
               <Button
                 sx={{
@@ -1238,7 +1253,7 @@ const DetalhesDemanda = (props) => {
 
         {/* caso o usuário seja um gerente */}
         {props.usuario?.tipoUsuario == "GERENTE" && props.botao &&
-          !editar && (
+          !editar && props.dados.status == "BACKLOG_APROVACAO" && (
             <Box className=" w-full flex justify-around">
               <Button
                 sx={{

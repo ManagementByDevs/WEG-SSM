@@ -28,7 +28,7 @@ const ContainerHistorico = (props) => {
 
   /** Função para baixar o pdf do histórico da lista, recebendo o documento do props */
   const baixarHistorico = () => {
-    const arquivo = props.historico.documento;
+    const arquivo = props.historico.documentoHistorico;
     let blob = arquivo instanceof File ? arquivo : new Blob([converterBase64(arquivo.dados)], { type: "application/pdf" });
     let nomeArquivo = arquivo instanceof File ? arquivo.name : `${arquivo.nome}`;
 

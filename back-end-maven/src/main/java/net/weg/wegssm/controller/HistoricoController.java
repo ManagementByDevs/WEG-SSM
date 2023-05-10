@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -85,7 +86,7 @@ public class HistoricoController {
 
         Historico historico = new Historico();
         BeanUtils.copyProperties(historicoDto, historico);
-        historico.setDocumento(historicoDto.getDocumentoHistorico());
+        historico.setDocumentoHistorico(historicoDto.getDocumentoHistorico());
         historico.setAutor(usuario);
 
         return ResponseEntity.status(HttpStatus.OK).body(historicoService.save(historico));

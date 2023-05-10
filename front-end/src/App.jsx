@@ -120,7 +120,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/home-gerencia"
+                        redirectPath="/"
                       >
                         <CriarProposta />
                       </ProtectedRoute>
@@ -131,7 +131,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/home-gerencia"
+                        redirectPath="/"
                       >
                         <DetalhesPropostaPagina />
                       </ProtectedRoute>
@@ -142,7 +142,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/home-gerencia"
+                        redirectPath="/"
                       >
                         <DetalhesAta />
                       </ProtectedRoute>
@@ -153,7 +153,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/home-gerencia"
+                        redirectPath="/"
                       >
                         <DetalhesPauta />
                       </ProtectedRoute>

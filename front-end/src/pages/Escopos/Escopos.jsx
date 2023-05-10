@@ -81,7 +81,7 @@ const Escopos = () => {
             id: escopo.id,
             titulo: escopo.titulo,
             problema: escopo.problema,
-            proposta: escopo.proposta,
+            proposta: atob(escopo.proposta),
             frequencia: escopo.frequencia,
             beneficios: escopo.beneficios,
             anexos: escopo.anexo,

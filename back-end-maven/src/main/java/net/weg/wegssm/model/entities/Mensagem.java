@@ -58,7 +58,7 @@ public class Mensagem {
         List<Anexo> listaAnexos = new ArrayList<>();
         try {
             for (MultipartFile file : files) {
-                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+                listaAnexos.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
             }
             this.anexo = listaAnexos;
         } catch (Exception e) {

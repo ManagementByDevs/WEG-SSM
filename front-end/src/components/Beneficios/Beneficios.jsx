@@ -13,35 +13,21 @@ import "./Beneficios.css";
 
 /** Componente de benefício editável utilizado na segunda etapa da criação da demanda */
 const Beneficios = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  /** Objeto que armazenas os dados do beneficio (recebido pelo props.dados) */
-  const [dadosBeneficio, setDadosBeneficio] = useState({
-    id: props.dados.id,
-    tipoBeneficio: props.dados.tipoBeneficio,
-    valor_mensal: props.dados.valor_mensal,
-    moeda: props.dados.moeda,
-    memoriaCalculo: props.dados.memoriaCalculo,
-    visible: true,
-  });
-
-  // UseEffect utilizado para salvar os dados do benefício a cada alteração feita, utilizando o props.save()
-  useEffect(() => {
-    props.save(dadosBeneficio);
-  }, [dadosBeneficio]);
-
   /** Função para salvar o tipo do benefício */
   const salvarTipoBeneficio = (event) => {
-    setDadosBeneficio({ ...dadosBeneficio, tipoBeneficio: event.target.value });
+    props.save({ ...props.dados, tipoBeneficio: event.target.value });
   };
 
   /** Função para salvar a moeda do benefício */
   const salvarMoeda = (event) => {
-    setDadosBeneficio({ ...dadosBeneficio, moeda: event.target.value });
+    props.save({ ...props.dados, moeda: event.target.value });
   };
 
   /** Função para salvar o valor mensal do benefício */
@@ -49,22 +35,19 @@ const Beneficios = (props) => {
     let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
 
     if (regexp.test(texto)) {
-      setDadosBeneficio({ ...dadosBeneficio, valor_mensal: texto });
+      props.save({ ...props.dados, valor_mensal: texto });
     }
   }
 
   /** Função para salvar a memória de cálculo do benefício */
   function salvarMemoriaCalculo(texto) {
-    setDadosBeneficio({ ...dadosBeneficio, memoriaCalculo: texto });
+    props.save({ ...props.dados, memoriaCalculo: texto });
   }
 
   /** Função para remover algum benefício, utilizando o props.removerBeneficio() para tirar a sua visibilidade */
   const removerComponente = () => {
     props.removerBeneficio(props.index);
   };
-
-  /** Variável para armazenar o valor do mini campo de edição de texto */
-  const [memoriaCaixa, setMemoriaCaixa] = useState();
 
   return (
     <Box
@@ -87,10 +70,10 @@ const Beneficios = (props) => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={dadosBeneficio.tipoBeneficio}
+              value={props.dados?.tipoBeneficio}
               onChange={salvarTipoBeneficio}
               label="Beneficio"
-              defaultValue={dadosBeneficio.tipoBeneficio}
+              defaultValue={props.dados?.tipoBeneficio}
             >
               <MenuItem value={"Real"}>
                 <Typography fontSize={FontConfig.medium}>
@@ -110,8 +93,8 @@ const Beneficios = (props) => {
             </Select>
           </FormControl>
         </Box>
-        {dadosBeneficio.tipoBeneficio === "Real" ||
-          dadosBeneficio.tipoBeneficio === "Potencial" ? (
+        {props.dados?.tipoBeneficio === "Real" ||
+          props.dados?.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -126,7 +109,7 @@ const Beneficios = (props) => {
                     label={texts.beneficios.valorMensal}
                     placeholder={texts.beneficios.exemploValorMensal}
                     fontConfig={FontConfig.default}
-                    texto={dadosBeneficio.valor_mensal}
+                    texto={props.dados?.valor_mensal}
                   />
                 </Box>
                 <FormControl
@@ -146,7 +129,7 @@ const Beneficios = (props) => {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    value={dadosBeneficio.moeda}
+                    value={props.dados?.moeda}
                     onChange={salvarMoeda}
                   >
                     <MenuItem value={"Real"}>
@@ -165,9 +148,9 @@ const Beneficios = (props) => {
           </Box>
         ) : null}
       </Box>
-      {dadosBeneficio.tipoBeneficio === "Real" ||
-        dadosBeneficio.tipoBeneficio === "Potencial" ||
-        dadosBeneficio.tipoBeneficio === "Qualitativo" ? (
+      {props.dados?.tipoBeneficio === "Real" ||
+        props.dados?.tipoBeneficio === "Potencial" ||
+        props.dados?.tipoBeneficio === "Qualitativo" ? (
         <Box className="flex items-center" sx={{ width: "65%" }}>
           {/* Input que permite estilização para a memória de cálculo do benefício */}
           <Box className="flex flex-col overflow-auto w-full h-full">
@@ -188,8 +171,7 @@ const Beneficios = (props) => {
               {/* Caixa de edição para o campo memória de cálculo */}
               <CaixaTextoQuill
                 placeholder={texts.beneficios.digiteMemoriaCalculo}
-                texto={memoriaCaixa}
-                setTexto={setMemoriaCaixa}
+                texto={props.dados?.memoriaCalculo}
                 onChange={(value) => {
                   salvarMemoriaCalculo(value);
                 }}
