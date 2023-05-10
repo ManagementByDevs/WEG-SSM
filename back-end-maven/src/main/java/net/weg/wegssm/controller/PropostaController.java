@@ -4040,14 +4040,16 @@ public class PropostaController {
         for (Beneficio beneficio : propostaNovosDados.getBeneficios()) {
             System.out.println("Benficio " + beneficio);
             beneficio.setId(null);
-            propostaNovosDados.getBeneficios().add(beneficio);
-//            beneficios.add(beneficio);
+            beneficios.add(beneficioService.save(beneficio));
         }
+
+        propostaNovosDados.setBeneficios(beneficios);
 
 //        propostaNovosDados.getBeneficios().add(bene);
 
         System.out.println("Beneficios: " + propostaNovosDados);
-
+        ArrayList<TabelaCusto> novasTabelasCustos = new ArrayList<>();
+        
         for (TabelaCusto tabelaCusto : propostaNovosDados.getTabelaCustos()) {
             List<Custo> novosCustos = new ArrayList<>();
             List<CC> novosCCs = new ArrayList<>();
@@ -4064,6 +4066,7 @@ public class PropostaController {
 
             tabelaCusto.setCustos(novosCustos);
             tabelaCusto.setCcs(novosCCs);
+            tabelaCusto.setId(null);
 
             proposta.getTabelaCustos().add(tabelaCusto);
         }
