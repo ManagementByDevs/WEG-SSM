@@ -48,6 +48,7 @@ import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
 import PropostaService from "../../service/propostaService";
+import BeneficioService from "../../service/beneficioService";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -98,6 +99,8 @@ const DetalhesPropostaEditMode = ({
   const [isBeneficiosVisible, setIsBeneficiosVisible] = useState(false);
 
   const [isTabelaCustosVisile, setIsTabelaCustosVisible] = useState(false);
+
+  const [listaBeneficiosSalvados, setListaBeneficiosSalvados] = useState([]);
 
   // Referênica para o input de arquivo
   const inputFile = useRef(null);
@@ -168,11 +171,21 @@ const DetalhesPropostaEditMode = ({
     return false;
   };
 
+  // Formata o HTML em casos como a falta de fechamentos em tags "<br>"
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, "<br/>");
+    return texto;
+  };
+
   // Salva as edições da proposta no banco de dados
   const saveProposal = () => {
     // Fazer verificação dos campos
 
     let propostaAux = { ...proposta };
+    let propostaEscopo = formatarHtml(propostaAux.escopo);
+
+    // Manda o escopo velho no objeto, pois o escopo novo está sendo mandado como outro param
+    propostaAux.escopo = propostaData.escopo;
 
     let novasTabelasCusto = propostaAux.tabelaCustos.filter((tabelaCusto) => {
       if (tabelaCusto.id < 0) {
@@ -212,20 +225,51 @@ const DetalhesPropostaEditMode = ({
       propostaAux,
       novasTabelasCusto,
       novosBeneficios,
-      listaIdsAnexos
+      listaIdsAnexos,
+      propostaEscopo
     );
     // return ;
+
+    // let listaBeneficiosID = [];
+
+    // for (let beneficio of novosBeneficios) {
+    //   BeneficioService.post(beneficio).then((beneficioSalvo) => {
+    //     listaBeneficiosID.push(beneficioSalvo.id);
+
+    //     if (listaBeneficiosID.length == novosBeneficios.length) {
+
+    //       for (let tabelaCusto of novasTabelasCusto) {
+
+    //       }
+    //     }
+    //   });
+    // }
 
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
       novasTabelasCusto,
       novosBeneficios,
-      listaIdsAnexos
+      listaIdsAnexos,
+      propostaEscopo
     ).then((response) => {
       console.log("response", response.data);
-      setPropostaData(response.data);
+      // setPropostaData(response.data);
     });
+  };
+
+  const saveNovosBeneficios = (listaBeneficios) => {
+    let listaID = [];
+
+    for (let beneficio of listaBeneficios) {
+      BeneficioService.post(beneficio).then((beneficioSalvo) => {
+        listaID.push(beneficioSalvo.id);
+        if (listaID.length == listaBeneficios.length) {
+          console.log("listaID", listaID);
+          return listaID;
+        }
+      });
+    }
   };
 
   // ***************************************** Handlers ***************************************** //
@@ -488,7 +532,7 @@ const DetalhesPropostaEditMode = ({
       anexosAux.findIndex((oldFile) => oldFile == file),
       1
     );
-    
+
     setProposta({ ...proposta, anexo: [...anexosAux] });
   };
 
@@ -568,7 +612,10 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
-    setProposta({ ...proposta, beneficios: [...beneficiosAux] });
+    setProposta({
+      ...proposta,
+      beneficios: [...beneficiosAux],
+    });
   }, []);
 
   useEffect(() => {
