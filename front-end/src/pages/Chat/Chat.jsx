@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef  } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -47,6 +47,7 @@ import { WebSocketContext } from "../../service/WebSocketService";
 import CookieService from "../../service/cookieService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import dateService from "../../service/dateService";
+import anexoService from "../../service/anexoService";
 
 // Chat para conversa entre usuários do sistema
 const Chat = () => {
@@ -77,6 +78,8 @@ const Chat = () => {
   const onChange = (evt) => {
     setPesquisaContato(evt.target.value);
   };
+
+  const boxRef = useRef(null);
 
   const [abrirModalEncerrarChat, setOpenModalEncerrarChat] = useState(false);
   const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
@@ -158,6 +161,13 @@ const Chat = () => {
     if (idChat) carregar();
   }, [idChat]);
 
+  useEffect(() => {
+    const boxElement = boxRef.current;
+    if (boxElement) {
+      boxElement.scrollTop = boxElement.scrollHeight;
+    }
+  }, [mensagens]);
+
   async function carregar() {
     await MensagemService.getMensagensChat(idChat)
       .then((response) => {
@@ -226,9 +236,11 @@ const Chat = () => {
   };
 
   const submit = async (event) => {
-    event.preventDefault();
-    enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
-    setDefaultMensagem();
+    if (mensagem.texto !== "") {
+      event.preventDefault();
+      enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
+      setDefaultMensagem();
+    }
   };
 
   // UseState para poder visualizar e alterar a visibilidade do menu
@@ -289,11 +301,14 @@ const Chat = () => {
   function handleFileUpload(event) {
     const file = event.target.files[0];
     event.preventDefault();
-    enviar(`/app/weg_ssm/mensagem/${idChat}`, {...mensagem, anexo: [file]});
+    anexoService.save(file).then((response) => {
+      console.log("Salvou", response);
+      enviar(`/app/weg_ssm/mensagem/${idChat}`, { ...mensagem, anexo: {id: response.id} });
+    });
     setDefaultMensagem();
   }
 
-  const retornaConverdaEncerrada = () => {
+  const retornaConversaEncerrada = () => {
     let valor = false;
     listaChats.map((chatInput) => {
       if (chatInput.id == idChat) {
@@ -714,7 +729,7 @@ const Chat = () => {
                             <hr className="w-10/12 my-1.5" />
                           </div>
 
-                          {retornaConverdaEncerrada() == true ? (
+                          {retornaConversaEncerrada() == true ? (
                             <MenuItem
                               className="gap-2"
                               onClick={() => {
@@ -766,6 +781,7 @@ const Chat = () => {
                     </Box>
                   </Box>
                   <Box
+                    ref={boxRef}
                     className="flex flex-col"
                     sx={{
                       width: "100%",
@@ -795,7 +811,7 @@ const Chat = () => {
                       height: "6.5%",
                     }}
                   >
-                    {retornaConverdaEncerrada() == true ? (
+                    {retornaConversaEncerrada() == true ? (
                       <>
                         <Box
                           onChange={atualizaMensagem}
@@ -845,9 +861,11 @@ const Chat = () => {
                         />
                         <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
                           <Tooltip title={texts.chat.enviarAnexo}>
-                            <IconButton onClick={()=> {
-                              inputRef.current.click()
-                            }}>
+                            <IconButton
+                              onClick={() => {
+                                inputRef.current.click();
+                              }}
+                            >
                               <AttachFileOutlinedIcon
                                 sx={{
                                   color: "primary.main",

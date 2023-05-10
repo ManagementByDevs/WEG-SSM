@@ -18,6 +18,6 @@ public class MensagemDTO {
     private StatusChat status;
     private Usuario usuario;
     private Chat idChat;
-    private List<Anexo> anexo;
+    private Anexo anexo;
 
 }
