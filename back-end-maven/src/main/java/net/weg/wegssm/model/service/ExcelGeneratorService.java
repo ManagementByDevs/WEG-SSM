@@ -566,7 +566,7 @@ public class ExcelGeneratorService {
                     int contadorCusto = 0;
                     for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                         for (Custo custo : tbCusto.getCustos()) {
-                            if(contadorCusto == 0) {
+                            if (contadorCusto == 0) {
                                 row.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                             } else {
                                 Row rowCusto = sheet.createRow(rowIndexProposta);
@@ -580,7 +580,7 @@ public class ExcelGeneratorService {
 
                     int contadorBeneficio = 0;
                     for (Beneficio beneficio : proposta.getBeneficios()) {
-                        if(contadorBeneficio == 0) {
+                        if (contadorBeneficio == 0) {
                             row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
                         } else {
                             Row roww = sheet.createRow(rowIndexProposta);
@@ -631,6 +631,7 @@ public class ExcelGeneratorService {
                     for (int colunaAuto : colunasAutoSize) {
                         sheet.autoSizeColumn(colunaAuto);
                     }
+
                 }
 
                 rowNum = rowIndexProposta;
@@ -743,7 +744,7 @@ public class ExcelGeneratorService {
                     int contadorCusto = 0;
                     for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                         for (Custo custo : tbCusto.getCustos()) {
-                            if(contadorCusto == 0) {
+                            if (contadorCusto == 0) {
                                 row.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                             } else {
                                 Row rowCusto = sheet.createRow(rowIndexProposta);
@@ -757,7 +758,7 @@ public class ExcelGeneratorService {
 
                     int contadorBeneficio = 0;
                     for (Beneficio beneficio : proposta.getBeneficios()) {
-                        if(contadorBeneficio == 0) {
+                        if (contadorBeneficio == 0) {
                             row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(beneficio.getMemoriaCalculo()).text());
                         } else {
                             Row roww = sheet.createRow(rowIndexProposta);
