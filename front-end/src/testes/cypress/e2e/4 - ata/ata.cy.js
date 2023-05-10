@@ -12,6 +12,7 @@ before(() => {
   cy.get("@LoginAnalista");
 });
 
+// Integração
 it("Buscar todas as atas", () => {
   cy.request("GET", "http://localhost:8443/weg_ssm/ata").as("getAta");
 
@@ -23,6 +24,7 @@ it("Buscar todas as atas", () => {
   });
 });
 
+// Processo
 it("Criar ata", () => {
   cy.request("POST", "http://localhost:8443/weg_ssm/login/auth", {
     email: "kenzo@gmail",
@@ -80,6 +82,7 @@ it("Criar ata errada", () => {
   });
 });
 
+// Carga
 it("Criar ata teste carga", () => {
   cy.request("POST", "http://localhost:8443/weg_ssm/login/auth", {
     email: "kenzo@gmail",
