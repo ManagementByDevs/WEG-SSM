@@ -16,7 +16,6 @@ it("Buscar todas as atas", () => {
     console.log("Atas: ", response.body);
     console.log("Quantidade de atas: ", response.body.length);
     expect(response.status).to.be.equal(200);
-    quantidadeAtas = response.body.length;
   });
 });
 
@@ -38,4 +37,3 @@ it("Criar ata errada", () => {
     });
   });
 });
-

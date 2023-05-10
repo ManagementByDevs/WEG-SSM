@@ -4,7 +4,7 @@ let somaTempoResposta = 0;
 let idAta = 0;
 let listaIdAtas = [];
 
-before(() => {
+beforeEach(() => {
   cy.request("POST", "http://localhost:8443/weg_ssm/login/auth", {
     email: "kenzo@gmail",
     senha: "123",
@@ -24,16 +24,12 @@ it("Buscar todas as atas", () => {
 });
 
 it("Criar ata", () => {
-  cy.request("POST", "http://localhost:8443/weg_ssm/login/auth", {
-    email: "kenzo@gmail",
-    senha: "123",
-  }).then((authResponse) => {
-    cy.request("POST", "http://localhost:8443/weg_ssm/ata", ata).as("postAta");
+  cy.request("POST", "http://localhost:8443/weg_ssm/ata", ata).as("postAta");
 
-    cy.get("@postAta").then((responsePost) => {
-      console.log("Ata: ", responsePost.body);
-      expect(responsePost.status).to.be.equal(200);
-    });
+  cy.get("@postAta").then((responsePost) => {
+    console.log("Ata: ", responsePost.body);
+    idAta = responsePost.body.id;
+    expect(responsePost.status).to.be.equal(200);
   });
 });
 
@@ -42,25 +38,19 @@ it("Verificar quantidade de atas", () => {
 
   cy.get("@getAta").then((response) => {
     console.log("Quantidade de atas depois: ", response.body.length);
-    idAta = responsePost.body.id;
     expect(response.status).to.be.equal(200);
     expect(response.body.length).to.be.equal(quantidadeAtas + 1);
   });
 });
 
 it("Deletar ata criada", () => {
-  cy.request("POST", "http://localhost:8443/weg_ssm/login/auth", {
-    email: "kenzo@gmail",
-    senha: "123",
-  }).then((authResponse) => {
-    cy.request("DELETE", `http://localhost:8443/weg_ssm/ata/${idAta}`).as(
-      "deleteAta"
-    );
+  cy.request("DELETE", `http://localhost:8443/weg_ssm/ata/${idAta}`).as(
+    "deleteAta"
+  );
 
-    cy.get("@deleteAta").then((response) => {
-      console.log("Ata: ", response.body);
-      expect(response.status).to.be.equal(200);
-    });
+  cy.get("@deleteAta").then((response) => {
+    console.log("Ata: ", response.body);
+    expect(response.status).to.be.equal(200);
   });
 });
 
@@ -69,28 +59,23 @@ it("Verificar quantidade de atas", () => {
 
   cy.get("@getAta").then((response) => {
     console.log("Quantidade de atas depois: ", response.body.length);
-    idAta = responsePost.body.id;
+    idAta = response.body.id;
     expect(response.status).to.be.equal(200);
     expect(response.body.length).to.be.equal(quantidadeAtas);
   });
 });
 
 it("Criar ata errada", () => {
-  cy.request("POST", "http://localhost:8443/weg_ssm/login/auth", {
-    email: "kenzo@gmail",
-    senha: "123",
-  }).then((authResponse) => {
-    cy.request({
-      method: "POST",
-      url: "http://localhost:8443/weg_ssm/ata",
-      body: { ...ata, numeroSequencial: 1 },
-      failOnStatusCode: false,
-    }).as("postLogin");
+  cy.request({
+    method: "POST",
+    url: "http://localhost:8443/weg_ssm/ata",
+    body: { ...ata, numeroSequencial: 1 },
+    failOnStatusCode: false,
+  }).as("postAta");
 
-    cy.get("@postLogin").then((response) => {
-      console.log("Ata: não criada!");
-      expect(response.status).to.be.equal(409);
-    });
+  cy.get("@postAta").then((response) => {
+    console.log("Ata: não criada!");
+    expect(response.status).to.be.equal(409);
   });
 });
 
@@ -99,9 +84,8 @@ it("Verificar quantidade de atas", () => {
 
   cy.get("@getAta").then((response) => {
     console.log("Quantidade de atas depois: ", response.body.length);
-    idAta = responsePost.body.id;
+    idAta = response.body.id;
     expect(response.status).to.be.equal(200);
     expect(response.body.length).to.be.equal(quantidadeAtas);
   });
 });
-
