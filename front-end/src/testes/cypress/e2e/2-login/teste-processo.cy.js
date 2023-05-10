@@ -41,12 +41,17 @@ describe("Login", () => {
   });
 
   it("Requisição de proposta estando logado", () => {
-    cy.request("GET", "http://localhost:8443/weg_ssm/proposta").as(
-      "getProposta"
-    );
+    cy.request("POST", "http://localhost:8443/weg_ssm/login/auth", {
+      email: "kenzo@gmail",
+      senha: "123",
+    }).then((res) => {
+      cy.request("GET", "http://localhost:8443/weg_ssm/proposta").as(
+        "getProposta"
+      );
 
-    cy.get("@getProposta").then((response) => {
-      expect(response.status).to.be.equal(200);
+      cy.get("@getProposta").then((response) => {
+        expect(response.status).to.be.equal(200);
+      });
     });
   });
 });
