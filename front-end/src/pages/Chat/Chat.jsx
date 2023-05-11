@@ -49,6 +49,8 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import dateService from "../../service/dateService";
 import anexoService from "../../service/anexoService";
 
+import ClipLoader from "react-spinners/ClipLoader";
+
 // Chat para conversa entre usuários do sistema
 const Chat = () => {
   /** Navigate utilizado para navegar para outras páginas */
@@ -71,8 +73,12 @@ const Chat = () => {
   // UseState para armazenar os resultados da pesquisa
   const [resultadosContato, setresultadosContato] = useState([]);
 
+  const [buscandoMensagens, setBuscandoMensagens] = useState(true);
+
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
   const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
+
+  const [listaChatsCancelados, setListaChatsCancelados] = useState([]);
 
   // UseState para armazenar o contato selecionado
   const onChange = (evt) => {
@@ -111,9 +117,16 @@ const Chat = () => {
         idChat
       ).then((e) => {
         setTimeout(() => {
-          window.location.reload();
+          // window.location.reload();
         }, 1000);
         setFeedbackChatEncerrado(true);
+        listaChats.map((chat) => {
+          if (chat.id === idChat) {
+            let aux = [...listaChats];
+            aux.splice(listaChats.indexOf(chat), 1, {conversaEncerrada: true});
+            setListaChats(aux);
+          }
+        });
       });
     });
   };
@@ -128,7 +141,7 @@ const Chat = () => {
         idChat
       ).then((e) => {
         setTimeout(() => {
-          window.location.reload();
+          // window.location.reload();
         }, 1000);
         setFeedbackChatAberto(true);
       });
@@ -162,6 +175,7 @@ const Chat = () => {
   }, [idChat]);
 
   useEffect(() => {
+    setBuscandoMensagens(false);
     const boxElement = boxRef.current;
     if (boxElement) {
       boxElement.scrollTop = boxElement.scrollHeight;
@@ -303,7 +317,10 @@ const Chat = () => {
     event.preventDefault();
     anexoService.save(file).then((response) => {
       console.log("Salvou", response);
-      enviar(`/app/weg_ssm/mensagem/${idChat}`, { ...mensagem, anexo: {id: response.id} });
+      enviar(`/app/weg_ssm/mensagem/${idChat}`, {
+        ...mensagem,
+        anexo: { id: response.id },
+      });
     });
     setDefaultMensagem();
   }
@@ -780,29 +797,37 @@ const Chat = () => {
                       </Menu>
                     </Box>
                   </Box>
-                  <Box
-                    ref={boxRef}
-                    className="flex flex-col"
-                    sx={{
-                      width: "100%",
-                      height: "85%",
-                      overflowY: "auto",
-                      overflowX: "hidden",
-                    }}
-                  >
-                    {/* Componente mensagens, é cada mensagem que aparece */}
-                    {mensagens.length > 0 &&
-                      mensagens.map((mensagemDoMap, index) => {
-                        return (
-                          <Mensagem
-                            key={index}
-                            mensagem={mensagemDoMap}
-                            index={index}
-                            usuario={mensagemDoMap.usuario}
-                          />
-                        );
-                      })}
-                  </Box>
+                  {buscandoMensagens ? (
+                    <Box>
+                      <Box className="mt-6 w-full h-full flex justify-center items-center">
+                        <ClipLoader color="#00579D" size={110} />
+                      </Box>
+                    </Box>
+                  ) : (
+                    <Box
+                      ref={boxRef}
+                      className="flex flex-col"
+                      sx={{
+                        width: "100%",
+                        height: "85%",
+                        overflowY: "auto",
+                        overflowX: "hidden",
+                      }}
+                    >
+                      {/* Componente mensagens, é cada mensagem que aparece */}
+                      {mensagens.length > 0 &&
+                        mensagens.map((mensagemDoMap, index) => {
+                          return (
+                            <Mensagem
+                              key={index}
+                              mensagem={mensagemDoMap}
+                              index={index}
+                              usuario={mensagemDoMap.usuario}
+                            />
+                          );
+                        })}
+                    </Box>
+                  )}
                   <Box
                     className="flex border px-3 py-1 m-4 rounded items-center"
                     sx={{
@@ -814,13 +839,6 @@ const Chat = () => {
                     {retornaConversaEncerrada() == true ? (
                       <>
                         <Box
-                          onChange={atualizaMensagem}
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter" && !event.shiftKey) {
-                              event.preventDefault(); // Evita quebra de linha ao enviar mensagem
-                              submit(event); // Função que envia a mensagem
-                            }
-                          }}
                           disabled={true}
                           className="w-full h-full flex items-center"
                           component="textarea"

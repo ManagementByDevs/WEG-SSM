@@ -187,6 +187,7 @@ const DetalhesPropostaEditMode = ({
     // Manda o escopo velho no objeto, pois o escopo novo está sendo mandado como outro param
     propostaAux.escopo = propostaData.escopo;
 
+    // Não tá deletando as tabelas que deveriam ser removidas!!!
     let novasTabelasCusto = propostaAux.tabelaCustos.filter((tabelaCusto) => {
       if (tabelaCusto.id < 0) {
         // Se o ID for negativo ele foi adicionado
@@ -211,7 +212,7 @@ const DetalhesPropostaEditMode = ({
 
     let listaIdsAnexos = propostaAux.anexo.filter((anexo) => {
       if (anexo.id) {
-        // Se o ID for positivo ele já existia
+        // Se existir ID ele já existia
         propostaAux.anexo.splice(
           propostaAux.anexo.find((element) => element == anexo),
           1
@@ -228,22 +229,6 @@ const DetalhesPropostaEditMode = ({
       listaIdsAnexos,
       propostaEscopo
     );
-    // return ;
-
-    // let listaBeneficiosID = [];
-
-    // for (let beneficio of novosBeneficios) {
-    //   BeneficioService.post(beneficio).then((beneficioSalvo) => {
-    //     listaBeneficiosID.push(beneficioSalvo.id);
-
-    //     if (listaBeneficiosID.length == novosBeneficios.length) {
-
-    //       for (let tabelaCusto of novasTabelasCusto) {
-
-    //       }
-    //     }
-    //   });
-    // }
 
     PropostaService.putComNovosDados(
       propostaAux,
@@ -253,23 +238,10 @@ const DetalhesPropostaEditMode = ({
       listaIdsAnexos,
       propostaEscopo
     ).then((response) => {
-      console.log("response", response.data);
-      // setPropostaData(response.data);
+      console.log("response", response);
+      setPropostaData(response);
+      setIsEditing(false);
     });
-  };
-
-  const saveNovosBeneficios = (listaBeneficios) => {
-    let listaID = [];
-
-    for (let beneficio of listaBeneficios) {
-      BeneficioService.post(beneficio).then((beneficioSalvo) => {
-        listaID.push(beneficioSalvo.id);
-        if (listaID.length == listaBeneficios.length) {
-          console.log("listaID", listaID);
-          return listaID;
-        }
-      });
-    }
   };
 
   // ***************************************** Handlers ***************************************** //
@@ -1035,6 +1007,10 @@ const DetalhesPropostaEditMode = ({
                 {/* Select de BUs beneficiadas */}
                 <Autocomplete
                   multiple
+                  value={proposta.busBeneficiadas}
+                  isOptionEqualToValue={(option, value) => {
+                    return option.idBu === value.idBu;
+                  }}
                   options={listaBus}
                   disableCloseOnSelect
                   onChange={handleOnBuBeneficiadaSelect}

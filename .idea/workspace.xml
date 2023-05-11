@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/MensagemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/controller/MensagemController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/dto/MensagemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/dto/MensagemDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Mensagem.java" beforeDir="false" afterPath="$PROJECT_DIR$/back-end-maven/src/main/java/net/weg/wegssm/model/entities/Mensagem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/Mensagem/Mensagem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Mensagem/Mensagem.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

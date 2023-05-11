@@ -130,11 +130,11 @@ const Mensagem = (props) => {
                   <Tooltip title={props.mensagem.anexo.nome}>
                     <Box
                       className="px-5 pb-2 mb-2 border rounded cursor-pointer"
-                      sx={{ backgroundColor: "chat.eu" }}
+                      sx={{ backgroundColor: "background.paper" }}
                       onClick={() => downloadAnexo(props.mensagem.anexo)}
                     >
                       <FolderOutlinedIcon
-                        sx={{ fontSize: "100px", color: "chat.outro" }}
+                        sx={{ fontSize: "100px", color: "chat.eu" }}
                       />
                       <Typography sx={{ fontWeight: 600 }}>
                         {props.mensagem.anexo.nome}

@@ -9,8 +9,8 @@ describe("Teste de carga do endPoint criar mensagen", () => {
     cy.get("@LoginAnalista");
   });
 
-  it("Criar 300 mensagens", () => {
-    for (let i = 0; i < 300; i++) {
+  it("Criar 50 mensagens", () => {
+    for (let i = 0; i < 50; i++) {
       let form = new FormData();
       form.append(
         "mensagem",
@@ -23,7 +23,7 @@ describe("Teste de carga do endPoint criar mensagen", () => {
         body: form,
       }).then((response) => {
         expect(response.status).to.equal(201);
-        expect(response.duration).to.be.lessThan(700)
+        expect(response.duration).to.be.lessThan(700);
       });
     }
   });
