@@ -258,20 +258,6 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  const saveNovosBeneficios = (listaBeneficios) => {
-    let listaID = [];
-
-    for (let beneficio of listaBeneficios) {
-      BeneficioService.post(beneficio).then((beneficioSalvo) => {
-        listaID.push(beneficioSalvo.id);
-        if (listaID.length == listaBeneficios.length) {
-          console.log("listaID", listaID);
-          return listaID;
-        }
-      });
-    }
-  };
-
   // ***************************************** Handlers ***************************************** //
 
   // Handler cancelar edição

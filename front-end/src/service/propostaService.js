@@ -120,12 +120,12 @@ class PropostaService {
   ) {
     let form = new FormData();
     let propostaNovosDados = { ...propostaObj };
+
     propostaNovosDados.beneficios = novosBeneficios;
     propostaNovosDados.tabelaCustos = novasTabelasCusto;
 
     form.append("proposta", JSON.stringify(propostaObj));
     form.append("propostaComDadosNovos", JSON.stringify(propostaNovosDados));
-
     form.append("escopo", escopoTexto);
 
     // for (let idAnexo of listaIdsAnexos) {

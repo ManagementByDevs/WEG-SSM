@@ -6,13 +6,16 @@ describe("Cadastro de Demanda - Processo", () => {
         cy.get("@LoginRequest");
     })
 
+    let listaDemandas = [];
+
     it("Verifica se existem demandas com status: CANCELLED", () => {
         cy.request("GET", `http://localhost:8443/weg_ssm/demanda/status?status=${"CANCELLED"}`).as("GetStatusRequest");
-
+               
         cy.get("@GetStatusRequest").then(response => {
             expect(response.duration).to.be.lessThan(2000)
             expect(response.body).to.be.an("array")
             expect(response.status).to.equal(200)
+            listaDemandas = response.body;
         })
     })
 
@@ -44,6 +47,7 @@ describe("Cadastro de Demanda - Processo", () => {
             expect(response.duration).to.be.lessThan(2000)
             expect(response.body).to.be.an("array")
             expect(response.status).to.equal(200)
+            expect(response.body.length).to.be.greaterThan(listaDemandas.length)
         })
     })
 })
