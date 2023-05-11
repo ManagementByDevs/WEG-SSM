@@ -1,5 +1,8 @@
 package net.weg.wegssm.controller;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.*;
 import net.weg.wegssm.model.entities.*;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -4011,67 +4015,60 @@ public class PropostaController {
     @PutMapping("/update-novos-dados/{id}")
     public ResponseEntity<Object> updateComNovosDados(@PathVariable(value = "id") Long id,
                                                       @RequestParam(value = "proposta") String propostaJSON,
+                                                      @RequestParam(value = "propostaComDadosNovos", required = false) String novaPropostaJSON,
                                                       @RequestParam(value = "beneficios", required = false) List<String> beneficiosJSON,
                                                       @RequestParam(value = "tabelasCustos", required = false) List<String> tabelaCustosJSON,
-                                                      @RequestParam(value = "listIdsAnexos", required = false) List<String> listaIdsAnexos
+                                                      @RequestParam(value = "listIdsAnexos", required = false) List<String> listaIdsAnexos,
+                                                      @RequestParam(value = "escopo", required = false) byte[] escopoProposta
     ) {
         Optional<Proposta> propostaOptional = propostaService.findById(id);
 
         if (propostaOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar uma proposta com este id.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível encontrar uma proposta com este id.");
         }
 
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJaCriadaJsonToModel(propostaJSON);
+        Proposta propostaNovosDados = propostaUtil.convertJaCriadaJsonToModel(novaPropostaJSON);
+        System.out.println("Proposta novos dados: " + propostaNovosDados);
         proposta.setId(id);
+        proposta.setEscopo(escopoProposta);
 
-        System.out.println("Proposta: " + proposta.toString());
+        System.out.println("Proposta: " + proposta);
 
-//        BeneficioUtil beneficioUtil = new BeneficioUtil();
-//        List<Beneficio> beneficios = new ArrayList<>();
-//
-//        for (String beneficioJSON : beneficiosJSON) {
-//            Beneficio beneficio = beneficioUtil.convertJsonToModel(beneficioJSON);
+        ArrayList<Beneficio> beneficios = new ArrayList<>();
+        for (Beneficio beneficio : propostaNovosDados.getBeneficios()) {
+            System.out.println("Benficio " + beneficio);
+            beneficio.setId(null);
+            propostaNovosDados.getBeneficios().add(beneficio);
 //            beneficios.add(beneficio);
-//        }
-//
-//        TabelaCustoUtil tabelaCustoUtil = new TabelaCustoUtil();
-//        List<TabelaCusto> tabelaCustos = new ArrayList<>();
-//
-//        for (String tabelaCustoJSON : tabelaCustosJSON) {
-//            TabelaCusto tabelaCusto = tabelaCustoUtil.convertJsonToModel(tabelaCustoJSON);
-//            tabelaCustos.add(tabelaCusto);
-//        }
-//
-//        for (Beneficio beneficio : beneficios) {
-//            Beneficio newBeneficio = new Beneficio();
-//            BeanUtils.copyProperties(beneficio, newBeneficio, "id");
-//            proposta.getBeneficios().add(beneficioService.save(beneficio));
-//        }
-//
-//        for (TabelaCusto tabelaCusto : tabelaCustos) {
-//            List<Custo> novosCustos = new ArrayList<>();
-//            List<CC> novosCCs = new ArrayList<>();
-//
-//            for (Custo custo : tabelaCusto.getCustos()) {
-//                Custo newCusto = new Custo();
-//                BeanUtils.copyProperties(custo, newCusto, "id");
-//                novosCustos.add(custoService.save(newCusto));
-//            }
-//
-//            for (CC cc : tabelaCusto.getCcs()) {
-//                CC newCC = new CC();
-//                BeanUtils.copyProperties(cc, newCC, "id");
-//                novosCCs.add(ccsService.save(newCC));
-//            }
-//
-//            tabelaCusto.setCustos(novosCustos);
-//            tabelaCusto.setCcs(novosCCs);
-//
-//            TabelaCusto newTabelaCusto = new TabelaCusto();
-//            BeanUtils.copyProperties(tabelaCusto, newTabelaCusto, "id");
-//            proposta.getTabelaCustos().add(tabelaCustoService.save(tabelaCusto));
-//        }
+        }
+
+//        propostaNovosDados.getBeneficios().add(bene);
+
+        System.out.println("Beneficios: " + propostaNovosDados);
+
+        for (TabelaCusto tabelaCusto : propostaNovosDados.getTabelaCustos()) {
+            List<Custo> novosCustos = new ArrayList<>();
+            List<CC> novosCCs = new ArrayList<>();
+
+            for (Custo custo : tabelaCusto.getCustos()) {
+                custo.setId(null);
+                novosCustos.add(custo);
+            }
+
+            for (CC cc : tabelaCusto.getCcs()) {
+                cc.setId(null);
+                novosCCs.add(cc);
+            }
+
+            tabelaCusto.setCustos(novosCustos);
+            tabelaCusto.setCcs(novosCCs);
+
+            proposta.getTabelaCustos().add(tabelaCusto);
+        }
+
+        System.out.println("Proposta: " + proposta.getTabelaCustos());
 //
 //        propostaService.save(proposta);
 //
