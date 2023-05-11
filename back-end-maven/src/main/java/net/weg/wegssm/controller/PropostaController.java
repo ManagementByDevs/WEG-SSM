@@ -4004,20 +4004,17 @@ public class PropostaController {
 
     /**
      * Método PUT para atualizar uma proposta no banco de dados com novos dados, sejam anexos, benefícios ou tabelas de custos a serem salvos
-     *
      * @param id
-     * @param propostaJSON
-     * @param beneficiosJSON
-     * @param tabelaCustosJSON
-     * @param listaIdsAnexos
-     * @return
+     * @param propostaJSON - Proposta com os novos dados
+     * @param novaPropostaJSON - Proposta com Benefícios e Tabelas de Custos a serem salvas no banco de dados
+     * @param listaIdsAnexos - Lista de IDs de anexos que já pertenciam à proposta
+     * @param escopoProposta - Escopo da proposta
+     * @return ResponseEntity<Object> - Proposta atualizada ou mensagem de erro
      */
     @PutMapping("/update-novos-dados/{id}")
     public ResponseEntity<Object> updateComNovosDados(@PathVariable(value = "id") Long id,
                                                       @RequestParam(value = "proposta") String propostaJSON,
                                                       @RequestParam(value = "propostaComDadosNovos", required = false) String novaPropostaJSON,
-                                                      @RequestParam(value = "beneficios", required = false) List<String> beneficiosJSON,
-                                                      @RequestParam(value = "tabelasCustos", required = false) List<String> tabelaCustosJSON,
                                                       @RequestParam(value = "listIdsAnexos", required = false) List<String> listaIdsAnexos,
                                                       @RequestParam(value = "escopo", required = false) byte[] escopoProposta
     ) {
@@ -4030,59 +4027,77 @@ public class PropostaController {
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJaCriadaJsonToModel(propostaJSON);
         Proposta propostaNovosDados = propostaUtil.convertJaCriadaJsonToModel(novaPropostaJSON);
-        System.out.println("Proposta novos dados: " + propostaNovosDados);
+
         proposta.setId(id);
         proposta.setEscopo(escopoProposta);
 
-        System.out.println("Proposta: " + proposta);
+        System.out.println("Proposta novos dados: " + propostaNovosDados);
+        System.out.println("Proposta antiga: " + proposta);
 
-        ArrayList<Beneficio> beneficios = new ArrayList<>();
+        ArrayList<Beneficio> beneficios = new ArrayList<>(); // Array aux que vai receber os novos beneficios
         for (Beneficio beneficio : propostaNovosDados.getBeneficios()) {
-            System.out.println("Benficio " + beneficio);
             beneficio.setId(null);
             beneficios.add(beneficioService.save(beneficio));
         }
 
-        propostaNovosDados.setBeneficios(beneficios);
-
-//        propostaNovosDados.getBeneficios().add(bene);
+        propostaNovosDados.setBeneficios(beneficios); // Seta os novos beneficios na proposta aux
 
         System.out.println("Beneficios: " + propostaNovosDados);
-        ArrayList<TabelaCusto> novasTabelasCustos = new ArrayList<>();
-        
+        ArrayList<TabelaCusto> novasTabelasCustos = new ArrayList<>(); // Array aux que vai receber as novas tabelas de custos
+
         for (TabelaCusto tabelaCusto : propostaNovosDados.getTabelaCustos()) {
             List<Custo> novosCustos = new ArrayList<>();
             List<CC> novosCCs = new ArrayList<>();
 
             for (Custo custo : tabelaCusto.getCustos()) {
                 custo.setId(null);
-                novosCustos.add(custo);
+                novosCustos.add(custoService.save(custo));
             }
 
             for (CC cc : tabelaCusto.getCcs()) {
                 cc.setId(null);
-                novosCCs.add(cc);
+                novosCCs.add(ccsService.save(cc));
             }
 
             tabelaCusto.setCustos(novosCustos);
             tabelaCusto.setCcs(novosCCs);
             tabelaCusto.setId(null);
 
-            proposta.getTabelaCustos().add(tabelaCusto);
+            novasTabelasCustos.add(tabelaCustoService.save(tabelaCusto));
         }
 
-        System.out.println("Proposta: " + proposta.getTabelaCustos());
-//
-//        propostaService.save(proposta);
-//
-//        if (listaIdsAnexos != null) {
-//            for (String idAnexo : listaIdsAnexos) {
-//                proposta.getAnexo().add(anexoService.findById(Long.parseLong(idAnexo)));
-//            }
-//        }
+        propostaNovosDados.setTabelaCustos(novasTabelasCustos); // Seta as novas tabelas de custos na proposta aux
 
-        return null;
-//        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+        System.out.println("Proposta: " + propostaNovosDados);
+
+        // Salvando linhas de tabelas custos que foram adicionadas na edição
+        for (TabelaCusto tabelaCusto : proposta.getTabelaCustos()) {
+            for (Custo custo : tabelaCusto.getCustos()) {
+                if (custo.getId() < 0) { // É um novo custo
+                    Custo novoCusto = custoService.save(custo);
+                    custo.setId(novoCusto.getId());
+                }
+            }
+
+            for (CC cc : tabelaCusto.getCcs()) {
+                if (cc.getId() < 0) { // É um novo CC
+                    CC novoCC = ccsService.save(cc);
+                    cc.setId(novoCC.getId());
+                }
+            }
+        }
+
+        // Colocando dados da PropostaAux para a Proposta a ser atualizada
+        if (listaIdsAnexos != null) {
+            for (String idAnexo : listaIdsAnexos) {
+                proposta.getAnexo().add(anexoService.findById(Long.parseLong(idAnexo)));
+            }
+        }
+
+        proposta.getBeneficios().addAll(propostaNovosDados.getBeneficios());
+        proposta.getTabelaCustos().addAll(propostaNovosDados.getTabelaCustos());
+
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
     /**
