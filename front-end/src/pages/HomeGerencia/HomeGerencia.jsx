@@ -560,6 +560,21 @@ const HomeGerencia = () => {
     });
   };
 
+  /** Função para formatar os campos necessários das demandas e propostas para HTML */
+  const formatarItens = (listaDemandas) => {
+    let listaNova = [];
+    for (let demanda of listaDemandas) {
+      
+      let listaNovaBeneficios = [];
+      for (let beneficio of demanda.beneficios) {
+        listaNovaBeneficios.push({ ...beneficio, memoriaCalculo: atob(beneficio.memoriaCalculo) });
+      }
+
+      listaNova.push({ ...demanda, problema: atob(demanda.problema), proposta: atob(demanda.proposta), beneficios: listaNovaBeneficios })
+    }
+    setListaItens(listaNova);
+  }
+
   const buscarItens = () => {
     setCarregamentoItens(true);
     switch (valorAba) {
@@ -570,15 +585,8 @@ const HomeGerencia = () => {
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
-            setListaItens([...response.content]);
+            formatarItens(response.content);
             setTotalPaginas(response.totalPages);
-            // arrangeParams();
-            // DemandaService.getPage(
-            //   params,
-            //   ordenacao + "size=" + 50 + "&page=" + paginaAtual
-            // ).then((response) => {
-            //   setListaAutocomplete(response.content);
-            // });
           });
         }
         break;
@@ -588,7 +596,7 @@ const HomeGerencia = () => {
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
-            setListaItens([...response.content]);
+            formatarItens(response.content);
             setTotalPaginas(response.totalPages);
           });
         }
@@ -599,7 +607,7 @@ const HomeGerencia = () => {
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
-            setListaItens([...response.content]);
+            formatarItens(response.content);
             setTotalPaginas(response.totalPages);
           });
         }
@@ -610,7 +618,7 @@ const HomeGerencia = () => {
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
-            setListaItens([...response.content]);
+            formatarItens(response.content);
             setTotalPaginas(response.totalPages);
           });
         }
