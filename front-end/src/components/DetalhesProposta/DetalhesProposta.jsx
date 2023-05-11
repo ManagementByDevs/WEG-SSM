@@ -139,6 +139,11 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
+  // Função para transformar um base64 em uma string
+  const convertByteArrayToString = (byteArray = []) => {
+    return window.atob(byteArray).toString("utf-8");
+  };
+
   // Função acionada quando o usúario clica no ícone de editar
   const handleOnEditClick = () => {
     setIsEditing(!isEditing);
@@ -154,6 +159,19 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
     if (escopo) {
       let blob = new Blob([base64ToArrayBuffer(escopo)]);
       reader.readAsText(blob);
+    }
+  };
+
+  // Formata o objeto proposta pego do banco de dados
+  const formatData = (proposal = EntitiesObjectService.proposta()) => {
+    proposal.problema = convertByteArrayToString(proposal.problema);
+    proposal.proposta = convertByteArrayToString(proposal.proposta);
+    carregarTextoEscopo(proposal.escopo);
+
+    for (let beneficio of proposal.beneficios) {
+      beneficio.memoriaCalculo = convertByteArrayToString(
+        beneficio.memoriaCalculo
+      );
     }
   };
 
@@ -174,6 +192,12 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
   useEffect(() => {
     // Buscando os dados da proposta usando o propostaId
     PropostaService.getById(propostaId).then((proposal) => {
+      console.log("proposta 1: ", proposal);
+
+      // Arrumando alguns textos
+      formatData(proposal);
+
+      console.log("useeffect vazio sem edit");
       setProposta(proposal);
       setIsLoading(false);
     });

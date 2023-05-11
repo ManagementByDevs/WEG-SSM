@@ -68,7 +68,9 @@ const DetalhesPropostaEditMode = ({
   const { texts } = useContext(TextLanguageContext);
 
   // Estado da proposta editável
-  const [proposta, setProposta] = useState(propostaData);
+  const [proposta, setProposta] = useState(
+    JSON.parse(JSON.stringify(propostaData))
+  );
 
   // Estado para mostrar tela de loading
   const [isLoading, setIsLoading] = useState(true);
@@ -96,11 +98,14 @@ const DetalhesPropostaEditMode = ({
   // Texto do modal de confirmação que irá aparecer para o usuário
   const [textoModalConfirmacao, setTextoModalConfirmacao] = useState("");
 
+  // State para atualizar os benefícios na tela
   const [isBeneficiosVisible, setIsBeneficiosVisible] = useState(false);
 
+  // State para atualizar as tabelas de custo na tela
   const [isTabelaCustosVisile, setIsTabelaCustosVisible] = useState(false);
 
-  const [listaBeneficiosSalvados, setListaBeneficiosSalvados] = useState([]);
+  // State para conseguir
+  const [escopoAux, setEscopoAux] = useState("");
 
   // Referênica para o input de arquivo
   const inputFile = useRef(null);
@@ -177,15 +182,40 @@ const DetalhesPropostaEditMode = ({
     return texto;
   };
 
+  // Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco
+  const carregarTextoEscopo = (escopo) => {
+    let reader = new FileReader();
+    reader.onload = () => {
+      setEscopoAux(reader.result);
+    };
+
+    if (escopo) {
+      let blob = new Blob([base64ToArrayBuffer(escopo)]);
+      reader.readAsText(blob);
+    }
+  };
+
+  const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
+    // Manda o escopo velho no objeto, pois o escopo novo está sendo mandado como outro param
+    propostaObj.escopo = propostaData.escopo;
+
+    propostaObj.problema = btoa(propostaObj.problema);
+    propostaObj.proposta = btoa(propostaObj.proposta);
+
+    for (let beneficio of propostaObj.beneficios) {
+      beneficio.memoriaCalculo = btoa(beneficio.memoriaCalculo);
+    }
+  };
+
   // Salva as edições da proposta no banco de dados
   const saveProposal = () => {
     // Fazer verificação dos campos
 
-    let propostaAux = { ...proposta };
+    let propostaAux = EntitiesObjectService.proposta();
+    propostaAux = JSON.parse(JSON.stringify(proposta));
     let propostaEscopo = formatarHtml(propostaAux.escopo);
 
-    // Manda o escopo velho no objeto, pois o escopo novo está sendo mandado como outro param
-    propostaAux.escopo = propostaData.escopo;
+    arrangeData(propostaAux);
 
     // Não tá deletando as tabelas que deveriam ser removidas!!!
     let novasTabelasCusto = propostaAux.tabelaCustos.filter((tabelaCusto) => {
@@ -564,6 +594,8 @@ const DetalhesPropostaEditMode = ({
   }, [listaBus, listaForuns, listaSecoesTI]);
 
   useEffect(() => {
+    carregarTextoEscopo();
+
     BuService.getAll().then((busReponse) => {
       setListaBus(busReponse);
     });
@@ -584,9 +616,11 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
+    console.log("useeffect vazio");
     setProposta({
       ...proposta,
       beneficios: [...beneficiosAux],
+      escopo: escopoAux,
     });
   }, []);
 
@@ -603,6 +637,11 @@ const DetalhesPropostaEditMode = ({
       setIsTabelaCustosVisible(true);
     }
   }, [isBeneficiosVisible, isTabelaCustosVisile]);
+
+  useEffect(() => {
+    console.log("useeffect escopoaux");
+    setProposta({ ...proposta, escopo: escopoAux });
+  }, [escopoAux]);
 
   // ***************************************** Fim UseEffects ***************************************** //
 
