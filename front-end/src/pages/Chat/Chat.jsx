@@ -116,20 +116,21 @@ const Chat = () => {
         },
         idChat
       ).then((e) => {
-        setTimeout(() => {
-          // window.location.reload();
-        }, 1000);
         setFeedbackChatEncerrado(true);
         listaChats.map((chat) => {
-          if (chat.id === idChat) {
+          if (chat.id == idChat) {
             let aux = [...listaChats];
-            aux.splice(listaChats.indexOf(chat), 1, {conversaEncerrada: true});
+            aux.splice(listaChats.indexOf(chat), 1, {
+              ...chat,
+              conversaEncerrada: true,
+            });
             setListaChats(aux);
           }
         });
       });
     });
   };
+
   const abrirChat = () => {
     fecharModalAbrirChat();
     ChatService.getByIdChat(idChat).then((e) => {
@@ -140,29 +141,48 @@ const Chat = () => {
         },
         idChat
       ).then((e) => {
-        setTimeout(() => {
-          // window.location.reload();
-        }, 1000);
         setFeedbackChatAberto(true);
+        listaChats.map((chat) => {
+          if (chat.id == idChat) {
+            let aux = [...listaChats];
+            aux.splice(listaChats.indexOf(chat), 1, {
+              ...chat,
+              conversaEncerrada: false,
+            });
+            setListaChats(aux);
+          }
+        });
       });
     });
   };
 
   const [listaChats, setListaChats] = useState([]);
 
-  const buscarChats = () => {
-    ChatService.getByRemetente(user.usuario.id).then((e) => {
+  async function buscarChats() {
+    await ChatService.getByRemetente(user.usuario.id).then((e) => {
       setListaChats(e);
     });
-  };
+  }
+
+  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+
+  const [mensagens, setMensagens] = useState([
+    EntitiesObjectService.mensagem(),
+  ]);
+
+  async function carregar() {
+    await MensagemService.getMensagensChat(idChat)
+      .then((response) => {
+        setMensagens(response);
+      })
+      .catch((error) => {});
+    setDefaultMensagem();
+  }
 
   const [user, setUser] = useState(UsuarioService.getUserCookies());
 
   const idChat = useParams().id;
-  const [mensagens, setMensagens] = useState([
-    EntitiesObjectService.mensagem(),
-  ]);
-  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
 
   useEffect(() => {
@@ -181,15 +201,6 @@ const Chat = () => {
       boxElement.scrollTop = boxElement.scrollHeight;
     }
   }, [mensagens]);
-
-  async function carregar() {
-    await MensagemService.getMensagensChat(idChat)
-      .then((response) => {
-        setMensagens(response);
-      })
-      .catch((error) => {});
-    setDefaultMensagem();
-  }
 
   // UseState para armazenar o contato selecionado
   useEffect(() => {
@@ -313,15 +324,22 @@ const Chat = () => {
   ];
 
   function handleFileUpload(event) {
+    console.log("AQUI ENTROU");
     const file = event.target.files[0];
     event.preventDefault();
-    anexoService.save(file).then((response) => {
-      console.log("Salvou", response);
-      enviar(`/app/weg_ssm/mensagem/${idChat}`, {
-        ...mensagem,
-        anexo: { id: response.id },
+    console.log("ANTES DO SAVE");
+    anexoService
+      .save(file)
+      .then((response) => {
+        enviar(`/app/weg_ssm/mensagem/${idChat}`, {
+          ...mensagem,
+          anexo: response,
+        });
+        inputRef.current.value = "";
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    });
     setDefaultMensagem();
   }
 
@@ -463,6 +481,7 @@ const Chat = () => {
                           navigate(`/chat/${resultado.id}`);
                         }}
                         contatoSelecionado={idChat}
+                        listaChats={listaChats}
                         chat={resultado}
                         index={index}
                       />

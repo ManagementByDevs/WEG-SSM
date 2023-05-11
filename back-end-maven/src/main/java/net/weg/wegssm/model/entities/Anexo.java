@@ -22,5 +22,4 @@ public class Anexo {
 
     @Lob
     private byte[] dados;
-
 }
