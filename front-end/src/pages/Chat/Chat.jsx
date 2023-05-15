@@ -758,17 +758,11 @@ const Chat = () => {
                             </Typography>
                           </MenuItem>
 
-                          {
-                          listaChats.map((chat) => {
-                            if (chat.id == idChat) {
-                                if (chat.idProposta.solicitante.id == user.usuario.id) {
-                                  return false
-                                } else {
-                                  return true
-                                }
-                            }
-                          }) 
-                          && (
+                          {listaChats.some(
+                            (chat) =>
+                              chat.id == idChat &&
+                              chat.idProposta.solicitante.id != user.usuario.id
+                          ) && (
                             <>
                               <div className="w-full flex justify-center">
                                 <hr className="w-10/12 my-1.5" />
