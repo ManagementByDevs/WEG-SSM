@@ -78,8 +78,6 @@ const Chat = () => {
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
   const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
 
-  const [listaChatsCancelados, setListaChatsCancelados] = useState([]);
-
   // UseState para armazenar o contato selecionado
   const onChange = (evt) => {
     setPesquisaContato(evt.target.value);
@@ -760,57 +758,70 @@ const Chat = () => {
                             </Typography>
                           </MenuItem>
 
-                          {/* Divisão de um item clicável e outro no modal */}
-                          <div className="w-full flex justify-center">
-                            <hr className="w-10/12 my-1.5" />
-                          </div>
+                          {
+                          listaChats.map((chat) => {
+                            if (chat.id == idChat) {
+                                if (chat.idProposta.solicitante.id == user.usuario.id) {
+                                  return false
+                                } else {
+                                  return true
+                                }
+                            }
+                          }) 
+                          && (
+                            <>
+                              <div className="w-full flex justify-center">
+                                <hr className="w-10/12 my-1.5" />
+                              </div>
 
-                          {retornaConversaEncerrada() == true ? (
-                            <MenuItem
-                              className="gap-2"
-                              onClick={() => {
-                                handleClose();
-                                abrirModalAbrirChat();
-                              }}
-                            >
-                              <CommentOutlinedIcon
-                                sx={{
-                                  fontSize: "25px",
-                                  color: "tertiary.main",
-                                  cursor: "pointer",
-                                }}
-                              />
-                              <Typography
-                                color={"text.primary"}
-                                fontSize={FontConfig.medium}
-                                sx={{ fontWeight: 500 }}
-                              >
-                                {texts.chat.reabrirChat}
-                              </Typography>
-                            </MenuItem>
-                          ) : (
-                            <MenuItem
-                              className="gap-2"
-                              onClick={() => {
-                                handleClose();
-                                abrirModalCancelarChat();
-                              }}
-                            >
-                              <CommentsDisabledOutlinedIcon
-                                sx={{
-                                  fontSize: "25px",
-                                  color: "tertiary.main",
-                                  cursor: "pointer",
-                                }}
-                              />
-                              <Typography
-                                color={"text.primary"}
-                                fontSize={FontConfig.medium}
-                                sx={{ fontWeight: 500 }}
-                              >
-                                {texts.chat.encerrarChat}
-                              </Typography>
-                            </MenuItem>
+                              {retornaConversaEncerrada() == true ? (
+                                <MenuItem
+                                  className="gap-2"
+                                  onClick={() => {
+                                    handleClose();
+                                    abrirModalAbrirChat();
+                                  }}
+                                >
+                                  <CommentOutlinedIcon
+                                    sx={{
+                                      fontSize: "25px",
+                                      color: "tertiary.main",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                  <Typography
+                                    color={"text.primary"}
+                                    fontSize={FontConfig.medium}
+                                    sx={{ fontWeight: 500 }}
+                                  >
+                                    {texts.chat.reabrirChat}
+                                  </Typography>
+                                </MenuItem>
+                              ) : (
+                                <MenuItem
+                                  className="gap-2"
+                                  onClick={() => {
+                                    handleClose();
+                                    abrirModalCancelarChat();
+                                  }}
+                                >
+                                  <CommentsDisabledOutlinedIcon
+                                    sx={{
+                                      fontSize: "25px",
+                                      color: "tertiary.main",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                  <Typography
+                                    color={"text.primary"}
+                                    fontSize={FontConfig.medium}
+                                    sx={{ fontWeight: 500 }}
+                                  >
+                                    {texts.chat.encerrarChat}
+                                  </Typography>
+                                </MenuItem>
+                              )}
+                            </>
                           )}
                         </Box>
                       </Menu>
