@@ -25,7 +25,6 @@ const Contato = (props) => {
         setCorSelecionado("transparent");
       }
     }
-    console.log("ATUALIZOU");
   }, [props.contatoSelecionado, props.idChat, props.listaChats]);
 
   const retornaConversaEncerrada = () => {
@@ -58,7 +57,7 @@ const Contato = (props) => {
                 backgroundColor: corSelecionado,
               }}
             >
-              <Conteudo chat={props.chat} />
+              <Conteudo chat={props.chat} listaChats={props.listaChats} />
             </Box>
           </Tooltip>
         ) : (
@@ -120,13 +119,13 @@ const Conteudo = (props) => {
 
   const retornaConversaEncerrada = () => {
     let valor = false;
-    props.listaChats.map((chatInput) => {
-      if (chatInput.id == props.idChat) {
-        if (chatInput.conversaEncerrada == true) {
-          valor = true;
-        }
-      }
-    });
+    if(props.listaChats) {
+      props.listaChats.map((chatInput) => {
+          if (chatInput.conversaEncerrada == true) {
+            valor = true;
+          }
+      });
+    }
     return valor;
   };
 
@@ -147,7 +146,7 @@ const Conteudo = (props) => {
           </Typography>
           {
             // Verificando se o chat está ativo ou não
-            !retornaConversaEncerrada && (
+            retornaConversaEncerrada() && (
               <Tooltip>
                 <CommentsDisabledOutlinedIcon
                   sx={{
