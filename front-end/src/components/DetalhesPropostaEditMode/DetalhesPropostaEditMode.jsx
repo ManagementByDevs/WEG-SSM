@@ -105,6 +105,12 @@ const DetalhesPropostaEditMode = ({
   // State para conseguir
   const [escopoAux, setEscopoAux] = useState("");
 
+  // Visibilidade do feedback de dados inválidos
+  const [feedbackDadosInvalidos, setFeedbackDadosInvalidos] = useState(false);
+
+  // State para ter o texto de feedback de dados inválidos
+  const [textoDadosInvalidos, setTextoDadosInvalidos] = useState("");
+
   // Referênica para o input de arquivo
   const inputFile = useRef(null);
 
@@ -206,54 +212,181 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
+  const areCCsValid = (
+    tabelasCustos = [EntitiesObjectService.tabelaCustos()]
+  ) => {
+    for (let tabelaCusto of tabelasCustos) {
+      let porcentagemTotal = 0;
+
+      for (let cc of tabelaCusto.ccs) {
+        porcentagemTotal += cc.porcentagem;
+      }
+
+      if (porcentagemTotal != 100) return false;
+    }
+    return true;
+  };
+
   // Verifica se todos os campos estão preenchidos corretamente
   const isAllFieldsValid = () => {
     let propostaAux = EntitiesObjectService.proposta();
+    let msgs = texts.detalhesPropostaEditMode;
+
     propostaAux = JSON.parse(JSON.stringify(proposta));
 
-    if (!propostaAux.codigoPPM) return false;
-    if (!propostaAux.data) return false;
-    if (!propostaAux.titulo) return false;
-    if (!propostaAux.solicitante) return false;
-    if (!propostaAux.buSolicitante) return false;
-    if (!propostaAux.gerente) return false;
-    if (!propostaAux.forum) return false;
-    if (!propostaAux.tamanho) return false;
-    if (!propostaAux.secaoTI) return false;
-    if (!propostaAux.proposta || propostaAux.proposta == "<p><br></p>")
+    if (!propostaAux.codigoPPM) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.ppm}`);
       return false;
-    if (!propostaAux.problema || propostaAux.problema == "<p><br></p>")
-      return false;
-    if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>")
-      return false;
-    if (!propostaAux.frequencia) return false;
-    if (propostaAux.busBeneficiadas.length == 0) return false;
-    if (!propostaAux.linkJira) return false;
-    if (!propostaAux.inicioExecucao) return false;
-    if (!propostaAux.fimExecucao) return false;
-    if (!propostaAux.paybackValor) return false;
-    if (!propostaAux.paybackTipo) return false;
-    if (!propostaAux.responsavelNegocio.length == 0) return false;
-
-    for (let beneficio of propostaAux.beneficios) {
-      if (!beneficio.tipoBeneficio) return false;
-      if (
-        !beneficio.memoriaCalculo ||
-        beneficio.memoriaCalculo == "<p><br></p>"
-      )
-        return false;
-      if (beneficio.tipoBeneficio == "QUALITATIVO") {
-        if (!beneficio.tipo) return false;
-        if (!beneficio.valor) return false;
-      }
     }
+    if (!propostaAux.data) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.data}`);
+      return false;
+    }
+    if (!propostaAux.titulo) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.titulo}`);
+      return false;
+    }
+    if (!propostaAux.solicitante) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.solicitante}`);
+      return false;
+    }
+    if (!propostaAux.buSolicitante) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.buSolicitante}`);
+      return false;
+    }
+    if (!propostaAux.gerente) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.gerente}`);
+      return false;
+    }
+    if (!propostaAux.forum) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.forum}`);
+      return false;
+    }
+    if (!propostaAux.tamanho) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.tamanho}`);
+      return false;
+    }
+    if (!propostaAux.secaoTI) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.secaoTi}`);
+      return false;
+    }
+
+    if (!propostaAux.proposta || propostaAux.proposta == "<p><br></p>") {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.proposta}`);
+      return false;
+    }
+    if (!propostaAux.problema || propostaAux.problema == "<p><br></p>") {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.problema}`);
+      return false;
+    }
+    // if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>")
+    // setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.escopo}`);
+    //   return false;
+    if (!propostaAux.frequencia) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.frequencia}`);
+      return false;
+    }
+    if (propostaAux.busBeneficiadas.length == 0) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.busBeneficiadas}`);
+      return false;
+    }
+    if (!propostaAux.linkJira) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.jira}`);
+      return false;
+    }
+    if (!propostaAux.inicioExecucao) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.inicioExecucao}`);
+      return false;
+    }
+    if (!propostaAux.fimExecucao) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.fimExecucao}`);
+      return false;
+    }
+    if (!propostaAux.paybackValor) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.paybackValor}`);
+      return false;
+    }
+    if (!propostaAux.paybackTipo) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.paybackTipo}`);
+      return false;
+    }
+    if (propostaAux.responsavelNegocio.length == 0) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.responsavelNegocio}`);
+      return false;
+    }
+    if (propostaAux.tabelaCustos.length == 0) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.tabelaCustos}`);
+      return false;
+    }
+
+    if (propostaAux.beneficios.length > 0)
+      for (let beneficio of propostaAux.beneficios) {
+        if (!beneficio.tipoBeneficio) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.benTipo}`);
+          return false;
+        }
+        if (
+          !beneficio.memoriaCalculo ||
+          beneficio.memoriaCalculo == "<p><br></p>"
+        ) {
+          setTextoDadosInvalidos(
+            `${msgs.dadoInvalido} ${msgs.benMemoriaCalculo}`
+          );
+          return false;
+        }
+        if (beneficio.tipoBeneficio != "QUALITATIVO") {
+          if (!beneficio.moeda) {
+            setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.benMoeda}`);
+            return false;
+          }
+          if (!beneficio.valor_mensal) {
+            setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.benValor}`);
+            return false;
+          }
+        }
+      }
 
     for (let tabelaCusto of propostaAux.tabelaCustos) {
       for (let custo of tabelaCusto.custos) {
+        if (!custo.tipoDespesa) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.tipoDespesa}`);
+          return false;
+        }
+        if (!custo.perfilDespesa) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.perfilDespesa}`);
+          return false;
+        }
+        if (!custo.periodoExecucao) {
+          setTextoDadosInvalidos(
+            `${msgs.dadoInvalido} ${msgs.periodoExecucao}`
+          );
+          return false;
+        }
+        if (!custo.horas) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.horas}`);
+          return false;
+        }
+        if (!custo.valorHora) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.valorHora}`);
+          return false;
+        }
       }
 
       for (let cc of tabelaCusto.ccs) {
+        if (!cc.codigo) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.codigoCC}`);
+          return false;
+        }
+        if (!cc.porcentagem) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.porcentagemCC}`);
+          return false;
+        }
       }
+    }
+
+    if (!areCCsValid(propostaAux.tabelaCustos)) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.porcentagemCC100}`);
+      return false;
     }
 
     return true;
@@ -262,10 +395,8 @@ const DetalhesPropostaEditMode = ({
   // Salva as edições da proposta no banco de dados
   const saveProposal = () => {
     // Verificação dos campos
-    if (!isAllFieldsValid()) {
-      console.log("Preencha todos os campos corretamente!");
-      return;
-    }
+    if (!isAllFieldsValid()) return;
+
     // Dando erro ao salvar qualquer campo com editor de texto que contenha acento
 
     let propostaAux = EntitiesObjectService.proposta();
@@ -310,7 +441,6 @@ const DetalhesPropostaEditMode = ({
           propostaAux.anexo.findIndex((element) => element == anexo),
           1
         );
-        console.log(anexo.id);
         listaIdsAnexos.push(anexo.id);
       }
     });
@@ -324,6 +454,9 @@ const DetalhesPropostaEditMode = ({
     }
 
     propostaAux.anexo = []; // Setando como lista vazia porque os anexos estão sendo mandados em outras variáveis
+    if (propostaAux.parecerComissao == "NONE")
+      propostaAux.parecerComissao = null;
+    if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
 
     console.log(
       "DATA: ",
@@ -728,6 +861,10 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, escopo: escopoAux });
   }, [escopoAux]);
 
+  useEffect(() => {
+    if (textoDadosInvalidos) setFeedbackDadosInvalidos(true);
+  }, [textoDadosInvalidos]);
+
   // ***************************************** Fim UseEffects ***************************************** //
 
   if (isLoading)
@@ -746,6 +883,12 @@ const DetalhesPropostaEditMode = ({
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
         onCancelClick={() => {}}
+      />
+      <Feedback
+        open={feedbackDadosInvalidos}
+        handleClose={() => setFeedbackDadosInvalidos(false)}
+        status={"erro"}
+        mensagem={textoDadosInvalidos}
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
@@ -2046,6 +2189,20 @@ const ParecerComissaoInsertText = ({
     setProposta({ ...proposta, parecerInformacao: value });
   };
 
+  // Handler para quando o parecer da comissão é selecionado
+  const handleOnSelectParecer = (event) => {
+    let parecer = event.target.value;
+    if (parecer == "NONE") {
+      setProposta({
+        ...proposta,
+        parecerComissao: parecer,
+        parecerInformacao: null,
+      });
+    } else {
+      setProposta({ ...proposta, parecerComissao: parecer });
+    }
+  };
+
   return (
     <Box>
       <Box className="flex">
@@ -2058,9 +2215,7 @@ const ParecerComissaoInsertText = ({
           select
           label={texts.detalhesProposta.parecer}
           value={proposta.parecerComissao ? proposta.parecerComissao : ""}
-          onChange={(event) =>
-            setProposta({ ...proposta, parecerComissao: event.target.value })
-          }
+          onChange={handleOnSelectParecer}
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
         >
@@ -2084,14 +2239,21 @@ const ParecerComissaoInsertText = ({
               {texts.detalhesProposta.businessCase}
             </Typography>
           </MenuItem>
+          <MenuItem key={"Nenhum"} value={"NONE"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.nenhum}
+            </Typography>
+          </MenuItem>
         </TextField>
       </Box>
       <Box className="mt-4">
-        <ReactQuill
-          value={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
-          onChange={handleOnParecerComissaoChange}
-          modules={modulesQuill}
-        />
+        {proposta.parecerComissao != "NONE" && (
+          <ReactQuill
+            value={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
+            onChange={handleOnParecerComissaoChange}
+            modules={modulesQuill}
+          />
+        )}
       </Box>
     </Box>
   );
@@ -2129,6 +2291,20 @@ const ParecerDGInsertText = ({
     setProposta({ ...proposta, parecerInformacaoDG: value });
   };
 
+  // Handler para o select do parecer da DG
+  const handleOnSelectParecer = (event) => {
+    let parecer = event.target.value;
+    if (parecer == "NONE") {
+      setProposta({
+        ...proposta,
+        parecerDG: parecer,
+        parecerInformacaoDG: null,
+      });
+    } else {
+      setProposta({ ...proposta, parecerDG: parecer });
+    }
+  };
+
   return (
     <Box className="mt-4">
       <Box className="flex">
@@ -2139,9 +2315,7 @@ const ParecerDGInsertText = ({
           select
           label={texts.detalhesProposta.parecer}
           value={proposta.parecerDG ? proposta.parecerDG : ""}
-          onChange={(event) =>
-            setProposta({ ...proposta, parecerDG: event.target.value })
-          }
+          onChange={handleOnSelectParecer}
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
         >
@@ -2155,16 +2329,23 @@ const ParecerDGInsertText = ({
               {texts.detalhesProposta.reprovado}
             </Typography>
           </MenuItem>
+          <MenuItem key={"Nenhum"} value={"NONE"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.nenhum}
+            </Typography>
+          </MenuItem>
         </TextField>
       </Box>
       <Box className="mt-4">
-        <ReactQuill
-          value={
-            proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""
-          }
-          onChange={handleOnParecerDGChange}
-          modules={modulesQuill}
-        />
+        {proposta.parecerDG != "NONE" && (
+          <ReactQuill
+            value={
+              proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""
+            }
+            onChange={handleOnParecerDGChange}
+            modules={modulesQuill}
+          />
+        )}
       </Box>
     </Box>
   );
