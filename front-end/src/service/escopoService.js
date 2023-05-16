@@ -20,28 +20,15 @@ class EscopoService {
 
     async salvarDados(escopo) {
         try {
-            const data = await axios.put(`/escopo/dados`, escopo, { headers: { "Content-Type": "application/json" }, withCredentials: true });
+            const data = await axios.put(`/escopo`, escopo, { headers: { "Content-Type": "application/json" }, withCredentials: true });
             return data.data;
         } catch (error) {
             throw error;
         }
     }
 
-    async salvarAnexosEscopo(idEscopo, anexos) {
-        let form = new FormData();
-        for (let anexo of anexos) {
-            form.append("anexos", anexo);
-        }
-
-        return (await axios.put(`/escopo/anexos/${idEscopo}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true }))
-    }
-
     async excluirEscopo(idEscopo) {
         return (await axios.delete(`/escopo/${idEscopo}`)).data;
-    }
-
-    async removerAnexos(idEscopo) {
-        return (await axios.put(`/escopo/remover-anexos/${idEscopo}`, { headers: { "Content-Type": "application/json" }, withCredentials: true })).data;
     }
 }
 

@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "anexo")
-@AllArgsConstructor @NoArgsConstructor() @RequiredArgsConstructor
+@AllArgsConstructor @NoArgsConstructor()
 @Getter @Setter
 @ToString
 @EqualsAndHashCode
@@ -16,14 +16,10 @@ public class Anexo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     private String nome;
 
-    @NonNull
     private String tipo;
 
     @Lob
-    @NonNull
     private byte[] dados;
-
 }

@@ -24,7 +24,6 @@ import AnexoService from "../../service/anexoService";
 import NotificacaoService from "../../service/notificacaoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
-import EntitiesObjectService from "../../service/entitiesObjectService";
 
 import CookieService from "../../service/cookieService";
 
@@ -100,7 +99,7 @@ const DetalhesDemanda = (props) => {
     setFrequencia(props.dados.frequencia);
     setBeneficios(formatarBeneficios(props.dados.beneficios));
     setAnexosDemanda(props.dados.anexo);
-  }, [props.dados]);
+  }, []);
 
   // ----------------------------------------------------------------------------------------------------------------------------
   // Funções de edição da demanda
@@ -150,7 +149,6 @@ const DetalhesDemanda = (props) => {
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true,
       };
     });
     return aux;
@@ -160,15 +158,13 @@ const DetalhesDemanda = (props) => {
   const formatarBeneficiosRequisicao = (listaBeneficios) => {
     let listaNova = [];
     for (let beneficio of listaBeneficios) {
-      if (beneficio.visible) {
-        listaNova.push({
-          id: beneficio.id,
-          memoriaCalculo: beneficio.memoriaCalculo,
-          moeda: beneficio.moeda,
-          valor_mensal: beneficio.valor_mensal,
-          tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
-        });
-      }
+      listaNova.push({
+        id: beneficio.id,
+        memoriaCalculo: beneficio.memoriaCalculo,
+        moeda: beneficio.moeda,
+        valor_mensal: beneficio.valor_mensal,
+        tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
+      });
     }
     return listaNova;
   };
@@ -194,31 +190,16 @@ const DetalhesDemanda = (props) => {
   // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
-      if (!existsInAnexos(file)) {
-        updateAnexosNovos(file);
-        setAnexosDemanda([...anexosDemanda, file]);
-      } else {
-        // feedback de anexo já existente
-        setFeedbackComAnexoMesmoNome(true);
-      }
+      AnexoService.save(file).then((response) => {
+        setNovosAnexos([...novosAnexos, response]);
+        setAnexosDemanda([...anexosDemanda, response]);
+      })
     }
-  };
-
-  // Função para verificar se um anexo já existe na lista de anexos
-  const existsInAnexos = (anexo) => {
-    return (
-      anexosDemanda.filter((anexoItem) => {
-        return (
-          anexoItem.nome == anexo.name ||
-          (anexo.id && anexoItem.nome == anexo.nome)
-        );
-      }).length > 0
-    );
   };
 
   // Função para remover um anexo da lista de anexos
   const removerAnexo = (index) => {
-    updateAnexosRemovidos(index);
+    setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]])
     removeAnexosNovos(anexosDemanda[index]);
     let aux = [...anexosDemanda];
     aux.splice(index, 1);
@@ -227,22 +208,9 @@ const DetalhesDemanda = (props) => {
 
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
   const adicionarBeneficio = () => {
-    BeneficioService.post({
-      tipoBeneficio: "",
-      valor_mensal: "",
-      moeda: "",
-      memoriaCalculo: "",
-    }).then((response) => {
-      let beneficioNovo = {
-        id: response.id,
-        tipoBeneficio: "",
-        valor_mensal: "",
-        moeda: "",
-        memoriaCalculo: "",
-        visible: true,
-      };
-      setBeneficiosNovos([...beneficiosNovos, beneficioNovo]);
-      setBeneficios([...beneficios, beneficioNovo]);
+    BeneficioService.post().then((response) => {
+      setBeneficiosNovos([...beneficiosNovos, response]);
+      setBeneficios([...beneficios, response]);
     });
   };
 
@@ -255,7 +223,6 @@ const DetalhesDemanda = (props) => {
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
-        visible: beneficio.visible,
       };
     });
     aux[index] = beneficio;
@@ -264,19 +231,15 @@ const DetalhesDemanda = (props) => {
 
   // Função para excluir um benefício da lista
   const deleteBeneficio = (indexBeneficio) => {
-    let aux = beneficios.map((beneficio) => {
-      return {
-        id: beneficio.id,
-        tipoBeneficio: beneficio.tipoBeneficio,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: beneficio.visible,
-      };
-    });
-    aux[indexBeneficio].visible = false;
-    setBeneficiosExcluidos([...beneficiosExcluidos, aux[indexBeneficio]]);
-    setBeneficios(aux);
+    let listaNova = [];
+    for (let contagem = 0; contagem < beneficios.length; contagem++) {
+      if (contagem != indexBeneficio) {
+        listaNova.push({ ...beneficios[contagem] });
+      } else {
+        setBeneficiosExcluidos([...beneficiosExcluidos, beneficios[contagem]]);
+      }
+    }
+    setBeneficios(listaNova);
   };
 
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
@@ -363,50 +326,19 @@ const DetalhesDemanda = (props) => {
         status: "BACKLOG_REVISAO",
         solicitante: props.dados.solicitante,
         gerente: props.dados.gerente,
-        anexo: props.dados.anexo,
+        anexo: retornarIdsObjetos(anexosDemanda),
         departamento: props.dados?.departamento,
         analista: props.dados?.analista,
         historicoDemanda: props.dados?.historicoDemanda,
       };
 
-      const anexosVelhos = [];
-      for (let anexo of anexosDemanda) {
-        if (anexo.id) {
-          anexosVelhos.push(
-            new File([converterBase64(anexo.dados)], anexo.nome, {
-              type: anexo.tipo,
-            })
-          );
-        }
-      }
-
-      if (novosAnexos.length > 0) {
-        DemandaService.put(demandaAtualizada, [
-          ...anexosVelhos,
-          ...novosAnexos,
-        ]).then((response) => {
-          for (let anexo of anexosDemanda) {
-            AnexoService.deleteById(anexo.id);
-          }
-          // atualizar demanda salva no location
-
-          setEditar(false);
-          excluirBeneficiosRemovidos();
-          setDemandaEmEdicao(false);
-          props.setDados(response);
-          salvarHistorico("Demanda Editada");
-        });
-      } else {
-        DemandaService.putSemAnexos(demandaAtualizada).then((response) => {
-          // atualizar demanda salva no location
-
-          setEditar(false);
-          excluirBeneficiosRemovidos();
-          setDemandaEmEdicao(false);
-          props.setDados(response);
-          salvarHistorico("Demanda Editada");
-        });
-      }
+      DemandaService.put(demandaAtualizada).then((response) => {
+        setEditar(false);
+        excluirBeneficiosRemovidos();
+        setDemandaEmEdicao(false);
+        props.setDados(response);
+        salvarHistorico("Demanda Editada");
+      });
     }
 
     if (props.dados.id) {
@@ -505,6 +437,45 @@ const DetalhesDemanda = (props) => {
     );
   };
 
+  /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
+  const retornarIdsObjetos = (listaObjetos) => {
+    let listaNova = [];
+    for (let objeto of listaObjetos) {
+      listaNova.push({ id: objeto.id });
+    }
+    return listaNova;
+  };
+
+  /** Função para formatar uma demanda para envio para edição da mesma */
+  const formatarDemanda = () => {
+    let demanda = {
+      ...props.dados,
+      problema: btoa(props.dados.problema),
+      proposta: btoa(props.dados.proposta),
+      beneficios: retornarIdsObjetos(props.dados.beneficios),
+      anexo: retornarIdsObjetos(props.dados.anexo)
+    }
+    return demanda;
+  }
+
+  /** Função para criar e retornar um objeto de histórico para salvamento */
+  const retornaObjetoHistorico = (acaoRealizada) => {
+    const historico = {
+      data: new Date(),
+      acaoRealizada: acaoRealizada,
+      autor: { id: CookieService.getUser().id }
+    }
+    return historico;
+  }
+
+  /** Função usada para atualizar o histórico da demanda quando ela for atualizada no banco, recebendo um texto da ação realizada */
+  const salvarHistorico = (texto) => {
+    ExportPdfService.exportDemanda(props.dados.id).then((file) => {
+      let arquivo = new Blob([file], { type: "application/pdf" });
+      DemandaService.addHistorico(props.dados.id, retornaObjetoHistorico(texto), arquivo);
+    });
+  };
+
   /** Função acionada quando o analista recusa uma demanda, tanto devolução quanto reprovação */
   const confirmRecusaDemanda = () => {
     if (!motivoRecusaDemanda) return;
@@ -513,8 +484,7 @@ const DetalhesDemanda = (props) => {
       modoModalRecusa === "devolucao" ? "BACKLOG_EDICAO" : "CANCELLED";
 
     DemandaService.put(
-      { ...props.dados, motivoRecusa: motivoRecusaDemanda, status: status },
-      []
+      { ...formatarDemanda(), motivoRecusa: motivoRecusaDemanda, status: status }
     ).then(() => {
       const tipoNotificacao =
         modoModalRecusa === "devolucao"
@@ -526,25 +496,8 @@ const DetalhesDemanda = (props) => {
           props.dados
         )
       );
-      salvarHistorico(
-        modoModalRecusa === "devolucao"
-          ? "Demanda Devolvida"
-          : "Demanda Reprovada"
-      );
+      salvarHistorico(modoModalRecusa === "devolucao" ? "Demanda Devolvida" : "Demanda Reprovada");
       navegarHome(modoModalRecusa === "devolucao" ? 2 : 3);
-    });
-  };
-
-  /** Função usada para atualizar o histórico da demanda quando ela for atualizada no banco, recebendo um texto da ação realizada */
-  const salvarHistorico = (texto) => {
-    ExportPdfService.exportDemanda(props.dados.id).then((file) => {
-      let arquivo = new Blob([file], { type: "application/pdf" });
-      DemandaService.addHistorico(
-        props.dados.id,
-        texto,
-        arquivo,
-        CookieService.getUser().id
-      );
     });
   };
 
@@ -597,23 +550,12 @@ const DetalhesDemanda = (props) => {
     setAnexosRemovidos([...anexosRemovidos, ...anexosFiltrados]);
   };
 
-  /** Função que verifica se um determinado anexo já existe na lista provida */
-  const existsInArray = (array, anexo) => {
-    return array.some((anexoItem) => anexoItem.name === anexo.name);
-  };
-
-  /** Irá atualizar a lista para que contenha os anexos que foram adicionados na demanda (somente novos anexos) */
-  const updateAnexosNovos = (anexo) => {
-    if (existsInArray(novosAnexos, anexo)) return;
-    setNovosAnexos([...novosAnexos, anexo]);
-  };
-
   /** Função que remove um anexo da lista anexosNovos caso o usuário o remova, 
   só é removido anexos que não estavam salvos no banco de dados */
   const removeAnexosNovos = (anexo) => {
     setNovosAnexos(
       novosAnexos.filter((anexoItem) => {
-        return anexoItem.name != anexo.name && !anexoItem.id;
+        return anexoItem.id != anexo.id;
       })
     );
   };
@@ -643,14 +585,10 @@ const DetalhesDemanda = (props) => {
     if (problemaDaDemanda.current) {
       problemaDaDemanda.current.innerHTML = props.dados.problema
     }
-  }, [props, visualizarTexto]);
-
-  // useEffect utilizado para atualizar o valor html do campo
-  useEffect(() => {
     if (propostaDaDemanda.current) {
       propostaDaDemanda.current.innerHTML = props.dados.proposta
     }
-  }, [props, visualizarTexto]);
+  }, [props, visualizarTexto, editar]);
 
   // Função utilizada para formatar o texto do problema
   const getProblemaFomartted = (problema) => {
@@ -662,17 +600,13 @@ const DetalhesDemanda = (props) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
-  // Variáveis utilizadas para realizar a edição da demanda
-  const [problemaEdicao, setProblemaEdicao] = useState();
-  const [propostaEdicao, setPropostaEdicao] = useState();
-
-  // useEffect utilizado para atualizar o valor das variáveis de edição, quando entrar na página
   useEffect(() => {
-    if (!props.carregamento) {
-      setProblemaEdicao(props.dados.problema);
-      setPropostaEdicao(props.dados.proposta);
-    }
-  }, [props.carregamento]);
+    try {
+      console.log(anexosRemovidos);
+      console.log(novosAnexos);
+      console.log(anexosDemanda);
+    } catch (error) { }
+  }, [anexosRemovidos, novosAnexos, anexosDemanda]);
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
@@ -816,16 +750,14 @@ const DetalhesDemanda = (props) => {
               </Box>
               <Box className="mt-2 flex flex-col gap-5">
                 {beneficios?.map((beneficio, index) => {
-                  if (beneficio.visible) {
-                    return (
-                      <BeneficiosDetalheDemanda
-                        editavel={false}
-                        key={index}
-                        index={index}
-                        beneficio={beneficio}
-                      />
-                    );
-                  }
+                  return (
+                    <BeneficiosDetalheDemanda
+                      editavel={false}
+                      key={index}
+                      index={index}
+                      beneficio={beneficio}
+                    />
+                  );
                 })}
               </Box>
             </Box>
@@ -1025,8 +957,8 @@ const DetalhesDemanda = (props) => {
                 {texts.DetalhesDemanda.problema}:
               </Typography>
               <CaixaTextoQuill
-                texto={problemaEdicao}
-                setTexto={setProblemaEdicao}
+                texto={problema}
+                setTexto={setProblema}
                 onChange={(value) => {
                   alterarTexto(value, "problema");
                 }}
@@ -1042,8 +974,8 @@ const DetalhesDemanda = (props) => {
                 {texts.DetalhesDemanda.proposta}:
               </Typography>
               <CaixaTextoQuill
-                texto={propostaEdicao}
-                setTexto={setPropostaEdicao}
+                texto={proposta}
+                setTexto={setProposta}
                 onChange={(value) => {
                   alterarTexto(value, "proposta");
                 }}
@@ -1069,18 +1001,16 @@ const DetalhesDemanda = (props) => {
               </Box>
               <Box className="mt-2 flex flex-col gap-5">
                 {beneficios?.map((beneficio, index) => {
-                  if (beneficio.visible) {
-                    return (
-                      <BeneficiosDetalheDemanda
-                        editavel={true}
-                        key={index}
-                        index={index}
-                        delete={deleteBeneficio}
-                        beneficio={beneficio}
-                        setBeneficio={alterarTextoBeneficio}
-                      />
-                    );
-                  }
+                  return (
+                    <BeneficiosDetalheDemanda
+                      editavel={true}
+                      key={index}
+                      index={index}
+                      delete={deleteBeneficio}
+                      beneficio={beneficio}
+                      setBeneficio={alterarTextoBeneficio}
+                    />
+                  );
                 })}
               </Box>
             </Box>
@@ -1193,7 +1123,7 @@ const DetalhesDemanda = (props) => {
         sx={{ width: "15rem", bottom: "20px", right: "20px" }}
       >
         {props.usuario?.tipoUsuario == "ANALISTA" && props.botao &&
-          !editar && (
+          !editar && props.dados.status == "BACKLOG_REVISAO" && (
             <Box className="flex justify-around w-full">
               <Button
                 sx={{
@@ -1238,7 +1168,7 @@ const DetalhesDemanda = (props) => {
 
         {/* caso o usuário seja um gerente */}
         {props.usuario?.tipoUsuario == "GERENTE" && props.botao &&
-          !editar && (
+          !editar && props.dados.status == "BACKLOG_APROVACAO" && (
             <Box className=" w-full flex justify-around">
               <Button
                 sx={{

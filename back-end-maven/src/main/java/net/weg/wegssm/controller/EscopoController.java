@@ -6,6 +6,7 @@ import net.weg.wegssm.model.entities.Anexo;
 import net.weg.wegssm.model.entities.Beneficio;
 import net.weg.wegssm.model.entities.Escopo;
 import net.weg.wegssm.model.entities.Usuario;
+import net.weg.wegssm.model.service.AnexoService;
 import net.weg.wegssm.model.service.BeneficioService;
 import net.weg.wegssm.model.service.EscopoService;
 import net.weg.wegssm.model.service.UsuarioService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +44,9 @@ public class EscopoController {
 
     /** Service dos benefícios */
     private BeneficioService beneficioService;
+
+    /** Service dos anexo */
+    private AnexoService anexoService;
 
     /**
      * Método GET para listar todos os escopos salvos no banco
@@ -125,68 +130,32 @@ public class EscopoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(escopoService.save(escopo));
     }
 
-    @PutMapping("/dados")
-    public ResponseEntity<Escopo> atualizarDados(@RequestBody Escopo escopo) {
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody Escopo escopo) {
+
         if (!escopoService.existsById(escopo.getId())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Escopo não encontrado!");
         }
+
         Escopo escopoAntigo = escopoService.findById(escopo.getId()).get();
         escopo.setUsuario(escopoAntigo.getUsuario());
-
-        List<Anexo> listaAnexos = escopoService.findById(escopo.getId()).get().getAnexo();
-        escopo.setAnexo(listaAnexos);
         escopo.setUltimaModificacao(new Date());
 
+        List<Beneficio> listaBeneficiosNova = new ArrayList<>();
         for (Beneficio beneficio : escopo.getBeneficios()) {
-            beneficioService.save(beneficio);
+            if(beneficioService.existsById(beneficio.getId())) {
+                listaBeneficiosNova.add(beneficio);
+            }
         }
+        escopo.setBeneficios(listaBeneficiosNova);
 
-        return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
-    }
-
-    @PutMapping("/anexos/{escopo}")
-    public ResponseEntity<Escopo> atualizarAnexos(@RequestParam("anexos") List<MultipartFile> files, @PathVariable(value = "escopo") Long idEscopo) {
-
-        if (!escopoService.existsById(idEscopo)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        List<Anexo> listaAnexosNova = new ArrayList<>();
+        for (Anexo anexo : escopo.getAnexo()) {
+            if(anexoService.existsById(anexo.getId())) {
+                listaAnexosNova.add(anexo);
+            }
         }
-        Escopo escopo = escopoService.findById(idEscopo).get();
-        escopo.setAnexos(files);
-        escopo.setUltimaModificacao(new Date());
-
-        return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
-    }
-
-    @PutMapping("/remover-anexos/{escopo}")
-    public ResponseEntity<Object> removerAnexos(@PathVariable(value = "escopo") Long idEscopo) {
-        if (!escopoService.existsById(idEscopo)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        Escopo escopo = escopoService.findById(idEscopo).get();
-        escopo.setAnexo(null);
-        escopo.setUltimaModificacao(new Date());
-
-        return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
-    }
-
-    /**
-     * Método PUT para atualizar um escopo no banco de dados, através de um id
-     *
-     * @param id
-     * @param escopoDTO ( Novos dados do escopo = req.body )
-     * @return
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid EscopoDTO escopoDTO) {
-        Optional<Escopo> escopoOptional = escopoService.findById(id);
-
-        if (escopoOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Não foi possível encontrar um escopo com este id.");
-        }
-
-        Escopo escopo = escopoOptional.get();
-        BeanUtils.copyProperties(escopoDTO, escopo, "id");
-
+        escopo.setAnexo(listaAnexosNova);
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
     }

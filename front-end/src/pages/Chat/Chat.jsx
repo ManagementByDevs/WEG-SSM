@@ -49,6 +49,8 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import dateService from "../../service/dateService";
 import anexoService from "../../service/anexoService";
 
+import ClipLoader from "react-spinners/ClipLoader";
+
 // Chat para conversa entre usuários do sistema
 const Chat = () => {
   /** Navigate utilizado para navegar para outras páginas */
@@ -57,7 +59,7 @@ const Chat = () => {
   // Context para alterar o idioma
   const { texts, setTexts } = useContext(TextLanguageContext);
 
-  const { setVisibilidade, visibilidade } = useContext(ChatContext);
+  const { setVisibilidade, setIdChat } = useContext(ChatContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -70,6 +72,8 @@ const Chat = () => {
 
   // UseState para armazenar os resultados da pesquisa
   const [resultadosContato, setresultadosContato] = useState([]);
+
+  const [buscandoMensagens, setBuscandoMensagens] = useState(true);
 
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
   const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
@@ -110,13 +114,21 @@ const Chat = () => {
         },
         idChat
       ).then((e) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
         setFeedbackChatEncerrado(true);
+        listaChats.map((chat) => {
+          if (chat.id == idChat) {
+            let aux = [...listaChats];
+            aux.splice(listaChats.indexOf(chat), 1, {
+              ...chat,
+              conversaEncerrada: true,
+            });
+            setListaChats(aux);
+          }
+        });
       });
     });
   };
+
   const abrirChat = () => {
     fecharModalAbrirChat();
     ChatService.getByIdChat(idChat).then((e) => {
@@ -127,29 +139,48 @@ const Chat = () => {
         },
         idChat
       ).then((e) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
         setFeedbackChatAberto(true);
+        listaChats.map((chat) => {
+          if (chat.id == idChat) {
+            let aux = [...listaChats];
+            aux.splice(listaChats.indexOf(chat), 1, {
+              ...chat,
+              conversaEncerrada: false,
+            });
+            setListaChats(aux);
+          }
+        });
       });
     });
   };
 
   const [listaChats, setListaChats] = useState([]);
 
-  const buscarChats = () => {
-    ChatService.getByRemetente(user.usuario.id).then((e) => {
+  async function buscarChats() {
+    await ChatService.getByRemetente(user.usuario.id).then((e) => {
       setListaChats(e);
     });
-  };
+  }
+
+  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+
+  const [mensagens, setMensagens] = useState([
+    EntitiesObjectService.mensagem(),
+  ]);
+
+  async function carregar() {
+    await MensagemService.getMensagensChat(idChat)
+      .then((response) => {
+        setMensagens(response);
+      })
+      .catch((error) => {});
+    setDefaultMensagem();
+  }
 
   const [user, setUser] = useState(UsuarioService.getUserCookies());
 
   const idChat = useParams().id;
-  const [mensagens, setMensagens] = useState([
-    EntitiesObjectService.mensagem(),
-  ]);
-  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
 
   useEffect(() => {
@@ -162,20 +193,12 @@ const Chat = () => {
   }, [idChat]);
 
   useEffect(() => {
+    setBuscandoMensagens(false);
     const boxElement = boxRef.current;
     if (boxElement) {
       boxElement.scrollTop = boxElement.scrollHeight;
     }
   }, [mensagens]);
-
-  async function carregar() {
-    await MensagemService.getMensagensChat(idChat)
-      .then((response) => {
-        setMensagens(response);
-      })
-      .catch((error) => {});
-    setDefaultMensagem();
-  }
 
   // UseState para armazenar o contato selecionado
   useEffect(() => {
@@ -301,10 +324,18 @@ const Chat = () => {
   function handleFileUpload(event) {
     const file = event.target.files[0];
     event.preventDefault();
-    anexoService.save(file).then((response) => {
-      console.log("Salvou", response);
-      enviar(`/app/weg_ssm/mensagem/${idChat}`, { ...mensagem, anexo: {id: response.id} });
-    });
+    anexoService
+      .save(file)
+      .then((response) => {
+        enviar(`/app/weg_ssm/mensagem/${idChat}`, {
+          ...mensagem,
+          anexo: response,
+        });
+        inputRef.current.value = "";
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setDefaultMensagem();
   }
 
@@ -446,6 +477,7 @@ const Chat = () => {
                           navigate(`/chat/${resultado.id}`);
                         }}
                         contatoSelecionado={idChat}
+                        listaChats={listaChats}
                         chat={resultado}
                         index={index}
                       />
@@ -529,7 +561,6 @@ const Chat = () => {
                             className="gap-2"
                             onClick={() => {
                               handleClose();
-                              setVisibilidade(true);
                             }}
                           >
                             <OpenInNewOutlinedIcon />
@@ -712,6 +743,7 @@ const Chat = () => {
                             onClick={() => {
                               handleClose();
                               setVisibilidade(true);
+                              setIdChat(idChat);
                             }}
                           >
                             <OpenInNewOutlinedIcon />
@@ -724,85 +756,100 @@ const Chat = () => {
                             </Typography>
                           </MenuItem>
 
-                          {/* Divisão de um item clicável e outro no modal */}
-                          <div className="w-full flex justify-center">
-                            <hr className="w-10/12 my-1.5" />
-                          </div>
+                          {listaChats.some(
+                            (chat) =>
+                              chat.id == idChat &&
+                              chat.idProposta.solicitante.id != user.usuario.id
+                          ) && (
+                            <>
+                              <div className="w-full flex justify-center">
+                                <hr className="w-10/12 my-1.5" />
+                              </div>
 
-                          {retornaConversaEncerrada() == true ? (
-                            <MenuItem
-                              className="gap-2"
-                              onClick={() => {
-                                handleClose();
-                                abrirModalAbrirChat();
-                              }}
-                            >
-                              <CommentOutlinedIcon
-                                sx={{
-                                  fontSize: "25px",
-                                  color: "tertiary.main",
-                                  cursor: "pointer",
-                                }}
-                              />
-                              <Typography
-                                color={"text.primary"}
-                                fontSize={FontConfig.medium}
-                                sx={{ fontWeight: 500 }}
-                              >
-                                {texts.chat.reabrirChat}
-                              </Typography>
-                            </MenuItem>
-                          ) : (
-                            <MenuItem
-                              className="gap-2"
-                              onClick={() => {
-                                handleClose();
-                                abrirModalCancelarChat();
-                              }}
-                            >
-                              <CommentsDisabledOutlinedIcon
-                                sx={{
-                                  fontSize: "25px",
-                                  color: "tertiary.main",
-                                  cursor: "pointer",
-                                }}
-                              />
-                              <Typography
-                                color={"text.primary"}
-                                fontSize={FontConfig.medium}
-                                sx={{ fontWeight: 500 }}
-                              >
-                                {texts.chat.encerrarChat}
-                              </Typography>
-                            </MenuItem>
+                              {retornaConversaEncerrada() == true ? (
+                                <MenuItem
+                                  className="gap-2"
+                                  onClick={() => {
+                                    handleClose();
+                                    abrirModalAbrirChat();
+                                  }}
+                                >
+                                  <CommentOutlinedIcon
+                                    sx={{
+                                      fontSize: "25px",
+                                      color: "tertiary.main",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                  <Typography
+                                    color={"text.primary"}
+                                    fontSize={FontConfig.medium}
+                                    sx={{ fontWeight: 500 }}
+                                  >
+                                    {texts.chat.reabrirChat}
+                                  </Typography>
+                                </MenuItem>
+                              ) : (
+                                <MenuItem
+                                  className="gap-2"
+                                  onClick={() => {
+                                    handleClose();
+                                    abrirModalCancelarChat();
+                                  }}
+                                >
+                                  <CommentsDisabledOutlinedIcon
+                                    sx={{
+                                      fontSize: "25px",
+                                      color: "tertiary.main",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                  <Typography
+                                    color={"text.primary"}
+                                    fontSize={FontConfig.medium}
+                                    sx={{ fontWeight: 500 }}
+                                  >
+                                    {texts.chat.encerrarChat}
+                                  </Typography>
+                                </MenuItem>
+                              )}
+                            </>
                           )}
                         </Box>
                       </Menu>
                     </Box>
                   </Box>
-                  <Box
-                    ref={boxRef}
-                    className="flex flex-col"
-                    sx={{
-                      width: "100%",
-                      height: "85%",
-                      overflowY: "auto",
-                      overflowX: "hidden",
-                    }}
-                  >
-                    {/* Componente mensagens, é cada mensagem que aparece */}
-                    {mensagens.length > 0 &&
-                      mensagens.map((mensagemDoMap, index) => {
-                        return (
-                          <Mensagem
-                            key={index}
-                            mensagem={mensagemDoMap}
-                            index={index}
-                            usuario={mensagemDoMap.usuario}
-                          />
-                        );
-                      })}
-                  </Box>
+                  {buscandoMensagens ? (
+                    <Box>
+                      <Box className="mt-6 w-full h-full flex justify-center items-center">
+                        <ClipLoader color="#00579D" size={110} />
+                      </Box>
+                    </Box>
+                  ) : (
+                    <Box
+                      ref={boxRef}
+                      className="flex flex-col"
+                      sx={{
+                        width: "100%",
+                        height: "85%",
+                        overflowY: "auto",
+                        overflowX: "hidden",
+                      }}
+                    >
+                      {/* Componente mensagens, é cada mensagem que aparece */}
+                      {mensagens.length > 0 &&
+                        mensagens.map((mensagemDoMap, index) => {
+                          return (
+                            <Mensagem
+                              key={index}
+                              mensagem={mensagemDoMap}
+                              index={index}
+                              usuario={mensagemDoMap.usuario}
+                            />
+                          );
+                        })}
+                    </Box>
+                  )}
                   <Box
                     className="flex border px-3 py-1 m-4 rounded items-center"
                     sx={{
@@ -814,13 +861,6 @@ const Chat = () => {
                     {retornaConversaEncerrada() == true ? (
                       <>
                         <Box
-                          onChange={atualizaMensagem}
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter" && !event.shiftKey) {
-                              event.preventDefault(); // Evita quebra de linha ao enviar mensagem
-                              submit(event); // Função que envia a mensagem
-                            }
-                          }}
                           disabled={true}
                           className="w-full h-full flex items-center"
                           component="textarea"
@@ -832,7 +872,7 @@ const Chat = () => {
                             paddingTop: "0.4rem",
                             resize: "none",
                           }}
-                          placeholder="Não é possível enviar mensagens, pois o chat foi encerrado."
+                          placeholder={texts.chat.inputChatEncerrado}
                           value={mensagem.texto}
                         />
                       </>

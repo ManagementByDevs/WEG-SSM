@@ -19,13 +19,25 @@ const Contato = (props) => {
     if (props.contatoSelecionado == props.chat.id) {
       setCorSelecionado("chat.eu");
     } else {
-      if (props.chat.conversaEncerrada) {
+      if (props.chat.conversaEncerrada || retornaConversaEncerrada()) {
         setCorSelecionado("divider.claro");
       } else {
         setCorSelecionado("transparent");
       }
     }
-  }, [props.contatoSelecionado, props.idChat]);
+  }, [props.contatoSelecionado, props.idChat, props.listaChats]);
+
+  const retornaConversaEncerrada = () => {
+    let valor = false;
+    props.listaChats.map((chatInput) => {
+      if (chatInput.id == props.idChat) {
+        if (chatInput.conversaEncerrada == true) {
+          valor = true;
+        }
+      }
+    });
+    return valor;
+  };
 
   return (
     <>
@@ -45,7 +57,7 @@ const Contato = (props) => {
                 backgroundColor: corSelecionado,
               }}
             >
-              <Conteudo chat={props.chat} />
+              <Conteudo chat={props.chat} listaChats={props.listaChats} />
             </Box>
           </Tooltip>
         ) : (
@@ -82,9 +94,16 @@ const Conteudo = (props) => {
   const [usuarioLogado, setUsuario] = useState(UsuarioService.getUserCookies());
   const [nomeContato, setNomeContato] = useState("");
 
+  const [conversaEncerrada, setConversaEncerrada] = useState(false);
+
   useEffect(() => {
     retornaNomeContato();
   }, []);
+
+  useEffect(() => {
+    retornaNomeContato();
+    setConversaEncerrada(props.chat.conversaEncerrada);
+  }, [props.chat.chatEncerrado]);
 
   const retornaNomeContato = () => {
     if (usuarioLogado.usuario.id !== props.chat.idProposta.solicitante.id) {
@@ -96,6 +115,18 @@ const Conteudo = (props) => {
         }
       });
     }
+  };
+
+  const retornaConversaEncerrada = () => {
+    let valor = false;
+    if(props.listaChats) {
+      props.listaChats.map((chatInput) => {
+          if (chatInput.conversaEncerrada == true) {
+            valor = true;
+          }
+      });
+    }
+    return valor;
   };
 
   return (
@@ -115,7 +146,7 @@ const Conteudo = (props) => {
           </Typography>
           {
             // Verificando se o chat está ativo ou não
-            props.chat.conversaEncerrada && (
+            retornaConversaEncerrada() && (
               <Tooltip>
                 <CommentsDisabledOutlinedIcon
                   sx={{

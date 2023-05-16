@@ -1,12 +1,11 @@
 package net.weg.wegssm.controller;
 
+import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
+import net.weg.wegssm.dto.HistoricoDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
-import net.weg.wegssm.util.DemandaUtil;
-import net.weg.wegssm.util.DepartamentoUtil;
-import net.weg.wegssm.util.ForumUtil;
-import net.weg.wegssm.util.UsuarioUtil;
+import net.weg.wegssm.util.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.print.Doc;
+import javax.servlet.http.HttpServletResponse;
+import com.itextpdf.text.*;
 import javax.transaction.Transactional;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,11 +36,12 @@ public class DemandaController {
 
     private DemandaService demandaService;
     private UsuarioService usuarioService;
-    private BeneficioService beneficioService;
     private PropostaService propostaService;
 
     private DocumentoHistoricoService documentoHistoricoService;
     private HistoricoService historicoService;
+
+    private PDFGeneratorService pdfGeneratorService;
 
     /**
      * Método GET para buscar todas as demandas
@@ -3427,76 +3432,16 @@ public class DemandaController {
     }
 
     /**
-     * Método GET para buscar as demandas com um determinado status
-     */
-    @GetMapping("/status")
-    public ResponseEntity<List<Demanda>> findByStatus(@RequestParam(value = "status") Status status) {
-        return ResponseEntity.status(HttpStatus.OK).body(demandaService.findByStatus(status));
-    }
-
-    /**
-     * Método GET para buscar as demandas de um determinado forum
-     */
-    @GetMapping("/forum/{forum}")
-    public ResponseEntity<List<Demanda>> findByForum(@PathVariable(value = "forum") Forum forum) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByForum(forum));
-    }
-
-    /**
-     * Método GET para buscar todas as demandas de um determinado departamento
-     */
-    @GetMapping("departamento/{departamento}")
-    public ResponseEntity<List<Demanda>> findByDepartamento(@PathVariable(value = "departamento") Departamento departamento) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(demandaService.findByDepartamento(departamento));
-    }
-
-    /**
      * Método POST para criar uma demanda adicionado um ou vários anexos
      */
-    @PostMapping("/{usuarioId}")
-    public ResponseEntity<Object> save(@RequestParam(value= "anexos", required = false) List<MultipartFile> files, @RequestParam("demanda") String demandaJSON, @PathVariable(value = "usuarioId") Long usuarioId) {
-
+    @PostMapping
+    public ResponseEntity<Object> save(@RequestParam("demanda") String demandaJSON) {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
-        Usuario usuario = usuarioService.findById(usuarioId).get();
-        Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(usuario.getDepartamento(), TipoUsuario.GERENTE);
 
-        ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
-        for (Beneficio beneficio : demanda.getBeneficios()) {
-            listaBeneficios.add(beneficioService.save(beneficio));
-        }
-
+        Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(demanda.getSolicitante().getDepartamento(), TipoUsuario.GERENTE);
         demanda.setData(new Date());
-        demanda.setDepartamento(usuario.getDepartamento());
-        demanda.setBeneficios(listaBeneficios);
-        demanda.setSolicitante(usuario);
-        demanda.setGerente(gerente);
-
-        demanda.setAnexos(files);
-
-        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
-    }
-
-    @PostMapping("/sem-arquivos/{usuarioId}")
-    public ResponseEntity<Object> saveSemArquivos(@RequestParam("demanda") String demandaJSON, @PathVariable(value = "usuarioId") Long usuarioId) {
-
-        DemandaUtil demandaUtil = new DemandaUtil();
-        Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
-        Usuario usuario = usuarioService.findById(usuarioId).get();
-        Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(usuario.getDepartamento(), TipoUsuario.GERENTE);
-
-        ArrayList<Beneficio> listaBeneficios = new ArrayList<>();
-
-        if(demanda.getBeneficios() != null) {
-            for (Beneficio beneficio : demanda.getBeneficios()) {
-                listaBeneficios.add(beneficioService.save(beneficio));
-            }
-        }
-
-        demanda.setData(new Date());
-        demanda.setDepartamento(usuario.getDepartamento());
-        demanda.setBeneficios(listaBeneficios);
-        demanda.setSolicitante(usuario);
+        demanda.setDepartamento(demanda.getSolicitante().getDepartamento());
         demanda.setGerente(gerente);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
@@ -3506,27 +3451,10 @@ public class DemandaController {
      * Método PUT para editar uma demanda já existente
      */
     @PutMapping
-    public ResponseEntity<Object> update(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("demanda") String demandaJSON) {
+    public ResponseEntity<Object> update(@RequestParam("demanda") String demandaJSON) {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
-        demanda.setAnexos(files);
-        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
-    }
 
-    @PutMapping("/sem-arquivos")
-    public ResponseEntity<Object> updateSemArquivos(@RequestParam("demanda") String demandaJSON) {
-        DemandaUtil demandaUtil = new DemandaUtil();
-        Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
-        demanda.setAnexo(null);
-        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
-    }
-
-    @PutMapping("/manter-arquivos-velhos")
-    public ResponseEntity<Object> updateManterArquivos(@RequestParam("demanda") String demandaJSON) {
-        DemandaUtil demandaUtil = new DemandaUtil();
-        Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
-        Optional<Demanda> demandaVelha = demandaService.findById(demanda.getId());
-        demanda.setAnexosWithoutMultiparFile(demandaVelha.get().getAnexo());
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
@@ -3540,38 +3468,23 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
-    @PutMapping("/aceite")
-    public ResponseEntity<Object> aceiteDemanda(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("demanda") String demandaJSON) {
-        DemandaUtil demandaUtil = new DemandaUtil();
-        Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
-
-        List<Anexo> anexos = demandaService.findById(demanda.getId()).get().getAnexo();
-        demanda.addAnexos(files, anexos);
-
-        return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
-    }
-
     @PutMapping("/add-historico/{idDemanda}")
     public ResponseEntity<Demanda> addHistorico(@PathVariable(value = "idDemanda") Long idDemanda,
-                                               @RequestParam("usuarioId") Long usuarioId,
-                                               @RequestParam("acao") String acao,
-                                               @RequestParam("documento") MultipartFile documento) {
-        Usuario usuario = usuarioService.findById(usuarioId).get();
+                                                @RequestParam(value = "historico") String historicoJson,
+                                                @RequestParam(value = "documento") MultipartFile documento) {
+
+        HistoricoUtil util = new HistoricoUtil();
+        Historico historico = util.convertJsonToModel(historicoJson);
         Demanda demanda = demandaService.findById(idDemanda).get();
 
-        Historico historico = new Historico();
-        historico.setAutor(usuario);
-        historico.setData(new Date());
-        historico.setAcaoRealizada(acao);
-
-        List<Historico> listaHistorico = demanda.getHistoricoDemanda();
         historico.setDocumentoMultipart(documento);
+        List<Historico> listaHistorico = demanda.getHistoricoDemanda();
 
-        DocumentoHistorico documentoHistorico = historico.getDocumento();
+        DocumentoHistorico documentoHistorico = historico.getDocumentoHistorico();
         documentoHistorico.setNome(demanda.getTitulo() + " - Versão " + (listaHistorico.size() + 1));
-        historico.setDocumento(documentoHistoricoService.save(documentoHistorico));
 
         listaHistorico.add(historicoService.save(historico));
+        demanda.setHistoricoDemanda(listaHistorico);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }

@@ -115,27 +115,30 @@ class PropostaService {
     idProposta,
     novasTabelasCusto = [],
     novosBeneficios = [],
-    listaIdsAnexos = []
+    novosAnexos = [],
+    listaIdsAnexos = [],
+    escopoTexto
   ) {
     let form = new FormData();
+    let propostaNovosDados = { ...propostaObj };
+
+    propostaNovosDados.beneficios = novosBeneficios;
+    propostaNovosDados.tabelaCustos = novasTabelasCusto;
 
     form.append("proposta", JSON.stringify(propostaObj));
+    form.append("propostaComDadosNovos", JSON.stringify(propostaNovosDados));
+    form.append("escopo", escopoTexto);
 
-    for (let beneficio of novosBeneficios) {
-      form.append("beneficios", JSON.stringify(beneficio));
-    }
-
-    for (let tabelaCusto of novasTabelasCusto) {
-      form.append("tabelasCustos", JSON.stringify(tabelaCusto));
+    if (novosAnexos.length > 0) {
+      for (let anexo of novosAnexos) {
+        form.append("listaAnexosNovos", anexo);
+      }
     }
 
     for (let idAnexo of listaIdsAnexos) {
       form.append("listaIdsAnexos", idAnexo);
     }
 
-    // fazer requisição para salvar novos custos e ccs dentro da tabela de custos já salvas no banco de dados
-
-    console.log("form", form)
     return (
       await axios.put(`${proposta}/update-novos-dados/${idProposta}`, form, {
         withCredentials: true,

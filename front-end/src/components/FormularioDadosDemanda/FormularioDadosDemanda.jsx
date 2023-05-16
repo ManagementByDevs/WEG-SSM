@@ -41,9 +41,6 @@ const FormularioDadosDemanda = (props) => {
     props.setDados({ ...props.dados, frequencia: texto });
   };
 
-  const [problemaCaixa, setProblemaCaixa] = useState();
-  const [propostaCaixa, setPropostaCaixa] = useState();
-
   return (
     <>
       <Box
@@ -92,8 +89,7 @@ const FormularioDadosDemanda = (props) => {
             >
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProblema}
-                texto={problemaCaixa}
-                setTexto={setProblemaCaixa}
+                texto={props.dados.problema}
                 onChange={(value) => {
                   salvarProblema(value);
                 }}
@@ -128,8 +124,7 @@ const FormularioDadosDemanda = (props) => {
             >
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProposta}
-                texto={propostaCaixa}
-                setTexto={setPropostaCaixa}
+                texto={props.dados.proposta}
                 onChange={(value) => {
                   salvarProposta(value);
                 }}

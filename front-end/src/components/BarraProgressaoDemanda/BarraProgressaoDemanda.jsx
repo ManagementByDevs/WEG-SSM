@@ -17,11 +17,13 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
+import { ClipLoader } from "react-spinners";
+import beneficioService from "../../service/beneficioService";
 
 /** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
  * salvando a demanda e escopos no banco de dados
  */
-const BarraProgressaoDemanda = () => {
+const BarraProgressaoDemanda = (props) => {
 
   const [usuario, setUsuario] = useState(null);
 
@@ -66,6 +68,9 @@ const BarraProgressaoDemanda = () => {
 
   /** Variável utilizada para abrir o modal de confirmação de criação de demanda */
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
+
+  /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
+  const [carregamento, setCarregamento] = useState(true);
 
   /** Variável com os nomes dos respectivos passos da criação da demanda, usando o contexto de tradução */
   const steps = [
@@ -114,6 +119,14 @@ const BarraProgressaoDemanda = () => {
     }
   }, [ultimoEscopo]);
 
+  // UseEffect para desativar o ícone de carregamento após ajustar as preferências do usuário
+  useEffect(() => {
+    setTimeout(() => {
+      setCarregamento(false);
+    }, 500)
+  }, [usuario])
+
+  /** Função para buscar o usuário salvo no cookie de autenticação */
   const buscarUsuario = () => {
     if (!CookieService.getCookie("jwt")) navigate("/login");
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
@@ -138,12 +151,12 @@ const BarraProgressaoDemanda = () => {
     EscopoService.buscarPorId(id).then((response) => {
       setPaginaDados({
         titulo: response.titulo,
-        problema: response.problema,
-        proposta: response.proposta,
+        problema: atob(response.problema),
+        proposta: atob(response.proposta),
         frequencia: response.frequencia,
       });
       receberBeneficios(response.beneficios);
-      receberArquivos(response.anexo);
+      setPaginaArquivos(response.anexo);
 
       setUltimoEscopo({
         id: response.id,
@@ -151,7 +164,7 @@ const BarraProgressaoDemanda = () => {
         problema: response.problema,
         proposta: response.proposta,
         frequencia: response.frequencia,
-        beneficios: formatarBeneficios(response.beneficios),
+        // beneficios: formatarBeneficios(response.beneficios),
       });
     });
   };
@@ -171,37 +184,17 @@ const BarraProgressaoDemanda = () => {
         tipoBeneficio: tipoBeneficioNovo,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true,
+        memoriaCalculo: atob(beneficio.memoriaCalculo),
       });
     }
     setPaginaBeneficios(listaNova);
   };
 
-  /** Função para formatar os arquivos recebidos no banco para a lista da página de edição */
-  const receberArquivos = (arquivos) => {
-    let listaArquivos = [];
-    for (let arquivo of arquivos) {
-      listaArquivos.push(
-        new File([arquivo.dados], arquivo.nome, { type: arquivo.tipo })
-      );
-    }
-    setPaginaArquivos(listaArquivos);
-  };
-
-  /** Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda */
-  const formatarBeneficios = (listaBeneficios) => {
+  /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
+  const retornarIdsObjetos = (listaObjetos) => {
     let listaNova = [];
-    for (let beneficio of listaBeneficios) {
-      if (beneficio.visible) {
-        listaNova.push({
-          id: beneficio.id,
-          memoriaCalculo: formatarHtml(beneficio.memoriaCalculo),
-          moeda: beneficio.moeda,
-          valor_mensal: beneficio.valor_mensal,
-          tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
-        });
-      }
+    for (let objeto of listaObjetos) {
+      listaNova.push({ id: objeto.id });
     }
     return listaNova;
   };
@@ -210,13 +203,25 @@ const BarraProgressaoDemanda = () => {
   const retornaObjetoDemanda = () => {
     const objetoDemanda = {
       titulo: paginaDados.titulo,
-      problema: formatarHtml(paginaDados.problema),
-      proposta: formatarHtml(paginaDados.proposta),
+      problema: btoa(formatarHtml(paginaDados.problema)),
+      proposta: btoa(formatarHtml(paginaDados.proposta)),
       frequencia: paginaDados.frequencia,
-      beneficios: formatarBeneficios(paginaBeneficios),
+      beneficios: retornarIdsObjetos(paginaBeneficios),
+      anexo: retornarIdsObjetos(paginaArquivos),
+      solicitante: { id: usuario.id }
     };
     return objetoDemanda;
   };
+
+  /** Função para criar e retornar um objeto de histórico para salvamento */
+  const retornaObjetoHistorico = () => {
+    const historico = {
+      data: new Date(),
+      acaoRealizada: "Demanda Criada",
+      autor: { id: usuario.id }
+    }
+    return historico;
+  }
 
   /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
   const formatarHtml = (texto) => {
@@ -237,17 +242,6 @@ const BarraProgressaoDemanda = () => {
     } catch (error) { }
   };
 
-  /** Função para atualizar os anexos de um escopo quando um anexo for adicionado/removido */
-  const salvarAnexosEscopo = () => {
-    if (paginaArquivos.length > 0) {
-      EscopoService.salvarAnexosEscopo(ultimoEscopo.id, paginaArquivos).then(
-        (response) => { }
-      );
-    } else {
-      EscopoService.removerAnexos(ultimoEscopo.id).then((response) => { });
-    }
-  };
-
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
     EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
@@ -258,20 +252,11 @@ const BarraProgressaoDemanda = () => {
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
 
-    DemandaService.post(
-      demandaFinal,
-      paginaArquivos,
-      usuario?.id
-    ).then((e) => {
-      ExportPdfService.exportDemanda(e.id).then((file) => {
+    DemandaService.post(demandaFinal).then((demanda) => {
+      ExportPdfService.exportDemanda(demanda.id).then((file) => {
         // Salvamento do histórico número 1 da demanda
         let arquivo = new Blob([file], { type: "application/pdf" });
-        DemandaService.addHistorico(
-          e.id,
-          "Demanda Criada",
-          arquivo,
-          usuario?.id
-        ).then((response) => {
+        DemandaService.addHistorico(demanda.id, retornaObjetoHistorico(), arquivo).then((response) => {
           direcionarHome();
           excluirEscopo();
         });
@@ -325,6 +310,7 @@ const BarraProgressaoDemanda = () => {
             setFeedbackDadosFaltantes(true);
           } else {
             setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
+            salvarBeneficios();
           }
         } else {
           setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
@@ -333,7 +319,14 @@ const BarraProgressaoDemanda = () => {
     }
   };
 
-  /** Função para direcionar o usuário para a tela de home após terminar a criação de demanda */
+  /** Função para salvar a lista de benefícios */
+  const salvarBeneficios = () => {
+    for (let beneficio of paginaBeneficios) {
+      beneficioService.put(beneficio, beneficio.memoriaCalculo).then((response) => { })
+    }
+  }
+
+  /** Função para direcionar o usuário para a tela de home após terminar a criação de demanda, ativando o feedback de criação de demanda */
   const direcionarHome = () => {
     localStorage.setItem("tipoFeedback", "1");
     navigate("/");
@@ -351,94 +344,102 @@ const BarraProgressaoDemanda = () => {
         mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
       />
 
-      {/* Modal de confirmação de criar demanda */}
-      {modalConfirmacao && (
-        <ModalConfirmacao
-          open={true}
-          setOpen={setOpenConfirmacao}
-          textoModal={"enviarDemanda"}
-          textoBotao={"enviar"}
-          onConfirmClick={criarDemanda}
-        />
-      )}
-
-      {/* Stepper utilizado para os passos da criação e a barra de progressão */}
-      <Stepper activeStep={etapaAtiva} sx={{ minWidth: "50rem" }}>
-        {steps.map((label, index) => {
-          return (
-            <Step key={label}>
-              <StepLabel>
-                <Typography fontSize={FontConfig.default}>{label}</Typography>
-              </StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-
-      {/* Componentes / páginas respectivas da criação da demanda */}
-      {etapaAtiva == 0 && (
-        <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
-      )}
-      {etapaAtiva == 1 && (
-        <Box className="w-full" sx={{ minWidth: "50rem" }}>
-          <FormularioBeneficiosDemanda
-            dados={paginaBeneficios}
-            setDados={setPaginaBeneficios}
-          />
+      {carregamento ? (
+        <Box className="mt-6 w-full h-full flex justify-center items-center">
+          <ClipLoader color="#00579D" size={110} />
         </Box>
-      )}
-      {etapaAtiva == 2 && (
-        <FormularioAnexosDemanda
-          salvarEscopo={salvarAnexosEscopo}
-          dados={paginaArquivos}
-          setDados={setPaginaArquivos}
-        />
-      )}
+      ) : (<>
+        {/* Modal de confirmação de criar demanda */}
+        {modalConfirmacao && (
+          <ModalConfirmacao
+            open={true}
+            setOpen={setOpenConfirmacao}
+            textoModal={"enviarDemanda"}
+            textoBotao={"enviar"}
+            onConfirmClick={criarDemanda}
+          />
+        )}
 
-      {/* Botão de voltar à etapa anterior da criação */}
-      <Button
-        variant="outlined"
-        color="tertiary"
-        disabled={etapaAtiva === 0}
-        onClick={voltarEtapa}
-        sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
-        disableElevation
-      >
-        <Typography fontSize={FontConfig.default}>
-          {texts.barraProgressaoDemanda.botaoVoltar}
-        </Typography>
-      </Button>
+        {/* Stepper utilizado para os passos da criação e a barra de progressão */}
+        <Stepper activeStep={etapaAtiva} sx={{ minWidth: "50rem" }}>
+          {steps.map((label, index) => {
+            return (
+              <Step key={label}>
+                <StepLabel>
+                  <Typography fontSize={FontConfig.default}>{label}</Typography>
+                </StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
 
-      {/* Verificações para mudar texto do botão de Próximo/Criar de acordo com o passo atual */}
-      {etapaAtiva === steps.length - 1 ? (
+        {/* Componentes / páginas respectivas da criação da demanda */}
+        {etapaAtiva == 0 && (
+          <FormularioDadosDemanda dados={paginaDados} setDados={setPaginaDados} />
+        )}
+        {etapaAtiva == 1 && (
+          <Box className="w-full" sx={{ minWidth: "50rem" }}>
+            <FormularioBeneficiosDemanda
+              dados={paginaBeneficios}
+              setDados={setPaginaBeneficios}
+              salvarBeneficios={salvarBeneficios}
+            />
+          </Box>
+        )}
+        {etapaAtiva == 2 && (
+          <FormularioAnexosDemanda
+            dados={paginaArquivos}
+            setDados={setPaginaArquivos}
+          />
+        )}
+
+        {/* Botão de voltar à etapa anterior da criação */}
         <Button
-          color="primary"
-          variant="contained"
-          onClick={() => {
-            setOpenConfirmacao(true);
-          }}
-          sx={{ mr: 1, position: "fixed", bottom: 50, right: 160 }}
-
+          variant="outlined"
+          color="tertiary"
+          disabled={etapaAtiva === 0}
+          onClick={voltarEtapa}
+          sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
           disableElevation
         >
           <Typography fontSize={FontConfig.default}>
-            {texts.barraProgressaoDemanda.botaoCriar}
+            {texts.barraProgressaoDemanda.botaoVoltar}
           </Typography>
         </Button>
-      ) : (
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={proximaEtapa}
-          disableElevation
-          sx={{ mr: 1, position: "fixed", bottom: 50, right: 160 }}
 
-        >
-          <Typography fontSize={FontConfig.default}>
-            {texts.barraProgressaoDemanda.botaoProximo}
-          </Typography>
-        </Button>
-      )}
+        {/* Verificações para mudar texto do botão de Próximo/Criar de acordo com o passo atual */}
+        {etapaAtiva === steps.length - 1 ? (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              setOpenConfirmacao(true);
+            }}
+            sx={{ mr: 1, position: "fixed", bottom: 50, right: 160 }}
+
+            disableElevation
+          >
+            <Typography fontSize={FontConfig.default}>
+              {texts.barraProgressaoDemanda.botaoCriar}
+            </Typography>
+          </Button>
+        ) : (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={proximaEtapa}
+            disableElevation
+            sx={{ mr: 1, position: "fixed", bottom: 50, right: 160 }}
+
+          >
+            <Typography fontSize={FontConfig.default}>
+              {texts.barraProgressaoDemanda.botaoProximo}
+            </Typography>
+          </Button>
+        )}
+      </>
+      )
+      }
     </>
   );
 };

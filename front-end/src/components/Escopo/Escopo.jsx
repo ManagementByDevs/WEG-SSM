@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 
 import { Box, Paper, Tooltip, Typography } from "@mui/material";
 
@@ -15,6 +15,21 @@ const Escopo = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  /** Variável utilizada para armazenar o valor em html do campo */
+  const propostaEscopo = useRef(null);
+
+  /** useEffect utilizado para declarar o campo html na variável */
+  useEffect(() => {
+    if (propostaEscopo.current) {
+      propostaEscopo.current.innerHTML = props.escopo.proposta;
+    }
+  }, []);
+
+  /** Função para formatar o html em texto */
+  const getPropostaFomartted = (proposta) => {
+    return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
+  };
 
   return (
     <Paper
@@ -62,9 +77,9 @@ const Escopo = (props) => {
         <Box className="h-16">
           <Typography
             className="w-11/12 h-full overflow-hidden text-ellipsis whitespace-pre-wrap"
-            fontSize={FontConfig.default}
+            fontSize={FontConfig.default} ref={propostaEscopo}
           >
-            {props.escopo.proposta}
+            {getPropostaFomartted(props.escopo.proposta)}
           </Typography>
         </Box>
         <Tooltip title={texts.escopo.titleExcluir}>

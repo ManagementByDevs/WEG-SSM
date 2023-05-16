@@ -48,6 +48,7 @@ import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
 import PropostaService from "../../service/propostaService";
+import BeneficioService from "../../service/beneficioService";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -67,7 +68,9 @@ const DetalhesPropostaEditMode = ({
   const { texts } = useContext(TextLanguageContext);
 
   // Estado da proposta editável
-  const [proposta, setProposta] = useState(propostaData);
+  const [proposta, setProposta] = useState(
+    JSON.parse(JSON.stringify(propostaData))
+  );
 
   // Estado para mostrar tela de loading
   const [isLoading, setIsLoading] = useState(true);
@@ -95,9 +98,14 @@ const DetalhesPropostaEditMode = ({
   // Texto do modal de confirmação que irá aparecer para o usuário
   const [textoModalConfirmacao, setTextoModalConfirmacao] = useState("");
 
+  // State para atualizar os benefícios na tela
   const [isBeneficiosVisible, setIsBeneficiosVisible] = useState(false);
 
+  // State para atualizar as tabelas de custo na tela
   const [isTabelaCustosVisile, setIsTabelaCustosVisible] = useState(false);
+
+  // State para conseguir
+  const [escopoAux, setEscopoAux] = useState("");
 
   // Referênica para o input de arquivo
   const inputFile = useRef(null);
@@ -168,63 +176,123 @@ const DetalhesPropostaEditMode = ({
     return false;
   };
 
+  // Formata o HTML em casos como a falta de fechamentos em tags "<br>"
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, "<br/>");
+    return texto;
+  };
+
+  // Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco
+  const carregarTextoEscopo = (escopo) => {
+    let reader = new FileReader();
+    reader.onload = () => {
+      setEscopoAux(reader.result);
+    };
+
+    if (escopo) {
+      let blob = new Blob([base64ToArrayBuffer(escopo)]);
+      reader.readAsText(blob);
+    }
+  };
+
+  const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
+    // Manda o escopo velho no objeto, pois o escopo novo está sendo mandado como outro param
+    propostaObj.escopo = propostaData.escopo;
+
+    propostaObj.problema = btoa(propostaObj.problema);
+    propostaObj.proposta = btoa(propostaObj.proposta);
+
+    for (let beneficio of propostaObj.beneficios) {
+      beneficio.memoriaCalculo = btoa(beneficio.memoriaCalculo);
+    }
+  };
+
   // Salva as edições da proposta no banco de dados
   const saveProposal = () => {
     // Fazer verificação dos campos
+    // Dando erro ao salvar qualquer campo com editor de texto que contenha acento
 
-    let propostaAux = { ...proposta };
+    let propostaAux = EntitiesObjectService.proposta();
+    propostaAux = JSON.parse(JSON.stringify(proposta));
+    let propostaEscopo = formatarHtml(propostaAux.escopo);
 
-    let novasTabelasCusto = propostaAux.tabelaCustos.filter((tabelaCusto) => {
+    arrangeData(propostaAux);
+
+    let novasTabelasCusto = JSON.parse(
+      JSON.stringify(propostaAux.tabelaCustos)
+    ).filter((tabelaCusto) => {
       if (tabelaCusto.id < 0) {
-        // Se o ID for negativo ele foi adicionado
+        // Se o ID for negativo ele é uma nova tabela de custos
         propostaAux.tabelaCustos.splice(
-          propostaAux.tabelaCustos.find((element) => element == tabelaCusto),
+          propostaAux.tabelaCustos.findIndex(
+            (element) => element == tabelaCusto
+          ),
           1
         );
         return tabelaCusto;
       }
     });
 
-    let novosBeneficios = propostaAux.beneficios.filter((beneficio) => {
+    let novosBeneficios = JSON.parse(
+      JSON.stringify(propostaAux.beneficios)
+    ).filter((beneficio) => {
       if (beneficio.id < 0) {
-        // Se o ID for negativo ele foi adicionado
+        // Se o ID for negativo ele é um novo benefício
         propostaAux.beneficios.splice(
-          propostaAux.beneficios.find((element) => element == beneficio),
+          propostaAux.beneficios.findIndex((element) => element == beneficio),
           1
         );
         return beneficio;
       }
     });
 
-    let listaIdsAnexos = propostaAux.anexo.filter((anexo) => {
+    let listaIdsAnexos = [];
+    JSON.parse(JSON.stringify(propostaAux.anexo)).filter((anexo) => {
       if (anexo.id) {
-        // Se o ID for positivo ele já existia
+        // Se existir ID ele já existia
         propostaAux.anexo.splice(
-          propostaAux.anexo.find((element) => element == anexo),
+          propostaAux.anexo.findIndex((element) => element == anexo),
           1
         );
-        return anexo.id;
+        console.log(anexo.id);
+        listaIdsAnexos.push(anexo.id);
       }
     });
+
+    // Verifica se o anexo não existia antes de ser editado e o adiciona na lista de novos anexos
+    let novosAnexos = [];
+    for (let anexo of proposta.anexo) {
+      if (!anexo.id) {
+        novosAnexos.push(anexo);
+      }
+    }
+
+    propostaAux.anexo = [];
+
+    // Falta apagar do banco de dados os objetos que foram removidos (CCs, custos, tabelas, anexos, busbeneficiadas)
 
     console.log(
       "DATA: ",
       propostaAux,
       novasTabelasCusto,
       novosBeneficios,
-      listaIdsAnexos
+      novosAnexos,
+      listaIdsAnexos,
+      propostaEscopo
     );
-    // return ;
 
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
       novasTabelasCusto,
       novosBeneficios,
-      listaIdsAnexos
+      novosAnexos,
+      listaIdsAnexos,
+      propostaEscopo
     ).then((response) => {
-      console.log("response", response.data);
-      setPropostaData(response.data);
+      console.log("response", response);
+      setPropostaData(response);
+      setIsEditing(false);
     });
   };
 
@@ -342,8 +410,14 @@ const DetalhesPropostaEditMode = ({
 
   const handleOnBeneficiosAddClick = () => {
     let newBeneficio = { ...EntitiesObjectService.beneficio() };
+    let ultimoEl;
 
-    let ultimoEl = proposta.beneficios[proposta.beneficios.length - 1];
+    if (proposta.beneficios.length == 0) {
+      ultimoEl = { id: 0 };
+    } else {
+      ultimoEl = proposta.beneficios[proposta.beneficios.length - 1];
+    }
+
     // Se o último elemento for novo, o id vai ser o id dele menos 1
     if (ultimoEl.id < 0) {
       newBeneficio.id = ultimoEl.id - 1;
@@ -488,7 +562,7 @@ const DetalhesPropostaEditMode = ({
       anexosAux.findIndex((oldFile) => oldFile == file),
       1
     );
-    
+
     setProposta({ ...proposta, anexo: [...anexosAux] });
   };
 
@@ -520,8 +594,13 @@ const DetalhesPropostaEditMode = ({
   // Handler para quando clicar no botão de adicionar criar uma nova tabela de custos
   const handleOnTabelaCustosAddClick = () => {
     let newTabelaCustos = EntitiesObjectService.tabelaCustos();
+    let ultimoEl;
 
-    let ultimoEl = proposta.tabelaCustos[proposta.tabelaCustos.length - 1];
+    if (proposta.tabelaCustos.length == 0) {
+      ultimoEl = { id: 0 };
+    } else {
+      ultimoEl = proposta.tabelaCustos[proposta.tabelaCustos.length - 1];
+    }
     // Se o último elemento for novo, o id vai ser o id dele menos 1
     if (ultimoEl.id < 0) {
       newTabelaCustos.id = ultimoEl.id - 1;
@@ -548,6 +627,8 @@ const DetalhesPropostaEditMode = ({
   }, [listaBus, listaForuns, listaSecoesTI]);
 
   useEffect(() => {
+    carregarTextoEscopo();
+
     BuService.getAll().then((busReponse) => {
       setListaBus(busReponse);
     });
@@ -568,7 +649,11 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
-    setProposta({ ...proposta, beneficios: [...beneficiosAux] });
+    setProposta({
+      ...proposta,
+      beneficios: [...beneficiosAux],
+      escopo: escopoAux,
+    });
   }, []);
 
   useEffect(() => {
@@ -584,6 +669,10 @@ const DetalhesPropostaEditMode = ({
       setIsTabelaCustosVisible(true);
     }
   }, [isBeneficiosVisible, isTabelaCustosVisile]);
+
+  useEffect(() => {
+    setProposta({ ...proposta, escopo: escopoAux });
+  }, [escopoAux]);
 
   // ***************************************** Fim UseEffects ***************************************** //
 
@@ -988,6 +1077,10 @@ const DetalhesPropostaEditMode = ({
                 {/* Select de BUs beneficiadas */}
                 <Autocomplete
                   multiple
+                  value={proposta.busBeneficiadas}
+                  isOptionEqualToValue={(option, value) => {
+                    return option.idBu === value.idBu;
+                  }}
                   options={listaBus}
                   disableCloseOnSelect
                   onChange={handleOnBuBeneficiadaSelect}
@@ -1415,15 +1508,6 @@ const TabelaCustos = ({
         </TableBody>
       </Table>
       <Box className="w-full flex justify-end px-2">
-        <Tooltip title={texts.formularioAnexosDemanda.remover}>
-          <IconButton
-            onClick={handleOnDeleteTabelaClick}
-            size="small"
-            color="primary"
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
         <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
           <IconButton
             onClick={handleOnDeleteCCClick}
@@ -1436,6 +1520,15 @@ const TabelaCustos = ({
         <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
           <IconButton onClick={handleOnAddCCClick} size="small" color="primary">
             <AddIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={texts.formularioAnexosDemanda.remover}>
+          <IconButton
+            onClick={handleOnDeleteTabelaClick}
+            size="small"
+            color="primary"
+          >
+            <DeleteIcon />
           </IconButton>
         </Tooltip>
       </Box>

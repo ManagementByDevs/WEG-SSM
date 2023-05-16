@@ -12,6 +12,7 @@ import FontContext from "../../service/FontContext";
 
 /** Segunda etapa da criação de demanda, usando uma lista de benefícios dos props */
 const FormularioBeneficiosDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -29,18 +30,14 @@ const FormularioBeneficiosDemanda = (props) => {
   // UseEffect que irá atualizar a lista de benefícios a serem salvos (que não foram excluídos)
   useEffect(() => {
     props.setDados(
-      beneficios?.filter((beneficio) => beneficio.visible === true)
+      beneficios
     );
   }, [beneficios]);
 
   /** Adiciona um benefício na lista de benefícios, já criando ele no banco de dados para receber um id */
   function adicionarBeneficio() {
-    BeneficioService.post({
-      tipoBeneficio: "",
-      valor_mensal: "",
-      moeda: "",
-      memoriaCalculo: "",
-    }).then((response) => {
+    props.salvarBeneficios();
+    BeneficioService.post().then((response) => {
       setBeneficios([
         ...beneficios,
         {
@@ -49,7 +46,6 @@ const FormularioBeneficiosDemanda = (props) => {
           valor_mensal: "",
           moeda: "",
           memoriaCalculo: "",
-          visible: true,
         },
       ]);
     });
@@ -69,15 +65,15 @@ const FormularioBeneficiosDemanda = (props) => {
 
   /** Função que irá setar a visibildade de um benefício para false, considerando o benefício como excluído */
   function removerBeneficio(desiredIndex) {
-    setBeneficios(
-      beneficios.map((beneficio, index) => {
-        if (index === desiredIndex) {
-          beneficio.visible = false;
-          BeneficioService.delete(beneficio.id).then((response) => { });
+    BeneficioService.delete(beneficios[desiredIndex].id).then((response) => {
+      let listaNova = [];
+      for (let contagem = 0; contagem < beneficios.length; contagem++) {
+        if (contagem != desiredIndex) {
+          listaNova.push({ ...beneficios[contagem] });
         }
-        return beneficio;
-      })
-    );
+      }
+      setBeneficios(listaNova);
+    });
   }
 
   return (
@@ -108,17 +104,15 @@ const FormularioBeneficiosDemanda = (props) => {
         >
           {/* Lista de benefícios */}
           {beneficios?.map((beneficio, index) => {
-            if (beneficio.visible) {
-              return (
-                <Beneficios
-                  key={index}
-                  save={salvarDados}
-                  index={index}
-                  removerBeneficio={removerBeneficio}
-                  dados={beneficio}
-                />
-              );
-            }
+            return (
+              <Beneficios
+                key={index}
+                save={salvarDados}
+                index={index}
+                removerBeneficio={removerBeneficio}
+                dados={beneficio}
+              />
+            );
           })}
         </Box>
       </Box>

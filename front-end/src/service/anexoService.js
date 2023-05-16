@@ -7,6 +7,7 @@ class AnexoService {
 
     /** Função para salvar um anexo, recebendo um arquivo File como parâmetro */
     async save(anexo) {
+        console.log("Entrou ss kenzo");
         let form = new FormData();
         form.set("anexo", anexo);
         return (await axios.post(anexoPath, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
@@ -15,11 +16,6 @@ class AnexoService {
     /** Função para excluir um anexo pelo seu ID */
     async deleteById(idAnexo) {
         return (await axios.delete(`${anexoPath}/${idAnexo}`, { withCredentials: true })).data;
-    }
-
-    /** Função para excluir um anexo pelo seu nome */
-    async delete(nomeAnexo) {
-        return (await axios.delete(`${anexoPath}/nome/${nomeAnexo}`, { withCredentials: true })).data;
     }
 
 }

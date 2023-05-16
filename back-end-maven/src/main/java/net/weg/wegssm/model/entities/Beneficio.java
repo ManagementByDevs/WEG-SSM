@@ -28,7 +28,7 @@ public class Beneficio {
     @Column(length = 6)
     private String moeda;
 
-    @Column(length = 200)
-    private String memoriaCalculo;
+    @Column
+    private byte[] memoriaCalculo;
 
 }

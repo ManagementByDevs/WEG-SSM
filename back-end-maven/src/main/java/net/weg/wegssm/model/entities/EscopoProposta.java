@@ -43,11 +43,13 @@ public class EscopoProposta {
     @Column(length = 100)
     private String titulo;
 
-    @Column(length = 2000)
-    private String problema;
+    @Column
+    @Lob
+    private byte[] problema;
 
-    @Column(length = 2000)
-    private String proposta;
+    @Column
+    @Lob
+    private byte[] proposta;
 
     @Column(length = 100)
     private String frequencia;
@@ -115,7 +117,7 @@ public class EscopoProposta {
     @JoinColumn(name = "demanda_id")
     private Demanda demanda;
 
-    @OneToMany(cascade = CascadeType.DETACH)
+    @OneToMany
     @JoinColumn(name = "id_escopo_proposta")
     private List<Anexo> anexo;
 
@@ -126,7 +128,7 @@ public class EscopoProposta {
         List<Anexo> listaAnexos = new ArrayList<>();
         try {
             for (MultipartFile file : files) {
-                listaAnexos.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+                listaAnexos.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
             }
             this.anexo = listaAnexos;
         } catch (Exception e) {
@@ -137,7 +139,7 @@ public class EscopoProposta {
     public void addAnexos(List<MultipartFile> files) {
         try {
             for (MultipartFile file : files) {
-                this.anexo.add(new Anexo(file.getOriginalFilename(), file.getContentType(), file.getBytes()));
+                this.anexo.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
             }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());

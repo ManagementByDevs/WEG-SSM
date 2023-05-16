@@ -139,23 +139,55 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
+  // Função para transformar um base64 em uma string
+  const convertByteArrayToString = (byteArray = []) => {
+    return window.atob(byteArray).toString("utf-8");
+  };
+
+  const setPropostaNewData = (proposta = EntitiesObjectService.proposta()) => {
+    proposta.proposta = convertByteArrayToString(proposta.proposta);
+    proposta.problema = convertByteArrayToString(proposta.problema);
+    proposta.escopo = convertByteArrayToString(proposta.escopo);
+
+    for (let beneficio of proposta.beneficios) {
+      beneficio.memoriaCalculo = convertByteArrayToString(
+        beneficio.memoriaCalculo
+      );
+    }
+
+    setProposta(JSON.parse(JSON.stringify(proposta)));
+  };
+
   // Função acionada quando o usúario clica no ícone de editar
   const handleOnEditClick = () => {
     setIsEditing(!isEditing);
   };
 
-  /** Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco */
+  // Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco
   const carregarTextoEscopo = (escopo) => {
     let reader = new FileReader();
     reader.onload = function () {
       textoEscopo.current.innerHTML = reader.result;
-    }
+    };
 
     if (escopo) {
       let blob = new Blob([base64ToArrayBuffer(escopo)]);
       reader.readAsText(blob);
     }
-  }
+  };
+
+  // Formata o objeto proposta pego do banco de dados
+  const formatData = (proposal = EntitiesObjectService.proposta()) => {
+    proposal.problema = convertByteArrayToString(proposal.problema);
+    proposal.proposta = convertByteArrayToString(proposal.proposta);
+    carregarTextoEscopo(proposal.escopo);
+
+    for (let beneficio of proposal.beneficios) {
+      beneficio.memoriaCalculo = convertByteArrayToString(
+        beneficio.memoriaCalculo
+      );
+    }
+  };
 
   useEffect(() => {
     if (problemaText.current) {
@@ -174,6 +206,8 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
   useEffect(() => {
     // Buscando os dados da proposta usando o propostaId
     PropostaService.getById(propostaId).then((proposal) => {
+      // Arrumando alguns textos
+      formatData(proposal);
       setProposta(proposal);
       setIsLoading(false);
     });
@@ -209,7 +243,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
           />
           <DetalhesPropostaEditMode
             propostaData={proposta}
-            setPropostaData={setProposta}
+            setPropostaData={setPropostaNewData}
             setIsEditing={setIsEditing}
           />
         </Box>
@@ -570,11 +604,11 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                       "ASSESSMENT_EDICAO",
                       "CANCELLED",
                     ].includes(proposta.status) && (
-                        <ParecerDG
-                          proposta={proposta}
-                          setProposta={setProposta}
-                        />
-                      )}
+                      <ParecerDG
+                        proposta={proposta}
+                        setProposta={setProposta}
+                      />
+                    )}
                   </Box>
                 </Box>
               </>
@@ -735,9 +769,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-        style: "currency",
-        currency: tipoMoeda,
-      })
+          style: "currency",
+          currency: tipoMoeda,
+        })
       : 0.0;
   };
 
@@ -892,7 +926,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => { },
+  setProposta = () => {},
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
@@ -905,7 +939,7 @@ const ParecerComissao = ({
 };
 
 // Chamar o parecer da DG
-const ParecerDG = ({ proposta = propostaExample, setProposta = () => { } }) => {
+const ParecerDG = ({ proposta = propostaExample, setProposta = () => {} }) => {
   if (proposta.status == "ASSESSMENT_DG")
     return (
       <ParecerDGInsertText proposta={proposta} setProposta={setProposta} />
@@ -916,7 +950,7 @@ const ParecerDG = ({ proposta = propostaExample, setProposta = () => { } }) => {
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
+  setProposta = () => {},
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1027,7 +1061,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
+  setProposta = () => {},
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1126,9 +1160,9 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  getCorStatus = () => { },
-  getStatusFormatted = () => { },
+  setProposta = () => {},
+  getCorStatus = () => {},
+  getStatusFormatted = () => {},
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1223,7 +1257,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
       <Menu
         id="basic-menu"

@@ -1,9 +1,10 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 const ChatContext = createContext({
-    usuarioId: 0,
-    visibilidade: false,
-    setVisibilidade: () => {},
+  visibilidade: false,
+  idChat: 0,
+  setVisibilidade: () => {},
+  setIdChat: () => {},
 });
 
 export default ChatContext;

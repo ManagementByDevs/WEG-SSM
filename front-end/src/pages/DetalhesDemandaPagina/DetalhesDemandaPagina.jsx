@@ -69,8 +69,8 @@ const DetalhesDemandaPagina = () => {
 
   // Função utilizada para alterar dados da demanda
   const updateDemandaProps = (demanda) => {
-    setDados(demanda);
-    location.state = demanda;
+    setDados({ ...demanda, problema: atob(demanda.problema), proposta: atob(demanda.proposta) });
+    location.state = { ...demanda, problema: atob(demanda.problema), proposta: atob(demanda.proposta) };
   };
 
   // Variável utilizada para o tour
@@ -120,7 +120,7 @@ const DetalhesDemandaPagina = () => {
       let url = URL.createObjectURL(blob);
       let link = document.createElement("a");
       link.href = url;
-      link.download = "pdf_demanda.pdf";
+      link.download = dados.titulo;
       link.click();
     });
   };

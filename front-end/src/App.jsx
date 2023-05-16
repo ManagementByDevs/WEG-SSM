@@ -67,11 +67,15 @@ const App = () => {
 
   const [chatMinimizado, setChatMinimizado] = useState(false);
 
+  const [chatId, setChatId] = useState(0);
+
   const miniChat = useMemo(
     () => ({
       usuarioId: 0,
+      idChat: chatId,
       visibilidade: chatMinimizado,
       setVisibilidade: setChatMinimizado,
+      setIdChat: setChatId,
     }),
     [chatMinimizado]
   );
@@ -120,7 +124,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/home-gerencia"
+                        redirectPath="/"
                       >
                         <CriarProposta />
                       </ProtectedRoute>
@@ -131,7 +135,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/home-gerencia"
+                        redirectPath="/"
                       >
                         <DetalhesPropostaPagina />
                       </ProtectedRoute>
@@ -142,7 +146,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/home-gerencia"
+                        redirectPath="/"
                       >
                         <DetalhesAta />
                       </ProtectedRoute>
@@ -153,7 +157,7 @@ const App = () => {
                     element={
                       <ProtectedRoute
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/home-gerencia"
+                        redirectPath="/"
                       >
                         <DetalhesPauta />
                       </ProtectedRoute>

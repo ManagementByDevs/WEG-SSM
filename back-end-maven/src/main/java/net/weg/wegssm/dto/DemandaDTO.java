@@ -12,11 +12,9 @@ public class DemandaDTO {
     @NotNull
     private String titulo;
 
-    @NotNull
-    private String problema;
+    private byte[] problema;
 
-    @NotNull
-    private String proposta;
+    private byte[] proposta;
 
     @NotNull
     private String frequencia;
@@ -32,5 +30,6 @@ public class DemandaDTO {
     private Forum forum;
     private Departamento departamento;
     private List<Beneficio> beneficios;
+    private List<Anexo> anexo;
 
 }

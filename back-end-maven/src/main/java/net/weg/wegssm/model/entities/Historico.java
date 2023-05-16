@@ -32,14 +32,14 @@ public class Historico {
     private Usuario autor;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private DocumentoHistorico documento;
+    private DocumentoHistorico documentoHistorico;
 
     @Column(nullable = false , length = 45)
     private String acaoRealizada;
 
     public void setDocumentoMultipart(MultipartFile file) {
         try {
-            this.documento = new DocumentoHistorico(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+            this.documentoHistorico = new DocumentoHistorico(file.getOriginalFilename(), file.getContentType(), file.getBytes());
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

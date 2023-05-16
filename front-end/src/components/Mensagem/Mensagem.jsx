@@ -11,7 +11,6 @@ import dateService from "../../service/dateService";
 import UsuarioService from "../../service/usuarioService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 
-
 // Componnete para utilizar durante uma mensagem no chat
 const Mensagem = (props) => {
   // Context para alterar o tamanho da fonte
@@ -22,8 +21,16 @@ const Mensagem = (props) => {
   // Função para baixar um anexo
   const downloadAnexo = (anexo = EntitiesObjectService.anexo()) => {
     const file = anexo;
-    let blob = new Blob([base64ToArrayBuffer(file.dados)]);
-    let fileName = `${file.nome}`;
+    let blob;
+    let fileName;
+
+    if (anexo instanceof File) {
+      blob = file;
+      fileName = file.name;
+    } else {
+      blob = new Blob([base64ToArrayBuffer(file.dados)]);
+      fileName = `${file.nome}`;
+    }
 
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, fileName);
@@ -42,8 +49,8 @@ const Mensagem = (props) => {
     }
   };
 
-   // Função para transformar uma string em base64 para um ArrayBuffer
-   const base64ToArrayBuffer = (base64) => {
+  // Função para transformar uma string em base64 para um ArrayBuffer
+  const base64ToArrayBuffer = (base64) => {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
@@ -76,7 +83,7 @@ const Mensagem = (props) => {
                 ) : (
                   <Tooltip title={props.mensagem.anexo.nome}>
                     <Box
-                      className="px-5 pb-2 mb-2 border rounded cursor-pointer"
+                      className="px-5 pb-2 mb-2 border rounded cursor-pointer flex flex-col justify-center items-center "
                       sx={{ backgroundColor: "chat.outro" }}
                       onClick={() => downloadAnexo(props.mensagem.anexo)}
                     >
@@ -130,11 +137,11 @@ const Mensagem = (props) => {
                   <Tooltip title={props.mensagem.anexo.nome}>
                     <Box
                       className="px-5 pb-2 mb-2 border rounded cursor-pointer"
-                      sx={{ backgroundColor: "chat.eu" }}
+                      sx={{ backgroundColor: "background.paper" }}
                       onClick={() => downloadAnexo(props.mensagem.anexo)}
                     >
                       <FolderOutlinedIcon
-                        sx={{ fontSize: "100px", color: "chat.outro" }}
+                        sx={{ fontSize: "100px", color: "chat.eu" }}
                       />
                       <Typography sx={{ fontWeight: 600 }}>
                         {props.mensagem.anexo.nome}

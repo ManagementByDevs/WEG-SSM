@@ -40,10 +40,10 @@ public class PropostaDTO {
     private Demanda demanda;
 
     @NotNull
-    private String problema;
+    private byte[] problema;
 
     @NotNull
-    private String proposta;
+    private byte[] proposta;
 
     @NotNull
     private String frequencia;

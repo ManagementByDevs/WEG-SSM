@@ -13,6 +13,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
+import AnexoService from "../../service/anexoService";
+
 /** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
 
@@ -35,19 +37,18 @@ const FormularioAnexosDemanda = (props) => {
     texts.formularioAnexosDemanda.arrasteSolteParaAdicionarUmArquivo
   );
 
-  // UseEffect para salvar o escopo da demanda atual quando algum arquivo for adicionado / removido
-  useEffect(() => {
-    props.salvarEscopo();
-  }, [props.dados]);
-
   /** Função para acionar o input de arquivos */
   const clickInputArquivos = () => {
     inputArquivos.current.click();
   };
 
-  /** Função para adicionar os arquivos no array após seleção pelo input */
-  const salvarArquivos = () => {
-    props.setDados([...props.dados, ...inputArquivos.current.files]);
+  /** Função para salvar e adicionar os arquivos no array após seleção pelo input */
+  const salvarArquivos = (arquivos) => {
+    for (let arquivo of arquivos) {
+      AnexoService.save(arquivo).then((response) => {
+        props.setDados([...props.dados, response]);
+      })
+    }
   };
 
   /** Função para mudar o "textoCaixa" quando o usuário arrastar um arquivo para a caixa de seleção */
@@ -68,16 +69,18 @@ const FormularioAnexosDemanda = (props) => {
     event.stopPropagation();
     let files = event.dataTransfer.files;
     let fileArrayAux = Array.from(files);
-    props.setDados([...props.dados, ...fileArrayAux]);
+    salvarArquivos(fileArrayAux);
   };
 
-  /** Função para excluir um arquivo do array */
+  /** Função para excluir um arquivo do banco de dados e do array */
   const deleteFile = (desiredIndex) => {
-    props.setDados(props.dados.filter((_, index) => index !== desiredIndex));
+    AnexoService.deleteById(props.dados[desiredIndex].id).then((response) => {
+      props.setDados(props.dados.filter((_, index) => index !== desiredIndex));
+    });
   };
 
   return (
-    <Box className="flex justify-center items-center" sx={{ height: "45rem", minWidth:"50.5rem" }}>
+    <Box className="flex justify-center items-center" sx={{ height: "45rem", minWidth: "50.5rem" }}>
       {/* Caixa de seleção */}
       <Box
         ref={areaArquivos}
@@ -88,7 +91,7 @@ const FormularioAnexosDemanda = (props) => {
         sx={{ width: "85%", height: "85%" }}
       >
         <input
-          onChange={salvarArquivos}
+          onChange={() => { salvarArquivos(inputArquivos.current?.files) }}
           ref={inputArquivos}
           type="file"
           multiple
@@ -153,12 +156,12 @@ const FormularioAnexosDemanda = (props) => {
                       <TableRow key={index} className="border-b">
                         <td className="text-center">
                           <Typography fontSize={FontConfig.medium} color="text.secondary" sx={{ fontWeight: "500", cursor: "default" }} >
-                            {file.name}
+                            {file.nome}
                           </Typography>
                         </td>
                         <td className="text-center">
                           <Typography fontSize={FontConfig.medium} color="text.secondary" sx={{ fontWeight: "500", cursor: "default" }} >
-                            {file.type}
+                            {file.tipo}
                           </Typography>
                         </td>
                         <td className="text-center">

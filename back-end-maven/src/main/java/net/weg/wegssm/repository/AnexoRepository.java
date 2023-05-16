@@ -8,13 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface AnexoRepository extends JpaRepository<Anexo, Long> {
 
-    /**
-     * Função para buscar um anexo pelo seu nome
-     */
-    Anexo findByNome(String nome);
-
-    /**
-     * Função para excluir um anexo pelo seu nome
-     */
-    void deleteByNome(String nome);
 }

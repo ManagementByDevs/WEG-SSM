@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.BeneficioDTO;
 import net.weg.wegssm.model.entities.Beneficio;
 import net.weg.wegssm.model.service.BeneficioService;
+import net.weg.wegssm.util.BeneficioUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -29,19 +31,24 @@ public class BeneficioController {
      * Função para salvar um benefício, recebendo o objeto no body
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid BeneficioDTO beneficioDTO) {
-
+    public ResponseEntity<Object> createNew() {
         Beneficio beneficio = new Beneficio();
-        BeanUtils.copyProperties(beneficioDTO, beneficio);
-
         return ResponseEntity.status(HttpStatus.OK).body(beneficioService.save(beneficio));
     }
 
     /**
      * Função para atualizar um benefício já existente, recebendo ele atualizado no body
      */
-    @PutMapping
-    public ResponseEntity<Object> update(@RequestBody Beneficio beneficio) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
+                                         @RequestParam(value = "beneficio") String beneficioJson,
+                                         @RequestParam(value = "memoriaCalculo") byte[] memoriaCalculo) {
+
+        BeneficioUtil beneficioUtil = new BeneficioUtil();
+        Beneficio beneficio = beneficioUtil.convertJsonToModel(beneficioJson);
+        beneficio.setId(id);
+        beneficio.setMemoriaCalculo(memoriaCalculo);
+
         if (!beneficioService.existsById(beneficio.getId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Benefício não encontrado!");
         }
