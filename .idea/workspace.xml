@@ -11,6 +11,8 @@
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/Home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Home/Home.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/HomeGerencia/HomeGerencia.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/HomeGerencia/HomeGerencia.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/Login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguageContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguageContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/service/entitiesObjectService.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/entitiesObjectService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
