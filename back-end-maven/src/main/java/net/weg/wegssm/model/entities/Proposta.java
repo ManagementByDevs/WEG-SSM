@@ -182,4 +182,13 @@ public class Proposta {
         }
     }
 
+    public boolean containsTabelaCusto(TabelaCusto tabelaCusto) {
+        for (TabelaCusto oldTabelaCusto : tabelaCustos) {
+            if (oldTabelaCusto.getId().equals(tabelaCusto.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

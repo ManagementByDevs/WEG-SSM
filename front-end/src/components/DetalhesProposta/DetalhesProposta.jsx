@@ -144,6 +144,20 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
     return window.atob(byteArray).toString("utf-8");
   };
 
+  const setPropostaNewData = (proposta = EntitiesObjectService.proposta()) => {
+    proposta.proposta = convertByteArrayToString(proposta.proposta);
+    proposta.problema = convertByteArrayToString(proposta.problema);
+    proposta.escopo = convertByteArrayToString(proposta.escopo);
+
+    for (let beneficio of proposta.beneficios) {
+      beneficio.memoriaCalculo = convertByteArrayToString(
+        beneficio.memoriaCalculo
+      );
+    }
+
+    setProposta(JSON.parse(JSON.stringify(proposta)));
+  };
+
   // Função acionada quando o usúario clica no ícone de editar
   const handleOnEditClick = () => {
     setIsEditing(!isEditing);
@@ -192,12 +206,8 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
   useEffect(() => {
     // Buscando os dados da proposta usando o propostaId
     PropostaService.getById(propostaId).then((proposal) => {
-      console.log("proposta 1: ", proposal);
-
       // Arrumando alguns textos
       formatData(proposal);
-
-      console.log("useeffect vazio sem edit");
       setProposta(proposal);
       setIsLoading(false);
     });
@@ -233,7 +243,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
           />
           <DetalhesPropostaEditMode
             propostaData={proposta}
-            setPropostaData={setProposta}
+            setPropostaData={setPropostaNewData}
             setIsEditing={setIsEditing}
           />
         </Box>
