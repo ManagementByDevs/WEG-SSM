@@ -59,7 +59,7 @@ const Chat = () => {
   // Context para alterar o idioma
   const { texts, setTexts } = useContext(TextLanguageContext);
 
-  const { setVisibilidade, visibilidade } = useContext(ChatContext);
+  const { setVisibilidade, setIdChat } = useContext(ChatContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -322,10 +322,8 @@ const Chat = () => {
   ];
 
   function handleFileUpload(event) {
-    console.log("AQUI ENTROU");
     const file = event.target.files[0];
     event.preventDefault();
-    console.log("ANTES DO SAVE");
     anexoService
       .save(file)
       .then((response) => {
@@ -563,7 +561,6 @@ const Chat = () => {
                             className="gap-2"
                             onClick={() => {
                               handleClose();
-                              setVisibilidade(true);
                             }}
                           >
                             <OpenInNewOutlinedIcon />
@@ -746,6 +743,7 @@ const Chat = () => {
                             onClick={() => {
                               handleClose();
                               setVisibilidade(true);
+                              setIdChat(idChat);
                             }}
                           >
                             <OpenInNewOutlinedIcon />
@@ -874,7 +872,7 @@ const Chat = () => {
                             paddingTop: "0.4rem",
                             resize: "none",
                           }}
-                          placeholder="Não é possível enviar mensagens, pois o chat foi encerrado."
+                          placeholder={texts.chat.inputChatEncerrado}
                           value={mensagem.texto}
                         />
                       </>

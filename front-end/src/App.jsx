@@ -67,11 +67,15 @@ const App = () => {
 
   const [chatMinimizado, setChatMinimizado] = useState(false);
 
+  const [chatId, setChatId] = useState(0);
+
   const miniChat = useMemo(
     () => ({
       usuarioId: 0,
+      idChat: chatId,
       visibilidade: chatMinimizado,
       setVisibilidade: setChatMinimizado,
+      setIdChat: setChatId,
     }),
     [chatMinimizado]
   );

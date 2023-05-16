@@ -503,6 +503,7 @@ const TextLanguageContext = createContext({
       chatEncerrado: "Chat encerrado com sucesso!",
       chatReaberto: "Chat reaberto com sucesso!",
       chatEncerradoErro: "Não é possível entrar em um chat encerrado!",
+      inputChatEncerrado: "Não é possível enviar mensagens, pois o chat foi encerrado.",
     },
     detalhesAta: {
       ataCriadaComSucesso: "Ata criada com sucesso!",

@@ -21,7 +21,7 @@ const Header = () => {
   const { texts } = useContext(TextLanguageContext);
 
   // Contexto para ver o chat minimizado
-  const { visibilidade, usuarioId } = useContext(ChatContext);
+  const { visibilidade, idChat } = useContext(ChatContext);
 
   // Variável para pegar informações da URL
   const location = useLocation();
@@ -38,7 +38,7 @@ const Header = () => {
     >
       {/* Aparecer o chat em qualquer lugar */}
       {visibilidade && (
-        <ChatMinimizado usuarioId={usuarioId} />
+        <ChatMinimizado idChat={idChat}/>
       )}
 
       {/* Link para página inicial */}
