@@ -77,6 +77,7 @@ const Chat = () => {
 
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
   const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
+  const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
 
   // UseState para armazenar o contato selecionado
   const onChange = (evt) => {
@@ -249,7 +250,6 @@ const Chat = () => {
       status: "MESSAGE",
       usuario: { id: user.usuario.id },
       idChat: { id: idChat },
-      anexo: [],
     });
   };
 
@@ -324,18 +324,23 @@ const Chat = () => {
   function handleFileUpload(event) {
     const file = event.target.files[0];
     event.preventDefault();
-    anexoService
-      .save(file)
-      .then((response) => {
-        enviar(`/app/weg_ssm/mensagem/${idChat}`, {
-          ...mensagem,
-          anexo: response,
+
+    if(file.size <= 65535) {
+      anexoService
+        .save(file)
+        .then((response) => {
+          enviar(`/app/weg_ssm/mensagem/${idChat}`, {
+            ...mensagem,
+            anexo: response,
+          });
+          inputRef.current.value = "";
+        })
+        .catch((error) => {
+          console.log(error);
         });
-        inputRef.current.value = "";
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    } else {
+      setFeedbackAnexoGrande(true)
+    }
     setDefaultMensagem();
   }
 
@@ -393,6 +398,15 @@ const Chat = () => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
+        />
+        {/* Feedback Anexo pesado */}
+        <Feedback
+          open={feedbackAnexoGrande}
+          handleClose={() => {
+            setFeedbackAnexoGrande(false);
+          }}
+          status={"erro"}
+          mensagem={texts.chat.anexoMuitoPesado}
         />
         {/* Feedback Chat reaberto com sucesso */}
         <Feedback
