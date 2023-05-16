@@ -28,6 +28,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import CookieService from "../../service/cookieService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
+import { WebSocketContext } from "../../service/WebSocketService";
+import chatService from "../../service/chatService";
 
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
 
@@ -126,6 +129,7 @@ const Home = () => {
   useEffect(() => {
     ativarFeedback();
     buscarUsuario();
+    inscreverSocket();
   }, []);
 
   useEffect(() => {
@@ -398,6 +402,53 @@ const Home = () => {
     saveNewPreference("abaPadrao");
   }, [valorAba]);
   // ********************************************** Fim Preferências **********************************************
+
+  // ********************************************** CHAT **********************************************
+
+  const [caraLogado, setCaraLogado] = useState(UsuarioService.getUserCookies())
+
+  const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
+
+
+  const [mensagens, setMensagens] = useState([
+    EntitiesObjectService.mensagem(),
+  ]);
+
+  const inscreverSocket = () => {
+    const acaoNovaMensagem = (response) => {
+      const mensagemRecebida = JSON.parse(response.body);
+      let mensagemNova = {
+        ...mensagemRecebida.body,
+        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
+      };
+      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
+    };
+
+    chatService.getByRemetente(caraLogado.usuario.id).then((response) => {
+      const chats = response;
+      chats.map((chat) => {
+      if (chat.id) {
+        let inscricaoId = inscrever(
+          `/weg_ssm/mensagem/${chat.id}/chat`,
+          acaoNovaMensagem
+        );
+
+        return () => {
+          if (inscricaoId) {
+            inscricaoId.unsubscribe();
+          }
+        };
+      }
+      });
+    });
+  }
+
+  useEffect(() => {
+    inscreverSocket();
+  }, [stompClient]);
+
+  // ********************************************** FIM CHAT **********************************************
+
 
   return (
     <FundoComHeader>

@@ -165,7 +165,7 @@ class EntitiesObjectService {
       status: "",
       usuario: this.usuario(),
       idChat: this.chat(),
-      anexo: [this.anexo()],
+      anexo: this.anexo(),
     };
   }
 }

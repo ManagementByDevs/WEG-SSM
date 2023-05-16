@@ -37,10 +37,13 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import PautaService from "../../service/pautaService";
 import AtaService from "../../service/ataService";
+import CookieService from "../../service/cookieService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
+import { WebSocketContext } from "../../service/WebSocketService";
+import chatService from "../../service/chatService";
 
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
-import CookieService from "../../service/cookieService";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
@@ -238,6 +241,63 @@ const HomeGerencia = () => {
     },
   ];
 
+
+
+
+
+
+  const [caraLogado, setCaraLogado] = useState(UsuarioService.getUserCookies())
+
+  const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
+
+
+  const [mensagens, setMensagens] = useState([]);
+
+  useEffect(() => {
+    console.log("MENSAGENS: ", mensagens);
+  }, [mensagens]);
+
+  const inscreverSocket = () => {
+    const acaoNovaMensagem = (response) => {
+      const mensagemRecebida = JSON.parse(response.body);
+      let mensagemNova = {
+        ...mensagemRecebida.body,
+        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
+      };
+      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
+    };
+
+    chatService.getByRemetente(caraLogado.usuario.id).then((response) => {
+      const chats = response;
+      chats.map((chat) => {
+      if (chat.id) {
+        let inscricaoId = inscrever(
+          `/weg_ssm/mensagem/${chat.id}/chat`,
+          acaoNovaMensagem
+        );
+      }
+      });
+    });
+  }
+
+  useEffect(() => {
+    inscreverSocket();
+  }, [stompClient]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Context para ver o tema do sistema
   const { mode } = useContext(ColorModeContext);
 
@@ -388,6 +448,7 @@ const HomeGerencia = () => {
     buscarUsuario();
     buscarFiltros();
     arrangePreferences();
+    inscreverSocket();
   }, []);
 
   useEffect(() => {
