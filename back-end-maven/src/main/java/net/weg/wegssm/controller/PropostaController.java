@@ -613,12 +613,12 @@ public class PropostaController {
                                 }
                             }
                         } else {
-                            if(titulo != null && titulo.isEmpty()) {
-                                if(gerente != null) {
-                                    if(forum != null) {
-                                        if(departamento != null) {
-                                            if(tamanho != null) {
-                                                if(solicitante != null) {
+                            if (titulo != null && titulo.isEmpty()) {
+                                if (gerente != null) {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
                                                     return ResponseEntity.status(HttpStatus.OK).body(
                                                             propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
                                                                     true, analista, codigoPPM, titulo, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
@@ -632,7 +632,7 @@ public class PropostaController {
                                                     );
                                                 }
                                             } else {
-                                                if(solicitante != null) {
+                                                if (solicitante != null) {
                                                     return ResponseEntity.status(HttpStatus.OK).body(
                                                             propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
                                                                     true, analista, codigoPPM, titulo, gerente, forum, departamento, solicitante, emPauta, emAta, pageable
@@ -647,8 +647,8 @@ public class PropostaController {
                                                 }
                                             }
                                         } else {
-                                            if(tamanho != null) {
-                                                if(solicitante != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
                                                     return ResponseEntity.status(HttpStatus.OK).body(
                                                             propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
                                                                     true, analista, codigoPPM, titulo, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable
@@ -662,7 +662,7 @@ public class PropostaController {
                                                     );
                                                 }
                                             } else {
-                                                if(solicitante != null) {
+                                                if (solicitante != null) {
                                                     return ResponseEntity.status(HttpStatus.OK).body(
                                                             propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(
                                                                     true, analista, codigoPPM, titulo, gerente, forum, solicitante, emPauta, emAta, pageable
@@ -678,9 +678,9 @@ public class PropostaController {
                                             }
                                         }
                                     } else {
-                                        if(departamento != null) {
-                                            if(tamanho != null) {
-                                                if(solicitante != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
                                                     return ResponseEntity.status(HttpStatus.OK).body(
                                                             propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
                                                                     true, analista, codigoPPM, titulo, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable
@@ -694,7 +694,7 @@ public class PropostaController {
                                                     );
                                                 }
                                             } else {
-                                                if(solicitante != null) {
+                                                if (solicitante != null) {
                                                     return ResponseEntity.status(HttpStatus.OK).body(
                                                             propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
                                                                     true, analista, codigoPPM, titulo, gerente, departamento, solicitante, emPauta, emAta, pageable
@@ -709,8 +709,8 @@ public class PropostaController {
                                                 }
                                             }
                                         } else {
-                                            if(tamanho != null) {
-                                                if(solicitante != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
                                                     return ResponseEntity.status(HttpStatus.OK).body(
                                                             propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
                                                                     true, analista, codigoPPM, titulo, gerente, tamanho, solicitante, emPauta, emAta, pageable
@@ -724,7 +724,7 @@ public class PropostaController {
                                                     );
                                                 }
                                             } else {
-                                                if(solicitante != null) {
+                                                if (solicitante != null) {
                                                     return ResponseEntity.status(HttpStatus.OK).body(
                                                             propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(
                                                                     true, analista, codigoPPM, titulo, gerente, solicitante, emPauta, emAta, pageable
@@ -741,17 +741,1677 @@ public class PropostaController {
                                         }
                                     }
                                 } else {
-                                    if
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndForumAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTituloContainingAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, titulo, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (gerente != null) {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndForumAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndGerenteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, gerente, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndForumAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndCodigoPPMAndEmPautaAndEmAta(
+                                                                    true, analista, codigoPPM, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        if (status != null) {
+                            if (titulo != null && !titulo.isEmpty()) {
+                                if (gerente != null) {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, gerente, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndEmPautaAndEmAta(
+                                                                    true, status, analista, titulo, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (gerente != null) {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndEmPautaAndEmAta(
+                                                                    true, status, analista, gerente, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, analista, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndForumAndEmPautaAndEmAta(
+                                                                    true, status, analista, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, analista, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, analista, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, analista, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndAnalistaAndEmPautaAndEmAta(
+                                                                    true, status, analista, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            if (titulo != null && !titulo.isEmpty()) {
+                                if (gerente != null) {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, gerente, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndEmPautaAndEmAta(
+                                                                    true, analista, titulo, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (gerente != null) {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndForumAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndGerenteAndEmPautaAndEmAta(
+                                                                    true, analista, gerente, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndForumAndTamanhoAndAndEmPautaAndEmAta(
+                                                                    true, analista, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndForumAndEmPautaAndEmAta(
+                                                                    true, analista, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, analista, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, analista, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, analista, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndAnalistaAndEmPautaAndEmAta(
+                                                                    true, analista, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (codigoPPM != null) {
+                        if (status != null) {
+                            if (titulo != null && !titulo.isEmpty()) {
+                                if (gerente != null) {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndGerenteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, gerente, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (forum != null) {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, forum, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, forum, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, forum, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, forum, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, forum, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, forum, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndForumAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, forum, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (departamento != null) {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, departamento, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, departamento, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, departamento, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, departamento, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        } else {
+                                            if (tamanho != null) {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, tamanho, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndTamanhoAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, tamanho, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            } else {
+                                                if (solicitante != null) {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, solicitante, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                } else {
+                                                    return ResponseEntity.status(HttpStatus.OK).body(
+                                                            propostaService.findByVisibilidadeAndStatusAndCodigoPPMAndTituloContainingAndEmPautaAndEmAta(
+                                                                    true, status, codigoPPM, titulo, emPauta, emAta, pageable
+                                                            )
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             } else {
 
                             }
+                        } else {
+
                         }
                     } else {
 
                     }
-                } else {
-
                 }
             } else {
                 if (analista != null) {
