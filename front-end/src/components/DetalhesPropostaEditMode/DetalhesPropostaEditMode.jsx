@@ -36,7 +36,6 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import Feedback from "../Feedback/Feedback";
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
@@ -48,7 +47,6 @@ import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
 import PropostaService from "../../service/propostaService";
-import BeneficioService from "../../service/beneficioService";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -195,6 +193,7 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
+  // Formata alguns dados da proposta para outro tipo de dado
   const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
     // Manda o escopo velho no objeto, pois o escopo novo está sendo mandado como outro param
     propostaObj.escopo = propostaData.escopo;
@@ -207,9 +206,66 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
+  // Verifica se todos os campos estão preenchidos corretamente
+  const isAllFieldsValid = () => {
+    let propostaAux = EntitiesObjectService.proposta();
+    propostaAux = JSON.parse(JSON.stringify(proposta));
+
+    if (!propostaAux.codigoPPM) return false;
+    if (!propostaAux.data) return false;
+    if (!propostaAux.titulo) return false;
+    if (!propostaAux.solicitante) return false;
+    if (!propostaAux.buSolicitante) return false;
+    if (!propostaAux.gerente) return false;
+    if (!propostaAux.forum) return false;
+    if (!propostaAux.tamanho) return false;
+    if (!propostaAux.secaoTI) return false;
+    if (!propostaAux.proposta || propostaAux.proposta == "<p><br></p>")
+      return false;
+    if (!propostaAux.problema || propostaAux.problema == "<p><br></p>")
+      return false;
+    if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>")
+      return false;
+    if (!propostaAux.frequencia) return false;
+    if (propostaAux.busBeneficiadas.length == 0) return false;
+    if (!propostaAux.linkJira) return false;
+    if (!propostaAux.inicioExecucao) return false;
+    if (!propostaAux.fimExecucao) return false;
+    if (!propostaAux.paybackValor) return false;
+    if (!propostaAux.paybackTipo) return false;
+    if (!propostaAux.responsavelNegocio.length == 0) return false;
+
+    for (let beneficio of propostaAux.beneficios) {
+      if (!beneficio.tipoBeneficio) return false;
+      if (
+        !beneficio.memoriaCalculo ||
+        beneficio.memoriaCalculo == "<p><br></p>"
+      )
+        return false;
+      if (beneficio.tipoBeneficio == "QUALITATIVO") {
+        if (!beneficio.tipo) return false;
+        if (!beneficio.valor) return false;
+      }
+    }
+
+    for (let tabelaCusto of propostaAux.tabelaCustos) {
+      for (let custo of tabelaCusto.custos) {
+      }
+
+      for (let cc of tabelaCusto.ccs) {
+      }
+    }
+
+    return true;
+  };
+
   // Salva as edições da proposta no banco de dados
   const saveProposal = () => {
-    // Fazer verificação dos campos
+    // Verificação dos campos
+    if (!isAllFieldsValid()) {
+      console.log("Preencha todos os campos corretamente!");
+      return;
+    }
     // Dando erro ao salvar qualquer campo com editor de texto que contenha acento
 
     let propostaAux = EntitiesObjectService.proposta();
@@ -267,9 +323,7 @@ const DetalhesPropostaEditMode = ({
       }
     }
 
-    propostaAux.anexo = [];
-
-    // Falta apagar do banco de dados os objetos que foram removidos (CCs, custos, tabelas, anexos, busbeneficiadas)
+    propostaAux.anexo = []; // Setando como lista vazia porque os anexos estão sendo mandados em outras variáveis
 
     console.log(
       "DATA: ",
@@ -1971,6 +2025,27 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Modules usados para o React Quill
+  const modulesQuill = {
+    toolbar: [
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      [{ script: "sub" }, { script: "super" }],
+      ["clean"],
+    ],
+  };
+
+  // Handler para quando o texto do parecer da comissão é alterado
+  const handleOnParecerComissaoChange = (value) => {
+    setProposta({ ...proposta, parecerInformacao: value });
+  };
+
   return (
     <Box>
       <Box className="flex">
@@ -2012,61 +2087,12 @@ const ParecerComissaoInsertText = ({
         </TextField>
       </Box>
       <Box className="mt-4">
-        <CaixaTextoQuill
-          texto={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
-          setTexto={(e) => setProposta({ ...proposta, parecerInformacao: e })}
+        <ReactQuill
+          value={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
+          onChange={handleOnParecerComissaoChange}
+          modules={modulesQuill}
         />
       </Box>
-    </Box>
-  );
-};
-
-// Visualizar o parecer da comissão
-const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
-  // Context para obter as configurações das fontes do sistema
-  const { FontConfig } = useContext(FontContext);
-
-  // Context para obter os textos do sistema
-  const { texts } = useContext(TextLanguageContext);
-
-  // Variável para armazenar as informações do parecer da comissão
-  const parecerComissaoInformacoesBox = useRef(null);
-
-  // useEffect para atualizar o texto do parecer da comissão
-  useEffect(() => {
-    if (parecerComissaoInformacoesBox.current) {
-      parecerComissaoInformacoesBox.current.innerHTML =
-        proposta.parecerInformacao
-          ? proposta.parecerInformacao
-          : texts.detalhesProposta.semInformacoesAdicionais;
-    }
-  }, []);
-
-  // Função para formatar o parecer
-  const getParecerComissaoFomartted = (parecer) => {
-    return parecer
-      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
-      : texts.detalhesProposta.semParecer;
-  };
-
-  return (
-    <Box>
-      <Box className="flex">
-        <Box className="flex items-center mt-4">
-          <Typography fontSize={FontConfig.medium}>
-            {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
-          </Typography>
-          <Typography fontSize={FontConfig.medium} fontWeight="bold">
-            {getParecerComissaoFomartted(proposta.parecerComissao)}
-          </Typography>
-        </Box>
-      </Box>
-      {/* Comporta o texto do parecer da comissão */}
-      <Box
-        ref={parecerComissaoInformacoesBox}
-        className="mt-2 mx-4 border-l-2 px-2"
-        sx={{ borderColor: "primary.main" }}
-      />
     </Box>
   );
 };
@@ -2081,6 +2107,27 @@ const ParecerDGInsertText = ({
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Modules usados para o React Quill
+  const modulesQuill = {
+    toolbar: [
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      [{ script: "sub" }, { script: "super" }],
+      ["clean"],
+    ],
+  };
+
+  // Handler para quando o texto do parecer da comissão é alterado
+  const handleOnParecerDGChange = (value) => {
+    setProposta({ ...proposta, parecerInformacaoDG: value });
+  };
 
   return (
     <Box className="mt-4">
@@ -2111,62 +2158,14 @@ const ParecerDGInsertText = ({
         </TextField>
       </Box>
       <Box className="mt-4">
-        <CaixaTextoQuill
-          texto={
+        <ReactQuill
+          value={
             proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""
           }
-          setTexto={(e) => setProposta({ ...proposta, parecerInformacaoDG: e })}
+          onChange={handleOnParecerDGChange}
+          modules={modulesQuill}
         />
       </Box>
-    </Box>
-  );
-};
-
-// Visualizar o parecer da DG
-const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
-  // Context para obter as configurações das fontes do sistema
-  const { FontConfig } = useContext(FontContext);
-
-  // Context para obter os textos do sistema
-  const { texts } = useContext(TextLanguageContext);
-
-  // Variável para armazenar o parecer da DG
-  const parecerDGInformacoesBox = useRef(null);
-
-  // UseEffect utilizado para armazenar o valor do parecer da dg
-  useEffect(() => {
-    if (parecerDGInformacoesBox.current) {
-      parecerDGInformacoesBox.current.innerHTML = proposta.parecerInformacaoDG
-        ? proposta.parecerInformacaoDG
-        : texts.detalhesProposta.semInformacoesAdicionais;
-    }
-  }, []);
-
-  // Função para formatar o parecer da DG
-  const getParecerDGFomartted = (parecer) => {
-    return parecer
-      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
-      : texts.detalhesProposta.semParecer;
-  };
-
-  return (
-    <Box>
-      <Box className="flex">
-        <Box className="flex items-center mt-4">
-          <Typography fontSize={FontConfig.medium}>
-            {texts.detalhesProposta.direcaoGeral}:&nbsp;
-          </Typography>
-          <Typography fontSize={FontConfig.medium} fontWeight="bold">
-            {getParecerDGFomartted(proposta.parecerDG)}
-          </Typography>
-        </Box>
-      </Box>
-      {/* Comporta o texto do parecer da comissão */}
-      <Box
-        ref={parecerDGInformacoesBox}
-        className="mt-2 mx-4 border-l-2 px-2"
-        sx={{ borderColor: "primary.main" }}
-      />
     </Box>
   );
 };

@@ -1031,9 +1031,20 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 
   // Função para formatar o parecer
   const getParecerComissaoFomartted = (parecer) => {
-    return parecer
-      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
-      : texts.detalhesProposta.semParecer;
+    if (!parecer) {
+      return texts.detalhesProposta.semParecer;
+    }
+
+    switch (parecer) {
+      case "APROVADO":
+        return texts.detalhesProposta.aprovado;
+      case "REPROVADO":
+        return texts.detalhesProposta.reprovado;
+      case "MAIS_INFORMACOES":
+        return texts.detalhesProposta.devolvido;
+      case "BUSINESS_CASE":
+        return texts.detalhesProposta.businessCase;
+    }
   };
 
   return (
@@ -1222,13 +1233,41 @@ const StatusProposta = ({
     return false;
   };
 
+  // Formata o HTML em casos como a falta de fechamentos em tags "<br>"
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, "<br/>");
+    return texto;
+  };
+
+  // Formata alguns dados da proposta para outro tipo de dado
+  const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
+    propostaObj.problema = btoa(formatarHtml(propostaObj.problema));
+    propostaObj.proposta = btoa(formatarHtml(propostaObj.proposta));
+    propostaObj.escopo = btoa(formatarHtml(propostaObj.escopo));
+
+    for (let beneficio of propostaObj.beneficios) {
+      beneficio.memoriaCalculo = btoa(formatarHtml(beneficio.memoriaCalculo));
+    }
+  };
+
+  // Função para transformar um base64 em uma string
+  const convertByteArrayToString = (byteArray = []) => {
+    return window.atob(byteArray).toString("utf-8");
+  };
+
+  // Função para editar o status da proposta
   const editarStatus = () => {
     if (newStatus == "") {
       console.log("Status não pode ser vazio!");
       return;
     }
 
-    let propostaAux = { ...proposta, status: newStatus };
+    let propostaAux = EntitiesObjectService.proposta();
+    propostaAux = JSON.parse(
+      JSON.stringify({ ...proposta, status: newStatus })
+    );
+
+    arrangeData(propostaAux);
 
     setConfirmEditStatus(false);
 
@@ -1236,6 +1275,16 @@ const StatusProposta = ({
     PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
       (newProposta) => {
         console.log("put: ", newProposta);
+        newProposta.proposta = convertByteArrayToString(newProposta.proposta);
+        newProposta.problema = convertByteArrayToString(newProposta.problema);
+        newProposta.escopo = convertByteArrayToString(newProposta.escopo);
+
+        for (let beneficio of newProposta.beneficios) {
+          beneficio.memoriaCalculo = convertByteArrayToString(
+            beneficio.memoriaCalculo
+          );
+        }
+
         // Atualiza a proposta com o novo status
         setProposta(newProposta);
       }
