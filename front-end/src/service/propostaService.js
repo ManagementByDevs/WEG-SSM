@@ -115,6 +115,7 @@ class PropostaService {
     idProposta,
     novasTabelasCusto = [],
     novosBeneficios = [],
+    novosAnexos = [],
     listaIdsAnexos = [],
     escopoTexto
   ) {
@@ -127,6 +128,12 @@ class PropostaService {
     form.append("proposta", JSON.stringify(propostaObj));
     form.append("propostaComDadosNovos", JSON.stringify(propostaNovosDados));
     form.append("escopo", escopoTexto);
+
+    if (novosAnexos.length > 0) {
+      for (let anexo of novosAnexos) {
+        form.append("listaAnexosNovos", anexo);
+      }
+    }
 
     for (let idAnexo of listaIdsAnexos) {
       form.append("listaIdsAnexos", idAnexo);

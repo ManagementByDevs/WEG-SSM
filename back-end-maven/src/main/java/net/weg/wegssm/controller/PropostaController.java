@@ -4013,8 +4013,9 @@ public class PropostaController {
     public ResponseEntity<Object> updateComNovosDados(@PathVariable(value = "id") Long id,
                                                       @RequestParam(value = "proposta") String propostaJSON,
                                                       @RequestParam(value = "propostaComDadosNovos", required = false) String novaPropostaJSON,
-                                                      @RequestParam(value = "listIdsAnexos", required = false) List<String> listaIdsAnexos,
-                                                      @RequestParam(value = "escopo", required = false) byte[] escopoProposta
+                                                      @RequestParam(value = "listaIdsAnexos", required = false) List<String> listaIdsAnexos,
+                                                      @RequestParam(value = "escopo", required = false) byte[] escopoProposta,
+                                                      @RequestParam(value = "listaAnexosNovos", required = false) List<MultipartFile> files
     ) {
         Optional<Proposta> propostaOptional = propostaService.findById(id);
 
@@ -4027,31 +4028,24 @@ public class PropostaController {
 
         proposta.setId(id);
 
-        System.out.println("Por curiosidade: " + proposta.getBeneficios().get(0).getMemoriaCalculo().getClass().getSimpleName());
-        System.out.println("Por curiosidade 2: " + escopoProposta.getClass().getSimpleName());
-
         if (escopoProposta != null) {
-            System.out.println("escopo proposta: " + Arrays.toString(escopoProposta));
             proposta.setEscopo(escopoProposta);
         }
 
-        System.out.println("Proposta antiga: " + proposta);
-
+        // Faz a atualização dos dados da proposta que devem ser adicionados (benefícios, tabelas...)
         Proposta propostaNovosDados = new Proposta();
         if (novaPropostaJSON != null) {
             propostaNovosDados = propostaUtil.convertJaCriadaJsonToModel(novaPropostaJSON);
 
-            System.out.println("Proposta novos dados: " + propostaNovosDados);
 
             ArrayList<Beneficio> beneficios = new ArrayList<>(); // Array aux que vai receber os novos beneficios
             for (Beneficio beneficio : propostaNovosDados.getBeneficios()) {
-                beneficio.setId(null);
-                beneficios.add(beneficioService.save(beneficio));
+                beneficio.setId(null); // Setando como null pq o id vem pra cá como negativo
+                beneficios.add(beneficioService.save(beneficio)); // Salva e adiciona o benefício na lista
             }
 
             propostaNovosDados.setBeneficios(beneficios); // Seta os novos beneficios na proposta aux
 
-            System.out.println("Beneficios: " + propostaNovosDados);
             ArrayList<TabelaCusto> novasTabelasCustos = new ArrayList<>(); // Array aux que vai receber as novas tabelas de custos
 
             for (TabelaCusto tabelaCusto : propostaNovosDados.getTabelaCustos()) {
@@ -4076,8 +4070,6 @@ public class PropostaController {
             }
 
             propostaNovosDados.setTabelaCustos(novasTabelasCustos); // Seta as novas tabelas de custos na proposta aux
-
-            System.out.println("Proposta: " + propostaNovosDados);
         }
 
         // Salvando linhas de tabelas custos que foram adicionadas na edição
@@ -4095,6 +4087,13 @@ public class PropostaController {
                     cc.setId(novoCC.getId());
                 }
             }
+
+            tabelaCustoService.save(tabelaCusto);
+        }
+
+        // Salvando os novos dados dos benefícios
+        for (Beneficio beneficio : proposta.getBeneficios()) {
+            beneficioService.save(beneficio);
         }
 
         // Colocando dados da PropostaAux para a Proposta a ser atualizada
@@ -4104,12 +4103,59 @@ public class PropostaController {
             }
         }
 
+        // Salvando os novos anexos adicionados na proposta
+        if (files != null) {
+            Proposta propostaAux = new Proposta();
+            propostaAux.setAnexos(files);
+
+            // Salvando os anexos no banco de dados
+            for (Anexo anexo : propostaAux.getAnexo()) {
+                anexo.setId((anexoService.save(anexo)).getId());
+            }
+
+            proposta.getAnexo().addAll(propostaAux.getAnexo());
+        }
+
         if (novaPropostaJSON != null) {
             proposta.getBeneficios().addAll(propostaNovosDados.getBeneficios());
             proposta.getTabelaCustos().addAll(propostaNovosDados.getTabelaCustos());
         }
 
+//        System.out.println("Última proposta: " + proposta);
+
+        /** Lógica para apagar objetos que foram removidos da proposta
+         * São eles: CCs, Custos, Tabelas de Custos, Anexos, BusBeneficiadas
+         */
+        deleteAllObjectsRemoved(proposta);
+
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
+    public void deleteAllObjectsRemoved(Proposta proposta) {
+        Proposta propostaAntiga = propostaService.findById(proposta.getId()).get();
+
+        System.out.println("Tabelas antigas: " + propostaAntiga.getTabelaCustos());
+        System.out.println("Tabelas novas: " + proposta.getTabelaCustos());
+
+        // Deletando as Tabelas de Custos removidos e seus respectivos custos e ccs
+        for (TabelaCusto oldTabelaCusto : propostaAntiga.getTabelaCustos()) {
+            System.out.println("Tabela de custo: " + oldTabelaCusto);
+            if (!proposta.containsTabelaCusto(oldTabelaCusto)) {
+                System.out.println("Entrou no if");
+
+                // Removendo os custos da tabela de custos
+                for (Custo custo : oldTabelaCusto.getCustos()) {
+                    custoService.deleteById(custo.getId());
+                }
+
+                // Removendo os CCs da tabela de custos
+                for (CC cc : oldTabelaCusto.getCcs()) {
+                    ccsService.deleteById(cc.getId());
+                }
+
+                tabelaCustoService.deleteById(oldTabelaCusto.getId());
+            }
+        }
     }
 
     /**

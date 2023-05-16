@@ -210,6 +210,7 @@ const DetalhesPropostaEditMode = ({
   // Salva as edições da proposta no banco de dados
   const saveProposal = () => {
     // Fazer verificação dos campos
+    // Dando erro ao salvar qualquer campo com editor de texto que contenha acento
 
     let propostaAux = EntitiesObjectService.proposta();
     propostaAux = JSON.parse(JSON.stringify(proposta));
@@ -217,45 +218,65 @@ const DetalhesPropostaEditMode = ({
 
     arrangeData(propostaAux);
 
-    // Não tá deletando as tabelas que deveriam ser removidas!!!
-    let novasTabelasCusto = propostaAux.tabelaCustos.filter((tabelaCusto) => {
+    let novasTabelasCusto = JSON.parse(
+      JSON.stringify(propostaAux.tabelaCustos)
+    ).filter((tabelaCusto) => {
       if (tabelaCusto.id < 0) {
-        // Se o ID for negativo ele foi adicionado
+        // Se o ID for negativo ele é uma nova tabela de custos
         propostaAux.tabelaCustos.splice(
-          propostaAux.tabelaCustos.find((element) => element == tabelaCusto),
+          propostaAux.tabelaCustos.findIndex(
+            (element) => element == tabelaCusto
+          ),
           1
         );
         return tabelaCusto;
       }
     });
 
-    let novosBeneficios = propostaAux.beneficios.filter((beneficio) => {
+    let novosBeneficios = JSON.parse(
+      JSON.stringify(propostaAux.beneficios)
+    ).filter((beneficio) => {
       if (beneficio.id < 0) {
-        // Se o ID for negativo ele foi adicionado
+        // Se o ID for negativo ele é um novo benefício
         propostaAux.beneficios.splice(
-          propostaAux.beneficios.find((element) => element == beneficio),
+          propostaAux.beneficios.findIndex((element) => element == beneficio),
           1
         );
         return beneficio;
       }
     });
 
-    let listaIdsAnexos = propostaAux.anexo.filter((anexo) => {
+    let listaIdsAnexos = [];
+    JSON.parse(JSON.stringify(propostaAux.anexo)).filter((anexo) => {
       if (anexo.id) {
         // Se existir ID ele já existia
         propostaAux.anexo.splice(
-          propostaAux.anexo.find((element) => element == anexo),
+          propostaAux.anexo.findIndex((element) => element == anexo),
           1
         );
-        return anexo.id;
+        console.log(anexo.id);
+        listaIdsAnexos.push(anexo.id);
       }
     });
+
+    // Verifica se o anexo não existia antes de ser editado e o adiciona na lista de novos anexos
+    let novosAnexos = [];
+    for (let anexo of proposta.anexo) {
+      if (!anexo.id) {
+        novosAnexos.push(anexo);
+      }
+    }
+
+    propostaAux.anexo = [];
+
+    // Falta apagar do banco de dados os objetos que foram removidos (CCs, custos, tabelas, anexos, busbeneficiadas)
 
     console.log(
       "DATA: ",
       propostaAux,
       novasTabelasCusto,
       novosBeneficios,
+      novosAnexos,
       listaIdsAnexos,
       propostaEscopo
     );
@@ -265,6 +286,7 @@ const DetalhesPropostaEditMode = ({
       proposta.id,
       novasTabelasCusto,
       novosBeneficios,
+      novosAnexos,
       listaIdsAnexos,
       propostaEscopo
     ).then((response) => {
@@ -388,8 +410,14 @@ const DetalhesPropostaEditMode = ({
 
   const handleOnBeneficiosAddClick = () => {
     let newBeneficio = { ...EntitiesObjectService.beneficio() };
+    let ultimoEl;
 
-    let ultimoEl = proposta.beneficios[proposta.beneficios.length - 1];
+    if (proposta.beneficios.length == 0) {
+      ultimoEl = { id: 0 };
+    } else {
+      ultimoEl = proposta.beneficios[proposta.beneficios.length - 1];
+    }
+
     // Se o último elemento for novo, o id vai ser o id dele menos 1
     if (ultimoEl.id < 0) {
       newBeneficio.id = ultimoEl.id - 1;
@@ -566,8 +594,13 @@ const DetalhesPropostaEditMode = ({
   // Handler para quando clicar no botão de adicionar criar uma nova tabela de custos
   const handleOnTabelaCustosAddClick = () => {
     let newTabelaCustos = EntitiesObjectService.tabelaCustos();
+    let ultimoEl;
 
-    let ultimoEl = proposta.tabelaCustos[proposta.tabelaCustos.length - 1];
+    if (proposta.tabelaCustos.length == 0) {
+      ultimoEl = { id: 0 };
+    } else {
+      ultimoEl = proposta.tabelaCustos[proposta.tabelaCustos.length - 1];
+    }
     // Se o último elemento for novo, o id vai ser o id dele menos 1
     if (ultimoEl.id < 0) {
       newTabelaCustos.id = ultimoEl.id - 1;
@@ -616,7 +649,6 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
-    console.log("useeffect vazio");
     setProposta({
       ...proposta,
       beneficios: [...beneficiosAux],
@@ -639,7 +671,6 @@ const DetalhesPropostaEditMode = ({
   }, [isBeneficiosVisible, isTabelaCustosVisile]);
 
   useEffect(() => {
-    console.log("useeffect escopoaux");
     setProposta({ ...proposta, escopo: escopoAux });
   }, [escopoAux]);
 
@@ -1477,15 +1508,6 @@ const TabelaCustos = ({
         </TableBody>
       </Table>
       <Box className="w-full flex justify-end px-2">
-        <Tooltip title={texts.formularioAnexosDemanda.remover}>
-          <IconButton
-            onClick={handleOnDeleteTabelaClick}
-            size="small"
-            color="primary"
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
         <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
           <IconButton
             onClick={handleOnDeleteCCClick}
@@ -1498,6 +1520,15 @@ const TabelaCustos = ({
         <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
           <IconButton onClick={handleOnAddCCClick} size="small" color="primary">
             <AddIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={texts.formularioAnexosDemanda.remover}>
+          <IconButton
+            onClick={handleOnDeleteTabelaClick}
+            size="small"
+            color="primary"
+          >
+            <DeleteIcon />
           </IconButton>
         </Tooltip>
       </Box>
