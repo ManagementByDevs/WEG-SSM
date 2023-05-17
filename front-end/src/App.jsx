@@ -105,12 +105,12 @@ const App = () => {
                     <Route path="/editar-escopo" element={<EditarEscopo />} />
                     <Route path="/escopos" element={<Escopos />} />
                     <Route path="*" element={<NotFound />} />
-                    <Route path="/test" element={<Test />} />
+                    {/* <Route path="/test" element={<Test />} /> */}
                   </Route>
                   <Route path="/editar-escopo" element={<EditarEscopo />} />
                   <Route path="/escopos" element={<Escopos />} />
                   <Route path="*" element={<NotFound />} />
-                  <Route path="/test" element={<Test />} />
+                  {/* <Route path="/test" element={<Test />} /> */}
                   <Route
                     path="/"
                     element={
