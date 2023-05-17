@@ -642,6 +642,8 @@ const DetalhesDemanda = (props) => {
 
   const [escutar, setEscutar] = useState(false);
 
+  const [localClique, setLocalClique] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -672,7 +674,16 @@ const DetalhesDemanda = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        // setValorPesquisa(transcript);
+        switch (localClique) {
+          case "tituloDemanda":
+            setTituloDemanda(transcript);
+            break;
+          case "frequenciaUso":
+            setFrequencia(transcript);
+            break;
+          default:
+            break;
+        }
       };
 
       recognition.onerror = (event) => {
@@ -695,8 +706,9 @@ const DetalhesDemanda = (props) => {
     }
   };
 
-  const startRecognition = () => {
+  const startRecognition = (ondeClicou) => {
     setEscutar(!escutar);
+    setLocalClique(ondeClicou);
   };
 
   useEffect(() => {
@@ -875,6 +887,12 @@ const DetalhesDemanda = (props) => {
                       key={index}
                       index={index}
                       beneficio={beneficio}
+                      setFeedbackErroNavegadorIncompativel={
+                        setFeedbackErroNavegadorIncompativel
+                      }
+                      setFeedbackErroReconhecimentoVoz={
+                        setFeedbackErroReconhecimentoVoz
+                      }
                     />
                   );
                 })}
@@ -1049,39 +1067,44 @@ const DetalhesDemanda = (props) => {
           <>
             <Box className="flex justify-center items-center">
               <Box
-                value={tituloDemanda}
-                onChange={(e) => {
-                  alterarTexto(e, "titulo");
-                }}
-                fontSize={FontConfig.title}
-                color="primary.main"
-                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                sx={{
-                  width: "100%;",
-                  height: "54px",
-                  backgroundColor: "background.default",
-                  fontWeight: "600",
-                }}
-                component="input"
-                placeholder={texts.DetalhesDemanda.digiteTituloDaDemanda}
-              />
-              <Tooltip
-                className="hover:cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition();
-                }}
+                className="flex justify-between items-center w-full border-solid border px-1 drop-shadow-sm rounded mt-2"
+                sx={{ backgroundColor: "background.default" }}
               >
-                {escutar ? (
-                  <MicOutlinedIcon
-                    sx={{ color: "primary.main", fontSize: "1.3rem" }}
-                  />
-                ) : (
-                  <MicNoneOutlinedIcon
-                    sx={{ color: "text.secondary", fontSize: "1.3rem" }}
-                  />
-                )}
-              </Tooltip>
+                <Box
+                  value={tituloDemanda}
+                  onChange={(e) => {
+                    alterarTexto(e, "titulo");
+                  }}
+                  fontSize={FontConfig.title}
+                  color="primary.main"
+                  className="flex outline-none"
+                  sx={{
+                    width: "95%;",
+                    height: "54px",
+                    backgroundColor: "transparent",
+                    fontWeight: "600",
+                  }}
+                  component="input"
+                  placeholder={texts.DetalhesDemanda.digiteTituloDaDemanda}
+                />
+                <Tooltip
+                  className="hover:cursor-pointer"
+                  title={texts.homeGerencia.gravarAudio}
+                  onClick={() => {
+                    startRecognition("tituloDemanda");
+                  }}
+                >
+                  {escutar && localClique == "tituloDemanda" ? (
+                    <MicOutlinedIcon
+                      sx={{ color: "primary.main", fontSize: "2rem" }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{ color: "text.secondary", fontSize: "2rem" }}
+                    />
+                  )}
+                </Tooltip>
+              </Box>
             </Box>
             <Divider />
             <Box>
@@ -1145,6 +1168,12 @@ const DetalhesDemanda = (props) => {
                       delete={deleteBeneficio}
                       beneficio={beneficio}
                       setBeneficio={alterarTextoBeneficio}
+                      setFeedbackErroNavegadorIncompativel={
+                        setFeedbackErroNavegadorIncompativel
+                      }
+                      setFeedbackErroReconhecimentoVoz={
+                        setFeedbackErroReconhecimentoVoz
+                      }
                     />
                   );
                 })}
@@ -1158,21 +1187,39 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.frequenciaDeUso}:
               </Typography>
-              <Box
-                value={frequencia}
-                onChange={(e) => {
-                  alterarTexto(e, "frequencia");
-                }}
-                fontSize={FontConfig.medium}
-                className="outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                sx={{
-                  width: "90%;",
-                  backgroundColor: corFundoTextArea,
-                  marginLeft: "30px",
-                }}
-                component="input"
-                placeholder={texts.DetalhesDemanda.digiteFrequenciaDeUso}
-              />
+              <Box className="flex items-center justify-between border-solid border px-2 py-1.5 drop-shadow-sm rounded" sx={{backgroundColor: corFundoTextArea, width: "90%",marginLeft: "30px",}}>
+                <Box
+                  value={frequencia}
+                  onChange={(e) => {
+                    alterarTexto(e, "frequencia");
+                  }}
+                  fontSize={FontConfig.medium}
+                  className="outline-none"
+                  sx={{
+                    width: "95%",
+                    backgroundColor: "transparent",
+                  }}
+                  component="input"
+                  placeholder={texts.DetalhesDemanda.digiteFrequenciaDeUso}
+                />
+                <Tooltip
+                  className="hover:cursor-pointer"
+                  title={texts.homeGerencia.gravarAudio}
+                  onClick={() => {
+                    startRecognition("frequenciaUso");
+                  }}
+                >
+                  {escutar && localClique == "frequenciaUso" ? (
+                    <MicOutlinedIcon
+                      sx={{ color: "primary.main", fontSize: "1.8rem" }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{ color: "text.secondary", fontSize: "1.8rem" }}
+                    />
+                  )}
+                </Tooltip>
+              </Box>
             </Box>
             <Box>
               <Box className="flex items-center">

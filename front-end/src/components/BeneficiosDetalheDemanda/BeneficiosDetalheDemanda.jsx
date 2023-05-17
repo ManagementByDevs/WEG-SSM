@@ -98,13 +98,6 @@ const BeneficiosDetalheDemanda = (props) => {
 
   // ********************************************** Gravar audio **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
   const recognitionRef = useRef(null);
 
   const [escutar, setEscutar] = useState(false);
@@ -149,14 +142,14 @@ const BeneficiosDetalheDemanda = (props) => {
       };
 
       recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
+        props.setFeedbackErroReconhecimentoVoz(true);
         setEscutar(false);
       };
 
       recognitionRef.current = recognition;
       recognition.start();
     } else {
-      setFeedbackErroNavegadorIncompativel(true);
+      props.setFeedbackErroNavegadorIncompativel(true);
       setEscutar(false);
     }
   };
@@ -184,24 +177,6 @@ const BeneficiosDetalheDemanda = (props) => {
 
   return (
     <Box className="flex items-center">
-      {/* Feedback Erro reconhecimento de voz */}
-      <Feedback
-        open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback12}
-      />
-      {/* Feedback Não navegador incompativel */}
-      <Feedback
-        open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback13}
-      />
       {/* Beneficios editáveis */}
       {props.editavel ? (
         <>
@@ -310,6 +285,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
                       props.beneficio.tipoBeneficio != "Qualitativo" && (
                         <>
+                        <Box className="flex items-center justify-center">
                           {/* Input de valor mensal */}
                           <Box
                             value={props.beneficio.valor_mensal || ""}
@@ -326,7 +302,7 @@ const BeneficiosDetalheDemanda = (props) => {
                             color="text.primary"
                             className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
                             sx={{
-                              width: "80%;",
+                              width: "70%;",
                               height: "30px",
                               backgroundColor: "background.default",
                             }}
@@ -358,6 +334,7 @@ const BeneficiosDetalheDemanda = (props) => {
                               />
                             )}
                           </Tooltip>
+                        </Box>
                         </>
                       )}
                   </td>
