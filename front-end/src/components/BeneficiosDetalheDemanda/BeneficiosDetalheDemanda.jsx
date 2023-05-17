@@ -158,7 +158,11 @@ const BeneficiosDetalheDemanda = (props) => {
                         id="demo-simple-select-standard"
                         value={props.beneficio.tipoBeneficio}
                         onChange={(e) => {
-                          props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value, }, props.index);
+                          if (e.target.value != "Qualitativo") {
+                            props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value }, props.index);
+                          } else {
+                            props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value, valor_mensal: "", moeda: "" }, props.index);
+                          }
                         }}
                       >
                         <MenuItem value={"Real"}>{texts.BeneficiosDetalheDemanda.real}</MenuItem>
@@ -212,8 +216,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     <Box sx={{ height: '10rem' }}>
                       {/* Caixa de texto para edição da memória cálculo */}
                       <CaixaTextoQuill
-                        texto={memoriaEdicao}
-                        setTexto={setMemoriaEdicao}
+                        texto={props.beneficio.memoriaCalculo}
                         onChange={(value) => {
                           alterarTexto(value)
                         }}

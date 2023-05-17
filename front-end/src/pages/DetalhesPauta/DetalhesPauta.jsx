@@ -215,7 +215,7 @@ const DetalhesPauta = (props) => {
       PropostaService.putWithoutArquivos(
         propostaDeleted,
         propostaDeleted.id
-      ).then((newProposta) => {});
+      ).then((newProposta) => { });
       location.state = { pauta: newPauta }; // Atualizando a pauta na página
       setPauta(newPauta); // Atualizando a pauta na variável do front
       setProposta(false); // Anulando a proposta que estava sendo exibida
@@ -386,7 +386,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       <Box className="p-2" sx={{ minWidth: "60rem" }}>
         <Box className="flex w-full relative">
@@ -484,6 +484,7 @@ const DetalhesPauta = (props) => {
                               backgroundColor: 'component.main',
                             }
                           }}
+                          key={proposta.id}
                           onClick={() => onClickProposta(index)}
                         >
                           <Typography

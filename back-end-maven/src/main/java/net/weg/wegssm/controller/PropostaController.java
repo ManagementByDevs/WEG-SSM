@@ -1214,7 +1214,7 @@ public class PropostaController {
                                             if (solicitante != null) {
                                                 return ResponseEntity.status(HttpStatus.OK).body(
                                                         propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(
-                                                                true, status, analista,  titulo, gerente, departamento, tamanho, solicitante, pageable
+                                                                true, status, analista, titulo, gerente, departamento, tamanho, solicitante, pageable
                                                         )
                                                 );
                                             } else {
@@ -1228,13 +1228,13 @@ public class PropostaController {
                                             if (solicitante != null) {
                                                 return ResponseEntity.status(HttpStatus.OK).body(
                                                         propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(
-                                                                true, status, analista,  titulo, gerente, forum, departamento, tamanho, solicitante, pageable
+                                                                true, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable
                                                         )
                                                 );
                                             } else {
                                                 return ResponseEntity.status(HttpStatus.OK).body(
                                                         propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamento(
-                                                                true, status, analista,  titulo, gerente, forum, departamento, tamanho, solicitante, pageable
+                                                                true, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable
                                                         )
                                                 );
                                             }
@@ -1644,7 +1644,7 @@ public class PropostaController {
                                             } else {
                                                 return ResponseEntity.status(HttpStatus.OK).body(
                                                         propostaService.findByVisibilidadeAndStatusAndAnalista(
-                                                                true, status, analista,  pageable
+                                                                true, status, analista, pageable
                                                         )
                                                 );
                                             }
@@ -1774,7 +1774,7 @@ public class PropostaController {
                                             } else {
                                                 return ResponseEntity.status(HttpStatus.OK).body(
                                                         propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerente(
-                                                                true, analista,  titulo, gerente, pageable
+                                                                true, analista, titulo, gerente, pageable
                                                         )
                                                 );
                                             }
@@ -1824,7 +1824,7 @@ public class PropostaController {
                                             } else {
                                                 return ResponseEntity.status(HttpStatus.OK).body(
                                                         propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanho(
-                                                                true, analista,  titulo, forum, tamanho, pageable
+                                                                true, analista, titulo, forum, tamanho, pageable
                                                         )
                                                 );
                                             }
@@ -2955,12 +2955,10 @@ public class PropostaController {
      * Método POST para criar uma proposta no banco de dados
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestParam(value = "proposta") String propostaJSON,
-                                       @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos,
-                                       @RequestParam(value = "escopo", required = false) byte[] escopoProposta) {
+    public ResponseEntity<Object> save(@RequestParam(value = "proposta") String propostaJSON) {
+
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
-        proposta.setEscopo(escopoProposta);
 
         Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
         List<Historico> historicoProposta = new ArrayList<>();
@@ -2971,10 +2969,6 @@ public class PropostaController {
 
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
-
-        for (Beneficio beneficio : proposta.getBeneficios()) {
-            beneficioService.save(beneficio);
-        }
 
         for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
@@ -2990,15 +2984,23 @@ public class PropostaController {
             tabelaCustoService.save(tabelaCusto);
         }
 
-        ArrayList<Anexo> listaAnexos = new ArrayList<>();
-        if (listaIdsAnexos != null) {
-            for (String id : listaIdsAnexos) {
-                listaAnexos.add(anexoService.findById(Long.parseLong(id)));
-            }
-        }
-        proposta.setAnexo(listaAnexos);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
+    }
+
+    /**
+     * Função utilizada para somente atualizar o status de uma proposta, recebendo como parâmetros o id e o novo status da proposta.
+     */
+    @PutMapping("/{id}/{status}")
+    public ResponseEntity<Object> atualizarStatus(@PathVariable(value = "id") Long id,
+                                                  @PathVariable(value = "status") Status status) {
+        Optional<Proposta> propostaOptional = propostaService.findById(id);
+        if(propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        proposta.setStatus(status);
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
     /**
@@ -3136,14 +3138,9 @@ public class PropostaController {
     public void deleteAllObjectsRemoved(Proposta proposta) {
         Proposta propostaAntiga = propostaService.findById(proposta.getId()).get();
 
-        System.out.println("Tabelas antigas: " + propostaAntiga.getTabelaCustos());
-        System.out.println("Tabelas novas: " + proposta.getTabelaCustos());
-
         // Deletando as Tabelas de Custos removidos e seus respectivos custos e ccs
         for (TabelaCusto oldTabelaCusto : propostaAntiga.getTabelaCustos()) {
-            System.out.println("Tabela de custo: " + oldTabelaCusto);
             if (!proposta.containsTabelaCusto(oldTabelaCusto)) {
-                System.out.println("Entrou no if");
 
                 // Removendo os custos da tabela de custos
                 for (Custo custo : oldTabelaCusto.getCustos()) {
@@ -3210,6 +3207,23 @@ public class PropostaController {
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
+
+    @RequestMapping("/pauta/{idProposta}")
+    public ResponseEntity<Object> updatePauta(@PathVariable(value = "idProposta") Long idProposta,
+                                              @RequestParam(value = "publicada") Boolean publicada,
+                                              @RequestParam(value = "status") Status status) {
+        Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
+        if(propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        proposta.setPublicada(publicada);
+        proposta.setStatus(status);
+        proposta.setEmPauta(true);
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
 
     /**
      * Método DELETE para modificar a visibilidade de uma proposta

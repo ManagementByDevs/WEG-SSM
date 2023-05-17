@@ -46,21 +46,11 @@ class PropostaService {
     ).data;
   }
 
-  async post(proposta, listaIds, escopoTexto) {
+  async post(proposta) {
     let form = new FormData();
 
     form.append("proposta", JSON.stringify(proposta));
-    for (let id of listaIds) {
-      form.append("idsAnexos", id);
-    }
-    form.append("escopo", escopoTexto);
-
-    return (
-      await axios.post(`/proposta`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      })
-    ).data;
+    return (await axios.post(`/proposta`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
   }
 
   async atualizarStatus(idProposta, statusNovo) {
@@ -95,6 +85,18 @@ class PropostaService {
         })
       ).data;
     }
+  }
+
+  async atualizarStatus(idProposta, status) {
+    return (await axios.put(`${proposta}/${idProposta}/${status}`)).data;
+  }
+
+  async atualizacaoPauta(idProposta, publicada, status) {
+    let form = new FormData();
+    form.set("publicada", publicada);
+    form.set("status", status);
+
+    return (await axios.put(`${proposta}/pauta/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
   }
 
   async putWithoutArquivos(propostaObj, idProposta) {

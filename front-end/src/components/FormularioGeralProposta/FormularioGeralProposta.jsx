@@ -22,6 +22,7 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
+import AnexoService from "../../service/anexoService";
 
 const FormularioGeralProposta = (props) => {
   // Contexto para trocar a linguagem
@@ -72,31 +73,15 @@ const FormularioGeralProposta = (props) => {
   // Coloca o arquivo selecionado no input no state de anexos
   const onFilesSelect = () => {
     for (let file of inputFile.current.files) {
-      props.setDados({
-        titulo: props.dados.titulo,
-        status: props.dados.status,
-        problema: props.dados.problema,
-        proposta: props.dados.proposta,
-        beneficios: props.dados.beneficios,
-        frequencia: props.dados.frequencia,
-        anexo: [...props.dados.anexo, file],
-        solicitante: props.dados.solicitante,
-        analista: props.dados.analista,
-        gerente: props.dados.gerente,
-        buSolicitante: props.dados.buSolicitante,
-        busBeneficiadas: props.dados.busBeneficiadas,
-        data: props.dados.data,
-        departamento: props.dados.departamento,
-        forum: props.dados.forum,
-        secaoTI: props.dados.secaoTI,
-        tamanho: props.dados.tamanho,
+      AnexoService.save(file).then((response) => {
+        props.setDados({ ...props.dados, anexo: [...props.dados.anexo, response] });
       });
     }
   };
 
   return (
     <Box className="flex flex-col">
-      <Box className="mt-12" sx={{minWidth:"55rem"}}>
+      <Box className="mt-12" sx={{ minWidth: "55rem" }}>
         <Box
           className="flex justify-around mb-5 mt-10 "
           sx={{

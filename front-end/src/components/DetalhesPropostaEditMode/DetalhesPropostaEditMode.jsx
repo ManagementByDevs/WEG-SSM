@@ -58,8 +58,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
-  setPropostaData = () => {},
-  setIsEditing = () => {},
+  setPropostaData = () => { },
+  setIsEditing = () => { },
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -254,7 +254,6 @@ const DetalhesPropostaEditMode = ({
           propostaAux.anexo.findIndex((element) => element == anexo),
           1
         );
-        console.log(anexo.id);
         listaIdsAnexos.push(anexo.id);
       }
     });
@@ -270,17 +269,6 @@ const DetalhesPropostaEditMode = ({
     propostaAux.anexo = [];
 
     // Falta apagar do banco de dados os objetos que foram removidos (CCs, custos, tabelas, anexos, busbeneficiadas)
-
-    console.log(
-      "DATA: ",
-      propostaAux,
-      novasTabelasCusto,
-      novosBeneficios,
-      novosAnexos,
-      listaIdsAnexos,
-      propostaEscopo
-    );
-
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
@@ -290,7 +278,6 @@ const DetalhesPropostaEditMode = ({
       listaIdsAnexos,
       propostaEscopo
     ).then((response) => {
-      console.log("response", response);
       setPropostaData(response);
       setIsEditing(false);
     });
@@ -649,16 +636,9 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
-    setProposta({
-      ...proposta,
-      beneficios: [...beneficiosAux],
-      escopo: escopoAux,
-    });
+    setProposta({ ...proposta, beneficios: [...beneficiosAux], escopo: atob(proposta.escopo) });
+    setEscopoAux(atob(proposta.escopo));
   }, []);
-
-  useEffect(() => {
-    console.log("Update proposta: ", proposta);
-  }, [proposta]);
 
   useEffect(() => {
     if (!isBeneficiosVisible) {
@@ -691,7 +671,7 @@ const DetalhesPropostaEditMode = ({
         textoModal={textoModalConfirmacao}
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
@@ -1014,15 +994,15 @@ const DetalhesPropostaEditMode = ({
             <Box className="mx-4">
               {proposta.tabelaCustos.length > 0 && isTabelaCustosVisile
                 ? proposta.tabelaCustos?.map((tabela, index) => {
-                    return (
-                      <TabelaCustos
-                        key={index}
-                        dados={tabela}
-                        handleOnTabelaCustosChange={handleOnTabelaCustosChange}
-                        handleDeleteTabelaCusto={handleDeleteTabelaCusto}
-                      />
-                    );
-                  })
+                  return (
+                    <TabelaCustos
+                      key={index}
+                      dados={tabela}
+                      handleOnTabelaCustosChange={handleOnTabelaCustosChange}
+                      handleDeleteTabelaCusto={handleDeleteTabelaCusto}
+                    />
+                  );
+                })
                 : null}
             </Box>
           </Box>
@@ -1322,8 +1302,8 @@ const TabelaCustos = ({
   dados = EntitiesObjectService.tabelaCustos(),
   handleOnTabelaCustosChange = (
     newTabela = EntitiesObjectService.tabelaCustos()
-  ) => {},
-  handleDeleteTabelaCusto = () => {},
+  ) => { },
+  handleDeleteTabelaCusto = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1538,7 +1518,7 @@ const TabelaCustos = ({
 
 const CC = ({
   cc = EntitiesObjectService.cc(),
-  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
+  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1586,7 +1566,7 @@ const CC = ({
 // Mostrar os custos na proposta
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
-  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
+  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1620,9 +1600,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -1730,8 +1710,8 @@ const CustosRow = ({
 // Mostrar os benefícios da proposta
 const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
-  handleOnBeneficioChange = () => {},
-  handleDeleteBeneficio = () => {},
+  handleOnBeneficioChange = () => { },
+  handleDeleteBeneficio = () => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1963,7 +1943,7 @@ const Beneficio = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2074,7 +2054,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);

@@ -3,7 +3,6 @@ import {
   Box,
   Typography,
   Divider,
-  TextareaAutosize,
   Paper,
   IconButton,
   Tooltip,
@@ -55,8 +54,6 @@ const FormularioPropostaProposta = (props) => {
 
   /** Variável de referência para ativar a escolha de anexos */
   const inputFile = useRef(null);
-
-  const mostrarEdicao = false;
 
   // UseEffect para alterar a cor do textArea (modo escuro / claro)
   useEffect(() => {
@@ -137,12 +134,7 @@ const FormularioPropostaProposta = (props) => {
   const adicionarBeneficio = () => {
     BeneficioService.post().then((response) => {
       let beneficioNovo = {
-        id: response.id,
-        tipoBeneficio: "REAL",
-        valor_mensal: "",
-        moeda: "",
-        memoriaCalculo: "",
-        visible: true,
+        ...response, tipoBeneficio: "", moeda: ""
       };
 
       try {
@@ -221,16 +213,6 @@ const FormularioPropostaProposta = (props) => {
     }
   };
 
-  const [problemaEdicao, setProblemaEdicao] = useState();
-  const [propostaEdicao, setPropostaEdicao] = useState();
-
-  useEffect(() => {
-    if (!props.carregamento) {
-      setProblemaEdicao(props.dados.problema);
-      setPropostaEdicao(props.dados.proposta);
-    }
-  }, [props.carregamento]);
-
   return (
     <>
       {/* Feedback anexos existente */}
@@ -279,13 +261,15 @@ const FormularioPropostaProposta = (props) => {
               </Box>
               <Divider />
               <Box>
-                <Typography
-                  fontSize={FontConfig.veryBig}
-                  fontWeight="600"
-                  color="text.primary"
-                  className="flex"
-                >
-                  {texts.formularioPropostaProposta.problema}:
+                <Box className="flex">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                    className="flex"
+                  >
+                    {texts.formularioPropostaProposta.problema}:
+                  </Typography>
                   <Typography
                     sx={{
                       fontSize: FontConfig.big,
@@ -295,11 +279,10 @@ const FormularioPropostaProposta = (props) => {
                   >
                     *
                   </Typography>
-                </Typography>
+                </Box>
                 <Box sx={{ marginTop: '1%' }}>
                   <CaixaTextoQuill
-                    texto={problemaEdicao}
-                    setTexto={setProblemaEdicao}
+                    texto={props.dados.problema}
                     onChange={(value) => {
                       alterarTexto(value, "problema");
                     }}
@@ -307,13 +290,15 @@ const FormularioPropostaProposta = (props) => {
                 </Box>
               </Box>
               <Box>
-                <Typography
-                  fontSize={FontConfig.veryBig}
-                  fontWeight="600"
-                  color="text.primary"
-                  className="flex"
-                >
-                  {texts.formularioPropostaProposta.proposta}:
+                <Box className="flex">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                    className="flex"
+                  >
+                    {texts.formularioPropostaProposta.proposta}:
+                  </Typography>
                   <Typography
                     sx={{
                       fontSize: FontConfig.big,
@@ -323,11 +308,10 @@ const FormularioPropostaProposta = (props) => {
                   >
                     *
                   </Typography>
-                </Typography>
+                </Box>
                 <Box sx={{ marginTop: '1%' }}>
                   <CaixaTextoQuill
-                    texto={propostaEdicao}
-                    setTexto={setPropostaEdicao}
+                    texto={props.dados.proposta}
                     onChange={(value) => {
                       alterarTexto(value, "proposta");
                     }}
@@ -368,13 +352,15 @@ const FormularioPropostaProposta = (props) => {
                 </Box>
               </Box>
               <Box>
-                <Typography
-                  fontSize={FontConfig.veryBig}
-                  fontWeight="600"
-                  color="text.primary"
-                  className="flex"
-                >
-                  {texts.formularioPropostaProposta.frequenciaDeUso}:
+                <Box className="flex">
+                  <Typography
+                    fontSize={FontConfig.veryBig}
+                    fontWeight="600"
+                    color="text.primary"
+                    className="flex"
+                  >
+                    {texts.formularioPropostaProposta.frequenciaDeUso}:
+                  </Typography>
                   <Typography
                     sx={{
                       fontSize: FontConfig.big,
@@ -384,7 +370,7 @@ const FormularioPropostaProposta = (props) => {
                   >
                     *
                   </Typography>
-                </Typography>
+                </Box>
                 <Box
                   value={props.dados.frequencia}
                   onChange={(e) => {

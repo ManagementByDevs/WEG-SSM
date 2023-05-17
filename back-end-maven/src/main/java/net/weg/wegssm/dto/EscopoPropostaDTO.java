@@ -3,88 +3,66 @@ package net.weg.wegssm.dto;
 import lombok.Data;
 import net.weg.wegssm.model.entities.*;
 
-import javax.persistence.Column;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class PropostaDTO {
+public class EscopoPropostaDTO {
 
-    @NotNull
-    private String titulo;
-
-    @NotNull @FutureOrPresent
     private Date inicioExecucao;
 
-    @NotNull @FutureOrPresent
     private Date fimExecucao;
 
-    @NotNull @Positive
     private Double paybackValor;
 
-    @NotNull
     private String paybackTipo;
 
-    @NotNull @Positive
-    private Long codigoPPM;
+    private Integer codigoPPM;
 
     private String linkJira;
 
-    private Status status;
+    private String titulo;
 
-    private List<ResponsavelNegocio> responsavelNegocio;
-
-    private Demanda demanda;
-
-    @NotNull
     private byte[] problema;
 
-    @NotNull
     private byte[] proposta;
 
-    @NotNull
     private String frequencia;
 
-    @NotNull
     private String tamanho;
 
-    @NotNull
+    private Date ultimaModificacao;
+
+    private byte[] escopo;
+
     private SecaoTI secaoTI;
 
-    private Boolean publicada;
+    private List<Beneficio> beneficios = new ArrayList<>();
 
-    @NotNull
     private Bu buSolicitante;
 
     private List<Bu> busBeneficiadas;
 
-    private List<Beneficio> beneficios;
-
     @NotNull
     private Usuario solicitante;
 
+    @NotNull
     private Usuario gerente;
 
     private Usuario analista;
 
-    @NotNull
     private Forum forum;
 
-    @NotNull
     private Departamento departamento;
 
     private List<TabelaCusto> tabelaCustos;
 
-    private List<Historico> historicoProposta;
+    private List<ResponsavelNegocio> responsavelNegocio;
 
-    private Boolean emPauta;
-
-    private Boolean emAta;
+    @NotNull
+    private Demanda demanda;
 
     private List<Anexo> anexo;
-
-    private byte[] escopo;
 }
