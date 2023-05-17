@@ -88,13 +88,13 @@ const PautaTable = ({
 
   // Função que retorna a cor do status da ata
   const getStatusColor = (ata = EntitiesObjectService.ata()) => {
-    if (ata.propostas[0].parecerDG != null) return "success.main";
+    if (ata.propostas[0]?.parecerDG != null) return "success.main";
     return "#C4C4C4";
   };
 
   const isApreciada = (ata = EntitiesObjectService.ata()) => {
-    return ata.propostas[0].parecerDG != null
-  }
+    return ata.propostas[0]?.parecerDG != null;
+  };
 
   return (
     <Paper sx={{ width: "100%", minWidth: "81rem" }} square>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Tab, Box, Tooltip, IconButton } from "@mui/material";
@@ -10,6 +10,8 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -28,12 +30,14 @@ import ClipLoader from "react-spinners/ClipLoader";
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import CookieService from "../../service/cookieService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
+import { WebSocketContext } from "../../service/WebSocketService";
+import chatService from "../../service/chatService";
 
 // import TextLinguage from "../../service/TextLinguage/TextLinguage";
 
 /** Página principal do solicitante */
 const Home = () => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -87,7 +91,14 @@ const Home = () => {
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
   /** Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado */
-  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
+  const [listaFiltros, setListaFiltros] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   /** Valores dos checkboxes de Score no modal de ordenação */
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
@@ -114,7 +125,8 @@ const Home = () => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] =
+    useState(true);
 
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
@@ -130,7 +142,7 @@ const Home = () => {
 
   useEffect(() => {
     arrangePreferences();
-  }, [usuario])
+  }, [usuario]);
 
   // UseEffect para buscar as demandas sempre que os parâmetros (filtros, ordenação ou páginas) forem modificados
   useEffect(() => {
@@ -194,12 +206,12 @@ const Home = () => {
 
   /** Função para buscar o usuário logado no sistema pelos cookies assim que ele entrar na página */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie("jwt").sub
-    ).then((e) => {
-      setUsuario(e);
-      setParams({ ...params, solicitante: e });
-    });
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (e) => {
+        setUsuario(e);
+        setParams({ ...params, solicitante: e });
+      }
+    );
   };
 
   // Função que verifica se os parâmetros estão nulos
@@ -225,7 +237,15 @@ const Home = () => {
     }
 
     setCarregamentoItens(true);
-    if (params.titulo || params.solicitante || params.gerente || params.forum || params.departamento || params.tamanho || params.status) {
+    if (
+      params.titulo ||
+      params.solicitante ||
+      params.gerente ||
+      params.forum ||
+      params.departamento ||
+      params.tamanho ||
+      params.status
+    ) {
       DemandaService.getPage(
         params,
         stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -240,16 +260,23 @@ const Home = () => {
   const formatarDemandas = (listaDemandas) => {
     let listaNova = [];
     for (let demanda of listaDemandas) {
-      
       let listaNovaBeneficios = [];
       for (let beneficio of demanda.beneficios) {
-        listaNovaBeneficios.push({ ...beneficio, memoriaCalculo: atob(beneficio.memoriaCalculo) });
+        listaNovaBeneficios.push({
+          ...beneficio,
+          memoriaCalculo: atob(beneficio.memoriaCalculo),
+        });
       }
 
-      listaNova.push({ ...demanda, problema: atob(demanda.problema), proposta: atob(demanda.proposta), beneficios: listaNovaBeneficios })
+      listaNova.push({
+        ...demanda,
+        problema: atob(demanda.problema),
+        proposta: atob(demanda.proposta),
+        beneficios: listaNovaBeneficios,
+      });
     }
     setListaDemandas(listaNova);
-  }
+  };
 
   /** Função para atualizar o filtro de status quando modificado no modal de filtros */
   const atualizarFiltro = (status) => {
@@ -264,7 +291,11 @@ const Home = () => {
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });
     } else {
-      setParams({ ...params, solicitante: null, departamento: usuario?.departamento });
+      setParams({
+        ...params,
+        solicitante: null,
+        departamento: usuario?.departamento,
+      });
     }
   };
 
@@ -356,20 +387,23 @@ const Home = () => {
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
   const arrangePreferences = () => {
-    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
-      let itemsVisualizationMode = preferencias?.itemsVisualizationMode?.toUpperCase();
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
+      (preferencias) => {
+        let itemsVisualizationMode =
+          preferencias?.itemsVisualizationMode?.toUpperCase();
 
-      setValorAba(preferencias?.abaPadrao);
-      // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
-      if (itemsVisualizationMode == nextModoVisualizacao) {
-        setNextModoVisualizacao("GRID");
+        setValorAba(preferencias?.abaPadrao);
+        // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+        if (itemsVisualizationMode == nextModoVisualizacao) {
+          setNextModoVisualizacao("GRID");
+        }
+
+        // Timeout para retirar o carregamento após as preferências serem atualizadas
+        setTimeout(() => {
+          setCarregamentoPreferencias(false);
+        }, 500);
       }
-
-      // Timeout para retirar o carregamento após as preferências serem atualizadas
-      setTimeout(() => {
-        setCarregamentoPreferencias(false);
-      }, 500)
-    });
+    );
   };
 
   /**
@@ -377,16 +411,18 @@ const Home = () => {
    */
   const saveNewPreference = () => {
     if (!CookieService.getCookie("jwt")) return;
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
-      let preferencias = JSON.parse(user.preferencias);
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (user) => {
+        let preferencias = JSON.parse(user.preferencias);
 
-      preferencias.itemsVisualizationMode =
-        nextModoVisualizacao == "TABLE" ? "grid" : "table";
+        preferencias.itemsVisualizationMode =
+          nextModoVisualizacao == "TABLE" ? "grid" : "table";
 
-      user.preferencias = JSON.stringify(preferencias);
+        user.preferencias = JSON.stringify(preferencias);
 
-      UsuarioService.updateUser(user.id, user).then((e) => { });
-    })
+        UsuarioService.updateUser(user.id, user).then((e) => {});
+      }
+    );
   };
 
   // UseEffect para salvar as novas preferências do usuário
@@ -398,6 +434,86 @@ const Home = () => {
     saveNewPreference("abaPadrao");
   }, [valorAba]);
   // ********************************************** Fim Preferências **********************************************
+
+  // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = () => {
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // ********************************************** Fim Gravar audio **********************************************
 
   return (
     <FundoComHeader>
@@ -415,6 +531,24 @@ const Home = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
+        {/* Feedback Erro reconhecimento de voz */}
+        <Feedback
+          open={feedbackErroReconhecimentoVoz}
+          handleClose={() => {
+            setFeedbackErroReconhecimentoVoz(false);
+          }}
+          status={"erro"}
+          mensagem={texts.homeGerencia.feedback.feedback12}
+        />
+        {/* Feedback navegador incompativel */}
+        <Feedback
+          open={feedbackErroNavegadorIncompativel}
+          handleClose={() => {
+            setFeedbackErroNavegadorIncompativel(false);
+          }}
+          status={"erro"}
+          mensagem={texts.homeGerencia.feedback.feedback13}
+        />
         {/* Feedback de demanda criada */}
         <Feedback
           open={feedbackDemandaCriada}
@@ -427,13 +561,11 @@ const Home = () => {
 
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
-
           {carregamentoPreferencias ? (
             <Box className="mt-6 w-full h-full flex justify-center items-center">
               <ClipLoader color="#00579D" size={110} />
             </Box>
           ) : (
-
             <TabContext value={valorAba}>
               <Box
                 className="mb-4 relative"
@@ -444,12 +576,18 @@ const Home = () => {
                   aria-label="lab API tabs example"
                 >
                   <Tab
-                    sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig?.medium,
+                    }}
                     label={texts.home.minhasDemandas}
                     value="1"
                   />
                   <Tab
-                    sx={{ color: "text.secondary", fontSize: FontConfig?.medium }}
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig?.medium,
+                    }}
                     label={texts.home.meuDepartamento}
                     value="2"
                   />
@@ -517,10 +655,30 @@ const Home = () => {
                       onChange={(e) => {
                         salvarPesquisa(e);
                       }}
+                      value={valorPesquisa}
                     />
 
                     {/* Container para os ícones */}
                     <Box className="flex gap-2">
+                      {/* Ícone de microfone */}
+                      <Tooltip
+                        className="hover:cursor-pointer"
+                        title={texts.homeGerencia.gravarAudio}
+                        onClick={() => {
+                          startRecognition();
+                        }}
+                      >
+                        {escutar ? (
+                          <MicOutlinedIcon
+                            sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                          />
+                        ) : (
+                          <MicNoneOutlinedIcon
+                            sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                          />
+                        )}
+                      </Tooltip>
+
                       {/* Ícone de pesquisa */}
                       <Tooltip title={texts.home.pesquisar}>
                         <SearchOutlinedIcon
@@ -534,7 +692,9 @@ const Home = () => {
                       <Tooltip title={texts.home.ordenacao}>
                         <SwapVertIcon
                           id="segundo"
-                          onClick={() => { setOpenOrdenacao(true); }}
+                          onClick={() => {
+                            setOpenOrdenacao(true);
+                          }}
                           className="cursor-pointer"
                           sx={{ color: "text.secondary" }}
                         />
@@ -566,7 +726,9 @@ const Home = () => {
                           fontSize: FontConfig?.default,
                           minWidth: "5rem",
                         }}
-                        onClick={() => { setFiltroAberto(true); }}
+                        onClick={() => {
+                          setFiltroAberto(true);
+                        }}
                         variant="contained"
                         disableElevation
                       >
@@ -631,7 +793,7 @@ const Home = () => {
                               solicitante: {
                                 id: 1,
                                 nome: texts.home.nomeDoSolicitante,
-                                tour: true
+                                tour: true,
                               },
                             }}
                           />
@@ -670,7 +832,7 @@ const Home = () => {
           />
         ) : null}
       </Box>
-    </FundoComHeader >
+    </FundoComHeader>
   );
 };
 

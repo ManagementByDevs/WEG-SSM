@@ -31,8 +31,10 @@ import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import PropostaService from "../../service/propostaService";
+import UsuarioService from "../../service/usuarioService";
 
 import ClipLoader from "react-spinners/ClipLoader";
+import Feedback from "../Feedback/Feedback";
 
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
@@ -53,6 +55,9 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
 
   // Estado para saber qual estado da proposta mostrar, a estática ou editável
   const [isEditing, setIsEditing] = useState(false);
+
+  // Estado para feedback de edição feita com sucesso
+  const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   // Referência para o texto do problema
   const problemaText = useRef(null);
@@ -147,12 +152,14 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
     proposta.problema = convertByteArrayToString(proposta.problema);
     proposta.escopo = convertByteArrayToString(proposta.escopo);
 
-    for (let beneficio of proposta.beneficios) {
-      beneficio.memoriaCalculo = convertByteArrayToString(
-        beneficio.memoriaCalculo
-      );
-    }
+    if (proposta.beneficios.length > 0)
+      for (let beneficio of proposta.beneficios) {
+        beneficio.memoriaCalculo = convertByteArrayToString(
+          beneficio.memoriaCalculo
+        );
+      }
 
+    setFeedbackEditSuccess(true);
     setProposta(JSON.parse(JSON.stringify(proposta)));
   };
 
@@ -189,6 +196,11 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
         beneficio.memoriaCalculo
       );
     }
+  };
+
+  const editProposta = (proposal) => {
+    setFeedbackEditSuccess(true);
+    setProposta(proposal);
   };
 
   useEffect(() => {
@@ -239,7 +251,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
         >
           <StatusProposta
             proposta={proposta}
-            setProposta={setProposta}
+            setProposta={editProposta}
             getCorStatus={getCorStatus}
             getStatusFormatted={getStatusFormatted}
           />
@@ -255,13 +267,19 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
 
   return (
     <Box className="flex justify-center">
+      <Feedback
+        open={feedbackEditSuccess}
+        handleClose={() => setFeedbackEditSuccess(false)}
+        status={"sucesso"}
+        mensagem={texts.detalhesProposta.editadoComSucesso}
+      />
       <Box
         className="border rounded px-10 py-4 border-t-6 relative"
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
       >
         <StatusProposta
           proposta={proposta}
-          setProposta={setProposta}
+          setProposta={editProposta}
           getCorStatus={getCorStatus}
           getStatusFormatted={getStatusFormatted}
         />
@@ -1033,9 +1051,20 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 
   // Função para formatar o parecer
   const getParecerComissaoFomartted = (parecer) => {
-    return parecer
-      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
-      : texts.detalhesProposta.semParecer;
+    if (!parecer) {
+      return texts.detalhesProposta.semParecer;
+    }
+
+    switch (parecer) {
+      case "APROVADO":
+        return texts.detalhesProposta.aprovado;
+      case "REPROVADO":
+        return texts.detalhesProposta.reprovado;
+      case "MAIS_INFORMACOES":
+        return texts.detalhesProposta.devolvido;
+      case "BUSINESS_CASE":
+        return texts.detalhesProposta.businessCase;
+    }
   };
 
   return (
@@ -1187,6 +1216,12 @@ const StatusProposta = ({
   // Estado do novo status
   const [newStatus, setNewStatus] = useState("");
 
+  // Estado para a controlar o feedback de erro de autoridade
+  const [feedbackErrorAuthority, setFeedbackErrorAuthority] = useState(false);
+
+  // Estado para controlar o feedback de erro de mesmo status selecionado
+  const [feedbackStatusError, setFeedbackStatusError] = useState(false);
+
   // Abre o modal para alterar o status da proposta
   const handleOpenModalStatus = () => {
     setModalStatus(true);
@@ -1199,7 +1234,7 @@ const StatusProposta = ({
 
   const confirmSelectStatus = (status) => {
     if (isSameStatus(status)) {
-      console.log("Status é o mesmo!");
+      setFeedbackStatusError(true);
       return;
     }
 
@@ -1224,6 +1259,37 @@ const StatusProposta = ({
     return false;
   };
 
+  // Formata o HTML em casos como a falta de fechamentos em tags "<br>"
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, "<br/>");
+    return texto;
+  };
+
+  // Formata alguns dados da proposta para outro tipo de dado
+  const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
+    propostaObj.problema = btoa(formatarHtml(propostaObj.problema));
+    propostaObj.proposta = btoa(formatarHtml(propostaObj.proposta));
+    propostaObj.escopo = btoa(formatarHtml(propostaObj.escopo));
+
+    for (let beneficio of propostaObj.beneficios) {
+      beneficio.memoriaCalculo = btoa(formatarHtml(beneficio.memoriaCalculo));
+    }
+  };
+
+  // Função para transformar um base64 em uma string
+  const convertByteArrayToString = (byteArray = []) => {
+    return window.atob(byteArray).toString("utf-8");
+  };
+
+  const userHasAuthority = () => {
+    let userCookie = UsuarioService.getUserCookies();
+    let user = userCookie.usuario;
+    if (proposta.analista.id == user.id) return true;
+
+    return false;
+  };
+
+  // Função para editar o status da proposta
   const editarStatus = () => {
     if (newStatus == "") {
       console.log("Status não pode ser vazio!");
@@ -1249,6 +1315,18 @@ const StatusProposta = ({
 
   return (
     <>
+      <Feedback
+        open={feedbackErrorAuthority}
+        handleClose={() => setFeedbackErrorAuthority(false)}
+        status={"erro"}
+        mensagem={texts.detalhesProposta.feedbackErrorAuthority}
+      />
+      <Feedback
+        open={feedbackStatusError}
+        handleClose={() => setFeedbackStatusError(false)}
+        status={"erro"}
+        mensagem={texts.detalhesProposta.mesmoStatus}
+      />
       <ModalConfirmacao
         open={confirmEditStatus}
         setOpen={setConfirmEditStatus}

@@ -35,8 +35,9 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
-import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import Feedback from "../Feedback/Feedback";
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
@@ -48,7 +49,6 @@ import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
 import PropostaService from "../../service/propostaService";
-import BeneficioService from "../../service/beneficioService";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -106,6 +106,12 @@ const DetalhesPropostaEditMode = ({
 
   // State para conseguir
   const [escopoAux, setEscopoAux] = useState("");
+
+  // Visibilidade do feedback de dados inválidos
+  const [feedbackDadosInvalidos, setFeedbackDadosInvalidos] = useState(false);
+
+  // State para ter o texto de feedback de dados inválidos
+  const [textoDadosInvalidos, setTextoDadosInvalidos] = useState("");
 
   // Referênica para o input de arquivo
   const inputFile = useRef(null);
@@ -195,6 +201,7 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
+  // Formata alguns dados da proposta para outro tipo de dado
   const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
     // Manda o escopo velho no objeto, pois o escopo novo está sendo mandado como outro param
     propostaObj.escopo = propostaData.escopo;
@@ -207,9 +214,191 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
+  const areCCsValid = (
+    tabelasCustos = [EntitiesObjectService.tabelaCustos()]
+  ) => {
+    for (let tabelaCusto of tabelasCustos) {
+      let porcentagemTotal = 0;
+
+      for (let cc of tabelaCusto.ccs) {
+        porcentagemTotal += cc.porcentagem;
+      }
+
+      if (porcentagemTotal != 100) return false;
+    }
+    return true;
+  };
+
+  // Verifica se todos os campos estão preenchidos corretamente
+  const isAllFieldsValid = () => {
+    let propostaAux = EntitiesObjectService.proposta();
+    let msgs = texts.detalhesPropostaEditMode;
+
+    propostaAux = JSON.parse(JSON.stringify(proposta));
+
+    if (!propostaAux.codigoPPM) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.ppm}`);
+      return false;
+    }
+    if (!propostaAux.data) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.data}`);
+      return false;
+    }
+    if (!propostaAux.titulo) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.titulo}`);
+      return false;
+    }
+    if (!propostaAux.solicitante) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.solicitante}`);
+      return false;
+    }
+    if (!propostaAux.buSolicitante) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.buSolicitante}`);
+      return false;
+    }
+    if (!propostaAux.gerente) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.gerente}`);
+      return false;
+    }
+    if (!propostaAux.forum) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.forum}`);
+      return false;
+    }
+    if (!propostaAux.tamanho) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.tamanho}`);
+      return false;
+    }
+    if (!propostaAux.secaoTI) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.secaoTi}`);
+      return false;
+    }
+
+    if (!propostaAux.proposta || propostaAux.proposta == "<p><br></p>") {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.proposta}`);
+      return false;
+    }
+    if (!propostaAux.problema || propostaAux.problema == "<p><br></p>") {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.problema}`);
+      return false;
+    }
+    // if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>")
+    // setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.escopo}`);
+    //   return false;
+    if (!propostaAux.frequencia) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.frequencia}`);
+      return false;
+    }
+    if (propostaAux.busBeneficiadas.length == 0) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.busBeneficiadas}`);
+      return false;
+    }
+    if (!propostaAux.linkJira) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.jira}`);
+      return false;
+    }
+    if (!propostaAux.inicioExecucao) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.inicioExecucao}`);
+      return false;
+    }
+    if (!propostaAux.fimExecucao) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.fimExecucao}`);
+      return false;
+    }
+    if (!propostaAux.paybackValor) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.paybackValor}`);
+      return false;
+    }
+    if (!propostaAux.paybackTipo) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.paybackTipo}`);
+      return false;
+    }
+    if (propostaAux.responsavelNegocio.length == 0) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.responsavelNegocio}`);
+      return false;
+    }
+    if (propostaAux.tabelaCustos.length == 0) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.tabelaCustos}`);
+      return false;
+    }
+
+    if (propostaAux.beneficios.length > 0)
+      for (let beneficio of propostaAux.beneficios) {
+        if (!beneficio.tipoBeneficio) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.benTipo}`);
+          return false;
+        }
+        if (
+          !beneficio.memoriaCalculo ||
+          beneficio.memoriaCalculo == "<p><br></p>"
+        ) {
+          setTextoDadosInvalidos(
+            `${msgs.dadoInvalido} ${msgs.benMemoriaCalculo}`
+          );
+          return false;
+        }
+        if (beneficio.tipoBeneficio != "QUALITATIVO") {
+          if (!beneficio.moeda) {
+            setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.benMoeda}`);
+            return false;
+          }
+          if (!beneficio.valor_mensal) {
+            setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.benValor}`);
+            return false;
+          }
+        }
+      }
+
+    for (let tabelaCusto of propostaAux.tabelaCustos) {
+      for (let custo of tabelaCusto.custos) {
+        if (!custo.tipoDespesa) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.tipoDespesa}`);
+          return false;
+        }
+        if (!custo.perfilDespesa) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.perfilDespesa}`);
+          return false;
+        }
+        if (!custo.periodoExecucao) {
+          setTextoDadosInvalidos(
+            `${msgs.dadoInvalido} ${msgs.periodoExecucao}`
+          );
+          return false;
+        }
+        if (!custo.horas) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.horas}`);
+          return false;
+        }
+        if (!custo.valorHora) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.valorHora}`);
+          return false;
+        }
+      }
+
+      for (let cc of tabelaCusto.ccs) {
+        if (!cc.codigo) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.codigoCC}`);
+          return false;
+        }
+        if (!cc.porcentagem) {
+          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.porcentagemCC}`);
+          return false;
+        }
+      }
+    }
+
+    if (!areCCsValid(propostaAux.tabelaCustos)) {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.porcentagemCC100}`);
+      return false;
+    }
+
+    return true;
+  };
+
   // Salva as edições da proposta no banco de dados
   const saveProposal = () => {
-    // Fazer verificação dos campos
+    // Verificação dos campos
+    if (!isAllFieldsValid()) return;
+
     // Dando erro ao salvar qualquer campo com editor de texto que contenha acento
 
     let propostaAux = EntitiesObjectService.proposta();
@@ -266,9 +455,11 @@ const DetalhesPropostaEditMode = ({
       }
     }
 
-    propostaAux.anexo = [];
+    propostaAux.anexo = []; // Setando como lista vazia porque os anexos estão sendo mandados em outras variáveis
+    if (propostaAux.parecerComissao == "NONE")
+      propostaAux.parecerComissao = null;
+    if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
 
-    // Falta apagar do banco de dados os objetos que foram removidos (CCs, custos, tabelas, anexos, busbeneficiadas)
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
@@ -654,7 +845,114 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, escopo: escopoAux });
   }, [escopoAux]);
 
+  useEffect(() => {
+    if (textoDadosInvalidos) setFeedbackDadosInvalidos(true);
+  }, [textoDadosInvalidos]);
+
   // ***************************************** Fim UseEffects ***************************************** //
+
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "titulo":
+            setProposta({
+              ...proposta,
+              titulo: transcript,
+            });
+            break;
+          case "frequencia":
+            setProposta({
+              ...proposta,
+              frequencia: transcript,
+            });
+            break;
+          case "linkJira":
+            setProposta({
+              ...proposta,
+              linkJira: transcript,
+            });
+          default:
+            break;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setLocalClique(ondeClicou);
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
 
   if (isLoading)
     return (
@@ -672,6 +970,30 @@ const DetalhesPropostaEditMode = ({
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
         onCancelClick={() => { }}
+      />
+      {/* Feedback Erro reconhecimento de voz */}
+      <Feedback
+        open={feedbackErroReconhecimentoVoz}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback12}
+      />
+      {/* Feedback Não navegador incompativel */}
+      <Feedback
+        open={feedbackErroNavegadorIncompativel}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback13}
+      />
+      <Feedback
+        open={feedbackDadosInvalidos}
+        handleClose={() => setFeedbackDadosInvalidos(false)}
+        status={"erro"}
+        mensagem={textoDadosInvalidos}
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
@@ -750,7 +1072,7 @@ const DetalhesPropostaEditMode = ({
       {/* Box Conteudo */}
       <Box className="w-full">
         {/* Titulo */}
-        <Box>
+        <Box className="flex items-center">
           <Input
             size="small"
             value={proposta.titulo}
@@ -760,6 +1082,33 @@ const DetalhesPropostaEditMode = ({
             sx={{ color: "primary.main", fontSize: FontConfig.smallTitle }}
             multiline={true}
           />
+          <Tooltip
+            className="flex items-center hover:cursor-pointer"
+            title={texts.homeGerencia.gravarAudio}
+            onClick={() => {
+              startRecognition("titulo");
+            }}
+          >
+            {escutar && localClique == "titulo" ? (
+              <MicOutlinedIcon
+                sx={{
+                  color: "primary.main",
+                  fontSize: "2rem",
+                  position: "absolute",
+                  right: "3rem",
+                }}
+              />
+            ) : (
+              <MicNoneOutlinedIcon
+                sx={{
+                  color: "text.secondary",
+                  fontSize: "2rem",
+                  position: "absolute",
+                  right: "3rem",
+                }}
+              />
+            )}
+          </Tooltip>
         </Box>
 
         {/* Box Informações gerais */}
@@ -966,7 +1315,7 @@ const DetalhesPropostaEditMode = ({
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.frequencia}:&nbsp;
             </Typography>
-            <Box className="mx-4">
+            <Box className="mx-4 flex items-center">
               <Input
                 size="small"
                 value={proposta.frequencia}
@@ -976,6 +1325,33 @@ const DetalhesPropostaEditMode = ({
                 sx={{ fontSize: FontConfig.medium }}
                 multiline={true}
               />
+              <Tooltip
+                className="flex items-center hover:cursor-pointer mb-2"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("frequencia");
+                }}
+              >
+                {escutar && localClique == "frequencia" ? (
+                  <MicOutlinedIcon
+                    sx={{
+                      color: "primary.main",
+                      fontSize: "1.6rem",
+                      position: "absolute",
+                      right: "1.8rem",
+                    }}
+                  />
+                ) : (
+                  <MicNoneOutlinedIcon
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: "1.6rem",
+                      position: "absolute",
+                      right: "1.8rem",
+                    }}
+                  />
+                )}
+              </Tooltip>
             </Box>
           </Box>
 
@@ -1118,16 +1494,43 @@ const DetalhesPropostaEditMode = ({
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.linkJira}:&nbsp;
             </Typography>
-            <Box className="mx-4">
+            <Box className="mx-4 flex items-center">
               <Input
                 size="small"
                 value={proposta.linkJira}
                 onChange={handleOnLinkJiraChange}
                 type="text"
                 fullWidth
-                sx={{ fontSize: FontConfig.medium }}
+                sx={{ fontSize: FontConfig.medium, paddingLeft: "0.6rem" }}
                 multiline={true}
               />
+              <Tooltip
+                className="flex items-center hover:cursor-pointer mb-2"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("linkJira");
+                }}
+              >
+                {escutar && localClique == "linkJira" ? (
+                  <MicOutlinedIcon
+                    sx={{
+                      color: "primary.main",
+                      fontSize: "1.6rem",
+                      position: "absolute",
+                      right: "1.8rem",
+                    }}
+                  />
+                ) : (
+                  <MicNoneOutlinedIcon
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: "1.6rem",
+                      position: "absolute",
+                      right: "1.8rem",
+                    }}
+                  />
+                )}
+              </Tooltip>
             </Box>
           </Box>
 
@@ -1520,6 +1923,9 @@ const CC = ({
   cc = EntitiesObjectService.cc(),
   handleOnCCChange = (newCC = EntitiesObjectService.cc()) => { },
 }) => {
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1535,9 +1941,102 @@ const CC = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "codigo":
+            handleOnCCChange({ ...cc, codigo: transcript });
+            break;
+          case "porcentagem":
+            handleOnCCChange({ ...cc, porcentagem: transcript });
+            break;
+          case "linkJira":
+          default:
+            break;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setLocalClique(ondeClicou);
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   return (
     <TableRow className="w-full border rounded">
-      <td className="text-center p-1">
+      <td className="text-center p-2">
         <Input
           value={cc.codigo}
           onChange={handleOnCodigoChange}
@@ -1547,8 +2046,35 @@ const CC = ({
           fullWidth
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("codigo");
+          }}
+        >
+          {escutar && localClique == "codigo" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                right: "14rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                right: "14rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
-      <td className="text-center p-1">
+      <td className="text-center p-2">
         <Input
           value={cc.porcentagem}
           onChange={handleOnPorcentagemChange}
@@ -1558,6 +2084,33 @@ const CC = ({
           fullWidth
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("porcentagem");
+          }}
+        >
+          {escutar && localClique == "porcentagem" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                right: "1.8rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                right: "1.8rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
     </TableRow>
   );
@@ -1635,6 +2188,108 @@ const CustosRow = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "tipoDespesa":
+            handleOnCustoChange({ ...custo, tipoDespesa: transcript });
+            break;
+          case "porcentagem":
+            break;
+          case "perfilDespesa":
+            handleOnCustoChange({ ...custo, perfilDespesa: transcript });
+            break;
+          case "periodoExecucao":
+            handleOnCustoChange({ ...custo, periodoExecucao: transcript });
+            break;
+          case "horas":
+            handleOnCustoChange({ ...custo, horas: transcript });
+            break;
+          case "valorHora":
+            handleOnCustoChange({ ...custo, valorHora: transcript });
+          default:
+            break;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setLocalClique(ondeClicou);
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   return (
     <TableRow>
       <td className="p-2 text-center">
@@ -1648,6 +2303,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("tipoDespesa");
+          }}
+        >
+          {escutar && localClique == "tipoDespesa" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "7rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "7rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Perfil da Despesa */}
@@ -1660,6 +2342,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("perfilDespesa");
+          }}
+        >
+          {escutar && localClique == "perfilDespesa" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "15rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "15rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Período de Execução */}
@@ -1672,6 +2381,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("periodoExecucao");
+          }}
+        >
+          {escutar && localClique == "periodoExecucao" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "23rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "23rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Horas */}
@@ -1684,6 +2420,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("horas");
+          }}
+        >
+          {escutar && localClique == "horas" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "31rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "31rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Valor da Hora */}
@@ -1696,6 +2459,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("valorHora");
+          }}
+        >
+          {escutar && localClique == "valorHora" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "39rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "39rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Total */}
@@ -1799,6 +2589,95 @@ const Beneficio = ({
 
   // ***************************************** Fim UseEffects ***************************************** //
 
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "valorMensal":
+            handleOnBeneficioChange({ ...beneficio, valor_mensal: event.target.value });
+            break;
+          default:
+            break;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setLocalClique(ondeClicou);
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   if (beneficio.id === 0) return null;
 
   return (
@@ -1892,6 +2771,33 @@ const Beneficio = ({
                     sx={{ fontSize: FontConfig.default }}
                     multiline={true}
                   />
+                  <Tooltip
+                    className="flex items-center cursor-pointer"
+                    title={texts.homeGerencia.gravarAudio}
+                    onClick={() => {
+                      startRecognition("valorMensal");
+                    }}
+                  >
+                    {escutar && localClique == "valorMensal" ? (
+                      <MicOutlinedIcon
+                        sx={{
+                          color: "primary.main",
+                          fontSize: "1.4rem",
+                          position: "absolute",
+                          left: "12.5rem",
+                        }}
+                      />
+                    ) : (
+                      <MicNoneOutlinedIcon
+                        sx={{
+                          color: "text.secondary",
+                          fontSize: "1.4rem",
+                          position: "absolute",
+                          left: "12.5rem",
+                        }}
+                      />
+                    )}
+                  </Tooltip>
                 </td>
                 <td className="text-center p-2">
                   {/* Select da moeda do benefício */}
@@ -1951,6 +2857,41 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Modules usados para o React Quill
+  const modulesQuill = {
+    toolbar: [
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      [{ script: "sub" }, { script: "super" }],
+      ["clean"],
+    ],
+  };
+
+  // Handler para quando o texto do parecer da comissão é alterado
+  const handleOnParecerComissaoChange = (value) => {
+    setProposta({ ...proposta, parecerInformacao: value });
+  };
+
+  // Handler para quando o parecer da comissão é selecionado
+  const handleOnSelectParecer = (event) => {
+    let parecer = event.target.value;
+    if (parecer == "NONE") {
+      setProposta({
+        ...proposta,
+        parecerComissao: parecer,
+        parecerInformacao: null,
+      });
+    } else {
+      setProposta({ ...proposta, parecerComissao: parecer });
+    }
+  };
+
   return (
     <Box>
       <Box className="flex">
@@ -1963,9 +2904,7 @@ const ParecerComissaoInsertText = ({
           select
           label={texts.detalhesProposta.parecer}
           value={proposta.parecerComissao ? proposta.parecerComissao : ""}
-          onChange={(event) =>
-            setProposta({ ...proposta, parecerComissao: event.target.value })
-          }
+          onChange={handleOnSelectParecer}
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
         >
@@ -1989,64 +2928,22 @@ const ParecerComissaoInsertText = ({
               {texts.detalhesProposta.businessCase}
             </Typography>
           </MenuItem>
+          <MenuItem key={"Nenhum"} value={"NONE"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.nenhum}
+            </Typography>
+          </MenuItem>
         </TextField>
       </Box>
       <Box className="mt-4">
-        <CaixaTextoQuill
-          texto={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
-          setTexto={(e) => setProposta({ ...proposta, parecerInformacao: e })}
-        />
+        {proposta.parecerComissao != "NONE" && (
+          <ReactQuill
+            value={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
+            onChange={handleOnParecerComissaoChange}
+            modules={modulesQuill}
+          />
+        )}
       </Box>
-    </Box>
-  );
-};
-
-// Visualizar o parecer da comissão
-const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
-  // Context para obter as configurações das fontes do sistema
-  const { FontConfig } = useContext(FontContext);
-
-  // Context para obter os textos do sistema
-  const { texts } = useContext(TextLanguageContext);
-
-  // Variável para armazenar as informações do parecer da comissão
-  const parecerComissaoInformacoesBox = useRef(null);
-
-  // useEffect para atualizar o texto do parecer da comissão
-  useEffect(() => {
-    if (parecerComissaoInformacoesBox.current) {
-      parecerComissaoInformacoesBox.current.innerHTML =
-        proposta.parecerInformacao
-          ? proposta.parecerInformacao
-          : texts.detalhesProposta.semInformacoesAdicionais;
-    }
-  }, []);
-
-  // Função para formatar o parecer
-  const getParecerComissaoFomartted = (parecer) => {
-    return parecer
-      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
-      : texts.detalhesProposta.semParecer;
-  };
-
-  return (
-    <Box>
-      <Box className="flex">
-        <Box className="flex items-center mt-4">
-          <Typography fontSize={FontConfig.medium}>
-            {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
-          </Typography>
-          <Typography fontSize={FontConfig.medium} fontWeight="bold">
-            {getParecerComissaoFomartted(proposta.parecerComissao)}
-          </Typography>
-        </Box>
-      </Box>
-      {/* Comporta o texto do parecer da comissão */}
-      <Box
-        ref={parecerComissaoInformacoesBox}
-        className="mt-2 mx-4 border-l-2 px-2"
-        sx={{ borderColor: "primary.main" }}
-      />
     </Box>
   );
 };
@@ -2062,6 +2959,41 @@ const ParecerDGInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Modules usados para o React Quill
+  const modulesQuill = {
+    toolbar: [
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      [{ script: "sub" }, { script: "super" }],
+      ["clean"],
+    ],
+  };
+
+  // Handler para quando o texto do parecer da comissão é alterado
+  const handleOnParecerDGChange = (value) => {
+    setProposta({ ...proposta, parecerInformacaoDG: value });
+  };
+
+  // Handler para o select do parecer da DG
+  const handleOnSelectParecer = (event) => {
+    let parecer = event.target.value;
+    if (parecer == "NONE") {
+      setProposta({
+        ...proposta,
+        parecerDG: parecer,
+        parecerInformacaoDG: null,
+      });
+    } else {
+      setProposta({ ...proposta, parecerDG: parecer });
+    }
+  };
+
   return (
     <Box className="mt-4">
       <Box className="flex">
@@ -2072,9 +3004,7 @@ const ParecerDGInsertText = ({
           select
           label={texts.detalhesProposta.parecer}
           value={proposta.parecerDG ? proposta.parecerDG : ""}
-          onChange={(event) =>
-            setProposta({ ...proposta, parecerDG: event.target.value })
-          }
+          onChange={handleOnSelectParecer}
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
         >
@@ -2088,65 +3018,24 @@ const ParecerDGInsertText = ({
               {texts.detalhesProposta.reprovado}
             </Typography>
           </MenuItem>
+          <MenuItem key={"Nenhum"} value={"NONE"}>
+            <Typography fontSize={FontConfig.medium}>
+              {texts.detalhesProposta.nenhum}
+            </Typography>
+          </MenuItem>
         </TextField>
       </Box>
       <Box className="mt-4">
-        <CaixaTextoQuill
-          texto={
-            proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""
-          }
-          setTexto={(e) => setProposta({ ...proposta, parecerInformacaoDG: e })}
-        />
+        {proposta.parecerDG != "NONE" && (
+          <ReactQuill
+            value={
+              proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""
+            }
+            onChange={handleOnParecerDGChange}
+            modules={modulesQuill}
+          />
+        )}
       </Box>
-    </Box>
-  );
-};
-
-// Visualizar o parecer da DG
-const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
-  // Context para obter as configurações das fontes do sistema
-  const { FontConfig } = useContext(FontContext);
-
-  // Context para obter os textos do sistema
-  const { texts } = useContext(TextLanguageContext);
-
-  // Variável para armazenar o parecer da DG
-  const parecerDGInformacoesBox = useRef(null);
-
-  // UseEffect utilizado para armazenar o valor do parecer da dg
-  useEffect(() => {
-    if (parecerDGInformacoesBox.current) {
-      parecerDGInformacoesBox.current.innerHTML = proposta.parecerInformacaoDG
-        ? proposta.parecerInformacaoDG
-        : texts.detalhesProposta.semInformacoesAdicionais;
-    }
-  }, []);
-
-  // Função para formatar o parecer da DG
-  const getParecerDGFomartted = (parecer) => {
-    return parecer
-      ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
-      : texts.detalhesProposta.semParecer;
-  };
-
-  return (
-    <Box>
-      <Box className="flex">
-        <Box className="flex items-center mt-4">
-          <Typography fontSize={FontConfig.medium}>
-            {texts.detalhesProposta.direcaoGeral}:&nbsp;
-          </Typography>
-          <Typography fontSize={FontConfig.medium} fontWeight="bold">
-            {getParecerDGFomartted(proposta.parecerDG)}
-          </Typography>
-        </Box>
-      </Box>
-      {/* Comporta o texto do parecer da comissão */}
-      <Box
-        ref={parecerDGInformacoesBox}
-        className="mt-2 mx-4 border-l-2 px-2"
-        sx={{ borderColor: "primary.main" }}
-      />
     </Box>
   );
 };

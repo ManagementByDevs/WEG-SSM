@@ -165,7 +165,17 @@ class EntitiesObjectService {
       status: "",
       usuario: this.usuario(),
       idChat: this.chat(),
-      anexo: [this.anexo()],
+      anexo: this.anexo(),
+    };
+  }
+
+  preferencias() {
+    return {
+      themeMode: "",
+      fontSizeDefault: "",
+      itemsVisualizationMode: "",
+      lang: "",
+      abaPadrao: "",
     };
   }
 }

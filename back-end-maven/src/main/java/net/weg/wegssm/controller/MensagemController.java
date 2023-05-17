@@ -52,7 +52,6 @@ public class MensagemController {
         return ResponseEntity.ok().body(mensagemService.save(mensagem));
     }
 
-
     /**
      * Método GET para buscar todas as mensagens
      *
