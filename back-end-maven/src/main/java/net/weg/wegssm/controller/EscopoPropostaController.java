@@ -62,16 +62,13 @@ public class EscopoPropostaController {
 
     @PostMapping
     public ResponseEntity<EscopoProposta> save(@RequestParam("escopo-proposta") String escopoPropostaJSON) {
+
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
         escopoProposta.setUltimaModificacao(new Date());
 
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
-        }
-
-        for (Beneficio beneficio : escopoProposta.getBeneficios()) {
-            beneficioService.save(beneficio);
         }
 
         for (TabelaCusto tabelaCusto : escopoProposta.getTabelaCustos()) {
@@ -84,26 +81,15 @@ public class EscopoPropostaController {
             tabelaCustoService.save(tabelaCusto);
         }
 
-        List<Anexo> listaAnexos = new ArrayList<>();
-        if(escopoProposta.getAnexo() != null) {
-            for (Anexo anexo : escopoProposta.getAnexo()) {
-                listaAnexos.add(anexoService.save(anexo));
-            }
-        }
-        escopoProposta.setAnexo(listaAnexos);
-
         return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
     }
 
     @PutMapping
-    public ResponseEntity<EscopoProposta> update(@RequestParam(value = "escopo-proposta") String escopoPropostaJSON,
-                                                 @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos,
-                                                 @RequestParam(value = "escopo", required = false) byte[] escopo) {
+    public ResponseEntity<EscopoProposta> update(@RequestParam(value = "escopo-proposta") String escopoPropostaJSON) {
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
 
-        EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModel(escopoPropostaJSON);
+        EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModelDirect(escopoPropostaJSON);
         escopoProposta.setUltimaModificacao(new Date());
-        escopoProposta.setEscopo(escopo);
 
         List<ResponsavelNegocio> listaResponsaveis = new ArrayList<>();
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {
@@ -113,13 +99,13 @@ public class EscopoPropostaController {
         }
         escopoProposta.setResponsavelNegocio(listaResponsaveis);
 
-        ArrayList<Beneficio> listaNovaBeneficios = new ArrayList<>();
+        List<Beneficio> listaBeneficiosNova = new ArrayList<>();
         for (Beneficio beneficio : escopoProposta.getBeneficios()) {
             if(beneficioService.existsById(beneficio.getId())) {
-                listaNovaBeneficios.add(beneficioService.save(beneficio));
+                listaBeneficiosNova.add(beneficio);
             }
         }
-        escopoProposta.setBeneficios(listaNovaBeneficios);
+        escopoProposta.setBeneficios(listaBeneficiosNova);
 
         ArrayList<TabelaCusto> tabelaCustos = new ArrayList<>();
         for (TabelaCusto tabelaCusto : escopoProposta.getTabelaCustos()) {
@@ -145,14 +131,6 @@ public class EscopoPropostaController {
             }
         }
         escopoProposta.setTabelaCustos(tabelaCustos);
-
-        ArrayList<Anexo> listaAnexos = new ArrayList<>();
-        if(listaIdsAnexos != null) {
-            for (String id : listaIdsAnexos) {
-                listaAnexos.add(anexoService.findById(Long.parseLong(id)));
-            }
-        }
-        escopoProposta.setAnexo(listaAnexos);
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoPropostaService.save(escopoProposta));
     }

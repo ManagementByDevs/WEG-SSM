@@ -35,6 +35,8 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import Feedback from "../Feedback/Feedback";
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
@@ -56,8 +58,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
-  setPropostaData = () => {},
-  setIsEditing = () => {},
+  setPropostaData = () => { },
+  setIsEditing = () => { },
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -825,11 +827,8 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
-    setProposta({
-      ...proposta,
-      beneficios: [...beneficiosAux],
-      escopo: escopoAux,
-    });
+    setProposta({ ...proposta, beneficios: [...beneficiosAux], escopo: atob(proposta.escopo) });
+    setEscopoAux(atob(proposta.escopo));
   }, []);
 
   useEffect(() => {
@@ -852,6 +851,109 @@ const DetalhesPropostaEditMode = ({
 
   // ***************************************** Fim UseEffects ***************************************** //
 
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "titulo":
+            setProposta({
+              ...proposta,
+              titulo: transcript,
+            });
+            break;
+          case "frequencia":
+            setProposta({
+              ...proposta,
+              frequencia: transcript,
+            });
+            break;
+          case "linkJira":
+            setProposta({
+              ...proposta,
+              linkJira: transcript,
+            });
+          default:
+            break;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setLocalClique(ondeClicou);
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   if (isLoading)
     return (
       <Box className="flex justify-center">
@@ -867,7 +969,25 @@ const DetalhesPropostaEditMode = ({
         textoModal={textoModalConfirmacao}
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
+      />
+      {/* Feedback Erro reconhecimento de voz */}
+      <Feedback
+        open={feedbackErroReconhecimentoVoz}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback12}
+      />
+      {/* Feedback Não navegador incompativel */}
+      <Feedback
+        open={feedbackErroNavegadorIncompativel}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback13}
       />
       <Feedback
         open={feedbackDadosInvalidos}
@@ -952,7 +1072,7 @@ const DetalhesPropostaEditMode = ({
       {/* Box Conteudo */}
       <Box className="w-full">
         {/* Titulo */}
-        <Box>
+        <Box className="flex items-center">
           <Input
             size="small"
             value={proposta.titulo}
@@ -962,6 +1082,33 @@ const DetalhesPropostaEditMode = ({
             sx={{ color: "primary.main", fontSize: FontConfig.smallTitle }}
             multiline={true}
           />
+          <Tooltip
+            className="flex items-center hover:cursor-pointer"
+            title={texts.homeGerencia.gravarAudio}
+            onClick={() => {
+              startRecognition("titulo");
+            }}
+          >
+            {escutar && localClique == "titulo" ? (
+              <MicOutlinedIcon
+                sx={{
+                  color: "primary.main",
+                  fontSize: "2rem",
+                  position: "absolute",
+                  right: "3rem",
+                }}
+              />
+            ) : (
+              <MicNoneOutlinedIcon
+                sx={{
+                  color: "text.secondary",
+                  fontSize: "2rem",
+                  position: "absolute",
+                  right: "3rem",
+                }}
+              />
+            )}
+          </Tooltip>
         </Box>
 
         {/* Box Informações gerais */}
@@ -1168,7 +1315,7 @@ const DetalhesPropostaEditMode = ({
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.frequencia}:&nbsp;
             </Typography>
-            <Box className="mx-4">
+            <Box className="mx-4 flex items-center">
               <Input
                 size="small"
                 value={proposta.frequencia}
@@ -1178,6 +1325,33 @@ const DetalhesPropostaEditMode = ({
                 sx={{ fontSize: FontConfig.medium }}
                 multiline={true}
               />
+              <Tooltip
+                className="flex items-center hover:cursor-pointer mb-2"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("frequencia");
+                }}
+              >
+                {escutar && localClique == "frequencia" ? (
+                  <MicOutlinedIcon
+                    sx={{
+                      color: "primary.main",
+                      fontSize: "1.6rem",
+                      position: "absolute",
+                      right: "1.8rem",
+                    }}
+                  />
+                ) : (
+                  <MicNoneOutlinedIcon
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: "1.6rem",
+                      position: "absolute",
+                      right: "1.8rem",
+                    }}
+                  />
+                )}
+              </Tooltip>
             </Box>
           </Box>
 
@@ -1196,15 +1370,15 @@ const DetalhesPropostaEditMode = ({
             <Box className="mx-4">
               {proposta.tabelaCustos.length > 0 && isTabelaCustosVisile
                 ? proposta.tabelaCustos?.map((tabela, index) => {
-                    return (
-                      <TabelaCustos
-                        key={index}
-                        dados={tabela}
-                        handleOnTabelaCustosChange={handleOnTabelaCustosChange}
-                        handleDeleteTabelaCusto={handleDeleteTabelaCusto}
-                      />
-                    );
-                  })
+                  return (
+                    <TabelaCustos
+                      key={index}
+                      dados={tabela}
+                      handleOnTabelaCustosChange={handleOnTabelaCustosChange}
+                      handleDeleteTabelaCusto={handleDeleteTabelaCusto}
+                    />
+                  );
+                })
                 : null}
             </Box>
           </Box>
@@ -1320,16 +1494,43 @@ const DetalhesPropostaEditMode = ({
             <Typography fontSize={FontConfig.medium} fontWeight="bold">
               {texts.detalhesProposta.linkJira}:&nbsp;
             </Typography>
-            <Box className="mx-4">
+            <Box className="mx-4 flex items-center">
               <Input
                 size="small"
                 value={proposta.linkJira}
                 onChange={handleOnLinkJiraChange}
                 type="text"
                 fullWidth
-                sx={{ fontSize: FontConfig.medium }}
+                sx={{ fontSize: FontConfig.medium, paddingLeft: "0.6rem" }}
                 multiline={true}
               />
+              <Tooltip
+                className="flex items-center hover:cursor-pointer mb-2"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("linkJira");
+                }}
+              >
+                {escutar && localClique == "linkJira" ? (
+                  <MicOutlinedIcon
+                    sx={{
+                      color: "primary.main",
+                      fontSize: "1.6rem",
+                      position: "absolute",
+                      right: "1.8rem",
+                    }}
+                  />
+                ) : (
+                  <MicNoneOutlinedIcon
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: "1.6rem",
+                      position: "absolute",
+                      right: "1.8rem",
+                    }}
+                  />
+                )}
+              </Tooltip>
             </Box>
           </Box>
 
@@ -1504,8 +1705,8 @@ const TabelaCustos = ({
   dados = EntitiesObjectService.tabelaCustos(),
   handleOnTabelaCustosChange = (
     newTabela = EntitiesObjectService.tabelaCustos()
-  ) => {},
-  handleDeleteTabelaCusto = () => {},
+  ) => { },
+  handleDeleteTabelaCusto = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1720,8 +1921,11 @@ const TabelaCustos = ({
 
 const CC = ({
   cc = EntitiesObjectService.cc(),
-  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
+  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => { },
 }) => {
+  // Context para obter os textos do sistema
+  const { texts } = useContext(TextLanguageContext);
+
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1737,9 +1941,102 @@ const CC = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "codigo":
+            handleOnCCChange({ ...cc, codigo: transcript });
+            break;
+          case "porcentagem":
+            handleOnCCChange({ ...cc, porcentagem: transcript });
+            break;
+          case "linkJira":
+          default:
+            break;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setLocalClique(ondeClicou);
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   return (
     <TableRow className="w-full border rounded">
-      <td className="text-center p-1">
+      <td className="text-center p-2">
         <Input
           value={cc.codigo}
           onChange={handleOnCodigoChange}
@@ -1749,8 +2046,35 @@ const CC = ({
           fullWidth
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("codigo");
+          }}
+        >
+          {escutar && localClique == "codigo" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                right: "14rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                right: "14rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
-      <td className="text-center p-1">
+      <td className="text-center p-2">
         <Input
           value={cc.porcentagem}
           onChange={handleOnPorcentagemChange}
@@ -1760,6 +2084,33 @@ const CC = ({
           fullWidth
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("porcentagem");
+          }}
+        >
+          {escutar && localClique == "porcentagem" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                right: "1.8rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                right: "1.8rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
     </TableRow>
   );
@@ -1768,7 +2119,7 @@ const CC = ({
 // Mostrar os custos na proposta
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
-  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
+  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1802,9 +2153,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -1837,6 +2188,108 @@ const CustosRow = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "tipoDespesa":
+            handleOnCustoChange({ ...custo, tipoDespesa: transcript });
+            break;
+          case "porcentagem":
+            break;
+          case "perfilDespesa":
+            handleOnCustoChange({ ...custo, perfilDespesa: transcript });
+            break;
+          case "periodoExecucao":
+            handleOnCustoChange({ ...custo, periodoExecucao: transcript });
+            break;
+          case "horas":
+            handleOnCustoChange({ ...custo, horas: transcript });
+            break;
+          case "valorHora":
+            handleOnCustoChange({ ...custo, valorHora: transcript });
+          default:
+            break;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setLocalClique(ondeClicou);
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   return (
     <TableRow>
       <td className="p-2 text-center">
@@ -1850,6 +2303,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("tipoDespesa");
+          }}
+        >
+          {escutar && localClique == "tipoDespesa" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "7rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "7rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Perfil da Despesa */}
@@ -1862,6 +2342,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("perfilDespesa");
+          }}
+        >
+          {escutar && localClique == "perfilDespesa" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "15rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "15rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Período de Execução */}
@@ -1874,6 +2381,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("periodoExecucao");
+          }}
+        >
+          {escutar && localClique == "periodoExecucao" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "23rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "23rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Horas */}
@@ -1886,6 +2420,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("horas");
+          }}
+        >
+          {escutar && localClique == "horas" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "31rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "31rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Valor da Hora */}
@@ -1898,6 +2459,33 @@ const CustosRow = ({
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
         />
+        <Tooltip
+          className="flex items-center cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition("valorHora");
+          }}
+        >
+          {escutar && localClique == "valorHora" ? (
+            <MicOutlinedIcon
+              sx={{
+                color: "primary.main",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "39rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                color: "text.secondary",
+                fontSize: "1.4rem",
+                position: "absolute",
+                left: "39rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Total */}
@@ -1912,8 +2500,8 @@ const CustosRow = ({
 // Mostrar os benefícios da proposta
 const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
-  handleOnBeneficioChange = () => {},
-  handleDeleteBeneficio = () => {},
+  handleOnBeneficioChange = () => { },
+  handleDeleteBeneficio = () => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2000,6 +2588,95 @@ const Beneficio = ({
   }, [beneficio]);
 
   // ***************************************** Fim UseEffects ***************************************** //
+
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "valorMensal":
+            handleOnBeneficioChange({ ...beneficio, valor_mensal: event.target.value });
+            break;
+          default:
+            break;
+        }
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setLocalClique(ondeClicou);
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
 
   if (beneficio.id === 0) return null;
 
@@ -2094,6 +2771,33 @@ const Beneficio = ({
                     sx={{ fontSize: FontConfig.default }}
                     multiline={true}
                   />
+                  <Tooltip
+                    className="flex items-center cursor-pointer"
+                    title={texts.homeGerencia.gravarAudio}
+                    onClick={() => {
+                      startRecognition("valorMensal");
+                    }}
+                  >
+                    {escutar && localClique == "valorMensal" ? (
+                      <MicOutlinedIcon
+                        sx={{
+                          color: "primary.main",
+                          fontSize: "1.4rem",
+                          position: "absolute",
+                          left: "12.5rem",
+                        }}
+                      />
+                    ) : (
+                      <MicNoneOutlinedIcon
+                        sx={{
+                          color: "text.secondary",
+                          fontSize: "1.4rem",
+                          position: "absolute",
+                          left: "12.5rem",
+                        }}
+                      />
+                    )}
+                  </Tooltip>
                 </td>
                 <td className="text-center p-2">
                   {/* Select da moeda do benefício */}
@@ -2145,7 +2849,7 @@ const Beneficio = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2247,7 +2951,7 @@ const ParecerComissaoInsertText = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);

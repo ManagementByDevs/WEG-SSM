@@ -3439,9 +3439,10 @@ public class DemandaController {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModel(demandaJSON);
 
-        Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(demanda.getSolicitante().getDepartamento(), TipoUsuario.GERENTE);
+        Usuario solicitante = usuarioService.findById(demanda.getSolicitante().getId()).get();
+        Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(solicitante.getDepartamento(), TipoUsuario.GERENTE);
         demanda.setData(new Date());
-        demanda.setDepartamento(demanda.getSolicitante().getDepartamento());
+        demanda.setDepartamento(solicitante.getDepartamento());
         demanda.setGerente(gerente);
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));

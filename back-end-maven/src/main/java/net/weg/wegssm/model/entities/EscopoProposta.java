@@ -70,7 +70,7 @@ public class EscopoProposta {
     @JoinColumn(nullable = false, name = "secao_ti_id")
     private SecaoTI secaoTI;
 
-    @OneToMany(cascade = CascadeType.DETACH)
+    @OneToMany
     @JoinColumn(name = "escopo_proposta_id")
     private List<Beneficio> beneficios = new ArrayList<>();
 

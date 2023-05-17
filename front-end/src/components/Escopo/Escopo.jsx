@@ -28,7 +28,7 @@ const Escopo = (props) => {
 
   /** Função para formatar o html em texto */
   const getPropostaFomartted = (proposta) => {
-    return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
+    return proposta[0]?.toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
   return (

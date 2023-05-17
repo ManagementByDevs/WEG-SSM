@@ -7,8 +7,6 @@ import InputComLabel from "../InputComLabel/InputComLabel";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
-import { useState } from "react";
-import { useEffect } from "react";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {

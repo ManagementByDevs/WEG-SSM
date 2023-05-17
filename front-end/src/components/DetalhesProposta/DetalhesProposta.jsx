@@ -170,14 +170,18 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
 
   // Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco
   const carregarTextoEscopo = (escopo) => {
-    let reader = new FileReader();
-    reader.onload = function () {
-      textoEscopo.current.innerHTML = reader.result;
-    };
+    try {
+      let reader = new FileReader();
+      reader.onload = function () {
+        textoEscopo.current.innerHTML = reader.result;
+      };
 
-    if (escopo) {
-      let blob = new Blob([base64ToArrayBuffer(escopo)]);
-      reader.readAsText(blob);
+      if (escopo) {
+        let blob = new Blob([base64ToArrayBuffer(escopo)]);
+        reader.readAsText(blob);
+      }
+    } catch (error) {
+      textoEscopo.current.innerHTML = escopo;
     }
   };
 
@@ -344,8 +348,8 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                 {texts.detalhesProposta.solicitante}:&nbsp;
               </Typography>
               <Typography fontSize={FontConfig.medium}>
-                {proposta.solicitante.nome} -{" "}
-                {proposta.solicitante.departamento.nome}
+                {proposta.solicitante?.nome} -{" "}
+                {proposta.solicitante?.departamento?.nome}
               </Typography>
             </Box>
 
@@ -366,7 +370,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                 {texts.detalhesProposta.gerente}:&nbsp;
               </Typography>
               <Typography fontSize={FontConfig.medium}>
-                {proposta.gerente.nome} - {proposta.gerente.departamento.nome}
+                {proposta.gerente?.nome} - {proposta.gerente?.departamento?.nome}
               </Typography>
             </Box>
 
@@ -620,11 +624,11 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                       "ASSESSMENT_EDICAO",
                       "CANCELLED",
                     ].includes(proposta.status) && (
-                      <ParecerDG
-                        proposta={proposta}
-                        setProposta={setProposta}
-                      />
-                    )}
+                        <ParecerDG
+                          proposta={proposta}
+                          setProposta={setProposta}
+                        />
+                      )}
                   </Box>
                 </Box>
               </>
@@ -785,9 +789,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -942,7 +946,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
@@ -955,7 +959,7 @@ const ParecerComissao = ({
 };
 
 // Chamar o parecer da DG
-const ParecerDG = ({ proposta = propostaExample, setProposta = () => {} }) => {
+const ParecerDG = ({ proposta = propostaExample, setProposta = () => { } }) => {
   if (proposta.status == "ASSESSMENT_DG")
     return (
       <ParecerDGInsertText proposta={proposta} setProposta={setProposta} />
@@ -966,7 +970,7 @@ const ParecerDG = ({ proposta = propostaExample, setProposta = () => {} }) => {
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1088,7 +1092,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1187,9 +1191,9 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  getCorStatus = () => {},
-  getStatusFormatted = () => {},
+  setProposta = () => { },
+  getCorStatus = () => { },
+  getStatusFormatted = () => { },
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1292,36 +1296,12 @@ const StatusProposta = ({
       return;
     }
 
-    if (!userHasAuthority()) {
-      setFeedbackErrorAuthority(true);
-      return;
-    }
-
-    let propostaAux = EntitiesObjectService.proposta();
-    propostaAux = JSON.parse(
-      JSON.stringify({ ...proposta, status: newStatus })
-    );
-
-    arrangeData(propostaAux);
-
     setConfirmEditStatus(false);
 
     // Requisição para atualizar a proposta com o novo status
-    PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
-      (newProposta) => {
-        console.log("put: ", newProposta);
-        newProposta.proposta = convertByteArrayToString(newProposta.proposta);
-        newProposta.problema = convertByteArrayToString(newProposta.problema);
-        newProposta.escopo = convertByteArrayToString(newProposta.escopo);
-
-        for (let beneficio of newProposta.beneficios) {
-          beneficio.memoriaCalculo = convertByteArrayToString(
-            beneficio.memoriaCalculo
-          );
-        }
-
-        // Atualiza a proposta com o novo status
-        setProposta(newProposta);
+    PropostaService.atualizarStatus(proposta.id, newStatus).then(
+      (response) => {
+        setProposta({ ...proposta, status: response.status });
       }
     );
   };
@@ -1353,7 +1333,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       <Menu
         id="basic-menu"

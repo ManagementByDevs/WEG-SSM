@@ -25,6 +25,7 @@ import FontContext from "../../service/FontContext";
 import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
+import AnexoService from "../../service/anexoService";
 
 // Variável para armazenar os ícones do checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -96,7 +97,11 @@ const ModalAceitarDemanda = (props) => {
 
   /** Função para salvar um arquivo quando selecionado no input de arquivos */
   const salvarArquivo = () => {
-    setAnexos([...anexos, ...inputFile.current.files]);
+    for (let arquivo of inputFile.current.files) {
+      AnexoService.save(arquivo).then((response) => {
+        setAnexos([...anexos, response]);
+      })
+    }
   };
 
   return (
@@ -291,12 +296,13 @@ const ModalAceitarDemanda = (props) => {
                 <Typography
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
                 >
-                  {anexo.name}
+                  {anexo.nome}
                 </Typography>
                 <IconButton
-                  onClick={() =>
+                  onClick={() => {
                     setAnexos(anexos.filter((anexo, i) => i !== index))
-                  }
+                    AnexoService.deleteById(anexos[index].id).then((response) => { })
+                  }}
                 >
                   <CloseIcon sx={{ color: "text.primary" }} />
                 </IconButton>

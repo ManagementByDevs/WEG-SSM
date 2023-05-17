@@ -6014,12 +6014,10 @@ public class PropostaController {
      * Método POST para criar uma proposta no banco de dados
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestParam(value = "proposta") String propostaJSON,
-                                       @RequestParam(value = "idsAnexos", required = false) List<String> listaIdsAnexos,
-                                       @RequestParam(value = "escopo", required = false) byte[] escopoProposta) {
+    public ResponseEntity<Object> save(@RequestParam(value = "proposta") String propostaJSON) {
+
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
-        proposta.setEscopo(escopoProposta);
 
         Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
         List<Historico> historicoProposta = new ArrayList<>();
@@ -6030,10 +6028,6 @@ public class PropostaController {
 
         proposta.setData(new Date());
         proposta.setVisibilidade(true);
-
-        for (Beneficio beneficio : proposta.getBeneficios()) {
-            beneficioService.save(beneficio);
-        }
 
         for (ResponsavelNegocio responsavelNegocio : proposta.getResponsavelNegocio()) {
             responsavelNegocioService.save(responsavelNegocio);
@@ -6049,15 +6043,23 @@ public class PropostaController {
             tabelaCustoService.save(tabelaCusto);
         }
 
-        ArrayList<Anexo> listaAnexos = new ArrayList<>();
-        if (listaIdsAnexos != null) {
-            for (String id : listaIdsAnexos) {
-                listaAnexos.add(anexoService.findById(Long.parseLong(id)));
-            }
-        }
-        proposta.setAnexo(listaAnexos);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
+    }
+
+    /**
+     * Função utilizada para somente atualizar o status de uma proposta, recebendo como parâmetros o id e o novo status da proposta.
+     */
+    @PutMapping("/{id}/{status}")
+    public ResponseEntity<Object> atualizarStatus(@PathVariable(value = "id") Long id,
+                                                  @PathVariable(value = "status") Status status) {
+        Optional<Proposta> propostaOptional = propostaService.findById(id);
+        if(propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        proposta.setStatus(status);
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
     /**
@@ -6303,6 +6305,23 @@ public class PropostaController {
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
+
+    @RequestMapping("/pauta/{idProposta}")
+    public ResponseEntity<Object> updatePauta(@PathVariable(value = "idProposta") Long idProposta,
+                                              @RequestParam(value = "publicada") Boolean publicada,
+                                              @RequestParam(value = "status") Status status) {
+        Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
+        if(propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        proposta.setPublicada(publicada);
+        proposta.setStatus(status);
+        proposta.setEmPauta(true);
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
 
     /**
      * Método DELETE para modificar a visibilidade de uma proposta

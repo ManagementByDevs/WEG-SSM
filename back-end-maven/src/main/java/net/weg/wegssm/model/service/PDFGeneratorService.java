@@ -322,15 +322,25 @@ public class PDFGeneratorService {
         Paragraph paragraphTitulo = new Paragraph(proposta.getDemanda().getTitulo(), fontTitulo);
         paragraphTitulo.setSpacingBefore(10);
 
+        String stringSolicitante = proposta.getSolicitante().getNome();
+        try {
+            stringSolicitante += " - " + proposta.getSolicitante().getDepartamento().getNome();
+        } catch (Exception e) { }
+
         Chunk chunkSolicitante = new Chunk("Solicitante: ", fontSubtitulo);
-        Chunk chunkValorSolicitante = new Chunk(String.valueOf(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome()), fontInformacoes);
+        Chunk chunkValorSolicitante = new Chunk(stringSolicitante, fontInformacoes);
         Paragraph paragraphSolicitante = new Paragraph();
         paragraphSolicitante.add(chunkSolicitante);
         paragraphSolicitante.add(chunkValorSolicitante);
         paragraphSolicitante.setSpacingBefore(20);
 
+        String stringGerente = proposta.getGerente().getNome();
+        try {
+            stringGerente += " - " + proposta.getGerente().getDepartamento().getNome();
+        } catch (Exception e) { }
+
         Chunk chunkGerente = new Chunk("Gerente: ", fontSubtitulo);
-        Chunk chunkValorGerente = new Chunk(String.valueOf(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome()), fontInformacoes);
+        Chunk chunkValorGerente = new Chunk(stringGerente, fontInformacoes);
         Paragraph paragraphGerente = new Paragraph();
         paragraphGerente.add(chunkGerente);
         paragraphGerente.add(chunkValorGerente);

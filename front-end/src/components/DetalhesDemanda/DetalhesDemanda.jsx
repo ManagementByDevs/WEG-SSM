@@ -137,14 +137,33 @@ const DetalhesDemanda = (props) => {
   // Função de cancelamento da edição da demanda, retornando os dados ao salvamento anterior
   function resetarTextoInput() {
     excluirBeneficiosAdicionados();
+    excluirAnexosAdicionados();
+    setBeneficios(resetarBeneficios());
     setVisualizarTexto(true);
     setEditar(false);
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
-    setBeneficios(formatarBeneficios(props.dados.beneficios));
     setAnexosDemanda(props.dados.anexo);
+  }
+
+  /** Função para resetar a formatação dos benefícios (em específico da memória de cálculo) após cancelamento de edição */
+  const resetarBeneficios = () => {
+    const aux = props.dados.beneficios.map((beneficio) => {
+      return {
+        id: beneficio.id,
+        tipoBeneficio:
+          beneficio.tipoBeneficio?.charAt(0) +
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || texts.DetalhesDemanda.real,
+        valor_mensal: beneficio.valor_mensal,
+        moeda: beneficio.moeda,
+        memoriaCalculo: atob(beneficio.memoriaCalculo),
+      };
+    });
+    return aux;
   }
 
   // Função para formatar os benefícios recebidos do banco para a lista de benefícios na página
@@ -208,10 +227,24 @@ const DetalhesDemanda = (props) => {
     }
   };
 
+  /** Função para procurar dentro de uma lista se um objeto com determinado ID está presente */
+  const estaPresente = (idObjeto, listaProcurada) => {
+    for (let objeto of listaProcurada) {
+      if (objeto.id == idObjeto) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // Função para remover um anexo da lista de anexos
   const removerAnexo = (index) => {
-    setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
-    removeAnexosNovos(anexosDemanda[index]);
+    if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
+      removeAnexosNovos(anexosDemanda[index]);
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { })
+    } else {
+      setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
+    }
     let aux = [...anexosDemanda];
     aux.splice(index, 1);
     setAnexosDemanda(aux);
@@ -220,8 +253,8 @@ const DetalhesDemanda = (props) => {
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
   const adicionarBeneficio = () => {
     BeneficioService.post().then((response) => {
-      setBeneficiosNovos([...beneficiosNovos, response]);
-      setBeneficios([...beneficios, response]);
+      setBeneficiosNovos([...beneficiosNovos, { ...response, tipoBeneficio: "", moeda: "" }]);
+      setBeneficios([...beneficios, { ...response, tipoBeneficio: "", moeda: "" }]);
     });
   };
 
@@ -269,6 +302,20 @@ const DetalhesDemanda = (props) => {
     setBeneficiosNovos([]);
   };
 
+  /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
+  const excluirAnexosAdicionados = () => {
+    for (let anexo of novosAnexos) {
+      AnexoService.deleteById(anexo.id).then(() => { });
+    }
+    setNovosAnexos([]);
+  }
+
+  /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, '<br/>');
+    return texto;
+  }
+
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
     if (!podeSalvar()) {
@@ -280,8 +327,8 @@ const DetalhesDemanda = (props) => {
     let contagem = 0;
 
     if (listaBeneficiosFinal.length > 0) {
-      for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => {});
+      for (let beneficio of listaBeneficiosFinal) {
+        BeneficioService.put(beneficio, beneficio.memoriaCalculo).then((response) => { });
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -316,6 +363,7 @@ const DetalhesDemanda = (props) => {
   const podeSalvar = () => {
     return (
       checkIfBeneficiosChanged() ||
+      novosAnexos.length > 0 || anexosRemovidos.length > 0 ||
       tituloDemanda != props.dados.titulo ||
       problema != props.dados.problema ||
       proposta != props.dados.proposta ||
@@ -329,10 +377,10 @@ const DetalhesDemanda = (props) => {
       const demandaAtualizada = {
         id: props.dados.id,
         titulo: tituloDemanda,
-        problema: problema,
-        proposta: proposta,
+        problema: btoa(formatarHtml(problema)),
+        proposta: btoa(formatarHtml(proposta)),
         frequencia: frequencia,
-        beneficios: formatarBeneficiosRequisicao(beneficios),
+        beneficios: retornarIdsObjetos(beneficios),
         data: props.dados.data,
         status: "BACKLOG_REVISAO",
         solicitante: props.dados.solicitante,
@@ -347,21 +395,16 @@ const DetalhesDemanda = (props) => {
         setEditar(false);
         excluirBeneficiosRemovidos();
         setDemandaEmEdicao(false);
-        props.setDados(response);
+        props.updateDemandaProps(response);
         salvarHistorico("Demanda Editada");
       });
-    }
 
-    if (props.dados.id) {
-      DemandaService.getById(props.dados.id).then((res) => {
-        props.updateDemandaProps(res);
-      });
-    }
-
-    if (anexosRemovidos.length > 0) {
-      for (let anexoRemovido of anexosRemovidos) {
-        AnexoService.deleteById(anexoRemovido.id);
+      if (anexosRemovidos.length > 0) {
+        for (let anexoRemovido of anexosRemovidos) {
+          AnexoService.deleteById(anexoRemovido.id);
+        }
       }
+      setAnexosRemovidos([]);
     }
   }, [demandaEmEdicao]);
 
@@ -416,27 +459,21 @@ const DetalhesDemanda = (props) => {
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
     const demandaAtualizada = {
-      id: props.dados.id,
-      titulo: props.dados.titulo,
-      problema: props.dados.problema,
-      proposta: props.dados.proposta,
-      frequencia: props.dados.frequencia,
-      beneficios: props.dados.beneficios,
-      data: props.dados.data,
+      ...props.dados,
+      problema: btoa(props.dados.problema),
+      proposta: btoa(props.dados.proposta),
+      anexo: [...retornarIdsObjetos(dados.anexos), ...retornarIdsObjetos(props.dados.anexo)],
+      beneficios: retornarIdsObjetos(props.dados.beneficios),
       status: "BACKLOG_APROVACAO",
-      solicitante: props.dados.solicitante,
       tamanho: dados.tamanho,
       secaoTI: dados.secaoTI,
       busBeneficiadas: dados.busBeneficiadas,
       buSolicitante: dados.buSolicitante,
       forum: dados.forum,
       analista: props.usuario,
-      gerente: props.dados.gerente,
-      departamento: props.dados.departamento,
-      historicoDemanda: props.dados.historicoDemanda,
     };
 
-    DemandaService.put(demandaAtualizada, dados.anexos).then(() => {
+    DemandaService.put(demandaAtualizada).then(() => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
     });
@@ -542,7 +579,7 @@ const DetalhesDemanda = (props) => {
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, nomeArquivo);
     } else {
-      const link = document.createElement("a");
+      let link = document.createElement("a");
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
@@ -550,8 +587,11 @@ const DetalhesDemanda = (props) => {
         link.style.visibility = "hidden";
         document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 1000);
       }
     }
   };
@@ -561,15 +601,6 @@ const DetalhesDemanda = (props) => {
 
   /** Anexos que já estavam na demanda e que serão removidos na edição da demanda */
   const [anexosRemovidos, setAnexosRemovidos] = useState([]);
-
-  /** Irá atualizar a lista para que contenha os anexos que foram removidos da demanda e que já estavam salvos no banco de dados */
-  const updateAnexosRemovidos = (indexAnexo) => {
-    const anexo = anexosDemanda[indexAnexo];
-    const anexosFiltrados = anexosDemanda.filter(
-      (anexoItem) => anexo.id && anexoItem.id == anexo.id
-    );
-    setAnexosRemovidos([...anexosRemovidos, ...anexosFiltrados]);
-  };
 
   /** Função que remove um anexo da lista anexosNovos caso o usuário o remova, 
   só é removido anexos que não estavam salvos no banco de dados */
@@ -642,6 +673,8 @@ const DetalhesDemanda = (props) => {
 
   const [escutar, setEscutar] = useState(false);
 
+  const [localClique, setLocalClique] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -672,7 +705,16 @@ const DetalhesDemanda = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        // setValorPesquisa(transcript);
+        switch (localClique) {
+          case "tituloDemanda":
+            setTituloDemanda(transcript);
+            break;
+          case "frequenciaUso":
+            setFrequencia(transcript);
+            break;
+          default:
+            break;
+        }
       };
 
       recognition.onerror = (event) => {
@@ -695,8 +737,9 @@ const DetalhesDemanda = (props) => {
     }
   };
 
-  const startRecognition = () => {
+  const startRecognition = (ondeClicou) => {
     setEscutar(!escutar);
+    setLocalClique(ondeClicou);
   };
 
   useEffect(() => {
@@ -875,6 +918,12 @@ const DetalhesDemanda = (props) => {
                       key={index}
                       index={index}
                       beneficio={beneficio}
+                      setFeedbackErroNavegadorIncompativel={
+                        setFeedbackErroNavegadorIncompativel
+                      }
+                      setFeedbackErroReconhecimentoVoz={
+                        setFeedbackErroReconhecimentoVoz
+                      }
                     />
                   );
                 })}
@@ -1049,39 +1098,44 @@ const DetalhesDemanda = (props) => {
           <>
             <Box className="flex justify-center items-center">
               <Box
-                value={tituloDemanda}
-                onChange={(e) => {
-                  alterarTexto(e, "titulo");
-                }}
-                fontSize={FontConfig.title}
-                color="primary.main"
-                className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                sx={{
-                  width: "100%;",
-                  height: "54px",
-                  backgroundColor: "background.default",
-                  fontWeight: "600",
-                }}
-                component="input"
-                placeholder={texts.DetalhesDemanda.digiteTituloDaDemanda}
-              />
-              <Tooltip
-                className="hover:cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition();
-                }}
+                className="flex justify-between items-center w-full border-solid border px-1 drop-shadow-sm rounded mt-2"
+                sx={{ backgroundColor: "background.default" }}
               >
-                {escutar ? (
-                  <MicOutlinedIcon
-                    sx={{ color: "primary.main", fontSize: "1.3rem" }}
-                  />
-                ) : (
-                  <MicNoneOutlinedIcon
-                    sx={{ color: "text.secondary", fontSize: "1.3rem" }}
-                  />
-                )}
-              </Tooltip>
+                <Box
+                  value={tituloDemanda}
+                  onChange={(e) => {
+                    alterarTexto(e, "titulo");
+                  }}
+                  fontSize={FontConfig.title}
+                  color="primary.main"
+                  className="flex outline-none"
+                  sx={{
+                    width: "95%;",
+                    height: "54px",
+                    backgroundColor: "transparent",
+                    fontWeight: "600",
+                  }}
+                  component="input"
+                  placeholder={texts.DetalhesDemanda.digiteTituloDaDemanda}
+                />
+                <Tooltip
+                  className="hover:cursor-pointer"
+                  title={texts.homeGerencia.gravarAudio}
+                  onClick={() => {
+                    startRecognition("tituloDemanda");
+                  }}
+                >
+                  {escutar && localClique == "tituloDemanda" ? (
+                    <MicOutlinedIcon
+                      sx={{ color: "primary.main", fontSize: "2rem" }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{ color: "text.secondary", fontSize: "2rem" }}
+                    />
+                  )}
+                </Tooltip>
+              </Box>
             </Box>
             <Divider />
             <Box>
@@ -1145,6 +1199,12 @@ const DetalhesDemanda = (props) => {
                       delete={deleteBeneficio}
                       beneficio={beneficio}
                       setBeneficio={alterarTextoBeneficio}
+                      setFeedbackErroNavegadorIncompativel={
+                        setFeedbackErroNavegadorIncompativel
+                      }
+                      setFeedbackErroReconhecimentoVoz={
+                        setFeedbackErroReconhecimentoVoz
+                      }
                     />
                   );
                 })}
@@ -1158,21 +1218,39 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.frequenciaDeUso}:
               </Typography>
-              <Box
-                value={frequencia}
-                onChange={(e) => {
-                  alterarTexto(e, "frequencia");
-                }}
-                fontSize={FontConfig.medium}
-                className="outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                sx={{
-                  width: "90%;",
-                  backgroundColor: corFundoTextArea,
-                  marginLeft: "30px",
-                }}
-                component="input"
-                placeholder={texts.DetalhesDemanda.digiteFrequenciaDeUso}
-              />
+              <Box className="flex items-center justify-between border-solid border px-2 py-1.5 drop-shadow-sm rounded" sx={{backgroundColor: corFundoTextArea, width: "90%",marginLeft: "30px",}}>
+                <Box
+                  value={frequencia}
+                  onChange={(e) => {
+                    alterarTexto(e, "frequencia");
+                  }}
+                  fontSize={FontConfig.medium}
+                  className="outline-none"
+                  sx={{
+                    width: "95%",
+                    backgroundColor: "transparent",
+                  }}
+                  component="input"
+                  placeholder={texts.DetalhesDemanda.digiteFrequenciaDeUso}
+                />
+                <Tooltip
+                  className="hover:cursor-pointer"
+                  title={texts.homeGerencia.gravarAudio}
+                  onClick={() => {
+                    startRecognition("frequenciaUso");
+                  }}
+                >
+                  {escutar && localClique == "frequenciaUso" ? (
+                    <MicOutlinedIcon
+                      sx={{ color: "primary.main", fontSize: "1.8rem" }}
+                    />
+                  ) : (
+                    <MicNoneOutlinedIcon
+                      sx={{ color: "text.secondary", fontSize: "1.8rem" }}
+                    />
+                  )}
+                </Tooltip>
+              </Box>
             </Box>
             <Box>
               <Box className="flex items-center">

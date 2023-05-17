@@ -173,19 +173,19 @@ const BarraProgressaoProposta = (props) => {
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-      const tipoBeneficioNovo =
-        beneficio.tipoBeneficio.charAt(0) +
-        beneficio.tipoBeneficio
-          .substring(1, beneficio.tipoBeneficio.length)
-          .toLowerCase();
+      const tipoBeneficioNovo = beneficio.tipoBeneficio?.charAt(0) + beneficio.tipoBeneficio?.substring(1, beneficio.tipoBeneficio.length).toLowerCase();
+
+      let memoriaCalculo = beneficio.memoriaCalculo;
+      try {
+        memoriaCalculo = atob(beneficio.memoriaCalculo);
+      } catch (error) { }
 
       listaNova.push({
         id: beneficio.id,
         tipoBeneficio: tipoBeneficioNovo,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true,
+        memoriaCalculo: memoriaCalculo,
       });
     }
     setListaBeneficios(listaNova);
@@ -196,8 +196,8 @@ const BarraProgressaoProposta = (props) => {
       id: escopo.demanda.id,
       titulo: escopo.titulo,
       status: null,
-      problema: escopo.problema,
-      proposta: escopo.proposta,
+      problema: atob(escopo.problema),
+      proposta: atob(escopo.proposta),
       frequencia: escopo.frequencia,
       anexo: escopo.anexo,
       solicitante: escopo.solicitante,
@@ -264,11 +264,9 @@ const BarraProgressaoProposta = (props) => {
       delete escopoFinal.emPauta;
 
       escopoFinal.id = ultimoEscopo.id;
-      EscopoPropostaService.salvarDados(escopoFinal, receberIdsAnexos(), formatarHtml(escopo)).then(
-        (response) => {
-          setUltimoEscopo(response);
-        }
-      );
+      EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
+        setUltimoEscopo(response);
+      });
     } catch (error) { }
   };
 
@@ -313,6 +311,13 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
+  /** Função para salvar os benefícios a etapa inicial da criação for concluída */
+  const salvarBeneficios = () => {
+    for (let beneficio of listaBeneficios) {
+      beneficioService.put(beneficio, beneficio.memoriaCalculo).then((response) => { })
+    }
+  }
+
   // Função para passar para próxima página
   const proximaEtapa = () => {
     let dadosFaltantes = false;
@@ -345,6 +350,7 @@ const BarraProgressaoProposta = (props) => {
             }
           });
         }
+        salvarBeneficios();
         break;
       case 2:
         let porcentagemCcs = 0;
@@ -411,25 +417,6 @@ const BarraProgressaoProposta = (props) => {
     });
   };
 
-  // Função para formatar os benefícios recebidos da página de benefícios para serem adicionados ao banco na criação da demanda
-  const formatarBeneficios = () => {
-    try {
-      let listaNova = [];
-      for (let beneficio of listaBeneficios) {
-        listaNova.push({
-          id: beneficio.id,
-          tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
-          valor_mensal: beneficio.valor_mensal,
-          moeda: beneficio.moeda,
-          memoriaCalculo: formatarHtml(beneficio.memoriaCalculo),
-        });
-      }
-      return listaNova;
-    } catch (error) {
-      return [];
-    }
-  };
-
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
     for (const beneficio of listaBeneficiosExcluidos) {
@@ -485,14 +472,23 @@ const BarraProgressaoProposta = (props) => {
     return listaIds;
   };
 
+  /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
+  const retornarIdsObjetos = (listaObjetos) => {
+    let listaNova = [];
+    for (let objeto of listaObjetos) {
+      listaNova.push({ id: objeto.id });
+    }
+    return listaNova;
+  };
+
   /** Função para montar um objeto de proposta para salvamento de escopos e propostas */
   const retornaObjetoProposta = () => {
     const objeto = {
-      demanda: dadosDemanda,
+      demanda: { id: dadosDemanda.id },
       titulo: dadosDemanda.titulo,
       status: "ASSESSMENT_APROVACAO",
-      problema: formatarHtml(dadosDemanda.problema),
-      proposta: formatarHtml(dadosDemanda.proposta),
+      problema: btoa(formatarHtml(dadosDemanda.problema)),
+      proposta: btoa(formatarHtml(dadosDemanda.proposta)),
       frequencia: dadosDemanda.frequencia,
       solicitante: dadosDemanda.solicitante,
       analista: dadosDemanda.analista,
@@ -503,7 +499,7 @@ const BarraProgressaoProposta = (props) => {
       forum: dadosDemanda.forum,
       secaoTI: dadosDemanda.secaoTI,
       tamanho: dadosDemanda.tamanho,
-      beneficios: formatarBeneficios(listaBeneficios),
+      beneficios: retornarIdsObjetos(listaBeneficios),
       tabelaCustos: formatarCustos(),
       responsavelNegocio: formatarResponsaveisNegocio(),
       inicioExecucao: gerais.periodoExecucacaoInicio,
@@ -513,16 +509,22 @@ const BarraProgressaoProposta = (props) => {
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
       historicoProposta: dadosDemanda.historicoDemanda,
+      anexo: retornarIdsObjetos(dadosDemanda.anexo),
       emPauta: false,
-      emAta: false
+      emAta: false,
+      escopo: btoa(formatarHtml(escopo))
     };
     return objeto;
   };
 
   /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
   const formatarHtml = (texto) => {
-    texto = texto.replace(/<br>/g, '<br/>');
-    return texto;
+    if (texto) {
+      texto = texto.replace(/<br>/g, '<br/>');
+      return texto;
+    } else {
+      return "";
+    }
   }
 
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
@@ -548,38 +550,36 @@ const BarraProgressaoProposta = (props) => {
         if (feedbackFaltante != true) {
           excluirBeneficios();
 
-          propostaService
-            .post(retornaObjetoProposta(), receberIdsAnexos(), formatarHtml(escopo))
-            .then((response) => {
-              DemandaService.atualizarStatus(
-                dadosDemanda.id,
-                "ASSESSMENT_APROVACAO"
-              ).then(() => {
-                EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
-                  () => {
-                    // Salvamento de histórico
-                    ExportPdfService.exportProposta(response.id).then(
-                      (file) => {
-                        let arquivo = new Blob([file], {
-                          type: "application/pdf",
+          propostaService.post(retornaObjetoProposta()).then((response) => {
+            DemandaService.atualizarStatus(
+              dadosDemanda.id,
+              "ASSESSMENT_APROVACAO"
+            ).then(() => {
+              EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
+                () => {
+                  // Salvamento de histórico
+                  ExportPdfService.exportProposta(response.id).then(
+                    (file) => {
+                      let arquivo = new Blob([file], {
+                        type: "application/pdf",
+                      });
+                      propostaService
+                        .addHistorico(
+                          response.id,
+                          "Proposta Criada",
+                          arquivo,
+                          CookieService.getUser().id
+                        )
+                        .then(() => {
+                          localStorage.setItem("tipoFeedback", "5");
+                          navigate("/");
                         });
-                        propostaService
-                          .addHistorico(
-                            response.id,
-                            "Proposta Criada",
-                            arquivo,
-                            CookieService.getUser().id
-                          )
-                          .then(() => {
-                            localStorage.setItem("tipoFeedback", "5");
-                            navigate("/");
-                          });
-                      }
-                    );
-                  }
-                );
-              });
+                    }
+                  );
+                }
+              );
             });
+          });
         }
       } else {
         setFeedbackFaltante(true);

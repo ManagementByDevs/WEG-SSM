@@ -98,13 +98,6 @@ const BeneficiosDetalheDemanda = (props) => {
 
   // ********************************************** Gravar audio **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
   const recognitionRef = useRef(null);
 
   const [escutar, setEscutar] = useState(false);
@@ -149,14 +142,14 @@ const BeneficiosDetalheDemanda = (props) => {
       };
 
       recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
+        props.setFeedbackErroReconhecimentoVoz(true);
         setEscutar(false);
       };
 
       recognitionRef.current = recognition;
       recognition.start();
     } else {
-      setFeedbackErroNavegadorIncompativel(true);
+      props.setFeedbackErroNavegadorIncompativel(true);
       setEscutar(false);
     }
   };
@@ -184,24 +177,6 @@ const BeneficiosDetalheDemanda = (props) => {
 
   return (
     <Box className="flex items-center">
-      {/* Feedback Erro reconhecimento de voz */}
-      <Feedback
-        open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback12}
-      />
-      {/* Feedback Não navegador incompativel */}
-      <Feedback
-        open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback13}
-      />
       {/* Beneficios editáveis */}
       {props.editavel ? (
         <>
@@ -285,13 +260,11 @@ const BeneficiosDetalheDemanda = (props) => {
                         id="demo-simple-select-standard"
                         value={props.beneficio.tipoBeneficio}
                         onChange={(e) => {
-                          props.setBeneficio(
-                            {
-                              ...props.beneficio,
-                              tipoBeneficio: e.target.value,
-                            },
-                            props.index
-                          );
+                          if (e.target.value != "Qualitativo") {
+                            props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value }, props.index);
+                          } else {
+                            props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value, valor_mensal: "", moeda: "" }, props.index);
+                          }
                         }}
                       >
                         <MenuItem value={"Real"}>
@@ -310,54 +283,56 @@ const BeneficiosDetalheDemanda = (props) => {
                     {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
                       props.beneficio.tipoBeneficio != "Qualitativo" && (
                         <>
-                          {/* Input de valor mensal */}
-                          <Box
-                            value={props.beneficio.valor_mensal || ""}
-                            fontSize={FontConfig.medium}
-                            onChange={(e) => {
-                              props.setBeneficio(
-                                {
-                                  ...props.beneficio,
-                                  valor_mensal: e.target.value,
-                                },
-                                props.index
-                              );
-                            }}
-                            color="text.primary"
-                            className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
-                            sx={{
-                              width: "80%;",
-                              height: "30px",
-                              backgroundColor: "background.default",
-                            }}
-                            component="input"
-                            placeholder={
-                              texts.BeneficiosDetalheDemanda.digiteValorMensal
-                            }
-                          />
-                          <Tooltip
-                            className="hover:cursor-pointer"
-                            title={texts.homeGerencia.gravarAudio}
-                            onClick={() => {
-                              startRecognition();
-                            }}
-                          >
-                            {escutar ? (
-                              <MicOutlinedIcon
-                                sx={{
-                                  color: "primary.main",
-                                  fontSize: "1.3rem",
-                                }}
-                              />
-                            ) : (
-                              <MicNoneOutlinedIcon
-                                sx={{
-                                  color: "text.secondary",
-                                  fontSize: "1.3rem",
-                                }}
-                              />
-                            )}
-                          </Tooltip>
+                          <Box className="flex items-center justify-center">
+                            {/* Input de valor mensal */}
+                            <Box
+                              value={props.beneficio.valor_mensal || ""}
+                              fontSize={FontConfig.medium}
+                              onChange={(e) => {
+                                props.setBeneficio(
+                                  {
+                                    ...props.beneficio,
+                                    valor_mensal: e.target.value,
+                                  },
+                                  props.index
+                                );
+                              }}
+                              color="text.primary"
+                              className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center"
+                              sx={{
+                                width: "70%;",
+                                height: "30px",
+                                backgroundColor: "background.default",
+                              }}
+                              component="input"
+                              placeholder={
+                                texts.BeneficiosDetalheDemanda.digiteValorMensal
+                              }
+                            />
+                            <Tooltip
+                              className="hover:cursor-pointer"
+                              title={texts.homeGerencia.gravarAudio}
+                              onClick={() => {
+                                startRecognition();
+                              }}
+                            >
+                              {escutar ? (
+                                <MicOutlinedIcon
+                                  sx={{
+                                    color: "primary.main",
+                                    fontSize: "1.3rem",
+                                  }}
+                                />
+                              ) : (
+                                <MicNoneOutlinedIcon
+                                  sx={{
+                                    color: "text.secondary",
+                                    fontSize: "1.3rem",
+                                  }}
+                                />
+                              )}
+                            </Tooltip>
+                          </Box>
                         </>
                       )}
                   </td>
@@ -391,8 +366,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     <Box sx={{ height: "10rem" }}>
                       {/* Caixa de texto para edição da memória cálculo */}
                       <CaixaTextoQuill
-                        texto={memoriaEdicao}
-                        setTexto={setMemoriaEdicao}
+                        texto={props.beneficio.memoriaCalculo}
                         onChange={(value) => {
                           alterarTexto(value);
                         }}
