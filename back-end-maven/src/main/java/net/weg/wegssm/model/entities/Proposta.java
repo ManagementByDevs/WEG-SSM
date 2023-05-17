@@ -191,4 +191,35 @@ public class Proposta {
         return false;
     }
 
+    public boolean containsAnexo(Anexo anexo) {
+        for (Anexo oldAnexo : this.anexo) {
+            if (oldAnexo.getId().equals(anexo.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsCustoInTabelaCusto(Custo oldCusto, List<TabelaCusto> tabelasCusto) {
+        for (TabelaCusto tabelaCusto : tabelasCusto) {
+            for (Custo custo : tabelaCusto.getCustos()) {
+                if (custo.getId().equals(oldCusto.getId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean containsCcInTabelaCusto(CC oldCc, List<TabelaCusto> tabelasCusto) {
+        for (TabelaCusto tabelaCusto : tabelasCusto) {
+            for (CC cc : tabelaCusto.getCcs()) {
+                if (cc.getId().equals(oldCc.getId())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

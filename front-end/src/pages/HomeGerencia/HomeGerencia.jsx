@@ -988,7 +988,8 @@ const HomeGerencia = () => {
    */
   const arrangePreferences = () => {
     UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
-      (preferencias) => {
+      (preferencias = EntitiesObjectService.preferencias()) => {
+        console.log("Preferências: ", preferencias);
         let itemsVisualizationMode =
           preferencias?.itemsVisualizationMode?.toUpperCase();
 
@@ -996,6 +997,9 @@ const HomeGerencia = () => {
         if (itemsVisualizationMode == nextModoVisualizacao) {
           setNextModoVisualizacao("GRID");
         }
+
+        // Setando valor da nova aba
+        setValorAba(preferencias?.abaPadrao);
 
         // Timeout para retirar o carregamento após as preferências serem atualizadas
         setTimeout(() => {
@@ -1008,18 +1012,29 @@ const HomeGerencia = () => {
   /**
    * Função que salva a nova preferência do usuário
    */
-  const saveNewPreference = () => {
+  const saveNewPreference = (preferenciaTipo = "") => {
     if (!CookieService.getCookie("jwt")) return;
+
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
       (user) => {
         let preferencias = JSON.parse(user.preferencias);
 
-        preferencias.itemsVisualizationMode =
-          nextModoVisualizacao == "TABLE" ? "grid" : "table";
+        switch (preferenciaTipo) {
+          case "itemsVisualizationMode":
+            // Nova preferência do modo de visualização
+            preferencias.itemsVisualizationMode =
+              nextModoVisualizacao == "TABLE" ? "grid" : "table";
+            break;
+          case "abaPadrao":
+            // Nova preferência da aba padrão
+            preferencias.abaPadrao = valorAba;
+            setValorAba(preferencias.abaPadrao);
+            break;
+        }
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => {});
+        UsuarioService.updateUser(user.id, user);
       }
     );
   };
