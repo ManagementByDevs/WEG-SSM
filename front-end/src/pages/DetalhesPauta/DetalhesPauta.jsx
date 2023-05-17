@@ -473,6 +473,7 @@ const DetalhesPauta = (props) => {
                     pauta.propostas?.map((proposta, index) => {
                       return (
                         <Box
+                          key={index}
                           className="w-full border-solid border border-l-4 px-4 drop-shadow-sm rounded flex items-center mt-4"
                           sx={{
                             height: "2.5rem",
@@ -480,9 +481,9 @@ const DetalhesPauta = (props) => {
                             backgroundColor: "background.default",
                             fontWeight: "300",
                             cursor: "pointer",
-                            '&:hover': {
-                              backgroundColor: 'component.main',
-                            }
+                            "&:hover": {
+                              backgroundColor: "component.main",
+                            },
                           }}
                           onClick={() => onClickProposta(index)}
                         >
@@ -506,35 +507,6 @@ const DetalhesPauta = (props) => {
                     </Typography>
                   )}
                 </Box>
-                {/* <Box
-                  sx={{
-                    display: "grid",
-                    textAlign: "center",
-                    marginTop: "2%",
-                    gap: "1rem",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(30%, 1fr))",
-                  }}
-                > */}
-                {/* Lista utilizada para mostrar os títulos no sumário */}
-                {/* {isSummaryVisible ? (
-                    pauta.propostas?.map((proposta, index) => {
-                      return (
-                        <Typography
-                          fontSize={FontConfig.big}
-                          sx={tituloProposta}
-                          key={index}
-                          onClick={() => onClickProposta(index)}
-                        >
-                          {index + 1} - {proposta.titulo}
-                        </Typography>
-                      );
-                    })
-                  ) : (
-                    <Typography fontSize={FontConfig.medium}>
-                      {texts.detalhesPauta.nenhumaPropostaAdicionada}
-                    </Typography>
-                  )}
-                </Box> */}
               </Box>
             ) : (
               // Mostrar uma proposta e seus dados
