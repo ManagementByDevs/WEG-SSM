@@ -7,7 +7,6 @@ class AnexoService {
 
     /** Função para salvar um anexo, recebendo um arquivo File como parâmetro */
     async save(anexo) {
-        console.log("Entrou ss kenzo");
         let form = new FormData();
         form.set("anexo", anexo);
         return (await axios.post(anexoPath, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;

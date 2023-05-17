@@ -36,9 +36,9 @@ public class PropostaController {
     private CustoService custoService;
     private CCsService ccsService;
     private AnexoService anexoService;
-
     private BeneficioService beneficioService;
     private DemandaService demandaService;
+    private BuService buService;
 
     private HistoricoService historicoService;
     private DocumentoHistoricoService documentoHistoricoService;
@@ -6093,6 +6093,8 @@ public class PropostaController {
             proposta.setEscopo(escopoProposta);
         }
 
+        deleteTabelaCustosRows(propostaOptional.get(), proposta);
+
         // Faz a atualização dos dados da proposta que devem ser adicionados (benefícios, tabelas...)
         Proposta propostaNovosDados = new Proposta();
         if (novaPropostaJSON != null) {
@@ -6182,39 +6184,71 @@ public class PropostaController {
             proposta.getTabelaCustos().addAll(propostaNovosDados.getTabelaCustos());
         }
 
-//        System.out.println("Última proposta: " + proposta);
-
-        /** Lógica para apagar objetos que foram removidos da proposta
-         * São eles: CCs, Custos, Tabelas de Custos, Anexos, BusBeneficiadas
-         */
         deleteAllObjectsRemoved(proposta);
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
+    /**
+     * Lógica para apagar objetos que foram removidos da proposta
+     * São eles: CCs, Custos, Tabelas de Custos, Anexos
+     *
+     * @param proposta Proposta que está sendo editada, nova proposta, nova versão
+     */
     public void deleteAllObjectsRemoved(Proposta proposta) {
         Proposta propostaAntiga = propostaService.findById(proposta.getId()).get();
 
-        System.out.println("Tabelas antigas: " + propostaAntiga.getTabelaCustos());
-        System.out.println("Tabelas novas: " + proposta.getTabelaCustos());
-
-        // Deletando as Tabelas de Custos removidos e seus respectivos custos e ccs
+        // Iterando as tabelas de custos da proposta antiga
         for (TabelaCusto oldTabelaCusto : propostaAntiga.getTabelaCustos()) {
-            System.out.println("Tabela de custo: " + oldTabelaCusto);
+            // Deletando as Tabelas de Custos removidos e seus respectivos custos e ccs
             if (!proposta.containsTabelaCusto(oldTabelaCusto)) {
-                System.out.println("Entrou no if");
 
-                // Removendo os custos da tabela de custos
+                // Apagando os custos da tabela de custos
                 for (Custo custo : oldTabelaCusto.getCustos()) {
                     custoService.deleteById(custo.getId());
                 }
 
-                // Removendo os CCs da tabela de custos
+                // Apagando os CCs da tabela de custos
                 for (CC cc : oldTabelaCusto.getCcs()) {
                     ccsService.deleteById(cc.getId());
                 }
 
                 tabelaCustoService.deleteById(oldTabelaCusto.getId());
+            }
+        }
+
+        // Apagando os anexos que foram removidos
+        for (Anexo anexo : propostaAntiga.getAnexo()) {
+            if (!proposta.containsAnexo(anexo)) {
+                anexoService.deleteById(anexo.getId());
+            }
+        }
+    }
+
+    /**
+     * Lógica para apagar os custos e ccs que foram removidos da tabela de custo mas não a tabela em si
+     *
+     * @param propostaAntiga Proposta antes de ser editada
+     * @param proposta       Proposta depois de ser editada
+     */
+    public void deleteTabelaCustosRows(Proposta propostaAntiga, Proposta proposta) {
+        // Iterando as tabelas de custos da proposta antiga
+        for (TabelaCusto oldTabelaCusto : propostaAntiga.getTabelaCustos()) {
+            // Apaga os custos e ccs que foram removidos da tabela de custo, mas não a tabela de custo em si
+            if (proposta.containsTabelaCusto(oldTabelaCusto)) {
+                // Apagando os custos que foram removidos
+                for (Custo oldCusto : oldTabelaCusto.getCustos()) {
+                    if (!proposta.containsCustoInTabelaCusto(oldCusto, proposta.getTabelaCustos())) {
+                        custoService.deleteById(oldCusto.getId());
+                    }
+                }
+
+                // Apagando os CCs que foram removidos
+                for (CC oldCc : oldTabelaCusto.getCcs()) {
+                    if (!proposta.containsCcInTabelaCusto(oldCc, proposta.getTabelaCustos())) {
+                        ccsService.deleteById(oldCc.getId());
+                    }
+                }
             }
         }
     }

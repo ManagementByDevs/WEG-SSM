@@ -3,7 +3,6 @@ package net.weg.wegssm.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.weg.wegssm.dto.PropostaDTO;
 import net.weg.wegssm.dto.PropostaJaCriadaDTO;
-import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Proposta;
 
 import javax.validation.Valid;
