@@ -168,6 +168,16 @@ class EntitiesObjectService {
       anexo: this.anexo(),
     };
   }
+
+  preferencias() {
+    return {
+      themeMode: "",
+      fontSizeDefault: "",
+      itemsVisualizationMode: "",
+      lang: "",
+      abaPadrao: "",
+    };
+  }
 }
 
 export default new EntitiesObjectService();

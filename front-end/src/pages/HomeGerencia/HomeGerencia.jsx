@@ -47,7 +47,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
-
   /** Context que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -55,7 +54,8 @@ const HomeGerencia = () => {
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
 
   /** Variável para determinar se a tour de criar proposta está aberta */
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
+    useState(false);
 
   /** Variável para determinar se a tour de propostas está aberta */
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
@@ -241,15 +241,9 @@ const HomeGerencia = () => {
     },
   ];
 
-
-
-
-
-
-  const [caraLogado, setCaraLogado] = useState(UsuarioService.getUserCookies())
+  const [caraLogado, setCaraLogado] = useState(UsuarioService.getUserCookies());
 
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
-
 
   const [mensagens, setMensagens] = useState([]);
 
@@ -270,33 +264,19 @@ const HomeGerencia = () => {
     chatService.getByRemetente(caraLogado.usuario.id).then((response) => {
       const chats = response;
       chats.map((chat) => {
-      if (chat.id) {
-        let inscricaoId = inscrever(
-          `/weg_ssm/mensagem/${chat.id}/chat`,
-          acaoNovaMensagem
-        );
-      }
+        if (chat.id) {
+          let inscricaoId = inscrever(
+            `/weg_ssm/mensagem/${chat.id}/chat`,
+            acaoNovaMensagem
+          );
+        }
       });
     });
-  }
+  };
 
   useEffect(() => {
     inscreverSocket();
   }, [stompClient]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // Context para ver o tema do sistema
   const { mode } = useContext(ColorModeContext);
@@ -358,7 +338,8 @@ const HomeGerencia = () => {
   // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
   const [isFirstTime, setIsFirstTime] = useState(false);
 
-  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] = useState(false);
+  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] =
+    useState(false);
 
   /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
   const [filtrosAtuais, setFiltrosAtuais] = useState({
@@ -406,13 +387,15 @@ const HomeGerencia = () => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] =
+    useState(true);
 
   /** Variável para o feedback de demanda aceita */
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
 
   /** Variável para o feedback de demanda devolvida */
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
+    useState(false);
 
   /** Variável para o feedback de demanda recusada */
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
@@ -427,13 +410,15 @@ const HomeGerencia = () => {
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   // Feedback propostas atualizadas
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] =
+    useState(false);
 
   /** Feedback deletar pauta */
   const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
 
   /** Feedback atualizar proposta */
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
+    useState(false);
 
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
@@ -506,20 +491,45 @@ const HomeGerencia = () => {
   useEffect(() => {
     switch (valorAba) {
       case "1":
-        setParams({ ...params, gerente: null, status: null, solicitante: usuario });
+        setParams({
+          ...params,
+          gerente: null,
+          status: null,
+          solicitante: usuario,
+        });
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
-          setParams({ ...params, gerente: usuario, solicitante: null, status: "BACKLOG_APROVACAO" });
+          setParams({
+            ...params,
+            gerente: usuario,
+            solicitante: null,
+            status: "BACKLOG_APROVACAO",
+          });
         } else {
-          setParams({ ...params, gerente: null, solicitante: null, status: "BACKLOG_REVISAO" });
+          setParams({
+            ...params,
+            gerente: null,
+            solicitante: null,
+            status: "BACKLOG_REVISAO",
+          });
         }
         break;
       case "3":
-        setParams({ ...params, gerente: null, solicitante: null, status: "ASSESSMENT" });
+        setParams({
+          ...params,
+          gerente: null,
+          solicitante: null,
+          status: "ASSESSMENT",
+        });
         break;
       case "4":
-        setParams({ ...params, gerente: null, solicitante: null, status: "ASSESSMENT_APROVACAO" });
+        setParams({
+          ...params,
+          gerente: null,
+          solicitante: null,
+          status: "ASSESSMENT_APROVACAO",
+        });
         break;
       case "5":
         setParamsPautas({ ...paramsPautas });
@@ -583,16 +593,16 @@ const HomeGerencia = () => {
       setFeedbackPropostaCriada(true);
     }
     localStorage.removeItem("tipoFeedback");
-  }
+  };
 
   /** Função para buscar o usuário logado no sistema pelo cookie salvo no navegador */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie("jwt").sub
-    ).then((e) => {
-      setUsuario(e)
-      setParams({ ...params, solicitante: e });
-    });
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (e) => {
+        setUsuario(e);
+        setParams({ ...params, solicitante: e });
+      }
+    );
   };
 
   /** Função para buscar a lista de fóruns e departamentos do sistema para o modal de filtros */
@@ -625,16 +635,23 @@ const HomeGerencia = () => {
   const formatarItens = (listaDemandas) => {
     let listaNova = [];
     for (let demanda of listaDemandas) {
-      
       let listaNovaBeneficios = [];
       for (let beneficio of demanda.beneficios) {
-        listaNovaBeneficios.push({ ...beneficio, memoriaCalculo: atob(beneficio.memoriaCalculo) });
+        listaNovaBeneficios.push({
+          ...beneficio,
+          memoriaCalculo: atob(beneficio.memoriaCalculo),
+        });
       }
 
-      listaNova.push({ ...demanda, problema: atob(demanda.problema), proposta: atob(demanda.proposta), beneficios: listaNovaBeneficios })
+      listaNova.push({
+        ...demanda,
+        problema: atob(demanda.problema),
+        proposta: atob(demanda.proposta),
+        beneficios: listaNovaBeneficios,
+      });
     }
     setListaItens(listaNova);
-  }
+  };
 
   const buscarItens = () => {
     setCarregamentoItens(true);
@@ -735,9 +752,7 @@ const HomeGerencia = () => {
     navigate("/detalhes-proposta/" + proposta.id, { state: proposta });
   };
 
-  const isGerente = !(
-    usuario.tipoUsuario == "GERENTE"
-  );
+  const isGerente = !(usuario.tipoUsuario == "GERENTE");
 
   // Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter"
   const eventoTeclado = (e) => {
@@ -754,12 +769,27 @@ const HomeGerencia = () => {
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto */
   const pesquisaTitulo = () => {
     if (!parseInt(valorPesquisa)) {
-      setParams({ ...params, titulo: valorPesquisa, codigoPPM: null, id: null });
+      setParams({
+        ...params,
+        titulo: valorPesquisa,
+        codigoPPM: null,
+        id: null,
+      });
     } else {
       if (valorAba < 3) {
-        setParams({ ...params, id: valorPesquisa, titulo: null, codigoPPM: null });
+        setParams({
+          ...params,
+          id: valorPesquisa,
+          titulo: null,
+          codigoPPM: null,
+        });
       } else {
-        setParams({ ...params, codigoPPM: valorPesquisa, titulo: null, id: null });
+        setParams({
+          ...params,
+          codigoPPM: valorPesquisa,
+          titulo: null,
+          id: null,
+        });
       }
     }
   };
@@ -804,7 +834,12 @@ const HomeGerencia = () => {
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
           let data = new Date();
-          let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
+          let dataFormatada =
+            data.getDate() +
+            "-" +
+            (data.getMonth() + 1) +
+            "-" +
+            data.getFullYear();
           link.href = url;
           link.download = "demandas-backlog " + dataFormatada + " .xlsx";
           link.click();
@@ -823,7 +858,12 @@ const HomeGerencia = () => {
           let url = URL.createObjectURL(blob);
           let link = document.createElement("a");
           let data = new Date();
-          let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
+          let dataFormatada =
+            data.getDate() +
+            "-" +
+            (data.getMonth() + 1) +
+            "-" +
+            data.getFullYear();
           link.href = url;
           link.download = "demandas-assessment " + dataFormatada + " .xlsx";
           link.click();
@@ -842,7 +882,12 @@ const HomeGerencia = () => {
             let link = document.createElement("a");
             link.href = url;
             let data = new Date();
-            let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
+            let dataFormatada =
+              data.getDate() +
+              "-" +
+              (data.getMonth() + 1) +
+              "-" +
+              data.getFullYear();
             link.download = "propostas " + dataFormatada + " .xlsx";
             link.click();
           }
@@ -861,7 +906,12 @@ const HomeGerencia = () => {
               let url = URL.createObjectURL(blob);
               let link = document.createElement("a");
               let data = new Date();
-              let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
+              let dataFormatada =
+                data.getDate() +
+                "-" +
+                (data.getMonth() + 1) +
+                "-" +
+                data.getFullYear();
               link.href = url;
               link.download = "pautas " + dataFormatada + " .xlsx";
               link.click();
@@ -882,7 +932,12 @@ const HomeGerencia = () => {
             let url = URL.createObjectURL(blob);
             let link = document.createElement("a");
             let data = new Date();
-            let dataFormatada = ((data.getDate())) + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear();
+            let dataFormatada =
+              data.getDate() +
+              "-" +
+              (data.getMonth() + 1) +
+              "-" +
+              data.getFullYear();
             link.href = url;
             link.download = "atas " + dataFormatada + " .xlsx";
             link.click();
@@ -933,36 +988,56 @@ const HomeGerencia = () => {
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
   const arrangePreferences = () => {
-    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
-      let itemsVisualizationMode = preferencias?.itemsVisualizationMode?.toUpperCase();
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
+      (preferencias = EntitiesObjectService.preferencias()) => {
+        console.log("Preferências: ", preferencias);
+        let itemsVisualizationMode =
+          preferencias?.itemsVisualizationMode?.toUpperCase();
 
-      // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
-      if (itemsVisualizationMode == nextModoVisualizacao) {
-        setNextModoVisualizacao("GRID");
+        // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+        if (itemsVisualizationMode == nextModoVisualizacao) {
+          setNextModoVisualizacao("GRID");
+        }
+
+        // Setando valor da nova aba
+        setValorAba(preferencias?.abaPadrao);
+
+        // Timeout para retirar o carregamento após as preferências serem atualizadas
+        setTimeout(() => {
+          setCarregamentoPreferencias(false);
+        }, 500);
       }
-
-      // Timeout para retirar o carregamento após as preferências serem atualizadas
-      setTimeout(() => {
-        setCarregamentoPreferencias(false);
-      }, 500)
-    })
+    );
   };
 
   /**
    * Função que salva a nova preferência do usuário
    */
-  const saveNewPreference = () => {
+  const saveNewPreference = (preferenciaTipo = "") => {
     if (!CookieService.getCookie("jwt")) return;
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
-      let preferencias = JSON.parse(user.preferencias);
 
-      preferencias.itemsVisualizationMode =
-        nextModoVisualizacao == "TABLE" ? "grid" : "table";
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (user) => {
+        let preferencias = JSON.parse(user.preferencias);
 
-      user.preferencias = JSON.stringify(preferencias);
+        switch (preferenciaTipo) {
+          case "itemsVisualizationMode":
+            // Nova preferência do modo de visualização
+            preferencias.itemsVisualizationMode =
+              nextModoVisualizacao == "TABLE" ? "grid" : "table";
+            break;
+          case "abaPadrao":
+            // Nova preferência da aba padrão
+            preferencias.abaPadrao = valorAba;
+            setValorAba(preferencias.abaPadrao);
+            break;
+        }
 
-      UsuarioService.updateUser(user.id, user).then((e) => { });
-    })
+        user.preferencias = JSON.stringify(preferencias);
+
+        UsuarioService.updateUser(user.id, user);
+      }
+    );
   };
 
   // UseEffect para salvar as novas preferências do usuário
@@ -1152,13 +1227,11 @@ const HomeGerencia = () => {
 
         {/* Div container para o conteúdo da home */}
         <Box sx={{ width: "90%" }}>
-
           {carregamentoPreferencias ? (
             <Box className="mt-6 w-full h-full flex justify-center items-center">
               <ClipLoader color="#00579D" size={110} />
             </Box>
           ) : (
-
             <TabContext value={valorAba}>
               <Box
                 className="relative mb-4"
@@ -1173,12 +1246,18 @@ const HomeGerencia = () => {
                   aria-label="lab API tabs example"
                 >
                   <Tab
-                    sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
                     label={texts.home.minhasDemandas}
                     value="1"
                   />
                   <Tab
-                    sx={{ color: "text.secondary", fontSize: FontConfig.medium }}
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
                     label={texts.homeGerencia.demandas}
                     value="2"
                   />
@@ -1442,7 +1521,9 @@ const HomeGerencia = () => {
                 <Box className="mt-6" id="sextoMinhasDemandas">
                   <Box>
                     <TabPanel sx={{ padding: 0 }} value="1">
-                      <Ajuda onClick={() => setIsTourMinhasDemandasOpen(true)} />
+                      <Ajuda
+                        onClick={() => setIsTourMinhasDemandasOpen(true)}
+                      />
                       <Box>
                         {isTourMinhasDemandasOpen ? (
                           <DemandaGerencia
@@ -1526,7 +1607,11 @@ const HomeGerencia = () => {
                   </Box>
                   {isGerente && (
                     <>
-                      <TabPanel sx={{ padding: 0 }} value="3" onClick={() => { }}>
+                      <TabPanel
+                        sx={{ padding: 0 }}
+                        value="3"
+                        onClick={() => {}}
+                      >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
                         />
@@ -1546,7 +1631,11 @@ const HomeGerencia = () => {
                           />
                         </Box>
                       </TabPanel>
-                      <TabPanel sx={{ padding: 0 }} value="4" onClick={() => { }}>
+                      <TabPanel
+                        sx={{ padding: 0 }}
+                        value="4"
+                        onClick={() => {}}
+                      >
                         <Box
                           sx={{
                             display: "grid",
