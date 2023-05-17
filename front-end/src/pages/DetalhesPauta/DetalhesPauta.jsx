@@ -485,7 +485,6 @@ const DetalhesPauta = (props) => {
                               backgroundColor: "component.main",
                             },
                           }}
-                          key={proposta.id}
                           onClick={() => onClickProposta(index)}
                         >
                           <Typography
