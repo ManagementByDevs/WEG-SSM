@@ -1,51 +1,121 @@
-import React, { Component } from 'react';
+// // ********************************************** Gravar audio **********************************************
 
-class MeuComponente extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      conteudoHtml: `
-        <ul>
-          <li>Item 1</li>
-          <li><strong>Item 2</strong></li>
-          <li><em>Item 3</em></li>
-        </ul>
-        <p>Parágrafo de exemplo<br />com quebra de linha</p>
-      `,
-    };
-  }
+// import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+// import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
-  removerTagsHtml = () => {
-    // Remover tags <ul> e </ul>
-    let novoConteudoHtml = this.state.conteudoHtml.replace(/<ul\b[^>]*>(.*?)<\/ul>/gi, '');
+// const [
+//   feedbackErroNavegadorIncompativel,
+//   setFeedbackErroNavegadorIncompativel,
+// ] = useState(false);
+// const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+//   useState(false);
 
-    // Remover tags <li> e </li>
-    novoConteudoHtml = novoConteudoHtml.replace(/<li\b[^>]*>(.*?)<\/li>/gi, '');
+// const recognitionRef = useRef(null);
 
-    // Remover tags <strong> e </strong>
-    novoConteudoHtml = novoConteudoHtml.replace(/<strong\b[^>]*>(.*?)<\/strong>/gi, '');
+// const [escutar, setEscutar] = useState(false);
 
-    // Remover tags <p> e </p>
-    novoConteudoHtml = novoConteudoHtml.replace(/<p\b[^>]*>(.*?)<\/p>/gi, '');
+// const ouvirAudio = () => {
+//   // Verifica se a API é suportada pelo navegador
+//   if ("webkitSpeechRecognition" in window) {
+//     const recognition = new window.webkitSpeechRecognition();
+//     recognition.continuous = true;
+//     switch (texts.linguagem) {
+//       case "pt":
+//         recognition.lang = "pt-BR";
+//         break;
+//       case "en":
+//         recognition.lang = "en-US";
+//         break;
+//       case "es":
+//         recognition.lang = "es-ES";
+//         break;
+//       case "ch":
+//         recognition.lang = "cmn-Hans-CN";
+//         break;
+//       default:
+//         recognition.lang = "pt-BR";
+//         break;
+//     }
 
-    // Remover tags <br /> e <br>
-    novoConteudoHtml = novoConteudoHtml.replace(/<br\b[^>]*\/?>/gi, '');
+//     recognition.onstart = () => {
+//       // console.log("Reconhecimento de fala iniciado. Fale algo...");
+//     };
 
-    // Remover tags <em> e </em>
-    novoConteudoHtml = novoConteudoHtml.replace(/<em\b[^>]*>(.*?)<\/em>/gi, '');
+//     recognition.onresult = (event) => {
+//       const transcript =
+//         event.results[event.results.length - 1][0].transcript;
+//       setValorPesquisa(transcript);
+//     };
 
-    // Atualizar o estado com o novo conteúdo HTML
-    this.setState({ conteudoHtml: novoConteudoHtml });
-  }
+//     recognition.onerror = (event) => {
+//       setFeedbackErroReconhecimentoVoz(true);
+//       setEscutar(false);
+//     };
 
-  render() {
-    return (
-      <div>
-        <div dangerouslySetInnerHTML={{ __html: this.state.conteudoHtml }}></div>
-        <button onClick={this.removerTagsHtml}>Remover Tags HTML</button>
-      </div>
-    );
-  }
-}
+//     recognitionRef.current = recognition;
+//     recognition.start();
+//   } else {
+//     setFeedbackErroNavegadorIncompativel(true);
+//     setEscutar(false);
+//   }
+// };
 
-export default MeuComponente;
+// const stopRecognition = () => {
+//   if (recognitionRef.current) {
+//     recognitionRef.current.stop();
+//     // console.log("Reconhecimento de fala interrompido.");
+//   }
+// };
+
+// const startRecognition = () => {
+//   setEscutar(!escutar);
+// };
+
+// useEffect(() => {
+//   if (escutar) {
+//     ouvirAudio();
+//   } else {
+//     stopRecognition();
+//   }
+// }, [escutar]);
+
+// {
+//   /* Feedback Erro reconhecimento de voz */
+// }
+// <Feedback
+//   open={feedbackErroReconhecimentoVoz}
+//   handleClose={() => {
+//     setFeedbackErroReconhecimentoVoz(false);
+//   }}
+//   status={"erro"}
+//   mensagem={texts.homeGerencia.feedback.feedback12}
+// />
+// {
+//   /* Feedback Não navegador incompativel */
+// }
+// <Feedback
+//   open={feedbackErroNavegadorIncompativel}
+//   handleClose={() => {
+//     setFeedbackErroNavegadorIncompativel(false);
+//   }}
+//   status={"erro"}
+//   mensagem={texts.homeGerencia.feedback.feedback13}
+// />
+
+// <Tooltip
+//   className="hover:cursor-pointer"
+//   title={texts.homeGerencia.gravarAudio}
+//   onClick={() => {
+//     startRecognition();
+//   }}
+// >
+//   {escutar ? (
+//     <MicOutlinedIcon sx={{ color: "primary.main", fontSize: "1.3rem" }} />
+//   ) : (
+//     <MicNoneOutlinedIcon
+//       sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+//     />
+//   )}
+// </Tooltip>
+
+// // ********************************************** Fim Gravar audio **********************************************

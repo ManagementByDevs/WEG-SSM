@@ -1,13 +1,24 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Typography, Button, Divider, TextareaAutosize, Paper, IconButton, Tooltip, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  TextareaAutosize,
+  Paper,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import DownloadIcon from "@mui/icons-material/Download";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
@@ -143,9 +154,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || texts.DetalhesDemanda.real,
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -193,13 +204,13 @@ const DetalhesDemanda = (props) => {
       AnexoService.save(file).then((response) => {
         setNovosAnexos([...novosAnexos, response]);
         setAnexosDemanda([...anexosDemanda, response]);
-      })
+      });
     }
   };
 
   // Função para remover um anexo da lista de anexos
   const removerAnexo = (index) => {
-    setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]])
+    setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     removeAnexosNovos(anexosDemanda[index]);
     let aux = [...anexosDemanda];
     aux.splice(index, 1);
@@ -245,7 +256,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -253,7 +264,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosNovos([]);
   };
@@ -270,7 +281,7 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of formatarBeneficiosRequisicao(beneficios)) {
-        BeneficioService.put(beneficio).then((response) => { });
+        BeneficioService.put(beneficio).then((response) => {});
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -291,12 +302,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-        props.dados.beneficios[index].moeda.toLowerCase() &&
+          props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -453,26 +464,30 @@ const DetalhesDemanda = (props) => {
       problema: btoa(props.dados.problema),
       proposta: btoa(props.dados.proposta),
       beneficios: retornarIdsObjetos(props.dados.beneficios),
-      anexo: retornarIdsObjetos(props.dados.anexo)
-    }
+      anexo: retornarIdsObjetos(props.dados.anexo),
+    };
     return demanda;
-  }
+  };
 
   /** Função para criar e retornar um objeto de histórico para salvamento */
   const retornaObjetoHistorico = (acaoRealizada) => {
     const historico = {
       data: new Date(),
       acaoRealizada: acaoRealizada,
-      autor: { id: CookieService.getUser().id }
-    }
+      autor: { id: CookieService.getUser().id },
+    };
     return historico;
-  }
+  };
 
   /** Função usada para atualizar o histórico da demanda quando ela for atualizada no banco, recebendo um texto da ação realizada */
   const salvarHistorico = (texto) => {
     ExportPdfService.exportDemanda(props.dados.id).then((file) => {
       let arquivo = new Blob([file], { type: "application/pdf" });
-      DemandaService.addHistorico(props.dados.id, retornaObjetoHistorico(texto), arquivo);
+      DemandaService.addHistorico(
+        props.dados.id,
+        retornaObjetoHistorico(texto),
+        arquivo
+      );
     });
   };
 
@@ -483,9 +498,11 @@ const DetalhesDemanda = (props) => {
     const status =
       modoModalRecusa === "devolucao" ? "BACKLOG_EDICAO" : "CANCELLED";
 
-    DemandaService.put(
-      { ...formatarDemanda(), motivoRecusa: motivoRecusaDemanda, status: status }
-    ).then(() => {
+    DemandaService.put({
+      ...formatarDemanda(),
+      motivoRecusa: motivoRecusaDemanda,
+      status: status,
+    }).then(() => {
       const tipoNotificacao =
         modoModalRecusa === "devolucao"
           ? NotificacaoService.maisInformacoes
@@ -496,7 +513,11 @@ const DetalhesDemanda = (props) => {
           props.dados
         )
       );
-      salvarHistorico(modoModalRecusa === "devolucao" ? "Demanda Devolvida" : "Demanda Reprovada");
+      salvarHistorico(
+        modoModalRecusa === "devolucao"
+          ? "Demanda Devolvida"
+          : "Demanda Reprovada"
+      );
       navegarHome(modoModalRecusa === "devolucao" ? 2 : 3);
     });
   };
@@ -583,10 +604,10 @@ const DetalhesDemanda = (props) => {
   // useEffect utilizado para atualizar o valor html do campo
   useEffect(() => {
     if (problemaDaDemanda.current) {
-      problemaDaDemanda.current.innerHTML = props.dados.problema
+      problemaDaDemanda.current.innerHTML = props.dados.problema;
     }
     if (propostaDaDemanda.current) {
-      propostaDaDemanda.current.innerHTML = props.dados.proposta
+      propostaDaDemanda.current.innerHTML = props.dados.proposta;
     }
   }, [props, visualizarTexto, editar]);
 
@@ -605,11 +626,109 @@ const DetalhesDemanda = (props) => {
       console.log(anexosRemovidos);
       console.log(novosAnexos);
       console.log(anexosDemanda);
-    } catch (error) { }
+    } catch (error) {}
   }, [anexosRemovidos, novosAnexos, anexosDemanda]);
+
+  // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        // setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = () => {
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // ********************************************** Fim Gravar audio **********************************************
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
+      {/* Feedback Erro reconhecimento de voz */}
+      <Feedback
+        open={feedbackErroReconhecimentoVoz}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback12}
+      />
+      {/* Feedback Não navegador incompativel */}
+      <Feedback
+        open={feedbackErroNavegadorIncompativel}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback13}
+      />
       <Feedback
         open={feedbackFacaAlteracao}
         handleClose={() => setFeedbackFacaAlteracao(false)}
@@ -663,8 +782,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -673,8 +792,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -928,7 +1047,7 @@ const DetalhesDemanda = (props) => {
           </>
         ) : (
           <>
-            <Box className="flex justify-center">
+            <Box className="flex justify-center items-center">
               <Box
                 value={tituloDemanda}
                 onChange={(e) => {
@@ -946,6 +1065,23 @@ const DetalhesDemanda = (props) => {
                 component="input"
                 placeholder={texts.DetalhesDemanda.digiteTituloDaDemanda}
               />
+              <Tooltip
+                className="hover:cursor-pointer"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition();
+                }}
+              >
+                {escutar ? (
+                  <MicOutlinedIcon
+                    sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                  />
+                ) : (
+                  <MicNoneOutlinedIcon
+                    sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                  />
+                )}
+              </Tooltip>
             </Box>
             <Divider />
             <Box>
@@ -1122,8 +1258,10 @@ const DetalhesDemanda = (props) => {
         className="flex fixed justify-end"
         sx={{ width: "15rem", bottom: "20px", right: "20px" }}
       >
-        {props.usuario?.tipoUsuario == "ANALISTA" && props.botao &&
-          !editar && props.dados.status == "BACKLOG_REVISAO" && (
+        {props.usuario?.tipoUsuario == "ANALISTA" &&
+          props.botao &&
+          !editar &&
+          props.dados.status == "BACKLOG_REVISAO" && (
             <Box className="flex justify-around w-full">
               <Button
                 sx={{
@@ -1167,8 +1305,10 @@ const DetalhesDemanda = (props) => {
           )}
 
         {/* caso o usuário seja um gerente */}
-        {props.usuario?.tipoUsuario == "GERENTE" && props.botao &&
-          !editar && props.dados.status == "BACKLOG_APROVACAO" && (
+        {props.usuario?.tipoUsuario == "GERENTE" &&
+          props.botao &&
+          !editar &&
+          props.dados.status == "BACKLOG_APROVACAO" && (
             <Box className=" w-full flex justify-around">
               <Button
                 sx={{

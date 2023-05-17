@@ -503,7 +503,8 @@ const TextLanguageContext = createContext({
       chatEncerrado: "Chat encerrado com sucesso!",
       chatReaberto: "Chat reaberto com sucesso!",
       chatEncerradoErro: "Não é possível entrar em um chat encerrado!",
-      inputChatEncerrado: "Não é possível enviar mensagens, pois o chat foi encerrado.",
+      inputChatEncerrado:
+        "Não é possível enviar mensagens, pois o chat foi encerrado.",
       anexoMuitoPesado: "O anexo é muito pesado!",
     },
     detalhesAta: {
@@ -655,6 +656,8 @@ const TextLanguageContext = createContext({
         feedback9: "Propostas atualizadas com sucesso!",
         feedback10: "Demanda criada com sucesso!",
         feedback11: "Você não pode abrir um chat com você mesmo!",
+        feedback12: "Erro ao reconhcer a voz!",
+        feedback13: "Navegador não é compatível!",
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",
@@ -665,6 +668,7 @@ const TextLanguageContext = createContext({
       visualizacaoEmBloco: "Visualização em bloco",
       pesquisarPorTitulo: "Pesquisar por título...",
       pesquisar: "Pesquisar",
+      gravarAudio: "Gravar Audio",
       ordenacao: "Ordenação",
       filtrar: "Filtrar",
       exportar: "Exportar",
