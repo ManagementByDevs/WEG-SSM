@@ -460,16 +460,6 @@ const DetalhesPropostaEditMode = ({
       propostaAux.parecerComissao = null;
     if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
 
-    console.log(
-      "DATA: ",
-      propostaAux,
-      novasTabelasCusto,
-      novosBeneficios,
-      novosAnexos,
-      listaIdsAnexos,
-      propostaEscopo
-    );
-
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
@@ -479,7 +469,6 @@ const DetalhesPropostaEditMode = ({
       listaIdsAnexos,
       propostaEscopo
     ).then((response) => {
-      console.log("response", response);
       setPropostaData(response);
       setIsEditing(false);
     });
@@ -844,10 +833,6 @@ const DetalhesPropostaEditMode = ({
       escopo: escopoAux,
     });
   }, []);
-
-  useEffect(() => {
-    console.log("Update proposta: ", proposta);
-  }, [proposta]);
 
   useEffect(() => {
     if (!isBeneficiosVisible) {

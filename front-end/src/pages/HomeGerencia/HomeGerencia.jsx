@@ -724,17 +724,15 @@ const HomeGerencia = () => {
   // Função para alterar a aba selecionada
   const handleChange = (event, novoValor) => {
     setListaItens([]);
+    saveNewPreference("abaPadrao", novoValor);
     setValorAba(novoValor);
   };
 
   /** Função para trocar o modo de visualização dos itens (bloco / lista) */
   const trocarModoVisualizacao = () => {
-    setNextModoVisualizacao((modoAnterior) => {
-      if (modoAnterior === "GRID") {
-        return "TABLE";
-      }
-      return "GRID";
-    });
+    let novoModo = nextModoVisualizacao === "GRID" ? "TABLE" : "GRID";
+    saveNewPreference("itemsVisualizationMode", novoModo);
+    setNextModoVisualizacao(novoModo);
   };
 
   // Função para ir na tela de detalhes da demanda, salvando a demanda no location state
@@ -989,7 +987,6 @@ const HomeGerencia = () => {
   const arrangePreferences = () => {
     UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
       (preferencias = EntitiesObjectService.preferencias()) => {
-        console.log("Preferências: ", preferencias);
         let itemsVisualizationMode =
           preferencias?.itemsVisualizationMode?.toUpperCase();
 
@@ -1012,7 +1009,7 @@ const HomeGerencia = () => {
   /**
    * Função que salva a nova preferência do usuário
    */
-  const saveNewPreference = (preferenciaTipo = "") => {
+  const saveNewPreference = (preferenciaTipo = "", value) => {
     if (!CookieService.getCookie("jwt")) return;
 
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
@@ -1023,12 +1020,12 @@ const HomeGerencia = () => {
           case "itemsVisualizationMode":
             // Nova preferência do modo de visualização
             preferencias.itemsVisualizationMode =
-              nextModoVisualizacao == "TABLE" ? "grid" : "table";
+              value == "TABLE" ? "grid" : "table";
             break;
           case "abaPadrao":
             // Nova preferência da aba padrão
-            preferencias.abaPadrao = valorAba;
-            setValorAba(preferencias.abaPadrao);
+            preferencias.abaPadrao = value;
+            // setValorAba(preferencias.abaPadrao);
             break;
         }
 
@@ -1038,21 +1035,16 @@ const HomeGerencia = () => {
       }
     );
   };
-
-  // UseEffect para salvar as novas preferências do usuário
-  useEffect(() => {
-    saveNewPreference("itemsVisualizationMode");
-  }, [nextModoVisualizacao]);
-
-  useEffect(() => {
-    saveNewPreference("abaPadrao");
-  }, [valorAba]);
   // ********************************************** Fim Preferências **********************************************
 
   // ********************************************** Funções de voz **********************************************
 
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
   const recognitionRef = useRef(null);
 

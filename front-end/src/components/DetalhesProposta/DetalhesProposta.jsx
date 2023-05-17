@@ -1217,6 +1217,9 @@ const StatusProposta = ({
   // Estado para a controlar o feedback de erro de autoridade
   const [feedbackErrorAuthority, setFeedbackErrorAuthority] = useState(false);
 
+  // Estado para controlar o feedback de erro de mesmo status selecionado
+  const [feedbackStatusError, setFeedbackStatusError] = useState(false);
+
   // Abre o modal para alterar o status da proposta
   const handleOpenModalStatus = () => {
     setModalStatus(true);
@@ -1229,7 +1232,7 @@ const StatusProposta = ({
 
   const confirmSelectStatus = (status) => {
     if (isSameStatus(status)) {
-      console.log("Status é o mesmo!");
+      setFeedbackStatusError(true);
       return;
     }
 
@@ -1339,6 +1342,12 @@ const StatusProposta = ({
         handleClose={() => setFeedbackErrorAuthority(false)}
         status={"erro"}
         mensagem={texts.detalhesProposta.feedbackErrorAuthority}
+      />
+      <Feedback
+        open={feedbackStatusError}
+        handleClose={() => setFeedbackStatusError(false)}
+        status={"erro"}
+        mensagem={texts.detalhesProposta.mesmoStatus}
       />
       <ModalConfirmacao
         open={confirmEditStatus}

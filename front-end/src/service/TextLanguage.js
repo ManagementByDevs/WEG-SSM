@@ -782,6 +782,7 @@ const TextLanguage = (linguagem) => {
           nenhum: "Nenhum",
           feedbackErrorAuthority: "Usuário não possui essa permissão!",
           editadoComSucesso: "Editado com sucesso!",
+          mesmoStatus: "A proposta já possui esse status!",
           status: {
             assessmentAprovacao: "Assessment",
           },
@@ -1639,6 +1640,7 @@ const TextLanguage = (linguagem) => {
           nenhum: "None",
           feedbackErrorAuthority: "User does not have this permission!",
           editadoComSucesso: "Successfully edited!",
+          mesmoStatus: "The proposal already has this status!",
           status: {
             assessmentAprovacao: "Assessment",
           },
@@ -2467,6 +2469,7 @@ const TextLanguage = (linguagem) => {
           nenhum: "没有任何",
           feedbackErrorAuthority: "用户没有此权限!",
           editadoComSucesso: "编辑成功！",
+          mesmoStatus: "该提案已具有此状态！",
           status: {
             assessmentAprovacao: "Assessment",
           },
@@ -3337,6 +3340,7 @@ const TextLanguage = (linguagem) => {
           nenhum: "Ninguno",
           feedbackErrorAuthority: "El usuario no tiene este permiso!",
           editadoComSucesso: "¡Editado con éxito!",
+          mesmoStatus: "¡La propuesta ya tiene este estado!",
           status: {
             assessmentAprovacao: "Assessment",
           },
