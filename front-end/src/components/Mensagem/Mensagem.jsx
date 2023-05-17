@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 
-import { Box, Typography, Avatar, Tooltip } from "@mui/material";
+import { Box, Typography, Tooltip } from "@mui/material";
 
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
@@ -11,14 +11,14 @@ import dateService from "../../service/dateService";
 import UsuarioService from "../../service/usuarioService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 
-// Componnete para utilizar durante uma mensagem no chat
+/** Componnete para utilizar durante uma mensagem no chat */
 const Mensagem = (props) => {
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  /** Context para alterar o tamanho da fonte */
+  const { FontConfig } = useContext(FontContext);
 
   const [user, setUser] = useState(UsuarioService.getUserCookies());
 
-  // Função para baixar um anexo
+  /** Função para baixar um anexo */
   const downloadAnexo = (anexo = EntitiesObjectService.anexo()) => {
     const file = anexo;
     let blob;
@@ -49,7 +49,7 @@ const Mensagem = (props) => {
     }
   };
 
-  // Função para transformar uma string em base64 para um ArrayBuffer
+  /** Função para transformar uma string em base64 para um ArrayBuffer */
   const base64ToArrayBuffer = (base64) => {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);
@@ -104,7 +104,7 @@ const Mensagem = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginRight: "0.2rem" }}
                 >
-                  {`${dateService.getHorasFormatado(props.mensagem.data)}`}
+                  {dateService.getHorasFormatado(props.mensagem.data)}
                 </Typography>
                 <DoneAllIcon fontSize="small" sx={{ color: "#FFFF" }} />
               </Box>
@@ -157,7 +157,7 @@ const Mensagem = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary" }}
                 >
-                  {`${dateService.getHorasFormatado(props.mensagem.data)}`}
+                  {dateService.getHorasFormatado(props.mensagem.data)}
                 </Typography>
               </Box>
             </Box>

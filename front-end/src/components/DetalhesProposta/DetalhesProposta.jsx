@@ -1,7 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 
-import { useLocation } from "react-router-dom";
-
 import {
   Box,
   Divider,

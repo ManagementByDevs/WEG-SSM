@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -22,7 +22,6 @@ import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 import NotFound from "./pages/NotFound/NotFound";
 import DetalhesPropostaPagina from "./pages/DetalhesPropostaPagina/DetalhesPropostaPagina";
-import Test from "./pages/Test/test";
 
 import ToggleColorMode from "./service/TemaProvedor";
 import TextLanguage from "./service/TextLanguage";
@@ -30,10 +29,8 @@ import TextLanguage from "./service/TextLanguage";
 import FontContext from "./service/FontContext";
 import TextLanguageContext from "./service/TextLanguageContext";
 import ChatContext from "./service/ChatContext";
-import { WebSocketService } from "./service/WebSocketService";
-
-import UsuarioService from "./service/usuarioService";
 import CookieService from "./service/cookieService";
+import { WebSocketService } from "./service/WebSocketService";
 
 const App = () => {
   const [FontConfig, setFontConfig] = useState({

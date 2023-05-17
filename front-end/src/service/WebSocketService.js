@@ -6,15 +6,15 @@ import * as Stomp from "stompjs";
 
 export const WebSocketContext = createContext();
 
-export const WebSocketService = ({children}) => {
+export const WebSocketService = ({ children }) => {
   const [stompClient, setStompClient] = useState(null);
 
   useEffect(() => {
     const conectar = () => {
       const socket = new SockJS("http://localhost:8443/ws");
       const stomp = Stomp.over(socket);
-      stomp.debug = null;
-      
+      // stomp.debug = null;
+
       stomp.connect(
         {},
         () => {
@@ -38,13 +38,12 @@ export const WebSocketService = ({children}) => {
 
   const enviar = (destino, mensagem) => {
     if (stompClient) {
-      let auxMensagem
+      let auxMensagem;
       auxMensagem = {
         ...mensagem,
-        texto: mensagem.texto.replace(/\n/g, "%BREAK%")
-      } 
+        texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
+      };
       stompClient.send(destino, {}, JSON.stringify(auxMensagem));
-    } else {
     }
   };
 
@@ -58,7 +57,7 @@ export const WebSocketService = ({children}) => {
     <WebSocketContext.Provider
       value={{ stompClient, desconectar, enviar, inscrever }}
     >
-        {children}
+      {children}
     </WebSocketContext.Provider>
   );
 };

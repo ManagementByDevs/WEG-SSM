@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.MensagemDTO;
 import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Mensagem;
+import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.service.ChatService;
 import net.weg.wegssm.model.service.MensagemService;
 import net.weg.wegssm.model.service.UsuarioService;
@@ -34,22 +35,35 @@ public class MensagemController {
     private MensagemService mensagemService;
     private ChatService chatService;
     private UsuarioService usuarioService;
-
-//    @Autowired
-//    private SimpMessagingTemplate simpMessagingTemplate;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/weg_ssm/mensagem/{id}")
     @SendTo("/weg_ssm/mensagem/{id}/chat")
     public ResponseEntity<Object> receiveMessage(@DestinationVariable Long id, @Payload MensagemDTO mensagemDTO) {
         System.out.println("Mensagem: " + mensagemDTO);
         Mensagem mensagem = new Mensagem();
+//        Proposta proposta = new Proposta();
 
         BeanUtils.copyProperties(mensagemDTO, mensagem, "id");
 
-
         mensagem.setUsuario(usuarioService.findById(mensagemDTO.getUsuario().getId()).get());
+//        mensagem.setIdChat(chatService.findById(mensagemDTO.getIdChat().getId()).get());
+//        proposta.setId(mensagem.getIdChat().getIdProposta().getId());
+//        mensagem.getIdChat().setIdProposta(proposta);
 
-        return ResponseEntity.ok().body(mensagemService.save(mensagem));
+        mensagem = mensagemService.save(mensagem);
+
+        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/all", mensagem);
+
+        return ResponseEntity.ok().body(mensagem);
+    }
+
+    @MessageMapping("/weg_ssm/mensagem/all")
+    @SendTo("/weg_ssm/mensagem/all")
+    public ResponseEntity<Object> receiveAnyMessage(@Payload Mensagem mensagem) {
+        System.out.println("Nova Mensagem: " + mensagem);
+
+        return ResponseEntity.ok().body(mensagem);
     }
 
     /**

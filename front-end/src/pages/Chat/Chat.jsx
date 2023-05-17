@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   Box,
@@ -10,14 +10,10 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  FormControlLabel,
-  Input,
 } from "@mui/material";
 
-import Cookies from "js-cookie";
-import { over } from "stompjs";
-import SockJS from "sockjs-client";
 import Tour from "reactour";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -36,256 +32,44 @@ import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
-import ChatService from "../../service/chatService";
-import { MensagemService } from "../../service/MensagemService";
-import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ChatContext from "../../service/ChatContext";
-import { useParams } from "react-router-dom";
-import { WebSocketContext } from "../../service/WebSocketService";
-import CookieService from "../../service/cookieService";
+
+import ChatService from "../../service/chatService";
+import UsuarioService from "../../service/usuarioService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
-import dateService from "../../service/dateService";
-import anexoService from "../../service/anexoService";
+import DateService from "../../service/dateService";
+import AnexoService from "../../service/anexoService";
+import { MensagemService } from "../../service/MensagemService";
+import { WebSocketContext } from "../../service/WebSocketService";
 
-import ClipLoader from "react-spinners/ClipLoader";
-
-// Chat para conversa entre usuários do sistema
+/** Chat para conversa entre usuários do sistema */
 const Chat = () => {
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
-  // Context para alterar o idioma
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  /** Context para alterar o idioma */
+  const { texts } = useContext(TextLanguageContext);
 
   const { setVisibilidade, setIdChat } = useContext(ChatContext);
 
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  /** Context para alterar o tamanho da fonte */
+  const { FontConfig } = useContext(FontContext);
 
-  // Location utilizado para conectar o usuário no webSocket
-  const location = useLocation();
-
-  // UseState para pesquisar um contato da lista
-  const [pesquisaContato, setPesquisaContato] = useState("");
-
-  // UseState para armazenar os resultados da pesquisa
-  const [resultadosContato, setresultadosContato] = useState([]);
-
-  const [buscandoMensagens, setBuscandoMensagens] = useState(true);
-
-  const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
-  const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
-  const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
-
-  // UseState para armazenar o contato selecionado
-  const onChange = (evt) => {
-    setPesquisaContato(evt.target.value);
-  };
-
-  const boxRef = useRef(null);
-
-  const [abrirModalEncerrarChat, setOpenModalEncerrarChat] = useState(false);
-  const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
-
-  const abrirModalCancelarChat = () => {
-    setOpenModalEncerrarChat(true);
-  };
-
-  const fecharModalCancelarChat = () => {
-    setOpenModalEncerrarChat(false);
-  };
-
-  const abrirModalAbrirChat = () => {
-    setOpenModalReabrirChat(true);
-  };
-
-  const fecharModalAbrirChat = () => {
-    setOpenModalReabrirChat(false);
-  };
-
-  const deletarChat = () => {
-    fecharModalCancelarChat();
-    ChatService.getByIdChat(idChat).then((e) => {
-      ChatService.put(
-        {
-          ...e,
-          conversaEncerrada: true,
-        },
-        idChat
-      ).then((e) => {
-        setFeedbackChatEncerrado(true);
-        listaChats.map((chat) => {
-          if (chat.id == idChat) {
-            let aux = [...listaChats];
-            aux.splice(listaChats.indexOf(chat), 1, {
-              ...chat,
-              conversaEncerrada: true,
-            });
-            setListaChats(aux);
-          }
-        });
-      });
-    });
-  };
-
-  const abrirChat = () => {
-    fecharModalAbrirChat();
-    ChatService.getByIdChat(idChat).then((e) => {
-      ChatService.put(
-        {
-          ...e,
-          conversaEncerrada: false,
-        },
-        idChat
-      ).then((e) => {
-        setFeedbackChatAberto(true);
-        listaChats.map((chat) => {
-          if (chat.id == idChat) {
-            let aux = [...listaChats];
-            aux.splice(listaChats.indexOf(chat), 1, {
-              ...chat,
-              conversaEncerrada: false,
-            });
-            setListaChats(aux);
-          }
-        });
-      });
-    });
-  };
-
-  const [listaChats, setListaChats] = useState([]);
-
-  async function buscarChats() {
-    await ChatService.getByRemetente(user.usuario.id).then((e) => {
-      setListaChats(e);
-    });
-  }
-
-  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
-
-  const [mensagens, setMensagens] = useState([
-    EntitiesObjectService.mensagem(),
-  ]);
-
-  async function carregar() {
-    await MensagemService.getMensagensChat(idChat)
-      .then((response) => {
-        setMensagens(response);
-      })
-      .catch((error) => {});
-    setDefaultMensagem();
-  }
-
-  const [user, setUser] = useState(UsuarioService.getUserCookies());
-
-  const idChat = useParams().id;
-
+  /**  Context do WebSocket */
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
 
-  useEffect(() => {
-    if (idChat) carregar();
-    buscarChats();
-  }, []);
+  /** ID do chat passado por params */
+  const idChat = useParams().id;
 
-  useEffect(() => {
-    if (idChat) carregar();
-  }, [idChat]);
+  /** Container das mensagens */
+  const boxRef = useRef(null);
 
-  useEffect(() => {
-    setBuscandoMensagens(false);
-    const boxElement = boxRef.current;
-    if (boxElement) {
-      boxElement.scrollTop = boxElement.scrollHeight;
-    }
-  }, [mensagens]);
+  /** Input de arquivo */
+  const inputRef = useRef(null);
 
-  // UseState para armazenar o contato selecionado
-  useEffect(() => {
-    const resultados = [];
-    listaChats.filter((chat) => {
-      chat.usuariosChat.map((userChat) => {
-        if (userChat.id != user.usuario.id) {
-          if (
-            userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
-          ) {
-            resultados.push(chat);
-          }
-        }
-      });
-    });
-    setresultadosContato(resultados);
-  }, [pesquisaContato, listaChats, idChat]);
-
-  useEffect(() => {
-    const acaoNovaMensagem = (response) => {
-      const mensagemRecebida = JSON.parse(response.body);
-      let mensagemNova = {
-        ...mensagemRecebida.body,
-        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
-      };
-      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
-    };
-
-    if (idChat) {
-      let inscricaoId = inscrever(
-        `/weg_ssm/mensagem/${idChat}/chat`,
-        acaoNovaMensagem
-      );
-
-      return () => {
-        if (inscricaoId) {
-          inscricaoId.unsubscribe();
-        }
-      };
-    }
-  }, [stompClient, idChat]);
-
-  const setDefaultMensagem = () => {
-    setMensagem({
-      data: dateService.getTodaysDate(),
-      visto: false,
-      texto: "",
-      status: "MESSAGE",
-      usuario: { id: user.usuario.id },
-      idChat: { id: idChat },
-    });
-  };
-
-  const atualizaMensagem = (event) => {
-    const { value } = event.target;
-    setMensagem({ ...mensagem, texto: value });
-  };
-
-  const submit = async (event) => {
-    if (mensagem.texto !== "") {
-      event.preventDefault();
-      enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
-      setDefaultMensagem();
-    }
-  };
-
-  // UseState para poder visualizar e alterar a visibilidade do menu
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  // Variável que é usada para saber se o menu está aberto ou não
-  const open = Boolean(anchorEl);
-
-  // Função para abrir o menu
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  // Função para fechar o menu
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  // useState para abrir e fechar o tour
-  const [isTourOpen, setIsTourOpen] = useState(false);
-
-  // Passos do tour
+  /** Passos do tour */
   const stepsTour = [
     {
       selector: "#primeiro",
@@ -321,13 +105,181 @@ const Chat = () => {
     },
   ];
 
-  function handleFileUpload(event) {
+  /** UseState para pesquisar um contato da lista */
+  const [pesquisaContato, setPesquisaContato] = useState("");
+
+  /** UseState para armazenar os resultados da pesquisa */
+  const [resultadosContato, setResultadosContato] = useState([]);
+
+  /** UseState para controlar o loading de mensagens */
+  const [buscandoMensagens, setBuscandoMensagens] = useState(true);
+
+  const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
+
+  const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
+
+  const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  /** Modal de confiramação para encerrar o chat */
+  const [abrirModalEncerrarChat, setOpenModalEncerrarChat] = useState(false);
+
+  /** Modal de confirmação para reabrir o chat */
+  const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
+
+  /** Lista de chats do usuário */
+  const [listaChats, setListaChats] = useState([]);
+
+  /** Mensagem que está sendo digitada */
+  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+
+  /** Todas as mensagens do chat selecionado */
+  const [mensagens, setMensagens] = useState([
+    EntitiesObjectService.mensagem(),
+  ]);
+
+  /** Usuário logado */
+  const [user, setUser] = useState(UsuarioService.getUserCookies());
+
+  /** UseState para poder visualizar e alterar a visibilidade do menu */
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  /** Variável que é usada para saber se o menu está aberto ou não */
+  const open = Boolean(anchorEl);
+
+  /** Função para abrir o menu */
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  /** Função para fechar o menu */
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  /** Hanlder para armazenar o contato selecionado */
+  const onChange = (evt) => {
+    setPesquisaContato(evt.target.value);
+  };
+
+  const abrirModalCancelarChat = () => {
+    setOpenModalEncerrarChat(true);
+  };
+
+  const fecharModalCancelarChat = () => {
+    setOpenModalEncerrarChat(false);
+  };
+
+  const abrirModalAbrirChat = () => {
+    setOpenModalReabrirChat(true);
+  };
+
+  const fecharModalAbrirChat = () => {
+    setOpenModalReabrirChat(false);
+  };
+
+  /** Seta a mensagem padrão */
+  const setDefaultMensagem = () => {
+    setMensagem({
+      data: DateService.getTodaysDate(),
+      visto: false,
+      texto: "",
+      status: "MESSAGE",
+      usuario: { id: user.usuario.id },
+      idChat: { id: idChat },
+    });
+  };
+
+  /** Atualiza a mensagem a cada tecla digitada */
+  const atualizaMensagem = (event) => {
+    const { value } = event.target;
+    setMensagem({ ...mensagem, texto: value });
+  };
+
+  /** Envia uma mensagem para o tópico */
+  const submit = (event) => {
+    if (mensagem.texto !== "") {
+      event.preventDefault();
+      enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
+      setDefaultMensagem();
+    }
+  };
+
+  /** Atualiza o chat para encerrado */
+  const deletarChat = () => {
+    fecharModalCancelarChat();
+    ChatService.getByIdChat(idChat).then((e) => {
+      ChatService.put(
+        {
+          ...e,
+          conversaEncerrada: true,
+        },
+        idChat
+      ).then((e) => {
+        setFeedbackChatEncerrado(true);
+        listaChats.map((chat) => {
+          if (chat.id == idChat) {
+            let aux = [...listaChats];
+            aux.splice(listaChats.indexOf(chat), 1, {
+              ...chat,
+              conversaEncerrada: true,
+            });
+            setListaChats(aux);
+          }
+        });
+      });
+    });
+  };
+
+  /** Atualiza o chat para não encerrado */
+  const abrirChat = () => {
+    fecharModalAbrirChat();
+    ChatService.getByIdChat(idChat).then((e) => {
+      ChatService.put(
+        {
+          ...e,
+          conversaEncerrada: false,
+        },
+        idChat
+      ).then((e) => {
+        setFeedbackChatAberto(true);
+        for (let chat of listaChats) {
+          if (chat.id == idChat) {
+            let aux = [...listaChats];
+            aux.splice(listaChats.indexOf(chat), 1, {
+              ...chat,
+              conversaEncerrada: false,
+            });
+            setListaChats(aux);
+            return;
+          }
+        }
+      });
+    });
+  };
+
+  /** Verifica se o chat está encerrado */
+  const isConversaEncerrada = () => {
+    for (let chatInput of listaChats) {
+      if (chatInput.id == idChat) {
+        if (chatInput.conversaEncerrada) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  /** Envia um anexo para o tópico caso ele seja menor que 64KB */
+  const handleFileUpload = (event) => {
     const file = event.target.files[0];
     event.preventDefault();
 
-    if(file.size <= 65535) {
-      anexoService
-        .save(file)
+    if (file.size <= 65535) {
+      AnexoService.save(file)
         .then((response) => {
           enviar(`/app/weg_ssm/mensagem/${idChat}`, {
             ...mensagem,
@@ -339,24 +291,103 @@ const Chat = () => {
           console.log(error);
         });
     } else {
-      setFeedbackAnexoGrande(true)
+      setFeedbackAnexoGrande(true);
     }
     setDefaultMensagem();
-  }
-
-  const retornaConversaEncerrada = () => {
-    let valor = false;
-    listaChats.map((chatInput) => {
-      if (chatInput.id == idChat) {
-        if (chatInput.conversaEncerrada == true) {
-          valor = true;
-        }
-      }
-    });
-    return valor;
   };
 
-  const inputRef = useRef(null);
+  /** Busca os chats do usuário */
+  const buscarChats = () => {
+    ChatService.getByRemetente(user.usuario.id).then((e) => {
+      setListaChats(e);
+    });
+  };
+
+  /** Busca as mensagens do usuário */
+  const carregar = () => {
+    MensagemService.getMensagensChat(idChat).then((response) => {
+      setMensagens(response);
+    });
+    setDefaultMensagem();
+  };
+
+  // ***************************************** UseEffects ***************************************** //
+
+  useEffect(() => {
+    if (idChat) carregar();
+    buscarChats();
+  }, []);
+
+  useEffect(() => {
+    if (idChat) carregar();
+  }, [idChat]);
+
+  useEffect(() => {
+    setBuscandoMensagens(false);
+    const boxElement = boxRef.current;
+    if (boxElement) {
+      boxElement.scrollTop = boxElement.scrollHeight;
+    }
+  }, [mensagens]);
+
+  /** UseState para armazenar o contato selecionado */
+  useEffect(() => {
+    const resultados = [];
+    listaChats.filter((chat) => {
+      chat.usuariosChat.map((userChat) => {
+        if (userChat.id != user.usuario.id) {
+          if (
+            userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
+          ) {
+            resultados.push(chat);
+          }
+        }
+      });
+    });
+    setResultadosContato(resultados);
+  }, [pesquisaContato, listaChats, idChat]);
+
+  useEffect(() => {
+    const acaoNovaMensagem = (response) => {
+      const mensagemRecebida = JSON.parse(response.body);
+      let mensagemNova = {
+        ...mensagemRecebida.body,
+        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
+      };
+      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
+    };
+
+    const receivedAnyMessage = (
+      mensagem = EntitiesObjectService.mensagem()
+    ) => {
+      const mensagemRecebida = JSON.parse(mensagem.body);
+      if (mensagemRecebida.usuario.id == user.usuario.id) {
+        console.log("a");
+        return;
+      }
+    };
+
+    if (idChat) {
+      let inscricaoId = inscrever(
+        `/weg_ssm/mensagem/${idChat}/chat`,
+        acaoNovaMensagem
+      );
+
+      let inscricaoAllMensagens = inscrever(
+        "/weg_ssm/mensagem/all",
+        receivedAnyMessage
+      );
+
+      return () => {
+        if (inscricaoId) {
+          inscricaoId.unsubscribe();
+          inscricaoAllMensagens.unsubscribe();
+        }
+      };
+    }
+  }, [stompClient, idChat]);
+
+  // ***************************************** Fim UseEffects ***************************************** //
 
   return (
     <>
@@ -780,7 +811,7 @@ const Chat = () => {
                                 <hr className="w-10/12 my-1.5" />
                               </div>
 
-                              {retornaConversaEncerrada() == true ? (
+                              {isConversaEncerrada() ? (
                                 <MenuItem
                                   className="gap-2"
                                   onClick={() => {
@@ -872,7 +903,7 @@ const Chat = () => {
                       height: "6.5%",
                     }}
                   >
-                    {retornaConversaEncerrada() == true ? (
+                    {isConversaEncerrada() ? (
                       <>
                         <Box
                           disabled={true}
