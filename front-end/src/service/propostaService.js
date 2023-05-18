@@ -99,6 +99,13 @@ class PropostaService {
     return (await axios.put(`${proposta}/pauta/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
   }
 
+  async atualizacaoAta(idProposta, status) {
+    let form = new FormData();
+    form.set("status", status);
+
+    return (await axios.put(`${proposta}/ata/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+  }
+
   async putWithoutArquivos(propostaObj, idProposta) {
     return (
       await axios.put(

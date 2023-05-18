@@ -4248,32 +4248,22 @@ public class PropostaController {
     }
 
     @RequestMapping("/pauta/{idProposta}")
-    public ResponseEntity<Object> updatePauta(@PathVariable(value = "idProposta") Long idProposta,
-                                              @RequestParam(value = "publicada") Boolean publicada,
-                                              @RequestParam(value = "status") Status status) {
+    public ResponseEntity<Object> updatePresenteEm(@PathVariable(value = "idProposta") Long idProposta,
+                                                   @RequestParam(required = false, value = "publicada") Boolean publicada,
+                                                   @RequestParam(value = "status") Status status,
+                                                   @RequestParam(value = "presenteEm") String presenteEm) {
         Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
         if (propostaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
         }
 
         Proposta proposta = propostaOptional.get();
-        proposta.setPublicada(publicada);
-        proposta.setStatus(status);
-//        proposta.setEmPauta(true);
-        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
-    }
-
-    @RequestMapping("/ata/{idProposta}")
-    public ResponseEntity<Object> updateAta(@PathVariable(value = "idProposta") Long idProposta,
-                                              @RequestParam(value = "status") Status status) {
-        Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
-        if(propostaOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        if(publicada != null) {
+            proposta.setPublicada(publicada);
         }
 
-        Proposta proposta = propostaOptional.get();
         proposta.setStatus(status);
-        proposta.setEmPauta(true);
+        proposta.setPresenteEm(presenteEm);
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
