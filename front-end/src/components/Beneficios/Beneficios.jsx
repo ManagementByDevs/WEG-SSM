@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { Box, Select, FormControl, InputLabel, MenuItem, Typography, } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -48,6 +48,116 @@ const Beneficios = (props) => {
   const removerComponente = () => {
     props.removerBeneficio(props.index);
   };
+
+  // // ********************************************** Gravar audio **********************************************
+
+  // const [
+  //   feedbackErroNavegadorIncompativel,
+  //   setFeedbackErroNavegadorIncompativel,
+  // ] = useState(false);
+  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+  //   useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClicado, setLocalClicado] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        // props.saveInputValue(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        props.setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      props.setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setEscutar(!escutar);
+    setLocalClicado(ondeClicou);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  {
+    /* Feedback Erro reconhecimento de voz */
+  }
+  {
+    /* <Feedback
+  open={feedbackErroReconhecimentoVoz}
+  handleClose={() => {
+    setFeedbackErroReconhecimentoVoz(false);
+  }}
+  status={"erro"}
+  mensagem={texts.homeGerencia.feedback.feedback12}
+/> */
+  }
+  {
+    /* Feedback Não navegador incompativel */
+  }
+  {
+    /* <Feedback
+  open={feedbackErroNavegadorIncompativel}
+  handleClose={() => {
+    setFeedbackErroNavegadorIncompativel(false);
+  }}
+  status={"erro"}
+  mensagem={texts.homeGerencia.feedback.feedback13}
+/> */
+  }
+
+  // // ********************************************** Fim Gravar audio **********************************************
 
   return (
     <Box
@@ -110,6 +220,8 @@ const Beneficios = (props) => {
                     placeholder={texts.beneficios.exemploValorMensal}
                     fontConfig={FontConfig.default}
                     texto={props.dados?.valor_mensal}
+                    setFeedbackErroNavegadorIncompativel= {props.setFeedbackErroNavegadorIncompativel}
+                    setFeedbackErroReconhecimentoVoz= {props.setFeedbackErroReconhecimentoVoz}
                   />
                 </Box>
                 <FormControl

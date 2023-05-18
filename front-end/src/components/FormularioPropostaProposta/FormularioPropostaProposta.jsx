@@ -17,6 +17,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import DownloadIcon from "@mui/icons-material/Download";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 import Feedback from "../../components/Feedback/Feedback";
@@ -134,7 +136,9 @@ const FormularioPropostaProposta = (props) => {
   const adicionarBeneficio = () => {
     BeneficioService.post().then((response) => {
       let beneficioNovo = {
-        ...response, tipoBeneficio: "", moeda: ""
+        ...response,
+        tipoBeneficio: "",
+        moeda: "",
       };
 
       try {
@@ -213,6 +217,89 @@ const FormularioPropostaProposta = (props) => {
     }
   };
 
+  // // ********************************************** Gravar audio **********************************************
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClique, setLocalClique] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClique) {
+          case "titulo":
+            props.setDadosDemanda({ ...props.dados, titulo: transcript });
+            break;
+
+          default:
+            break;
+        }
+        // setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        props.setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      props.setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setEscutar(!escutar);
+    setLocalClique(ondeClicou);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   return (
     <>
       {/* Feedback anexos existente */}
@@ -239,25 +326,45 @@ const FormularioPropostaProposta = (props) => {
           >
             <>
               <Box className="flex justify-center">
-                <Box
-                  value={props.dados.titulo}
-                  onChange={(e) => {
-                    alterarTexto(e, "titulo");
-                  }}
-                  fontSize={FontConfig.title}
-                  color="primary.main"
-                  className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-                  sx={{
-                    width: "100%;",
-                    height: "54px",
-                    backgroundColor: "background.default",
-                    fontWeight: "600",
-                  }}
-                  component="input"
-                  placeholder={
-                    texts.formularioPropostaProposta.digiteTituloDaDemanda
-                  }
-                />
+                <Box className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded" sx={{width: "100%;",
+                      height: "54px",
+                      backgroundColor: "background.default",}}>
+                  <Box
+                    value={props.dados.titulo}
+                    onChange={(e) => {
+                      alterarTexto(e, "titulo");
+                    }}
+                    fontSize={FontConfig.title}
+                    color="primary.main"
+                    className="flex outline-none"
+                    sx={{
+                      width: "95%;",
+                      backgroundColor: "transparent",
+                      fontWeight: "600",
+                    }}
+                    component="input"
+                    placeholder={
+                      texts.formularioPropostaProposta.digiteTituloDaDemanda
+                    }
+                  />
+                  <Tooltip
+                    className="hover:cursor-pointer"
+                    title={texts.homeGerencia.gravarAudio}
+                    onClick={() => {
+                      startRecognition("titulo");
+                    }}
+                  >
+                    {escutar && localClique == "titulo" ? (
+                      <MicOutlinedIcon
+                        sx={{ color: "primary.main", fontSize: "2rem" }}
+                      />
+                    ) : (
+                      <MicNoneOutlinedIcon
+                        sx={{ color: "text.secondary", fontSize: "2rem" }}
+                      />
+                    )}
+                  </Tooltip>
+                </Box>
               </Box>
               <Divider />
               <Box>
@@ -280,7 +387,7 @@ const FormularioPropostaProposta = (props) => {
                     *
                   </Typography>
                 </Box>
-                <Box sx={{ marginTop: '1%' }}>
+                <Box sx={{ marginTop: "1%" }}>
                   <CaixaTextoQuill
                     texto={props.dados.problema}
                     onChange={(value) => {
@@ -309,7 +416,7 @@ const FormularioPropostaProposta = (props) => {
                     *
                   </Typography>
                 </Box>
-                <Box sx={{ marginTop: '1%' }}>
+                <Box sx={{ marginTop: "1%" }}>
                   <CaixaTextoQuill
                     texto={props.dados.proposta}
                     onChange={(value) => {
@@ -371,23 +478,45 @@ const FormularioPropostaProposta = (props) => {
                     *
                   </Typography>
                 </Box>
+                <Box className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded" sx={{
+                    width: "90%;",
+                    backgroundColor: corFundoTextArea,
+                    marginLeft: "30px",
+                  }}>
                 <Box
                   value={props.dados.frequencia}
                   onChange={(e) => {
                     alterarTexto(e, "frequencia");
                   }}
                   fontSize={FontConfig.medium}
-                  className="outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+                  className="outline-none"
                   sx={{
-                    width: "90%;",
-                    backgroundColor: corFundoTextArea,
-                    marginLeft: "30px",
+                    width: "95%;",
+                    backgroundColor: "transparent",
                   }}
                   component="input"
                   placeholder={
                     texts.formularioPropostaProposta.digiteFrequencia
                   }
                 />
+                <Tooltip
+                    className="hover:cursor-pointer"
+                    title={texts.homeGerencia.gravarAudio}
+                    onClick={() => {
+                      startRecognition("frequencia");
+                    }}
+                  >
+                    {escutar && localClique == "frequencia" ? (
+                      <MicOutlinedIcon
+                        sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                      />
+                    ) : (
+                      <MicNoneOutlinedIcon
+                        sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                      />
+                    )}
+                  </Tooltip>
+                </Box>
               </Box>
               <Box
                 className="flex justify-evenly"

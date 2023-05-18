@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Box, Button, Tooltip } from "@mui/material";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import Caminho from "../../components/Caminho/Caminho";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -26,7 +28,6 @@ import Tour from "reactour";
 
 // Tela para mostrar os escopos de demandas/propostas não finalizadas
 const Escopos = () => {
-
   const [usuario, setUsuario] = useState(null);
 
   // useContext para alterar a linguagem do sistema
@@ -63,34 +64,35 @@ const Escopos = () => {
   }, [usuario]);
 
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
-      setUsuario(user);
-    });
-  }
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (user) => {
+        setUsuario(user);
+      }
+    );
+  };
 
   // função integrada com a barra de pesquisa para buscar os escopos
   const buscarEscopos = () => {
     if (inputPesquisa == "") {
-      EscopoService.buscarPorUsuario(
-        usuario.id,
-        "sort=id,asc&"
-      ).then((response) => {
-        let listaEscopos = [];
-        for (let escopo of response.content) {
-          listaEscopos.push({
-            id: escopo.id,
-            titulo: escopo.titulo,
-            problema: escopo.problema,
-            proposta: atob(escopo.proposta),
-            frequencia: escopo.frequencia,
-            beneficios: escopo.beneficios,
-            anexos: escopo.anexo,
-            ultimaModificacao: escopo.ultimaModificacao,
-            porcentagem: calculaPorcentagem(escopo),
-          });
+      EscopoService.buscarPorUsuario(usuario.id, "sort=id,asc&").then(
+        (response) => {
+          let listaEscopos = [];
+          for (let escopo of response.content) {
+            listaEscopos.push({
+              id: escopo.id,
+              titulo: escopo.titulo,
+              problema: escopo.problema,
+              proposta: atob(escopo.proposta),
+              frequencia: escopo.frequencia,
+              beneficios: escopo.beneficios,
+              anexos: escopo.anexo,
+              ultimaModificacao: escopo.ultimaModificacao,
+              porcentagem: calculaPorcentagem(escopo),
+            });
+          }
+          setEscopos([...listaEscopos]);
         }
-        setEscopos([...listaEscopos]);
-      });
+      );
     } else {
       EscopoService.buscarPorTitulo(
         parseInt(localStorage.getItem("usuarioId")),
@@ -204,6 +206,86 @@ const Escopos = () => {
     },
   ];
 
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+          setInputPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = () => {
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   return (
     <FundoComHeader>
       {/* Modal de confirmação de exclusão de escopo */}
@@ -275,6 +357,23 @@ const Escopos = () => {
                       sx={{ color: "text.secondary" }}
                     />
                   </Tooltip>
+                  <Tooltip
+                    className="hover:cursor-pointer"
+                    title={texts.homeGerencia.gravarAudio}
+                    onClick={() => {
+                      startRecognition();
+                    }}
+                  >
+                    {escutar ? (
+                      <MicOutlinedIcon
+                        sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                      />
+                    ) : (
+                      <MicNoneOutlinedIcon
+                        sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                      />
+                    )}
+                  </Tooltip>
                 </Box>
               </Box>
             </Box>
@@ -300,7 +399,24 @@ const Escopos = () => {
                 );
               })}
             </Box>
-
+            {/* Feedback Erro reconhecimento de voz */}
+            <Feedback
+              open={feedbackErroReconhecimentoVoz}
+              handleClose={() => {
+                setFeedbackErroReconhecimentoVoz(false);
+              }}
+              status={"erro"}
+              mensagem={texts.homeGerencia.feedback.feedback12}
+            />
+            {/* Feedback Não navegador incompativel */}
+            <Feedback
+              open={feedbackErroNavegadorIncompativel}
+              handleClose={() => {
+                setFeedbackErroNavegadorIncompativel(false);
+              }}
+              status={"erro"}
+              mensagem={texts.homeGerencia.feedback.feedback13}
+            />
             {/* Feedback de escopo deletado com sucesso */}
             <Feedback
               open={feedbackDeletar}
