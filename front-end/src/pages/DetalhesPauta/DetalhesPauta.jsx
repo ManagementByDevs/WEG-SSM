@@ -225,7 +225,7 @@ const DetalhesPauta = (props) => {
       PropostaService.putWithoutArquivos(
         propostaDeleted,
         propostaDeleted.id
-      ).then((newProposta) => {});
+      ).then((newProposta) => { });
       location.state = { pauta: newPauta }; // Atualizando a pauta na página
       setPauta(newPauta); // Atualizando a pauta na variável do front
       setProposta(false); // Anulando a proposta que estava sendo exibida
@@ -339,7 +339,7 @@ const DetalhesPauta = (props) => {
   // Atualiza a lista de propostas passada por parâmetro
   const updatePropostas = (listaPropostasToUpdate = []) => {
     for (let proposta of listaPropostasToUpdate) {
-      PropostaService.putWithoutArquivos(proposta, proposta.id).then(
+      PropostaService.atualizacaoAta(proposta.id, "ASSESSMENT_DG").then(
         (response) => {
           console.log("Proposta atualizada com sucesso! ", response);
         }
@@ -418,7 +418,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       <Box className="p-2" sx={{ minWidth: "60rem" }}>
         <Box className="flex w-full relative">
