@@ -12,7 +12,6 @@ import FontContext from "../../service/FontContext";
 
 /** Segunda etapa da criação de demanda, usando uma lista de benefícios dos props */
 const FormularioBeneficiosDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -29,9 +28,7 @@ const FormularioBeneficiosDemanda = (props) => {
 
   // UseEffect que irá atualizar a lista de benefícios a serem salvos (que não foram excluídos)
   useEffect(() => {
-    props.setDados(
-      beneficios
-    );
+    props.setDados(beneficios);
   }, [beneficios]);
 
   /** Adiciona um benefício na lista de benefícios, já criando ele no banco de dados para receber um id */
@@ -111,6 +108,12 @@ const FormularioBeneficiosDemanda = (props) => {
                 index={index}
                 removerBeneficio={removerBeneficio}
                 dados={beneficio}
+                setFeedbackErroNavegadorIncompativel={
+                  props.setFeedbackErroNavegadorIncompativel
+                }
+                setFeedbackErroReconhecimentoVoz={
+                  props.setFeedbackErroReconhecimentoVoz
+                }
               />
             );
           })}

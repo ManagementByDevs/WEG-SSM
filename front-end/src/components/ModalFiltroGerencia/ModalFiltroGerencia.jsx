@@ -1,9 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 
-import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
+import {
+  Modal,
+  Typography,
+  Box,
+  Button,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+  Autocomplete,
+  TextField,
+} from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -11,7 +24,6 @@ import FontContext from "../../service/FontContext";
 
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -151,16 +163,150 @@ const ModalFiltroGerencia = (props) => {
     });
   };
 
+  // // ********************************************** Gravar audio **********************************************
+
+  // const [
+  //   feedbackErroNavegadorIncompativel,
+  //   setFeedbackErroNavegadorIncompativel,
+  // ] = useState(false);
+  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+  //   useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClicado, setLocalClicado] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClicado) {
+          case "solicitante":
+            break;
+          case "forum":
+            break;
+          default:
+            break;
+        }
+        // setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        props.setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      props.setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setEscutar(!escutar);
+    setLocalClicado(ondeClicou);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  {
+    /* Feedback Erro reconhecimento de voz */
+  }
+  {
+    /* <Feedback
+  open={feedbackErroReconhecimentoVoz}
+  handleClose={() => {
+    setFeedbackErroReconhecimentoVoz(false);
+  }}
+  status={"erro"}
+  mensagem={texts.homeGerencia.feedback.feedback12}
+/> */
+  }
+  {
+    /* Feedback Não navegador incompativel */
+  }
+  {
+    /* <Feedback
+  open={feedbackErroNavegadorIncompativel}
+  handleClose={() => {
+    setFeedbackErroNavegadorIncompativel(false);
+  }}
+  status={"erro"}
+  mensagem={texts.homeGerencia.feedback.feedback13}
+/> */
+  }
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   return (
     <Modal open={true} onClose={props.fecharModal} closeAfterTransition>
       <Fade in={true}>
         <Box
           className="absolute flex justify-evenly items-center flex-col"
-          sx={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 580, height: 400, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 4, }}
+          sx={{
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 580,
+            height: 400,
+            bgcolor: "background.paper",
+            borderRadius: "5px",
+            borderTop: "10px solid #00579D",
+            boxShadow: 24,
+            p: 4,
+          }}
         >
           <CloseIcon
             onClick={props.fecharModal}
-            sx={{ position: "absolute", left: "93%", top: "3%", cursor: "pointer" }}
+            sx={{
+              position: "absolute",
+              left: "93%",
+              top: "3%",
+              cursor: "pointer",
+            }}
           />
           <Typography
             fontWeight={650}
@@ -189,13 +335,18 @@ const ModalFiltroGerencia = (props) => {
                   return option?.nome || "";
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label={texts.modalFiltroGerencia.labelSolicitante} />
+                  <TextField
+                    {...params}
+                    label={texts.modalFiltroGerencia.labelSolicitante}
+                  />
                 )}
               />
 
               {/* Select de fórum */}
               <FormControl sx={{ width: "15rem" }}>
-                <InputLabel id="demo-simple-select-label">{texts.modalFiltroGerencia.forum}</InputLabel>
+                <InputLabel id="demo-simple-select-label">
+                  {texts.modalFiltroGerencia.forum}
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -218,7 +369,9 @@ const ModalFiltroGerencia = (props) => {
 
               {/* Select de tamanho */}
               <FormControl sx={{ width: "15rem" }}>
-                <InputLabel id="demo-simple-select-label">{texts.modalFiltroGerencia.tamanho}</InputLabel>
+                <InputLabel id="demo-simple-select-label">
+                  {texts.modalFiltroGerencia.tamanho}
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -229,11 +382,21 @@ const ModalFiltroGerencia = (props) => {
                   <MenuItem selected value={""}>
                     {texts.modalFiltroGerencia.selecionar}
                   </MenuItem>
-                  <MenuItem value={"Muito Pequeno"}>{texts.modalFiltroGerencia.muitoPequeno}</MenuItem>
-                  <MenuItem value={"Pequeno"}>{texts.modalFiltroGerencia.pequeno}</MenuItem>
-                  <MenuItem value={"Médio"}>{texts.modalAceitarDemanda.medio}</MenuItem>
-                  <MenuItem value={"Grande"}>{texts.modalAceitarDemanda.grande}</MenuItem>
-                  <MenuItem value={"Muito Grande"}>{texts.modalAceitarDemanda.muitoGrande}</MenuItem>
+                  <MenuItem value={"Muito Pequeno"}>
+                    {texts.modalFiltroGerencia.muitoPequeno}
+                  </MenuItem>
+                  <MenuItem value={"Pequeno"}>
+                    {texts.modalFiltroGerencia.pequeno}
+                  </MenuItem>
+                  <MenuItem value={"Médio"}>
+                    {texts.modalAceitarDemanda.medio}
+                  </MenuItem>
+                  <MenuItem value={"Grande"}>
+                    {texts.modalAceitarDemanda.grande}
+                  </MenuItem>
+                  <MenuItem value={"Muito Grande"}>
+                    {texts.modalAceitarDemanda.muitoGrande}
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -256,7 +419,10 @@ const ModalFiltroGerencia = (props) => {
                   return option?.nome || "";
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label={texts.modalFiltroGerencia.gerenteResponsavel} />
+                  <TextField
+                    {...params}
+                    label={texts.modalFiltroGerencia.gerenteResponsavel}
+                  />
                 )}
               />
 
@@ -303,7 +469,10 @@ const ModalFiltroGerencia = (props) => {
                   return option?.nome || "";
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label={texts.modalFiltroGerencia.analistaResponsavel} />
+                  <TextField
+                    {...params}
+                    label={texts.modalFiltroGerencia.analistaResponsavel}
+                  />
                 )}
               />
             </Box>

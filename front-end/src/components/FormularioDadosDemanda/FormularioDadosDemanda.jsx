@@ -58,10 +58,16 @@ const FormularioDadosDemanda = (props) => {
             label={texts.formularioDadosDemanda.titulo}
             placeholder={texts.formularioDadosDemanda.digiteTitulo}
             fontConfig={FontConfig.default}
+            setFeedbackErroReconhecimentoVoz={
+              props.setFeedbackErroReconhecimentoVoz
+            }
+            setFeedbackErroNavegadorIncompativel={
+              props.setFeedbackErroNavegadorIncompativel
+            }
           />
 
           <Box>
-            <Box className="flex" sx={{marginTop: "3rem"}}>
+            <Box className="flex" sx={{ marginTop: "3rem" }}>
               <Typography fontSize={FontConfig.default} fontWeight={600}>
                 {texts.formularioDadosDemanda.problema}
               </Typography>
@@ -96,7 +102,7 @@ const FormularioDadosDemanda = (props) => {
           </Box>
 
           <Box>
-            <Box className="flex" sx={{marginTop: "3rem"}}>
+            <Box className="flex" sx={{ marginTop: "3rem" }}>
               <Typography fontSize={FontConfig.default} fontWeight={600}>
                 {texts.formularioDadosDemanda.proposta}
               </Typography>
@@ -139,6 +145,12 @@ const FormularioDadosDemanda = (props) => {
               label={texts.formularioDadosDemanda.frequenciaDeUso}
               placeholder={texts.formularioDadosDemanda.digiteFrequenciaDeUso}
               fontConfig={FontConfig.default}
+              setFeedbackErroReconhecimentoVoz={
+                props.setFeedbackErroReconhecimentoVoz
+              }
+              setFeedbackErroNavegadorIncompativel={
+                props.setFeedbackErroNavegadorIncompativel
+              }
             />
           </Box>
         </Box>

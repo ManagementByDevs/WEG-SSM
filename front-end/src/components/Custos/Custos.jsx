@@ -232,6 +232,8 @@ const Custos = (props) => {
                     indexCusto={props.index}
                     setCustos={props.setCustos}
                     custos={props.custos}
+                    setFeedbackErroNavegadorIncompativel={props.setFeedbackErroNavegadorIncompativel}
+                    setFeedbackErroReconhecimentoVoz={props.setFeedbackErroReconhecimentoVoz}
                   />
                 );
               })}
