@@ -111,6 +111,9 @@ const BarraProgressaoProposta = (props) => {
 
   const [mudancasFeitas, setMudancasFeitas] = useState(false);
 
+  /** Variável usada para interromper o salvamento de escopos enquanto a proposta estiver sendo criada */
+  let criandoProposta = false;
+
   // UseEffect utilizado para pegar os dados da demanda e pegar os fóruns e BUs
   useEffect(() => {
     setDadosDemanda(props.dados);
@@ -143,7 +146,7 @@ const BarraProgressaoProposta = (props) => {
               } else {
                 idEscopo = data[0].id;
                 setUltimoEscopo(data[0]);
-                carregarEscopoSalvo(data[0])
+                carregarEscopoSalvo(data[0]);
               }
             }
           );
@@ -164,7 +167,9 @@ const BarraProgressaoProposta = (props) => {
   useEffect(() => {
     if (ultimoEscopo) {
       setTimeout(() => {
-        salvarEscopo();
+        if (!criandoProposta) {
+          salvarEscopo();
+        }
       }, 5000);
     }
   }, [ultimoEscopo]);
@@ -173,7 +178,11 @@ const BarraProgressaoProposta = (props) => {
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-      const tipoBeneficioNovo = beneficio.tipoBeneficio?.charAt(0) + beneficio.tipoBeneficio?.substring(1, beneficio.tipoBeneficio.length).toLowerCase();
+      const tipoBeneficioNovo =
+        beneficio.tipoBeneficio?.charAt(0) +
+        beneficio.tipoBeneficio
+          ?.substring(1, beneficio.tipoBeneficio.length)
+          .toLowerCase();
 
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
@@ -246,13 +255,13 @@ const BarraProgressaoProposta = (props) => {
     let reader = new FileReader();
     reader.onload = function () {
       setEscopo(reader.result);
-    }
+    };
 
     if (escopo.escopo) {
       let blob = new Blob([converterBase64(escopo.escopo)]);
       reader.readAsText(blob);
     }
-  }
+  };
 
   /** Função de salvamento de escopo, usando a variável "ultimoEscopo" e atualizando ela com os dados da página */
   const salvarEscopo = () => {
@@ -314,9 +323,11 @@ const BarraProgressaoProposta = (props) => {
   /** Função para salvar os benefícios a etapa inicial da criação for concluída */
   const salvarBeneficios = () => {
     for (let beneficio of listaBeneficios) {
-      beneficioService.put(beneficio, beneficio.memoriaCalculo).then((response) => { })
+      beneficioService
+        .put(beneficio, beneficio.memoriaCalculo)
+        .then((response) => { });
     }
-  }
+  };
 
   // Função para passar para próxima página
   const proximaEtapa = () => {
@@ -343,7 +354,10 @@ const BarraProgressaoProposta = (props) => {
               beneficio.tipoBeneficio == "" ||
               beneficio.memoriaCalculo == ""
             ) {
-              if ((beneficio.tipoBeneficio != "Qualitativo") && (beneficio.valor_mensal == "" || beneficio.moeda == "")) {
+              if (
+                beneficio.tipoBeneficio != "Qualitativo" &&
+                (beneficio.valor_mensal == "" || beneficio.moeda == "")
+              ) {
                 dadosFaltantes = true;
                 setFeedbackFaltante(true);
               }
@@ -463,15 +477,6 @@ const BarraProgressaoProposta = (props) => {
     return listaNova;
   };
 
-  /** Função que retorna os IDs de todos os anexos da proposta */
-  const receberIdsAnexos = () => {
-    let listaIds = [];
-    for (const anexo of dadosDemanda.anexo) {
-      listaIds.push(anexo.id);
-    }
-    return listaIds;
-  };
-
   /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
   const retornarIdsObjetos = (listaObjetos) => {
     let listaNova = [];
@@ -512,7 +517,7 @@ const BarraProgressaoProposta = (props) => {
       anexo: retornarIdsObjetos(dadosDemanda.anexo),
       emPauta: false,
       emAta: false,
-      escopo: btoa(formatarHtml(escopo))
+      escopo: btoa(formatarHtml(escopo)),
     };
     return objeto;
   };
@@ -520,24 +525,20 @@ const BarraProgressaoProposta = (props) => {
   /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
   const formatarHtml = (texto) => {
     if (texto) {
-      texto = texto.replace(/<br>/g, '<br/>');
+      texto = texto.replace(/<br>/g, "<br/>");
       return texto;
     } else {
       return "";
     }
-  }
+  };
 
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = () => {
+
     let feedbackFaltante = false;
-    if (
-      gerais.periodoExecucacaoInicio == "" ||
-      gerais.periodoExecucacaoFim == "" ||
-      gerais.qtdPaybackSimples == "" ||
-      gerais.unidadePaybackSimples == "" ||
-      gerais.ppm == "" ||
-      gerais.linkJira == ""
-    ) {
+    criandoProposta = true;
+
+    if (gerais.periodoExecucacaoInicio == "" || gerais.periodoExecucacaoFim == "" || gerais.qtdPaybackSimples == "" || gerais.unidadePaybackSimples == "" || gerais.ppm == "" || gerais.linkJira == "") {
       setFeedbackFaltante(true);
     } else {
       if (gerais.responsaveisNegocio.length != 0) {
@@ -551,33 +552,19 @@ const BarraProgressaoProposta = (props) => {
           excluirBeneficios();
 
           propostaService.post(retornaObjetoProposta()).then((response) => {
-            DemandaService.atualizarStatus(
-              dadosDemanda.id,
-              "ASSESSMENT_APROVACAO"
-            ).then(() => {
-              EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
-                () => {
-                  // Salvamento de histórico
-                  ExportPdfService.exportProposta(response.id).then(
-                    (file) => {
-                      let arquivo = new Blob([file], {
-                        type: "application/pdf",
-                      });
-                      propostaService
-                        .addHistorico(
-                          response.id,
-                          "Proposta Criada",
-                          arquivo,
-                          CookieService.getUser().id
-                        )
-                        .then(() => {
-                          localStorage.setItem("tipoFeedback", "5");
-                          navigate("/");
-                        });
-                    }
-                  );
-                }
-              );
+            DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
+              EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
+
+                // Salvamento de histórico
+                ExportPdfService.exportProposta(response.id).then((file) => {
+
+                  let arquivo = new Blob([file], { type: "application/pdf" });
+                  propostaService.addHistorico(response.id, "Proposta Criada", arquivo, CookieService.getUser().id).then(() => {
+                    localStorage.setItem("tipoFeedback", "5");
+                    navigate("/");
+                  });
+                });
+              });
             });
           });
         }
@@ -590,6 +577,13 @@ const BarraProgressaoProposta = (props) => {
   /** Variável utilizada para abrir o modal de feedback de dados faltantes */
   const [feedbackFaltante, setFeedbackFaltante] = useState(false);
   const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
   return (
     <>
@@ -616,13 +610,28 @@ const BarraProgressaoProposta = (props) => {
           listaForuns={listaForuns}
           listaBU={listaBU}
           listaSecoesTI={listaSecoesTI}
+          setFeedbackErroNavegadorIncompativel={
+            setFeedbackErroNavegadorIncompativel
+          }
+          setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         />
       )}
       {activeStep == 1 && (
-        <FormularioEscopoProposta escopoTemp={escopoTemp} escopo={escopo} setEscopo={setEscopo} />
+        <FormularioEscopoProposta
+          escopoTemp={escopoTemp}
+          escopo={escopo}
+          setEscopo={setEscopo}
+        />
       )}
       {activeStep == 2 && (
-        <FormularioCustosProposta custos={custos} setCustos={setCustos} />
+        <FormularioCustosProposta
+          custos={custos}
+          setCustos={setCustos}
+          setFeedbackErroNavegadorIncompativel={
+            setFeedbackErroNavegadorIncompativel
+          }
+          setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+        />
       )}
       {activeStep == 3 && (
         <FormularioGeralProposta
@@ -630,6 +639,10 @@ const BarraProgressaoProposta = (props) => {
           setGerais={setGerais}
           dados={dadosDemanda}
           setDados={setDadosDemanda}
+          setFeedbackErroNavegadorIncompativel={
+            setFeedbackErroNavegadorIncompativel
+          }
+          setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         />
       )}
       <Button
@@ -664,6 +677,24 @@ const BarraProgressaoProposta = (props) => {
           {texts.barraProgressaoProposta.botaoProximo}
         </Button>
       )}
+      {/* Feedback Erro reconhecimento de voz */}
+      <Feedback
+        open={feedbackErroReconhecimentoVoz}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback12}
+      />
+      {/* Feedback Não navegador incompativel */}
+      <Feedback
+        open={feedbackErroNavegadorIncompativel}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback13}
+      />
       {/* Feedback de dados faltantes */}
       <Feedback
         open={feedbackFaltante}

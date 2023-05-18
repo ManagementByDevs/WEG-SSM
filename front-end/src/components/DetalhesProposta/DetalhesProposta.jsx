@@ -40,7 +40,7 @@ import Feedback from "../Feedback/Feedback";
 const propostaExample = EntitiesObjectService.proposta();
 
 // Componente  para mostrar os detalhes de uma proposta e suas respectivas funções
-const DetalhesProposta = ({ propostaId = 0 }) => {
+const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosProposta = () => { }, parecerComissao = "", parecerInformacao = "" }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -259,6 +259,7 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
             propostaData={proposta}
             setPropostaData={setPropostaNewData}
             setIsEditing={setIsEditing}
+            emAprovacao={emAprovacao}
           />
         </Box>
       </Box>
@@ -615,6 +616,9 @@ const DetalhesProposta = ({ propostaId = 0 }) => {
                     <ParecerComissao
                       proposta={proposta}
                       setProposta={setProposta}
+                      setDadosProposta={setDadosProposta}
+                      parecerComissao={parecerComissao}
+                      parecerInformacao={parecerInformacao}
                     />
 
                     {/* Parecer da Diretoria */}
@@ -947,12 +951,18 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
 const ParecerComissao = ({
   proposta = propostaExample,
   setProposta = () => { },
+  setDadosProposta = () => { },
+  parecerComissao = "",
+  parecerInformacao = ""
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
       <ParecerComissaoInsertText
         proposta={proposta}
         setProposta={setProposta}
+        setDadosProposta={setDadosProposta}
+        parecerComissao={parecerComissao}
+        parecerInformacao={parecerInformacao}
       />
     );
   return <ParecerComissaoOnlyRead proposta={proposta} />;
@@ -971,6 +981,9 @@ const ParecerDG = ({ proposta = propostaExample, setProposta = () => { } }) => {
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
   setProposta = () => { },
+  setDadosProposta = () => { },
+  parecerComissao = "",
+  parecerInformacao = ""
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -989,9 +1002,11 @@ const ParecerComissaoInsertText = ({
         <TextField
           select
           label={texts.detalhesProposta.parecer}
-          value={proposta.parecerComissao ? proposta.parecerComissao : ""}
-          onChange={(event) =>
+          value={parecerComissao}
+          onChange={(event) => {
             setProposta({ ...proposta, parecerComissao: event.target.value })
+            setDadosProposta({ ...proposta, parecerComissao: event.target.value })
+          }
           }
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
@@ -1020,8 +1035,11 @@ const ParecerComissaoInsertText = ({
       </Box>
       <Box className="mt-4">
         <CaixaTextoQuill
-          texto={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
-          setTexto={(e) => setProposta({ ...proposta, parecerInformacao: e })}
+          texto={parecerInformacao}
+          onChange={(e) => {
+            setProposta({ ...proposta, parecerInformacao: e })
+            setDadosProposta({ ...proposta, parecerInformacao: e })
+          }}
         />
       </Box>
     </Box>

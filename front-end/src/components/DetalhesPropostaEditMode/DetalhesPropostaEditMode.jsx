@@ -60,6 +60,7 @@ const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
   setPropostaData = () => { },
   setIsEditing = () => { },
+  emAprovacao = false
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -403,7 +404,9 @@ const DetalhesPropostaEditMode = ({
 
     let propostaAux = EntitiesObjectService.proposta();
     propostaAux = JSON.parse(JSON.stringify(proposta));
-    let propostaEscopo = formatarHtml(propostaAux.escopo);
+
+    let propostaEscopo = "";
+    propostaEscopo = formatarHtml(propostaAux.escopo);
 
     arrangeData(propostaAux);
 
@@ -827,8 +830,13 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
-    setProposta({ ...proposta, beneficios: [...beneficiosAux], escopo: atob(proposta.escopo) });
-    setEscopoAux(atob(proposta.escopo));
+    try {
+      setProposta({ ...proposta, beneficios: [...beneficiosAux], escopo: atob(proposta.escopo) });
+      setEscopoAux(atob(proposta.escopo));
+    } catch (error) {
+      setProposta({ ...proposta, beneficios: [...beneficiosAux], escopo: proposta.escopo });
+      setEscopoAux(proposta.escopo);
+    }
   }, []);
 
   useEffect(() => {
@@ -1672,28 +1680,32 @@ const DetalhesPropostaEditMode = ({
             </Typography>
           </Box>
 
-          <Divider />
           {/* Pareceres */}
-          <Box className="mt-3">
-            <Typography fontSize={FontConfig.big} fontWeight="bold">
-              {texts.detalhesProposta.pareceres}:&nbsp;
-            </Typography>
-            <Box className="mx-4">
-              {/* Parecer da Comissão */}
-              <ParecerComissaoInsertText
-                proposta={proposta}
-                setProposta={setProposta}
-              />
+          {emAprovacao && (
+            <>
+              <Divider />
+              <Box className="mt-3">
+                <Typography fontSize={FontConfig.big} fontWeight="bold">
+                  {texts.detalhesProposta.pareceres}:&nbsp;
+                </Typography>
+                <Box className="mx-4">
+                  {/* Parecer da Comissão */}
+                  <ParecerComissaoInsertText
+                    proposta={proposta}
+                    setProposta={setProposta}
+                  />
 
-              {/* Parecer da Diretoria */}
-              {isParecerGerenciaVisible() && (
-                <ParecerDGInsertText
-                  proposta={proposta}
-                  setProposta={setProposta}
-                />
-              )}
-            </Box>
-          </Box>
+                  {/* Parecer da Diretoria */}
+                  {isParecerGerenciaVisible() && (
+                    <ParecerDGInsertText
+                      proposta={proposta}
+                      setProposta={setProposta}
+                    />
+                  )}
+                </Box>
+              </Box>
+            </>
+          )}
         </Box>
       </Box>
     </>

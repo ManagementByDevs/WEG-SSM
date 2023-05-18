@@ -1086,2052 +1086,1028 @@ public class PropostaService {
     public Page<Proposta> findByVisibilidadeAndAnalista(boolean b, Usuario analista, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndAnalista(b, analista, pageable);
     }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, analista, titulo, gerente, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(b, status, analista, titulo, gerente, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(b, status, analista, titulo, gerente, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(b, status, analista, titulo, gerente, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, analista, titulo, gerente, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(b, status, analista, titulo, gerente, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(b, status, analista, titulo, gerente, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndEmPautaAndEmAta(b, status, analista, titulo, gerente, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, analista, titulo, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(b, status, analista, titulo, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(b, status, analista, titulo, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndEmPautaAndEmAta(b, status, analista, titulo, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, analista, titulo, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(b, status, analista, titulo, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndEmPautaAndEmAta(b, status, analista, titulo, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(b, status, analista, titulo, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String titulo, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndEmPautaAndEmAta(b, status, analista, titulo, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, analista, gerente, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, gerente, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(b, status, analista, gerente, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(b, status, analista, gerente, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(b, status, analista, gerente, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndEmPautaAndEmAta(b, status, analista, gerente, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, analista, gerente, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, gerente, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndEmPautaAndEmAta(b, status, analista, gerente, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, gerente, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndEmPautaAndEmAta(b, status, analista, gerente, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndSolicitanteAndEmPautaAndEmAta(b, status, analista, gerente, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndEmPautaAndEmAta(b, status, analista, gerente, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, analista, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndEmPautaAndEmAta(b, status, analista, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndEmPautaAndEmAta(b, status, analista, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndSolicitanteAndEmPautaAndEmAta(b, status, analista, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndEmPautaAndEmAta(b, status, analista, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, analista, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndEmPautaAndEmAta(b, status, analista, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, analista, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndEmPautaAndEmAta(b, status, analista, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndSolicitanteAndEmPautaAndEmAta(b, status, analista, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndEmPautaAndEmAta(boolean b, Status status, Usuario analista, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndEmPautaAndEmAta(b, status, analista, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndEmPautaAndEmAta(b, analista, titulo, gerente, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, gerente, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(b, analista, titulo, gerente, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, gerente, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(b, analista, titulo, gerente, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, gerente, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, analista, titulo, gerente, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(b, analista, titulo, gerente, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, gerente, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(b, analista, titulo, gerente, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(b, analista, titulo, gerente, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, gerente, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, analista, titulo, gerente, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndEmPautaAndEmAta(b, analista, titulo, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndEmPautaAndEmAta(b, analista, titulo, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(b, analista, titulo, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, analista, titulo, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndEmPautaAndEmAta(b, analista, titulo, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(b, analista, titulo, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(b, analista, titulo, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, analista, titulo, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, titulo, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, analista, gerente, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, analista, gerente, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(b, analista, gerente, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(b, analista, gerente, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(b, analista, gerente, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndEmPautaAndEmAta(b, analista, gerente, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, analista, gerente, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, analista, gerente, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndEmPautaAndEmAta(b, analista, gerente, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, gerente, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndEmPautaAndEmAta(b, analista, gerente, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndSolicitanteAndEmPautaAndEmAta(b, analista, gerente, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario gerente, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndEmPautaAndEmAta(b, analista, gerente, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, analista, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, analista, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario analista, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndEmPautaAndEmAta(b, analista, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndTamanhoAndAndEmPautaAndEmAta(boolean b, Usuario analista, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndTamanhoAndAndEmPautaAndEmAta(b, analista, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndSolicitanteAndEmPautaAndEmAta(b, analista, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndEmPautaAndEmAta(boolean b, Usuario analista, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndEmPautaAndEmAta(b, analista, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, analista, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, analista, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario analista, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndEmPautaAndEmAta(b, analista, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, analista, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario analista, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTamanhoAndEmPautaAndEmAta(b, analista, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario analista, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndSolicitanteAndEmPautaAndEmAta(b, analista, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndEmPautaAndEmAta(boolean b, Usuario analista, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndEmPautaAndEmAta(b, analista, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(b, status, titulo, gerente, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, gerente, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(b, status, titulo, gerente, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(b, status, titulo, gerente, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, gerente, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, titulo, gerente, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndEmPautaAndEmAta(boolean b, Status status, String titulo, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndEmPautaAndEmAta(b, status, titulo, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(b, status, titulo, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(b, status, titulo, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, titulo, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndEmPautaAndEmAta(b, status, titulo, gerente, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, gerente, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(b, status, titulo, gerente, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, gerente, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(b, status, titulo, gerente, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, gerente, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, titulo, gerente, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndEmPautaAndEmAta(boolean b, Status status, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndEmPautaAndEmAta(b, status, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndSolicitanteAndEmPautaAndEmAta(b, status, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTamanhoAndEmPautaAndEmAta(b, status, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndEmPautaAndEmAta(b, status, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndEmPautaAndEmAta(boolean b, Status status, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndEmPautaAndEmAta(b, status, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndSolicitanteAndEmPautaAndEmAta(b, status, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndTamanhoAndEmPautaAndEmAta(b, status, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndEmPautaAndEmAta(b, status, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndEmPautaAndEmAta(b, status, gerente, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndSolicitanteAndEmPautaAndEmAta(b, status, gerente, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndTamanhoAndEmPautaAndEmAta(b, status, gerente, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, gerente, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndEmPautaAndEmAta(b, status, gerente, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, gerente, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, gerente, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndEmPautaAndEmAta(b, status, gerente, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(b, status, gerente, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(b, status, gerente, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(b, status, gerente, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, gerente, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndEmPautaAndEmAta(boolean b, Status status, String titulo, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndEmPautaAndEmAta(b, status, titulo, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String titulo, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndEmPautaAndEmAta(b, status, titulo, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(b, status, titulo, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Status status, String titulo, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, status, titulo, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Status status, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, status, titulo, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, titulo, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, titulo, gerente, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, titulo, gerente, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(b, titulo, gerente, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, titulo, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(b, titulo, gerente, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(b, titulo, gerente, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndEmPautaAndEmAta(b, titulo, gerente, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, titulo, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, titulo, gerente, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, titulo, gerente, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndEmPautaAndEmAta(b, titulo, gerente, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, titulo, gerente, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndEmPautaAndEmAta(b, titulo, gerente, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndSolicitanteAndEmPautaAndEmAta(b, titulo, gerente, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndEmPautaAndEmAta(boolean b, String titulo, Usuario gerente, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndEmPautaAndEmAta(b, titulo, gerente, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, titulo, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, String titulo, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, titulo, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, titulo, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, String titulo, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndEmPautaAndEmAta(b, titulo, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, titulo, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, String titulo, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndEmPautaAndEmAta(b, titulo, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndSolicitanteAndEmPautaAndEmAta(b, titulo, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndEmPautaAndEmAta(boolean b, String titulo, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndEmPautaAndEmAta(b, titulo, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, titulo, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, String titulo, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, titulo, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, titulo, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(boolean b, String titulo, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndEmPautaAndEmAta(b, titulo, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, titulo, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndTamanhoAndEmPautaAndEmAta(boolean b, String titulo, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndTamanhoAndEmPautaAndEmAta(b, titulo, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(boolean b, String titulo, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndSolicitanteAndEmPautaAndEmAta(b, titulo, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndEmPautaAndEmAta(boolean b, String titulo, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndEmPautaAndEmAta(b, titulo, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, gerente, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, gerente, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, gerente, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario gerente, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndEmPautaAndEmAta(b, gerente, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, gerente, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario gerente, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndTamanhoAndEmPautaAndEmAta(b, gerente, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario gerente, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndSolicitanteAndEmPautaAndEmAta(b, gerente, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndEmPautaAndEmAta(boolean b, Usuario gerente, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndEmPautaAndEmAta(b, gerente, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, gerente, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario gerente, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, gerente, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, gerente, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndEmPautaAndEmAta(boolean b, Usuario gerente, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndEmPautaAndEmAta(b, gerente, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario gerente, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, gerente, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndTamanhoAndEmPautaAndEmAta(boolean b, Usuario gerente, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndTamanhoAndEmPautaAndEmAta(b, gerente, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario gerente, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndSolicitanteAndEmPautaAndEmAta(b, gerente, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndGerenteAndEmPautaAndEmAta(boolean b, Usuario gerente, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndEmPautaAndEmAta(b, gerente, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndEmPautaAndEmAta(boolean b, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndEmPautaAndEmAta(b, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndSolicitanteAndEmPautaAndEmAta(boolean b, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndSolicitanteAndEmPautaAndEmAta(b, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTamanhoAndEmPautaAndEmAta(boolean b, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTamanhoAndEmPautaAndEmAta(b, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndDepartamentoAndEmPautaAndEmAta(boolean b, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndDepartamentoAndEmPautaAndEmAta(b, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndForumAndEmPautaAndEmAta(boolean b, Forum forum, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndEmPautaAndEmAta(b, forum, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndForumAndSolicitanteAndEmPautaAndEmAta(boolean b, Forum forum, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndSolicitanteAndEmPautaAndEmAta(b, forum, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndForumAndTamanhoAndEmPautaAndEmAta(boolean b, Forum forum, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndTamanhoAndEmPautaAndEmAta(b, forum, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Forum forum, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, forum, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndEmPautaAndEmAta(boolean b, Forum forum, Departamento departamento, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndEmPautaAndEmAta(b, forum, departamento, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(boolean b, Forum forum, Departamento departamento, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndSolicitanteAndEmPautaAndEmAta(b, forum, departamento, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(boolean b, Forum forum, Departamento departamento, String tamanho, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndEmPautaAndEmAta(b, forum, departamento, tamanho, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(boolean b, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emPauta, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmPautaAndEmAta(b, forum, departamento, tamanho, solicitante, emPauta, emAta, pageable);
-    }
-
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndEmAta(b, status, analista, titulo, gerente, emAta, pageable);
+    
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndPresenteEm(b, status, analista, titulo, gerente, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmAta(b, status, analista, titulo, gerente, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(b, status, analista, titulo, gerente, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmAta(b, status, analista, titulo, gerente, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(b, status, analista, titulo, gerente, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmAta(b, status, analista, titulo, gerente, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, titulo, gerente, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmAta(b, status, analista, titulo, gerente, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(b, status, analista, titulo, gerente, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmAta(b, status, analista, titulo, gerente, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(b, status, analista, titulo, gerente, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmAta(b, status, analista, titulo, gerente, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(b, status, analista, titulo, gerente, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, analista, titulo, gerente, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, titulo, gerente, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndEmAta(b, status, analista, titulo, gerente, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndPresenteEm(b, status, analista, titulo, gerente, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmAta(b, status, analista, titulo, gerente, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(b, status, analista, titulo, gerente, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmAta(b, status, analista, titulo, gerente, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(b, status, analista, titulo, gerente, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(b, status, analista, titulo, gerente, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, titulo, gerente, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmAta(b, status, analista, titulo, gerente, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(b, status, analista, titulo, gerente, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(b, status, analista, titulo, gerente, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, status, analista, titulo, gerente, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(b, status, analista, titulo, gerente, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, status, analista, titulo, gerente, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndEmAta(b, status, analista, titulo, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndPresenteEm(b, status, analista, titulo, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmAta(b, status, analista, titulo, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(b, status, analista, titulo, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmAta(b, status, analista, titulo, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(b, status, analista, titulo, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, analista, titulo, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, titulo, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndEmAta(b, status, analista, titulo, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndPresenteEm(b, status, analista, titulo, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmAta(b, status, analista, titulo, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitanteAndPresenteEm(b, status, analista, titulo, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmAta(b, status, analista, titulo, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndPresenteEm(b, status, analista, titulo, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmAta(b, status, analista, titulo, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, titulo, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmAta(b, status, analista, titulo, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndPresenteEm(b, status, analista, titulo, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmAta(b, status, analista, titulo, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, status, analista, titulo, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmAta(b, status, analista, titulo, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, status, analista, titulo, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, analista, titulo, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, titulo, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmAta(b, status, analista, titulo, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, titulo, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String titulo, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndEmAta(b, status, analista, titulo, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndPresenteEm(b, status, analista, titulo, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String titulo, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitanteAndEmAta(b, status, analista, titulo, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitanteAndPresenteEm(b, status, analista, titulo, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndEmAta(boolean b, Status status, Usuario analista, String titulo, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndEmAta(b, status, analista, titulo, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndPresenteEm(b, status, analista, titulo, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, analista, gerente, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(b, status, analista, gerente, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, status, analista, gerente, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(b, status, analista, gerente, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, status, analista, gerente, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndEmAta(b, status, analista, gerente, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndDepartamentoAndPresenteEm(b, status, analista, gerente, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(b, status, analista, gerente, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, gerente, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndEmAta(b, status, analista, gerente, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndTamanhoAndPresenteEm(b, status, analista, gerente, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndSolicitanteAndEmAta(b, status, analista, gerente, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndSolicitanteAndPresenteEm(b, status, analista, gerente, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndEmAta(b, status, analista, gerente, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndForumAndPresenteEm(b, status, analista, gerente, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, analista, gerente, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, gerente, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmAta(b, status, analista, gerente, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(b, status, analista, gerente, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmAta(b, status, analista, gerente, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(b, status, analista, gerente, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndEmAta(b, status, analista, gerente, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndDepartamentoAndPresenteEm(b, status, analista, gerente, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmAta(b, status, analista, gerente, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, gerente, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndEmAta(b, status, analista, gerente, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndTamanhoAndPresenteEm(b, status, analista, gerente, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndSolicitanteAndEmAta(b, status, analista, gerente, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndSolicitanteAndPresenteEm(b, status, analista, gerente, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndEmAta(boolean b, Status status, Usuario analista, Usuario gerente, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndEmAta(b, status, analista, gerente, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndGerenteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario gerente, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndGerenteAndPresenteEm(b, status, analista, gerente, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, analista, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmAta(b, status, analista, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, status, analista, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmAta(b, analista, titulo, gerente, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(b, analista, titulo, gerente, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, analista, titulo, gerente, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, analista, titulo, gerente, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndEmAta(b, analista, titulo, gerente, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndPresenteEm(b, analista, titulo, gerente, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmAta(b, analista, titulo, gerente, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(b, analista, titulo, gerente, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndEmAta(b, analista, titulo, gerente, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(b, analista, titulo, gerente, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(b, analista, titulo, gerente, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, analista, titulo, gerente, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmAta(b, analista, titulo, gerente, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(b, analista, titulo, gerente, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(b, analista, titulo, gerente, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, analista, titulo, gerente, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(b, analista, titulo, gerente, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, analista, titulo, gerente, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, analista, titulo, gerente, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, analista, titulo, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndEmAta(boolean b, Status status, Usuario analista, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndEmAta(b, status, analista, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndPresenteEm(boolean b, Status status, Usuario analista, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndPresenteEm(b, status, analista, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndSolicitanteAndEmAta(b, status, analista, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndSolicitanteAndPresenteEm(b, status, analista, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndEmAta(b, status, analista, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndPresenteEm(b, status, analista, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndSolicitanteAndEmAta(b, status, analista, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndEmAta(boolean b, Status status, Usuario analista, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndEmAta(b, status, analista, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario analista, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndPresenteEm(b, status, analista, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndSolicitanteAndEmAta(b, status, analista, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndSolicitanteAndPresenteEm(b, status, analista, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndEmAta(b, status, analista, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndPresenteEm(b, status, analista, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, analista, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndEmAta(b, status, analista, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndPresenteEm(boolean b, Status status, Usuario analista, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndPresenteEm(b, status, analista, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndSolicitanteAndEmAta(b, status, analista, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndSolicitanteAndPresenteEm(b, status, analista, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndEmAta(boolean b, Status status, Usuario analista, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndEmAta(b, status, analista, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndPresenteEm(boolean b, Status status, Usuario analista, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndPresenteEm(b, status, analista, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmAta(b, status, analista, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, status, analista, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndEmAta(b, status, analista, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndPresenteEm(b, status, analista, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmAta(b, status, analista, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, status, analista, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndEmAta(boolean b, Usuario analista, Usuario gerente, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndEmAta(b, analista, gerente, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndPresenteEm(b, analista, gerente, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmAta(b, analista, titulo, gerente, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(b, analista, titulo, gerente, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndEmAta(b, analista, titulo, gerente, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(b, analista, titulo, gerente, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmAta(b, analista, titulo, gerente, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(b, analista, titulo, gerente, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndEmAta(b, analista, titulo, gerente, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(b, analista, titulo, gerente, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndEmAta(b, analista, titulo, gerente, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(b, analista, titulo, gerente, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndEmAta(boolean b, Usuario analista, String titulo, Usuario gerente, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndEmAta(b, analista, titulo, gerente, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario gerente, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndPresenteEm(b, analista, titulo, gerente, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, analista, titulo, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, analista, titulo, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmAta(b, analista, titulo, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, analista, titulo, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmAta(b, analista, titulo, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, analista, titulo, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndEmAta(b, analista, titulo, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndPresenteEm(boolean b, Usuario analista, String titulo, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndPresenteEm(b, analista, titulo, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmAta(b, analista, titulo, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, analista, titulo, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndEmAta(b, analista, titulo, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndPresenteEm(boolean b, Usuario analista, String titulo, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndPresenteEm(b, analista, titulo, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitanteAndEmAta(b, analista, titulo, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitanteAndPresenteEm(b, analista, titulo, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndEmAta(boolean b, Usuario analista, String titulo, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndEmAta(b, analista, titulo, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndPresenteEm(boolean b, Usuario analista, String titulo, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndPresenteEm(b, analista, titulo, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, analista, titulo, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, analista, titulo, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario analista, String titulo, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndEmAta(b, analista, titulo, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario analista, String titulo, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(b, analista, titulo, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndEmAta(b, analista, titulo, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(b, analista, titulo, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndEmAta(boolean b, Usuario analista, String titulo, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndEmAta(b, analista, titulo, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndPresenteEm(boolean b, Usuario analista, String titulo, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndPresenteEm(b, analista, titulo, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndEmAta(b, analista, titulo, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(b, analista, titulo, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndEmAta(boolean b, Usuario analista, String titulo, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndEmAta(b, analista, titulo, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndPresenteEm(boolean b, Usuario analista, String titulo, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndPresenteEm(b, analista, titulo, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitanteAndEmAta(boolean b, Usuario analista, String titulo, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitanteAndEmAta(b, analista, titulo, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String titulo, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitanteAndPresenteEm(b, analista, titulo, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndEmAta(boolean b, Usuario analista, String titulo, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndEmAta(b, analista, titulo, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTituloContainingAndPresenteEm(boolean b, Usuario analista, String titulo, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTituloContainingAndPresenteEm(b, analista, titulo, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, analista, gerente, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, analista, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(b, analista, gerente, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, analista, gerente, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(b, analista, gerente, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, analista, gerente, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndEmAta(b, analista, gerente, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndDepartamentoAndPresenteEm(b, analista, gerente, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(b, analista, gerente, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, analista, gerente, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndEmAta(b, analista, gerente, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndTamanhoAndPresenteEm(b, analista, gerente, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndSolicitanteAndEmAta(b, analista, gerente, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndSolicitanteAndPresenteEm(b, analista, gerente, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndEmAta(boolean b, Usuario analista, Usuario gerente, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndEmAta(b, analista, gerente, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndForumAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndForumAndPresenteEm(b, analista, gerente, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, analista, gerente, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, analista, gerente, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndEmAta(b, analista, gerente, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(b, analista, gerente, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndEmAta(b, analista, gerente, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(b, analista, gerente, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndEmAta(boolean b, Usuario analista, Usuario gerente, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndEmAta(b, analista, gerente, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndDepartamentoAndPresenteEm(b, analista, gerente, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario gerente, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndEmAta(b, analista, gerente, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(b, analista, gerente, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndEmAta(boolean b, Usuario analista, Usuario gerente, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndEmAta(b, analista, gerente, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndPresenteEm(boolean b, Usuario analista, Usuario gerente, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndTamanhoAndPresenteEm(b, analista, gerente, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario gerente, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndSolicitanteAndEmAta(b, analista, gerente, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndGerenteAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario gerente, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndGerenteAndSolicitanteAndPresenteEm(b, analista, gerente, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndEmAta(boolean b, Status status, String titulo, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndEmAta(b, status, titulo, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndPresenteEm(boolean b, Status status, String titulo, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndPresenteEm(b, status, titulo, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndSolicitanteAndEmAta(b, status, titulo, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(b, status, titulo, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, String titulo, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndEmAta(b, status, titulo, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, String titulo, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(b, status, titulo, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, titulo, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, titulo, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndEmAta(boolean b, Status status, String titulo, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndEmAta(b, status, titulo, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndPresenteEm(boolean b, Status status, String titulo, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndPresenteEm(b, status, titulo, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndSolicitanteAndEmAta(b, status, titulo, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndSolicitanteAndPresenteEm(b, status, titulo, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndEmAta(boolean b, Status status, String titulo, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndEmAta(b, status, titulo, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndPresenteEm(boolean b, Status status, String titulo, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndPresenteEm(b, status, titulo, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmAta(b, status, titulo, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, status, titulo, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndEmAta(boolean b, Status status, String titulo, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndEmAta(b, status, titulo, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndPresenteEm(boolean b, Status status, String titulo, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndPresenteEm(b, status, titulo, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmAta(b, status, titulo, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, status, titulo, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmAta(b, status, titulo, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, String titulo, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, status, titulo, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, titulo, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, titulo, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndEmAta(b, status, titulo, gerente, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndPresenteEm(b, status, titulo, gerente, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndSolicitanteAndEmAta(b, status, titulo, gerente, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(b, status, titulo, gerente, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndEmAta(boolean b, Status status, String titulo, Usuario gerente, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndEmAta(b, status, titulo, gerente, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(b, status, titulo, gerente, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmAta(b, status, titulo, gerente, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(b, status, titulo, gerente, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndEmAta(b, status, titulo, gerente, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(b, status, titulo, gerente, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmAta(b, status, titulo, gerente, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(b, status, titulo, gerente, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmAta(b, status, titulo, gerente, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(b, status, titulo, gerente, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, titulo, gerente, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, titulo, gerente, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndEmAta(b, status, titulo, gerente, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndPresenteEm(b, status, titulo, gerente, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmAta(b, status, titulo, gerente, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(b, status, titulo, gerente, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndEmAta(b, status, titulo, gerente, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(b, status, titulo, gerente, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(b, status, titulo, gerente, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, status, titulo, gerente, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmAta(b, status, titulo, gerente, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(b, status, titulo, gerente, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(b, status, titulo, gerente, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, status, titulo, gerente, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(b, status, titulo, gerente, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, status, titulo, gerente, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, titulo, gerente, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, titulo, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndEmAta(boolean b, Usuario analista, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndEmAta(b, analista, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndPresenteEm(boolean b, Usuario analista, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndPresenteEm(b, analista, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndSolicitanteAndEmAta(boolean b, Usuario analista, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndSolicitanteAndEmAta(b, analista, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndSolicitanteAndPresenteEm(b, analista, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTamanhoAndEmAta(boolean b, Usuario analista, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTamanhoAndEmAta(b, analista, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTamanhoAndPresenteEm(boolean b, Usuario analista, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTamanhoAndPresenteEm(b, analista, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndTamanhoAndSolicitanteAndEmAta(b, analista, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndTamanhoAndSolicitanteAndPresenteEm(b, analista, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndEmAta(boolean b, Usuario analista, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndEmAta(b, analista, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndPresenteEm(boolean b, Usuario analista, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndPresenteEm(b, analista, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario analista, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndSolicitanteAndEmAta(b, analista, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndSolicitanteAndPresenteEm(b, analista, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario analista, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndEmAta(b, analista, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario analista, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndPresenteEm(b, analista, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, analista, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, analista, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndEmAta(boolean b, Usuario analista, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndEmAta(b, analista, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndPresenteEm(boolean b, Usuario analista, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndPresenteEm(b, analista, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndSolicitanteAndEmAta(boolean b, Usuario analista, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndSolicitanteAndEmAta(b, analista, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndSolicitanteAndPresenteEm(b, analista, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndTamanhoAndEmAta(boolean b, Usuario analista, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndTamanhoAndEmAta(b, analista, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndTamanhoAndPresenteEm(boolean b, Usuario analista, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndTamanhoAndPresenteEm(b, analista, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndTamanhoAndSolicitanteAndEmAta(b, analista, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, analista, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndEmAta(boolean b, Usuario analista, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndEmAta(b, analista, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndPresenteEm(boolean b, Usuario analista, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndPresenteEm(b, analista, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndSolicitanteAndEmAta(b, analista, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, analista, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario analista, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndEmAta(b, analista, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario analista, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, analista, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario analista, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, analista, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario analista, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndAnalistaAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, analista, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String titulo, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndSolicitanteAndEmAta(b, status, titulo, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(b, status, titulo, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndEmAta(boolean b, Status status, String titulo, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndEmAta(b, status, titulo, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndPresenteEm(boolean b, Status status, String titulo, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndPresenteEm(b, status, titulo, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndSolicitanteAndEmAta(boolean b, Status status, String titulo, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndSolicitanteAndEmAta(b, status, titulo, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndSolicitanteAndPresenteEm(boolean b, Status status, String titulo, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndSolicitanteAndPresenteEm(b, status, titulo, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndEmAta(boolean b, Status status, String titulo, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndEmAta(b, status, titulo, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndPresenteEm(boolean b, Status status, String titulo, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndPresenteEm(b, status, titulo, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, gerente, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(b, status, gerente, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, status, gerente, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(b, status, gerente, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, status, gerente, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndEmAta(b, status, gerente, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario gerente, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndDepartamentoAndPresenteEm(b, status, gerente, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(b, status, gerente, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, status, gerente, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndEmAta(b, status, gerente, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndPresenteEm(boolean b, Status status, Usuario gerente, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndTamanhoAndPresenteEm(b, status, gerente, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndSolicitanteAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndSolicitanteAndEmAta(b, status, gerente, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario gerente, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndSolicitanteAndPresenteEm(b, status, gerente, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndEmAta(boolean b, Status status, Usuario gerente, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndEmAta(b, status, gerente, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndForumAndPresenteEm(boolean b, Status status, Usuario gerente, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndForumAndPresenteEm(b, status, gerente, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndEmAta(boolean b, Status status, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndEmAta(b, status, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndPresenteEm(boolean b, Status status, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndForumAndPresenteEm(b, status, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndSolicitanteAndEmAta(boolean b, Status status, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndSolicitanteAndEmAta(b, status, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndSolicitanteAndPresenteEm(boolean b, Status status, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndForumAndSolicitanteAndPresenteEm(b, status, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndTamanhoAndEmAta(boolean b, Status status, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndTamanhoAndEmAta(b, status, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndTamanhoAndPresenteEm(boolean b, Status status, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndForumAndTamanhoAndPresenteEm(b, status, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndTamanhoAndSolicitanteAndEmAta(b, status, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, status, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndEmAta(boolean b, Status status, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndEmAta(b, status, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndPresenteEm(boolean b, Status status, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndPresenteEm(b, status, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndSolicitanteAndEmAta(b, status, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, status, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndEmAta(b, status, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, status, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndEmAta(boolean b, Status status, Usuario gerente, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndEmAta(b, status, gerente, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndPresenteEm(boolean b, Status status, Usuario gerente, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndPresenteEm(b, status, gerente, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndSolicitanteAndEmAta(boolean b, Status status, Usuario gerente, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndSolicitanteAndEmAta(b, status, gerente, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario gerente, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndSolicitanteAndPresenteEm(b, status, gerente, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndTamanhoAndEmAta(boolean b, Status status, Usuario gerente, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndTamanhoAndEmAta(b, status, gerente, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndTamanhoAndPresenteEm(boolean b, Status status, Usuario gerente, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndTamanhoAndPresenteEm(b, status, gerente, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario gerente, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndTamanhoAndSolicitanteAndEmAta(b, status, gerente, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario gerente, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(b, status, gerente, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndEmAta(boolean b, Status status, Usuario gerente, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndEmAta(b, status, gerente, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndPresenteEm(boolean b, Status status, Usuario gerente, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndPresenteEm(b, status, gerente, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndSolicitanteAndEmAta(b, status, gerente, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario gerente, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(b, status, gerente, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Usuario gerente, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndEmAta(b, status, gerente, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Usuario gerente, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(b, status, gerente, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, gerente, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, gerente, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndEmAta(b, titulo, gerente, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndPresenteEm(boolean b, String titulo, Usuario gerente, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndPresenteEm(b, titulo, gerente, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndSolicitanteAndEmAta(b, titulo, gerente, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario gerente, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(b, titulo, gerente, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndEmAta(b, titulo, gerente, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(boolean b, String titulo, Usuario gerente, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(b, titulo, gerente, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(b, titulo, gerente, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, titulo, gerente, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndEmAta(b, titulo, gerente, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(b, titulo, gerente, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(b, titulo, gerente, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, titulo, gerente, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(b, titulo, gerente, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, titulo, gerente, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, titulo, gerente, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, titulo, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndEmAta(boolean b, Status status, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndEmAta(b, status, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndPresenteEm(boolean b, Status status, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndPresenteEm(b, status, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndSolicitanteAndEmAta(boolean b, Status status, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndSolicitanteAndEmAta(b, status, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndSolicitanteAndPresenteEm(boolean b, Status status, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndSolicitanteAndPresenteEm(b, status, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTamanhoAndEmAta(boolean b, Status status, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTamanhoAndEmAta(b, status, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTamanhoAndPresenteEm(boolean b, Status status, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTamanhoAndPresenteEm(b, status, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndTamanhoAndSolicitanteAndEmAta(b, status, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndTamanhoAndSolicitanteAndPresenteEm(b, status, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndEmAta(boolean b, Status status, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndEmAta(b, status, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndPresenteEm(boolean b, Status status, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndPresenteEm(b, status, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndSolicitanteAndEmAta(boolean b, Status status, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndSolicitanteAndEmAta(b, status, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Status status, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndSolicitanteAndPresenteEm(b, status, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndEmAta(boolean b, Status status, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndEmAta(b, status, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Status status, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndPresenteEm(b, status, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Status status, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, status, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Status status, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, status, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, titulo, gerente, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, titulo, gerente, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmAta(boolean b, String titulo, Usuario gerente, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndEmAta(b, titulo, gerente, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(boolean b, String titulo, Usuario gerente, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(b, titulo, gerente, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmAta(boolean b, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndEmAta(b, titulo, gerente, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(b, titulo, gerente, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndEmAta(boolean b, String titulo, Usuario gerente, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndEmAta(b, titulo, gerente, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(boolean b, String titulo, Usuario gerente, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(b, titulo, gerente, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmAta(boolean b, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndEmAta(b, titulo, gerente, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario gerente, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(b, titulo, gerente, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndEmAta(boolean b, String titulo, Usuario gerente, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndEmAta(b, titulo, gerente, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(boolean b, String titulo, Usuario gerente, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(b, titulo, gerente, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndSolicitanteAndEmAta(boolean b, String titulo, Usuario gerente, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndSolicitanteAndEmAta(b, titulo, gerente, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario gerente, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(b, titulo, gerente, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndEmAta(boolean b, String titulo, Usuario gerente, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndEmAta(b, titulo, gerente, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndGerenteAndPresenteEm(boolean b, String titulo, Usuario gerente, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndGerenteAndPresenteEm(b, titulo, gerente, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, titulo, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, titulo, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, String titulo, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndEmAta(b, titulo, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, String titulo, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, titulo, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndEmAta(b, titulo, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, String titulo, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, titulo, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndEmAta(boolean b, String titulo, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndEmAta(b, titulo, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndPresenteEm(boolean b, String titulo, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndPresenteEm(b, titulo, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, String titulo, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndSolicitanteAndEmAta(b, titulo, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String titulo, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, titulo, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndEmAta(boolean b, String titulo, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndEmAta(b, titulo, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndPresenteEm(boolean b, String titulo, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndPresenteEm(b, titulo, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndSolicitanteAndEmAta(boolean b, String titulo, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndSolicitanteAndEmAta(b, titulo, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndSolicitanteAndPresenteEm(boolean b, String titulo, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndSolicitanteAndPresenteEm(b, titulo, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndEmAta(boolean b, String titulo, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndEmAta(b, titulo, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndForumAndPresenteEm(boolean b, String titulo, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndForumAndPresenteEm(b, titulo, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, titulo, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String titulo, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, titulo, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndEmAta(boolean b, String titulo, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndEmAta(b, titulo, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(boolean b, String titulo, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(b, titulo, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndSolicitanteAndEmAta(boolean b, String titulo, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndSolicitanteAndEmAta(b, titulo, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, String titulo, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(b, titulo, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndEmAta(boolean b, String titulo, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndEmAta(b, titulo, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndDepartamentoAndPresenteEm(boolean b, String titulo, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndDepartamentoAndPresenteEm(b, titulo, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndTamanhoAndSolicitanteAndEmAta(boolean b, String titulo, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndTamanhoAndSolicitanteAndEmAta(b, titulo, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String titulo, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(b, titulo, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndTamanhoAndEmAta(boolean b, String titulo, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndTamanhoAndEmAta(b, titulo, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndTamanhoAndPresenteEm(boolean b, String titulo, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndTamanhoAndPresenteEm(b, titulo, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndSolicitanteAndEmAta(boolean b, String titulo, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndSolicitanteAndEmAta(b, titulo, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndSolicitanteAndPresenteEm(boolean b, String titulo, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndSolicitanteAndPresenteEm(b, titulo, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTituloContainingAndEmAta(boolean b, String titulo, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTituloContainingAndEmAta(b, titulo, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTituloContainingAndPresenteEm(boolean b, String titulo, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTituloContainingAndPresenteEm(b, titulo, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, gerente, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndEmAta(b, gerente, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, gerente, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndSolicitanteAndEmAta(b, gerente, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, gerente, forum, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndEmAta(boolean b, Usuario gerente, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndEmAta(b, gerente, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndDepartamentoAndPresenteEm(b, gerente, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndTamanhoAndSolicitanteAndEmAta(b, gerente, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, gerente, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndTamanhoAndEmAta(boolean b, Usuario gerente, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndTamanhoAndEmAta(b, gerente, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndTamanhoAndPresenteEm(boolean b, Usuario gerente, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndTamanhoAndPresenteEm(b, gerente, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndSolicitanteAndEmAta(boolean b, Usuario gerente, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndSolicitanteAndEmAta(b, gerente, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndSolicitanteAndPresenteEm(b, gerente, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndEmAta(boolean b, Usuario gerente, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndEmAta(b, gerente, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndForumAndPresenteEm(boolean b, Usuario gerente, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndForumAndPresenteEm(b, gerente, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, gerente, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, gerente, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndEmAta(boolean b, Usuario gerente, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndEmAta(b, gerente, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario gerente, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(b, gerente, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndSolicitanteAndEmAta(boolean b, Usuario gerente, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndSolicitanteAndEmAta(b, gerente, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(b, gerente, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndEmAta(boolean b, Usuario gerente, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndEmAta(b, gerente, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndDepartamentoAndPresenteEm(boolean b, Usuario gerente, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndDepartamentoAndPresenteEm(b, gerente, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndTamanhoAndSolicitanteAndEmAta(boolean b, Usuario gerente, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndTamanhoAndSolicitanteAndEmAta(b, gerente, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(b, gerente, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndTamanhoAndEmAta(boolean b, Usuario gerente, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndTamanhoAndEmAta(b, gerente, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndTamanhoAndPresenteEm(boolean b, Usuario gerente, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndTamanhoAndPresenteEm(b, gerente, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndSolicitanteAndEmAta(boolean b, Usuario gerente, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndSolicitanteAndEmAta(b, gerente, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndSolicitanteAndPresenteEm(b, gerente, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndGerenteAndEmAta(boolean b, Usuario gerente, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndGerenteAndEmAta(b, gerente, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndGerenteAndPresenteEm(boolean b, Usuario gerente, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndGerenteAndPresenteEm(b, gerente, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, forum, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, forum, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndEmAta(boolean b, Forum forum, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndEmAta(b, forum, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndTamanhoAndPresenteEm(b, forum, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndEmAta(boolean b, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndEmAta(b, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndPresenteEm(boolean b, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndPresenteEm(b, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndSolicitanteAndEmAta(boolean b, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndSolicitanteAndEmAta(b, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndSolicitanteAndPresenteEm(boolean b, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndSolicitanteAndPresenteEm(b, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTamanhoAndEmAta(boolean b, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTamanhoAndEmAta(b, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTamanhoAndPresenteEm(boolean b, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTamanhoAndPresenteEm(b, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndTamanhoAndSolicitanteAndEmAta(boolean b, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndTamanhoAndSolicitanteAndEmAta(b, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndTamanhoAndSolicitanteAndPresenteEm(boolean b, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndTamanhoAndSolicitanteAndPresenteEm(b, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndDepartamentoAndEmAta(boolean b, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndDepartamentoAndEmAta(b, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndDepartamentoAndPresenteEm(boolean b, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndDepartamentoAndPresenteEm(b, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndDepartamentoAndSolicitanteAndEmAta(boolean b, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndDepartamentoAndSolicitanteAndEmAta(b, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndDepartamentoAndSolicitanteAndPresenteEm(b, departamento, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndDepartamentoAndTamanhoAndEmAta(boolean b, Departamento departamento, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndDepartamentoAndTamanhoAndEmAta(b, departamento, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Departamento departamento, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndDepartamentoAndTamanhoAndPresenteEm(b, departamento, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(boolean b, Departamento departamento, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndDepartamentoAndTamanhoAndSolicitanteAndEmAta(b, departamento, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(b, departamento, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndForumAndEmAta(boolean b, Forum forum, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndEmAta(b, forum, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndForumAndPresenteEm(boolean b, Forum forum, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndForumAndPresenteEm(b, forum, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndForumAndSolicitanteAndEmAta(boolean b, Forum forum, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndSolicitanteAndEmAta(b, forum, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndForumAndSolicitanteAndPresenteEm(boolean b, Forum forum, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndForumAndSolicitanteAndPresenteEm(b, forum, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndForumAndTamanhoAndEmAta(boolean b, Forum forum, String tamanho, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndTamanhoAndEmAta(b, forum, tamanho, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndForumAndTamanhoAndPresenteEm(boolean b, Forum forum, String tamanho, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndForumAndTamanhoAndPresenteEm(b, forum, tamanho, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndForumAndTamanhoAndSolicitanteAndEmAta(boolean b, Forum forum, String tamanho, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndTamanhoAndSolicitanteAndEmAta(b, forum, tamanho, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndForumAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Forum forum, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndForumAndTamanhoAndSolicitanteAndPresenteEm(b, forum, tamanho, solicitante, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndEmAta(boolean b, Forum forum, Departamento departamento, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndEmAta(b, forum, departamento, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndPresenteEm(boolean b, Forum forum, Departamento departamento, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndPresenteEm(b, forum, departamento, presenteEm, pageable);
     }
 
-    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndSolicitanteAndEmAta(boolean b, Forum forum, Departamento departamento, Usuario solicitante, Boolean emAta, Pageable pageable) {
-        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndSolicitanteAndEmAta(b, forum, departamento, solicitante, emAta, pageable);
+    public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, forum, departamento, solicitante, presenteEm, pageable);
     }
 }
