@@ -100,8 +100,8 @@ public class ExcelGeneratorService {
                 // Adicionando informações nas respectivas colunas
                 row.createCell(0).setCellValue(contadorDemanda);
                 row.createCell(1).setCellValue(demanda.getTitulo());
-                row.createCell(2).setCellValue(new String(demanda.getProblema(), StandardCharsets.UTF_8));
-                row.createCell(3).setCellValue(new String(demanda.getProposta(), StandardCharsets.UTF_8));
+                row.createCell(2).setCellValue(Jsoup.parse(new String(demanda.getProblema(), StandardCharsets.UTF_8)).text());
+                row.createCell(3).setCellValue(Jsoup.parse(new String(demanda.getProposta(), StandardCharsets.UTF_8)).text());
 
                 int contadorBeneficios = 0;
 
@@ -227,8 +227,8 @@ public class ExcelGeneratorService {
                 // Adicionando informações nas respectivas colunas
                 row.createCell(0).setCellValue(contadorDemanda);
                 row.createCell(1).setCellValue(demanda.getTitulo());
-                row.createCell(2).setCellValue(new String(demanda.getProblema(), StandardCharsets.UTF_8));
-                row.createCell(3).setCellValue(new String(demanda.getProposta(), StandardCharsets.UTF_8));
+                row.createCell(2).setCellValue(Jsoup.parse(new String(demanda.getProblema(), StandardCharsets.UTF_8)).text());
+                row.createCell(3).setCellValue(Jsoup.parse(new String(demanda.getProposta(), StandardCharsets.UTF_8)).text());
 
                 int contadorBeneficios = 0;
 
@@ -377,8 +377,8 @@ public class ExcelGeneratorService {
                 row.createCell(3).setCellValue(proposta.getTitulo());
                 row.createCell(4).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                 row.createCell(5).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                row.createCell(6).setCellValue(new String(proposta.getProblema(), StandardCharsets.UTF_8));
-                row.createCell(7).setCellValue(new String(proposta.getProposta(), StandardCharsets.UTF_8));
+                row.createCell(6).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
+                row.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
 
                 int contadorCusto = 0;
 
@@ -557,8 +557,8 @@ public class ExcelGeneratorService {
                         row.createCell(4).setCellValue(proposta.getData());
                         row.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         row.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                        row.createCell(7).setCellValue(new String(proposta.getProblema(), StandardCharsets.UTF_8));
-                        row.createCell(8).setCellValue(new String(proposta.getProposta(), StandardCharsets.UTF_8));
+                        row.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
+                        row.createCell(8).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
 
                         row.createCell(12).setCellValue(proposta.getFrequencia());
                         row.createCell(13).setCellValue(proposta.getLinkJira());
@@ -603,10 +603,10 @@ public class ExcelGeneratorService {
 
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             if (contadorBeneficio == 0) {
-                                row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                                row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
                             } else {
                                 Row roww = sheet.createRow(rowIndexProposta++);
-                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)));
                             }
 
                             contadorBeneficio++;
@@ -621,8 +621,8 @@ public class ExcelGeneratorService {
                         rowProposta.createCell(4).setCellValue(proposta.getData());
                         rowProposta.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         rowProposta.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                        rowProposta.createCell(7).setCellValue(new String(proposta.getProblema(), StandardCharsets.UTF_8));
-                        rowProposta.createCell(8).setCellValue(new String(proposta.getProposta(), StandardCharsets.UTF_8));
+                        rowProposta.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
+                        rowProposta.createCell(8).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
 
                         rowProposta.createCell(12).setCellValue(proposta.getFrequencia());
                         rowProposta.createCell(13).setCellValue(proposta.getLinkJira());
@@ -667,10 +667,10 @@ public class ExcelGeneratorService {
 
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             if (contadorBeneficio == 0) {
-                                rowProposta.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                                rowProposta.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
                             } else {
                                 Row roww = sheet.createRow(rowIndexProposta++);
-                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)));
                             }
                             contadorBeneficio++;
                         }
@@ -806,8 +806,8 @@ public class ExcelGeneratorService {
                         row.createCell(4).setCellValue(proposta.getData());
                         row.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         row.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                        row.createCell(7).setCellValue(new String(proposta.getProblema(), StandardCharsets.UTF_8));
-                        row.createCell(8).setCellValue(new String(proposta.getProposta(), StandardCharsets.UTF_8));
+                        row.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
+                        row.createCell(8).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
                         int contadorCusto = 0;
 
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
@@ -828,10 +828,10 @@ public class ExcelGeneratorService {
 
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             if (contadorBeneficio == 0) {
-                                row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                                row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
                             } else {
                                 Row roww = sheet.createRow(rowIndexProposta);
-                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
                                 rowIndexProposta++;
                             }
 
@@ -871,8 +871,8 @@ public class ExcelGeneratorService {
                         rowProposta.createCell(4).setCellValue(proposta.getData());
                         rowProposta.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         rowProposta.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
-                        rowProposta.createCell(7).setCellValue(new String(proposta.getProblema(), StandardCharsets.UTF_8));
-                        rowProposta.createCell(8).setCellValue(new String(proposta.getProposta(), StandardCharsets.UTF_8));
+                        rowProposta.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
+                        rowProposta.createCell(8).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
 
                         int contadorCusto = 0;
 
@@ -893,10 +893,10 @@ public class ExcelGeneratorService {
 
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             if (contadorBeneficio == 0) {
-                                rowProposta.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                                rowProposta.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
                             } else {
                                 Row roww = sheet.createRow(rowIndexProposta++);
-                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                                roww.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
                             }
 
                             contadorBeneficio++;
