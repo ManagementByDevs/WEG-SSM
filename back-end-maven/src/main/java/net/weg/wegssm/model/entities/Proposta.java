@@ -53,13 +53,13 @@ public class Proposta {
     @Column
     private ParecerGerencia parecerComissao;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String parecerInformacao;
 
     @Column
     private ParecerGerencia parecerDG;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     private String parecerInformacaoDG;
 
     @Column
