@@ -90,7 +90,7 @@ public class ExcelGeneratorService {
         int contadorDemanda = 1;
 
         for (Optional<Demanda> demandaOp : listDemandas) {
-            XSSFRow row = sheet.createRow(rowNum);
+            XSSFRow row = sheet.createRow(rowNum++);
 
             int rowIndex = rowNum;
 
