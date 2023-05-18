@@ -2,6 +2,8 @@ package net.weg.wegssm.repository;
 
 import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Mensagem;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +12,7 @@ import java.util.List;
 @Repository
 public interface MensagemRepository extends JpaRepository<Mensagem, Long> {
 
-    List<Mensagem> findByIdChat(Chat chat);
+    List<Mensagem> findAllByIdChat(Chat chat);
+
+    Page<Mensagem> findByIdChat(Chat chat, Pageable pageable);
 }

@@ -4,11 +4,16 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.MensagemDTO;
 import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Mensagem;
+import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.model.service.ChatService;
 import net.weg.wegssm.model.service.MensagemService;
 import net.weg.wegssm.model.service.UsuarioService;
 import net.weg.wegssm.util.MensagemUtil;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -38,18 +44,14 @@ public class MensagemController {
     public ResponseEntity<Object> receiveMessage(@DestinationVariable Long id, @Payload MensagemDTO mensagemDTO) {
         System.out.println("Mensagem: " + mensagemDTO);
         Mensagem mensagem = new Mensagem();
-//        Proposta proposta = new Proposta();
 
         BeanUtils.copyProperties(mensagemDTO, mensagem, "id");
 
         mensagem.setUsuario(usuarioService.findById(mensagemDTO.getUsuario().getId()).get());
-//        mensagem.setIdChat(chatService.findById(mensagemDTO.getIdChat().getId()).get());
-//        proposta.setId(mensagem.getIdChat().getIdProposta().getId());
-//        mensagem.getIdChat().setIdProposta(proposta);
 
         mensagem = mensagemService.save(mensagem);
 
-        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/all", mensagem);
+        simpMessagingTemplate.convertAndSend("/api/weg_ssm/mensagem/all", mensagem);
 
         return ResponseEntity.ok().body(mensagem);
     }
@@ -57,9 +59,59 @@ public class MensagemController {
     @MessageMapping("/weg_ssm/mensagem/all")
     @SendTo("/weg_ssm/mensagem/all")
     public ResponseEntity<Object> receiveAnyMessage(@Payload Mensagem mensagem) {
-        System.out.println("Nova Mensagem: " + mensagem);
+//        System.out.println("Nova Mensagem: " + mensagem);
 
         return ResponseEntity.ok().body(mensagem);
+    }
+
+    @MessageMapping("/weg_ssm/mensagem/chat/{idChat}/visto")
+    @SendTo("/weg_ssm/mensagem/chat/{idChat}/visto")
+    public ResponseEntity<Object> verMensagem(
+            @Payload Mensagem mensagem,
+            @DestinationVariable(value = "idChat") Long idChat
+    ) {
+        System.out.println("Mensagem nova: " + mensagem);
+        Optional<Chat> chat = chatService.findById(idChat);
+        if (chat.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum Chat com esse ID.");
+        }
+        System.out.println("Teste");
+
+        mensagem.setIdChat(chat.get());
+        System.out.println("Teste 2");
+        mensagem.setVisto(true);
+        System.out.println("Teste 3");
+
+
+        return ResponseEntity.ok().body(mensagemService.save(mensagem));
+    }
+
+    @PutMapping("/chat/{idChat}/user/{idUsuario}")
+    public ResponseEntity<Object> updateMessages(
+            @PathVariable(value = "idChat") Long idChat,
+            @PathVariable(value = "idUsuario") Long idUser,
+            @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        Optional<Chat> chat = chatService.findById(idChat);
+        if (chat.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma mensagem deste id de chat.");
+        }
+
+        Optional<Usuario> usuario = usuarioService.findById(idUser);
+
+        if (usuario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum usuário com este id.");
+        }
+
+        Page<Mensagem> mensagens = mensagemService.findByIdChat(chat.get(), pageable);
+        for (Mensagem mensagem : mensagens.getContent()) {
+            if (!Objects.equals(mensagem.getUsuario().getId(), idUser)) {
+                mensagem.setVisto(true);
+                mensagemService.save(mensagem);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(mensagens);
     }
 
     /**
@@ -100,7 +152,7 @@ public class MensagemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma mensagem deste id de chat.");
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(mensagemService.findByIdChat(chat.get()));
+        return ResponseEntity.status(HttpStatus.OK).body(mensagemService.findAllByIdChat(chat.get()));
     }
 
     /**

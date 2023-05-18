@@ -12,7 +12,7 @@ import UsuarioService from "../../service/usuarioService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 
 /** Componnete para utilizar durante uma mensagem no chat */
-const Mensagem = (props) => {
+const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
@@ -56,9 +56,9 @@ const Mensagem = (props) => {
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
-  return (
-    <>
-      {props.mensagem.usuario.id == user.usuario.id ? (
+  if (mensagem.usuario.id == user.usuario.id) {
+    return (
+      <>
         <Box className="flex w-full justify-end">
           <Box
             className="flex items-center border py-2 px-4 my-2"
@@ -71,9 +71,9 @@ const Mensagem = (props) => {
           >
             <Box className="flex flex-col w-full">
               <Box className="flex">
-                {props.mensagem.texto != "" ? (
+                {mensagem.texto != "" ? (
                   <Typography fontSize={FontConfig.default} fontWeight="400">
-                    {props.mensagem.texto.split("\n").map((line, index) => (
+                    {mensagem.texto.split("\n").map((line, index) => (
                       <React.Fragment key={index}>
                         {line}
                         <br />
@@ -81,17 +81,17 @@ const Mensagem = (props) => {
                     ))}
                   </Typography>
                 ) : (
-                  <Tooltip title={props.mensagem.anexo.nome}>
+                  <Tooltip title={mensagem.anexo.nome}>
                     <Box
                       className="px-5 pb-2 mb-2 border rounded cursor-pointer flex flex-col justify-center items-center "
                       sx={{ backgroundColor: "chat.outro" }}
-                      onClick={() => downloadAnexo(props.mensagem.anexo)}
+                      onClick={() => downloadAnexo(mensagem.anexo)}
                     >
                       <FolderOutlinedIcon
                         sx={{ fontSize: "100px", color: "chat.eu" }}
                       />
                       <Typography sx={{ fontWeight: 600 }}>
-                        {props.mensagem.anexo.nome}
+                        {mensagem.anexo.nome}
                       </Typography>
                     </Box>
                   </Tooltip>
@@ -104,66 +104,74 @@ const Mensagem = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginRight: "0.2rem" }}
                 >
-                  {dateService.getHorasFormatado(props.mensagem.data)}
+                  {dateService.getHorasFormatado(mensagem.data)}
                 </Typography>
-                <DoneAllIcon fontSize="small" sx={{ color: "#FFFF" }} />
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      ) : (
-        <Box className="flex w-full justify-start">
-          <Box
-            className="flex items-center rounded-lg border py-2 px-4 my-2"
-            sx={{
-              backgroundColor: "chat.outro",
-              borderRadius: "10px 10px 10px 0px",
-              maxWidth: "70%",
-              marginLeft: "5%",
-            }}
-          >
-            <Box className="flex flex-col w-full">
-              <Box className="flex">
-                {props.mensagem.texto != "" ? (
-                  <Typography fontSize={FontConfig.default} fontWeight="400">
-                    {props.mensagem.texto.split("\n").map((line, index) => (
-                      <React.Fragment key={index}>
-                        {line}
-                        <br />
-                      </React.Fragment>
-                    ))}
-                  </Typography>
+                {mensagem.visto ? (
+                  <DoneAllIcon fontSize="small" sx={{ color: "#00579D" }} />
                 ) : (
-                  <Tooltip title={props.mensagem.anexo.nome}>
-                    <Box
-                      className="px-5 pb-2 mb-2 border rounded cursor-pointer"
-                      sx={{ backgroundColor: "background.paper" }}
-                      onClick={() => downloadAnexo(props.mensagem.anexo)}
-                    >
-                      <FolderOutlinedIcon
-                        sx={{ fontSize: "100px", color: "chat.eu" }}
-                      />
-                      <Typography sx={{ fontWeight: 600 }}>
-                        {props.mensagem.anexo.nome}
-                      </Typography>
-                    </Box>
-                  </Tooltip>
+                  <DoneAllIcon fontSize="small" sx={{ color: "#FFFF" }} />
                 )}
               </Box>
-
-              <Box className="flex justify-end w-full">
-                <Typography
-                  fontSize={FontConfig.small}
-                  fontWeight="600"
-                  sx={{ color: "text.secondary" }}
-                >
-                  {dateService.getHorasFormatado(props.mensagem.data)}
-                </Typography>
-              </Box>
             </Box>
           </Box>
         </Box>
-      )}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Box className="flex w-full justify-start">
+        <Box
+          className="flex items-center rounded-lg border py-2 px-4 my-2"
+          sx={{
+            backgroundColor: "chat.outro",
+            borderRadius: "10px 10px 10px 0px",
+            maxWidth: "70%",
+            marginLeft: "5%",
+          }}
+        >
+          <Box className="flex flex-col w-full">
+            <Box className="flex">
+              {mensagem.texto != "" ? (
+                <Typography fontSize={FontConfig.default} fontWeight="400">
+                  {mensagem.texto.split("\n").map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                  ))}
+                </Typography>
+              ) : (
+                <Tooltip title={mensagem.anexo.nome}>
+                  <Box
+                    className="px-5 pb-2 mb-2 border rounded cursor-pointer"
+                    sx={{ backgroundColor: "background.paper" }}
+                    onClick={() => downloadAnexo(mensagem.anexo)}
+                  >
+                    <FolderOutlinedIcon
+                      sx={{ fontSize: "100px", color: "chat.eu" }}
+                    />
+                    <Typography sx={{ fontWeight: 600 }}>
+                      {mensagem.anexo.nome}
+                    </Typography>
+                  </Box>
+                </Tooltip>
+              )}
+            </Box>
+
+            <Box className="flex justify-end w-full">
+              <Typography
+                fontSize={FontConfig.small}
+                fontWeight="600"
+                sx={{ color: "text.secondary" }}
+              >
+                {dateService.getHorasFormatado(mensagem.data)}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
     </>
   );
 };

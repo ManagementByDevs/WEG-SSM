@@ -3,6 +3,8 @@ package net.weg.wegssm.model.service;
 import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Mensagem;
 import net.weg.wegssm.repository.MensagemRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +39,11 @@ public class MensagemService {
         mensagemRepository.deleteById(id);
     }
 
-    public List<Mensagem> findByIdChat(Chat chat) {
-        return mensagemRepository.findByIdChat(chat);
+    public Page<Mensagem> findByIdChat(Chat chat, Pageable pageable) {
+        return mensagemRepository.findByIdChat(chat, pageable);
+    }
+
+    public List<Mensagem> findAllByIdChat(Chat chat) {
+        return mensagemRepository.findAllByIdChat(chat);
     }
 }

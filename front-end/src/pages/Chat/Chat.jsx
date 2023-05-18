@@ -15,15 +15,8 @@ import {
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 
-import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
-import Caminho from "../../components/Caminho/Caminho";
-import Contato from "../../components/Contato/Contato";
-import Mensagem from "../../components/Mensagem/Mensagem";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
-import Ajuda from "../../components/Ajuda/Ajuda";
-import Feedback from "../../components/Feedback/Feedback";
-
 import logoWeg from "../../assets/logo-weg.png";
+
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -31,6 +24,14 @@ import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
+
+import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
+import Caminho from "../../components/Caminho/Caminho";
+import Contato from "../../components/Contato/Contato";
+import Mensagem from "../../components/Mensagem/Mensagem";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import Ajuda from "../../components/Ajuda/Ajuda";
+import Feedback from "../../components/Feedback/Feedback";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -298,15 +299,31 @@ const Chat = () => {
 
   /** Busca os chats do usuário */
   const buscarChats = () => {
-    ChatService.getByRemetente(user.usuario.id).then((e) => {
-      setListaChats(e);
+    ChatService.getByRemetente(user.usuario.id).then((chatResponse) => {
+      setListaChats(chatResponse);
     });
   };
 
   /** Busca as mensagens do usuário */
   const carregar = () => {
     MensagemService.getMensagensChat(idChat).then((response) => {
-      setMensagens(response);
+      console.log("response!  ", response);
+      let mensagensAux = [];
+      if (response) {
+        mensagensAux = response;
+      }
+
+      // Marcando como visualizado as mensagens que o usuário não visualizou
+      // if (!mensagensAux.every((mensagem) => mensagem.visto)) {
+      //   console.log("entrou aqui");
+      //   MensagemService.putVisto(idChat, user.usuario.id).then(
+      //     (putResponse) => {
+      //       console.log("putResponse!  ", putResponse);
+      //       mensagensAux = putResponse.content.reverse();
+      //     }
+      //   );
+      // }
+      setMensagens(mensagensAux);
     });
     setDefaultMensagem();
   };
@@ -316,15 +333,12 @@ const Chat = () => {
   useEffect(() => {
     if (idChat) carregar();
     buscarChats();
-  }, []);
-
-  useEffect(() => {
-    if (idChat) carregar();
   }, [idChat]);
 
   useEffect(() => {
     setBuscandoMensagens(false);
     const boxElement = boxRef.current;
+    // Colocando o scroll para a última mensagem recebida
     if (boxElement) {
       boxElement.scrollTop = boxElement.scrollHeight;
     }
@@ -349,22 +363,52 @@ const Chat = () => {
 
   useEffect(() => {
     const acaoNovaMensagem = (response) => {
+      console.log("passou no acao nova mensagem");
       const mensagemRecebida = JSON.parse(response.body);
       let mensagemNova = {
         ...mensagemRecebida.body,
         texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
       };
+      // Se o remetente não for o usuário, tenho que notificar a visualização
+      if (mensagemNova.usuario.id != user.usuario.id) {
+        // mensagemNova.visto = true;
+        console.log("Mensagem nova.visto: ", mensagemNova);
+        enviar(`/app/weg_ssm/mensagem/chat/${idChat}/visto`, {
+          ...mensagemNova,
+        });
+      }
+
       setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
     };
 
-    const receivedAnyMessage = (
-      mensagem = EntitiesObjectService.mensagem()
-    ) => {
-      const mensagemRecebida = JSON.parse(mensagem.body);
+    const receivedAnyMessage = (mensagem) => {
+      let mensagemRecebida = EntitiesObjectService.mensagem();
+      mensagemRecebida = JSON.parse(mensagem.body);
+      // console.log("Mensagem recebida: ", mensagemRecebida);
       if (mensagemRecebida.usuario.id == user.usuario.id) {
-        console.log("a");
+        // console.log("a");
         return;
       }
+
+      if (mensagemRecebida.idChat.id == idChat) {
+        // console.log("b");
+        return;
+      }
+    };
+
+    const visualizeMessage = (mensagem) => {
+      let mensagemRecebida = EntitiesObjectService.mensagem();
+      mensagemRecebida = JSON.parse(mensagem.body);
+
+      console.log("Mensagens: ", mensagens);
+      console.log("MENSAGEM: ", mensagemRecebida);
+
+      setMensagens((oldMensagens) => {
+        // fazer a última mensagem ter visto = true
+        oldMensagens[oldMensagens.length - 1].visto = true;
+        console.log("oldMensagens: ", oldMensagens);
+        return [...oldMensagens];
+      });
     };
 
     if (idChat) {
@@ -378,14 +422,24 @@ const Chat = () => {
         receivedAnyMessage
       );
 
+      let inscricaoVerMensagem = inscrever(
+        `/weg_ssm/mensagem/chat/${idChat}/visto`,
+        visualizeMessage
+      );
+
       return () => {
         if (inscricaoId) {
           inscricaoId.unsubscribe();
           inscricaoAllMensagens.unsubscribe();
+          inscricaoVerMensagem.unsubscribe();
         }
       };
     }
   }, [stompClient, idChat]);
+
+  // useEffect(() => {
+  //   // if (isThereNewMsg)
+  // }, [mensagens]);
 
   // ***************************************** Fim UseEffects ***************************************** //
 
@@ -889,7 +943,6 @@ const Chat = () => {
                               key={index}
                               mensagem={mensagemDoMap}
                               index={index}
-                              usuario={mensagemDoMap.usuario}
                             />
                           );
                         })}
