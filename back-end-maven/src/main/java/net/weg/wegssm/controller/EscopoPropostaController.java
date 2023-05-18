@@ -85,11 +85,15 @@ public class EscopoPropostaController {
     }
 
     @PutMapping
-    public ResponseEntity<EscopoProposta> update(@RequestParam(value = "escopo-proposta") String escopoPropostaJSON) {
+    public ResponseEntity<Object> update(@RequestParam(value = "escopo-proposta") String escopoPropostaJSON) {
         EscopoPropostaUtil escopoPropostaUtil = new EscopoPropostaUtil();
 
         EscopoProposta escopoProposta = escopoPropostaUtil.convertJsonToModelDirect(escopoPropostaJSON);
         escopoProposta.setUltimaModificacao(new Date());
+
+        if(!escopoPropostaService.existsById(escopoProposta.getId())) {
+            return ResponseEntity.status(HttpStatus.OK).body("Escopo não encontrado!");
+        }
 
         List<ResponsavelNegocio> listaResponsaveis = new ArrayList<>();
         for (ResponsavelNegocio responsavelNegocio : escopoProposta.getResponsavelNegocio()) {

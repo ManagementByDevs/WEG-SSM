@@ -111,6 +111,9 @@ const BarraProgressaoProposta = (props) => {
 
   const [mudancasFeitas, setMudancasFeitas] = useState(false);
 
+  /** Variável usada para interromper o salvamento de escopos enquanto a proposta estiver sendo criada */
+  let criandoProposta = false;
+
   // UseEffect utilizado para pegar os dados da demanda e pegar os fóruns e BUs
   useEffect(() => {
     setDadosDemanda(props.dados);
@@ -164,7 +167,9 @@ const BarraProgressaoProposta = (props) => {
   useEffect(() => {
     if (ultimoEscopo) {
       setTimeout(() => {
-        salvarEscopo();
+        if (!criandoProposta) {
+          salvarEscopo();
+        }
       }, 5000);
     }
   }, [ultimoEscopo]);
@@ -463,15 +468,6 @@ const BarraProgressaoProposta = (props) => {
     return listaNova;
   };
 
-  /** Função que retorna os IDs de todos os anexos da proposta */
-  const receberIdsAnexos = () => {
-    let listaIds = [];
-    for (const anexo of dadosDemanda.anexo) {
-      listaIds.push(anexo.id);
-    }
-    return listaIds;
-  };
-
   /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
   const retornarIdsObjetos = (listaObjetos) => {
     let listaNova = [];
@@ -529,15 +525,11 @@ const BarraProgressaoProposta = (props) => {
 
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = () => {
+
     let feedbackFaltante = false;
-    if (
-      gerais.periodoExecucacaoInicio == "" ||
-      gerais.periodoExecucacaoFim == "" ||
-      gerais.qtdPaybackSimples == "" ||
-      gerais.unidadePaybackSimples == "" ||
-      gerais.ppm == "" ||
-      gerais.linkJira == ""
-    ) {
+    criandoProposta = true;
+
+    if (gerais.periodoExecucacaoInicio == "" || gerais.periodoExecucacaoFim == "" || gerais.qtdPaybackSimples == "" || gerais.unidadePaybackSimples == "" || gerais.ppm == "" || gerais.linkJira == "") {
       setFeedbackFaltante(true);
     } else {
       if (gerais.responsaveisNegocio.length != 0) {
@@ -551,33 +543,19 @@ const BarraProgressaoProposta = (props) => {
           excluirBeneficios();
 
           propostaService.post(retornaObjetoProposta()).then((response) => {
-            DemandaService.atualizarStatus(
-              dadosDemanda.id,
-              "ASSESSMENT_APROVACAO"
-            ).then(() => {
-              EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
-                () => {
-                  // Salvamento de histórico
-                  ExportPdfService.exportProposta(response.id).then(
-                    (file) => {
-                      let arquivo = new Blob([file], {
-                        type: "application/pdf",
-                      });
-                      propostaService
-                        .addHistorico(
-                          response.id,
-                          "Proposta Criada",
-                          arquivo,
-                          CookieService.getUser().id
-                        )
-                        .then(() => {
-                          localStorage.setItem("tipoFeedback", "5");
-                          navigate("/");
-                        });
-                    }
-                  );
-                }
-              );
+            DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
+              EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
+
+                // Salvamento de histórico
+                ExportPdfService.exportProposta(response.id).then((file) => {
+
+                  let arquivo = new Blob([file], { type: "application/pdf" });
+                  propostaService.addHistorico(response.id, "Proposta Criada", arquivo, CookieService.getUser().id).then(() => {
+                    localStorage.setItem("tipoFeedback", "5");
+                    navigate("/");
+                  });
+                });
+              });
             });
           });
         }
