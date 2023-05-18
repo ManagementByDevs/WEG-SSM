@@ -194,6 +194,16 @@ const DetalhesPauta = (props) => {
   // Feedback para quando o usuário não preencher todos os campos obrigatórios
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
+  // Feedback para quando da erro de incompatibilidade com o navegador
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+
+  // Feedback para quando da erro no reconhecimento de voz
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
   // Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida
   const deletePropostaFromPauta = () => {
     const indexProposta = pauta.propostas.findIndex(
@@ -215,7 +225,7 @@ const DetalhesPauta = (props) => {
       PropostaService.putWithoutArquivos(
         propostaDeleted,
         propostaDeleted.id
-      ).then((newProposta) => { });
+      ).then((newProposta) => {});
       location.state = { pauta: newPauta }; // Atualizando a pauta na página
       setPauta(newPauta); // Atualizando a pauta na variável do front
       setProposta(false); // Anulando a proposta que estava sendo exibida
@@ -360,6 +370,38 @@ const DetalhesPauta = (props) => {
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}
         criarAta={criarAta}
+        setFeedbackErroNavegadorIncompativel={
+          setFeedbackErroNavegadorIncompativel
+        }
+        setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+        setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
+      />
+      {/* Feedback Erro reconhecimento de voz */}
+      <Feedback
+        open={feedbackErroReconhecimentoVoz}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback12}
+      />
+      {/* Feedback Não navegador incompativel */}
+      <Feedback
+        open={feedbackErroNavegadorIncompativel}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback13}
+      />
+      {/* Feedback campos faltantes */}
+      <Feedback
+        open={feedbackCamposFaltantes}
+        handleClose={() => {
+          setFeedbackCamposFaltantes(false);
+        }}
+        status={"erro"}
+        mensagem={texts.modalCriarAta.feedback}
       />
       {/* Feedback proposta deletada da pauta */}
       <Feedback
@@ -370,23 +412,13 @@ const DetalhesPauta = (props) => {
         status={"erro"}
         mensagem={texts.detalhesPauta.feedbacks.feedback1}
       />
-
-      {/* Feedback campos faltantes */}
-      <Feedback
-        open={feedbackCamposFaltantes}
-        handleClose={() => {
-          setFeedbackCamposFaltantes(false);
-        }}
-        status={"erro"}
-        mensagem={texts.detalhesPauta.feedbacks.feedback2}
-      />
       <ModalConfirmacao
         open={modal}
         setOpen={setModal}
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
       <Box className="p-2" sx={{ minWidth: "60rem" }}>
         <Box className="flex w-full relative">

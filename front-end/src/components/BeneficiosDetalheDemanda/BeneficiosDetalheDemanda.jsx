@@ -9,7 +9,6 @@ import {
   Paper,
   Typography,
   Box,
-  TextareaAutosize,
   FormControl,
   Select,
   MenuItem,

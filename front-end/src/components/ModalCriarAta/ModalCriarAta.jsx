@@ -62,16 +62,18 @@ const ModalCriarAta = (props) => {
   // useState para abrir e fechar o modal
   const handleClose = () => setOpen(false);
 
-  // Feedback para quando o usuário não preencher todos os campos obrigatórios
-  const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
-
   const [numeroSequencial, setNumeroSequencial] = useState("");
 
   const [dataReuniao, setDataReuniao] = useState("");
 
   const criarAta = () => {
-    if (numeroSequencial == "" || numeroSequencial == null || dataReuniao == "" || dataReuniao == null) {
-      setFeedbackCamposFaltantes(true);
+    if (
+      numeroSequencial == "" ||
+      numeroSequencial == null ||
+      dataReuniao == "" ||
+      dataReuniao == null
+    ) {
+      props.setFeedbackCamposFaltantes(true);
     } else {
       props.criarAta(numeroSequencial, dataReuniao);
     }
@@ -79,15 +81,6 @@ const ModalCriarAta = (props) => {
 
   return (
     <>
-      {/* Feedback campos faltantes */}
-      <Feedback
-        open={feedbackCamposFaltantes}
-        handleClose={() => {
-          setFeedbackCamposFaltantes(false);
-        }}
-        status={"erro"}
-        mensagem={texts.modalCriarAta.feedback}
-      />
       <Modal
         open={open}
         onClose={handleClose}
@@ -138,6 +131,12 @@ const ModalCriarAta = (props) => {
                   placeholder={texts.modalCriarAta.digiteNumeroSequencial}
                   texto={numeroSequencial}
                   saveInputValue={setNumeroSequencial}
+                  setFeedbackErroNavegadorIncompativel={
+                    props.setFeedbackErroNavegadorIncompativel
+                  }
+                  setFeedbackErroReconhecimentoVoz={
+                    props.setFeedbackErroReconhecimentoVoz
+                  }
                 />
                 {/* input de data */}
                 <Box className="mt-4">

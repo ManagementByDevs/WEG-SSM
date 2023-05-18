@@ -119,6 +119,8 @@ const FormularioCustosProposta = (props) => {
               setCustos={props.setCustos}
               custos={props.custos}
               deletarCustos={deletarTabelaCustos}
+              setFeedbackErroNavegadorIncompativel={props.setFeedbackErroNavegadorIncompativel}
+              setFeedbackErroReconhecimentoVoz={props.setFeedbackErroReconhecimentoVoz}
             />
           );
         })}

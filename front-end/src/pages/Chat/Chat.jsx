@@ -31,6 +31,8 @@ import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -389,6 +391,99 @@ const Chat = () => {
 
   // ***************************************** Fim UseEffects ***************************************** //
 
+  // // ********************************************** Gravar audio **********************************************
+
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const [localClicado, setLocalClicado] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        switch (localClicado) {
+          case "titulo":
+            setPesquisaContato(transcript);
+            break;
+          case "mensagem":
+            setMensagem({ ...mensagem, texto: transcript });
+            break;
+          default:
+            break;
+        }
+        // setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setEscutar(!escutar);
+    setLocalClicado(ondeClicou);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+
   return (
     <>
       <Ajuda onClick={() => setIsTourOpen(true)} />
@@ -421,6 +516,24 @@ const Chat = () => {
         />
       )}
       <FundoComHeader>
+        {/* Feedback Erro reconhecimento de voz */}
+        <Feedback
+          open={feedbackErroReconhecimentoVoz}
+          handleClose={() => {
+            setFeedbackErroReconhecimentoVoz(false);
+          }}
+          status={"erro"}
+          mensagem={texts.homeGerencia.feedback.feedback12}
+        />
+        {/* Feedback Não navegador incompativel */}
+        <Feedback
+          open={feedbackErroNavegadorIncompativel}
+          handleClose={() => {
+            setFeedbackErroNavegadorIncompativel(false);
+          }}
+          status={"erro"}
+          mensagem={texts.homeGerencia.feedback.feedback13}
+        />
         {/* Feedback Chat encerrado com sucesso */}
         <Feedback
           open={feedbackChatEncerrado}
@@ -461,7 +574,7 @@ const Chat = () => {
               >
                 <Box
                   id="primeiro"
-                  className="flex border px-3 py-1 m-4 rounded-lg"
+                  className="flex items-center border px-3 py-1 m-4 rounded-lg"
                   sx={{
                     backgroundColor: "input.main",
                     width: "90%",
@@ -479,10 +592,28 @@ const Chat = () => {
                       fontSize: FontConfig.medium,
                     }}
                     placeholder={texts.chat.pesquisarPorNome}
+                    value={pesquisaContato}
                   />
                   <Box className="flex gap-2">
                     <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                   </Box>
+                  <Tooltip
+                    className="hover:cursor-pointer"
+                    title={texts.homeGerencia.gravarAudio}
+                    onClick={() => {
+                      startRecognition("titulo");
+                    }}
+                  >
+                    {escutar && localClicado == "titulo" ? (
+                      <MicOutlinedIcon
+                        sx={{ color: "primary.main", fontSize: "1.45rem" }}
+                      />
+                    ) : (
+                      <MicNoneOutlinedIcon
+                        sx={{ color: "text.secondary", fontSize: "1.45rem" }}
+                      />
+                    )}
+                  </Tooltip>
                 </Box>
                 {isTourOpen ? (
                   <Contato
@@ -672,6 +803,23 @@ const Chat = () => {
                       }}
                       placeholder={texts.chat.escrevaSuaMensagem}
                     />
+                    <Tooltip
+                      className="hover:cursor-pointer"
+                      title={texts.homeGerencia.gravarAudio}
+                      onClick={() => {
+                        startRecognition("titulo");
+                      }}
+                    >
+                      {escutar && localClicado == "titulo" ? (
+                        <MicOutlinedIcon
+                          sx={{ color: "primary.main", fontSize: "1.7rem" }}
+                        />
+                      ) : (
+                        <MicNoneOutlinedIcon
+                          sx={{ color: "text.secondary", fontSize: "1.7rem" }}
+                        />
+                      )}
+                    </Tooltip>
                     <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
                       <Tooltip title={texts.chat.enviarAnexo}>
                         <IconButton>
@@ -944,6 +1092,26 @@ const Chat = () => {
                           placeholder={texts.chat.escrevaSuaMensagem}
                           value={mensagem.texto}
                         />
+                        <Tooltip
+                          className="hover:cursor-pointer"
+                          title={texts.homeGerencia.gravarAudio}
+                          onClick={() => {
+                            startRecognition("mensagem");
+                          }}
+                        >
+                          {escutar && localClicado == "mensagem" ? (
+                            <MicOutlinedIcon
+                              sx={{ color: "primary.main", fontSize: "1.7rem" }}
+                            />
+                          ) : (
+                            <MicNoneOutlinedIcon
+                              sx={{
+                                color: "text.secondary",
+                                fontSize: "1.7rem",
+                              }}
+                            />
+                          )}
+                        </Tooltip>
                         <Box className="flex gap-2 delay-120 hover:scale-110 duration-300">
                           <Tooltip title={texts.chat.enviarAnexo}>
                             <IconButton
