@@ -1,29 +1,16 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
-
-import {
-  Modal,
-  Typography,
-  Box,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
+import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField, FormGroup, FormControlLabel, Checkbox } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
-import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
-import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
-
-import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+import UsuarioService from "../../service/usuarioService";
+
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
+  
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -291,7 +278,7 @@ const ModalFiltroGerencia = (props) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 580,
-            height: 400,
+            height: 440,
             bgcolor: "background.paper",
             borderRadius: "5px",
             borderTop: "10px solid #00579D",
@@ -478,6 +465,14 @@ const ModalFiltroGerencia = (props) => {
             </Box>
           </Box>
 
+          <Box className="flex flex-row w-3/4">
+            <FormGroup className="justify-between w-full" row>
+              <FormControlLabel control={<Checkbox defaultChecked />} label="Em Ata" />
+              <FormControlLabel control={<Checkbox />} label="Em Pauta" />
+              <FormControlLabel control={<Checkbox />} label="Em Edição" />
+            </FormGroup>
+          </Box>
+
           {/* Botão de limpar filtros */}
           <Button
             onClick={limparFiltro}
@@ -485,7 +480,7 @@ const ModalFiltroGerencia = (props) => {
             disableElevation
             color="primary"
             sx={{
-              marginTop: "1%",
+              marginTop: "4%",
               width: "8rem",
               height: "3rem",
               fontSize: FontConfig.normal,
