@@ -87,6 +87,7 @@ const HomeGerencia = () => {
     status: null,
     codigoPPM: null,
     id: null,
+    presenteEm: null,
   });
 
   const stepsMinhasDemandas = [
@@ -350,6 +351,7 @@ const HomeGerencia = () => {
     id: null,
     codigoPPM: null,
     analista: null,
+    presenteEm: null,
   });
 
   /** Objeto contendo o usuário logado no sistema */
@@ -445,6 +447,7 @@ const HomeGerencia = () => {
       codigoPPM: null,
       id: null,
       analista: null,
+      presenteEm: null,
     };
 
     if (filtrosAtuais.solicitante != "") {
@@ -471,6 +474,9 @@ const HomeGerencia = () => {
     if (filtrosAtuais.analista != "") {
       paramsTemp.analista = filtrosAtuais.analista;
     }
+    if (filtrosAtuais.presenteEm != "") {
+      paramsTemp.presenteEm = filtrosAtuais.presenteEm;
+    }
 
     setParams({
       titulo: valorPesquisa,
@@ -483,6 +489,7 @@ const HomeGerencia = () => {
       departamento: paramsTemp.departamento,
       codigoPPM: paramsTemp.codigoPPM,
       id: paramsTemp.id,
+      presenteEm: paramsTemp.presenteEm,
     });
   }, [filtrosAtuais]);
 
@@ -1709,7 +1716,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
@@ -1733,7 +1740,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="4"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Box
                           sx={{
