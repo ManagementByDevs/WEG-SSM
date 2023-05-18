@@ -4263,6 +4263,20 @@ public class PropostaController {
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
+    @RequestMapping("/ata/{idProposta}")
+    public ResponseEntity<Object> updateAta(@PathVariable(value = "idProposta") Long idProposta,
+                                              @RequestParam(value = "status") Status status) {
+        Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
+        if(propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        proposta.setStatus(status);
+        proposta.setEmPauta(true);
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
 
     /**
      * Método DELETE para modificar a visibilidade de uma proposta

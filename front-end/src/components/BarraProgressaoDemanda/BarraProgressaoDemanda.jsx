@@ -88,6 +88,9 @@ const BarraProgressaoDemanda = (props) => {
   /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamento, setCarregamento] = useState(true);
 
+  /** Variável para interromper o salvamento de escopos enquanto a demanda estiver sendo criada */
+  let criandoDemanda = false;
+
   /** Variável com os nomes dos respectivos passos da criação da demanda, usando o contexto de tradução */
   const steps = [
     `${texts.barraProgressaoDemanda.steps.dados}`,
@@ -251,20 +254,23 @@ const BarraProgressaoDemanda = (props) => {
     escopoFinal.id = ultimoEscopo.id;
 
     try {
-      EscopoService.salvarDados(escopoFinal).then((response) => {
-        setUltimoEscopo(response);
-        //Confirmação de salvamento (se sobrar tempo)
-      });
-    } catch (error) {}
+      if (!criandoDemanda) {
+        EscopoService.salvarDados(escopoFinal).then((response) => {
+          setUltimoEscopo(response);
+          //Confirmação de salvamento (se sobrar tempo)
+        });
+      }
+    } catch (error) { }
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
   const criarDemanda = () => {
+    criandoDemanda = true;
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
 
@@ -344,7 +350,7 @@ const BarraProgressaoDemanda = (props) => {
     for (let beneficio of paginaBeneficios) {
       beneficioService
         .put(beneficio, beneficio.memoriaCalculo)
-        .then((response) => {});
+        .then((response) => { });
     }
   };
 

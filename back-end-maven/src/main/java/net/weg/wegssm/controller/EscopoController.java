@@ -134,7 +134,7 @@ public class EscopoController {
     public ResponseEntity<Object> update(@RequestBody Escopo escopo) {
 
         if (!escopoService.existsById(escopo.getId())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Escopo não encontrado!");
+            return ResponseEntity.status(HttpStatus.OK).body("Escopo não encontrado!");
         }
 
         Escopo escopoAntigo = escopoService.findById(escopo.getId()).get();

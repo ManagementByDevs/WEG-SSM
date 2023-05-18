@@ -574,7 +574,8 @@ const DetalhesPauta = (props) => {
                     />
                   </IconButton>
                 </Box>
-                <DetalhesProposta propostaId={dadosProposta.id} />
+                <DetalhesProposta setDadosProposta={setDadosProposta} parecerComissao={dadosProposta.parecerComissao || ""} parecerInformacao={dadosProposta.parecerInformacao || ""}
+                  emAprovacao={true} propostaId={dadosProposta.id} />
               </Box>
             )}
           </Box>
