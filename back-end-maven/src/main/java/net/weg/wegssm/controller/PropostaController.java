@@ -4273,7 +4273,7 @@ public class PropostaController {
 
         Proposta proposta = propostaOptional.get();
         proposta.setStatus(status);
-        proposta.setEmPauta(true);
+//        proposta.setEmPauta(true);
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
