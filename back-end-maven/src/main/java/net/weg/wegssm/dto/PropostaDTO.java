@@ -80,9 +80,7 @@ public class PropostaDTO {
 
     private List<Historico> historicoProposta;
 
-    private Boolean emPauta;
-
-    private Boolean emAta;
+    private String presenteEm;
 
     private List<Anexo> anexo;
 
