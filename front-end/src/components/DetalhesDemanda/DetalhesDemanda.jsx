@@ -1,15 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Paper,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Paper, IconButton, Tooltip, } from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -34,11 +26,11 @@ import AnexoService from "../../service/anexoService";
 import NotificacaoService from "../../service/notificacaoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
-
 import CookieService from "../../service/cookieService";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
+  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -172,9 +164,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || texts.DetalhesDemanda.real,
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -288,7 +280,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -296,7 +288,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosNovos([]);
   };
@@ -348,12 +340,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-          props.dados.beneficios[index].moeda.toLowerCase() &&
+        props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -818,8 +810,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -828,8 +820,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -1211,7 +1203,7 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.frequenciaDeUso}:
               </Typography>
-              <Box className="flex items-center justify-between border-solid border px-2 py-1.5 drop-shadow-sm rounded" sx={{backgroundColor: corFundoTextArea, width: "90%",marginLeft: "30px",}}>
+              <Box className="flex items-center justify-between border-solid border px-2 py-1.5 drop-shadow-sm rounded" sx={{ backgroundColor: corFundoTextArea, width: "90%", marginLeft: "30px", }}>
                 <Box
                   value={frequencia}
                   onChange={(e) => {

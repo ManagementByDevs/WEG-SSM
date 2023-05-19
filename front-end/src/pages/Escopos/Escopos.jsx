@@ -15,12 +15,12 @@ import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
+import EscopoModoVisualizacao from "../../components/EscopoModoVisualizacao/EscopoModoVisualizacao";
 
 import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
-
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 
@@ -28,6 +28,7 @@ import Tour from "reactour";
 
 // Tela para mostrar os escopos de demandas/propostas não finalizadas
 const Escopos = () => {
+  
   const [usuario, setUsuario] = useState(null);
 
   // useContext para alterar a linguagem do sistema
@@ -249,7 +250,7 @@ const Escopos = () => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-          setInputPesquisa(transcript);
+        setInputPesquisa(transcript);
       };
 
       recognition.onerror = (event) => {
@@ -285,6 +286,12 @@ const Escopos = () => {
   }, [escutar]);
 
   // // ********************************************** Fim Gravar audio **********************************************
+
+  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
+
+  const verEscopo = (escopo) => {
+
+  };
 
   return (
     <FundoComHeader>
@@ -377,6 +384,14 @@ const Escopos = () => {
                 </Box>
               </Box>
             </Box>
+
+            {/* <EscopoModoVisualizacao
+              listaEscopos={escopos}
+              onEscopoClick={verEscopo}
+              nextModoVisualizacao={nextModoVisualizacao}
+              myEscopos={true}
+            /> */}
+
             <Box
               id="primeiro"
               className="mt-6 grid gap-4"

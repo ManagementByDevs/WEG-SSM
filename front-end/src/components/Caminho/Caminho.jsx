@@ -12,6 +12,7 @@ import CookieService from "../../service/cookieService";
 
 // Componente utilizado para mostrar o caminho atual do usuário no sistema
 const Caminho = (props) => {
+  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

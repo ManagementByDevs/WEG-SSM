@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import { keyframes } from "@emotion/react";
 
@@ -17,7 +18,6 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import ChatContext from "../../service/ChatContext";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
 import { MensagemService } from "../../service/MensagemService";
@@ -26,10 +26,9 @@ import dateService from "../../service/dateService";
 import { WebSocketContext } from "../../service/WebSocketService";
 import anexoService from "../../service/anexoService";
 
-import ClipLoader from "react-spinners/ClipLoader";
-
 // Componente utilizado para representar a versão minimizada do chat
 const ChatMinimizado = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -127,7 +126,7 @@ const ChatMinimizado = (props) => {
       .then((response) => {
         setMensagens(response);
       })
-      .catch((error) => {});
+      .catch((error) => { });
     setDefaultMensagem();
   }
 

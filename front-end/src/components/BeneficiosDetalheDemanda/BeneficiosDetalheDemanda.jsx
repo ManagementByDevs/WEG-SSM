@@ -1,19 +1,6 @@
 import React, { useState, useContext, useEffect, useRef, memo } from "react";
 
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  FormControl,
-  Select,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, FormControl, Select, MenuItem, Tooltip, } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -21,14 +8,15 @@ import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import Feedback from "../../components/Feedback/Feedback";
+import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 import ColorModeContext from "../../service/TemaContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
-import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -304,30 +292,20 @@ const BeneficiosDetalheDemanda = (props) => {
                                 backgroundColor: "background.default",
                               }}
                               component="input"
-                              placeholder={
-                                texts.BeneficiosDetalheDemanda.digiteValorMensal
-                              }
+                              placeholder={texts.BeneficiosDetalheDemanda.digiteValorMensal}
                             />
                             <Tooltip
                               className="hover:cursor-pointer"
                               title={texts.homeGerencia.gravarAudio}
-                              onClick={() => {
-                                startRecognition();
-                              }}
+                              onClick={() => { startRecognition(); }}
                             >
                               {escutar ? (
                                 <MicOutlinedIcon
-                                  sx={{
-                                    color: "primary.main",
-                                    fontSize: "1.3rem",
-                                  }}
+                                  sx={{ color: "primary.main", fontSize: "1.3rem", }}
                                 />
                               ) : (
                                 <MicNoneOutlinedIcon
-                                  sx={{
-                                    color: "text.secondary",
-                                    fontSize: "1.3rem",
-                                  }}
+                                  sx={{ color: "text.secondary", fontSize: "1.3rem", }}
                                 />
                               )}
                             </Tooltip>
@@ -338,10 +316,7 @@ const BeneficiosDetalheDemanda = (props) => {
                   <td align="center">
                     {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
                       props.beneficio.tipoBeneficio != "Qualitativo" && (
-                        <FormControl
-                          variant="standard"
-                          sx={{ marginRight: "10px", minWidth: 90 }}
-                        >
+                        <FormControl variant="standard" sx={{ marginRight: "10px", minWidth: 90 }}>
                           {/* Select de moeda do benefício */}
                           <Select
                             labelId="demo-simple-select-standard-label"
@@ -366,9 +341,7 @@ const BeneficiosDetalheDemanda = (props) => {
                       {/* Caixa de texto para edição da memória cálculo */}
                       <CaixaTextoQuill
                         texto={props.beneficio.memoriaCalculo}
-                        onChange={(value) => {
-                          alterarTexto(value);
-                        }}
+                        onChange={(value) => { alterarTexto(value); }}
                       />
                     </Box>
                   </td>
