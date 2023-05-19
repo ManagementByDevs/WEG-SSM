@@ -322,6 +322,11 @@ const Chat = () => {
     setDefaultMensagem();
   };
 
+  const clearNewMessages = () => {
+    let chatAux = listaChats.find((chat) => chat.id == idChat);
+    chatAux.msgNaoLidas = 0;
+  };
+
   // ***************************************** UseEffects ***************************************** //
 
   useEffect(() => {
@@ -348,7 +353,15 @@ const Chat = () => {
       }
 
       // for ()
+
       console.log("listaChats", listaChats);
+
+      let chatAux = listaChats.find(
+        (chat) => chat.id == mensagemRecebida.idChat.id
+      );
+
+      chatAux.msgNaoLidas += 1;
+      setListaChats([...listaChats]);
     };
 
     let inscricaoAllMensagens = inscrever(
@@ -388,6 +401,7 @@ const Chat = () => {
           ...mensagemNova,
         });
         mensagemNova.visto = true;
+        clearNewMessages();
       }
 
       setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
@@ -398,7 +412,7 @@ const Chat = () => {
 
       setMensagens((oldMensagens) => {
         for (let oldMensagem of oldMensagens) {
-          if (!oldMensagem.visto) {
+          if (!oldMensagem.visto && oldMensagem.usuario.id != user.usuario.id) {
             oldMensagem.visto = true;
           }
         }

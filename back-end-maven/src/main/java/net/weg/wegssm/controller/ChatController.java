@@ -109,7 +109,7 @@ public class ChatController {
         List<Chat> chats = chatService.findByUsuariosChat(usuario.get());
 
         for (Chat chat : chats) {
-            List<Mensagem> mensagensNaoLidas = mensagemService.findAllByIdChatAndVisto(chat, false);
+            List<Mensagem> mensagensNaoLidas = mensagemService.findAllByIdChatAndVistoAndUsuarioNot(chat, false, usuario.get());
 
             chat.setMsgNaoLidas((long) mensagensNaoLidas.size());
         }

@@ -2,6 +2,7 @@ package net.weg.wegssm.model.service;
 
 import net.weg.wegssm.model.entities.Chat;
 import net.weg.wegssm.model.entities.Mensagem;
+import net.weg.wegssm.model.entities.Usuario;
 import net.weg.wegssm.repository.MensagemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,5 +50,9 @@ public class MensagemService {
 
     public List<Mensagem> findAllByIdChatAndVisto(Chat chat, Boolean visto) {
         return mensagemRepository.findAllByIdChatAndVisto(chat, visto);
+    }
+
+    public List<Mensagem> findAllByIdChatAndVistoAndUsuarioNot(Chat chat, Boolean visto, Usuario usuario) {
+        return mensagemRepository.findAllByIdChatAndVistoAndUsuarioNot(chat, visto, usuario);
     }
 }
