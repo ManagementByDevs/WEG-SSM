@@ -776,6 +776,9 @@ const TextLanguageContext = createContext({
       essaPropostaJaSeEncontraEmUmaPauta:
         "Essa proposta já se encontra em uma pauta!",
     },
+    CaixaTextoQuill: {
+      gravarAudio: "Gravar áudio",
+    },
   },
   setTexts: () => {},
 });

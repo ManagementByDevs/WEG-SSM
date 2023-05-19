@@ -1,11 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Box, Typography, TextareaAutosize } from "@mui/material";
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { Box, Typography, TextareaAutosize, Tooltip } from "@mui/material";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
 
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -76,6 +79,114 @@ const PropostaDeAta = (props) => {
     }
     setParecer(event.target.value);
   };
+
+  // // ********************************************** Gravar audio **********************************************
+
+  // const [
+  //   feedbackErroNavegadorIncompativel,
+  //   setFeedbackErroNavegadorIncompativel,
+  // ] = useState(false);
+  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+  //   useState(false);
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+          console.log("Não está salvando em nada")
+        // setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        props.setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      props.setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = () => {
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  {
+    /* Feedback Erro reconhecimento de voz */
+  }
+  {
+    /* <Feedback
+  open={feedbackErroReconhecimentoVoz}
+  handleClose={() => {
+    setFeedbackErroReconhecimentoVoz(false);
+  }}
+  status={"erro"}
+  mensagem={texts.homeGerencia.feedback.feedback12}
+/> */
+  }
+  {
+    /* Feedback Não navegador incompativel */
+  }
+  {
+    /* <Feedback
+  open={feedbackErroNavegadorIncompativel}
+  handleClose={() => {
+    setFeedbackErroNavegadorIncompativel(false);
+  }}
+  status={"erro"}
+  mensagem={texts.homeGerencia.feedback.feedback13}
+/> */
+  }
+
+  // // ********************************************** Fim Gravar audio **********************************************
 
   return (
     <Box>
@@ -279,29 +390,35 @@ const PropostaDeAta = (props) => {
                 >
                   <MenuItem value="">{texts.propostaDeAta.aprovado}</MenuItem>
                   <MenuItem value={1}>{texts.propostaDeAta.reprovado}</MenuItem>
-                  <MenuItem value={2}>{texts.propostaDeAta.maisInformacoes}</MenuItem>
-                  <MenuItem value={3}>{texts.propostaDeAta.businessCase}</MenuItem>
+                  <MenuItem value={2}>
+                    {texts.propostaDeAta.maisInformacoes}
+                  </MenuItem>
+                  <MenuItem value={3}>
+                    {texts.propostaDeAta.businessCase}
+                  </MenuItem>
                 </Select>
               </FormControl>
             ) : (
-              <Box sx={{ marginLeft: "2%" }}>{texts.propostaDeAta.aprovado}</Box>
+              <Box sx={{ marginLeft: "2%" }}>
+                {texts.propostaDeAta.aprovado}
+              </Box>
             )}
           </Box>
 
           {parecerComissao ? (
             <Box
+            className="flex items-center justify-between"
               sx={{
+                width: "70%",
+                height: "8rem",
                 marginTop: "2%",
-                display: "flex",
-                flexDirection: "row",
                 alignItems: "center",
               }}
             >
               <TextareaAutosize
                 placeholder={texts.propostaDeAta.escrevaNovaInformacao}
                 style={{
-                  width: "70%",
-                  height: "8rem",
+                  width: "95%",
                   overflow: "auto",
                   resize: "none",
                   textAlign: "justify",
@@ -311,6 +428,23 @@ const PropostaDeAta = (props) => {
                   borderRadius: "5px",
                 }}
               />
+              <Tooltip
+                className="hover:cursor-pointer"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition();
+                }}
+              >
+                {escutar ? (
+                  <MicOutlinedIcon
+                    sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                  />
+                ) : (
+                  <MicNoneOutlinedIcon
+                    sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                  />
+                )}
+              </Tooltip>
             </Box>
           ) : (
             <></>

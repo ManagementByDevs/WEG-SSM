@@ -10,19 +10,94 @@ import {
 } from "@mui/material";
 
 import Backdrop from "@mui/material/Backdrop";
+
 import CloseIcon from "@mui/icons-material/Close";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 // Modal para informar o motivo da recusa ou devolvimento da demanda
 const ModalInformarMotivo = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // // ********************************************** Gravar audio **********************************************
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        // setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        props.setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      props.setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = () => {
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
 
   return (
     <Modal
@@ -70,16 +145,14 @@ const ModalInformarMotivo = (props) => {
             {texts.modalInformarMotivo.informarMotivo}
           </Typography>
           <Box
+            className="flex w-full h-full justify-between items-center"
             sx={{
               marginTop: "5%",
-              display: "flex",
               textAlign: "justify",
               border: "1px solid",
               borderColor: "divider.main",
               borderRadius: "5px",
               p: 2,
-              width: "100%",
-              height: "100%",
               overflow: "auto",
             }}
           >
@@ -96,13 +169,35 @@ const ModalInformarMotivo = (props) => {
                 background: "transparent",
               }}
             />
+            <Tooltip
+              className="hover:cursor-pointer"
+              title={texts.homeGerencia.gravarAudio}
+              onClick={() => {
+                startRecognition();
+              }}
+            >
+              {escutar ? (
+                <MicOutlinedIcon
+                  sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                />
+              ) : (
+                <MicNoneOutlinedIcon
+                  sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                />
+              )}
+            </Tooltip>
           </Box>
           <Button
             onClick={handleClose}
             variant="contained"
             disableElevation
             color="primary"
-            sx={{ marginTop: "2%", width: "8rem", height: "3rem", fontSize: FontConfig.normal, }}
+            sx={{
+              marginTop: "2%",
+              width: "8rem",
+              height: "3rem",
+              fontSize: FontConfig.normal,
+            }}
           >
             {texts.modalInformarMotivo.confirmar}
           </Button>

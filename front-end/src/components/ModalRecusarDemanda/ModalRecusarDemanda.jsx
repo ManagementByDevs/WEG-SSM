@@ -1,8 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 
-import { Modal, Typography, Box, Fade, TextareaAutosize, Button } from '@mui/material';
+import {
+  Modal,
+  Typography,
+  Box,
+  Fade,
+  TextareaAutosize,
+  Button,
+  Tooltip,
+} from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -19,6 +29,79 @@ const ModalRecusarDemanda = (props) => {
   const alterarTexto = (e) => {
     props.setMotivo(e.target.value);
   };
+
+  // // ********************************************** Gravar audio **********************************************
+
+  const recognitionRef = useRef(null);
+
+  const [escutar, setEscutar] = useState(false);
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        // setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        props.setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      props.setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
+    }
+  };
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = () => {
+    setEscutar(!escutar);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
 
   return (
     <Modal
@@ -58,23 +141,43 @@ const ModalRecusarDemanda = (props) => {
           </Typography>
 
           {/* Textarea para escrita do motivo da recusa */}
-          <TextareaAutosize
-            style={{
-              width: "90%",
-              height: "70%",
-              resize: "none",
-              overflow: "auto",
-              marginTop: "4%",
-              background: "transparent",
-            }}
-            value={props.motivo}
-            fontSize={FontConfig.medium}
-            onChange={(e) => {
-              alterarTexto(e, "problema");
-            }}
-            className="flex outline-none border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-            placeholder={texts.modalRecusarDemanda.informeMotivo}
-          />
+          <Box
+            className="flex justify-center border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
+            sx={{ width: "90%", height: "70%", marginTop: "4%" }}
+          >
+            <TextareaAutosize
+              style={{
+                width: "95%",
+                resize: "none",
+                overflow: "auto",
+                background: "transparent",
+              }}
+              value={props.motivo}
+              fontSize={FontConfig.medium}
+              onChange={(e) => {
+                alterarTexto(e, "problema");
+              }}
+              className="flex outline-none "
+              placeholder={texts.modalRecusarDemanda.informeMotivo}
+            />
+            <Tooltip
+              className="hover:cursor-pointer"
+              title={texts.homeGerencia.gravarAudio}
+              onClick={() => {
+                startRecognition();
+              }}
+            >
+              {escutar ? (
+                <MicOutlinedIcon
+                  sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                />
+              ) : (
+                <MicNoneOutlinedIcon
+                  sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                />
+              )}
+            </Tooltip>
+          </Box>
           <Box className="flex justify-end" sx={{ width: "90%" }}>
             <Button
               sx={{

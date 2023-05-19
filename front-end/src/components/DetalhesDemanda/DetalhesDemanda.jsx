@@ -6,7 +6,6 @@ import {
   Typography,
   Button,
   Divider,
-  TextareaAutosize,
   Paper,
   IconButton,
   Tooltip,
@@ -797,6 +796,8 @@ const DetalhesDemanda = (props) => {
         confirmRecusarDemanda={confirmRecusaDemanda}
         motivo={motivoRecusaDemanda}
         setMotivo={setMotivoRecusaDemanda}
+        setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
+        setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
       />
       <ModalConfirmacao
         open={openModal}

@@ -1,6 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip } from "@mui/material";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  Typography,
+  Box,
+  Tooltip,
+} from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -14,7 +24,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para representar a tabela de custos utilizada na proposta
 const Custos = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -122,33 +131,81 @@ const Custos = (props) => {
               <Table sx={{ minWidth: "90%" }} aria-label="customized table">
                 <TableHead sx={{ backgroundColor: "primary.main" }}>
                   <TableRow>
-                    <th align="center" className="p-4 w-0" style={{ width: "5%" }} >
-                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "5%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
                         {texts.custos.tipoDaDespesa}
                       </Typography>
                     </th>
-                    <th align="center" className="p-4 w-0" style={{ width: "5%" }}>
-                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "5%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
                         {texts.custos.perfilDaDespesa}
                       </Typography>
                     </th>
-                    <th align="center" className="p-4 w-0" style={{ width: "10%", minWidth: "200px" }}>
-                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "10%", minWidth: "200px" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
                         {texts.custos.periodoDeExecucao}
                       </Typography>
                     </th>
-                    <th align="center" className="p-4 w-0" style={{ width: "7%" }}>
-                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white" >
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "7%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
                         {texts.custos.horas}
                       </Typography>
                     </th>
-                    <th align="center" className="p-4 w-0" style={{ width: "8%" }}>
-                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white">
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "8%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
                         {texts.custos.valorHora}
                       </Typography>
                     </th>
-                    <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
-                      <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white">
+                    <th
+                      align="center"
+                      className="p-4 w-0"
+                      style={{ width: "10%" }}
+                    >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        fontWeight="800"
+                        color="text.white"
+                      >
                         {texts.custos.total}
                       </Typography>
                     </th>
@@ -167,6 +224,12 @@ const Custos = (props) => {
                         indexCusto={props.index}
                         setCustos={props.setCustos}
                         custos={props.custos}
+                        setFeedbackErroNavegadorIncompativel={
+                          props.setFeedbackErroNavegadorIncompativel
+                        }
+                        setFeedbackErroReconhecimentoVoz={
+                          props.setFeedbackErroReconhecimentoVoz
+                        }
                       />
                     );
                   })}
@@ -175,17 +238,29 @@ const Custos = (props) => {
             </TableContainer>
             <Box className="w-full flex justify-between items-center m-2">
               <Box className="flex w-full">
-                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  sx={{ marginRight: "8px" }}
+                >
                   {texts.custos.total}:{" "}
                 </Typography>
-                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  sx={{ marginRight: "15px" }}
+                >
                   {horasTotais}
                   {texts.custos.h}
                 </Typography>
-                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  sx={{ marginRight: "15px" }}
+                >
                   -
                 </Typography>
-                <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  sx={{ marginRight: "8px" }}
+                >
                   {texts.custos.moeda}
                   {valorTotal}
                 </Typography>
@@ -213,7 +288,11 @@ const Custos = (props) => {
             >
               <TableRow>
                 <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
-                  <Typography fontSize={FontConfig.big} fontWeight="800" color="text.white">
+                  <Typography
+                    fontSize={FontConfig.big}
+                    fontWeight="800"
+                    color="text.white"
+                  >
                     {texts.custos.ccs}
                   </Typography>
                 </th>
@@ -232,8 +311,12 @@ const Custos = (props) => {
                     indexCusto={props.index}
                     setCustos={props.setCustos}
                     custos={props.custos}
-                    setFeedbackErroNavegadorIncompativel={props.setFeedbackErroNavegadorIncompativel}
-                    setFeedbackErroReconhecimentoVoz={props.setFeedbackErroReconhecimentoVoz}
+                    setFeedbackErroNavegadorIncompativel={
+                      props.setFeedbackErroNavegadorIncompativel
+                    }
+                    setFeedbackErroReconhecimentoVoz={
+                      props.setFeedbackErroReconhecimentoVoz
+                    }
                   />
                 );
               })}
@@ -242,7 +325,10 @@ const Custos = (props) => {
         </TableContainer>
         <Box className="w-full flex justify-between items-center m-2">
           <Box className="flex">
-            <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
+            <Typography
+              fontSize={FontConfig.medium}
+              sx={{ marginRight: "8px" }}
+            >
               {texts.custos.total}:
             </Typography>
             <Typography fontSize={FontConfig.medium}>

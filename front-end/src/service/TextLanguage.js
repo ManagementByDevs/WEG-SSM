@@ -848,6 +848,9 @@ const TextLanguage = (linguagem) => {
           nenhumaPautaEncontrada: "Nenhuma pauta encontrada!",
           pfvCrieUmaNova: "Por favor, crie uma nova",
         },
+        CaixaTextoQuill: {
+          gravarAudio: "Gravar áudio",
+        },
         rotas: [
           "Login",
           "Criar demanda",
@@ -1706,6 +1709,9 @@ const TextLanguage = (linguagem) => {
           nenhumaPautaEncontrada: "No minutes found!",
           pfvCrieUmaNova: "Please, create a new",
         },
+        CaixaTextoQuill: {
+          gravarAudio: "Record Audio",
+        },
         rotas: [
           "Login",
           "Create demand",
@@ -2533,6 +2539,9 @@ const TextLanguage = (linguagem) => {
           essaPropostaJaSeEncontraEmUmaPauta: "该提案已在会议记录中！",
           nenhumaPautaEncontrada: "找不到分钟!",
           pfvCrieUmaNova: "请创建一个新的",
+        },
+        CaixaTextoQuill: {
+          gravarAudio: "录制音频",
         },
         rotas: [
           "登录",
@@ -3405,6 +3414,9 @@ const TextLanguage = (linguagem) => {
             "¡Esta propuesta ya se encuentra en una pauta!",
           nenhumaPautaEncontrada: "No se encontraron minutos!",
           pfvCrieUmaNova: "Por favor, crea uno nuevo",
+        },
+        CaixaTextoQuill: {
+          gravarAudio: "Grabar Audio",
         },
         rotas: [
           "Login",
