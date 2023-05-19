@@ -153,6 +153,7 @@ class EntitiesObjectService {
       conversaEncerrada: false,
       idProposta: this.proposta(),
       usuariosChat: [this.usuario()],
+      msgNaoLidas: 0,
     };
   }
 

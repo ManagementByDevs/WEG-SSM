@@ -2,151 +2,120 @@ import React, { useContext, useState, useEffect } from "react";
 
 import { Box, Typography, Avatar, Tooltip } from "@mui/material";
 
+import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
+
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
-import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
-
 import UsuarioService from "../../service/usuarioService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Componente contato utilizado para representar os contatos do chat
-const Contato = (props) => {
+const Contato = ({
+  onClick = () => {},
+  idChat = 0,
+  chat = EntitiesObjectService.chat(),
+}) => {
   // UseState para saber se o contato foi selecionado ou não
   const [corSelecionado, setCorSelecionado] = useState("transparent");
 
   // UseEffect para alterar a cor do contato quando ele for selecionado
   useEffect(() => {
-    if (props.contatoSelecionado == props.chat.id) {
+    if (idChat == chat.id) {
       setCorSelecionado("chat.eu");
     } else {
-      if (props.chat.conversaEncerrada || retornaConversaEncerrada()) {
+      if (chat.conversaEncerrada) {
         setCorSelecionado("divider.claro");
       } else {
         setCorSelecionado("transparent");
       }
     }
-  }, [props.contatoSelecionado, props.idChat, props.listaChats]);
-
-  const retornaConversaEncerrada = () => {
-    let valor = false;
-    props.listaChats.map((chatInput) => {
-      if (chatInput.id == props.idChat) {
-        if (chatInput.conversaEncerrada == true) {
-          valor = true;
-        }
-      }
-    });
-    return valor;
-  };
+  }, [idChat]);
 
   return (
     <>
-      {
-        // Verificando se o chat está ativo ou não
-        props.chat.conversaEncerrada ? (
-          <Tooltip title={props.chat.idProposta.titulo} placement="right">
-            <Box
-              id="segundo"
-              onClick={props.onClick}
-              className="flex justify-evenly items-center rounded-lg border "
-              sx={{
-                width: "90%",
-                minWidth: "195px",
-                minHeight: "8%",
-                cursor: "pointer",
-                backgroundColor: corSelecionado,
-              }}
-            >
-              <Conteudo chat={props.chat} listaChats={props.listaChats} />
-            </Box>
-          </Tooltip>
-        ) : (
-          <Tooltip title={props.chat.idProposta.titulo} placement="right">
-            <Box
-              id="segundo"
-              onClick={props.onClick}
-              className="flex justify-evenly items-center rounded-lg border delay-120 hover:scale-105 duration-300"
-              sx={{
-                width: "90%",
-                minWidth: "195px",
-                minHeight: "8%",
-                cursor: "pointer",
-                backgroundColor: corSelecionado,
-                "&:hover": { backgroundColor: "chat.eu" },
-              }}
-            >
-              <Conteudo chat={props.chat} />
-            </Box>
-          </Tooltip>
-        )
-      }
+      <Tooltip title={chat.idProposta.titulo} placement="right">
+        <Box
+          id="segundo"
+          onClick={onClick}
+          className="flex justify-evenly items-center rounded-lg border "
+          sx={{
+            width: "90%",
+            minWidth: "195px",
+            minHeight: "8%",
+            cursor: "pointer",
+            backgroundColor: corSelecionado,
+            "&:hover": {
+              backgroundColor: !chat.conversaEncerrada
+                ? "chat.eu"
+                : corSelecionado,
+            },
+          }}
+        >
+          <Conteudo chat={chat} />
+        </Box>
+      </Tooltip>
     </>
   );
 };
 
-const Conteudo = (props) => {
+const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   const [usuarioLogado, setUsuario] = useState(UsuarioService.getUserCookies());
   const [nomeContato, setNomeContato] = useState("");
-
-  const [conversaEncerrada, setConversaEncerrada] = useState(false);
 
   useEffect(() => {
     retornaNomeContato();
   }, []);
 
-  useEffect(() => {
-    retornaNomeContato();
-    setConversaEncerrada(props.chat.conversaEncerrada);
-  }, [props.chat.chatEncerrado]);
-
   const retornaNomeContato = () => {
-    if (usuarioLogado.usuario.id !== props.chat.idProposta.solicitante.id) {
-      setNomeContato(props.chat.idProposta.solicitante.nome);
-    } else {
-      props.chat.usuariosChat.map((usuarioChat) => {
-        if (usuarioLogado.usuario.id !== usuarioChat.id) {
-          setNomeContato(usuarioChat.nome);
-        }
-      });
+    for (let user of chat.usuariosChat) {
+      if (usuarioLogado.usuario.id !== user.id) {
+        setNomeContato(user.nome);
+        return;
+      }
     }
-  };
-
-  const retornaConversaEncerrada = () => {
-    let valor = false;
-    if(props.listaChats) {
-      props.listaChats.map((chatInput) => {
-          if (chatInput.conversaEncerrada == true) {
-            valor = true;
-          }
-      });
-    }
-    return valor;
   };
 
   return (
     <>
       {/* Pegando a foto de perfil do usuário */}
-      <Box className="flex justify-content items-center">
-        <Avatar
-          sx={{ width: "3rem", height: "3rem" }}
-          // src={props.usuario.foto}
-        />
+      <Box className="flex w-1/5 justify-center items-center">
+        <Avatar />
       </Box>
       {/* Informações adicioanais do usuário e da demanda respectiva */}
-      <Box className="flex justify-content flex-col" sx={{ width: "70%" }}>
+      <Box className="flex w-4/5 justify-content flex-col">
         <Box className="flex justify-between">
-          <Typography fontSize={FontConfig.medium} fontWeight="600">
-            {nomeContato}
-          </Typography>
+          <Box className="flex w-full justify-between relative">
+            <Typography
+              className="w-11/12 overflow-hidden text-ellipsis whitespace-nowrap"
+              fontSize={FontConfig.medium}
+              fontWeight="600"
+            >
+              {nomeContato}
+            </Typography>
+            {chat.msgNaoLidas > 0 && (
+              <Typography
+                className="border rounded-full absolute top-1 right-1 px-1"
+                sx={{
+                  borderColor: "primary.main",
+                  backgroundColor: "primary.main",
+                }}
+                fontSize={FontConfig.verySmall}
+                color="white"
+              >
+                {chat.msgNaoLidas}
+              </Typography>
+            )}
+          </Box>
           {
             // Verificando se o chat está ativo ou não
-            retornaConversaEncerrada() && (
+            chat.conversaEncerrada && (
               <Tooltip>
                 <CommentsDisabledOutlinedIcon
                   sx={{
@@ -165,7 +134,7 @@ const Conteudo = (props) => {
           fontWeight="600"
           sx={{ color: "primary.main" }}
         >
-          {texts.contato.ppm}: #{props.chat.idProposta.codigoPPM}
+          {texts.contato.ppm}: #{chat.idProposta.codigoPPM}
         </Typography>
         <Typography
           fontSize={FontConfig.small}
@@ -173,7 +142,7 @@ const Conteudo = (props) => {
           className="overflow-hidden truncate"
           sx={{ width: "100%" }}
         >
-          {texts.contato.demanda}: {props.chat.idProposta.titulo}
+          {texts.contato.demanda}: {chat.idProposta.titulo}
         </Typography>
       </Box>
     </>

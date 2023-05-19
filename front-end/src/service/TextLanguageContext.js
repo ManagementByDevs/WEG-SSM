@@ -152,6 +152,11 @@ const TextLanguageContext = createContext({
       nadaEncontrado: "Nada encontrado",
       tenteNovamenteMaisTarde: "Tente novamente mais tarde",
     },
+    escopoModoVisualizacao:{
+      porcentagem: "Porcentagem",
+      titulo: "Titulo",
+      excluir: "Excluir",
+    },
     DetalhesDemanda: {
       real: "Real",
       facaAlgumaAlteracaoParaPoderSalvar:

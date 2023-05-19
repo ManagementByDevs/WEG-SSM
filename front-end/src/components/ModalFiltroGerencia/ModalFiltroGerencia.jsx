@@ -508,19 +508,22 @@ const ModalFiltroGerencia = (props) => {
           </Box>
 
           {/* CheckBox em ata, em pauta e em edição */}
-          <Box className="flex flex-row w-3/4">
-            <RadioGroup
-              className="justify-between w-full"
-              row
-              value={selectedValue}
-              onChange={handleChange}
-            >
-              <FormControlLabel value="Ata" control={<Radio />} label="Em Ata" />
-              <FormControlLabel value="Pauta" control={<Radio />} label="Em Pauta" />
-              <FormControlLabel value="Nada" control={<Radio />} label="Em Edição" />
-            </RadioGroup>
-          </Box>
-
+          {props.filtroProposta ? (
+            <Box className="flex flex-row w-3/4">
+              <RadioGroup
+                className="justify-between w-full"
+                row
+                value={selectedValue}
+                onChange={handleChange}
+              >
+                <FormControlLabel value="Ata" control={<Radio />} label="Em Ata" />
+                <FormControlLabel value="Pauta" control={<Radio />} label="Em Pauta" />
+                <FormControlLabel value="Nada" control={<Radio />} label="Em Edição" />
+              </RadioGroup>
+            </Box>) 
+            : null
+          }
+          
           {/* Botão de limpar filtros */}
           <Button
             onClick={limparFiltro}

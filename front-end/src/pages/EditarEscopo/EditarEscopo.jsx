@@ -10,6 +10,7 @@ import FontContext from "../../service/FontContext";
 
 // Tela de base que mostra a edição do escopo
 const EditarEscopo = () => {
+    
     // Context para alterar o tamanho da fonte
     const { FontConfig, setFontConfig } = useContext(FontContext);
 

@@ -1,13 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { keyframes } from "@emotion/react";
+
+import { Box, Typography, Button, Divider, Tooltip, IconButton, } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -19,8 +14,6 @@ import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
-
-import { keyframes } from "@emotion/react";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -35,6 +28,7 @@ import ModalCriarAta from "../../components/ModalCriarAta/ModalCriarAta";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -188,21 +182,16 @@ const DetalhesPauta = (props) => {
   };
 
   // Feedback para quando o usuário deletar uma proposta da pauta
-  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
-    useState(false);
+  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] = useState(false);
 
   // Feedback para quando o usuário não preencher todos os campos obrigatórios
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
   // Feedback para quando da erro de incompatibilidade com o navegador
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
 
   // Feedback para quando da erro no reconhecimento de voz
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   // Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida
   const deletePropostaFromPauta = () => {
@@ -273,6 +262,7 @@ const DetalhesPauta = (props) => {
     for (let objeto of listaObjetos) {
       listaNova.push({ id: objeto.id });
     }
+
     return listaNova;
   };
 
@@ -370,36 +360,28 @@ const DetalhesPauta = (props) => {
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}
         criarAta={criarAta}
-        setFeedbackErroNavegadorIncompativel={
-          setFeedbackErroNavegadorIncompativel
-        }
+        setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
       />
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
+        handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
         open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
+        handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
       />
       {/* Feedback campos faltantes */}
       <Feedback
         open={feedbackCamposFaltantes}
-        handleClose={() => {
-          setFeedbackCamposFaltantes(false);
-        }}
+        handleClose={() => { setFeedbackCamposFaltantes(false); }}
         status={"erro"}
         mensagem={texts.modalCriarAta.feedback}
       />
@@ -512,10 +494,7 @@ const DetalhesPauta = (props) => {
                             borderLeftColor: "primary.main",
                             backgroundColor: "background.default",
                             fontWeight: "300",
-                            cursor: "pointer",
-                            "&:hover": {
-                              backgroundColor: "component.main",
-                            },
+                            cursor: "pointer", "&:hover": { backgroundColor: "component.main", },
                           }}
                           onClick={() => onClickProposta(index)}
                         >

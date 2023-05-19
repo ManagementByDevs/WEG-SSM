@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.ChatDTO;
 import net.weg.wegssm.dto.HistoricoDTO;
 import net.weg.wegssm.model.entities.*;
-import net.weg.wegssm.model.service.ChatService;
+import net.weg.wegssm.model.service.*;
 import net.weg.wegssm.model.service.PropostaService;
-import net.weg.wegssm.model.service.PropostaService;
-import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +31,7 @@ public class ChatController {
     private UsuarioService usuarioService;
     private PropostaService propostaService;
     private ChatService chatService;
+    private MensagemService mensagemService;
 
     @MessageMapping("/weg_ssm/chats")
     @SendTo("/weg_ssm/chats")
@@ -107,7 +106,15 @@ public class ChatController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(chatService.findByUsuariosChat(usuario.get()));
+        List<Chat> chats = chatService.findByUsuariosChat(usuario.get());
+
+        for (Chat chat : chats) {
+            List<Mensagem> mensagensNaoLidas = mensagemService.findAllByIdChatAndVisto(chat, false);
+
+            chat.setMsgNaoLidas((long) mensagensNaoLidas.size());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(chats);
     }
 
     @PutMapping("/{id}")

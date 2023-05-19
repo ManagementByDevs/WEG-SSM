@@ -24,6 +24,9 @@ public class Chat {
     @Column(nullable = false)
     private Boolean conversaEncerrada;
 
+    @Column
+    private Long msgNaoLidas = Long.parseLong("0");
+
     // Foreign keys
 
     @OneToOne
