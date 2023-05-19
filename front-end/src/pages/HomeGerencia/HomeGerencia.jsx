@@ -534,7 +534,7 @@ const HomeGerencia = () => {
           ...params,
           gerente: null,
           solicitante: null,
-          status: "ASSESSMENT_APROVACAO",
+          status: null,
         });
         break;
       case "5":
@@ -697,7 +697,6 @@ const HomeGerencia = () => {
         }
         break;
       case "4":
-        if (params.status != null) {
           PropostaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -705,7 +704,6 @@ const HomeGerencia = () => {
             formatarItens(response.content);
             setTotalPaginas(response.totalPages);
           });
-        }
         break;
       case "5":
         PautaService.getPage(

@@ -20,10 +20,19 @@ const ModalFiltroGerencia = (props) => {
   /** Variável para armazenar o valor do radio button */
   const [selectedValue, setSelectedValue] = useState('');
 
+  /** Variável para manter a seleção do radio button caso feche o modal */
+  const lastSelectedValueRef = useRef('');
+
+  /** useEffect para pegar o valor do radio button caso o modal seja fechado */
+  useEffect(() => {
+    setSelectedValue(props.filtro.presenteEm);
+  }, [selectedValue]);
+
   /** Função para mudar o valor do radio button e chamar a função do filtro */
   const handleChange = (event) => {
     let value = event.target.value;
     setSelectedValue(value);
+    lastSelectedValueRef.current = value;
     selecionarPresenteEm(value);
   };
 
@@ -169,6 +178,7 @@ const ModalFiltroGerencia = (props) => {
 
   /** Função para atualizar os filtros quando em pauta, em ata ou em edição for selecionado */
   const selecionarPresenteEm = (value) => {
+    localStorage.setItem('lastSelectedValue', value);
     props.setFiltro({
       solicitante: props.filtro.solicitante,
       forum: props.filtro.forum,

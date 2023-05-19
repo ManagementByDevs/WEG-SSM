@@ -89,7 +89,7 @@ public class PropostaController {
             @RequestParam(required = false) String tamanho,
             @RequestParam(value = "analista", required = false) String analistaJson,
             @RequestParam(required = false) Long id,
-            @RequestParam Status status,
+            @RequestParam(required = false, value = "status") Status status,
             @RequestParam(required = false, value = "presenteEm") String presenteEm
     ) {
         Usuario solicitante = new UsuarioUtil().convertJsonToModel(solicitanteJson);
