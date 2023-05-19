@@ -8,6 +8,8 @@ import {
   Outlet,
 } from "react-router-dom";
 
+import VLibras from "@djpfs/react-vlibras";
+
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import CriarDemanda from "./pages/CriarDemanda/CriarDemanda";
@@ -22,6 +24,7 @@ import CriarProposta from "./pages/CriarProposta/CriarProposta";
 import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 import NotFound from "./pages/NotFound/NotFound";
 import DetalhesPropostaPagina from "./pages/DetalhesPropostaPagina/DetalhesPropostaPagina";
+import LerTexto from "./components/LerTexto/LerTexto";
 
 import ToggleColorMode from "./service/TemaProvedor";
 import TextLanguage from "./service/TextLanguage";
@@ -77,6 +80,9 @@ const App = () => {
     [chatMinimizado]
   );
 
+  const [textoSelecionado, setTextoSelecionado] = useState("");
+  const [lendoTexto, setLendoTexto] = useState(false);
+
   /*
   Tipos possíveis de usuários:
   [SOLICITANTE, ANALISTA, GERENTE, GETOR]
@@ -88,31 +94,147 @@ const App = () => {
           <ChatContext.Provider value={miniChat}>
             <WebSocketService>
               <Router>
+                <LerTexto
+                  texto={textoSelecionado}
+                  setTexto={setTextoSelecionado}
+                  lendo={lendoTexto}
+                  setLendo={setLendoTexto}
+                />
+                <VLibras forceOnload />
                 <Routes>
-                  <Route path="/login" element={<Login />} />
+                  <Route
+                    path="/login"
+                    element={
+                      <Login
+                        texto={textoSelecionado}
+                        setTexto={setTextoSelecionado}
+                        lendo={lendoTexto}
+                      />
+                    }
+                  />
                   <Route element={<ProtectedRoute />}>
-                    <Route path="/criar-demanda" element={<CriarDemanda />} />
-                    <Route path="/notificacao" element={<Notificacao />} />
-                    <Route path="/chat" element={<Chat />} />
-                    <Route path="/chat/:id" element={<Chat />} />
+                    <Route
+                      path="/criar-demanda"
+                      element={
+                        <CriarDemanda
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/notificacao"
+                      element={
+                        <Notificacao
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/chat"
+                      element={
+                        <Chat
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/chat/:id"
+                      element={
+                        <Chat
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
+                      }
+                    />
                     <Route
                       path="/detalhes-demanda"
-                      element={<DetalhesDemandaPagina />}
+                      element={
+                        <DetalhesDemandaPagina
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
+                      }
                     />
-                    <Route path="/editar-escopo" element={<EditarEscopo />} />
-                    <Route path="/escopos" element={<Escopos />} />
-                    <Route path="*" element={<NotFound />} />
+                    <Route
+                      path="/editar-escopo"
+                      element={
+                        <EditarEscopo
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
+                      }
+                    />
+                    <Route
+                      path="/escopos"
+                      element={
+                        <Escopos
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
+                      }
+                    />
+                    <Route
+                      path="*"
+                      element={
+                        <NotFound
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
+                      }
+                    />
                     {/* <Route path="/test" element={<Test />} /> */}
                   </Route>
-                  <Route path="/editar-escopo" element={<EditarEscopo />} />
-                  <Route path="/escopos" element={<Escopos />} />
-                  <Route path="*" element={<NotFound />} />
+                  <Route
+                    path="/editar-escopo"
+                    element={
+                      <EditarEscopo
+                        texto={textoSelecionado}
+                        setTexto={setTextoSelecionado}
+                        lendo={lendoTexto}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/escopos"
+                    element={
+                      <Escopos
+                        texto={textoSelecionado}
+                        setTexto={setTextoSelecionado}
+                        lendo={lendoTexto}
+                      />
+                    }
+                  />
+                  <Route
+                    path="*"
+                    element={
+                      <NotFound
+                        texto={textoSelecionado}
+                        setTexto={setTextoSelecionado}
+                        lendo={lendoTexto}
+                      />
+                    }
+                  />
                   {/* <Route path="/test" element={<Test />} /> */}
                   <Route
                     path="/"
                     element={
                       <ProtectedRoute>
-                        <DetermineHomeUser />
+                        <DetermineHomeUser
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
                       </ProtectedRoute>
                     }
                   />
@@ -123,7 +245,11 @@ const App = () => {
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
                         redirectPath="/"
                       >
-                        <CriarProposta />
+                        <CriarProposta
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
                       </ProtectedRoute>
                     }
                   />
@@ -134,7 +260,11 @@ const App = () => {
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
                         redirectPath="/"
                       >
-                        <DetalhesPropostaPagina />
+                        <DetalhesPropostaPagina
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
                       </ProtectedRoute>
                     }
                   />
@@ -145,7 +275,11 @@ const App = () => {
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
                         redirectPath="/"
                       >
-                        <DetalhesAta />
+                        <DetalhesAta
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
                       </ProtectedRoute>
                     }
                   />
@@ -156,7 +290,11 @@ const App = () => {
                         tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
                         redirectPath="/"
                       >
-                        <DetalhesPauta />
+                        <DetalhesPauta
+                          texto={textoSelecionado}
+                          setTexto={setTextoSelecionado}
+                          lendo={lendoTexto}
+                        />
                       </ProtectedRoute>
                     }
                   />
@@ -190,13 +328,17 @@ const ProtectedRoute = ({
   }
 };
 
-const DetermineHomeUser = () => {
+const DetermineHomeUser = (props) => {
   const userJpa = CookieService.getCookie("user");
 
   if (userJpa.authorities[0].authority == "SOLICITANTE") {
-    return <Home />;
+    return <Home texto={props.texto}
+    setTexto={props.setTexto}
+    lendo={props.lendo}/>;
   } else {
-    return <HomeGerencia />;
+    return <HomeGerencia texto={props.texto}
+    setTexto={props.setTexto}
+    lendo={props.lendo}/>;
   }
 };
 

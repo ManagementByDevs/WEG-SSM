@@ -27,7 +27,7 @@ import AutenticacaoService from "../../service/autenticacaoService";
 import { WebSocketContext } from "../../service/WebSocketService";
 
 /** Página de login, para que o usuário tenha acesso ao restante do sistema */
-const Login = () => {
+const Login = (props) => {
   // useContext que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
   // Context para alterar o tamanho da fonte
@@ -80,6 +80,12 @@ const Login = () => {
   const eventoTeclado = (e) => {
     if (e.key == "Enter") {
       fazerLogin();
+    }
+  };
+
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
     }
   };
 
@@ -151,13 +157,22 @@ const Login = () => {
             {/* Div para checkbox "lembrar-me" e "Esqueci a senha" */}
             <div className="w-8/12 flex justify-between items-center">
               {/* Checkbox com label para função de "lembrar-me" */}
-              <FormControlLabel control={<Checkbox />} label="Lembrar-me" />
+              <FormControlLabel
+                control={<Checkbox />}
+                label={texts.login.lembrarme}
+                onClick={() => {
+                  lerTexto(texts.login.lembrarme);
+                }}
+              />
               {/* Texto "Esqueci a Senha" (Usa a fonte média) */}
               <Typography
                 fontSize={FontConfig.medium}
                 variant="h2"
                 color="text.primary"
                 className="underline hover:cursor-pointer"
+                onClick={() => {
+                  lerTexto(texts.login.esqueciSenha);
+                }}
               >
                 {texts.login.esqueciSenha}
               </Typography>
@@ -172,7 +187,13 @@ const Login = () => {
                 color="primary"
                 className="self-end w-2/6"
               >
-                {texts.login.entrar}
+                <Typography
+                  onClick={() => {
+                    lerTexto(texts.login.entrar);
+                  }}
+                >
+                  {texts.login.entrar}
+                </Typography>
               </Button>
             </div>
 

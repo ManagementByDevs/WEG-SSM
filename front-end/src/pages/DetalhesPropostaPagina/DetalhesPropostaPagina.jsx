@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
 
+import VLibras from "@djpfs/react-vlibras"
+
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -57,6 +59,7 @@ const DetalhesPropostaPagina = () => {
 
   return (
     <FundoComHeader>
+      <VLibras forceOnload />
       <ModalAddPropostaPauta
         open={openModalAddPropostaPauta}
         setOpen={setOpenModalAddPropostaPauta}

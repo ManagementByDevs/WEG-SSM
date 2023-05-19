@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import VLibras from "@djpfs/react-vlibras"
+
 import {
   Box,
   Avatar,
@@ -537,6 +539,7 @@ const Chat = () => {
 
   return (
     <>
+      <VLibras forceOnload />
       <Ajuda onClick={() => setIsTourOpen(true)} />
       <Tour
         steps={stepsTour}

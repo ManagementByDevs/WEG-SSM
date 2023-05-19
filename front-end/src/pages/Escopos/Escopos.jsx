@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+import VLibras from "@djpfs/react-vlibras"
+
 import { Box, Button, Tooltip } from "@mui/material";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -288,6 +290,7 @@ const Escopos = () => {
 
   return (
     <FundoComHeader>
+      <VLibras forceOnload />
       {/* Modal de confirmação de exclusão de escopo */}
       <ModalConfirmacao
         textoModal={"descartarRascunho"}

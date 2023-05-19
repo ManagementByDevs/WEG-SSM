@@ -1,6 +1,8 @@
 import { React, useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import VLibras from "@djpfs/react-vlibras"
+
 import { keyframes } from "@emotion/react";
 
 import {
@@ -272,6 +274,7 @@ const DetalhesAta = (props) => {
   return (
     // Começo com o header da página
     <FundoComHeader>
+      <VLibras forceOnload />
       {/* Feedback campos faltantes */}
       <Feedback
         open={feedbackCamposFaltantes}

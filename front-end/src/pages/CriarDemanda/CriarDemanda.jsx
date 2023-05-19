@@ -1,5 +1,7 @@
 import React from "react";
 
+import VLibras from "@djpfs/react-vlibras"
+
 import { Box } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -11,6 +13,7 @@ const CriarDemanda = () => {
 
   return (
     <FundoComHeader>
+      <VLibras forceOnload />
       <Box className="p-2">
         <Caminho feedback={true} />
         <Box className="w-full flex justify-center">

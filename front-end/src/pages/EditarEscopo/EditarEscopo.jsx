@@ -1,5 +1,7 @@
 import React, { useContext } from 'react'
 
+import VLibras from "@djpfs/react-vlibras"
+
 import { Box } from '@mui/material';
 
 import FundoComHeader from '../../components/FundoComHeader/FundoComHeader';
@@ -15,6 +17,7 @@ const EditarEscopo = () => {
 
     return (
         <FundoComHeader>
+            <VLibras forceOnload />
             <Box className='p-2'>
                 <Caminho />
                 <Box className='w-full flex justify-center'>

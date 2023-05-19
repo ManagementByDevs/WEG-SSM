@@ -1,5 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import VLibras from "@djpfs/react-vlibras"
+
 import {
   Box,
   Typography,
@@ -372,6 +375,7 @@ const DetalhesPauta = (props) => {
 
   return (
     <FundoComHeader>
+      <VLibras forceOnload />
       <ModalCriarAta
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}

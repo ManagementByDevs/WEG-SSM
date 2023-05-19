@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 
+import VLibras from "@djpfs/react-vlibras"
+
 import { Box, IconButton } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
@@ -127,6 +129,7 @@ const DetalhesDemandaPagina = () => {
 
   return (
     <FundoComHeader>
+      <VLibras forceOnload />
       {/* Tour ao usuário */}
       <Tour
         steps={steps}

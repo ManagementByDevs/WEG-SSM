@@ -24,7 +24,6 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import ColorModeContext from "../../service/TemaContext";
 // import InputPesquisa from "../../components/InputPesquisa/InputPesquisa";
 
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
@@ -43,6 +42,7 @@ import AtaService from "../../service/ataService";
 import CookieService from "../../service/cookieService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import { WebSocketContext } from "../../service/WebSocketService";
+import ColorModeContext from "../../service/TemaContext";
 import chatService from "../../service/chatService";
 
 import Tour from "reactour";

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+import VLibras from "@djpfs/react-vlibras"
+
 import { Button, Tab, Box, Tooltip, IconButton } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
@@ -517,6 +519,7 @@ const Home = () => {
 
   return (
     <FundoComHeader>
+      <VLibras forceOnload />
       {/* Div container */}
       <Tour
         steps={stepsTour}

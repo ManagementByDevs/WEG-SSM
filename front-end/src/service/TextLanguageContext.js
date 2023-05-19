@@ -679,6 +679,7 @@ const TextLanguageContext = createContext({
       email: "Email",
       senha: "Senha",
       esqueciSenha: "Esqueci a senha",
+      lembrarme: "Lembrar-me",
       entrar: "Entrar",
       feedback: {
         dadosInvalidos: "Dados inválidos!",

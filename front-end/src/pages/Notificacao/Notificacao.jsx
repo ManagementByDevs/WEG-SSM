@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
+import VLibras from "@djpfs/react-vlibras"
+
 import {
   Box,
   Typography,
@@ -287,6 +289,7 @@ const Notificacao = () => {
 
   return (
     <FundoComHeader>
+      <VLibras forceOnload />
       <Feedback
         open={feedback.visibilidade}
         handleClose={() => {

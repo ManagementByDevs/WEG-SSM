@@ -695,6 +695,7 @@ const TextLanguage = (linguagem) => {
           email: "Email",
           senha: "Senha",
           esqueciSenha: "Esqueci a senha",
+          lembrarme: "Lembrar-me",
           entrar: "Entrar",
           feedback: {
             dadosInvalidos: "Dados inválidos!",
@@ -1554,6 +1555,7 @@ const TextLanguage = (linguagem) => {
           email: "Email",
           senha: "Password",
           esqueciSenha: "Forgot Password",
+          lembrarme: "Remember me",
           entrar: "Login",
           feedback: {
             dadosInvalidos: "Invalid data!",
@@ -2389,6 +2391,7 @@ const TextLanguage = (linguagem) => {
           email: "电子邮件",
           senha: "密码",
           esqueciSenha: "忘记密码",
+          lembrarme: "记住我",
           entrar: "登录",
           feedback: {
             dadosInvalidos: "无效数据！",
@@ -3255,6 +3258,7 @@ const TextLanguage = (linguagem) => {
           email: "Email",
           senha: "Contraseña",
           esqueciSenha: "Olvidé mi contraseña",
+          lembrarme: "Recordarme",
           entrar: "Entrar",
           feedback: {
             dadosInvalidos: "Datos inválidos!",
