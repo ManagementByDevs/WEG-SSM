@@ -46,4 +46,8 @@ public class MensagemService {
     public List<Mensagem> findAllByIdChat(Chat chat) {
         return mensagemRepository.findAllByIdChat(chat);
     }
+
+    public List<Mensagem> findAllByIdChatAndVisto(Chat chat, Boolean visto) {
+        return mensagemRepository.findAllByIdChatAndVisto(chat, visto);
+    }
 }

@@ -58,6 +58,9 @@ public class EscopoProposta {
     private String tamanho;
 
     @Column
+    private String presenteEm;
+
+    @Column
     private Date ultimaModificacao;
 
     @Lob

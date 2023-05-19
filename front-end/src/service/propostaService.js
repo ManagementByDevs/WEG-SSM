@@ -91,19 +91,27 @@ class PropostaService {
     return (await axios.put(`${proposta}/${idProposta}/${status}`)).data;
   }
 
-  async atualizacaoPauta(idProposta, publicada, status) {
+  async atualizacaoPauta(idProposta, publicada) {
     let form = new FormData();
     form.set("publicada", publicada);
-    form.set("status", status);
 
     return (await axios.put(`${proposta}/pauta/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
   }
 
-  async atualizacaoAta(idProposta, status) {
+  async atualizacaoAta(idProposta, parecerComissao, parecerInformacao) {
     let form = new FormData();
-    form.set("status", status);
+    form.set("parecerComissao", parecerComissao);
+    form.set("parecerInformacao", parecerInformacao);
 
     return (await axios.put(`${proposta}/ata/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+  }
+
+  async atualizacaoDg(idProposta, parecerComissao, parecerInformacao) {
+    let form = new FormData();
+    form.set("parecerComissao", parecerComissao);
+    form.set("parecerInformacao", parecerInformacao);
+
+    return (await axios.put(`${proposta}/dg/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
   }
 
   async putWithoutArquivos(propostaObj, idProposta) {

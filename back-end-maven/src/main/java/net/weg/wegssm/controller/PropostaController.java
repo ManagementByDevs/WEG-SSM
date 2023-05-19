@@ -89,7 +89,7 @@ public class PropostaController {
             @RequestParam(required = false) String tamanho,
             @RequestParam(value = "analista", required = false) String analistaJson,
             @RequestParam(required = false) Long id,
-            @RequestParam Status status,
+            @RequestParam(required = false, value = "status") Status status,
             @RequestParam(required = false, value = "presenteEm") String presenteEm
     ) {
         Usuario solicitante = new UsuarioUtil().convertJsonToModel(solicitanteJson);
@@ -4248,22 +4248,80 @@ public class PropostaController {
     }
 
     @RequestMapping("/pauta/{idProposta}")
-    public ResponseEntity<Object> updatePresenteEm(@PathVariable(value = "idProposta") Long idProposta,
-                                                   @RequestParam(required = false, value = "publicada") Boolean publicada,
-                                                   @RequestParam(value = "status") Status status,
-                                                   @RequestParam(value = "presenteEm") String presenteEm) {
+    public ResponseEntity<Object> updatePauta(@PathVariable(value = "idProposta") Long idProposta,
+                                              @RequestParam(value = "publicada") Boolean publicada) {
         Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
         if (propostaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
         }
 
         Proposta proposta = propostaOptional.get();
-        if(publicada != null) {
-            proposta.setPublicada(publicada);
+        proposta.setPublicada(publicada);
+        proposta.setStatus(Status.ASSESSMENT_COMISSAO);
+        proposta.setPresenteEm("Pauta");
+
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
+    @RequestMapping("/ata/{idProposta}")
+    public ResponseEntity<Object> updateCriacaoAta(@PathVariable(value = "idProposta") Long idProposta,
+                                                   @RequestParam(value = "parecerComissao") ParecerGerencia parecerGerencia,
+                                                   @RequestParam(value = "parecerInformacao") String parecerInformacao) {
+        Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
+        if (propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
         }
 
-        proposta.setStatus(status);
-        proposta.setPresenteEm(presenteEm);
+        Proposta proposta = propostaOptional.get();
+        proposta.setParecerComissao(parecerGerencia);
+        proposta.setParecerInformacao(parecerInformacao);
+
+        switch (parecerGerencia) {
+            case APROVADO -> {
+                proposta.setStatus(Status.ASSESSMENT_DG);
+                proposta.setPresenteEm("Ata");
+            }
+            case REPROVADO -> {
+                proposta.setStatus(Status.CANCELLED);
+                proposta.setPresenteEm("Nada");
+            }
+            case BUSSINESS_CASE -> {
+                proposta.setStatus(Status.BUSINESS_CASE);
+                proposta.setPresenteEm("Nada");
+            }
+            case MAIS_INFORMACOES -> {
+                proposta.setStatus(Status.ASSESSMENT_EDICAO);
+                proposta.setPresenteEm("Nada");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
+    @RequestMapping("/dg/{idProposta}")
+    public ResponseEntity<Object> updateDg(@PathVariable(value = "idProposta") Long idProposta,
+                                           @RequestParam(value = "parecerComissao") ParecerGerencia parecerGerencia,
+                                           @RequestParam(value = "parecerInformacao") String parecerInformacao) {
+        Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
+        if (propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        proposta.setParecerDG(parecerGerencia);
+        proposta.setParecerInformacaoDG(parecerInformacao);
+
+        switch (parecerGerencia) {
+            case APROVADO -> {
+                proposta.setStatus(Status.DONE);
+                proposta.setPresenteEm("Ata");
+            }
+            case REPROVADO -> {
+                proposta.setStatus(Status.CANCELLED);
+                proposta.setPresenteEm("Nada");
+            }
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 

@@ -14,5 +14,7 @@ public interface MensagemRepository extends JpaRepository<Mensagem, Long> {
 
     List<Mensagem> findAllByIdChat(Chat chat);
 
+    List<Mensagem> findAllByIdChatAndVisto(Chat chat, Boolean visto);
+
     Page<Mensagem> findByIdChat(Chat chat, Pageable pageable);
 }

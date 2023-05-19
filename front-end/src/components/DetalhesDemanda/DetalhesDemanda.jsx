@@ -651,14 +651,6 @@ const DetalhesDemanda = (props) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
-  useEffect(() => {
-    try {
-      console.log(anexosRemovidos);
-      console.log(novosAnexos);
-      console.log(anexosDemanda);
-    } catch (error) {}
-  }, [anexosRemovidos, novosAnexos, anexosDemanda]);
-
   // ********************************************** Gravar audio **********************************************
 
   const [

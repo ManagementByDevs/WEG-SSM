@@ -166,10 +166,10 @@ const DemandaGerencia = (props) => {
                   ></Box>
                 </Box>
               </Box>
+
+              {/* Verificando se está em ata, em pauta ou em edição */}
               {
-                // Se a demanda estiver em pauta, exibe o ícone de em pauta
-                (tipo === "proposta" && props.dados.emPauta) ||
-                props.dados.emAta ? (
+                props.dados.presenteEm && props.dados.presenteEm != "Nada" && (
                   <Box>
                     <Typography
                       fontSize={FontConfig.small}
@@ -181,12 +181,12 @@ const DemandaGerencia = (props) => {
                         padding: "2px 15px",
                       }}
                     >
-                      {props.dados.emPauta
+                      {props.dados.presenteEm === "Pauta"
                         ? texts.demandaGerencia.emPauta
                         : texts.demandaGerencia.emAta}
                     </Typography>
                   </Box>
-                ) : null
+                )
               }
             </Box>
           </Box>

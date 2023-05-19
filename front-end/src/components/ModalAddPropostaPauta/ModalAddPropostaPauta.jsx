@@ -292,7 +292,7 @@ const ModalAddPropostaPauta = (props) => {
       );
 
       PautaService.post(pauta).then((res) => {
-        PropostaService.atualizacaoPauta(props.proposta.id, check[0], "ASSESSMENT_COMISSAO").then((res) => { });
+        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then((res) => { });
       });
     } else {
       if (!check.includes(true)) {
@@ -304,7 +304,7 @@ const ModalAddPropostaPauta = (props) => {
       pauta.propostas = retornarIdsObjetos([...pauta.propostas, { id: props.proposta.id }]);
 
       PautaService.put(pauta).then((res) => {
-        PropostaService.atualizacaoPauta(props.proposta.id, check[0], "ASSESSMENT_COMISSAO").then((res) => {
+        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then((res) => {
           setFeedbackPautaAtualizada(true)
         });
       });

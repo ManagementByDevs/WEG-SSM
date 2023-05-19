@@ -51,39 +51,55 @@ public class MensagemController {
 
         mensagem = mensagemService.save(mensagem);
 
+        System.out.println("mensagem salva: " + mensagem);
+
         simpMessagingTemplate.convertAndSend("/api/weg_ssm/mensagem/all", mensagem);
 
         return ResponseEntity.ok().body(mensagem);
     }
 
+    @MessageMapping("/weg_ssm/enter/chat/{idChat}")
+    @SendTo("/weg_ssm/enter/chat/{idChat}")
+    public ResponseEntity<Object> enteredChat(@DestinationVariable(value = "idChat") Long idChat) {
+        List<Mensagem> mensagens = mensagemService.findAllByIdChatAndVisto(chatService.findById(idChat).get(), false);
+
+        for (Mensagem mensagem : mensagens) {
+            mensagem.setVisto(true);
+            mensagemService.save(mensagem);
+        }
+
+        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/chat/{idChat}/visto", "visualizar");
+
+        return ResponseEntity.ok().build();
+    }
+
     @MessageMapping("/weg_ssm/mensagem/all")
     @SendTo("/weg_ssm/mensagem/all")
     public ResponseEntity<Object> receiveAnyMessage(@Payload Mensagem mensagem) {
-//        System.out.println("Nova Mensagem: " + mensagem);
-
         return ResponseEntity.ok().body(mensagem);
     }
 
     @MessageMapping("/weg_ssm/mensagem/chat/{idChat}/visto")
     @SendTo("/weg_ssm/mensagem/chat/{idChat}/visto")
     public ResponseEntity<Object> verMensagem(
-            @Payload Mensagem mensagem,
+            @Payload MensagemDTO mensagemDTO,
             @DestinationVariable(value = "idChat") Long idChat
     ) {
-        System.out.println("Mensagem nova: " + mensagem);
+        System.out.println("Entrou visto: " + mensagemDTO);
         Optional<Chat> chat = chatService.findById(idChat);
         if (chat.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum Chat com esse ID.");
         }
-        System.out.println("Teste");
 
-        mensagem.setIdChat(chat.get());
-        System.out.println("Teste 2");
+        Mensagem mensagem = new Mensagem();
+
+        BeanUtils.copyProperties(mensagemDTO, mensagem);
+
         mensagem.setVisto(true);
-        System.out.println("Teste 3");
+        mensagem.setIdChat(chat.get());
+        mensagemService.save(mensagem);
 
-
-        return ResponseEntity.ok().body(mensagemService.save(mensagem));
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/chat/{idChat}/user/{idUsuario}")
