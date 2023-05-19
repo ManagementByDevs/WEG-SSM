@@ -38,22 +38,22 @@ export const WebSocketService = ({ children }) => {
 
   const enviar = (destino, mensagem) => {
     if (stompClient) {
-      let auxMensagem;
       if (mensagem) {
+        let auxMensagem;
         auxMensagem = {
           ...mensagem,
           texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
         };
         stompClient.send(destino, {}, JSON.stringify(auxMensagem));
       } else {
-        console.log("passou aqui");
-        stompClient.send(destino, {}, "a");
+        stompClient.send(destino, {}, "");
       }
     }
   };
 
   const inscrever = (caminho, acao) => {
     if (stompClient) {
+      // console.log("Conexões: ", stompClient.subscriptions);
       return stompClient.subscribe(caminho, acao);
     }
   };

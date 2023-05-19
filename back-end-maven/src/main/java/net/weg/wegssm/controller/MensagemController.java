@@ -42,18 +42,14 @@ public class MensagemController {
     @MessageMapping("/weg_ssm/mensagem/{id}")
     @SendTo("/weg_ssm/mensagem/{id}/chat")
     public ResponseEntity<Object> receiveMessage(@DestinationVariable Long id, @Payload MensagemDTO mensagemDTO) {
-        System.out.println("Mensagem: " + mensagemDTO);
         Mensagem mensagem = new Mensagem();
-
         BeanUtils.copyProperties(mensagemDTO, mensagem, "id");
 
         mensagem.setUsuario(usuarioService.findById(mensagemDTO.getUsuario().getId()).get());
 
         mensagem = mensagemService.save(mensagem);
 
-        System.out.println("mensagem salva: " + mensagem);
-
-        simpMessagingTemplate.convertAndSend("/api/weg_ssm/mensagem/all", mensagem);
+        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/all", mensagem);
 
         return ResponseEntity.ok().body(mensagem);
     }
@@ -64,11 +60,13 @@ public class MensagemController {
         List<Mensagem> mensagens = mensagemService.findAllByIdChatAndVisto(chatService.findById(idChat).get(), false);
 
         for (Mensagem mensagem : mensagens) {
-            mensagem.setVisto(true);
-            mensagemService.save(mensagem);
+            if (!mensagem.getVisto()) {
+                mensagem.setVisto(true);
+                mensagemService.save(mensagem);
+            }
         }
 
-        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/chat/{idChat}/visto", "visualizar");
+        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/chat/" + idChat + "/visto", "visualizar");
 
         return ResponseEntity.ok().build();
     }
@@ -76,6 +74,7 @@ public class MensagemController {
     @MessageMapping("/weg_ssm/mensagem/all")
     @SendTo("/weg_ssm/mensagem/all")
     public ResponseEntity<Object> receiveAnyMessage(@Payload Mensagem mensagem) {
+        System.out.println("Chegou aqui");
         return ResponseEntity.ok().body(mensagem);
     }
 
@@ -85,7 +84,6 @@ public class MensagemController {
             @Payload MensagemDTO mensagemDTO,
             @DestinationVariable(value = "idChat") Long idChat
     ) {
-        System.out.println("Entrou visto: " + mensagemDTO);
         Optional<Chat> chat = chatService.findById(idChat);
         if (chat.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum Chat com esse ID.");

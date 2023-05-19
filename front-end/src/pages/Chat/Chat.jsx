@@ -302,6 +302,7 @@ const Chat = () => {
   /** Busca os chats do usuário */
   const buscarChats = () => {
     ChatService.getByRemetente(user.usuario.id).then((chatResponse) => {
+      console.log("chatresponse: ", chatResponse);
       setListaChats(chatResponse);
     });
   };
@@ -309,25 +310,14 @@ const Chat = () => {
   /** Busca as mensagens do usuário */
   const carregar = () => {
     MensagemService.getMensagensChat(idChat).then((response) => {
-      console.log("response! ", response);
       let mensagensAux = [];
       if (response) {
         mensagensAux = response;
       }
 
-      // Marcando como visualizado as mensagens que o usuário não visualizou
-      // if (!mensagensAux.every((mensagem) => mensagem.visto)) {
-      //   console.log("entrou aqui");
-      //   MensagemService.putVisto(idChat, user.usuario.id).then(
-      //     (putResponse) => {
-      //       console.log("putResponse!  ", putResponse);
-      //       mensagensAux = putResponse.content.reverse();
-      //     }
-      //   );
-      // }
       setMensagens(mensagensAux);
 
-      enviar(`/app/weg_ssm/enter/chat/${idChat}`, "");
+      enviar(`/app/weg_ssm/enter/chat/${idChat}`, null);
     });
     setDefaultMensagem();
   };
@@ -340,6 +330,40 @@ const Chat = () => {
   }, [idChat]);
 
   useEffect(() => {
+    const receivedAnyMessage = (mensagem) => {
+      let mensagemRecebida = EntitiesObjectService.mensagem();
+      mensagemRecebida = JSON.parse(mensagem.body);
+      console.log("Mensagem recebida all: ", mensagemRecebida);
+
+      // Se a mensagem recebida for do usuário logado, ignore
+      if (mensagemRecebida.usuario.id == user.usuario.id) {
+        console.log("a");
+        return;
+      }
+
+      // Se a mensagem recebida for do chat atual, ignore
+      if (mensagemRecebida.idChat.id == idChat) {
+        console.log("b");
+        return;
+      }
+
+      // for ()
+      console.log("listaChats", listaChats);
+    };
+
+    let inscricaoAllMensagens = inscrever(
+      "/weg_ssm/mensagem/all",
+      receivedAnyMessage
+    );
+
+    return () => {
+      if (inscricaoAllMensagens) {
+        inscricaoAllMensagens.unsubscribe();
+      }
+    };
+  }, [stompClient]);
+
+  useEffect(() => {
     setBuscandoMensagens(false);
     const boxElement = boxRef.current;
     // Colocando o scroll para a última mensagem recebida
@@ -347,23 +371,6 @@ const Chat = () => {
       boxElement.scrollTop = boxElement.scrollHeight;
     }
   }, [mensagens]);
-
-  /** UseState para armazenar o contato selecionado */
-  useEffect(() => {
-    const resultados = [];
-    listaChats.filter((chat) => {
-      chat.usuariosChat.map((userChat) => {
-        if (userChat.id != user.usuario.id) {
-          if (
-            userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
-          ) {
-            resultados.push(chat);
-          }
-        }
-      });
-    });
-    setResultadosContato(resultados);
-  }, [pesquisaContato, listaChats, idChat]);
 
   useEffect(() => {
     const acaoNovaMensagem = (response) => {
@@ -386,21 +393,6 @@ const Chat = () => {
       setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
     };
 
-    const receivedAnyMessage = (mensagem) => {
-      let mensagemRecebida = EntitiesObjectService.mensagem();
-      mensagemRecebida = JSON.parse(mensagem.body);
-      // console.log("Mensagem recebida: ", mensagemRecebida);
-      if (mensagemRecebida.usuario.id == user.usuario.id) {
-        // console.log("a");
-        return;
-      }
-
-      // if (mensagemRecebida.idChat.id == idChat) {
-      // console.log("b");
-      //   return;
-      // }
-    };
-
     const readMessage = (mensagem) => {
       console.log("passou no readMessage");
 
@@ -420,11 +412,6 @@ const Chat = () => {
         acaoNovaMensagem
       );
 
-      let inscricaoAllMensagens = inscrever(
-        "/weg_ssm/mensagem/all",
-        receivedAnyMessage
-      );
-
       let inscricaoVerMensagem = inscrever(
         `/weg_ssm/mensagem/chat/${idChat}/visto`,
         readMessage
@@ -433,12 +420,28 @@ const Chat = () => {
       return () => {
         if (inscricaoId) {
           inscricaoId.unsubscribe();
-          inscricaoAllMensagens.unsubscribe();
           inscricaoVerMensagem.unsubscribe();
         }
       };
     }
   }, [stompClient, idChat]);
+
+  /** UseState para armazenar o contato selecionado */
+  useEffect(() => {
+    const resultados = [];
+    listaChats.filter((chat) => {
+      chat.usuariosChat.map((userChat) => {
+        if (userChat.id != user.usuario.id) {
+          if (
+            userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
+          ) {
+            resultados.push(chat);
+          }
+        }
+      });
+    });
+    setResultadosContato(resultados);
+  }, [pesquisaContato, listaChats, idChat]);
 
   // ***************************************** Fim UseEffects ***************************************** //
 
@@ -669,7 +672,7 @@ const Chat = () => {
                 {isTourOpen ? (
                   <Contato
                     key={0}
-                    contatoSelecionado={idChat}
+                    idChat={idChat}
                     chat={{
                       conversa_encerrada: false,
                       id: 0,
@@ -703,8 +706,7 @@ const Chat = () => {
                         onClick={() => {
                           navigate(`/chat/${resultado.id}`);
                         }}
-                        contatoSelecionado={idChat}
-                        listaChats={listaChats}
+                        idChat={idChat}
                         chat={resultado}
                         index={index}
                       />
