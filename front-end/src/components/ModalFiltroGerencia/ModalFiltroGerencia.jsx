@@ -1,34 +1,40 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
-
-import {
-  Modal,
-  Typography,
-  Box,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Autocomplete,
-  TextField,
-} from "@mui/material";
+import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField, FormGroup, FormControlLabel, Checkbox, RadioGroup, Radio } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
-import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
-import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
-
-import UsuarioService from "../../service/usuarioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+import UsuarioService from "../../service/usuarioService";
+
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  /** Variável para armazenar o valor do radio button */
+  const [selectedValue, setSelectedValue] = useState('');
+
+  /** Variável para manter a seleção do radio button caso feche o modal */
+  const lastSelectedValueRef = useRef('');
+
+  /** useEffect para pegar o valor do radio button caso o modal seja fechado */
+  useEffect(() => {
+    setSelectedValue(props.filtro.presenteEm);
+  }, [selectedValue]);
+
+  /** Função para mudar o valor do radio button e chamar a função do filtro */
+  const handleChange = (event) => {
+    let value = event.target.value;
+    setSelectedValue(value);
+    lastSelectedValueRef.current = value;
+    selecionarPresenteEm(value);
+  };
 
   /** Função para limpar os filtros ativos e fechar o modal */
   const limparFiltro = () => {
@@ -39,6 +45,7 @@ const ModalFiltroGerencia = (props) => {
       gerente: null,
       departamento: "",
       analista: null,
+      presenteEm: "",
     });
     props.fecharModal();
   };
@@ -90,6 +97,7 @@ const ModalFiltroGerencia = (props) => {
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
       analista: props.filtro.analista,
+      presenteEm: props.filtro.presenteEm,
     });
   };
 
@@ -104,6 +112,7 @@ const ModalFiltroGerencia = (props) => {
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
       analista: props.filtro.analista,
+      presenteEm: props.filtro.presenteEm,
     });
   };
 
@@ -118,6 +127,7 @@ const ModalFiltroGerencia = (props) => {
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
       analista: props.filtro.analista,
+      presenteEm: props.filtro.presenteEm,
     });
   };
 
@@ -132,6 +142,7 @@ const ModalFiltroGerencia = (props) => {
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
       analista: props.filtro.analista,
+      presenteEm: props.filtro.presenteEm,
     });
   };
 
@@ -146,6 +157,7 @@ const ModalFiltroGerencia = (props) => {
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
       analista: props.filtro.analista,
+      presenteEm: props.filtro.presenteEm,
     });
   };
 
@@ -160,8 +172,25 @@ const ModalFiltroGerencia = (props) => {
       departamento: props.filtro.departamento,
       id: props.filtro.id,
       codigoPPM: props.filtro.codigoPPM,
+      presenteEm: props.filtro.presenteEm,
     });
   };
+
+  /** Função para atualizar os filtros quando em pauta, em ata ou em edição for selecionado */
+  const selecionarPresenteEm = (value) => {
+    localStorage.setItem('lastSelectedValue', value);
+    props.setFiltro({
+      solicitante: props.filtro.solicitante,
+      forum: props.filtro.forum,
+      tamanho: props.filtro.tamanho,
+      gerente: props.filtro.gerente,
+      analista: props.filtro.analista,
+      departamento: props.filtro.departamento,
+      id: props.filtro.id,
+      codigoPPM: props.filtro.codigoPPM,
+      presenteEm: value,
+    });
+  }
 
   // // ********************************************** Gravar audio **********************************************
 
@@ -291,7 +320,7 @@ const ModalFiltroGerencia = (props) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 580,
-            height: 400,
+            height: 440,
             bgcolor: "background.paper",
             borderRadius: "5px",
             borderTop: "10px solid #00579D",
@@ -478,6 +507,20 @@ const ModalFiltroGerencia = (props) => {
             </Box>
           </Box>
 
+          {/* CheckBox em ata, em pauta e em edição */}
+          <Box className="flex flex-row w-3/4">
+            <RadioGroup
+              className="justify-between w-full"
+              row
+              value={selectedValue}
+              onChange={handleChange}
+            >
+              <FormControlLabel value="Ata" control={<Radio />} label="Em Ata" />
+              <FormControlLabel value="Pauta" control={<Radio />} label="Em Pauta" />
+              <FormControlLabel value="Nada" control={<Radio />} label="Em Edição" />
+            </RadioGroup>
+          </Box>
+
           {/* Botão de limpar filtros */}
           <Button
             onClick={limparFiltro}
@@ -485,7 +528,7 @@ const ModalFiltroGerencia = (props) => {
             disableElevation
             color="primary"
             sx={{
-              marginTop: "1%",
+              marginTop: "4%",
               width: "8rem",
               height: "3rem",
               fontSize: FontConfig.normal,

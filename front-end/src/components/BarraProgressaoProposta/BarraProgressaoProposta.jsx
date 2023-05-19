@@ -515,8 +515,7 @@ const BarraProgressaoProposta = (props) => {
       linkJira: gerais.linkJira,
       historicoProposta: dadosDemanda.historicoDemanda,
       anexo: retornarIdsObjetos(dadosDemanda.anexo),
-      emPauta: false,
-      emAta: false,
+      presenteEm: "Nada",
       escopo: btoa(formatarHtml(escopo)),
     };
     return objeto;

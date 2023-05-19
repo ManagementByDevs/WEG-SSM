@@ -273,6 +273,15 @@ const DetalhesPauta = (props) => {
     setOpenModalCriarAta(true);
   };
 
+  /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
+  const retornarIdsObjetos = (listaObjetos) => {
+    let listaNova = [];
+    for (let objeto of listaObjetos) {
+      listaNova.push({ id: objeto.id });
+    }
+    return listaNova;
+  };
+
   // Função que cria uma ata
   const criarAta = (numeroSequencial, dataReuniao) => {
     // Criação do obj ata
@@ -295,12 +304,9 @@ const DetalhesPauta = (props) => {
 
     // Cria a ata caso tenha propostas aprovadas
     if (ata.propostas.length > 0) {
-      for (let proposta of ata.propostas) {
-        proposta.status = "ASSESSMENT_DG";
-        proposta.emAta = true;
-      }
 
       updatePropostas(pauta.propostas);
+      ata.propostas = retornarIdsObjetos(ata.propostas);
 
       AtaService.post(ata).then((response) => {
         PautaService.delete(pauta.id).then((response) => {
@@ -324,7 +330,7 @@ const DetalhesPauta = (props) => {
           break;
       }
 
-      PropostaService.putWithoutArquivos(proposta, proposta.id);
+      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao);
     }
 
     PautaService.delete(pauta.id).then((response) => {
@@ -339,7 +345,7 @@ const DetalhesPauta = (props) => {
   // Atualiza a lista de propostas passada por parâmetro
   const updatePropostas = (listaPropostasToUpdate = []) => {
     for (let proposta of listaPropostasToUpdate) {
-      PropostaService.atualizacaoAta(proposta.id, "ASSESSMENT_DG").then(
+      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then(
         (response) => {
           console.log("Proposta atualizada com sucesso! ", response);
         }

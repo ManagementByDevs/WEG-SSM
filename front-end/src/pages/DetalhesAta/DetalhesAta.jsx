@@ -190,7 +190,7 @@ const DetalhesAta = (props) => {
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
   ) => {
     for (let proposta of listaPropostasToUpdate) {
-      PropostaService.putWithoutArquivos(proposta, proposta.id).then(
+      PropostaService.atualizacaoDg(proposta.id, proposta.parecerDG, proposta.parecerInformacaoDG).then(
         (response) => {
           console.log("Proposta atualizada com sucesso! ", response);
         }
@@ -203,6 +203,15 @@ const DetalhesAta = (props) => {
       setFeedbackCamposFaltantes(true);
       return;
     }
+  };
+
+  /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
+  const retornarIdsObjetos = (listaObjetos) => {
+    let listaNova = [];
+    for (let objeto of listaObjetos) {
+      listaNova.push({ id: objeto.id });
+    }
+    return listaNova;
   };
 
   // Função de criar ata e enviar feedback
@@ -219,6 +228,7 @@ const DetalhesAta = (props) => {
     }
 
     updatePropostas(ataPublished.propostas);
+    ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
 
     console.log("ata a ser ataulizada: ", ataPublished);
     AtaService.put(ataPublished, ataPublished.id).then((response) => {
@@ -256,7 +266,7 @@ const DetalhesAta = (props) => {
     let hora = dataHora.getHours();
     let minuto = dataHora.getMinutes();
 
-    return hora+":"+minuto;
+    return hora + ":" + minuto;
   };
 
   return (
@@ -396,7 +406,8 @@ const DetalhesAta = (props) => {
                     {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
                 </Box>
-                <DetalhesProposta propostaId={dadosProposta.id} />
+                <DetalhesProposta setDadosProposta={setDadosProposta} parecerDG={dadosProposta.parecerDG || ""} parecerInformacaoDG={dadosProposta.parecerInformacaoDG || ""}
+                  emAprovacao={true} propostaId={dadosProposta.id} />
               </Box>
             )}
           </Box>
