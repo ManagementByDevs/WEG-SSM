@@ -85,18 +85,20 @@ const DetalhesPropostaPagina = () => {
           propostaId={paramsPath.id}
         />
       </Box>
-      <Box className="absolute bottom-4 right-6  p-1">
-        {/* Botão de adicionar proposta em pauta */}
-        <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>
-          <Button
-            variant="contained"
-            sx={{ borderRadius: "9999px" }}
-            onClick={adicionarAPauta}
-          >
-            <BookmarkAddIcon sx={{ fontSize: "28px", color: "text.white" }} />
-          </Button>
-        </Tooltip>
-      </Box>
+      {location.state.status != "CANCELLED" && (
+        <Box className="absolute bottom-4 right-6  p-1">
+          {/* Botão de adicionar proposta em pauta */}
+          <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>
+            <Button
+              variant="contained"
+              sx={{ borderRadius: "9999px" }}
+              onClick={adicionarAPauta}
+            >
+              <BookmarkAddIcon sx={{ fontSize: "28px", color: "text.white" }} />
+            </Button>
+          </Tooltip>
+        </Box>
+      )}
     </FundoComHeader>
   );
 };

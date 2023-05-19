@@ -1,22 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-import {
-  Modal,
-  Fade,
-  Divider,
-  Typography,
-  Box,
-  Button,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Paper,
-  Select,
-  FormControl,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import { Modal, Fade, Divider, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Paper, Select, FormControl, MenuItem, TextField } from "@mui/material";
 
 import { red } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
@@ -32,9 +16,11 @@ import PropostaService from "../../service/propostaService";
 import ForumService from "../../service/forumService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import CookieService from "../../service/cookieService";
+import ExportPdfService from "../../service/exportPdfService";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalAddPropostaPauta = (props) => {
+  
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -292,7 +278,15 @@ const ModalAddPropostaPauta = (props) => {
       );
 
       PautaService.post(pauta).then((res) => {
-        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then((res) => { });
+        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then((response) => {
+
+          // Salvamento de histórico
+          ExportPdfService.exportProposta(response.id).then((file) => {
+
+            let arquivo = new Blob([file], { type: "application/pdf" });
+            PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.id, arquivo, CookieService.getUser().id).then(() => { });
+          });
+        });
       });
     } else {
       if (!check.includes(true)) {
@@ -304,8 +298,15 @@ const ModalAddPropostaPauta = (props) => {
       pauta.propostas = retornarIdsObjetos([...pauta.propostas, { id: props.proposta.id }]);
 
       PautaService.put(pauta).then((res) => {
-        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then((res) => {
-          setFeedbackPautaAtualizada(true)
+        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then((response) => {
+          setFeedbackPautaAtualizada(true);
+
+          // Salvamento de histórico
+          ExportPdfService.exportProposta(response.id).then((file) => {
+
+            let arquivo = new Blob([file], { type: "application/pdf" });
+            PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.id, arquivo, CookieService.getUser().id).then(() => { });
+          });
         });
       });
     }

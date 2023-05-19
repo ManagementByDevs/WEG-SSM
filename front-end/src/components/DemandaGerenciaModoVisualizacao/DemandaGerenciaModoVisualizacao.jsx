@@ -104,6 +104,12 @@ const DemandaTable = ({
       return "#00579D";
     } else if (status.startsWith("ASSESSMENT")) {
       return "#8862A2";
+    } else if (status == "CANCELLED") {
+      return "#DA0303";
+    } else if (status == "DONE") {
+      return "#7EB61C";
+    } else if (status == "BUSINESS_CASE") {
+      return "#FFD600";
     }
   };
 
@@ -113,6 +119,12 @@ const DemandaTable = ({
       return texts.demandaGerenciaModoVisualizacao.backlog;
     } else if (status.startsWith("ASSESSMENT")) {
       return texts.demandaGerenciaModoVisualizacao.assessment;
+    } else if (status == "CANCELLED") {
+      return texts.demandaGerenciaModoVisualizacao.cancelled;
+    } else if (status == "DONE") {
+      return texts.demandaGerenciaModoVisualizacao.done;
+    } else if (status == "BUSINESS_CASE") {
+      return texts.demandaGerenciaModoVisualizacao.businessCase;
     }
   };
 
@@ -206,9 +218,9 @@ const DemandaTable = ({
                   className="text-left p-3 width-4/12 flex"
                   title={row.titulo}
                 >
-                  {(row.emPauta == true || row.emAta == true) && (
+                  {(row.presenteEm == "Pauta" || row.presenteEm == "Ata") && (
                     <Box className="mr-4">
-                      {row.emPauta == true ? (
+                      {row.presenteEm == "Pauta" ? (
                         <Box title="Em pauta">
                           <ContentPasteOutlinedIcon
                             sx={{ color: "icon.main" }}

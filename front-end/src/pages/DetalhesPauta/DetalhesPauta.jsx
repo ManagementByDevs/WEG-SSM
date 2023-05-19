@@ -206,26 +206,20 @@ const DetalhesPauta = (props) => {
 
   // Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida
   const deletePropostaFromPauta = () => {
+
+    pauta.propostas = retornarIdsObjetos(pauta.propostas);
     const indexProposta = pauta.propostas.findIndex(
       (proposta) => proposta.id == dadosProposta.id
     );
 
     const propostasDeleted = pauta.propostas.splice(indexProposta, 1);
-    const propostaDeleted = propostasDeleted[0];
-
-    // Anulando os campos da proposta que não devem ter valor após ser tirada da pauta
-    propostaDeleted.publicada = null;
-    propostaDeleted.status = "ASSESSMENT_APROVACAO";
-    propostaDeleted.parecerInformacao = null;
-    propostaDeleted.parecerComissao = null;
-    propostaDeleted.parecerDG = null;
 
     PautaService.put(pauta).then((newPauta) => {
       setFeedbackPropostaDeletada(true);
-      PropostaService.putWithoutArquivos(
-        propostaDeleted,
-        propostaDeleted.id
+      PropostaService.removerPresenca(
+        propostasDeleted[0].id
       ).then((newProposta) => { });
+
       location.state = { pauta: newPauta }; // Atualizando a pauta na página
       setPauta(newPauta); // Atualizando a pauta na variável do front
       setProposta(false); // Anulando a proposta que estava sendo exibida
@@ -415,7 +409,7 @@ const DetalhesPauta = (props) => {
         handleClose={() => {
           setFeedbackPropostaDeletada(false);
         }}
-        status={"erro"}
+        status={"sucesso"}
         mensagem={texts.detalhesPauta.feedbacks.feedback1}
       />
       <ModalConfirmacao

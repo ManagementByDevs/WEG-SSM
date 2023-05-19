@@ -101,6 +101,9 @@ const TextLanguageContext = createContext({
     demandaGerencia: {
       backlog: "Backlog",
       assessment: "Assessment",
+      businessCase: "Business Case",
+      done: "Done",
+      cancelled: "Cancelled",
       ppm: "PPM",
       solicitante: "Solicitante",
       departamento: "Departamento",
@@ -115,6 +118,9 @@ const TextLanguageContext = createContext({
     demandaGerenciaModoVisualizacao: {
       backlog: "Backlog",
       assessment: "Assessment",
+      businessCase: "Business Case",
+      done: "Done",
+      cancelled: "Cancelled",
       codigo: "Código",
       titulo: "Título",
       solicitante: "Solicitante",

@@ -30,8 +30,6 @@ public class PropostaJaCriadaDTO {
     private byte[] proposta;
     private String frequencia;
     private String tamanho;
-    private Boolean emPauta;
-    private Boolean emAta;
     private SecaoTI secaoTI;
     private byte[] escopo;
     private List<Beneficio> beneficios = new ArrayList<>();
@@ -47,4 +45,5 @@ public class PropostaJaCriadaDTO {
     private Demanda demanda;
     private List<Anexo> anexo;
     private List<Historico> historicoProposta;
+    private String presenteEm;
 }

@@ -953,13 +953,8 @@ const HomeGerencia = () => {
   const deletePauta = () => {
     // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
     for (let propostaAux of pautaSelecionada.propostas) {
-      propostaAux.publicada = null;
-      propostaAux.status = "ASSESSMENT_APROVACAO";
-      propostaAux.parecerInformacao = null;
-      propostaAux.parecerComissao = null;
-      propostaAux.parecerDG = null;
 
-      PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
+      PropostaService.removerPresenca(propostaAux.id).then(
         (newProposta) => {
           setFeedbackPropostaAtualizada(true);
         }
