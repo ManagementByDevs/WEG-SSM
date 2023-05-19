@@ -75,6 +75,8 @@ const HomeGerencia = () => {
   /** Variável usada para navegação entre as páginas */
   const navigate = useNavigate();
 
+  const [filtroProposta, setFiltroProposta] = useState(false);
+
   /** Parâmetros para pesquisa das demandas e propostas (filtros e pesquisa por título) */
   const [params, setParams] = useState({
     titulo: null,
@@ -536,6 +538,7 @@ const HomeGerencia = () => {
           solicitante: null,
           status: null,
         });
+        setFiltroProposta(true);
         break;
       case "5":
         setParamsPautas({ ...paramsPautas });
@@ -1572,6 +1575,7 @@ const HomeGerencia = () => {
                       setListaAnalistas={setListaAnalistas}
                       buscarPorNumero={buscarPorNumero}
                       buscarPorPPM={buscarPorPPM}
+                      filtroProposta={filtroProposta}
                     />
                   )}
 

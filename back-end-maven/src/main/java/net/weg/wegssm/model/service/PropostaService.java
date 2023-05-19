@@ -1086,7 +1086,7 @@ public class PropostaService {
     public Page<Proposta> findByVisibilidadeAndAnalista(boolean b, Usuario analista, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndAnalista(b, analista, pageable);
     }
-    
+
     public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndPresenteEm(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, String presenteEm, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndPresenteEm(b, status, analista, titulo, gerente, presenteEm, pageable);
     }
