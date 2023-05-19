@@ -65,4 +65,6 @@ public class EscopoPropostaDTO {
     private Demanda demanda;
 
     private List<Anexo> anexo;
+
+    private String presenteEm;
 }
