@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class MensagemDTO {
 
+    private Long id;
     private Date data;
     private Boolean visto;
     private String texto;

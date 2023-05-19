@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,6 +44,7 @@ public class Mensagem {
 
     @ManyToOne
     @JoinColumn(name = "id_chat", nullable = false)
+    @JsonIgnore
     private Chat idChat;
 
     @OneToOne

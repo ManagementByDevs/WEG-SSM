@@ -95,7 +95,7 @@ public class Proposta {
 
     // foreign keys
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "proposta_id")
     private List<Beneficio> beneficios = new ArrayList<>();
 

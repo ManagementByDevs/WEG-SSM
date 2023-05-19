@@ -309,7 +309,7 @@ const Chat = () => {
   /** Busca as mensagens do usuário */
   const carregar = () => {
     MensagemService.getMensagensChat(idChat).then((response) => {
-      console.log("response!  ", response);
+      console.log("response! ", response);
       let mensagensAux = [];
       if (response) {
         mensagensAux = response;
@@ -326,6 +326,8 @@ const Chat = () => {
       //   );
       // }
       setMensagens(mensagensAux);
+
+      enviar(`/app/weg_ssm/enter/chat/${idChat}`, "");
     });
     setDefaultMensagem();
   };
@@ -371,13 +373,14 @@ const Chat = () => {
         ...mensagemRecebida.body,
         texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
       };
+
       // Se o remetente não for o usuário, tenho que notificar a visualização
       if (mensagemNova.usuario.id != user.usuario.id) {
-        // mensagemNova.visto = true;
         console.log("Mensagem nova.visto: ", mensagemNova);
         enviar(`/app/weg_ssm/mensagem/chat/${idChat}/visto`, {
           ...mensagemNova,
         });
+        mensagemNova.visto = true;
       }
 
       setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
@@ -392,23 +395,21 @@ const Chat = () => {
         return;
       }
 
-      if (mensagemRecebida.idChat.id == idChat) {
-        // console.log("b");
-        return;
-      }
+      // if (mensagemRecebida.idChat.id == idChat) {
+      // console.log("b");
+      //   return;
+      // }
     };
 
-    const visualizeMessage = (mensagem) => {
-      let mensagemRecebida = EntitiesObjectService.mensagem();
-      mensagemRecebida = JSON.parse(mensagem.body);
-
-      console.log("Mensagens: ", mensagens);
-      console.log("MENSAGEM: ", mensagemRecebida);
+    const readMessage = (mensagem) => {
+      console.log("passou no readMessage");
 
       setMensagens((oldMensagens) => {
-        // fazer a última mensagem ter visto = true
-        oldMensagens[oldMensagens.length - 1].visto = true;
-        console.log("oldMensagens: ", oldMensagens);
+        for (let oldMensagem of oldMensagens) {
+          if (!oldMensagem.visto) {
+            oldMensagem.visto = true;
+          }
+        }
         return [...oldMensagens];
       });
     };
@@ -426,7 +427,7 @@ const Chat = () => {
 
       let inscricaoVerMensagem = inscrever(
         `/weg_ssm/mensagem/chat/${idChat}/visto`,
-        visualizeMessage
+        readMessage
       );
 
       return () => {
@@ -438,10 +439,6 @@ const Chat = () => {
       };
     }
   }, [stompClient, idChat]);
-
-  // useEffect(() => {
-  //   // if (isThereNewMsg)
-  // }, [mensagens]);
 
   // ***************************************** Fim UseEffects ***************************************** //
 

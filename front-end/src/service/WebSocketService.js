@@ -13,7 +13,7 @@ export const WebSocketService = ({ children }) => {
     const conectar = () => {
       const socket = new SockJS("http://localhost:8443/ws");
       const stomp = Stomp.over(socket);
-      stomp.debug = null;
+      // stomp.debug = null;
 
       stomp.connect(
         {},
@@ -39,11 +39,16 @@ export const WebSocketService = ({ children }) => {
   const enviar = (destino, mensagem) => {
     if (stompClient) {
       let auxMensagem;
-      auxMensagem = {
-        ...mensagem,
-        texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
-      };
-      stompClient.send(destino, {}, JSON.stringify(auxMensagem));
+      if (mensagem) {
+        auxMensagem = {
+          ...mensagem,
+          texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
+        };
+        stompClient.send(destino, {}, JSON.stringify(auxMensagem));
+      } else {
+        console.log("passou aqui");
+        stompClient.send(destino, {}, "a");
+      }
     }
   };
 
