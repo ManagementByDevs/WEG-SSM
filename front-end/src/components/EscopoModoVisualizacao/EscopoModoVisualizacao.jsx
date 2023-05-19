@@ -29,13 +29,13 @@ const EscopoModoVisualizacao = ({
                 myEscopos={myEscopos}
             />
         );
-    return (
-        <EscopoTable
-            listaEscopos={listaEscopos}
-            onEscopoClick={onEscopoClick}
-            myEscopos={myEscopos}
-        />
-    );
+    // return (
+    //     <EscopoTable
+    //         listaEscopos={listaEscopos}
+    //         onEscopoClick={onEscopoClick}
+    //         myEscopos={myEscopos}
+    //     />
+    // );
 };
 
 // const EscopoTable = ({
