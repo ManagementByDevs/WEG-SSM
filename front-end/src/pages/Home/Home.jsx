@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Tour from "reactour";
+import ClipLoader from "react-spinners/ClipLoader";
+
 import { Button, Tab, Box, Tooltip, IconButton } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
@@ -13,8 +16,6 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
-import TextLanguageContext from "../../service/TextLanguageContext";
-import FontContext from "../../service/FontContext";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
 import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
@@ -24,9 +25,8 @@ import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/De
 import Ajuda from "../../components/Ajuda/Ajuda";
 import Demanda from "../../components/Demanda/Demanda";
 
-import Tour from "reactour";
-import ClipLoader from "react-spinners/ClipLoader";
-
+import TextLanguageContext from "../../service/TextLanguageContext";
+import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import CookieService from "../../service/cookieService";
@@ -38,6 +38,7 @@ import chatService from "../../service/chatService";
 
 /** Página principal do solicitante */
 const Home = () => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -91,14 +92,7 @@ const Home = () => {
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
   /** Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado */
-  const [listaFiltros, setListaFiltros] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
 
   /** Valores dos checkboxes de Score no modal de ordenação */
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
@@ -259,6 +253,7 @@ const Home = () => {
   /** Função para formatar os campos necessários das demandas para HTML */
   const formatarDemandas = (listaDemandas) => {
     let listaNova = [];
+
     for (let demanda of listaDemandas) {
       let listaNovaBeneficios = [];
       for (let beneficio of demanda.beneficios) {
@@ -420,7 +415,7 @@ const Home = () => {
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => {});
+        UsuarioService.updateUser(user.id, user).then((e) => { });
       }
     );
   };
@@ -437,12 +432,8 @@ const Home = () => {
 
   // ********************************************** Gravar audio **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   const recognitionRef = useRef(null);
 
@@ -534,27 +525,21 @@ const Home = () => {
         {/* Feedback Erro reconhecimento de voz */}
         <Feedback
           open={feedbackErroReconhecimentoVoz}
-          handleClose={() => {
-            setFeedbackErroReconhecimentoVoz(false);
-          }}
+          handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
         />
         {/* Feedback navegador incompativel */}
         <Feedback
           open={feedbackErroNavegadorIncompativel}
-          handleClose={() => {
-            setFeedbackErroNavegadorIncompativel(false);
-          }}
+          handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
         />
         {/* Feedback de demanda criada */}
         <Feedback
           open={feedbackDemandaCriada}
-          handleClose={() => {
-            setFeedbackDemandaCriada(false);
-          }}
+          handleClose={() => { setFeedbackDemandaCriada(false); }}
           status={"sucesso"}
           mensagem={texts.home.demandaCriadaComSucesso}
         />
@@ -576,18 +561,12 @@ const Home = () => {
                   aria-label="lab API tabs example"
                 >
                   <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig?.medium,
-                    }}
+                    sx={{ color: "text.secondary", fontSize: FontConfig?.medium, }}
                     label={texts.home.minhasDemandas}
                     value="1"
                   />
                   <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig?.medium,
-                    }}
+                    sx={{ color: "text.secondary", fontSize: FontConfig?.medium, }}
                     label={texts.home.meuDepartamento}
                     value="2"
                   />
@@ -597,9 +576,7 @@ const Home = () => {
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.home.visualizacaoEmTabela}>
                       <IconButton
-                        onClick={() => {
-                          setNextModoVisualizacao("GRID");
-                        }}
+                        onClick={() => { setNextModoVisualizacao("GRID"); }}
                       >
                         <ViewListIcon color="primary" />
                       </IconButton>
@@ -607,9 +584,7 @@ const Home = () => {
                   ) : (
                     <Tooltip title={texts.home.visualizacaoEmBloco}>
                       <IconButton
-                        onClick={() => {
-                          setNextModoVisualizacao("TABLE");
-                        }}
+                        onClick={() => { setNextModoVisualizacao("TABLE"); }}
                       >
                         <ViewModuleIcon color="primary" />
                       </IconButton>
@@ -626,11 +601,7 @@ const Home = () => {
                   <Box
                     id="primeiro"
                     className="flex justify-between items-center border px-3 py-1"
-                    sx={{
-                      backgroundColor: "input.main",
-                      width: "50%",
-                      minWidth: "10rem",
-                    }}
+                    sx={{ backgroundColor: "input.main", width: "50%", minWidth: "10rem", }}
                   >
                     {/* Input de pesquisa */}
                     <Box
@@ -649,12 +620,8 @@ const Home = () => {
                           pesquisaTitulo();
                         }
                       }}
-                      onBlur={() => {
-                        pesquisaTitulo();
-                      }}
-                      onChange={(e) => {
-                        salvarPesquisa(e);
-                      }}
+                      onBlur={() => { pesquisaTitulo(); }}
+                      onChange={(e) => { salvarPesquisa(e); }}
                       value={valorPesquisa}
                     />
 
@@ -669,13 +636,9 @@ const Home = () => {
                         }}
                       >
                         {escutar ? (
-                          <MicOutlinedIcon
-                            sx={{ color: "primary.main", fontSize: "1.3rem" }}
-                          />
+                          <MicOutlinedIcon sx={{ color: "primary.main", fontSize: "1.3rem" }} />
                         ) : (
-                          <MicNoneOutlinedIcon
-                            sx={{ color: "text.secondary", fontSize: "1.3rem" }}
-                          />
+                          <MicNoneOutlinedIcon sx={{ color: "text.secondary", fontSize: "1.3rem" }} />
                         )}
                       </Tooltip>
 
@@ -692,9 +655,7 @@ const Home = () => {
                       <Tooltip title={texts.home.ordenacao}>
                         <SwapVertIcon
                           id="segundo"
-                          onClick={() => {
-                            setOpenOrdenacao(true);
-                          }}
+                          onClick={() => { setOpenOrdenacao(true); }}
                           className="cursor-pointer"
                           sx={{ color: "text.secondary" }}
                         />
@@ -703,9 +664,7 @@ const Home = () => {
                       {/* Modal de ordenação */}
                       {abrirOrdenacao && (
                         <ModalOrdenacao
-                          fecharModal={() => {
-                            setOpenOrdenacao(false);
-                          }}
+                          fecharModal={() => { setOpenOrdenacao(false); }}
                           ordenacaoTitulo={ordenacaoTitulo}
                           setOrdenacaoTitulo={setOrdenacaoTitulo}
                           ordenacaoScore={ordenacaoScore}
@@ -726,9 +685,7 @@ const Home = () => {
                           fontSize: FontConfig?.default,
                           minWidth: "5rem",
                         }}
-                        onClick={() => {
-                          setFiltroAberto(true);
-                        }}
+                        onClick={() => { setFiltroAberto(true); }}
                         variant="contained"
                         disableElevation
                       >
@@ -739,9 +696,7 @@ const Home = () => {
                   {/* Modal de filtro */}
                   {filtroAberto && (
                     <ModalFiltro
-                      fecharModal={() => {
-                        setFiltroAberto(false);
-                      }}
+                      fecharModal={() => { setFiltroAberto(false); }}
                       listaFiltros={listaFiltros}
                       setListaFiltros={setListaFiltros}
                     />
@@ -761,9 +716,7 @@ const Home = () => {
                   }}
                   variant="contained"
                   disableElevation
-                  onClick={() => {
-                    navigate("/criar-demanda");
-                  }}
+                  onClick={() => { navigate("/criar-demanda"); }}
                 >
                   {texts.home.criarDemanda}
                   <AddIcon />

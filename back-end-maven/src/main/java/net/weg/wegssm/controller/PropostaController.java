@@ -1,8 +1,5 @@
 package net.weg.wegssm.controller;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.*;
 import net.weg.wegssm.model.entities.*;
@@ -15,12 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -4197,11 +4192,10 @@ public class PropostaController {
     }
 
     /**
-     * Método PUT para atualizar uma proposta no banco de dados, através de um id, recebendo a propostaDTO como JSON
-     *
-     * @param id
-     * @param propostaJaCriadaDTO
-     * @return
+     * Função para atualizar os campos de uma proposta
+     * @param id ID da proposta a ser atualizada
+     * @param propostaJaCriadaDTO DTO de uma proposta com todos os seus campos atualizados
+     * @return ResponseEntity com a proposta atualizada
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody PropostaJaCriadaDTO propostaJaCriadaDTO) {
@@ -4217,13 +4211,31 @@ public class PropostaController {
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
+    /**
+     * Função para adicionar um objeto de Historico em uma proposta
+     * @param idProposta ID da proposta a ser adicionado o histórico
+     * @param usuarioId ID do usuário que fez a mudança
+     * @param acao String da ação feita na proposta
+     * @param documento Documento PDF da proposta para salvamento de seu estado atual
+     * @return ResponseEntity com a proposta editada
+     */
     @PutMapping("/add-historico/{idProposta}")
-    public ResponseEntity<Proposta> addHistorico(@PathVariable(value = "idProposta") Long idProposta,
+    public ResponseEntity<Object> addHistorico(@PathVariable(value = "idProposta") Long idProposta,
                                                  @RequestParam("usuarioId") Long usuarioId,
                                                  @RequestParam("acao") String acao,
                                                  @RequestParam("documento") MultipartFile documento) {
-        Usuario usuario = usuarioService.findById(usuarioId).get();
-        Proposta proposta = propostaService.findById(idProposta).get();
+        Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
+        if (propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        }
+
+        Optional<Usuario> usuarioOptional = usuarioService.findById(usuarioId);
+        if(usuarioOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        Usuario usuario = usuarioOptional.get();
 
         Historico historico = new Historico();
         historico.setAutor(usuario);
@@ -4237,16 +4249,44 @@ public class PropostaController {
         documentoHistorico.setNome(proposta.getTitulo() + " - Versão " + (listaHistorico.size() + 1));
         historico.setDocumentoHistorico(documentoHistoricoService.save(documentoHistorico));
 
-        if (listaHistorico != null) {
-            listaHistorico.add(historicoService.save(historico));
-        } else {
+        if (listaHistorico == null) {
             listaHistorico = new ArrayList<>();
-            listaHistorico.add(historicoService.save(historico));
         }
+        listaHistorico.add(historicoService.save(historico));
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
+    /**
+     * Função para resetar o atributo "presenteEm" na proposta para a string "Nada". Usada quando uma proposta é retirada de alguma pauta
+     * ou vai para edição / business_case
+     * @param idProposta ID da proposta a ser editada
+     * @return ResponseEntity com a proposta editada
+     */
+    @RequestMapping("/presente/{idProposta}")
+    public ResponseEntity<Object> removerPresenca(@PathVariable(value = "idProposta") Long idProposta) {
+        Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
+        if (propostaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
+        }
+
+        Proposta proposta = propostaOptional.get();
+        proposta.setPresenteEm("Nada");
+        proposta.setPublicada(null);
+        proposta.setParecerComissao(null);
+        proposta.setParecerDG(null);
+        proposta.setParecerInformacao(null);
+        proposta.setParecerInformacaoDG(null);
+        proposta.setStatus(Status.ASSESSMENT_APROVACAO);
+        return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
+    }
+
+    /**
+     * Função para atualizar a proposta ao ser adicionada a uma pauta, atualizando os atributos "publicada", "presenteEm" e "status"
+     * @param idProposta ID da proposta a ser atualizada
+     * @param publicada Valor do atributo "publicada" a ser atribuído à proposta
+     * @return ResponseEntity com a proposta atualizada
+     */
     @RequestMapping("/pauta/{idProposta}")
     public ResponseEntity<Object> updatePauta(@PathVariable(value = "idProposta") Long idProposta,
                                               @RequestParam(value = "publicada") Boolean publicada) {
@@ -4263,6 +4303,13 @@ public class PropostaController {
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
+    /**
+     * Função para atualizar uma proposta quando ela for adicionada a uma ata ou reprovada, atualizando o parecer da comissão, status e "presenteEm"
+     * @param idProposta ID da proposta a ser atualizada
+     * @param parecerGerencia Parecer da Gerencia da aceitação da proposta
+     * @param parecerInformacao Texto do Parecer da Gerencia
+     * @return ResponseEntity com a proposta atualizada
+     */
     @RequestMapping("/ata/{idProposta}")
     public ResponseEntity<Object> updateCriacaoAta(@PathVariable(value = "idProposta") Long idProposta,
                                                    @RequestParam(value = "parecerComissao") ParecerGerencia parecerGerencia,
@@ -4298,6 +4345,13 @@ public class PropostaController {
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
+    /**
+     * Função para atualizar uma proposta quando uma ata for apreciada pela DG, atualizando o parecer da DG, status e "presenteEm"
+     * @param idProposta ID da proposta a ser atualizada
+     * @param parecerGerencia Parecer da DG da aceitação da proposta
+     * @param parecerInformacao Texto do Parecer da DG
+     * @return ResponseEntity com a proposta atualizada
+     */
     @RequestMapping("/dg/{idProposta}")
     public ResponseEntity<Object> updateDg(@PathVariable(value = "idProposta") Long idProposta,
                                            @RequestParam(value = "parecerComissao") ParecerGerencia parecerGerencia,
@@ -4327,35 +4381,24 @@ public class PropostaController {
 
 
     /**
-     * Método DELETE para modificar a visibilidade de uma proposta
+     * Função para "deletar" uma proposta pelo seu ID, definindo o atributo "visibilidade" para falso
+     * @param id ID da proposta a ser atualizada
+     * @return ResponseEntity com a proposta atualizada
      */
     @Transactional
-    @DeleteMapping("/visibilidade/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
-        if (!propostaService.existsById(id)) {
+
+        Optional<Proposta> propostaOptional = propostaService.findById(id);
+        if (propostaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma proposta com este id.");
         }
 
-        Proposta proposta = propostaService.findById(id).get();
+        Proposta proposta = propostaOptional.get();
         proposta.setVisibilidade(false);
         propostaService.save(proposta);
 
         return ResponseEntity.status(HttpStatus.OK).body(proposta);
-    }
-
-    /**
-     * Método DELETE para remover uma proposta do banco de dados
-     */
-    @Transactional
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable(value = "id") Long id) {
-        if (!propostaService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma proposta com este id.");
-        }
-
-        propostaService.deleteById(id);
-
-        return ResponseEntity.status(HttpStatus.OK).body("Proposta deletada com sucesso.");
     }
 
 }

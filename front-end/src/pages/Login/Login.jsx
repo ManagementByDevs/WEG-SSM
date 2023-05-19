@@ -1,17 +1,7 @@
 import { React, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Button,
-  Box,
-  Paper,
-  TextField,
-  InputAdornment,
-  FormControlLabel,
-  Checkbox,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { Button, Box, Paper, TextField, InputAdornment, FormControlLabel, Checkbox, Typography, IconButton, } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
@@ -28,8 +18,10 @@ import { WebSocketContext } from "../../service/WebSocketService";
 
 /** Página de login, para que o usuário tenha acesso ao restante do sistema */
 const Login = () => {
+
   // useContext que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -69,7 +61,7 @@ const Login = () => {
       try {
         await AutenticacaoService.login(dados);
         navigate("/");
-      } catch (error) {}
+      } catch (error) { }
     } else {
       // Abrir modal de feedback de dados não preenchidos
       setDadosFaltantes(true);
@@ -96,7 +88,6 @@ const Login = () => {
             width: "28%",
             height: "63%",
           }}
-          className=" "
         >
           <Box className="w-full h-full border-t-12 border-[#00579D] rounded shadow-2xl flex flex-col items-center justify-center space-y-10">
             <Box>
@@ -106,12 +97,8 @@ const Login = () => {
             {/* Input de texto do email do usuário */}
             <TextField
               value={dados.email}
-              onChange={(e) => {
-                atualizarInput(1, e);
-              }}
-              onKeyDown={(e) => {
-                eventoTeclado(e);
-              }}
+              onChange={(e) => { atualizarInput(1, e) }}
+              onKeyDown={(e) => { eventoTeclado(e) }}
               className="w-8/12"
               id="filled-basic"
               label={texts.login.email}
@@ -122,12 +109,8 @@ const Login = () => {
                         "mudarVisualizacaoSenha" no click) */}
             <TextField
               value={dados.senha}
-              onChange={(e) => {
-                atualizarInput(2, e);
-              }}
-              onKeyDown={(e) => {
-                eventoTeclado(e);
-              }}
+              onChange={(e) => { atualizarInput(2, e) }}
+              onKeyDown={(e) => { eventoTeclado(e) }}
               className="w-8/12"
               id="input-with-icon-textfield"
               label={texts.login.senha}
@@ -192,9 +175,7 @@ const Login = () => {
             {dadosFaltantes && (
               <Feedback
                 open={dadosFaltantes}
-                handleClose={() => {
-                  setDadosFaltantes(false);
-                }}
+                handleClose={() => { setDadosFaltantes(false) }}
                 status={"erro"}
                 mensagem={texts.login.feedback.preenchaTodosOsCampos}
               />

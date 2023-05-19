@@ -50,6 +50,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
+
   /** Context que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -57,8 +58,7 @@ const HomeGerencia = () => {
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
 
   /** Variável para determinar se a tour de criar proposta está aberta */
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
-    useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
 
   /** Variável para determinar se a tour de propostas está aberta */
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
@@ -390,15 +390,13 @@ const HomeGerencia = () => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] =
-    useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
 
   /** Variável para o feedback de demanda aceita */
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
 
   /** Variável para o feedback de demanda devolvida */
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
-    useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
 
   /** Variável para o feedback de demanda recusada */
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
@@ -413,15 +411,13 @@ const HomeGerencia = () => {
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   // Feedback propostas atualizadas
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] =
-    useState(false);
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
 
   /** Feedback deletar pauta */
   const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
 
   /** Feedback atualizar proposta */
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
-    useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
 
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
@@ -505,6 +501,7 @@ const HomeGerencia = () => {
           status: null,
           solicitante: usuario,
         });
+        setFiltroProposta(false);
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
@@ -522,6 +519,7 @@ const HomeGerencia = () => {
             status: "BACKLOG_REVISAO",
           });
         }
+        setFiltroProposta(false);
         break;
       case "3":
         setParams({
@@ -530,6 +528,7 @@ const HomeGerencia = () => {
           solicitante: null,
           status: "ASSESSMENT",
         });
+        setFiltroProposta(false);
         break;
       case "4":
         setParams({
@@ -542,9 +541,11 @@ const HomeGerencia = () => {
         break;
       case "5":
         setParamsPautas({ ...paramsPautas });
+        setFiltroProposta(false);
         break;
       case "6":
         setParamsPautas({ ...paramsAtas });
+        setFiltroProposta(false);
         break;
     }
   }, [valorAba, isFirstTime]);
@@ -700,13 +701,13 @@ const HomeGerencia = () => {
         }
         break;
       case "4":
-          PropostaService.getPage(
-            params,
-            ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
-          ).then((response) => {
-            formatarItens(response.content);
-            setTotalPaginas(response.totalPages);
-          });
+        PropostaService.getPage(
+          params,
+          ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
+        ).then((response) => {
+          formatarItens(response.content);
+          setTotalPaginas(response.totalPages);
+        });
         break;
       case "5":
         PautaService.getPage(
@@ -956,13 +957,8 @@ const HomeGerencia = () => {
   const deletePauta = () => {
     // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
     for (let propostaAux of pautaSelecionada.propostas) {
-      propostaAux.publicada = null;
-      propostaAux.status = "ASSESSMENT_APROVACAO";
-      propostaAux.parecerInformacao = null;
-      propostaAux.parecerComissao = null;
-      propostaAux.parecerDG = null;
 
-      PropostaService.putWithoutArquivos(propostaAux, propostaAux.id).then(
+      PropostaService.removerPresenca(propostaAux.id).then(
         (newProposta) => {
           setFeedbackPropostaAtualizada(true);
         }
@@ -1047,12 +1043,8 @@ const HomeGerencia = () => {
 
   // ********************************************** Funções de voz **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   const recognitionRef = useRef(null);
 
@@ -1185,8 +1177,8 @@ const HomeGerencia = () => {
           handleOnCancelClickDeletePauta();
         }}
       />
-      {/* Div container */}
 
+      {/* Div container */}
       <Box
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
@@ -1334,28 +1326,19 @@ const HomeGerencia = () => {
                   aria-label="lab API tabs example"
                 >
                   <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig.medium,
-                    }}
+                    sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
                     label={texts.home.minhasDemandas}
                     value="1"
                   />
                   <Tab
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: FontConfig.medium,
-                    }}
+                    sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
                     label={texts.homeGerencia.demandas}
                     value="2"
                   />
 
                   {isGerente && (
                     <Tab
-                      sx={{
-                        color: "text.secondary",
-                        fontSize: FontConfig.medium,
-                      }}
+                      sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
                       label={texts.homeGerencia.criarPropostas}
                       value="3"
                     />
@@ -1363,10 +1346,7 @@ const HomeGerencia = () => {
 
                   {isGerente && (
                     <Tab
-                      sx={{
-                        color: "text.secondary",
-                        fontSize: FontConfig.medium,
-                      }}
+                      sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
                       label={texts.homeGerencia.propostas}
                       value="4"
                     />
@@ -1374,10 +1354,7 @@ const HomeGerencia = () => {
 
                   {isGerente && (
                     <Tab
-                      sx={{
-                        color: "text.secondary",
-                        fontSize: FontConfig.medium,
-                      }}
+                      sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
                       label={texts.homeGerencia.pautas}
                       value="5"
                     />
@@ -1385,10 +1362,7 @@ const HomeGerencia = () => {
 
                   {isGerente && (
                     <Tab
-                      sx={{
-                        color: "text.secondary",
-                        fontSize: FontConfig.medium,
-                      }}
+                      sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
                       label={texts.homeGerencia.atas}
                       value="6"
                     />
@@ -1398,9 +1372,7 @@ const HomeGerencia = () => {
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
                       <IconButton
-                        onClick={() => {
-                          trocarModoVisualizacao();
-                        }}
+                        onClick={() => { trocarModoVisualizacao(); }}
                       >
                         <ViewListIcon color="primary" />
                       </IconButton>
@@ -1408,9 +1380,7 @@ const HomeGerencia = () => {
                   ) : (
                     <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
                       <IconButton
-                        onClick={() => {
-                          trocarModoVisualizacao();
-                        }}
+                        onClick={() => { trocarModoVisualizacao(); }}
                       >
                         <ViewModuleIcon color="primary" />
                       </IconButton>
@@ -1458,15 +1428,9 @@ const HomeGerencia = () => {
                         fontSize: FontConfig.medium,
                       }}
                       placeholder={texts.homeGerencia.pesquisarPorTitulo}
-                      onKeyDown={(e) => {
-                        eventoTeclado(e);
-                      }}
-                      onBlur={() => {
-                        pesquisaTitulo();
-                      }}
-                      onChange={(e) => {
-                        salvarPesquisa(e.target.value);
-                      }}
+                      onKeyDown={(e) => { eventoTeclado(e); }}
+                      onBlur={() => { pesquisaTitulo(); }}
+                      onChange={(e) => { salvarPesquisa(e.target.value); }}
                       value={valorPesquisa}
                     />
                     {/* Container para os ícones */}
@@ -1475,9 +1439,7 @@ const HomeGerencia = () => {
                       <Tooltip
                         className="hover:cursor-pointer"
                         title={texts.homeGerencia.gravarAudio}
-                        onClick={() => {
-                          startRecognition();
-                        }}
+                        onClick={() => { startRecognition(); }}
                       >
                         {escutar ? (
                           <MicOutlinedIcon
@@ -1493,9 +1455,7 @@ const HomeGerencia = () => {
                       <Tooltip
                         className="hover:cursor-pointer"
                         title={texts.homeGerencia.pesquisar}
-                        onClick={() => {
-                          pesquisaTitulo();
-                        }}
+                        onClick={() => { pesquisaTitulo(); }}
                       >
                         <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                       </Tooltip>
@@ -1504,9 +1464,7 @@ const HomeGerencia = () => {
                       <Tooltip title={texts.homeGerencia.ordenacao}>
                         <SwapVertIcon
                           id="segundoDemandas"
-                          onClick={() => {
-                            setOpenOrdenacao(true);
-                          }}
+                          onClick={() => { setOpenOrdenacao(true); }}
                           className="cursor-pointer"
                           sx={{ color: "text.secondary" }}
                         />
@@ -1549,9 +1507,7 @@ const HomeGerencia = () => {
                         fontSize: FontConfig.default,
                         minWidth: "5rem",
                       }}
-                      onClick={() => {
-                        setModalFiltro(true);
-                      }}
+                      onClick={() => { setModalFiltro(true); }}
                       variant="contained"
                       disableElevation
                     >

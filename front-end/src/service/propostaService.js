@@ -91,6 +91,10 @@ class PropostaService {
     return (await axios.put(`${proposta}/${idProposta}/${status}`)).data;
   }
 
+  async removerPresenca(idProposta) {
+    return (await axios.put(`${proposta}/presente/${idProposta}`, { withCredentials: true })).data;
+  }
+
   async atualizacaoPauta(idProposta, publicada) {
     let form = new FormData();
     form.set("publicada", publicada);

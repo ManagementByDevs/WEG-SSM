@@ -180,8 +180,8 @@ function CaixaTextoQuill({
           useScroll
             ? { height: "5rem", overflowY: "scroll" }
             : setScroll
-            ? { height: "5rem", overflowY: "scroll" }
-            : {}
+              ? { height: "5rem", overflowY: "scroll" }
+              : {}
         }
       />
       <Box className="absolute" sx={{ right: 6, bottom: 8 }}>

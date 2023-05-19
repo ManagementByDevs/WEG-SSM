@@ -43,6 +43,12 @@ const DemandaGerencia = (props) => {
       return "#00579D";
     } else if (props.dados.status?.startsWith("ASSESSMENT")) {
       return "#8862A2";
+    } else if (props.dados.status == "CANCELLED") {
+      return "#DA0303";
+    } else if (props.dados.status == "DONE") {
+      return "#7EB61C";
+    } else if (props.dados.status == "BUSINESS_CASE") {
+      return "#FFD600";
     }
   }
 
@@ -60,6 +66,12 @@ const DemandaGerencia = (props) => {
       return texts.demandaGerencia.backlog;
     } else if (props.dados.status?.startsWith("ASSESSMENT")) {
       return texts.demandaGerencia.assessment;
+    } else if (props.dados.status == "CANCELLED") {
+      return texts.demandaGerencia.cancelled;
+    } else if (props.dados.status == "DONE") {
+      return texts.demandaGerencia.done;
+    } else if (props.dados.status == "BUSINESS_CASE") {
+      return texts.demandaGerencia.businessCase;
     }
   };
 

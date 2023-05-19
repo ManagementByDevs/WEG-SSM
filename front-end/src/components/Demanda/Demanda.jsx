@@ -6,13 +6,13 @@ import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-
 import CookieService from "../../service/cookieService";
 
 /** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -111,7 +111,7 @@ const Demanda = (props) => {
             sx={{ fontWeight: "600", maxWidth: "77%" }}
             color="text.primary"
             title={props.demanda.titulo}
-          > 
+          >
             {props.demanda.titulo}
           </Typography>
 
@@ -136,7 +136,7 @@ const Demanda = (props) => {
         </Box>
 
         {/* Proposta da demanda */}
-        <Typography gutterBottom fontSize={FontConfig?.default} color="text.secondary" ref={descricaoDemanda} sx={{ maxHeight: "5rem", maxWidth: "70%", overflow: "hidden", textOverflow: "ellipsis"}}>
+        <Typography gutterBottom fontSize={FontConfig?.default} color="text.secondary" ref={descricaoDemanda} sx={{ maxHeight: "5rem", maxWidth: "70%", overflow: "hidden", textOverflow: "ellipsis" }}>
           {/* Chamando a função de formatação html, passando como parâmetro o texto em html */}
           {getPropostaFomartted(props.demanda.proposta)}
         </Typography>
