@@ -87,6 +87,7 @@ const HomeGerencia = () => {
     status: null,
     codigoPPM: null,
     id: null,
+    presenteEm: null,
   });
 
   const stepsMinhasDemandas = [
@@ -350,6 +351,7 @@ const HomeGerencia = () => {
     id: null,
     codigoPPM: null,
     analista: null,
+    presenteEm: null,
   });
 
   /** Objeto contendo o usuário logado no sistema */
@@ -445,6 +447,7 @@ const HomeGerencia = () => {
       codigoPPM: null,
       id: null,
       analista: null,
+      presenteEm: null,
     };
 
     if (filtrosAtuais.solicitante != "") {
@@ -471,6 +474,9 @@ const HomeGerencia = () => {
     if (filtrosAtuais.analista != "") {
       paramsTemp.analista = filtrosAtuais.analista;
     }
+    if (filtrosAtuais.presenteEm != "") {
+      paramsTemp.presenteEm = filtrosAtuais.presenteEm;
+    }
 
     setParams({
       titulo: valorPesquisa,
@@ -483,6 +489,7 @@ const HomeGerencia = () => {
       departamento: paramsTemp.departamento,
       codigoPPM: paramsTemp.codigoPPM,
       id: paramsTemp.id,
+      presenteEm: paramsTemp.presenteEm,
     });
   }, [filtrosAtuais]);
 
@@ -527,7 +534,7 @@ const HomeGerencia = () => {
           ...params,
           gerente: null,
           solicitante: null,
-          status: "ASSESSMENT_APROVACAO",
+          status: null,
         });
         break;
       case "5":
@@ -690,7 +697,6 @@ const HomeGerencia = () => {
         }
         break;
       case "4":
-        if (params.status != null) {
           PropostaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -698,7 +704,6 @@ const HomeGerencia = () => {
             formatarItens(response.content);
             setTotalPaginas(response.totalPages);
           });
-        }
         break;
       case "5":
         PautaService.getPage(
@@ -1709,7 +1714,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
@@ -1733,7 +1738,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="4"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Box
                           sx={{
