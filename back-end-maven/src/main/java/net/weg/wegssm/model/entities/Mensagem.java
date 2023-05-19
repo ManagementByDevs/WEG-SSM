@@ -33,7 +33,7 @@ public class Mensagem {
     @Column(nullable = false, length = 200)
     private String texto;
 
-    @Column()
+    @Column
     private StatusChat status;
 
     // Foreign keys
@@ -44,7 +44,7 @@ public class Mensagem {
 
     @ManyToOne
     @JoinColumn(name = "id_chat", nullable = false)
-    @JsonIgnore
+//    @JsonIgnore
     private Chat idChat;
 
     @OneToOne

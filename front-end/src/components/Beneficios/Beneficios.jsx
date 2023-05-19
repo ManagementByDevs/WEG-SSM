@@ -220,8 +220,8 @@ const Beneficios = (props) => {
                     placeholder={texts.beneficios.exemploValorMensal}
                     fontConfig={FontConfig.default}
                     texto={props.dados?.valor_mensal}
-                    setFeedbackErroNavegadorIncompativel= {props.setFeedbackErroNavegadorIncompativel}
-                    setFeedbackErroReconhecimentoVoz= {props.setFeedbackErroReconhecimentoVoz}
+                    setFeedbackErroNavegadorIncompativel={props.setFeedbackErroNavegadorIncompativel}
+                    setFeedbackErroReconhecimentoVoz={props.setFeedbackErroReconhecimentoVoz}
                   />
                 </Box>
                 <FormControl

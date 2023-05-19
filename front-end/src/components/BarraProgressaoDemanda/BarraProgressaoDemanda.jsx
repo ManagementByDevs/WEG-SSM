@@ -1,14 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography, Button, } from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -21,22 +15,21 @@ import EscopoService from "../../service/escopoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
-import { ClipLoader } from "react-spinners";
 import beneficioService from "../../service/beneficioService";
 
 /** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
  * salvando a demanda e escopos no banco de dados
  */
 const BarraProgressaoDemanda = (props) => {
+
   const [usuario, setUsuario] = useState(null);
 
-  // Contexto para alterar o idioma
+  /** Contexto para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
-  // Contexto para alterar o tamanho da fonte
+  /** Contexto para alterar o tamanho da fonte */
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   /** Location utilizado para setar o state utilizado para verificação de lógica */
@@ -52,14 +45,10 @@ const BarraProgressaoDemanda = (props) => {
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
 
   /** Variável utilizada para abrir o modal de feedback de navegador incompativel */
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
 
   /** Variável utilizada para abrir o modal de feedback de erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
@@ -365,27 +354,21 @@ const BarraProgressaoDemanda = (props) => {
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
+        handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
         open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
+        handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
       />
       {/* Feedback de dados faltantes */}
       <Feedback
         open={feedbackDadosFaltantes}
-        handleClose={() => {
-          setFeedbackDadosFaltantes(false);
-        }}
+        handleClose={() => { setFeedbackDadosFaltantes(false); }}
         status={"erro"}
         mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
       />
@@ -427,12 +410,8 @@ const BarraProgressaoDemanda = (props) => {
             <FormularioDadosDemanda
               dados={paginaDados}
               setDados={setPaginaDados}
-              setFeedbackErroReconhecimentoVoz={
-                setFeedbackErroReconhecimentoVoz
-              }
-              setFeedbackErroNavegadorIncompativel={
-                setFeedbackErroNavegadorIncompativel
-              }
+              setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+              setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
             />
           )}
           {etapaAtiva == 1 && (
@@ -441,20 +420,13 @@ const BarraProgressaoDemanda = (props) => {
                 dados={paginaBeneficios}
                 setDados={setPaginaBeneficios}
                 salvarBeneficios={salvarBeneficios}
-                setFeedbackErroNavegadorIncompativel={
-                  setFeedbackErroNavegadorIncompativel
-                }
-                setFeedbackErroReconhecimentoVoz={
-                  setFeedbackErroReconhecimentoVoz
-                }
+                setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
+                setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
               />
             </Box>
           )}
           {etapaAtiva == 2 && (
-            <FormularioAnexosDemanda
-              dados={paginaArquivos}
-              setDados={setPaginaArquivos}
-            />
+            <FormularioAnexosDemanda dados={paginaArquivos} setDados={setPaginaArquivos} />
           )}
 
           {/* Botão de voltar à etapa anterior da criação */}

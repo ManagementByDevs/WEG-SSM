@@ -1,23 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-
-import {
-  Autocomplete,
-  Box,
-  Checkbox,
-  Divider,
-  IconButton,
-  Input,
-  MenuItem,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Box, Checkbox, Divider, IconButton, Input, MenuItem, Paper, Select, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
 
 import ClipLoader from "react-spinners/ClipLoader";
 import ReactQuill from "react-quill";
@@ -49,6 +31,8 @@ import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
 import PropostaService from "../../service/propostaService";
+import ExportPdfService from "../../service/exportPdfService";
+import CookieService from "../../service/cookieService";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -463,17 +447,16 @@ const DetalhesPropostaEditMode = ({
       propostaAux.parecerComissao = null;
     if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
 
-    PropostaService.putComNovosDados(
-      propostaAux,
-      proposta.id,
-      novasTabelasCusto,
-      novosBeneficios,
-      novosAnexos,
-      listaIdsAnexos,
-      propostaEscopo
-    ).then((response) => {
+    PropostaService.putComNovosDados(propostaAux, proposta.id, novasTabelasCusto, novosBeneficios, novosAnexos, listaIdsAnexos, propostaEscopo).then((response) => {
       setPropostaData(response);
       setIsEditing(false);
+
+      // Salvamento de histórico
+      ExportPdfService.exportProposta(response.id).then((file) => {
+
+        let arquivo = new Blob([file], { type: "application/pdf" });
+        PropostaService.addHistorico(response.id, "Proposta Editada", arquivo, CookieService.getUser().id).then(() => { });
+      });
     });
   };
 

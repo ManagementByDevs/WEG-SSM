@@ -334,16 +334,18 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
           {/* Box Informações gerais */}
           <Box className="relative">
-            <Tooltip title={texts.detalhesProposta.editar}>
-              <Box className="absolute -right-8 -top-2">
-                <IconButton
-                  sx={{ color: "primary.main" }}
-                  onClick={handleOnEditClick}
-                >
-                  {!isEditing ? <EditIcon /> : <EditOffIcon />}
-                </IconButton>
-              </Box>
-            </Tooltip>
+            {proposta.status != "CANCELLED" && (
+              <Tooltip title={texts.detalhesProposta.editar}>
+                <Box className="absolute -right-8 -top-2">
+                  <IconButton
+                    sx={{ color: "primary.main" }}
+                    onClick={handleOnEditClick}
+                  >
+                    {!isEditing ? <EditIcon /> : <EditOffIcon />}
+                  </IconButton>
+                </Box>
+              </Tooltip>
+            )}
             {/* Solicitante */}
             <Box className="flex mt-4">
               <Typography fontSize={FontConfig.medium} fontWeight="bold">

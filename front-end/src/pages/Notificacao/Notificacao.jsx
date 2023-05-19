@@ -18,6 +18,8 @@ import {
 
 import "./notificacaoStyle.css";
 
+import ClipLoader from 'react-spinners/ClipLoader';
+
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
@@ -29,14 +31,12 @@ import NotificacaoService from "../../service/notificacaoService";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
-import ClipLoader from 'react-spinners/ClipLoader';
-
-import UsuarioService from "../../service/usuarioService";
-import CookieService from "../../service/cookieService";
 
 // Tela para mostrar as notificações do usuário no sistema
 const Notificacao = () => {
@@ -108,9 +108,8 @@ const Notificacao = () => {
       // para ter o "titulo da notificação"
       const retornaTitulo = () => {
         if (data.numeroSequencial) {
-          return `${texts.notificacaoComponente.demandaDeNumero} ${
-            data.numeroSequencial
-          } ${texts.notificacaoComponente.foi} ${formataStatus()}!`;
+          return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial
+            } ${texts.notificacaoComponente.foi} ${formataStatus()}!`;
         }
       };
 
@@ -292,9 +291,7 @@ const Notificacao = () => {
       <VLibras forceOnload />
       <Feedback
         open={feedback.visibilidade}
-        handleClose={() => {
-          setFeedback({ ...feedback, visibilidade: false });
-        }}
+        handleClose={() => { setFeedback({ ...feedback, visibilidade: false }); }}
         status={feedback.tipo}
         mensagem={feedback.mensagem}
       />
@@ -304,7 +301,7 @@ const Notificacao = () => {
         setOpen={setOpenModalConfirmDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onDeleteClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         textoBotao={"sim"}
       />
 
@@ -313,7 +310,7 @@ const Notificacao = () => {
         setOpen={setOpenModalConfirmMultiDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onMultiDeleteRowClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         textoBotao={"sim"}
       />
 
@@ -350,9 +347,7 @@ const Notificacao = () => {
                         <Box className="w-1/12 flex justify-center">
                           <Tooltip title={texts.notificacao.deletar}>
                             <IconButton
-                              onClick={() => {
-                                setOpenModalConfirmMultiDelete(true);
-                              }}
+                              onClick={() => { setOpenModalConfirmMultiDelete(true); }}
                             >
                               <DeleteOutlineOutlinedIcon
                                 sx={{ color: "primary.main" }}
@@ -362,13 +357,9 @@ const Notificacao = () => {
                           <Tooltip title={texts.notificacao.marcarComoLido}>
                             <IconButton onClick={onMultiReadOrUnreadClick}>
                               {rows.every((row) => row.visualizado) ? (
-                                <MarkEmailUnreadOutlinedIcon
-                                  sx={{ color: "primary.main" }}
-                                />
+                                <MarkEmailUnreadOutlinedIcon sx={{ color: "primary.main" }} />
                               ) : (
-                                <MarkEmailReadOutlinedIcon
-                                  sx={{ color: "primary.main" }}
-                                />
+                                <MarkEmailReadOutlinedIcon sx={{ color: "primary.main" }} />
                               )}
                             </IconButton>
                           </Tooltip>
@@ -391,13 +382,8 @@ const Notificacao = () => {
                                     color: "white",
                                   },
                                 }}
-                                checked={
-                                  rows.every((row) => row.checked) &&
-                                  rows.length > 0
-                                }
-                                onChange={(e) => {
-                                  onSelectAllClick(e.target.checked);
-                                }}
+                                checked={rows.every((row) => row.checked) && rows.length > 0}
+                                onChange={(e) => { onSelectAllClick(e.target.checked); }}
                               />
                             </th>
                             <th className="text-white">
@@ -424,16 +410,12 @@ const Notificacao = () => {
                               selected={!row.visualizado}
                               hover
                               key={index}
-                              sx={{
-                                "&:last-child td, &:last-child th": { border: 0 },
-                              }}
+                              sx={{ "&:last-child td, &:last-child th": { border: 0 }, }}
                             >
                               <td className="text-center">
                                 <Checkbox
                                   checked={row.checked}
-                                  onChange={(e) => {
-                                    onSelectRowClick(e, index);
-                                  }}
+                                  onChange={(e) => { onSelectRowClick(e, index); }}
                                 />
                               </td>
                               <td className="text-center">

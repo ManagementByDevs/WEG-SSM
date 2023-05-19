@@ -100,6 +100,9 @@ const TextLanguage = (linguagem) => {
         demandaGerencia: {
           backlog: "Backlog",
           assessment: "Assessment",
+          businessCase: "Business Case",
+          done: "Done",
+          cancelled: "Cancelled",
           ppm: "PPM",
           solicitante: "Solicitante",
           departamento: "Departamento",
@@ -114,6 +117,9 @@ const TextLanguage = (linguagem) => {
         demandaGerenciaModoVisualizacao: {
           backlog: "Backlog",
           assessment: "Assessment",
+          businessCase: "Business Case",
+          done: "Done",
+          cancelled: "Cancelled",
           codigo: "Código",
           titulo: "Título",
           solicitante: "Solicitante",
@@ -966,6 +972,9 @@ const TextLanguage = (linguagem) => {
         demandaGerencia: {
           backlog: "Backlog",
           assessment: "Assessment",
+          businessCase: "Business Case",
+          done: "Done",
+          cancelled: "Cancelled",
           ppm: "PPM",
           solicitante: "Requester",
           departamento: "Department",
@@ -980,6 +989,9 @@ const TextLanguage = (linguagem) => {
         demandaGerenciaModoVisualizacao: {
           backlog: "Backlog",
           assessment: "Assessment",
+          businessCase: "Business Case",
+          done: "Done",
+          cancelled: "Cancelled",
           codigo: "Code",
           titulo: "Title",
           solicitante: "Requester",
@@ -1826,6 +1838,9 @@ const TextLanguage = (linguagem) => {
         demandaGerencia: {
           backlog: "待办事项",
           assessment: "评估",
+          businessCase: "商业案例",
+          done: "完毕",
+          cancelled: "取消",
           ppm: "PPM",
           solicitante: "请求者",
           departamento: "部门",
@@ -1840,6 +1855,9 @@ const TextLanguage = (linguagem) => {
         demandaGerenciaModoVisualizacao: {
           backlog: "待办事项",
           assessment: "评估",
+          businessCase: "商业案例",
+          done: "完毕",
+          cancelled: "取消",
           codigo: "代码",
           titulo: "标题",
           solicitante: "请求者",
@@ -2661,6 +2679,9 @@ const TextLanguage = (linguagem) => {
         demandaGerencia: {
           backlog: "Backlog",
           assessment: "Assessment",
+          businessCase: "Business Case",
+          done: "Done",
+          cancelled: "Cancelled",
           ppm: "PPM",
           solicitante: "Solicitante",
           departamento: "Departamento",
@@ -2675,6 +2696,9 @@ const TextLanguage = (linguagem) => {
         demandaGerenciaModoVisualizacao: {
           backlog: "Backlog",
           assessment: "Assessment",
+          businessCase: "Business Case",
+          done: "Done",
+          cancelled: "Cancelled",
           codigo: "Código",
           titulo: "Título",
           solicitante: "Solicitante",

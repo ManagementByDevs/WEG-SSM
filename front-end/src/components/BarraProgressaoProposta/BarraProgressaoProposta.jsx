@@ -19,12 +19,12 @@ import CustosService from "../../service/custosService";
 import EscopoPropostaService from "../../service/escopoPropostaService";
 import ExportPdfService from "../../service/exportPdfService";
 import SecaoTIService from "../../service/secaoTIService";
-
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CookieService from "../../service/cookieService";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -577,12 +577,8 @@ const BarraProgressaoProposta = (props) => {
   const [feedbackFaltante, setFeedbackFaltante] = useState(false);
   const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   return (
     <>
@@ -609,9 +605,7 @@ const BarraProgressaoProposta = (props) => {
           listaForuns={listaForuns}
           listaBU={listaBU}
           listaSecoesTI={listaSecoesTI}
-          setFeedbackErroNavegadorIncompativel={
-            setFeedbackErroNavegadorIncompativel
-          }
+          setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         />
       )}
@@ -626,9 +620,7 @@ const BarraProgressaoProposta = (props) => {
         <FormularioCustosProposta
           custos={custos}
           setCustos={setCustos}
-          setFeedbackErroNavegadorIncompativel={
-            setFeedbackErroNavegadorIncompativel
-          }
+          setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         />
       )}
@@ -638,9 +630,7 @@ const BarraProgressaoProposta = (props) => {
           setGerais={setGerais}
           dados={dadosDemanda}
           setDados={setDadosDemanda}
-          setFeedbackErroNavegadorIncompativel={
-            setFeedbackErroNavegadorIncompativel
-          }
+          setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         />
       )}
@@ -679,38 +669,28 @@ const BarraProgressaoProposta = (props) => {
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
+        handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
         open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
+        handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
       />
       {/* Feedback de dados faltantes */}
       <Feedback
         open={feedbackFaltante}
-        handleClose={() => {
-          setFeedbackFaltante(false);
-        }}
+        handleClose={() => { setFeedbackFaltante(false); }}
         status={"erro"}
-        mensagem={
-          texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
-        }
+        mensagem={texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios}
       />
       {/* Feedback de que não fechou 100% de CCs */}
       <Feedback
         open={feedback100porcentoCcs}
-        handleClose={() => {
-          setFeedback100porcentoCcs(false);
-        }}
+        handleClose={() => { setFeedback100porcentoCcs(false); }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
       />

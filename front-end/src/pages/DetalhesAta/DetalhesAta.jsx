@@ -193,17 +193,8 @@ const DetalhesAta = (props) => {
   ) => {
     for (let proposta of listaPropostasToUpdate) {
       PropostaService.atualizacaoDg(proposta.id, proposta.parecerDG, proposta.parecerInformacaoDG).then(
-        (response) => {
-          console.log("Proposta atualizada com sucesso! ", response);
-        }
+        (response) => { }
       );
-    }
-  };
-
-  const confirmarPublicarAta = () => {
-    if (!isAllFieldsFilled()) {
-      setFeedbackCamposFaltantes(true);
-      return;
     }
   };
 
@@ -218,6 +209,12 @@ const DetalhesAta = (props) => {
 
   // Função de criar ata e enviar feedback
   const publicarAta = () => {
+
+    if (!isAllFieldsFilled()) {
+      setFeedbackCamposFaltantes(true);
+      return;
+    }
+
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };
 
@@ -231,11 +228,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-
-    console.log("ata a ser ataulizada: ", ataPublished);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => {
-      console.log("Ata atualizada com sucesso! ", response);
-    });
+    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
 
     navigate("/", { state: { feedback: true } });
   };
@@ -258,10 +251,6 @@ const DetalhesAta = (props) => {
       }
     }
   }, []);
-
-  useEffect(() => {
-    console.log("ata: ", ata);
-  }, [ata]);
 
   const trazerHoraData = (data) => {
     let dataHora = new Date(data);

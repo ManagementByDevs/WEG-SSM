@@ -12,6 +12,7 @@ import FontContext from "../../service/FontContext";
 
 // Página de Not Found, caso o usuário entre em alguma url inexistente no sistema
 const NotFound = (props) => {
+
     // useContext para alterar o idioma do sistema
     const { texts } = useContext(TextLanguageContext);
 
