@@ -2,7 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 
-import { Box, Stepper, Step, StepLabel, Typography, Button, } from "@mui/material";
+import {
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+  Button,
+} from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -23,7 +30,6 @@ import beneficioService from "../../service/beneficioService";
  * salvando a demanda e escopos no banco de dados
  */
 const BarraProgressaoDemanda = (props) => {
-
   const [usuario, setUsuario] = useState(null);
 
   /** Contexto para alterar o idioma */
@@ -45,10 +51,14 @@ const BarraProgressaoDemanda = (props) => {
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
 
   /** Variável utilizada para abrir o modal de feedback de navegador incompativel */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
 
   /** Variável utilizada para abrir o modal de feedback de erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
   // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
@@ -249,12 +259,12 @@ const BarraProgressaoDemanda = (props) => {
           //Confirmação de salvamento (se sobrar tempo)
         });
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
@@ -281,56 +291,64 @@ const BarraProgressaoDemanda = (props) => {
 
   /** Função para voltar para a etapa anterior na criação da demanda */
   const voltarEtapa = () => {
-    setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
+    if (!props.lendo) {
+      setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
+    } else {
+      lerTexto(texts.barraProgressaoDemanda.botaoVoltar);
+    }
   };
 
   /** Função para ir para a próxima etapa da demanda */
   const proximaEtapa = () => {
-    switch (etapaAtiva) {
-      case 0:
-        if (
-          paginaDados.titulo !== "" &&
-          paginaDados.problema !== "" &&
-          paginaDados.proposta !== "" &&
-          paginaDados.frequencia !== ""
-        ) {
-          setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
-        } else {
-          setFeedbackDadosFaltantes(true);
-        }
-        break;
-      case 1:
-        let precisaFeedback = false;
-        if (paginaBeneficios.length > 0) {
-          paginaBeneficios.map((beneficio) => {
-            if (
-              beneficio.tipoBeneficio == "Qualitativo" &&
-              beneficio.memoriaCalculo == ""
-            ) {
-              precisaFeedback = true;
-            } else if (
-              (beneficio.tipoBeneficio == "Real" ||
-                beneficio.tipoBeneficio == "Potencial") &&
-              (beneficio.valor_mensal == "" ||
-                beneficio.moeda == "" ||
-                beneficio.memoriaCalculo == "")
-            ) {
-              precisaFeedback = true;
-            }
-            if (beneficio.tipoBeneficio == "") {
-              precisaFeedback = true;
-            }
-          });
-          if (precisaFeedback) {
+    if (props.lendo) {
+      lerTexto(texts.barraProgressaoDemanda.botaoProximo);
+    } else {
+      switch (etapaAtiva) {
+        case 0:
+          if (
+            paginaDados.titulo !== "" &&
+            paginaDados.problema !== "" &&
+            paginaDados.proposta !== "" &&
+            paginaDados.frequencia !== ""
+          ) {
+            setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
+          } else {
             setFeedbackDadosFaltantes(true);
+          }
+          break;
+        case 1:
+          let precisaFeedback = false;
+          if (paginaBeneficios.length > 0) {
+            paginaBeneficios.map((beneficio) => {
+              if (
+                beneficio.tipoBeneficio == "Qualitativo" &&
+                beneficio.memoriaCalculo == ""
+              ) {
+                precisaFeedback = true;
+              } else if (
+                (beneficio.tipoBeneficio == "Real" ||
+                  beneficio.tipoBeneficio == "Potencial") &&
+                (beneficio.valor_mensal == "" ||
+                  beneficio.moeda == "" ||
+                  beneficio.memoriaCalculo == "")
+              ) {
+                precisaFeedback = true;
+              }
+              if (beneficio.tipoBeneficio == "") {
+                precisaFeedback = true;
+              }
+            });
+            if (precisaFeedback) {
+              setFeedbackDadosFaltantes(true);
+            } else {
+              setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
+              salvarBeneficios();
+            }
           } else {
             setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
-            salvarBeneficios();
           }
-        } else {
-          setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
-        }
-        break;
+          break;
+      }
     }
   };
 
@@ -339,7 +357,7 @@ const BarraProgressaoDemanda = (props) => {
     for (let beneficio of paginaBeneficios) {
       beneficioService
         .put(beneficio, beneficio.memoriaCalculo)
-        .then((response) => { });
+        .then((response) => {});
     }
   };
 
@@ -349,26 +367,51 @@ const BarraProgressaoDemanda = (props) => {
     navigate("/");
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <>
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}
-        handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
         open={feedbackErroNavegadorIncompativel}
-        handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
       />
       {/* Feedback de dados faltantes */}
       <Feedback
         open={feedbackDadosFaltantes}
-        handleClose={() => { setFeedbackDadosFaltantes(false); }}
+        handleClose={() => {
+          setFeedbackDadosFaltantes(false);
+        }}
         status={"erro"}
         mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
       />
@@ -396,7 +439,12 @@ const BarraProgressaoDemanda = (props) => {
               return (
                 <Step key={label}>
                   <StepLabel>
-                    <Typography fontSize={FontConfig.default}>
+                    <Typography
+                      fontSize={FontConfig.default}
+                      onClick={() => {
+                        lerTexto(label);
+                      }}
+                    >
                       {label}
                     </Typography>
                   </StepLabel>
@@ -410,8 +458,12 @@ const BarraProgressaoDemanda = (props) => {
             <FormularioDadosDemanda
               dados={paginaDados}
               setDados={setPaginaDados}
-              setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
-              setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
+              setFeedbackErroReconhecimentoVoz={
+                setFeedbackErroReconhecimentoVoz
+              }
+              setFeedbackErroNavegadorIncompativel={
+                setFeedbackErroNavegadorIncompativel
+              }
             />
           )}
           {etapaAtiva == 1 && (
@@ -420,13 +472,20 @@ const BarraProgressaoDemanda = (props) => {
                 dados={paginaBeneficios}
                 setDados={setPaginaBeneficios}
                 salvarBeneficios={salvarBeneficios}
-                setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
-                setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+                setFeedbackErroNavegadorIncompativel={
+                  setFeedbackErroNavegadorIncompativel
+                }
+                setFeedbackErroReconhecimentoVoz={
+                  setFeedbackErroReconhecimentoVoz
+                }
               />
             </Box>
           )}
           {etapaAtiva == 2 && (
-            <FormularioAnexosDemanda dados={paginaArquivos} setDados={setPaginaArquivos} />
+            <FormularioAnexosDemanda
+              dados={paginaArquivos}
+              setDados={setPaginaArquivos}
+            />
           )}
 
           {/* Botão de voltar à etapa anterior da criação */}
@@ -449,7 +508,11 @@ const BarraProgressaoDemanda = (props) => {
               color="primary"
               variant="contained"
               onClick={() => {
-                setOpenConfirmacao(true);
+                if (!props.lendo) {
+                  setOpenConfirmacao(true);
+                } else {
+                  lerTexto(texts.barraProgressaoDemanda.botaoCriar);
+                }
               }}
               sx={{ mr: 1, position: "fixed", bottom: 50, right: 160 }}
               disableElevation
