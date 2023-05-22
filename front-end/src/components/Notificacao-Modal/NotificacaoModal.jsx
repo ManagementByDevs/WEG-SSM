@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Box, Tooltip, Typography, IconButton, Menu } from "@mui/material";
 
@@ -11,27 +11,44 @@ import Feedback from "../Feedback/Feedback";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
+import CookieService from "../../service/cookieService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 import NotificacaoService from "../../service/notificacaoService";
 import UsuarioService from "../../service/usuarioService";
-import CookieService from "../../service/cookieService";
+import DateService from "../../service/dateService";
+import { WebSocketContext } from "../../service/WebSocketService";
 
 // Modal de notificações do sistema
 const NotificacaoModal = (props) => {
+  // Variável para pegar informações da URL
+  const location = useLocation();
 
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
+  /**  Context do WebSocket */
+  const { inscrever, stompClient } = useContext(WebSocketContext);
+
+  // Context para alterar o tamanho da fonte
+  const { FontConfig } = useContext(FontContext);
+
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
 
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  /** Usuário logado */
+  const [user, setUser] = useState(UsuarioService.getUserCookies().usuario);
 
   // UseState para poder visualizar e alterar a visibilidade das notificacoes
   const [anchorEl, setAnchorEl] = useState(null);
 
   // UseState para poder visualizar e alterar a visibilidade do feedback de notificação lida
   const [feedback, setFeedback] = useState(false);
+
+  /** Lista de notificações não lidas do usuário */
+  const [notificacoes, setNotificacoes] = useState([]);
+
+  // UseState para poder visualizar e alterar rota (pathname)
+  const [rota, setRota] = useState(location.pathname);
 
   // Variável que é usada para saber se o menu está aberto ou não
   const open = Boolean(anchorEl);
@@ -46,24 +63,36 @@ const NotificacaoModal = (props) => {
     setAnchorEl(null);
   };
 
-  // Contador para ver se tem notificação não lida
-  const [contNaoLidas, setContNaoLidas] = useState(0);
-
-  const [notificacoes, setNotificacoes] = useState([]);
-
   // Função para buscar as notificações não lidas do usuário
   const buscarNotificacoes = () => {
-    if(!CookieService.getCookie("jwt")) return;
-    UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie("jwt").sub
-    ).then((user) => {
-      NotificacaoService.getByUserIdAndNotVisualizado(user.id)
-        .then((response) => {
-          setNotificacoes(response.content);
-          setContNaoLidas(response.totalElements);
-        })
-        .catch((error) => {
-        });
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (user) => {
+        NotificacaoService.getByUserIdAndNotVisualizado(user.id)
+          .then((response) => {
+            setNotificacoes(response.content);
+          })
+          .catch((error) => {});
+      }
+    );
+  };
+
+  // Função para quando clicar em uma notificação
+  const onNotificationItemClick = () => {
+    setFeedback(true);
+    buscarNotificacoes();
+  };
+
+  const saveNotificacao = (mensagem = EntitiesObjectService.mensagem()) => {
+    let newNotificacao = EntitiesObjectService.notificacao();
+    newNotificacao.numeroSequencial = mensagem.idChat.id;
+    newNotificacao.data = DateService.getTodaysDateMySQL();
+    newNotificacao.tipoNotificacao = "MENSAGENS";
+    newNotificacao.usuario.id = user.id;
+    console.log("notificacao: ", mensagem);
+
+    NotificacaoService.post(newNotificacao).then((notificacaoResponse) => {
+      notificacoes.push(notificacaoResponse);
     });
   };
 
@@ -72,17 +101,41 @@ const NotificacaoModal = (props) => {
     buscarNotificacoes();
   }, []);
 
-  // Função para quando clicar em uma notificação
-  const onNotificationItemClick = () => {
-    setFeedback(true);
-    buscarNotificacoes();
-  };
+  // UseEffect para se inscrever no tópico de chats para receber notificações em tempo real
+  useEffect(() => {
+    const receivedAnyMessage = (mensagem) => {
+      let mensagemRecebida = EntitiesObjectService.mensagem();
+      mensagemRecebida = JSON.parse(mensagem.body);
+      // Se a mensagem recebida for do usuário logado, ignore
+      if (mensagemRecebida.usuario.id == user.id) {
+        console.log("a");
+        return;
+      }
+
+      saveNotificacao(mensagemRecebida);
+    };
+
+    if (!rota.includes("/chat")) {
+      let inscricaoAllMensagens = inscrever(
+        "/weg_ssm/mensagem/all",
+        receivedAnyMessage
+      );
+
+      return () => {
+        if (inscricaoAllMensagens) {
+          inscricaoAllMensagens.unsubscribe();
+        }
+      };
+    }
+  }, [stompClient]);
 
   return (
     <>
       <Feedback
         open={feedback}
-        handleClose={() => { setFeedback(false); }}
+        handleClose={() => {
+          setFeedback(false);
+        }}
         status={"info"}
         mensagem={texts.notificacaoModal.notificacaoLidaComSucesso}
       />
@@ -97,16 +150,9 @@ const NotificacaoModal = (props) => {
             />
             {
               // Verifica se tem notificação não lida
-              notificacoes?.map((notificacao, index) => {
-                if (!notificacao.lida) {
-                  return (
-                    <Box
-                      key={index}
-                      className="absolute top-0 right-0.5 w-3 h-3 bg-red-500 rounded-full"
-                    ></Box>
-                  );
-                }
-              })
+              notificacoes.length > 0 && (
+                <Box className="absolute top-0 right-0.5 w-3 h-3 bg-red-500 rounded-full" />
+              )
             }
           </Box>
         </IconButton>
@@ -118,8 +164,8 @@ const NotificacaoModal = (props) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right", }}
-        transformOrigin={{ vertical: "top", horizontal: "right", }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
         {...props}
       >
         <Box className="w-72 px-3 py-2 max-h-60 overflow-hidden">
@@ -139,7 +185,7 @@ const NotificacaoModal = (props) => {
               );
             })}
             {/* Caso não haja notificação não lida, aparece a mensagem abaixo */}
-            {contNaoLidas === 0 && (
+            {notificacoes.length === 0 && (
               <Box className="flex items-center justify-center text-center w-full pt-1">
                 <Typography
                   fontSize={FontConfig?.default}
@@ -170,8 +216,11 @@ const NotificacaoModal = (props) => {
                 navigate("/notificacao");
               }}
             >
-              {contNaoLidas > 0
-                ? texts.notificacaoModal.verTudo + "(" + contNaoLidas + ")"
+              {notificacoes.length > 0
+                ? texts.notificacaoModal.verTudo +
+                  "(" +
+                  notificacoes.length +
+                  ")"
                 : texts.notificacaoModal.verNotificacoes}
             </Typography>
           </Box>

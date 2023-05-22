@@ -21,18 +21,32 @@ public class Chat {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    /**
+     * Utilizada para verificar se a conversa foi encerrada
+     */
     @Column(nullable = false)
     private Boolean conversaEncerrada;
 
+    /**
+     * Mensagens que ainda não foram lidas
+     */
     @Column
     private Long msgNaoLidas = Long.parseLong("0");
 
-    // Foreign keys
+    /**
+     * Foreign keys
+     */
 
+    /**
+     * Proposta que o chat está relacionado
+     */
     @OneToOne
     @JoinColumn(name = "id_proposta", nullable = false)
     private Proposta idProposta;
 
+    /**
+     * Lista de usuários que pertencem ao chat
+     */
     @ManyToMany
     @JoinTable(
             name = "usuario_chat",

@@ -24,19 +24,41 @@ public class Historico {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    /**
+     * Data do histórico
+     */
     @Column(nullable = false)
     private Date data;
 
+    /**
+     * Descrição da ação realizada
+     */
+    @Column(nullable = false, length = 45)
+    private String acaoRealizada;
+
+    /**
+     * Foreign keys
+     */
+
+    /**
+     * Autor do histórico
+     */
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario autor;
 
+    /**
+     * Documento do histórico que contém as modificações
+     */
     @OneToOne(cascade = CascadeType.ALL)
     private DocumentoHistorico documentoHistorico;
 
-    @Column(nullable = false , length = 45)
-    private String acaoRealizada;
 
+    /**
+     * Função para setar o documento do histórico
+     *
+     * @param file
+     */
     public void setDocumentoMultipart(MultipartFile file) {
         try {
             this.documentoHistorico = new DocumentoHistorico(file.getOriginalFilename(), file.getContentType(), file.getBytes());

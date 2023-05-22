@@ -6,8 +6,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "anexo")
-@AllArgsConstructor @NoArgsConstructor()
-@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor()
+@Getter
+@Setter
 @ToString
 @EqualsAndHashCode
 public class Anexo {
@@ -16,10 +18,20 @@ public class Anexo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Nome do arquivo
+     */
     private String nome;
 
+    /**
+     * Tipo do arquivo
+     */
     private String tipo;
 
+    /**
+     * Dados do arquivo em bytes
+     */
     @Lob
     private byte[] dados;
+
 }

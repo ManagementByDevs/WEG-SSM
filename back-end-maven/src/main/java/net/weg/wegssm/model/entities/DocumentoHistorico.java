@@ -17,13 +17,23 @@ public class DocumentoHistorico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Nome do documento
+     */
     @NonNull
     private String nome;
 
+    /**
+     * Tipo do documento
+     */
     @NonNull
     private String tipo;
 
+    /**
+     * Dados do documento
+     */
     @Lob
     @NonNull
     private byte[] dados;
+
 }

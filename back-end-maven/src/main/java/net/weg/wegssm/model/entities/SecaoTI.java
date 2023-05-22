@@ -19,9 +19,16 @@ public class SecaoTI {
     @Column(nullable = false, unique = true)
     private Long idSecao;
 
+    /**
+     * Sigla da seção
+     */
     @Column(length = 6)
     private String siglaSecao;
 
+    /**
+     * Nome da seção
+     */
     @Column(length = 100)
     private String nomeSecao;
+
 }

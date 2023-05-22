@@ -12,6 +12,8 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EscopoService from "../../service/escopoService";
 
+import Tour from "reactour";
+
 // Componente para mudar o modo de visualização dos escopos (Grid, tabela ou nenhum escopo encontrado)
 const EscopoModoVisualizacao = ({
     listaEscopos,
@@ -111,6 +113,45 @@ const EscopoTable = ({
         return porcentagem + "%";
     };
 
+    // useState para abrir e fechar o tour
+    const [isTourOpen, setIsTourOpen] = useState(false);
+
+    // Passos do tour
+    const stepsTour = [
+        {
+            selector: "#segundo",
+            content: texts.escopos.tour.tour1,
+            style: {
+                backgroundColor: "#DCDCDC",
+                color: "#000000",
+            },
+        },
+        {
+            selector: "#primeiro",
+            content: texts.escopos.tour.tour2,
+            style: {
+                backgroundColor: "#DCDCDC",
+                color: "#000000",
+            },
+        },
+        {
+            selector: "#terceiro",
+            content: texts.escopos.tour.tour3,
+            style: {
+                backgroundColor: "#DCDCDC",
+                color: "#000000",
+            },
+        },
+        {
+            selector: "#quarto",
+            content: texts.escopos.tour.tour4,
+            style: {
+                backgroundColor: "#DCDCDC",
+                color: "#000000",
+            },
+        },
+    ];
+
     return (
         <Paper sx={{ width: "100%" }} square>
             <Table className="mb-8 table-fixed" sx={{ width: "100%" }}>
@@ -148,7 +189,7 @@ const EscopoTable = ({
 
                         >
                             <td className="text-center p-3" title={row.id}>
-                                <Typography className="truncate" fontSize={FontConfig.medium}>
+                                <Typography id="quarto" className="truncate" fontSize={FontConfig.medium}>
                                     {calculaPorcentagem(row)}
                                 </Typography>
                             </td>

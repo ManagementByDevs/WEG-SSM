@@ -19,9 +19,15 @@ public class Forum {
     @Column(nullable = false, unique = true)
     private Long idForum;
 
+    /**
+     * Sigla do fórum
+     */
     @Column(length = 6)
     private String siglaForum;
 
+    /**
+     * Nome do fórum
+     */
     @Column(nullable = false, length = 100)
     private String nomeForum;
 

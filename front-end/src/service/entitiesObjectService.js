@@ -179,6 +179,17 @@ class EntitiesObjectService {
       abaPadrao: "",
     };
   }
+
+  notificacao() {
+    return {
+      id: 0,
+      numeroSequencial: "",
+      visualizado: false,
+      data: "",
+      tipoNotificacao: "",
+      usuario: this.usuario(),
+    };
+  }
 }
 
 export default new EntitiesObjectService();

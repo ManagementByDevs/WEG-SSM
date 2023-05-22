@@ -68,9 +68,6 @@ const Chat = (props) => {
   /** ID do chat passado por params */
   const idChat = useParams().id;
 
-  /** Informações da localização da página atual */
-  const location = useLocation();
-
   /** Container das mensagens */
   const boxRef = useRef(null);
 

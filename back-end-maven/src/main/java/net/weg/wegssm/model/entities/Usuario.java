@@ -25,28 +25,51 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    /**
+     * Nome do usuário
+     */
     @Column(nullable = false, length = 100)
     private String nome;
 
+    /**
+     * Senha do usuário
+     */
     @Column(nullable = false)
     @JsonIgnore
     private String senha;
 
+    /**
+     * Email do usuário
+     */
     @Column(nullable = false, length = 100, unique = true)
     private String email;
 
+    /**
+     * Visibilidade para não deletar o usuário por completo do BD
+     */
     @Column
     private Boolean visibilidade;
 
+    /**
+     * Tipo do usuário
+     */
     @Enumerated
     @Column(nullable = false)
     private TipoUsuario tipoUsuario;
 
+    /**
+     * Preferências do usuário
+     */
     @Column(nullable = false, length = 2000)
     private String preferencias;
 
-    // Foreign key
+    /**
+     * Foreign key
+     */
 
+    /**
+     * Departamento do usuário
+     */
     @ManyToOne
     @JoinColumn(name = "departamento_id")
     private Departamento departamento;

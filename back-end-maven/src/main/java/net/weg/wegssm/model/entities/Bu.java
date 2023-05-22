@@ -19,9 +19,15 @@ public class Bu {
     @Column(nullable = false, unique = true)
     private Long idBu;
 
+    /**
+     * Sigla da BU
+     */
     @Column(length = 6)
     private String siglaBu;
 
+    /**
+     * Nome da BU
+     */
     @Column(nullable = false, length = 100)
     private String nomeBu;
 

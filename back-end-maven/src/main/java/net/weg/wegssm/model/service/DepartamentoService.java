@@ -3,6 +3,7 @@ package net.weg.wegssm.model.service;
 import net.weg.wegssm.model.entities.Departamento;
 import net.weg.wegssm.repository.DepartamentoRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**

@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.Beneficio;
 import net.weg.wegssm.model.entities.TipoBeneficio;
 import net.weg.wegssm.repository.BeneficioRepository;
@@ -12,19 +13,13 @@ import java.util.Optional;
  * Classe service para os benefícios
  */
 @Service
+@AllArgsConstructor
 public class BeneficioService {
 
     /**
      * Classe repository dos benefícios
      */
     private BeneficioRepository beneficioRepository;
-
-    /**
-     * Construtor da classe
-     */
-    public BeneficioService(BeneficioRepository beneficioRepository) {
-        this.beneficioRepository = beneficioRepository;
-    }
 
     /**
      * Função para buscar um benefício pelo ID recebido
@@ -53,4 +48,5 @@ public class BeneficioService {
     public void deleteById(Long id) {
         beneficioRepository.deleteById(id);
     }
+
 }
