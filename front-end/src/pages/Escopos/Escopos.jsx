@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras"
 
-import { Box, Button, Tooltip } from "@mui/material";
+import { Box, Button, IconButton, Tooltip } from "@mui/material";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 import Caminho from "../../components/Caminho/Caminho";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -25,12 +27,13 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 import Tour from "reactour";
 
 // Tela para mostrar os escopos de demandas/propostas não finalizadas
 const Escopos = () => {
-  
+
   const [usuario, setUsuario] = useState(null);
 
   // useContext para alterar a linguagem do sistema
@@ -291,8 +294,39 @@ const Escopos = () => {
 
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
-  const verEscopo = (escopo) => {
+  /** Função para trocar o modo de visualização dos itens (bloco / lista) */
+  const trocarModoVisualizacao = () => {
+    let novoModo = nextModoVisualizacao === "GRID" ? "TABLE" : "GRID";
+    saveNewPreference("itemsVisualizationMode", novoModo);
+    setNextModoVisualizacao(novoModo);
+  };
 
+  /** Função que salva a nova preferência do usuário */
+  const saveNewPreference = (preferenciaTipo = "", value) => {
+    if (!CookieService.getCookie("jwt")) return;
+
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (user) => {
+        let preferencias = JSON.parse(user.preferencias);
+
+        switch (preferenciaTipo) {
+          case "itemsVisualizationMode":
+            // Nova preferência do modo de visualização
+            preferencias.itemsVisualizationMode =
+              value == "TABLE" ? "grid" : "table";
+            break;
+          case "abaPadrao":
+            // Nova preferência da aba padrão
+            preferencias.abaPadrao = value;
+            // setValorAba(preferencias.abaPadrao);
+            break;
+        }
+
+        user.preferencias = JSON.stringify(preferencias);
+
+        UsuarioService.updateUser(user.id, user);
+      }
+    );
   };
 
   return (
@@ -325,14 +359,14 @@ const Escopos = () => {
           {/* Container conteudo */}
           <Box className="w-11/12 mt-10">
             {/* Container para o input e botão de filtrar */}
-            <Box className="flex gap-4 w-2/4">
+            <Box className="relative mb-4">
               {/* Input de pesquisa */}
               <Box
                 id="segundo"
                 className="flex justify-between border px-3 py-1"
                 sx={{
                   backgroundColor: "input.main",
-                  width: "50%",
+                  width: "25%",
                   minWidth: "15rem",
                 }}
               >
@@ -386,37 +420,40 @@ const Escopos = () => {
                   </Tooltip>
                 </Box>
               </Box>
+              <Box id="nonoDemandas" className="absolute right-0 top-2">
+                {nextModoVisualizacao == "TABLE" ? (
+                  <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
+                    <IconButton
+                      onClick={() => { trocarModoVisualizacao(); }}
+                    >
+                      <ViewListIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
+                    <IconButton
+                      onClick={() => { trocarModoVisualizacao(); }}
+                    >
+                      <ViewModuleIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
             </Box>
 
-            {/* <EscopoModoVisualizacao
-              listaEscopos={escopos}
-              onEscopoClick={verEscopo}
-              nextModoVisualizacao={nextModoVisualizacao}
-              myEscopos={true}
-            /> */}
-
-            <Box
-              id="primeiro"
-              className="mt-6 grid gap-4"
-              sx={{
-                gridTemplateColumns: "repeat(auto-fit, minmax(650px, 1fr))",
-              }}
-            >
-              {escopos?.map((escopo, index) => {
-                return (
-                  <Escopo
-                    key={index}
-                    isTourOpen={isTourOpen}
-                    escopo={escopo}
-                    index={index}
-                    onclick={() => {
-                      openEscopo(escopo);
-                    }}
-                    handleDelete={onTrashCanClick}
-                  />
-                );
-              })}
+            {/* Mostrando os escopos de acordo com a forma de visualização */}
+            <Box sx={{ marginTop: '2%' }}>
+              <EscopoModoVisualizacao
+                listaEscopos={escopos}
+                onEscopoClick={openEscopo}
+                nextModoVisualizacao={nextModoVisualizacao}
+                myEscopos={true}
+                handleDelete={onTrashCanClick}
+                buscar={buscarEscopos}
+                isTourOpen={isTourOpen}
+              />
             </Box>
+
             {/* Feedback Erro reconhecimento de voz */}
             <Feedback
               open={feedbackErroReconhecimentoVoz}

@@ -1,6 +1,19 @@
 import React, { useState, useContext, useEffect, useRef, memo } from "react";
 
-import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, FormControl, Select, MenuItem, Tooltip, } from "@mui/material";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  Typography,
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -16,7 +29,6 @@ import FontContext from "../../service/FontContext";
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -162,6 +174,25 @@ const BeneficiosDetalheDemanda = (props) => {
 
   // ********************************************** Fim Gravar audio **********************************************
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Box className="flex items-center">
       {/* Beneficios editáveis */}
@@ -189,6 +220,9 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
+                      onClick={() => {
+                        lerTexto(texts.BeneficiosDetalheDemanda.tipo);
+                      }}
                     >
                       {texts.BeneficiosDetalheDemanda.tipo}
                     </Typography>
@@ -202,6 +236,9 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
+                      onClick={() => {
+                        lerTexto(texts.BeneficiosDetalheDemanda.valorMensal);
+                      }}
                     >
                       {texts.BeneficiosDetalheDemanda.valorMensal}
                     </Typography>
@@ -215,6 +252,9 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
+                      onClick={() => {
+                        lerTexto(texts.BeneficiosDetalheDemanda.moeda);
+                      }}
                     >
                       {texts.BeneficiosDetalheDemanda.moeda}
                     </Typography>
@@ -228,6 +268,9 @@ const BeneficiosDetalheDemanda = (props) => {
                       fontSize={FontConfig.big}
                       fontWeight="800"
                       color="text.white"
+                      onClick={() => {
+                        lerTexto(texts.BeneficiosDetalheDemanda.memoriaCalculo);
+                      }}
                     >
                       {texts.BeneficiosDetalheDemanda.memoriaCalculo}
                     </Typography>
@@ -248,9 +291,23 @@ const BeneficiosDetalheDemanda = (props) => {
                         value={props.beneficio.tipoBeneficio}
                         onChange={(e) => {
                           if (e.target.value != "Qualitativo") {
-                            props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value }, props.index);
+                            props.setBeneficio(
+                              {
+                                ...props.beneficio,
+                                tipoBeneficio: e.target.value,
+                              },
+                              props.index
+                            );
                           } else {
-                            props.setBeneficio({ ...props.beneficio, tipoBeneficio: e.target.value, valor_mensal: "", moeda: "" }, props.index);
+                            props.setBeneficio(
+                              {
+                                ...props.beneficio,
+                                tipoBeneficio: e.target.value,
+                                valor_mensal: "",
+                                moeda: "",
+                              },
+                              props.index
+                            );
                           }
                         }}
                       >
@@ -292,20 +349,30 @@ const BeneficiosDetalheDemanda = (props) => {
                                 backgroundColor: "background.default",
                               }}
                               component="input"
-                              placeholder={texts.BeneficiosDetalheDemanda.digiteValorMensal}
+                              placeholder={
+                                texts.BeneficiosDetalheDemanda.digiteValorMensal
+                              }
                             />
                             <Tooltip
                               className="hover:cursor-pointer"
                               title={texts.homeGerencia.gravarAudio}
-                              onClick={() => { startRecognition(); }}
+                              onClick={() => {
+                                startRecognition();
+                              }}
                             >
                               {escutar ? (
                                 <MicOutlinedIcon
-                                  sx={{ color: "primary.main", fontSize: "1.3rem", }}
+                                  sx={{
+                                    color: "primary.main",
+                                    fontSize: "1.3rem",
+                                  }}
                                 />
                               ) : (
                                 <MicNoneOutlinedIcon
-                                  sx={{ color: "text.secondary", fontSize: "1.3rem", }}
+                                  sx={{
+                                    color: "text.secondary",
+                                    fontSize: "1.3rem",
+                                  }}
                                 />
                               )}
                             </Tooltip>
@@ -316,7 +383,10 @@ const BeneficiosDetalheDemanda = (props) => {
                   <td align="center">
                     {props.beneficio.tipoBeneficio != "QUALITATIVO" &&
                       props.beneficio.tipoBeneficio != "Qualitativo" && (
-                        <FormControl variant="standard" sx={{ marginRight: "10px", minWidth: 90 }}>
+                        <FormControl
+                          variant="standard"
+                          sx={{ marginRight: "10px", minWidth: 90 }}
+                        >
                           {/* Select de moeda do benefício */}
                           <Select
                             labelId="demo-simple-select-standard-label"
@@ -341,7 +411,9 @@ const BeneficiosDetalheDemanda = (props) => {
                       {/* Caixa de texto para edição da memória cálculo */}
                       <CaixaTextoQuill
                         texto={props.beneficio.memoriaCalculo}
-                        onChange={(value) => { alterarTexto(value); }}
+                        onChange={(value) => {
+                          alterarTexto(value);
+                        }}
                       />
                     </Box>
                   </td>
@@ -361,6 +433,9 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
+                    onClick={() => {
+                      lerTexto(texts.BeneficiosDetalheDemanda.tipo);
+                    }}
                   >
                     {texts.BeneficiosDetalheDemanda.tipo}
                   </Typography>
@@ -370,6 +445,9 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
+                    onClick={() => {
+                      lerTexto(texts.BeneficiosDetalheDemanda.valorMensal);
+                    }}
                   >
                     {texts.BeneficiosDetalheDemanda.valorMensal}
                   </Typography>
@@ -379,6 +457,9 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
+                    onClick={() => {
+                      lerTexto(texts.BeneficiosDetalheDemanda.moeda);
+                    }}
                   >
                     {texts.BeneficiosDetalheDemanda.moeda}
                   </Typography>
@@ -388,6 +469,9 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
+                    onClick={() => {
+                      lerTexto(texts.BeneficiosDetalheDemanda.memoriaCalculo);
+                    }}
                   >
                     {texts.BeneficiosDetalheDemanda.memoriaCalculo}
                   </Typography>
@@ -398,19 +482,37 @@ const BeneficiosDetalheDemanda = (props) => {
               <StyledTableRow className="flex">
                 <td align="center">
                   {/* Tipo do benefício */}
-                  <Typography fontSize={FontConfig.medium} color="text.primary">
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    color="text.primary"
+                    onClick={() => {
+                      lerTexto(props.beneficio.tipoBeneficio);
+                    }}
+                  >
                     {props.beneficio.tipoBeneficio}
                   </Typography>
                 </td>
                 <td align="center">
                   {/* Valor mensal */}
-                  <Typography fontSize={FontConfig.medium} color="text.primary">
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    color="text.primary"
+                    onClick={() => {
+                      lerTexto(props.beneficio.valor_mensal);
+                    }}
+                  >
                     {props.beneficio.valor_mensal}
                   </Typography>
                 </td>
                 <td align="center">
                   {/* Moeda do benefício */}
-                  <Typography fontSize={FontConfig.medium} color="text.primary">
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    color="text.primary"
+                    onClick={() => {
+                      lerTexto(props.beneficio.moeda);
+                    }}
+                  >
                     {props.beneficio.moeda}
                   </Typography>
                 </td>
@@ -426,6 +528,13 @@ const BeneficiosDetalheDemanda = (props) => {
                     color="text.primary"
                     sx={{ width: "100%" }}
                     ref={memoriaCalculo}
+                    onClick={() => {
+                      lerTexto(
+                        getMemoriaCalculoFomartted(
+                          props.beneficio.memoriaCalculo
+                        )
+                      );
+                    }}
                   >
                     {getMemoriaCalculoFomartted(props.beneficio.memoriaCalculo)}
                   </Typography>

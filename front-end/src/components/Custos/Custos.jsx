@@ -1,6 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip, } from "@mui/material";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  Typography,
+  Box,
+  Tooltip,
+} from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -14,7 +24,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para representar a tabela de custos utilizada na proposta
 const Custos = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -99,6 +108,25 @@ const Custos = (props) => {
     });
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Box className="flex w-full mt-5">
       <Box className="flex items-top mr-2">
@@ -131,6 +159,9 @@ const Custos = (props) => {
                         fontSize={FontConfig.big}
                         fontWeight="800"
                         color="text.white"
+                        onClick={() => {
+                          lerTexto(texts.custos.tipoDaDespesa);
+                        }}
                       >
                         {texts.custos.tipoDaDespesa}
                       </Typography>
@@ -144,6 +175,9 @@ const Custos = (props) => {
                         fontSize={FontConfig.big}
                         fontWeight="800"
                         color="text.white"
+                        onClick={() => {
+                          lerTexto(texts.custos.perfilDaDespesa);
+                        }}
                       >
                         {texts.custos.perfilDaDespesa}
                       </Typography>
@@ -157,6 +191,9 @@ const Custos = (props) => {
                         fontSize={FontConfig.big}
                         fontWeight="800"
                         color="text.white"
+                        onClick={() => {
+                          lerTexto(texts.custos.periodoDeExecucao);
+                        }}
                       >
                         {texts.custos.periodoDeExecucao}
                       </Typography>
@@ -170,6 +207,9 @@ const Custos = (props) => {
                         fontSize={FontConfig.big}
                         fontWeight="800"
                         color="text.white"
+                        onClick={() => {
+                          lerTexto(texts.custos.horas);
+                        }}
                       >
                         {texts.custos.horas}
                       </Typography>
@@ -183,6 +223,9 @@ const Custos = (props) => {
                         fontSize={FontConfig.big}
                         fontWeight="800"
                         color="text.white"
+                        onClick={() => {
+                          lerTexto(texts.custos.valorHora);
+                        }}
                       >
                         {texts.custos.valorHora}
                       </Typography>
@@ -196,6 +239,9 @@ const Custos = (props) => {
                         fontSize={FontConfig.big}
                         fontWeight="800"
                         color="text.white"
+                        onClick={() => {
+                          lerTexto(texts.custos.total);
+                        }}
                       >
                         {texts.custos.total}
                       </Typography>
@@ -232,12 +278,18 @@ const Custos = (props) => {
                 <Typography
                   fontSize={FontConfig.medium}
                   sx={{ marginRight: "8px" }}
+                  onClick={() => {
+                    lerTexto(texts.custos.total);
+                  }}
                 >
                   {texts.custos.total}:{" "}
                 </Typography>
                 <Typography
                   fontSize={FontConfig.medium}
                   sx={{ marginRight: "15px" }}
+                  onClick={() => {
+                    lerTexto(texts.custos.h);
+                  }}
                 >
                   {horasTotais}
                   {texts.custos.h}
@@ -251,6 +303,9 @@ const Custos = (props) => {
                 <Typography
                   fontSize={FontConfig.medium}
                   sx={{ marginRight: "8px" }}
+                  onClick={() => {
+                    lerTexto(texts.custos.moeda);
+                  }}
                 >
                   {texts.custos.moeda}
                   {valorTotal}
@@ -283,6 +338,9 @@ const Custos = (props) => {
                     fontSize={FontConfig.big}
                     fontWeight="800"
                     color="text.white"
+                    onClick={() => {
+                      lerTexto(texts.custos.cc);
+                    }}
                   >
                     {texts.custos.ccs}
                   </Typography>
@@ -319,10 +377,18 @@ const Custos = (props) => {
             <Typography
               fontSize={FontConfig.medium}
               sx={{ marginRight: "8px" }}
+              onClick={() => {
+                lerTexto(texts.custos.total);
+              }}
             >
               {texts.custos.total}:
             </Typography>
-            <Typography fontSize={FontConfig.medium}>
+            <Typography
+              fontSize={FontConfig.medium}
+              onClick={() => {
+                lerTexto(porcentagemTotal);
+              }}
+            >
               {porcentagemTotal}%{" "}
             </Typography>
           </Box>

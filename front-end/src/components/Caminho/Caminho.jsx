@@ -1,4 +1,4 @@
-import { React, useContext } from "react";
+import { React, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Typography, Box, Tooltip } from "@mui/material";
@@ -12,7 +12,6 @@ import CookieService from "../../service/cookieService";
 
 // Componente utilizado para mostrar o caminho atual do usuário no sistema
 const Caminho = (props) => {
-  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -50,21 +49,46 @@ const Caminho = (props) => {
     return texts.rotas[indexCaminho];
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
-    <Box className="flex items-center gap-x-1" color="link.main" sx={{minWidth:"20rem"}}>
+    <Box
+      className="flex items-center gap-x-1"
+      color="link.main"
+      sx={{ minWidth: "20rem" }}
+    >
       <Tooltip title={texts.caminho.home}>
         <HomeOutlinedIcon
           className="cursor-pointer"
           sx={{ fontSize: "32px" }}
           onClick={() => {
-            if(!CookieService.getCookie()) navigate("/");
-            UsuarioService.getUsuarioByEmail(CookieService.getCookie().sub).then((usuario) => {
-              if(usuario.tipoUsuario == "SOLICITANTE") {
+            if (!CookieService.getCookie()) navigate("/");
+            UsuarioService.getUsuarioByEmail(
+              CookieService.getCookie().sub
+            ).then((usuario) => {
+              if (usuario.tipoUsuario == "SOLICITANTE") {
                 navigate("/home");
               } else {
                 navigate("/home-gerencia");
               }
-            })
+            });
           }}
         />
       </Tooltip>
@@ -80,7 +104,11 @@ const Caminho = (props) => {
                   fontSize={FontConfig.default}
                   sx={{ fontWeight: 500 }}
                   onClick={() => {
-                    navigate("/" + item);
+                    if (!props.lendo) {
+                      navigate("/" + item);
+                    } else {
+                      lerTexto(getPathName(item));
+                    }
                   }}
                 >
                   {getPathName(item)}
@@ -90,6 +118,9 @@ const Caminho = (props) => {
                   className="cursor-pointer"
                   fontSize={FontConfig.default}
                   sx={{ fontWeight: 500 }}
+                  onClick={() => {
+                    lerTexto(getPathName(item));
+                  }}
                 >
                   {getPathName(item)}
                 </Typography>
