@@ -38,16 +38,7 @@ export const WebSocketService = ({ children }) => {
 
   const enviar = (destino, mensagem) => {
     if (stompClient) {
-      if (mensagem) {
-        let auxMensagem;
-        auxMensagem = {
-          ...mensagem,
-          texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
-        };
-        stompClient.send(destino, {}, JSON.stringify(auxMensagem));
-      } else {
-        stompClient.send(destino, {}, "");
-      }
+      stompClient.send(destino, {}, mensagem);
     }
   };
 

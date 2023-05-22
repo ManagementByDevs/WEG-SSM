@@ -99,19 +99,18 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
             >
               {nomeContato}
             </Typography>
-            {chat.msgNaoLidas > 0 && (
-              <Typography
-                className="border rounded-full absolute top-1 right-1 px-1"
-                sx={{
-                  borderColor: "primary.main",
-                  backgroundColor: "primary.main",
-                }}
-                fontSize={FontConfig.verySmall}
-                color="white"
-              >
-                {chat.msgNaoLidas}
-              </Typography>
-            )}
+            {/* {novasMensagens && ( */}
+            <Typography
+              className="rounded-full absolute top-1 right-1 px-2"
+              sx={{
+                backgroundColor: chat.msgNaoLidas > 0 ? "primary.main" : "",
+              }}
+              fontSize={FontConfig.verySmall}
+              color="white"
+            >
+              {chat.msgNaoLidas > 0 ? chat.msgNaoLidas : ""}
+            </Typography>
+            {/* )} */}
           </Box>
           {
             // Verificando se o chat está ativo ou não

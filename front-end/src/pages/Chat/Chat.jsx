@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
 import {
   Box,
@@ -51,9 +51,6 @@ import { WebSocketContext } from "../../service/WebSocketService";
 
 /** Chat para conversa entre usuários do sistema */
 const Chat = () => {
-  /** Navigate utilizado para navegar para outras páginas */
-  const navigate = useNavigate();
-
   /** Context para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
@@ -65,8 +62,14 @@ const Chat = () => {
   /**  Context do WebSocket */
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
 
+  /** Navigate utilizado para navegar para outras páginas */
+  const navigate = useNavigate();
+
   /** ID do chat passado por params */
   const idChat = useParams().id;
+
+  /** Informações da localização da página atual */
+  const location = useLocation();
 
   /** Container das mensagens */
   const boxRef = useRef(null);
@@ -207,7 +210,13 @@ const Chat = () => {
   const submit = (event) => {
     if (mensagem.texto !== "") {
       event.preventDefault();
-      enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
+      enviar(
+        `/app/weg_ssm/mensagem/${idChat}`,
+        JSON.stringify({
+          ...mensagem,
+          texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
+        })
+      );
       setDefaultMensagem();
     }
   };
@@ -286,10 +295,13 @@ const Chat = () => {
     if (file.size <= 65535) {
       AnexoService.save(file)
         .then((response) => {
-          enviar(`/app/weg_ssm/mensagem/${idChat}`, {
-            ...mensagem,
-            anexo: response,
-          });
+          enviar(
+            `/app/weg_ssm/mensagem/${idChat}`,
+            JSON.stringify({
+              ...mensagem,
+              anexo: response,
+            })
+          );
           inputRef.current.value = "";
         })
         .catch((error) => {
@@ -304,8 +316,7 @@ const Chat = () => {
   /** Busca os chats do usuário */
   const buscarChats = () => {
     ChatService.getByRemetente(user.usuario.id).then((chatResponse) => {
-      console.log("chatresponse: ", chatResponse);
-      setListaChats(chatResponse);
+      setListaChats([...chatResponse]);
     });
   };
 
@@ -319,14 +330,17 @@ const Chat = () => {
 
       setMensagens(mensagensAux);
 
-      enviar(`/app/weg_ssm/enter/chat/${idChat}`, null);
+      enviar(`/app/weg_ssm/enter/chat/${idChat}`, user.usuario.id);
     });
     setDefaultMensagem();
   };
 
   const clearNewMessages = () => {
-    let chatAux = listaChats.find((chat) => chat.id == idChat);
+    let listaChatsAux = JSON.parse(JSON.stringify(listaChats));
+    let chatAux = listaChatsAux.find((chat) => chat.id == idChat);
     chatAux.msgNaoLidas = 0;
+
+    setListaChats([...listaChatsAux]);
   };
 
   // ***************************************** UseEffects ***************************************** //
@@ -340,7 +354,6 @@ const Chat = () => {
     const receivedAnyMessage = (mensagem) => {
       let mensagemRecebida = EntitiesObjectService.mensagem();
       mensagemRecebida = JSON.parse(mensagem.body);
-      console.log("Mensagem recebida all: ", mensagemRecebida);
 
       // Se a mensagem recebida for do usuário logado, ignore
       if (mensagemRecebida.usuario.id == user.usuario.id) {
@@ -353,10 +366,6 @@ const Chat = () => {
         console.log("b");
         return;
       }
-
-      // for ()
-
-      console.log("listaChats", listaChats);
 
       let chatAux = listaChats.find(
         (chat) => chat.id == mensagemRecebida.idChat.id
@@ -379,17 +388,7 @@ const Chat = () => {
   }, [stompClient]);
 
   useEffect(() => {
-    setBuscandoMensagens(false);
-    const boxElement = boxRef.current;
-    // Colocando o scroll para a última mensagem recebida
-    if (boxElement) {
-      boxElement.scrollTop = boxElement.scrollHeight;
-    }
-  }, [mensagens]);
-
-  useEffect(() => {
     const acaoNovaMensagem = (response) => {
-      console.log("passou no acao nova mensagem");
       const mensagemRecebida = JSON.parse(response.body);
       let mensagemNova = {
         ...mensagemRecebida.body,
@@ -398,11 +397,15 @@ const Chat = () => {
 
       // Se o remetente não for o usuário, tenho que notificar a visualização
       if (mensagemNova.usuario.id != user.usuario.id) {
-        console.log("Mensagem nova.visto: ", mensagemNova);
-        enviar(`/app/weg_ssm/mensagem/chat/${idChat}/visto`, {
-          ...mensagemNova,
-        });
         mensagemNova.visto = true;
+        console.log("Mensagem nova visto: ", mensagemNova);
+        enviar(
+          `/app/weg_ssm/mensagem/chat/${idChat}/visto`,
+          JSON.stringify({
+            ...mensagemNova,
+            texto: mensagemNova.texto.replace(/\n/g, "%BREAK%"),
+          })
+        );
         clearNewMessages();
       }
 
@@ -410,14 +413,18 @@ const Chat = () => {
     };
 
     const readMessage = (mensagem) => {
-      console.log("passou no readMessage");
-
+      console.log("Mensagem vista: ", mensagem);
+      if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
+        return;
+      }
       setMensagens((oldMensagens) => {
         for (let oldMensagem of oldMensagens) {
-          if (!oldMensagem.visto && oldMensagem.usuario.id != user.usuario.id) {
+          if (!oldMensagem.visto) {
             oldMensagem.visto = true;
           }
         }
+        clearNewMessages();
+
         return [...oldMensagens];
       });
     };
@@ -446,7 +453,7 @@ const Chat = () => {
   useEffect(() => {
     const resultados = [];
     listaChats.filter((chat) => {
-      chat.usuariosChat.map((userChat) => {
+      for (let userChat of chat.usuariosChat) {
         if (userChat.id != user.usuario.id) {
           if (
             userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
@@ -454,10 +461,23 @@ const Chat = () => {
             resultados.push(chat);
           }
         }
-      });
+      }
     });
     setResultadosContato(resultados);
   }, [pesquisaContato, listaChats, idChat]);
+
+  useEffect(() => {
+    console.log("mensagens: ", mensagens);
+  }, [mensagens]);
+
+  useEffect(() => {
+    setBuscandoMensagens(false);
+    const boxElement = boxRef.current;
+    // Colocando o scroll para a última mensagem recebida
+    if (boxElement) {
+      boxElement.scrollTop = boxElement.scrollHeight;
+    }
+  }, [mensagens]);
 
   // ***************************************** Fim UseEffects ***************************************** //
 
