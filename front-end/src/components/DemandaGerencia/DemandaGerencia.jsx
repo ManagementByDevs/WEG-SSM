@@ -1,4 +1,4 @@
-import { React, useState, useContext } from "react";
+import { React, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Box, Paper, Tooltip, Typography, IconButton } from "@mui/material";
@@ -84,10 +84,13 @@ const DemandaGerencia = (props) => {
           chat = response;
           if (chat.length > 0) {
             if (chat[0].conversaEncerrada == true) {
-              ChatService.put({
-                ...chat[0],
-                conversaEncerrada: false,
-              }, chat[0].id).then((response) => {
+              ChatService.put(
+                {
+                  ...chat[0],
+                  conversaEncerrada: false,
+                },
+                chat[0].id
+              ).then((response) => {
                 console.log("EDITOU", response);
                 chat = response;
               });
@@ -112,6 +115,25 @@ const DemandaGerencia = (props) => {
       props.setFeedbackAbrirChat(true);
     }
   };
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <>
@@ -146,12 +168,18 @@ const DemandaGerencia = (props) => {
               fontWeight="600"
               className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
               title={props.dados.titulo}
+              onClick={() => {
+                lerTexto(props.dados.titulo);
+              }}
             >
               {tipo === "proposta" && (
                 <Typography
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   sx={{ color: "primary.main" }}
+                  onClick={() => {
+                    lerTexto(texts.demandaGerencia.ppm);
+                  }}
                 >
                   {texts.demandaGerencia.ppm} {props.dados.codigoPPM}
                 </Typography>
@@ -165,7 +193,13 @@ const DemandaGerencia = (props) => {
             <Box className="flex items-end flex-col">
               <Box id="segundoCriarPropostas">
                 <Box id="oitavoDemandas" className="flex items-center gap-2">
-                  <Typography fontSize={FontConfig.medium} fontWeight="600">
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    fontWeight="600"
+                    onClick={() => {
+                      lerTexto(formatarStatus(props.dados.status));
+                    }}
+                  >
                     {formatarStatus(props.dados.status)}
                   </Typography>
                   <Box
@@ -180,26 +214,31 @@ const DemandaGerencia = (props) => {
               </Box>
 
               {/* Verificando se está em ata, em pauta ou em edição */}
-              {
-                props.dados.presenteEm && props.dados.presenteEm != "Nada" && (
-                  <Box>
-                    <Typography
-                      fontSize={FontConfig.small}
-                      fontWeight="600"
-                      sx={{
-                        color: "text.primary",
-                        backgroundColor: "divider.claro",
-                        borderRadius: "5px",
-                        padding: "2px 15px",
-                      }}
-                    >
-                      {props.dados.presenteEm === "Pauta"
-                        ? texts.demandaGerencia.emPauta
-                        : texts.demandaGerencia.emAta}
-                    </Typography>
-                  </Box>
-                )
-              }
+              {props.dados.presenteEm && props.dados.presenteEm != "Nada" && (
+                <Box>
+                  <Typography
+                    fontSize={FontConfig.small}
+                    fontWeight="600"
+                    sx={{
+                      color: "text.primary",
+                      backgroundColor: "divider.claro",
+                      borderRadius: "5px",
+                      padding: "2px 15px",
+                    }}
+                    onClick={() => {
+                      if (props.dados.presenteEm == "Pauta") {
+                        lerTexto(texts.demandaGerencia.emPauta);
+                      } else {
+                        lerTexto(texts.demandaGerencia.emAta);
+                      }
+                    }}
+                  >
+                    {props.dados.presenteEm === "Pauta"
+                      ? texts.demandaGerencia.emPauta
+                      : texts.demandaGerencia.emAta}
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>
@@ -211,7 +250,13 @@ const DemandaGerencia = (props) => {
             <Box sx={{ width: "40%" }}>
               {/* Solicitante */}
               <Box className="flex">
-                <Typography fontSize={FontConfig.default} fontWeight="600">
+                <Typography
+                  fontSize={FontConfig.default}
+                  fontWeight="600"
+                  onClick={() => {
+                    lerTexto(texts.demandaGerencia.solicitante);
+                  }}
+                >
                   {texts.demandaGerencia.solicitante}:
                 </Typography>
                 <Typography
@@ -219,6 +264,9 @@ const DemandaGerencia = (props) => {
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginLeft: "5px" }}
+                  onClick={() => {
+                    lerTexto(props.dados.solicitante?.nome);
+                  }}
                 >
                   {props.dados.solicitante?.nome}
                 </Typography>
@@ -226,7 +274,13 @@ const DemandaGerencia = (props) => {
 
               {/* Departamento */}
               <Box className="flex">
-                <Typography fontSize={FontConfig.default} fontWeight="600">
+                <Typography
+                  fontSize={FontConfig.default}
+                  fontWeight="600"
+                  onClick={() => {
+                    lerTexto(texts.demandaGerencia.departamento);
+                  }}
+                >
                   {texts.demandaGerencia.departamento}:
                 </Typography>
                 <Typography
@@ -234,6 +288,13 @@ const DemandaGerencia = (props) => {
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginLeft: "5px" }}
+                  onClick={() => {
+                    if (props.dados.departamento?.nome) {
+                      lerTexto(props.dados.departamento?.nome);
+                    } else {
+                      lerTexto(texts.demandaGerencia.naoAtribuido);
+                    }
+                  }}
                 >
                   {props.dados.departamento?.nome ||
                     texts.demandaGerencia.naoAtribuido}
@@ -251,6 +312,9 @@ const DemandaGerencia = (props) => {
                     className="overflow-hidden truncate"
                     fontSize={FontConfig.default}
                     fontWeight="600"
+                    onClick={() => {
+                      lerTexto(texts.demandaGerencia.analistaResponsavel);
+                    }}
                   >
                     {texts.demandaGerencia.analistaResponsavel}:
                   </Typography>
@@ -263,6 +327,13 @@ const DemandaGerencia = (props) => {
                       marginLeft: "5px",
                       width: "50%",
                     }}
+                    onClick={() => {
+                      if (props.dados.analista?.nome) {
+                        lerTexto(props.dados.analista?.nome);
+                      } else {
+                        lerTexto(texts.demandaGerencia.naoAtribuido);
+                      }
+                    }}
                   >
                     {props.dados.analista?.nome ||
                       texts.demandaGerencia.naoAtribuido}
@@ -273,6 +344,9 @@ const DemandaGerencia = (props) => {
                     className="overflow-hidden truncate"
                     fontSize={FontConfig.default}
                     fontWeight="600"
+                    onClick={() => {
+                      lerTexto(texts.demandaGerencia.gerenteResponsavel);
+                    }}
                   >
                     {texts.demandaGerencia.gerenteResponsavel}:
                   </Typography>
@@ -284,6 +358,13 @@ const DemandaGerencia = (props) => {
                       color: "text.secondary",
                       marginLeft: "5px",
                       width: "50%",
+                    }}
+                    onClick={() => {
+                      if (props.dados.gerente?.nome) {
+                        lerTexto(props.dados.gerente?.nome);
+                      } else {
+                        lerTexto(texts.demandaGerencia.naoAtribuido);
+                      }
                     }}
                   >
                     {props.dados.gerente?.nome ||

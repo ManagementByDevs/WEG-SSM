@@ -1,6 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography, } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -23,7 +32,7 @@ const DemandaGerenciaModoVisualizacao = ({
   onDemandaClick,
   nextModoVisualizacao,
   isProposta = false,
-  setFeedbackAbrirChat
+  setFeedbackAbrirChat,
 }) => {
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
@@ -76,6 +85,9 @@ const DemandaTable = ({
   ],
   onDemandaClick,
   isProposta = false,
+  lendo,
+  setTexto,
+  texto,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -124,6 +136,25 @@ const DemandaTable = ({
     setModalHistorico(true);
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTexto(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (lendo && texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(texto);
+        synthesis.speak(utterance);
+      }
+      setTexto("");
+    }
+  }, [texto]);
+
   return (
     <>
       {modalHistorico && (
@@ -144,39 +175,82 @@ const DemandaTable = ({
               }}
             >
               <th className="text-white p-2 width-75/1000">
-                <Typography fontSize={FontConfig.big}>
+                <Typography
+                  fontSize={FontConfig.big}
+                  onClick={() => {
+                    if (!isProposta) {
+                      lerTexto(texts.demandaGerenciaModoVisualizacao.codigo);
+                    } else {
+                      lerTexto("PPM");
+                    }
+                  }}
+                >
                   {!isProposta
                     ? texts.demandaGerenciaModoVisualizacao.codigo
                     : "PPM"}
                 </Typography>
               </th>
               <th className="text-left text-white p-3 width-4/10">
-                <Typography fontSize={FontConfig.big}>
+                <Typography
+                  fontSize={FontConfig.big}
+                  onClick={() => {
+                    lerTexto(texts.demandaGerenciaModoVisualizacao.titulo);
+                  }}
+                >
                   {texts.demandaGerenciaModoVisualizacao.titulo}
                 </Typography>
               </th>
               <th className="text-left text-white p-3">
-                <Typography fontSize={FontConfig.big}>
+                <Typography
+                  fontSize={FontConfig.big}
+                  onClick={() => {
+                    lerTexto(texts.demandaGerenciaModoVisualizacao.solicitante);
+                  }}
+                >
                   {texts.demandaGerenciaModoVisualizacao.solicitante}
                 </Typography>
               </th>
               <th className="text-left text-white p-3">
-                <Typography fontSize={FontConfig.big}>
+                <Typography
+                  fontSize={FontConfig.big}
+                  onClick={() => {
+                    lerTexto(
+                      texts.demandaGerenciaModoVisualizacao.departamento
+                    );
+                  }}
+                >
                   {texts.demandaGerenciaModoVisualizacao.departamento}
                 </Typography>
               </th>
               <th className="text-left text-white p-3">
-                <Typography fontSize={FontConfig.big}>
+                <Typography
+                  fontSize={FontConfig.big}
+                  onClick={() => {
+                    lerTexto(
+                      texts.demandaGerenciaModoVisualizacao.gerenteResponsavel
+                    );
+                  }}
+                >
                   {texts.demandaGerenciaModoVisualizacao.gerenteResponsavel}
                 </Typography>
               </th>
               <th className="text-left text-white p-3 ">
-                <Typography fontSize={FontConfig.big}>
+                <Typography
+                  fontSize={FontConfig.big}
+                  onClick={() => {
+                    lerTexto(texts.demandaGerenciaModoVisualizacao.status);
+                  }}
+                >
                   {texts.demandaGerenciaModoVisualizacao.status}
                 </Typography>
               </th>
               <th className="text-white p-3 width-75/1000">
-                <Typography fontSize={FontConfig.big}>
+                <Typography
+                  fontSize={FontConfig.big}
+                  onClick={() => {
+                    lerTexto(texts.demandaGerenciaModoVisualizacao.data);
+                  }}
+                >
                   {texts.demandaGerenciaModoVisualizacao.data}
                 </Typography>
               </th>
@@ -201,7 +275,17 @@ const DemandaTable = ({
                   className="text-center p-3 width-1/10"
                   title={row.codigoPPM}
                 >
-                  <Typography className="truncate" fontSize={FontConfig.medium}>
+                  <Typography
+                    className="truncate"
+                    fontSize={FontConfig.medium}
+                    onClick={() => {
+                      if (!isProposta) {
+                        lerTexto(row.id);
+                      } else {
+                        lerTexto(row.codigoPPM);
+                      }
+                    }}
+                  >
                     {!isProposta ? row.id : row.codigoPPM}
                   </Typography>
                 </td>
@@ -224,7 +308,13 @@ const DemandaTable = ({
                       )}
                     </Box>
                   )}
-                  <Typography className="truncate" fontSize={FontConfig.medium}>
+                  <Typography
+                    className="truncate"
+                    fontSize={FontConfig.medium}
+                    onClick={() => {
+                      lerTexto(row.titulo);
+                    }}
+                  >
                     {row.titulo}
                   </Typography>
                 </td>
@@ -232,7 +322,13 @@ const DemandaTable = ({
                   className="text-left p-3 width-1/10"
                   title={row.solicitante.nome}
                 >
-                  <Typography className="truncate" fontSize={FontConfig.medium}>
+                  <Typography
+                    className="truncate"
+                    fontSize={FontConfig.medium}
+                    onClick={() => {
+                      lerTexto(row.solicitante.nome);
+                    }}
+                  >
                     {row.solicitante.nome}
                   </Typography>
                 </td>
@@ -244,7 +340,19 @@ const DemandaTable = ({
                       : texts.demandaGerenciaModoVisualizacao.naoAtribuido
                   }
                 >
-                  <Typography className="truncate" fontSize={FontConfig.medium}>
+                  <Typography
+                    className="truncate"
+                    fontSize={FontConfig.medium}
+                    onClick={() => {
+                      if (row.departamento) {
+                        lerTexto(row.departamento.nome);
+                      } else {
+                        lerTexto(
+                          texts.demandaGerenciaModoVisualizacao.naoAtribuido
+                        );
+                      }
+                    }}
+                  >
                     {row.departamento
                       ? row.departamento.nome
                       : texts.demandaGerenciaModoVisualizacao.naoAtribuido}
@@ -258,7 +366,19 @@ const DemandaTable = ({
                       : texts.demandaGerenciaModoVisualizacao.naoAtribuido
                   }
                 >
-                  <Typography className="truncate" fontSize={FontConfig.medium}>
+                  <Typography
+                    className="truncate"
+                    fontSize={FontConfig.medium}
+                    onClick={() => {
+                      if (row.gerente?.nome) {
+                        lerTexto(row.gerente.nome);
+                      } else {
+                        lerTexto(
+                          texts.demandaGerenciaModoVisualizacao.naoAtribuido
+                        );
+                      }
+                    }}
+                  >
                     {row.gerente?.nome
                       ? row.gerente.nome
                       : texts.demandaGerenciaModoVisualizacao.naoAtribuido}
@@ -281,6 +401,9 @@ const DemandaTable = ({
                       <Typography
                         className="truncate"
                         fontSize={FontConfig.medium}
+                        onClick={() => {
+                          lerTexto(formatarNomeStatus(row.status));
+                        }}
                       >
                         {formatarNomeStatus(row.status)}
                       </Typography>
@@ -295,6 +418,13 @@ const DemandaTable = ({
                     <Typography
                       className="visualizacao-tabela-gerencia-data truncate"
                       fontSize={FontConfig.default}
+                      onClick={() => {
+                        lerTexto(
+                          DateService.getTodaysDateUSFormat(
+                            DateService.getDateByMySQLFormat(row.data)
+                          )
+                        );
+                      }}
                     >
                       {DateService.getTodaysDateUSFormat(
                         DateService.getDateByMySQLFormat(row.data)
@@ -347,7 +477,12 @@ const DemandaTable = ({
 };
 
 // Componente para exibição de demandas em grid
-const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false, setFeedbackAbrirChat }) => {
+const DemandaGrid = ({
+  listaDemandas,
+  onDemandaClick,
+  isProposta = false,
+  setFeedbackAbrirChat,
+}) => {
   return (
     <Box
       sx={{
@@ -374,12 +509,31 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, isProposta = false, setFee
 };
 
 // Componente para exibição de nada encontrado
-const NadaEncontrado = () => {
+const NadaEncontrado = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+   // Função que irá setar o texto que será "lido" pela a API
+   const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <Box
@@ -395,12 +549,18 @@ const NadaEncontrado = () => {
       <Typography
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
+        onClick={() => {
+          lerTexto(texts.demandaGerenciaModoVisualizacao.nadaEncontrado);
+        }}
       >
         {texts.demandaGerenciaModoVisualizacao.nadaEncontrado}
       </Typography>
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
+        onClick={() => {
+          lerTexto(texts.demandaGerenciaModoVisualizacao.tenteNovamenteMaisTarde);
+        }}
       >
         {texts.demandaGerenciaModoVisualizacao.tenteNovamenteMaisTarde}
       </Typography>
