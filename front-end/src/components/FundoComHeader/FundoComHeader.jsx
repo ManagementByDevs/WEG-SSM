@@ -1,17 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { Box } from "@mui/material";
 
 import Header from "../Header/Header";
 
-import FontContext from "../../service/FontContext";
-
 // Componente que cria um fundo com um header
 const FundoComHeader = (props) => {
-  
-  // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
-
   return (
     <Box
       sx={{
@@ -25,7 +19,9 @@ const FundoComHeader = (props) => {
       <Header />
 
       {/* O box aqui precisa ter o height = 100vh - (h-header-weg) */}
-      <Box sx={{ width: "100%", height: "92.8vh", overflow: "auto" }}>{props.children}</Box>
+      <Box sx={{ width: "100%", height: "92.8vh", overflow: "auto" }}>
+        {props.children}
+      </Box>
     </Box>
   );
 };
