@@ -1,58 +1,95 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box, Button } from "@mui/material";
 
-import Error from '../../assets/Error.png';
+import Error from "../../assets/Error.png";
 
-import TextLanguageContext from '../../service/TextLanguageContext';
+import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 
 // Página de Not Found, caso o usuário entre em alguma url inexistente no sistema
 const NotFound = (props) => {
+  // useContext para alterar o idioma do sistema
+  const { texts } = useContext(TextLanguageContext);
 
-    // useContext para alterar o idioma do sistema
-    const { texts } = useContext(TextLanguageContext);
+  // Context para alterar o tamanho da fonte
+  const { FontConfig, setFontConfig } = useContext(FontContext);
 
-    // Context para alterar o tamanho da fonte
-    const { FontConfig, setFontConfig } = useContext(FontContext);
+  // Navigate utilizado para navegar para outra página
+  let navigate = useNavigate();
 
-    // Navigate utilizado para navegar para outra página
-    let navigate = useNavigate();
+  // Função para retornar a home
+  const voltarPaginaPrincipal = () => {
+    if(!props.lendo) {
+        navigate("/");
+    } else {
+        lerTexto(texts.notFound.voltar);
+    }
+  };
 
-    // Função para retornar a home
-    const voltarPaginaPrincipal = () => {
-        navigate('/')
-    };
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
 
-    return (
-        <Box className='flex justify-center items-center w-screen h-screen'>
-            <VLibras forceOnload />
-            {/* Componente com informações da página */}
-            <Box className='flex justify-evenly flex-col items-center h-1/2'>
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
-                <img src={Error} />
+  return (
+    <Box className="flex justify-center items-center w-screen h-screen">
+      <VLibras forceOnload />
+      {/* Componente com informações da página */}
+      <Box className="flex justify-evenly flex-col items-center h-1/2">
+        <img src={Error} />
 
-                <Typography fontSize={FontConfig.title} color={'primary.main'} fontWeight={650}>
-                    {texts.notFound.paginaNaoEncontrada}
-                </Typography>
+        <Typography
+          fontSize={FontConfig.title}
+          color={"primary.main"}
+          fontWeight={650}
+          onClick={() => {
+            lerTexto(texts.notFound.paginaNaoEncontrada);
+          }}
+        >
+          {texts.notFound.paginaNaoEncontrada}
+        </Typography>
 
-                <Typography fontSize={FontConfig.veryBig} fontWeight={500}>
-                    {texts.notFound.paginaNaoEncontrada}
-                </Typography>
+        <Typography fontSize={FontConfig.veryBig} fontWeight={500} onClick={() => {
+            lerTexto(texts.notFound.paginaNaoEncontrada);
+          }}>
+          {texts.notFound.paginaNaoEncontrada}
+        </Typography>
 
-                <Typography fontSize={FontConfig.veryBig} fontWeight={500}>
-                    {texts.notFound.porfavorVolteParaPaginaPrincipal}
-                </Typography>
+        <Typography fontSize={FontConfig.veryBig} fontWeight={500} onClick={() => {
+            lerTexto(texts.notFound.porfavorVolteParaPaginaPrincipal);
+          }}>
+          {texts.notFound.porfavorVolteParaPaginaPrincipal}
+        </Typography>
 
-                <Button className='w-32 rounded-sm p-1' fontSize={FontConfig.big} onClick={voltarPaginaPrincipal} variant="contained">
-                    {texts.notFound.voltar}
-                </Button>
-            </Box>
-        </Box>
-    );
+        <Button
+          className="w-32 rounded-sm p-1"
+          fontSize={FontConfig.big}
+          onClick={voltarPaginaPrincipal}
+          variant="contained"
+        >
+          {texts.notFound.voltar}
+        </Button>
+      </Box>
+    </Box>
+  );
 };
 
 export default NotFound;
