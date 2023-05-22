@@ -1,7 +1,7 @@
 import { React, useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
 import { keyframes } from "@emotion/react";
 
@@ -101,25 +101,33 @@ const DetalhesAta = (props) => {
 
   // Função para voltar para uma proposta
   const voltar = () => {
-    if (indexProposta <= 0) {
-      setProposta(false);
-      setIndexProposta(-1);
+    if(!props.lendo) {
+      if (indexProposta <= 0) {
+        setProposta(false);
+        setIndexProposta(-1);
+      } else {
+        setBotaoProximo(true);
+        setProposta(false);
+        setDadosProposta(ata.propostas[indexProposta - 1]);
+        setIndexProposta(indexProposta - 1);
+      }
     } else {
-      setBotaoProximo(true);
-      setProposta(false);
-      setDadosProposta(ata.propostas[indexProposta - 1]);
-      setIndexProposta(indexProposta - 1);
+        lerTexto(texts.detalhesAta.voltar);
     }
   };
 
   // Função para passar para a próxima proposta
   const proximo = () => {
-    if (indexProposta == ata.propostas.length - 1) {
-      setBotaoProximo(false);
+    if(!props.lendo) {
+      if (indexProposta == ata.propostas.length - 1) {
+        setBotaoProximo(false);
+      } else {
+        setProposta(false);
+        setDadosProposta(ata.propostas[indexProposta + 1]);
+        setIndexProposta(indexProposta + 1);
+      }
     } else {
-      setProposta(false);
-      setDadosProposta(ata.propostas[indexProposta + 1]);
-      setIndexProposta(indexProposta + 1);
+        lerTexto(texts.detalhesAta.proximo);
     }
   };
 
@@ -192,9 +200,11 @@ const DetalhesAta = (props) => {
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
   ) => {
     for (let proposta of listaPropostasToUpdate) {
-      PropostaService.atualizacaoDg(proposta.id, proposta.parecerDG, proposta.parecerInformacaoDG).then(
-        (response) => { }
-      );
+      PropostaService.atualizacaoDg(
+        proposta.id,
+        proposta.parecerDG,
+        proposta.parecerInformacaoDG
+      ).then((response) => {});
     }
   };
 
@@ -209,7 +219,6 @@ const DetalhesAta = (props) => {
 
   // Função de criar ata e enviar feedback
   const publicarAta = () => {
-
     if (!isAllFieldsFilled()) {
       setFeedbackCamposFaltantes(true);
       return;
@@ -228,7 +237,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
+    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
 
     navigate("/", { state: { feedback: true } });
   };
@@ -259,6 +268,25 @@ const DetalhesAta = (props) => {
 
     return hora + ":" + minuto;
   };
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     // Começo com o header da página
@@ -308,27 +336,61 @@ const DetalhesAta = (props) => {
                   textAlign: "center",
                   color: "primary.main",
                 }}
+                onClick={() => {
+                  lerTexto(texts.detalhesAta.ata);
+                }}
               >
                 {texts.detalhesAta.ata}
               </Typography>
-              <Typography className="cursor-default mt-2" fontWeight={600}>
-                {/* {props.numeroSequencial} */}
+              <Typography
+                className="cursor-default mt-2"
+                fontWeight={600}
+                onClick={() => {
+                  lerTexto(texts.detalhesAta.numeroSequencial);
+                }}
+              >
                 {texts.detalhesAta.numeroSequencial}: {ata.numeroSequencial}
               </Typography>
-              <Typography className="cursor-default mt-2" fontWeight={600}>
+              <Typography
+                className="cursor-default mt-2"
+                fontWeight={600}
+                onClick={() => {
+                  lerTexto(texts.detalhesAta.dataReuniao);
+                }}
+              >
                 {/* {data reunião} */}
-                {texts.detalhesAta.dataReuniao}: {DateService.getTodaysDateUSFormat(ata.dataReuniao)}
+                {texts.detalhesAta.dataReuniao}:{" "}
+                {DateService.getTodaysDateUSFormat(ata.dataReuniao)}
               </Typography>
-              <Typography className="cursor-default mt-2" fontWeight={600}>
+              <Typography
+                className="cursor-default mt-2"
+                fontWeight={600}
+                onClick={() => {
+                  lerTexto(texts.detalhesAta.horaReuniao);
+                }}
+              >
                 {/* {Hora reunião} */}
-                {texts.detalhesAta.horaReuniao}: {trazerHoraData(ata.dataReuniao)}
+                {texts.detalhesAta.horaReuniao}:{" "}
+                {trazerHoraData(ata.dataReuniao)}
               </Typography>
-              <Typography className="cursor-default mt-2" fontWeight={600}>
+              <Typography
+                className="cursor-default mt-2"
+                fontWeight={600}
+                onClick={() => {
+                  lerTexto(texts.detalhesAta.analistaResponsavel);
+                }}
+              >
                 {/* {analista responsavel} */}
                 {texts.detalhesAta.analistaResponsavel}:{" "}
                 {ata.analistaResponsavel.nome}
               </Typography>
-              <Typography className="cursor-default mt-2" fontWeight={600}>
+              <Typography
+                className="cursor-default mt-2"
+                fontWeight={600}
+                onClick={() => {
+                  lerTexto(texts.detalhesAta.comissao);
+                }}
+              >
                 {/* {props.inicio} */}
                 {texts.detalhesAta.comissao}: {ata.comissao.siglaForum} -{" "}
                 {ata.comissao.nomeForum}
@@ -349,6 +411,9 @@ const DetalhesAta = (props) => {
                     textAlign: "center",
                   }}
                   color="primary.main"
+                  onClick={() => {
+                    lerTexto(texts.detalhesAta.sumario);
+                  }}
                 >
                   {texts.detalhesAta.sumario}
                 </Typography>
@@ -394,12 +459,20 @@ const DetalhesAta = (props) => {
                     }}
                     fontSize={FontConfig.title}
                     fontWeight={650}
+                    onClick={() => {
+                      lerTexto(texts.detalhesAta.proposta);
+                    }}
                   >
                     {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
                 </Box>
-                <DetalhesProposta setDadosProposta={setDadosProposta} parecerDG={dadosProposta.parecerDG || ""} parecerInformacaoDG={dadosProposta.parecerInformacaoDG || ""}
-                  emAprovacao={true} propostaId={dadosProposta.id} />
+                <DetalhesProposta
+                  setDadosProposta={setDadosProposta}
+                  parecerDG={dadosProposta.parecerDG || ""}
+                  parecerInformacaoDG={dadosProposta.parecerInformacaoDG || ""}
+                  emAprovacao={true}
+                  propostaId={dadosProposta.id}
+                />
               </Box>
             )}
           </Box>

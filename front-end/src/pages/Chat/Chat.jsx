@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
 import {
   Box,
@@ -50,7 +50,7 @@ import { MensagemService } from "../../service/MensagemService";
 import { WebSocketContext } from "../../service/WebSocketService";
 
 /** Chat para conversa entre usuários do sistema */
-const Chat = () => {
+const Chat = (props) => {
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -554,6 +554,25 @@ const Chat = () => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <>
       <VLibras forceOnload />
@@ -741,6 +760,9 @@ const Chat = () => {
                     fontSize={FontConfig.title}
                     color={"text.secondary"}
                     sx={{ fontWeight: "600" }}
+                    onClick={() => {
+                      lerTexto(texts.chat.selecioneAlgumaConversa);
+                    }}
                   >
                     {texts.chat.selecioneAlgumaConversa}
                   </Typography>
@@ -768,10 +790,18 @@ const Chat = () => {
                           className="ml-2"
                           fontSize={FontConfig.veryBig}
                           fontWeight="600"
+                          onClick={() => {
+                            lerTexto(texts.chat.usuarioTour.tour);
+                          }}
                         >
                           {texts.chat.usuarioTour.tour}
                         </Typography>
-                        <Typography fontSize={FontConfig.small}>
+                        <Typography
+                          fontSize={FontConfig.small}
+                          onClick={() => {
+                            lerTexto(texts.chat.cargo);
+                          }}
+                        >
                           {texts.chat.cargo}
                         </Typography>
                       </Box>
@@ -814,6 +844,9 @@ const Chat = () => {
                               color={"text.primary"}
                               fontSize={FontConfig.medium}
                               sx={{ fontWeight: 500 }}
+                              onClick={() => {
+                                lerTexto(texts.chat.abrirPopUp);
+                              }}
                             >
                               {texts.chat.abrirPopUp}
                             </Typography>
@@ -842,6 +875,9 @@ const Chat = () => {
                               color={"text.primary"}
                               fontSize={FontConfig.medium}
                               sx={{ fontWeight: 500 }}
+                              onClick={() => {
+                                lerTexto(texts.chat.encerrarChat);
+                              }}
                             >
                               {texts.chat.encerrarChat}
                             </Typography>
@@ -1014,6 +1050,9 @@ const Chat = () => {
                               color={"text.primary"}
                               fontSize={FontConfig.medium}
                               sx={{ fontWeight: 500 }}
+                              onClick={() => {
+                                lerTexto(texts.chat.abrirPopUp);
+                              }}
                             >
                               {texts.chat.abrirPopUp}
                             </Typography>
@@ -1048,6 +1087,9 @@ const Chat = () => {
                                     color={"text.primary"}
                                     fontSize={FontConfig.medium}
                                     sx={{ fontWeight: 500 }}
+                                    onClick={() => {
+                                      lerTexto(texts.chat.reabrirChat);
+                                    }}
                                   >
                                     {texts.chat.reabrirChat}
                                   </Typography>
@@ -1071,6 +1113,9 @@ const Chat = () => {
                                     color={"text.primary"}
                                     fontSize={FontConfig.medium}
                                     sx={{ fontWeight: 500 }}
+                                    onClick={() => {
+                                      lerTexto(texts.chat.encerrarChat);
+                                    }}
                                   >
                                     {texts.chat.encerrarChat}
                                   </Typography>

@@ -700,7 +700,7 @@ const DetalhesPauta = (props) => {
                       maxHeight: "2.5rem",
                     }}
                     variant="contained"
-                    onClick={proximo}
+                    onClick={proximo}fdsfds
                   >
                     <Typography>{texts.detalhesPauta.proximo}</Typography>
                   </Button>

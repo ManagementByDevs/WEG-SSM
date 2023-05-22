@@ -24,7 +24,6 @@ import CookieService from "../../service/cookieService";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -187,7 +186,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) { }
+      } catch (error) {}
 
       listaNova.push({
         id: beneficio.id,
@@ -276,7 +275,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -325,89 +324,97 @@ const BarraProgressaoProposta = (props) => {
     for (let beneficio of listaBeneficios) {
       beneficioService
         .put(beneficio, beneficio.memoriaCalculo)
-        .then((response) => { });
+        .then((response) => {});
     }
   };
 
   // Função para passar para próxima página
   const proximaEtapa = () => {
-    let dadosFaltantes = false;
-    let fechar100porcentoCcs = false;
-    switch (activeStep) {
-      case 0:
-        if (
-          dadosDemanda.titulo == "" ||
-          dadosDemanda.problema == "" ||
-          dadosDemanda.proposta == "" ||
-          dadosDemanda.frequencia == "" ||
-          dadosDemanda.buSolicitante == "" ||
-          dadosDemanda.busBeneficiadas == "" ||
-          dadosDemanda.forum == "" ||
-          dadosDemanda.secaoTI == "" ||
-          dadosDemanda.tamanho == ""
-        ) {
-          dadosFaltantes = true;
-          setFeedbackFaltante(true);
-        } else {
-          listaBeneficios.map((beneficio) => {
-            if (
-              beneficio.tipoBeneficio == "" ||
-              beneficio.memoriaCalculo == ""
-            ) {
+    if (props.lendo) {
+      lerTexto(texts.barraProgressaoProposta.botaoProximo);
+    } else {
+      let dadosFaltantes = false;
+      let fechar100porcentoCcs = false;
+      switch (activeStep) {
+        case 0:
+          if (
+            dadosDemanda.titulo == "" ||
+            dadosDemanda.problema == "" ||
+            dadosDemanda.proposta == "" ||
+            dadosDemanda.frequencia == "" ||
+            dadosDemanda.buSolicitante == "" ||
+            dadosDemanda.busBeneficiadas == "" ||
+            dadosDemanda.forum == "" ||
+            dadosDemanda.secaoTI == "" ||
+            dadosDemanda.tamanho == ""
+          ) {
+            dadosFaltantes = true;
+            setFeedbackFaltante(true);
+          } else {
+            listaBeneficios.map((beneficio) => {
               if (
-                beneficio.tipoBeneficio != "Qualitativo" &&
-                (beneficio.valor_mensal == "" || beneficio.moeda == "")
+                beneficio.tipoBeneficio == "" ||
+                beneficio.memoriaCalculo == ""
+              ) {
+                if (
+                  beneficio.tipoBeneficio != "Qualitativo" &&
+                  (beneficio.valor_mensal == "" || beneficio.moeda == "")
+                ) {
+                  dadosFaltantes = true;
+                  setFeedbackFaltante(true);
+                }
+              }
+            });
+          }
+          salvarBeneficios();
+          break;
+        case 2:
+          let porcentagemCcs = 0;
+          custos.map((custo) => {
+            custo.custos.map((custolinha) => {
+              if (
+                custolinha.tipoDespesa == "" ||
+                custolinha.perfilDespesa == "" ||
+                custolinha.periodoExecucao == "" ||
+                custolinha.periodoExecucao == null ||
+                custolinha.horas == "" ||
+                custolinha.horas == null ||
+                custolinha.valorHora == "" ||
+                custolinha.valorHora == null
               ) {
                 dadosFaltantes = true;
                 setFeedbackFaltante(true);
               }
+            });
+            custo.ccs.map((cc) => {
+              if (cc.codigo == "" || cc.porcentagem == "") {
+                dadosFaltantes = true;
+                setFeedbackFaltante(true);
+              }
+              porcentagemCcs += cc.porcentagem;
+            });
+            if (dadosFaltantes == false && porcentagemCcs != 100) {
+              fechar100porcentoCcs = true;
+              setFeedback100porcentoCcs(true);
+            } else {
+              porcentagemCcs = 0;
             }
           });
-        }
-        salvarBeneficios();
-        break;
-      case 2:
-        let porcentagemCcs = 0;
-        custos.map((custo) => {
-          custo.custos.map((custolinha) => {
-            if (
-              custolinha.tipoDespesa == "" ||
-              custolinha.perfilDespesa == "" ||
-              custolinha.periodoExecucao == "" ||
-              custolinha.periodoExecucao == null ||
-              custolinha.horas == "" ||
-              custolinha.horas == null ||
-              custolinha.valorHora == "" ||
-              custolinha.valorHora == null
-            ) {
-              dadosFaltantes = true;
-              setFeedbackFaltante(true);
-            }
-          });
-          custo.ccs.map((cc) => {
-            if (cc.codigo == "" || cc.porcentagem == "") {
-              dadosFaltantes = true;
-              setFeedbackFaltante(true);
-            }
-            porcentagemCcs += cc.porcentagem;
-          });
-          if (dadosFaltantes == false && porcentagemCcs != 100) {
-            fechar100porcentoCcs = true;
-            setFeedback100porcentoCcs(true);
-          } else {
-            porcentagemCcs = 0;
-          }
-        });
-        break;
-    }
-    if (dadosFaltantes == false && fechar100porcentoCcs == false) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          break;
+      }
+      if (dadosFaltantes == false && fechar100porcentoCcs == false) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      }
     }
   };
 
   // Função para voltar para página anterior
   const voltarEtapa = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    if (!props.lendo) {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    } else {
+      lerTexto(texts.barraProgressaoProposta.botaoVoltar);
+    }
   };
 
   // Função para pesquisar os fóruns do banco e salvar na lista para o select
@@ -434,7 +441,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
     for (const beneficio of listaBeneficiosExcluidos) {
-      beneficioService.delete(beneficio.id).then((response) => { });
+      beneficioService.delete(beneficio.id).then((response) => {});
     }
   };
 
@@ -533,42 +540,66 @@ const BarraProgressaoProposta = (props) => {
 
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = () => {
-
-    let feedbackFaltante = false;
-    criandoProposta = true;
-
-    if (gerais.periodoExecucacaoInicio == "" || gerais.periodoExecucacaoFim == "" || gerais.qtdPaybackSimples == "" || gerais.unidadePaybackSimples == "" || gerais.ppm == "" || gerais.linkJira == "") {
-      setFeedbackFaltante(true);
+    if (props.lendo) {
+      lerTexto(texts.barraProgressaoProposta.botaoCriar);
     } else {
-      if (gerais.responsaveisNegocio.length != 0) {
-        gerais.responsaveisNegocio.map((responsavel) => {
-          if (responsavel.nome == "" || responsavel.area == "") {
-            feedbackFaltante = true;
-            setFeedbackFaltante(true);
-          }
-        });
-        if (feedbackFaltante != true) {
-          excluirBeneficios();
+      let feedbackFaltante = false;
+      criandoProposta = true;
 
-          propostaService.post(retornaObjetoProposta()).then((response) => {
-            DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
-              EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
+      if (
+        gerais.periodoExecucacaoInicio == "" ||
+        gerais.periodoExecucacaoFim == "" ||
+        gerais.qtdPaybackSimples == "" ||
+        gerais.unidadePaybackSimples == "" ||
+        gerais.ppm == "" ||
+        gerais.linkJira == ""
+      ) {
+        setFeedbackFaltante(true);
+      } else {
+        if (gerais.responsaveisNegocio.length != 0) {
+          gerais.responsaveisNegocio.map((responsavel) => {
+            if (responsavel.nome == "" || responsavel.area == "") {
+              feedbackFaltante = true;
+              setFeedbackFaltante(true);
+            }
+          });
+          if (feedbackFaltante != true) {
+            excluirBeneficios();
 
-                // Salvamento de histórico
-                ExportPdfService.exportProposta(response.id).then((file) => {
-
-                  let arquivo = new Blob([file], { type: "application/pdf" });
-                  propostaService.addHistorico(response.id, "Proposta Criada", arquivo, CookieService.getUser().id).then(() => {
-                    localStorage.setItem("tipoFeedback", "5");
-                    navigate("/");
-                  });
-                });
+            propostaService.post(retornaObjetoProposta()).then((response) => {
+              DemandaService.atualizarStatus(
+                dadosDemanda.id,
+                "ASSESSMENT_APROVACAO"
+              ).then(() => {
+                EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
+                  () => {
+                    // Salvamento de histórico
+                    ExportPdfService.exportProposta(response.id).then(
+                      (file) => {
+                        let arquivo = new Blob([file], {
+                          type: "application/pdf",
+                        });
+                        propostaService
+                          .addHistorico(
+                            response.id,
+                            "Proposta Criada",
+                            arquivo,
+                            CookieService.getUser().id
+                          )
+                          .then(() => {
+                            localStorage.setItem("tipoFeedback", "5");
+                            navigate("/");
+                          });
+                      }
+                    );
+                  }
+                );
               });
             });
-          });
+          }
+        } else {
+          setFeedbackFaltante(true);
         }
-      } else {
-        setFeedbackFaltante(true);
       }
     }
   };
@@ -577,8 +608,31 @@ const BarraProgressaoProposta = (props) => {
   const [feedbackFaltante, setFeedbackFaltante] = useState(false);
   const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
 
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <>
@@ -605,7 +659,9 @@ const BarraProgressaoProposta = (props) => {
           listaForuns={listaForuns}
           listaBU={listaBU}
           listaSecoesTI={listaSecoesTI}
-          setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
+          setFeedbackErroNavegadorIncompativel={
+            setFeedbackErroNavegadorIncompativel
+          }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         />
       )}
@@ -620,7 +676,9 @@ const BarraProgressaoProposta = (props) => {
         <FormularioCustosProposta
           custos={custos}
           setCustos={setCustos}
-          setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
+          setFeedbackErroNavegadorIncompativel={
+            setFeedbackErroNavegadorIncompativel
+          }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         />
       )}
@@ -630,7 +688,9 @@ const BarraProgressaoProposta = (props) => {
           setGerais={setGerais}
           dados={dadosDemanda}
           setDados={setDadosDemanda}
-          setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
+          setFeedbackErroNavegadorIncompativel={
+            setFeedbackErroNavegadorIncompativel
+          }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         />
       )}
@@ -669,28 +729,38 @@ const BarraProgressaoProposta = (props) => {
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}
-        handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
         open={feedbackErroNavegadorIncompativel}
-        handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
       />
       {/* Feedback de dados faltantes */}
       <Feedback
         open={feedbackFaltante}
-        handleClose={() => { setFeedbackFaltante(false); }}
+        handleClose={() => {
+          setFeedbackFaltante(false);
+        }}
         status={"erro"}
-        mensagem={texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios}
+        mensagem={
+          texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
+        }
       />
       {/* Feedback de que não fechou 100% de CCs */}
       <Feedback
         open={feedback100porcentoCcs}
-        handleClose={() => { setFeedback100porcentoCcs(false); }}
+        handleClose={() => {
+          setFeedback100porcentoCcs(false);
+        }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
       />
