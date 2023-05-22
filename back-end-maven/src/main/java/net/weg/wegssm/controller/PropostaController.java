@@ -18,28 +18,50 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.*;
 
+/**
+ * Classe controller para todas as ações envolvendo propostas
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/proposta")
 public class PropostaController {
 
+    /** Service de Proposta */
     private PropostaService propostaService;
+
+    /** Service de Usuário */
     private UsuarioService usuarioService;
 
+    /** Service de Responsável de Negócio */
     private ResponsavelNegocioService responsavelNegocioService;
-    private TabelaCustoService tabelaCustoService;
-    private CustoService custoService;
-    private CCsService ccsService;
-    private AnexoService anexoService;
-    private BeneficioService beneficioService;
-    private DemandaService demandaService;
-    private BuService buService;
 
+    /** Service de Tabelas de Custos */
+    private TabelaCustoService tabelaCustoService;
+
+    /** Service de Custos */
+    private CustoService custoService;
+
+    /** Service de CCs */
+    private CCsService ccsService;
+
+    /** Service de Anexos */
+    private AnexoService anexoService;
+
+    /** Service de Benefícios */
+    private BeneficioService beneficioService;
+
+    /** Service de Demandas */
+    private DemandaService demandaService;
+
+    /** Service de Histórico */
     private HistoricoService historicoService;
+
+    /** Service de Documentos de Histórico */
     private DocumentoHistoricoService documentoHistoricoService;
 
     /**
-     * Método GET para listar todas as propostas
+     * Função para buscar todas as propostas existentes
+     * @return ResponseEntity com uma lista com todas as propostas salvas
      */
     @GetMapping
     public ResponseEntity<List<Proposta>> findAll() {
@@ -47,7 +69,9 @@ public class PropostaController {
     }
 
     /**
-     * Método GET para listar uma proposta específica através de um id
+     * Função para buscar uma proposta pelo seu ID, passado como variável
+     * @param id ID da proposta
+     * @return ResponseEntity com a proposta encontrada
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -59,23 +83,33 @@ public class PropostaController {
     }
 
     /**
-     * Função principal para buscar propostas, retornando uma página com as propostas seguindo o filtro utilizado
+     * Função para buscar uma proposta pelo seu código PPM
      *
-     * @param codigoPPM        - Código PPM da proposta
-     * @param pageable         - Objeto que contém as informações da páginação
-     * @param titulo           - Título da proposta (usado na barra de pesquisa)
-     * @param solicitanteJson  - Solicitante da proposta (usado no modal de filtro)
-     * @param gerenteJson      - Gerente da proposta (usado no modal de filtro)
-     * @param forumJson        - Fórum da proposta (usado no modal de filtro)
-     * @param departamentoJson - Departamento da proposta (usado no modal de filtro)
-     * @param tamanho          - Tamanho da proposta (usado no modal de filtro)
-     * @param status           - Status da proposta (usado sempre quando é feita a busca)
-     * @return - Retorna uma página com as propostas encontradas
+     * @param ppm Código PPM da proposta a ser buscada
+     * @return ResponseEntity com a proposta buscada pelo código PPM
+     */
+    @GetMapping("/ppm/{ppm}")
+    public ResponseEntity<Page<Proposta>> findByPpm(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                    @PathVariable(value = "ppm") Long ppm) {
+        return ResponseEntity.status(200).body(propostaService.findByPpm(ppm, pageable));
+    }
+
+    /** Função principal para a pesquisa de propostas, usando diversos parâmetros possíveis para a busca
+     * @param pageable Pageable usado para a ordenação das propostas e separação em páginas
+     * @param titulo Título da proposta
+     * @param solicitanteJson Solicitante de proposta em formato String
+     * @param gerenteJson Gerente da proposta em formato String
+     * @param forumJson Forum da proposta em formato String
+     * @param departamentoJson Departamento da proposta em formato String
+     * @param tamanho Tamanho da proposta
+     * @param analistaJson Analista da proposta em formato String
+     * @param status Status da proposta
+     * @param presenteEm Parâmetro "PresenteEm" da proposta
+     * @return ResponseEntity contendo uma página de propostas filtradas com os parâmetros que receber
      */
     @GetMapping("/page")
     public ResponseEntity<Page<Proposta>> findPage(
             @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-            @RequestParam(required = false) Long codigoPPM,
             @RequestParam(required = false) String titulo,
             @RequestParam(value = "solicitante", required = false) String solicitanteJson,
             @RequestParam(value = "gerente", required = false) String gerenteJson,
@@ -83,7 +117,6 @@ public class PropostaController {
             @RequestParam(value = "departamento", required = false) String departamentoJson,
             @RequestParam(required = false) String tamanho,
             @RequestParam(value = "analista", required = false) String analistaJson,
-            @RequestParam(required = false) Long id,
             @RequestParam(required = false, value = "status") Status status,
             @RequestParam(required = false, value = "presenteEm") String presenteEm
     ) {
@@ -2226,13 +2259,13 @@ public class PropostaController {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
                                                     propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(
-                                                            true, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable
+                                                            true, status, analista, titulo, gerente, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
                                                     propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamento(
-                                                            true, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable
+                                                            true, status, analista, titulo, gerente, departamento, pageable
                                                     )
                                             );
                                         }
@@ -3935,22 +3968,13 @@ public class PropostaController {
     }
 
     /**
-     * Método GET para listar uma proposta específica através de um código PPM
-     */
-    @GetMapping("/ppm/{ppm}")
-    public ResponseEntity<Object> findByPpm(@PathVariable(value = "ppm") Long ppm) {
-        if (!propostaService.existsByPpm(ppm)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma proposta com este ppm.");
-        }
-
-        return ResponseEntity.status(200).body(propostaService.findByPpm(ppm));
-    }
-
-    /**
-     * Método POST para criar uma proposta no banco de dados
+     * Função de criação de uma proposta
+     *
+     * @param propostaJSON Objeto da proposta em formato string
+     * @return ResponseEntity com a proposta recém-criada
      */
     @PostMapping
-    public ResponseEntity<Object> save(@RequestParam(value = "proposta") String propostaJSON) {
+    public ResponseEntity<Proposta> save(@RequestParam(value = "proposta") String propostaJSON) {
 
         PropostaUtil propostaUtil = new PropostaUtil();
         Proposta proposta = propostaUtil.convertJsonToModel(propostaJSON);
@@ -3983,7 +4007,11 @@ public class PropostaController {
     }
 
     /**
-     * Função utilizada para somente atualizar o status de uma proposta, recebendo como parâmetros o id e o novo status da proposta.
+     * Função para somente atualizar o status de uma proposta, recebendo seu ID e o novo status como parâmetros
+     *
+     * @param id     ID da proposta a ser atualizada
+     * @param status Status novo que a proposta irá receber
+     * @return ResponseEntity com a proposta atualizada
      */
     @PutMapping("/{id}/{status}")
     public ResponseEntity<Object> atualizarStatus(@PathVariable(value = "id") Long id,
@@ -4001,7 +4029,7 @@ public class PropostaController {
     /**
      * Método PUT para atualizar uma proposta no banco de dados com novos dados, sejam anexos, benefícios ou tabelas de custos a serem salvos
      *
-     * @param id
+     * @param id               - ID da proposta a ser atualizada
      * @param propostaJSON     - Proposta com os novos dados
      * @param novaPropostaJSON - Proposta com Benefícios e Tabelas de Custos a serem salvas no banco de dados
      * @param listaIdsAnexos   - Lista de IDs de anexos que já pertenciam à proposta
@@ -4193,7 +4221,8 @@ public class PropostaController {
 
     /**
      * Função para atualizar os campos de uma proposta
-     * @param id ID da proposta a ser atualizada
+     *
+     * @param id                  ID da proposta a ser atualizada
      * @param propostaJaCriadaDTO DTO de uma proposta com todos os seus campos atualizados
      * @return ResponseEntity com a proposta atualizada
      */
@@ -4213,24 +4242,25 @@ public class PropostaController {
 
     /**
      * Função para adicionar um objeto de Historico em uma proposta
+     *
      * @param idProposta ID da proposta a ser adicionado o histórico
-     * @param usuarioId ID do usuário que fez a mudança
-     * @param acao String da ação feita na proposta
-     * @param documento Documento PDF da proposta para salvamento de seu estado atual
+     * @param usuarioId  ID do usuário que fez a mudança
+     * @param acao       String da ação feita na proposta
+     * @param documento  Documento PDF da proposta para salvamento de seu estado atual
      * @return ResponseEntity com a proposta editada
      */
     @PutMapping("/add-historico/{idProposta}")
     public ResponseEntity<Object> addHistorico(@PathVariable(value = "idProposta") Long idProposta,
-                                                 @RequestParam("usuarioId") Long usuarioId,
-                                                 @RequestParam("acao") String acao,
-                                                 @RequestParam("documento") MultipartFile documento) {
+                                               @RequestParam("usuarioId") Long usuarioId,
+                                               @RequestParam("acao") String acao,
+                                               @RequestParam("documento") MultipartFile documento) {
         Optional<Proposta> propostaOptional = propostaService.findById(idProposta);
         if (propostaOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Proposta não encontrada!");
         }
 
         Optional<Usuario> usuarioOptional = usuarioService.findById(usuarioId);
-        if(usuarioOptional.isEmpty()) {
+        if (usuarioOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
         }
 
@@ -4260,6 +4290,7 @@ public class PropostaController {
     /**
      * Função para resetar o atributo "presenteEm" na proposta para a string "Nada". Usada quando uma proposta é retirada de alguma pauta
      * ou vai para edição / business_case
+     *
      * @param idProposta ID da proposta a ser editada
      * @return ResponseEntity com a proposta editada
      */
@@ -4283,8 +4314,9 @@ public class PropostaController {
 
     /**
      * Função para atualizar a proposta ao ser adicionada a uma pauta, atualizando os atributos "publicada", "presenteEm" e "status"
+     *
      * @param idProposta ID da proposta a ser atualizada
-     * @param publicada Valor do atributo "publicada" a ser atribuído à proposta
+     * @param publicada  Valor do atributo "publicada" a ser atribuído à proposta
      * @return ResponseEntity com a proposta atualizada
      */
     @RequestMapping("/pauta/{idProposta}")
@@ -4299,14 +4331,17 @@ public class PropostaController {
         proposta.setPublicada(publicada);
         proposta.setStatus(Status.ASSESSMENT_COMISSAO);
         proposta.setPresenteEm("Pauta");
+        proposta.setParecerComissao(null);
+        proposta.setParecerInformacao(null);
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
 
     /**
      * Função para atualizar uma proposta quando ela for adicionada a uma ata ou reprovada, atualizando o parecer da comissão, status e "presenteEm"
-     * @param idProposta ID da proposta a ser atualizada
-     * @param parecerGerencia Parecer da Gerencia da aceitação da proposta
+     *
+     * @param idProposta        ID da proposta a ser atualizada
+     * @param parecerGerencia   Parecer da Gerencia da aceitação da proposta
      * @param parecerInformacao Texto do Parecer da Gerencia
      * @return ResponseEntity com a proposta atualizada
      */
@@ -4332,7 +4367,7 @@ public class PropostaController {
                 proposta.setStatus(Status.CANCELLED);
                 proposta.setPresenteEm("Nada");
             }
-            case BUSSINESS_CASE -> {
+            case BUSINESS_CASE -> {
                 proposta.setStatus(Status.BUSINESS_CASE);
                 proposta.setPresenteEm("Nada");
             }
@@ -4347,8 +4382,9 @@ public class PropostaController {
 
     /**
      * Função para atualizar uma proposta quando uma ata for apreciada pela DG, atualizando o parecer da DG, status e "presenteEm"
-     * @param idProposta ID da proposta a ser atualizada
-     * @param parecerGerencia Parecer da DG da aceitação da proposta
+     *
+     * @param idProposta        ID da proposta a ser atualizada
+     * @param parecerGerencia   Parecer da DG da aceitação da proposta
      * @param parecerInformacao Texto do Parecer da DG
      * @return ResponseEntity com a proposta atualizada
      */
@@ -4382,6 +4418,7 @@ public class PropostaController {
 
     /**
      * Função para "deletar" uma proposta pelo seu ID, definindo o atributo "visibilidade" para falso
+     *
      * @param id ID da proposta a ser atualizada
      * @return ResponseEntity com a proposta atualizada
      */

@@ -284,7 +284,7 @@ const ModalAddPropostaPauta = (props) => {
           ExportPdfService.exportProposta(response.id).then((file) => {
 
             let arquivo = new Blob([file], { type: "application/pdf" });
-            PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.id, arquivo, CookieService.getUser().id).then(() => { });
+            PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.numeroSequencial, arquivo, CookieService.getUser().id).then(() => { });
           });
         });
       });
@@ -305,7 +305,7 @@ const ModalAddPropostaPauta = (props) => {
           ExportPdfService.exportProposta(response.id).then((file) => {
 
             let arquivo = new Blob([file], { type: "application/pdf" });
-            PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.id, arquivo, CookieService.getUser().id).then(() => { });
+            PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.numeroSequencial, arquivo, CookieService.getUser().id).then(() => { });
           });
         });
       });

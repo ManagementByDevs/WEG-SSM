@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.print.Doc;
 import javax.servlet.http.HttpServletResponse;
+
 import com.itextpdf.text.*;
+
 import javax.transaction.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -49,6 +51,15 @@ public class DemandaController {
     @GetMapping
     public ResponseEntity<List<Demanda>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.findAll());
+    }
+
+    /**
+     * Método GET para buscar uma demanda específica através do id
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<Page<Demanda>> findById(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                  @PathVariable(value = "id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.findById(id, pageable));
     }
 
     /**
@@ -3412,26 +3423,6 @@ public class DemandaController {
     }
 
     /**
-     * Método GET para buscar uma demanda específica através do id
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
-        if (!demandaService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(demandaService.findById(id).get());
-    }
-
-    @GetMapping("/ppm/{ppm}")
-    public ResponseEntity<Object> findByPPM(@PathVariable(value = "ppm") Long ppm) {
-        if (!propostaService.existsByPPM(ppm)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma proposta com este id.");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(propostaService.findByPPM(ppm));
-    }
-
-    /**
      * Método POST para criar uma demanda adicionado um ou vários anexos
      */
     @PostMapping
@@ -3459,8 +3450,10 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
-    /** Função utilizada para somente atualizar o status de uma demanda, recebendo como parâmetros o id e o novo status da demanda.
-     * Usada na aceitação/recusa do gerente e na criação/edição de propostas para acompanhamento do status da demanda */
+    /**
+     * Função utilizada para somente atualizar o status de uma demanda, recebendo como parâmetros o id e o novo status da demanda.
+     * Usada na aceitação/recusa do gerente e na criação/edição de propostas para acompanhamento do status da demanda
+     */
     @PutMapping("/status/{id}/{status}")
     public ResponseEntity<Object> atualizarStatus(@PathVariable(value = "id") Long id,
                                                   @PathVariable(value = "status") Status status) {

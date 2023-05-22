@@ -94,6 +94,7 @@ const TextLanguage = (linguagem) => {
             emAprovacao: "Em Aprovação",
             aprovada: "Aprovada",
             emAndamento: "Em Andamento",
+            emDesenvolvimento: "Em Desenvolvimento"
           },
           motivo: "Motivo",
         },
@@ -142,6 +143,7 @@ const TextLanguage = (linguagem) => {
             emAprovacao: "Em Aprovação",
             aprovada: "Aprovada",
             emAndamento: "Em Andamento",
+            emDesenvolvimento: "Em Desenvolvimento"
           },
           codigo: "Código",
           titulo: "Titulo",
@@ -966,6 +968,7 @@ const TextLanguage = (linguagem) => {
             emAprovacao: "In Approval",
             aprovada: "Approved",
             emAndamento: "In Progress",
+            emDesenvolvimento: "In Development"
           },
           motivo: "Reason",
         },
@@ -1013,6 +1016,7 @@ const TextLanguage = (linguagem) => {
             emAprovacao: "In Approval",
             aprovada: "Approved",
             emAndamento: "In Progress",
+            emDesenvolvimento: "In Development"
           },
           codigo: "Code",
           titulo: "Title",
@@ -1832,6 +1836,7 @@ const TextLanguage = (linguagem) => {
             emAprovacao: "正在批准",
             aprovada: "批准",
             emAndamento: "进行中",
+            emDesenvolvimento: "正在开发中"
           },
           motivo: "原因",
         },
@@ -1879,6 +1884,7 @@ const TextLanguage = (linguagem) => {
             emAprovacao: "正在批准",
             aprovada: "批准",
             emAndamento: "进行中",
+            emDesenvolvimento: "正在开发中"
           },
           codigo: "代码",
           titulo: "标题",
@@ -2668,11 +2674,12 @@ const TextLanguage = (linguagem) => {
         demanda: {
           status: {
             reprovada: "Rechazada",
-            aguardandoRevisao: "Esperando revisión",
-            aguardandoEdicao: "Esperando edición",
-            emAprovacao: "En aprobación",
+            aguardandoRevisao: "Esperando Revisión",
+            aguardandoEdicao: "Esperando Edición",
+            emAprovacao: "En Aprobación",
             aprovada: "Aprobada",
-            emAndamento: "En curso",
+            emAndamento: "En Curso",
+            emDesenvolvimento: "En Desarrollo"
           },
           motivo: "Motivo",
         },
@@ -2716,11 +2723,12 @@ const TextLanguage = (linguagem) => {
         demandaModoVisualizacao: {
           statusDemanda: {
             reprovada: "Rechazada",
-            aguardandoRevisao: "Esperando revisión",
-            aguardandoEdicao: "Esperando edición",
-            emAprovacao: "En aprobación",
+            aguardandoRevisao: "Esperando Revisión",
+            aguardandoEdicao: "Esperando Edición",
+            emAprovacao: "En Aprobación",
             aprovada: "Aprobada",
-            emAndamento: "En curso",
+            emAndamento: "En Curso",
+            emDesenvolvimento: "En Desarrollo"
           },
           codigo: "Código",
           titulo: "Título",

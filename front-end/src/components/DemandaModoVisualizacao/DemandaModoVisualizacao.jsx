@@ -82,6 +82,8 @@ const DemandaTable = ({
       return "#11B703";
     } else if (status == "ASSESSMENT_APROVACAO") {
       return "#F7DC6F";
+    } else if (status == "DONE") {
+      return "#7EB61C";
     }
   }
 
@@ -99,6 +101,8 @@ const DemandaTable = ({
       return texts.demandaModoVisualizacao.statusDemanda?.aprovada;
     } else if (status == "ASSESSMENT_APROVACAO") {
       return texts.demandaModoVisualizacao.statusDemanda?.emAndamento;
+    } else if (status == "DONE") {
+      return texts.demandaModoVisualizacao.statusDemanda?.emDesenvolvimento
     }
   };
 

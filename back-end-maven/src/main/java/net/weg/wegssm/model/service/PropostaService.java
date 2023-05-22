@@ -31,8 +31,8 @@ public class PropostaService {
         return propostaRepository.findById(id);
     }
 
-    public Proposta findByPpm(Long ppm) {
-        return propostaRepository.findByCodigoPPM(ppm);
+    public Page<Proposta> findByPpm(Long ppm, Pageable pageable) {
+        return propostaRepository.findByCodigoPPM(ppm, pageable);
     }
 
     public Boolean existsById(Long id) {
@@ -569,10 +569,6 @@ public class PropostaService {
 
     public Boolean existsByPPM(Long ppm) {
         return propostaRepository.existsByCodigoPPM(ppm);
-    }
-
-    public Proposta findByPPM(Long ppm) {
-        return propostaRepository.findByCodigoPPM(ppm);
     }
 
     public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
@@ -2109,5 +2105,13 @@ public class PropostaService {
 
     public Page<Proposta> findByVisibilidadeAndForumAndDepartamentoAndSolicitanteAndPresenteEm(boolean b, Forum forum, Departamento departamento, Usuario solicitante, String presenteEm, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndForumAndDepartamentoAndSolicitanteAndPresenteEm(b, forum, departamento, solicitante, presenteEm, pageable);
+    }
+
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(b, status, analista, titulo, gerente, departamento, solicitante, pageable);
+    }
+
+    public Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamento(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return propostaRepository.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamento(b, status, analista, titulo, gerente, departamento, pageable);
     }
 }

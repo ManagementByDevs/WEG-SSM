@@ -95,6 +95,7 @@ const TextLanguageContext = createContext({
         emAprovacao: "Em Aprovação",
         aprovada: "Aprovada",
         emAndamento: "Em Andamento",
+        emDesenvolvimento: "Em Desenvolvimento"
       },
       motivo: "Motivo",
     },
@@ -143,6 +144,7 @@ const TextLanguageContext = createContext({
         emAprovacao: "Em Aprovação",
         aprovada: "Aprovada",
         emAndamento: "Em Andamento",
+        emDesenvolvimento: "Em Desenvolvimento"
       },
       codigo: "Código",
       titulo: "Titulo",
@@ -152,7 +154,7 @@ const TextLanguageContext = createContext({
       nadaEncontrado: "Nada encontrado",
       tenteNovamenteMaisTarde: "Tente novamente mais tarde",
     },
-    escopoModoVisualizacao:{
+    escopoModoVisualizacao: {
       porcentagem: "Porcentagem",
       titulo: "Titulo",
       excluir: "Excluir",
@@ -792,7 +794,7 @@ const TextLanguageContext = createContext({
       gravarAudio: "Gravar áudio",
     },
   },
-  setTexts: () => {},
+  setTexts: () => { },
 });
 
 export default TextLanguageContext;

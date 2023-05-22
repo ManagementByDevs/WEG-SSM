@@ -45,6 +45,8 @@ const Demanda = (props) => {
       return "#11B703";
     } else if (props.demanda.status == "ASSESSMENT_APROVACAO") {
       return "#F7DC6F";
+    } else if (props.demanda.status == "DONE") {
+      return "#7EB61C";
     }
   };
 
@@ -62,6 +64,8 @@ const Demanda = (props) => {
       return texts.demanda.status.aprovada;
     } else if (props.demanda.status == "ASSESSMENT_APROVACAO") {
       return texts.demanda.status.emAndamento;
+    } else if (props.demanda.status == "DONE") {
+      return texts.demanda.status.emDesenvolvimento;
     }
   };
 

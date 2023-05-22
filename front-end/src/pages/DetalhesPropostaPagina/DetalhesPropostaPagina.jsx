@@ -89,7 +89,7 @@ const DetalhesPropostaPagina = () => {
           propostaId={paramsPath.id}
         />
       </Box>
-      {location.state.status != "CANCELLED" && (
+      {location.state.status != "CANCELLED" && location.state.presenteEm != "Pauta" && location.state.presenteEm != "Ata" && (
         <Box className="absolute bottom-4 right-6  p-1">
           {/* Botão de adicionar proposta em pauta */}
           <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>

@@ -10,14 +10,11 @@ class PropostaService {
   }
 
   async getById(id) {
-    return (await axios.get(proposta + "/" + id, { withCredentials: true }))
-      .data;
+    return (await axios.get(proposta + "/" + id, { withCredentials: true })).data;
   }
 
   async getByPPM(ppm) {
-    return (
-      await axios.get(proposta + `/ppm/${ppm}`, { withCredentials: true })
-    ).data;
+    return (await axios.get(proposta + `/ppm/${ppm}`, { withCredentials: true })).data;
   }
 
   async getPage(params, page) {

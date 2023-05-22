@@ -24,7 +24,6 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-// import InputPesquisa from "../../components/InputPesquisa/InputPesquisa";
 
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
@@ -44,6 +43,7 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import { WebSocketContext } from "../../service/WebSocketService";
 import ColorModeContext from "../../service/TemaContext";
 import chatService from "../../service/chatService";
+import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -87,8 +87,6 @@ const HomeGerencia = () => {
     departamento: null,
     tamanho: null,
     status: null,
-    codigoPPM: null,
-    id: null,
     presenteEm: null,
   });
 
@@ -431,7 +429,6 @@ const HomeGerencia = () => {
     verificarFeedbacks();
     buscarUsuario();
     buscarFiltros();
-    arrangePreferences();
     // inscreverSocket();
   }, []);
 
@@ -442,8 +439,6 @@ const HomeGerencia = () => {
       tamanho: null,
       gerente: null,
       departamento: null,
-      codigoPPM: null,
-      id: null,
       analista: null,
       presenteEm: null,
     };
@@ -463,12 +458,6 @@ const HomeGerencia = () => {
     if (filtrosAtuais.departamento != "") {
       paramsTemp.departamento = filtrosAtuais.departamento;
     }
-    if (filtrosAtuais.codigoPPM != "") {
-      paramsTemp.codigoPPM = filtrosAtuais.codigoPPM;
-    }
-    if (filtrosAtuais.id != "") {
-      paramsTemp.id = filtrosAtuais.id;
-    }
     if (filtrosAtuais.analista != "") {
       paramsTemp.analista = filtrosAtuais.analista;
     }
@@ -485,8 +474,6 @@ const HomeGerencia = () => {
       tamanho: paramsTemp.tamanho,
       status: params.status,
       departamento: paramsTemp.departamento,
-      codigoPPM: paramsTemp.codigoPPM,
-      id: paramsTemp.id,
       presenteEm: paramsTemp.presenteEm,
     });
   }, [filtrosAtuais]);
@@ -544,7 +531,7 @@ const HomeGerencia = () => {
         setFiltroProposta(false);
         break;
       case "6":
-        setParamsPautas({ ...paramsAtas });
+        setParamsAtas({ ...paramsAtas });
         setFiltroProposta(false);
         break;
     }
@@ -552,8 +539,7 @@ const HomeGerencia = () => {
 
   // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
   useEffect(() => {
-    // setParams({ ...params, solicitante: usuario });
-
+    arrangePreferences();
     if (listaAnalistas.length == 0 && usuario.tipoUsuario == "ANALISTA") {
       listaAnalistas.push(usuario);
     }
@@ -607,12 +593,9 @@ const HomeGerencia = () => {
 
   /** Função para buscar o usuário logado no sistema pelo cookie salvo no navegador */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
-      (e) => {
-        setUsuario(e);
-        setParams({ ...params, solicitante: e });
-      }
-    );
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((e) => {
+      setUsuario(e);
+    });
   };
 
   /** Função para buscar a lista de fóruns e departamentos do sistema para o modal de filtros */
@@ -629,15 +612,19 @@ const HomeGerencia = () => {
     }
   };
 
+  /** Função para buscar uma demanda pelo seu número sequencial, possível no campo de pesquisa */
   const buscarPorNumero = (numero) => {
     DemandaService.getById(numero).then((response) => {
-      setListaItens([response]);
+      formatarItens(response.content);
+      setTotalPaginas(response.totalPages);
     });
   };
 
+  /** Função para buscar uma proposta pelo seu PPM, possível no campo de pesquisa */
   const buscarPorPPM = (ppm) => {
-    DemandaService.getByPPM(ppm).then((response) => {
-      setListaItens([response]);
+    PropostaService.getByPPM(ppm).then((response) => {
+      formatarItens(response.content);
+      setTotalPaginas(response.totalPages);
     });
   };
 
@@ -667,8 +654,7 @@ const HomeGerencia = () => {
     setCarregamentoItens(true);
     switch (valorAba) {
       case "1":
-        if (usuario.id != 0) {
-          // arrangeParams();
+        if (params.solicitante && params.solicitante.id != 0) {
           DemandaService.getPage(
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
@@ -783,19 +769,9 @@ const HomeGerencia = () => {
       });
     } else {
       if (valorAba < 3) {
-        setParams({
-          ...params,
-          id: valorPesquisa,
-          titulo: null,
-          codigoPPM: null,
-        });
+        buscarPorNumero(valorPesquisa);
       } else {
-        setParams({
-          ...params,
-          codigoPPM: valorPesquisa,
-          titulo: null,
-          id: null,
-        });
+        buscarPorPPM(valorPesquisa);
       }
     }
   };
@@ -958,10 +934,14 @@ const HomeGerencia = () => {
     // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
     for (let propostaAux of pautaSelecionada.propostas) {
 
-      PropostaService.removerPresenca(propostaAux.id).then(
-        (newProposta) => {
-          setFeedbackPropostaAtualizada(true);
-        }
+      PropostaService.removerPresenca(propostaAux.id).then((response) => {
+        // Salvamento de histórico
+        ExportPdfService.exportProposta(response.id).then((file) => {
+
+          let arquivo = new Blob([file], { type: "application/pdf" });
+          PropostaService.addHistorico(response.id, "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída", arquivo, CookieService.getUser().id).then(() => { });
+        });
+      }
       );
     }
 
@@ -1004,6 +984,7 @@ const HomeGerencia = () => {
 
         // Timeout para retirar o carregamento após as preferências serem atualizadas
         setTimeout(() => {
+          setIsFirstTime(true);
           setCarregamentoPreferencias(false);
         }, 500);
       }
@@ -1070,9 +1051,7 @@ const HomeGerencia = () => {
           break;
       }
 
-      recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
-      };
+      recognition.onstart = () => { };
 
       recognition.onresult = (event) => {
         const transcript =
@@ -1094,7 +1073,6 @@ const HomeGerencia = () => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
     }
   };
 
@@ -1529,8 +1507,6 @@ const HomeGerencia = () => {
                       setListaGerentes={setListaGerentes}
                       listaAnalistas={listaAnalistas}
                       setListaAnalistas={setListaAnalistas}
-                      buscarPorNumero={buscarPorNumero}
-                      buscarPorPPM={buscarPorPPM}
                       filtroProposta={filtroProposta}
                     />
                   )}

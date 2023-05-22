@@ -15,7 +15,7 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     /**
      * Método para encontrar uma proposta pelo código PPM
      */
-    Proposta findByCodigoPPM(Long ppm);
+    Page<Proposta> findByCodigoPPM(Long ppm, Pageable pageable);
 
     /**
      * Método para verificar se existe uma proposta com o código PPM

@@ -4,15 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import VLibras from "@djpfs/react-vlibras"
 
 import { keyframes } from "@emotion/react";
-
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip, } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -31,6 +23,9 @@ import ExportPdfService from "../../service/exportPdfService";
 import PropostaService from "../../service/propostaService";
 import AtaService from "../../service/ataService";
 import DateService from "../../service/dateService";
+
+import CookieService from "../../service/cookieService";
+import DemandaService from "../../service/demandaService";
 
 // Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
 const DetalhesAta = (props) => {
@@ -188,12 +183,26 @@ const DetalhesAta = (props) => {
   };
 
   // Atualiza a lista de propostas passada por parâmetro
-  const updatePropostas = (
-    listaPropostasToUpdate = [EntitiesObjectService.proposta()]
-  ) => {
+  const updatePropostas = (listaPropostasToUpdate = [EntitiesObjectService.proposta()]) => {
     for (let proposta of listaPropostasToUpdate) {
-      PropostaService.atualizacaoDg(proposta.id, proposta.parecerDG, proposta.parecerInformacaoDG).then(
-        (response) => { }
+      PropostaService.atualizacaoDg(proposta.id, proposta.parecerDG, proposta.parecerInformacaoDG).then((response) => {
+
+        // Salvamento de histórico e atualização da demanda
+        ExportPdfService.exportProposta(response.id).then((file) => {
+
+          let arquivo = new Blob([file], { type: "application/pdf" });
+          switch (response.parecerDG) {
+            case "REPROVADO":
+              PropostaService.addHistorico(response.id, "Reprovada pela DG", arquivo, CookieService.getUser().id).then(() => { });
+              DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(() => { })
+              break;
+            case "APROVADO":
+              PropostaService.addHistorico(response.id, "Aprovada pela DG", arquivo, CookieService.getUser().id).then(() => { });
+              DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(() => { })
+              break;
+          }
+        });
+      }
       );
     }
   };
@@ -217,14 +226,6 @@ const DetalhesAta = (props) => {
 
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };
-
-    for (let proposta of ataPublished.propostas) {
-      if (proposta.parecerDG == "APROVADO") {
-        proposta.status = "DONE";
-      } else {
-        proposta.status = "CANCELLED";
-      }
-    }
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);

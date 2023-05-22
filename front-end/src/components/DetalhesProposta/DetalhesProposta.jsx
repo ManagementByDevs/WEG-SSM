@@ -334,7 +334,7 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
           {/* Box Informações gerais */}
           <Box className="relative">
-            {proposta.status != "CANCELLED" && (
+            {proposta.status != "CANCELLED" && proposta.presenteEm != "Pauta" && proposta.presenteEm != "Ata" && (
               <Tooltip title={texts.detalhesProposta.editar}>
                 <Box className="absolute -right-8 -top-2">
                   <IconButton
@@ -1032,7 +1032,7 @@ const ParecerComissaoInsertText = ({
               {texts.detalhesProposta.devolvido}
             </Typography>
           </MenuItem>
-          <MenuItem key={"Business Case"} value={"BUSINESSCASE"}>
+          <MenuItem key={"Business Case"} value={"BUSINESS_CASE"}>
             <Typography fontSize={FontConfig.medium}>
               {texts.detalhesProposta.businessCase}
             </Typography>

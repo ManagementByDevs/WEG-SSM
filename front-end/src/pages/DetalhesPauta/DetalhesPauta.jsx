@@ -3,14 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras"
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
 
 import { keyframes } from "@emotion/react";
 
@@ -35,6 +28,9 @@ import ExportPdfService from "../../service/exportPdfService";
 import AtaService from "../../service/ataService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import ModalCriarAta from "../../components/ModalCriarAta/ModalCriarAta";
+
+import CookieService from "../../service/cookieService";
+import DemandaService from "../../service/demandaService";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
@@ -215,9 +211,15 @@ const DetalhesPauta = (props) => {
 
     PautaService.put(pauta).then((newPauta) => {
       setFeedbackPropostaDeletada(true);
-      PropostaService.removerPresenca(
-        propostasDeleted[0].id
-      ).then((newProposta) => { });
+      PropostaService.removerPresenca(propostasDeleted[0].id).then((response) => {
+
+        // Salvamento de histórico
+        ExportPdfService.exportProposta(response.id).then((file) => {
+
+          let arquivo = new Blob([file], { type: "application/pdf" });
+          PropostaService.addHistorico(response.id, "Removida da Pauta #" + newPauta.numeroSequencial, arquivo, CookieService.getUser().id).then(() => { });
+        });
+      });
 
       location.state = { pauta: newPauta }; // Atualizando a pauta na página
       setPauta(newPauta); // Atualizando a pauta na variável do front
@@ -298,11 +300,10 @@ const DetalhesPauta = (props) => {
 
     // Cria a ata caso tenha propostas aprovadas
     if (ata.propostas.length > 0) {
-
-      updatePropostas(pauta.propostas);
       ata.propostas = retornarIdsObjetos(ata.propostas);
 
       AtaService.post(ata).then((response) => {
+        updatePropostas(pauta.propostas, response.numeroSequencial);
         PautaService.delete(pauta.id).then((response) => {
           feedbackAta();
         });
@@ -312,38 +313,64 @@ const DetalhesPauta = (props) => {
 
   const handlePautaWithNoApprovedProposals = () => {
     for (let proposta of pauta.propostas) {
-      switch (proposta.parecerComissao) {
-        case "REPROVADO":
-          proposta.status = "CANCELLED";
-          break;
-        case "MAIS_INFORMACOES":
-          proposta.status = "ASSESSMENT_EDICAO";
-          break;
-        case "BUSINESSCASE":
-          proposta.status = "ASSESSMENT_EDICAO";
-          break;
-      }
+      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then((response) => {
 
-      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao);
+        //Salvamento de histórico e atualização da demanda
+        ExportPdfService.exportProposta(response.id).then((file) => {
+          let arquivo = new Blob([file], { type: "application/pdf" });
+
+          switch (response.parecerComissao) {
+            case "REPROVADO":
+              PropostaService.addHistorico(response.id, "Proposta Reprovada", arquivo, CookieService.getUser().id).then(() => { });
+              DemandaService.atualizarStatus(response.demanda.id, "CANCELLED").then(() => { })
+              break;
+            case "MAIS_INFORMACOES":
+              PropostaService.addHistorico(response.id, "Enviada para Edição", arquivo, CookieService.getUser().id).then(() => { });
+              break;
+            case "BUSINESS_CASE":
+              PropostaService.addHistorico(response.id, "Enviada para Business Case", arquivo, CookieService.getUser().id).then(() => { });
+              break;
+          }
+        });
+      });
     }
 
     PautaService.delete(pauta.id).then((response) => {
-      console.log(
-        "Pauta deletada com sucesso e propostas atualizadas! ",
-        response
-      );
       feedbackPropostasAtualizadas(); // Caso não tenha propostas aprovadas, atualiza as propostas
     });
   };
 
+  /** Função para salvar o histórico da proposta após criação da ata, seguindo um texto diferente dependendo do parecer da comissão */
+  const salvarHistoricoAprovacao = (proposta, idAta) => {
+
+    //Salvamento do histórico e atualização da demanda
+    ExportPdfService.exportProposta(proposta.id).then((file) => {
+      let arquivo = new Blob([file], { type: "application/pdf" });
+
+      switch (proposta.parecerComissao) {
+        case "REPROVADO":
+          PropostaService.addHistorico(proposta.id, "Proposta Reprovada", arquivo, CookieService.getUser().id).then(() => { });
+          DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(() => { })
+          break;
+        case "MAIS_INFORMACOES":
+          PropostaService.addHistorico(proposta.id, "Enviada para Edição", arquivo, CookieService.getUser().id).then(() => { });
+          break;
+        case "BUSINESS_CASE":
+          PropostaService.addHistorico(proposta.id, "Entrada em Business Case", arquivo, CookieService.getUser().id).then(() => { });
+          break;
+        case "APROVADO":
+          PropostaService.addHistorico(proposta.id, "Adicionada na Ata #" + idAta, arquivo, CookieService.getUser().id).then(() => { });
+          break;
+      }
+    });
+  }
+
   // Atualiza a lista de propostas passada por parâmetro
-  const updatePropostas = (listaPropostasToUpdate = []) => {
+  const updatePropostas = (listaPropostasToUpdate = [], idAta) => {
     for (let proposta of listaPropostasToUpdate) {
-      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then(
-        (response) => {
-          console.log("Proposta atualizada com sucesso! ", response);
-        }
-      );
+      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then((response) => {
+        salvarHistoricoAprovacao(response, idAta);
+      });
     }
   };
 

@@ -30,7 +30,7 @@ import CookieService from "../../service/cookieService";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
-  
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
