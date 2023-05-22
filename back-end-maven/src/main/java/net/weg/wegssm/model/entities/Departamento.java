@@ -1,6 +1,7 @@
 package net.weg.wegssm.model.entities;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,9 +19,15 @@ public class Departamento {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    /**
+     * Nome do departamento
+     */
     @Column(nullable = false, length = 50)
     private String nome;
 
+    /**
+     * Visibilidade do departamento, utilizada para não excluir direto do BD
+     */
     @Column
     private Boolean visibilidade;
 

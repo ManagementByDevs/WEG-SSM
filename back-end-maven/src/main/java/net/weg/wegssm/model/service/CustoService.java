@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.Custo;
 import net.weg.wegssm.repository.CustoRepository;
 import org.springframework.stereotype.Service;
@@ -8,19 +9,13 @@ import org.springframework.stereotype.Service;
  * Classe service para os custos
  */
 @Service
+@AllArgsConstructor
 public class CustoService {
 
     /**
      * Classe repository dos custos
      */
     private CustoRepository custoRepository;
-
-    /**
-     * Construtor da classe
-     */
-    public CustoService(CustoRepository custoRepository) {
-        this.custoRepository = custoRepository;
-    }
 
     /**
      * Função para salvar um custo no banco de dados
@@ -42,4 +37,5 @@ public class CustoService {
     public void deleteById(Long id) {
         custoRepository.deleteById(id);
     }
+
 }

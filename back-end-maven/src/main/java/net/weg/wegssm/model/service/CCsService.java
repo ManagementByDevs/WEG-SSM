@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.CC;
 import net.weg.wegssm.repository.CCsRepository;
 import org.springframework.stereotype.Service;
@@ -8,19 +9,13 @@ import org.springframework.stereotype.Service;
  * Classe service para as CCs
  */
 @Service
+@AllArgsConstructor
 public class CCsService {
 
     /**
      * Classe repository das CCs
      */
     private CCsRepository ccsRepository;
-
-    /**
-     * Construtor da classe
-     */
-    public CCsService(CCsRepository ccsRepository) {
-        this.ccsRepository = ccsRepository;
-    }
 
     /**
      * Função para salvar uma CC no banco
@@ -42,4 +37,5 @@ public class CCsService {
     public void deleteById(Long id) {
         ccsRepository.deleteById(id);
     }
+
 }

@@ -19,9 +19,16 @@ public class CC {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    /**
+     * Código do centro de custo
+     */
     @Column(name = "codigo")
     private Integer codigo;
 
+    /**
+     * Porcentagem do centro de custo
+     */
     @Column(name = "porcentagem")
     private Double porcentagem;
+
 }

@@ -20,11 +20,18 @@ public class TabelaCusto {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    /**
+     * Lista de custos da tabela de custos
+     */
     @OneToMany
     @JoinColumn(name = "tabela_custo_id")
     private List<Custo> custos;
 
+    /**
+     * Lista de CCs da tabela de custos
+     */
     @OneToMany
     @JoinColumn(name = "tabela_custo_id")
     private List<CC> ccs;
+
 }

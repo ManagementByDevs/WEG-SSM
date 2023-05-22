@@ -8,8 +8,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "ata")
-@AllArgsConstructor @NoArgsConstructor
-@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @ToString
 @EqualsAndHashCode
 public class Ata {
@@ -19,24 +21,46 @@ public class Ata {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    /**
+     * Data em que a reunião foi realizada
+     */
     @Column(nullable = false)
     private Date dataReuniao;
 
+    /**
+     * Número sequencial da ata
+     */
     @Column(nullable = false, length = 14, unique = true)
     private String numeroSequencial;
 
+    /**
+     * Visibilidade da ata, utilizada para guardá-la antes de removê-la do banco de dados
+     */
+    @Column
+    private Boolean visibilidade;
+
+
+    /** Foreign keys */
+
+    /**
+     * Comissão presente na ata
+     */
     @ManyToOne
     @JoinColumn(nullable = false, name = "comissao_id")
     private Forum comissao;
 
-    @Column
-    private Boolean visibilidade;
-
+    /**
+     * Lista de propostas presentes na ata
+     */
     @OneToMany
     @JoinColumn(name = "ata_id")
     private List<Proposta> propostas;
 
+    /**
+     * Analista responsável pela ata
+     */
     @ManyToOne
     @JoinColumn(name = "analista_id")
     private Usuario analistaResponsavel;
+
 }
