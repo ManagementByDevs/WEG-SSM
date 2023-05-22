@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras"
 
-import { Box, Button, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -14,8 +13,6 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 import Caminho from "../../components/Caminho/Caminho";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
-import Escopo from "../../components/Escopo/Escopo";
-import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
@@ -27,14 +24,11 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
-import EntitiesObjectService from "../../service/entitiesObjectService";
 
 import Tour from "reactour";
 
 // Tela para mostrar os escopos de demandas/propostas não finalizadas
 const Escopos = () => {
-
-  const [usuario, setUsuario] = useState(null);
 
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -45,30 +39,39 @@ const Escopos = () => {
   // navigate utilizado para navegar entre as páginas
   const navigate = useNavigate();
 
+  // useState utilizado para armazenar o usuário logado no sistema
+  const [usuario, setUsuario] = useState(null);
+
   // useState utilizado para armazenar os escopos
   const [escopos, setEscopos] = useState(null);
+
   // useState utilizado para abrir e fechar o modal de confirmação
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
+
   // useState para armazenar o escopo selecionado
   const [escopoSelecionado, setEscopoSelecionado] = useState(null);
+
   // useState para armazenar o valor do input na barra de pesquisa
   const [inputPesquisa, setInputPesquisa] = useState("");
+
   // useState para aparecer o feedback de escopo deletado
   const [feedbackDeletar, setFeedbackDeletar] = useState(false);
 
-  // useEffect utilizado para buscar os escopos assim que a página é carregada
+  // useEffect utilizado para buscar o usuário ao entrar na página
   useEffect(() => {
     if (!usuario) {
       buscarUsuario();
     }
   }, []);
 
+  // useEffect utilizado para buscar os escopos ao entrar na página se tiver um usuário logado
   useEffect(() => {
     if (!escopos && usuario) {
       buscarEscopos();
     }
   }, [usuario]);
 
+  // Função para buscar o usuário logado no sistema pelo cookie salvo no navegador 
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
       (user) => {
@@ -77,7 +80,7 @@ const Escopos = () => {
     );
   };
 
-  // função integrada com a barra de pesquisa para buscar os escopos
+  // Função integrada com a barra de pesquisa para buscar os escopos
   const buscarEscopos = () => {
     if (inputPesquisa == "") {
       EscopoService.buscarPorUsuario(usuario.id, "sort=id,asc&").then(
@@ -101,7 +104,7 @@ const Escopos = () => {
       );
     } else {
       EscopoService.buscarPorTitulo(
-        parseInt(localStorage.getItem("usuarioId")),
+        usuario.id,
         inputPesquisa,
         "sort=id,asc&"
       ).then((response) => {
