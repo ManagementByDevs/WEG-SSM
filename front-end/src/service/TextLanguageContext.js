@@ -152,9 +152,9 @@ const TextLanguageContext = createContext({
       nadaEncontrado: "Nada encontrado",
       tenteNovamenteMaisTarde: "Tente novamente mais tarde",
     },
-    escopoModoVisualizacao:{
+    escopoModoVisualizacao: {
+      titulo: "Título",
       porcentagem: "Porcentagem",
-      titulo: "Titulo",
       excluir: "Excluir",
     },
     DetalhesDemanda: {
@@ -792,7 +792,7 @@ const TextLanguageContext = createContext({
       gravarAudio: "Gravar áudio",
     },
   },
-  setTexts: () => {},
+  setTexts: () => { },
 });
 
 export default TextLanguageContext;
