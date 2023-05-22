@@ -1,7 +1,17 @@
-import { React, useState, useContext } from "react";
+import { React, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Box, Paper, TextField, InputAdornment, FormControlLabel, Checkbox, Typography, IconButton, } from "@mui/material";
+import {
+  Button,
+  Box,
+  Paper,
+  TextField,
+  InputAdornment,
+  FormControlLabel,
+  Checkbox,
+  Typography,
+  IconButton,
+} from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
@@ -56,16 +66,21 @@ const Login = (props) => {
    * Caso não encontre ou os inputs não estejam preenchidos, os feedbacks respectivos serão ativados
    */
   const fazerLogin = async () => {
-    if (dados.email && dados.senha) {
-      try {
-        await AutenticacaoService.login(dados);
-        navigate("/");
-      } catch (error) { }
-    } else {
-      // Abrir modal de feedback de dados não preenchidos
-      setDadosFaltantes(true);
+    if (!props.lendo) {
+      if (dados.email && dados.senha) {
+        try {
+          await AutenticacaoService.login(dados);
+          navigate("/");
+        } catch (error) {}
+      } else {
+        // Abrir modal de feedback de dados não preenchidos
+        setDadosFaltantes(true);
+      }
     }
   };
+
+  // Feedback para ver se o navegador é compatível com a API de síntese de fala
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
 
   /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer o login caso seja a tecla "Enter" */
   const eventoTeclado = (e) => {
@@ -74,11 +89,26 @@ const Login = (props) => {
     }
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (texto) => {
     if (props.lendo) {
       props.setTexto(texto);
     }
   };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      } else {
+        setFeedbackErroNavegadorIncompativel(true);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <FundoComHeader>
@@ -102,8 +132,12 @@ const Login = (props) => {
             {/* Input de texto do email do usuário */}
             <TextField
               value={dados.email}
-              onChange={(e) => { atualizarInput(1, e) }}
-              onKeyDown={(e) => { eventoTeclado(e) }}
+              onChange={(e) => {
+                atualizarInput(1, e);
+              }}
+              onKeyDown={(e) => {
+                eventoTeclado(e);
+              }}
               className="w-8/12"
               id="filled-basic"
               label={texts.login.email}
@@ -114,8 +148,12 @@ const Login = (props) => {
                         "mudarVisualizacaoSenha" no click) */}
             <TextField
               value={dados.senha}
-              onChange={(e) => { atualizarInput(2, e) }}
-              onKeyDown={(e) => { eventoTeclado(e) }}
+              onChange={(e) => {
+                atualizarInput(2, e);
+              }}
+              onKeyDown={(e) => {
+                eventoTeclado(e);
+              }}
               className="w-8/12"
               id="input-with-icon-textfield"
               label={texts.login.senha}
@@ -195,11 +233,22 @@ const Login = (props) => {
             {dadosFaltantes && (
               <Feedback
                 open={dadosFaltantes}
-                handleClose={() => { setDadosFaltantes(false) }}
+                handleClose={() => {
+                  setDadosFaltantes(false);
+                }}
                 status={"erro"}
                 mensagem={texts.login.feedback.preenchaTodosOsCampos}
               />
             )}
+            {/* Feedback navegador incompativel */}
+            <Feedback
+              open={feedbackErroNavegadorIncompativel}
+              handleClose={() => {
+                setFeedbackErroNavegadorIncompativel(false);
+              }}
+              status={"erro"}
+              mensagem={texts.homeGerencia.feedback.feedback13}
+            />
           </Box>
         </Paper>
       </Paper>
