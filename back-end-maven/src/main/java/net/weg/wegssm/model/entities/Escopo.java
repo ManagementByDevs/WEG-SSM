@@ -23,39 +23,67 @@ public class Escopo {
     @Column(nullable = false, unique = true)
     private Long id;
 
+    /**
+     * Título do escopo da demanda
+     */
     @Column(length = 100)
     private String titulo;
 
+    /**
+     * Problema do escopo da demanda, em bytes pois está em HTML
+     */
     @Column
     @Lob
     private byte[] problema;
 
+    /**
+     * Proposta do escopo da demanda, em bytes pois está em HTML
+     */
     @Column
     @Lob
     private byte[] proposta;
 
+    /**
+     * Frequência do escopo da demanda
+     */
     @Column(length = 100)
     private String frequencia;
 
+    /**
+     * Data da última modificação do escopo da demanda
+     */
     @Column
     private Date ultimaModificacao;
 
-    // Foreign key
+    /**
+     * Foreign keys
+     */
 
+    /**
+     * Lista de benefícios do escopo da demanda
+     */
     @OneToMany
     @JoinColumn(name = "escopo_id")
     private List<Beneficio> beneficios = new ArrayList<>();
 
+    /**
+     * Usuário que pertence ao escopo da demanda
+     */
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    /**
+     * Lista de anexos do escopo da demanda
+     */
     @OneToMany
     @JoinColumn(name = "id_escopo")
     private List<Anexo> anexo;
 
     /**
-     * Função para adicionar anexos em um escopo
+     * Função para adicionar anexos em um escopo da demanda
+     *
+     * @Param files Lista de arquivos a serem adicionados
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();

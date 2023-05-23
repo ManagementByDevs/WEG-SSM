@@ -5,23 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67a58551-e66b-45e0-aaef-2619ef44c215" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Chat/Chat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/CriarDemanda/CriarDemanda.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/CriarDemanda/CriarDemanda.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/CriarProposta/CriarProposta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/CriarProposta/CriarProposta.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesAta/DetalhesAta.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesDemandaPagina/DetalhesDemandaPagina.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/LerTexto/LerTexto.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/LerTexto/LerTexto.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesPauta/DetalhesPauta.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesPauta/DetalhesPauta.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/DetalhesPropostaPagina/DetalhesPropostaPagina.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/DetalhesPropostaPagina/DetalhesPropostaPagina.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/EditarEscopo/EditarEscopo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/EditarEscopo/EditarEscopo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/pages/Escopos/Escopos.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Escopos/Escopos.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/Home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Home/Home.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/HomeGerencia/HomeGerencia.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/HomeGerencia/HomeGerencia.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/Login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Login/Login.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/NotFound/NotFound.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/NotFound/NotFound.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/src/pages/Notificacao/Notificacao.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/pages/Notificacao/Notificacao.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/service/TextLanguageContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/service/TextLanguageContext.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

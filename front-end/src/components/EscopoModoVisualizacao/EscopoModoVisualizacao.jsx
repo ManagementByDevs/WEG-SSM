@@ -1,14 +1,18 @@
 import React, { useContext, useState } from "react";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, Button } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, } from "@mui/material";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import Feedback from "../../components/Feedback/Feedback";
 import Escopo from "../Escopo/Escopo";
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 
-import DateService from "../../service/dateService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EscopoService from "../../service/escopoService";
+
+import Tour from "reactour";
 
 // Componente para mudar o modo de visualização dos escopos (Grid, tabela ou nenhum escopo encontrado)
 const EscopoModoVisualizacao = ({
@@ -16,8 +20,10 @@ const EscopoModoVisualizacao = ({
     onEscopoClick,
     nextModoVisualizacao,
     myEscopos,
+    handleDelete,
+    buscar,
 }) => {
-    if (listaEscopos.length == 0) {
+    if (listaEscopos && listaEscopos.length === 0) {
         return <NadaEncontrado />;
     }
 
@@ -27,132 +33,217 @@ const EscopoModoVisualizacao = ({
                 listaEscopos={listaEscopos}
                 onEscopoClick={onEscopoClick}
                 myEscopos={myEscopos}
+                handleDelete={handleDelete}
             />
         );
-    // return (
-    //     <EscopoTable
-    //         listaEscopos={listaEscopos}
-    //         onEscopoClick={onEscopoClick}
-    //         myEscopos={myEscopos}
-    //     />
-    // );
+    return (
+        <EscopoTable
+            listaEscopos={listaEscopos}
+            onEscopoClick={onEscopoClick}
+            myEscopos={myEscopos}
+            handleDelete={handleDelete}
+            buscar={buscar}
+        />
+    );
 };
 
-// const EscopoTable = ({
-//     listaEscopos = [
-//         {
-//             id: 0,
-//             titulo: "",
-//             problema: "",
-//             proposta: null,
-//             frequencia: "",
-//             beneficios: null,
-//             anexos: null,
-//             ultimaModificacao: null,
-//             porcentagem: null,
-//         },
-//     ],
-//     onEscopoClick,
-//     myEscopos,
-// }) => {
+const EscopoTable = ({
+    listaEscopos = [
+        {
+            id: 0,
+            titulo: "",
+            problema: "",
+            proposta: null,
+            frequencia: "",
+            beneficios: null,
+            anexos: null,
+            ultimaModificacao: null,
+        },
+    ],
+    onEscopoClick,
+    buscar,
+}) => {
 
-//     // Context para alterar o tamanho da fonte
-//     const { FontConfig, setFontConfig } = useContext(FontContext);
+    // Context para alterar o tamanho da fonte
+    const { FontConfig, setFontConfig } = useContext(FontContext);
 
-//     // Contexto para trocar a linguagem
-//     const { texts } = useContext(TextLanguageContext);
+    // Contexto para trocar a linguagem
+    const { texts } = useContext(TextLanguageContext);
 
-//     const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
+    // Variável para controlar a abertura do modal de confirmação de remoção do escopo
+    const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
 
-//     // Função que captura o click no ícone e abre o modal de confirmação de remoção do escopo
-//     const onTrashCanClick = (index) => {
-//         setOpenModalConfirmacao(true);
-//         setEscopoSelecionado(listaEscopos[index]);
-//     };
+    // Guarda a demanda selecionada para abrir o modal de motivo recusa
+    const [escopoSelecionado, setEscopoSelecionado] = useState();
 
-//     // Guarda a demanda selecionada para abrir o modal de motivo recusa
-//     const [escopoSelecionado, setEscopoSelecionado] = useState();
+    // useState para aparecer o feedback de escopo deletado
+    const [feedbackDeletar, setFeedbackDeletar] = useState(false);
 
-//     // Função para deletar um escopo
-//     const onDeleteClickEscopo = () => {
-       
-//     };
+    // Função que captura o click no ícone e abre o modal de confirmação de remoção do escopo
+    const onTrashCanClick = (index) => {
+        setOpenModalConfirmacao(true);
+        setEscopoSelecionado(listaEscopos[index]);
+    };
 
-//     return (
-//         <Paper sx={{ width: "100%" }} square>
-//             <Table className="mb-8 table-fixed" sx={{ width: "100%" }}>
-//                 <TableHead>
-//                     <TableRow sx={{ backgroundColor: "primary.main" }}>
-//                         <th className="text-white p-3 w-1/10">
-//                             <Typography fontSize={FontConfig.big}>
-//                                 {texts.escopoModoVisualizacao.porcentagem}
-//                             </Typography>
-//                         </th>
-//                         <th className="text-left text-white p-3 w-3/6">
-//                             <Typography fontSize={FontConfig.big}>
-//                                 {texts.escopoModoVisualizacao.titulo}
-//                             </Typography>
-//                         </th>
-//                         <th className="text-white p-3 w-1/12">
-//                             <Typography fontSize={FontConfig.big}>
-//                                 {texts.escopoModoVisualizacao.excluir}
-//                             </Typography>
-//                         </th>
-//                     </TableRow>
-//                 </TableHead>
-//                 <TableBody>
-//                     {listaEscopos.map((row, index) => (
-//                         <TableRow
-//                             className="cursor-pointer tabela-linha-demanda"
-//                             hover
-//                             key={index}
-//                             sx={{
-//                                 "&:last-child td, &:last-child th": { border: 0 },
-//                             }}
-//                             onClick={() => {
-//                                 onEscopoClick(row);
-//                             }}
-//                         >
-//                             <td className="text-center p-3" title={row.id}>
-//                                 <Typography className="truncate" fontSize={FontConfig.medium}>
-//                                     {row.id}
-//                                 </Typography>
-//                             </td>
-//                             <td className="text-left p-3" title={row.titulo}>
-//                                 <Typography className="truncate" fontSize={FontConfig.medium}>
-//                                     {row.titulo}
-//                                 </Typography>
-//                             </td>
-//                             <td
-//                                 className="text-center p-3"
-//                                 title={DateService.getTodaysDateUSFormat(row.data)}
-//                             >
-//                                 <Typography className="truncate" fontSize={FontConfig.default}>
-//                                     {DateService.getTodaysDateUSFormat(row.data)}
-//                                 </Typography>
-//                             </td>
-//                         </TableRow>
-//                     ))}
-//                 </TableBody>
-//             </Table>
+    // Função para deletar o escopo que foi selecionado
+    const onDeleteClickEscopo = () => {
+        EscopoService.excluirEscopo(escopoSelecionado.id).then((response) => {
+            { buscar() }
+        });
+        setFeedbackDeletar(true);
+    };
 
-//             {/* Abrindo modal de confirmação de deletar escopo */}
-//             <ModalConfirmacao
-//                 textoModal={"descartarRascunho"}
-//                 onConfirmClick={onDeleteClickEscopo}
-//                 onCancelClick={() => {
-//                     setOpenModalConfirmacao(false);
-//                 }}
-//                 textoBotao={"sim"}
-//                 open={openModalConfirmacao}
-//                 setOpen={setOpenModalConfirmacao}
-//             />
-//         </Paper>
-//     );
-// };
+    // Função para calcular a porcentagem de preenchimento do escopo
+    const calculaPorcentagem = (escopo) => {
+        let porcentagem = 0;
+
+        if (escopo.titulo != "" && escopo.titulo != null) {
+            porcentagem += 20;
+        }
+        if (escopo.problema != "" && escopo.problema != null) {
+            porcentagem += 20;
+        }
+        if (escopo.proposta != "" && escopo.proposta != null) {
+            porcentagem += 20;
+        }
+        if (escopo.frequencia != "" && escopo.frequencia != null) {
+            porcentagem += 20;
+        }
+
+        return porcentagem + "%";
+    };
+
+    // useState para abrir e fechar o tour
+    const [isTourOpen, setIsTourOpen] = useState(false);
+
+    // Passos do tour
+    const stepsTour = [
+        {
+            selector: "#segundo",
+            content: texts.escopos.tour.tour1,
+            style: {
+                backgroundColor: "#DCDCDC",
+                color: "#000000",
+            },
+        },
+        {
+            selector: "#primeiro",
+            content: texts.escopos.tour.tour2,
+            style: {
+                backgroundColor: "#DCDCDC",
+                color: "#000000",
+            },
+        },
+        {
+            selector: "#terceiro",
+            content: texts.escopos.tour.tour3,
+            style: {
+                backgroundColor: "#DCDCDC",
+                color: "#000000",
+            },
+        },
+        {
+            selector: "#quarto",
+            content: texts.escopos.tour.tour4,
+            style: {
+                backgroundColor: "#DCDCDC",
+                color: "#000000",
+            },
+        },
+    ];
+
+    return (
+        <Paper sx={{ width: "100%" }} square>
+            <Table className="mb-8 table-fixed" sx={{ width: "100%" }}>
+                <TableHead>
+                    <TableRow sx={{ backgroundColor: "primary.main" }}>
+                        <th className="text-white p-3 w-1/10">
+                            <Typography fontSize={FontConfig.big}>
+                                {texts.escopoModoVisualizacao.porcentagem}
+                            </Typography>
+                        </th>
+                        <th className="text-left text-white p-3 w-3/6">
+                            <Typography fontSize={FontConfig.big}>
+                                {texts.escopoModoVisualizacao.titulo}
+                            </Typography>
+                        </th>
+                        <th className="text-white p-3 w-1/12">
+                            <Typography fontSize={FontConfig.big}>
+                                {texts.escopoModoVisualizacao.excluir}
+                            </Typography>
+                        </th>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {listaEscopos.map((row, index) => (
+                        <TableRow
+                            className="cursor-pointer tabela-linha-demanda"
+                            hover
+                            key={index}
+                            sx={{
+                                "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                            onClick={() => {
+                                onEscopoClick(row);
+                            }}
+
+                        >
+                            <td className="text-center p-3" title={row.id}>
+                                <Typography id="quarto" className="truncate" fontSize={FontConfig.medium}>
+                                    {calculaPorcentagem(row)}
+                                </Typography>
+                            </td>
+                            <td className="text-left p-3" title={row.titulo}>
+                                <Typography className="truncate" fontSize={FontConfig.medium}>
+                                    {row.titulo}
+                                </Typography>
+                            </td>
+                            <td
+                                className="text-center p-3"
+                                title={texts.escopoModoVisualizacao.excluir}
+                            >
+                                <DeleteIcon
+                                    id="terceiro"
+                                    className="delay-120 hover:scale-110 duration-300"
+                                    color="primary"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onTrashCanClick(index);
+                                    }}
+                                />
+                            </td>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+
+            {/* Abrindo modal de confirmação de deletar escopo */}
+            <ModalConfirmacao
+                textoModal={"descartarRascunho"}
+                onConfirmClick={onDeleteClickEscopo}
+                onCancelClick={() => {
+                    setOpenModalConfirmacao(false);
+                }}
+                textoBotao={"sim"}
+                open={openModalConfirmacao}
+                setOpen={setOpenModalConfirmacao}
+            />
+
+            {/* Feedback de escopo deletado com sucesso */}
+            <Feedback
+                open={feedbackDeletar}
+                handleClose={() => {
+                    setFeedbackDeletar(false);
+                }}
+                status={"sucesso"}
+                mensagem={texts.escopos.escopoDeletadoComSucesso}
+            />
+        </Paper>
+    );
+};
 
 // Componente para exibir as demanda em forma de grid
-const EscopoGrid = ({ listaEscopos, onEscopoClick }) => {
+const EscopoGrid = ({ listaEscopos, onEscopoClick, handleDelete }) => {
     return (
         <Box
             sx={{
@@ -167,8 +258,9 @@ const EscopoGrid = ({ listaEscopos, onEscopoClick }) => {
                     escopo={escopo}
                     index={index}
                     onclick={() => {
-                        // openEscopo(escopo);
+                        onEscopoClick(escopo);
                     }}
+                    handleDelete={handleDelete}
                 />
             ))}
         </Box>

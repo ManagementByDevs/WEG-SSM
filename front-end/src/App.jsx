@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -82,6 +82,8 @@ const App = () => {
 
   const [textoSelecionado, setTextoSelecionado] = useState("");
   const [lendoTexto, setLendoTexto] = useState(false);
+
+
 
   /*
   Tipos possíveis de usuários:

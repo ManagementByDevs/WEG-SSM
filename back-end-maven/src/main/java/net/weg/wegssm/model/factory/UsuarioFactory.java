@@ -28,4 +28,5 @@ public class UsuarioFactory {
         }
         return usuario;
     }
+
 }

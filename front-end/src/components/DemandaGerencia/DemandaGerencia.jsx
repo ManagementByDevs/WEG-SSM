@@ -84,10 +84,13 @@ const DemandaGerencia = (props) => {
           chat = response;
           if (chat.length > 0) {
             if (chat[0].conversaEncerrada == true) {
-              ChatService.put({
-                ...chat[0],
-                conversaEncerrada: false,
-              }, chat[0].id).then((response) => {
+              ChatService.put(
+                {
+                  ...chat[0],
+                  conversaEncerrada: false,
+                },
+                chat[0].id
+              ).then((response) => {
                 console.log("EDITOU", response);
                 chat = response;
               });
@@ -180,26 +183,24 @@ const DemandaGerencia = (props) => {
               </Box>
 
               {/* Verificando se está em ata, em pauta ou em edição */}
-              {
-                props.dados.presenteEm && props.dados.presenteEm != "Nada" && (
-                  <Box>
-                    <Typography
-                      fontSize={FontConfig.small}
-                      fontWeight="600"
-                      sx={{
-                        color: "text.primary",
-                        backgroundColor: "divider.claro",
-                        borderRadius: "5px",
-                        padding: "2px 15px",
-                      }}
-                    >
-                      {props.dados.presenteEm === "Pauta"
-                        ? texts.demandaGerencia.emPauta
-                        : texts.demandaGerencia.emAta}
-                    </Typography>
-                  </Box>
-                )
-              }
+              {props.dados.presenteEm && props.dados.presenteEm != "Nada" && (
+                <Box>
+                  <Typography
+                    fontSize={FontConfig.small}
+                    fontWeight="600"
+                    sx={{
+                      color: "text.primary",
+                      backgroundColor: "divider.claro",
+                      borderRadius: "5px",
+                      padding: "2px 15px",
+                    }}
+                  >
+                    {props.dados.presenteEm === "Pauta"
+                      ? texts.demandaGerencia.emPauta
+                      : texts.demandaGerencia.emAta}
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>

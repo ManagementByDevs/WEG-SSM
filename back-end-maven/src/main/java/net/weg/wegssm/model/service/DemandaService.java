@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.repository.DemandaRepository;
 import org.springframework.data.domain.Page;
@@ -9,67 +10,155 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe service para a demanda
+ */
 @Service
+@AllArgsConstructor
 public class DemandaService {
 
+    /**
+     * Repository da demanda
+     */
     private DemandaRepository demandaRepository;
 
-    public DemandaService(DemandaRepository demandaRepository) {
-        this.demandaRepository = demandaRepository;
-    }
-
+    /**
+     * Função para buscar todas as demandas
+     *
+     * @return
+     */
     public List<Demanda> findAll() {
         return demandaRepository.findAll();
     }
 
+    /**
+     * Função para buscar todas as demandas com paginação
+     *
+     * @param pageable
+     * @return
+     */
     public Page<Demanda> findAll(Pageable pageable) {
         return demandaRepository.findAll(pageable);
     }
 
+    /**
+     * Função para buscar uma demanda pelo ID
+     *
+     * @param id
+     * @return
+     */
     public Optional<Demanda> findById(Long id) {
         return demandaRepository.findById(id);
     }
 
+    /**
+     * Função para buscar uma demanda pelo ID com paginação
+     *
+     * @param id
+     * @param pageable
+     * @return
+     */
     public Page<Demanda> findById(Long id, Pageable pageable) {
         return demandaRepository.findById(id, pageable);
     }
 
+    /**
+     * Função para buscar uma demanda pelo seu status
+     *
+     * @param status
+     * @return
+     */
     public List<Demanda> findByStatus(Status status) {
         return demandaRepository.findByStatus(status);
     }
 
+    /**
+     * Função para buscar uma demanda pelo seu status com paginação
+     *
+     * @param status
+     * @param pageable
+     * @return
+     */
     public Page<Demanda> findByStatus(Status status, Pageable pageable) {
         return demandaRepository.findByStatus(status, pageable);
     }
 
+    /**
+     * Função para buscar uma demanda pelo fórum
+     *
+     * @param forum
+     * @return
+     */
     public List<Demanda> findByForum(Forum forum) {
         return demandaRepository.findByForum(forum);
     }
 
+    /**
+     * Função para buscar uma demanda pelo fórum com paginação
+     *
+     * @param forum
+     * @param pageable
+     * @return
+     */
     public Page<Demanda> findByForum(Forum forum, Pageable pageable) {
         return demandaRepository.findByForum(forum, pageable);
     }
 
+    /**
+     * Função para buscar uma demanda pelo departamento
+     *
+     * @param departamento
+     * @return
+     */
     public List<Demanda> findByDepartamento(Departamento departamento) {
         return demandaRepository.findByDepartamento(departamento);
     }
 
+    /**
+     * Função para buscar uma demanda pelo departamento com paginação
+     *
+     * @param departamento
+     * @param pageable
+     * @return
+     */
     public Page<Demanda> findByDepartamento(Departamento departamento, Pageable pageable) {
         return demandaRepository.findByDepartamento(departamento, pageable);
     }
 
+    /**
+     * Função para verificar se uma demanda existe pelo ID
+     *
+     * @param id
+     * @return
+     */
     public boolean existsById(Long id) {
         return demandaRepository.existsById(id);
     }
 
+    /**
+     * Função para salvar uma demanda
+     *
+     * @param entity
+     * @param <S>
+     * @return
+     */
     public <S extends Demanda> S save(S entity) {
         return demandaRepository.save(entity);
     }
 
+    /**
+     * Função para deletar uma demanda pelo ID
+     *
+     * @param id
+     */
     public void deleteById(Long id) {
         demandaRepository.deleteById(id);
     }
-    
+
+    /**
+     * Funções utilizadas pelo filtro
+     */
+
     public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
         return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable);
     }
@@ -630,7 +719,7 @@ public class DemandaService {
         return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForum(analista, titulo, gerente, forum, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) { 
+    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
         return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, gerente, departamento, tamanho, status, pageable);
     }
 

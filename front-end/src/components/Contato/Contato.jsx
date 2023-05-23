@@ -82,6 +82,25 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
     }
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    //   if (props.lendo) {
+    //     props.setTexto(texto);
+    //   }
+  };
+
+  // // Função que irá "ouvir" o texto que será "lido" pela a API
+  // useEffect(() => {
+  //   if (props.lendo && props.texto != "") {
+  //     if ("speechSynthesis" in window) {
+  //       const synthesis = window.speechSynthesis;
+  //       const utterance = new SpeechSynthesisUtterance(props.texto);
+  //       synthesis.speak(utterance);
+  //     }
+  //     props.setTexto("");
+  //   }
+  // }, [props.texto]);
+
   return (
     <>
       {/* Pegando a foto de perfil do usuário */}
@@ -96,22 +115,22 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
               className="w-11/12 overflow-hidden text-ellipsis whitespace-nowrap"
               fontSize={FontConfig.medium}
               fontWeight="600"
+              onClick={() => {
+                lerTexto(nomeContato);
+              }}
             >
               {nomeContato}
             </Typography>
-            {chat.msgNaoLidas > 0 && (
-              <Typography
-                className="border rounded-full absolute top-1 right-1 px-1"
-                sx={{
-                  borderColor: "primary.main",
-                  backgroundColor: "primary.main",
-                }}
-                fontSize={FontConfig.verySmall}
-                color="white"
-              >
-                {chat.msgNaoLidas}
-              </Typography>
-            )}
+            <Typography
+              className="rounded-full absolute top-1 right-1 px-2"
+              sx={{
+                backgroundColor: chat.msgNaoLidas > 0 ? "primary.main" : "",
+              }}
+              fontSize={FontConfig.verySmall}
+              color="white"
+            >
+              {chat.msgNaoLidas > 0 ? chat.msgNaoLidas : ""}
+            </Typography>
           </Box>
           {
             // Verificando se o chat está ativo ou não
@@ -133,6 +152,9 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
           fontSize={FontConfig.small}
           fontWeight="600"
           sx={{ color: "primary.main" }}
+          onClick={() => {
+            lerTexto(texts.contato.ppm);
+          }}
         >
           {texts.contato.ppm}: #{chat.idProposta.codigoPPM}
         </Typography>
@@ -141,6 +163,9 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
           fontWeight="400"
           className="overflow-hidden truncate"
           sx={{ width: "100%" }}
+          onClick={() => {
+            lerTexto(texts.contato.demanda);
+          }}
         >
           {texts.contato.demanda}: {chat.idProposta.titulo}
         </Typography>

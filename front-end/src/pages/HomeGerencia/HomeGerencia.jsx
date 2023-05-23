@@ -49,8 +49,7 @@ import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
-const HomeGerencia = () => {
-
+const HomeGerencia = (props) => {
   /** Context que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -58,7 +57,8 @@ const HomeGerencia = () => {
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
 
   /** Variável para determinar se a tour de criar proposta está aberta */
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
+    useState(false);
 
   /** Variável para determinar se a tour de propostas está aberta */
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
@@ -388,13 +388,15 @@ const HomeGerencia = () => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] =
+    useState(true);
 
   /** Variável para o feedback de demanda aceita */
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
 
   /** Variável para o feedback de demanda devolvida */
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
+    useState(false);
 
   /** Variável para o feedback de demanda recusada */
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
@@ -409,13 +411,15 @@ const HomeGerencia = () => {
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   // Feedback propostas atualizadas
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] =
+    useState(false);
 
   /** Feedback deletar pauta */
   const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
 
   /** Feedback atualizar proposta */
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
+    useState(false);
 
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
@@ -794,75 +798,30 @@ const HomeGerencia = () => {
 
   // Função para exportar para excel
   const exportarExcel = () => {
-    let listaObjetosString = [];
+    if (props.lendo) {
+      lerTexto(texts.homeGerencia.exportar);
+    } else {
+      let listaObjetosString = [];
 
-    for (const object in listaItens) {
-      listaObjetosString.push(JSON.stringify(listaItens[object]));
-    }
+      for (const object in listaItens) {
+        listaObjetosString.push(JSON.stringify(listaItens[object]));
+      }
 
-    if (listaObjetosString != null && listaObjetosString.length > 0) {
-      // Verificação para saber em qual aba o usuário deseja exportar para excel
-      if (valorAba == 2) {
-        let listaIdDemandasBacklog = [];
+      if (listaObjetosString != null && listaObjetosString.length > 0) {
+        // Verificação para saber em qual aba o usuário deseja exportar para excel
+        if (valorAba == 2) {
+          let listaIdDemandasBacklog = [];
 
-        for (const object in listaItens) {
-          listaIdDemandasBacklog.push(listaItens[object].id);
-        }
+          for (const object in listaItens) {
+            listaIdDemandasBacklog.push(listaItens[object].id);
+          }
 
-        ExportExcelService.exportDemandasBacklogToExcel(
-          listaIdDemandasBacklog
-        ).then((response) => {
-          let blob = new Blob([response], { type: "application/excel" });
-          let url = URL.createObjectURL(blob);
-          let link = document.createElement("a");
-          let data = new Date();
-          let dataFormatada =
-            data.getDate() +
-            "-" +
-            (data.getMonth() + 1) +
-            "-" +
-            data.getFullYear();
-          link.href = url;
-          link.download = "demandas-backlog " + dataFormatada + " .xlsx";
-          link.click();
-        });
-      } else if (valorAba == 3) {
-        let listaIdDemandasAssessment = [];
-
-        for (const object in listaItens) {
-          listaIdDemandasAssessment.push(listaItens[object].id);
-        }
-
-        ExportExcelService.exportDemandasAssessmentToExcel(
-          listaIdDemandasAssessment
-        ).then((response) => {
-          let blob = new Blob([response], { type: "application/excel" });
-          let url = URL.createObjectURL(blob);
-          let link = document.createElement("a");
-          let data = new Date();
-          let dataFormatada =
-            data.getDate() +
-            "-" +
-            (data.getMonth() + 1) +
-            "-" +
-            data.getFullYear();
-          link.href = url;
-          link.download = "demandas-assessment " + dataFormatada + " .xlsx";
-          link.click();
-        });
-      } else if (valorAba == 4) {
-        let listaIdPropostas = [];
-
-        for (const object in listaItens) {
-          listaIdPropostas.push(listaItens[object].id);
-        }
-
-        ExportExcelService.exportPropostasToExcel(listaIdPropostas).then(
-          (response) => {
+          ExportExcelService.exportDemandasBacklogToExcel(
+            listaIdDemandasBacklog
+          ).then((response) => {
             let blob = new Blob([response], { type: "application/excel" });
             let url = URL.createObjectURL(blob);
             let link = document.createElement("a");
-            link.href = url;
             let data = new Date();
             let dataFormatada =
               data.getDate() +
@@ -870,23 +829,47 @@ const HomeGerencia = () => {
               (data.getMonth() + 1) +
               "-" +
               data.getFullYear();
-            link.download = "propostas " + dataFormatada + " .xlsx";
+            link.href = url;
+            link.download = "demandas-backlog " + dataFormatada + " .xlsx";
             link.click();
+          });
+        } else if (valorAba == 3) {
+          let listaIdDemandasAssessment = [];
+
+          for (const object in listaItens) {
+            listaIdDemandasAssessment.push(listaItens[object].id);
           }
-        );
-      } else if (valorAba == 5) {
-        let listaIdPautas = [];
 
-        for (const object in listaItens) {
-          listaIdPautas.push(listaItens[object].id);
-        }
+          ExportExcelService.exportDemandasAssessmentToExcel(
+            listaIdDemandasAssessment
+          ).then((response) => {
+            let blob = new Blob([response], { type: "application/excel" });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            let data = new Date();
+            let dataFormatada =
+              data.getDate() +
+              "-" +
+              (data.getMonth() + 1) +
+              "-" +
+              data.getFullYear();
+            link.href = url;
+            link.download = "demandas-assessment " + dataFormatada + " .xlsx";
+            link.click();
+          });
+        } else if (valorAba == 4) {
+          let listaIdPropostas = [];
 
-        if (listaIdPautas.length > 0) {
-          ExportExcelService.exportPautasToExcel(listaIdPautas).then(
+          for (const object in listaItens) {
+            listaIdPropostas.push(listaItens[object].id);
+          }
+
+          ExportExcelService.exportPropostasToExcel(listaIdPropostas).then(
             (response) => {
               let blob = new Blob([response], { type: "application/excel" });
               let url = URL.createObjectURL(blob);
               let link = document.createElement("a");
+              link.href = url;
               let data = new Date();
               let dataFormatada =
                 data.getDate() +
@@ -894,36 +877,63 @@ const HomeGerencia = () => {
                 (data.getMonth() + 1) +
                 "-" +
                 data.getFullYear();
-              link.href = url;
-              link.download = "pautas " + dataFormatada + " .xlsx";
+              link.download = "propostas " + dataFormatada + " .xlsx";
               link.click();
             }
           );
-        }
-      } else {
-        // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
-        let listaIdAtas = [];
+        } else if (valorAba == 5) {
+          let listaIdPautas = [];
 
-        for (const object in listaItens) {
-          listaIdAtas.push(listaItens[object].id);
-        }
+          for (const object in listaItens) {
+            listaIdPautas.push(listaItens[object].id);
+          }
 
-        if (listaIdAtas.length > 0) {
-          ExportExcelService.exportAtasToExcel(listaIdAtas).then((response) => {
-            let blob = new Blob([response], { type: "application/excel" });
-            let url = URL.createObjectURL(blob);
-            let link = document.createElement("a");
-            let data = new Date();
-            let dataFormatada =
-              data.getDate() +
-              "-" +
-              (data.getMonth() + 1) +
-              "-" +
-              data.getFullYear();
-            link.href = url;
-            link.download = "atas " + dataFormatada + " .xlsx";
-            link.click();
-          });
+          if (listaIdPautas.length > 0) {
+            ExportExcelService.exportPautasToExcel(listaIdPautas).then(
+              (response) => {
+                let blob = new Blob([response], { type: "application/excel" });
+                let url = URL.createObjectURL(blob);
+                let link = document.createElement("a");
+                let data = new Date();
+                let dataFormatada =
+                  data.getDate() +
+                  "-" +
+                  (data.getMonth() + 1) +
+                  "-" +
+                  data.getFullYear();
+                link.href = url;
+                link.download = "pautas " + dataFormatada + " .xlsx";
+                link.click();
+              }
+            );
+          }
+        } else {
+          // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
+          let listaIdAtas = [];
+
+          for (const object in listaItens) {
+            listaIdAtas.push(listaItens[object].id);
+          }
+
+          if (listaIdAtas.length > 0) {
+            ExportExcelService.exportAtasToExcel(listaIdAtas).then(
+              (response) => {
+                let blob = new Blob([response], { type: "application/excel" });
+                let url = URL.createObjectURL(blob);
+                let link = document.createElement("a");
+                let data = new Date();
+                let dataFormatada =
+                  data.getDate() +
+                  "-" +
+                  (data.getMonth() + 1) +
+                  "-" +
+                  data.getFullYear();
+                link.href = url;
+                link.download = "atas " + dataFormatada + " .xlsx";
+                link.click();
+              }
+            );
+          }
         }
       }
     }
@@ -1024,8 +1034,12 @@ const HomeGerencia = () => {
 
   // ********************************************** Funções de voz **********************************************
 
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
   const recognitionRef = useRef(null);
 
@@ -1089,6 +1103,25 @@ const HomeGerencia = () => {
   }, [escutar]);
 
   // ********************************************** Fim Funções de voz **********************************************
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <FundoComHeader>
@@ -1304,45 +1337,81 @@ const HomeGerencia = () => {
                   aria-label="lab API tabs example"
                 >
                   <Tab
-                    sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
                     label={texts.home.minhasDemandas}
                     value="1"
+                    onClick={() => {
+                      lerTexto(texts.home.minhasDemandas);
+                    }}
                   />
                   <Tab
-                    sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
+                    sx={{
+                      color: "text.secondary",
+                      fontSize: FontConfig.medium,
+                    }}
                     label={texts.homeGerencia.demandas}
                     value="2"
+                    onClick={() => {
+                      lerTexto(texts.homeGerencia.demandas);
+                    }}
                   />
 
                   {isGerente && (
                     <Tab
-                      sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: FontConfig.medium,
+                      }}
                       label={texts.homeGerencia.criarPropostas}
                       value="3"
+                      onClick={() => {
+                        lerTexto(texts.homeGerencia.criarPropostas);
+                      }}
                     />
                   )}
 
                   {isGerente && (
                     <Tab
-                      sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: FontConfig.medium,
+                      }}
                       label={texts.homeGerencia.propostas}
                       value="4"
+                      onClick={() => {
+                        lerTexto(texts.homeGerencia.propostas);
+                      }}
                     />
                   )}
 
                   {isGerente && (
                     <Tab
-                      sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: FontConfig.medium,
+                      }}
                       label={texts.homeGerencia.pautas}
                       value="5"
+                      onClick={() => {
+                        lerTexto(texts.homeGerencia.pautas);
+                      }}
                     />
                   )}
 
                   {isGerente && (
                     <Tab
-                      sx={{ color: "text.secondary", fontSize: FontConfig.medium, }}
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: FontConfig.medium,
+                      }}
                       label={texts.homeGerencia.atas}
                       value="6"
+                      onClick={() => {
+                        lerTexto(texts.homeGerencia.atas);
+                      }}
                     />
                   )}
                 </TabList>
@@ -1350,7 +1419,9 @@ const HomeGerencia = () => {
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
                       <IconButton
-                        onClick={() => { trocarModoVisualizacao(); }}
+                        onClick={() => {
+                          trocarModoVisualizacao();
+                        }}
                       >
                         <ViewListIcon color="primary" />
                       </IconButton>
@@ -1358,7 +1429,9 @@ const HomeGerencia = () => {
                   ) : (
                     <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
                       <IconButton
-                        onClick={() => { trocarModoVisualizacao(); }}
+                        onClick={() => {
+                          trocarModoVisualizacao();
+                        }}
                       >
                         <ViewModuleIcon color="primary" />
                       </IconButton>
@@ -1406,9 +1479,15 @@ const HomeGerencia = () => {
                         fontSize: FontConfig.medium,
                       }}
                       placeholder={texts.homeGerencia.pesquisarPorTitulo}
-                      onKeyDown={(e) => { eventoTeclado(e); }}
-                      onBlur={() => { pesquisaTitulo(); }}
-                      onChange={(e) => { salvarPesquisa(e.target.value); }}
+                      onKeyDown={(e) => {
+                        eventoTeclado(e);
+                      }}
+                      onBlur={() => {
+                        pesquisaTitulo();
+                      }}
+                      onChange={(e) => {
+                        salvarPesquisa(e.target.value);
+                      }}
                       value={valorPesquisa}
                     />
                     {/* Container para os ícones */}
@@ -1417,7 +1496,9 @@ const HomeGerencia = () => {
                       <Tooltip
                         className="hover:cursor-pointer"
                         title={texts.homeGerencia.gravarAudio}
-                        onClick={() => { startRecognition(); }}
+                        onClick={() => {
+                          startRecognition();
+                        }}
                       >
                         {escutar ? (
                           <MicOutlinedIcon
@@ -1433,7 +1514,9 @@ const HomeGerencia = () => {
                       <Tooltip
                         className="hover:cursor-pointer"
                         title={texts.homeGerencia.pesquisar}
-                        onClick={() => { pesquisaTitulo(); }}
+                        onClick={() => {
+                          pesquisaTitulo();
+                        }}
                       >
                         <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                       </Tooltip>
@@ -1442,7 +1525,9 @@ const HomeGerencia = () => {
                       <Tooltip title={texts.homeGerencia.ordenacao}>
                         <SwapVertIcon
                           id="segundoDemandas"
-                          onClick={() => { setOpenOrdenacao(true); }}
+                          onClick={() => {
+                            setOpenOrdenacao(true);
+                          }}
                           className="cursor-pointer"
                           sx={{ color: "text.secondary" }}
                         />
@@ -1485,7 +1570,13 @@ const HomeGerencia = () => {
                         fontSize: FontConfig.default,
                         minWidth: "5rem",
                       }}
-                      onClick={() => { setModalFiltro(true); }}
+                      onClick={() => {
+                        if (!props.lendo) {
+                          setModalFiltro(true);
+                        } else {
+                          lerTexto(texts.homeGerencia.filtrar);
+                        }
+                      }}
                       variant="contained"
                       disableElevation
                     >
@@ -1545,7 +1636,11 @@ const HomeGerencia = () => {
                   variant="contained"
                   disableElevation
                   onClick={() => {
-                    navigate("/criar-demanda");
+                    if(!props.lendo) {
+                      navigate("/criar-demanda");
+                    } else {
+                      lerTexto(texts.homeGerencia.criarDemanda);
+                    }
                   }}
                 >
                   {texts.homeGerencia.criarDemanda}
@@ -1650,7 +1745,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
@@ -1674,7 +1769,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="4"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <Box
                           sx={{

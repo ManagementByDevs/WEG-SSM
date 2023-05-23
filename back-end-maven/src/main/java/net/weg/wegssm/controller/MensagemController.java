@@ -56,24 +56,24 @@ public class MensagemController {
 
     @MessageMapping("/weg_ssm/enter/chat/{idChat}")
     @SendTo("/weg_ssm/enter/chat/{idChat}")
-    public ResponseEntity<Object> enteredChat(@DestinationVariable(value = "idChat") Long idChat) {
+    public ResponseEntity<Object> enteredChat(@DestinationVariable(value = "idChat") Long idChat, @Payload Long usuarioID) {
         List<Mensagem> mensagens = mensagemService.findAllByIdChatAndVisto(chatService.findById(idChat).get(), false);
 
         for (Mensagem mensagem : mensagens) {
-            if (!mensagem.getVisto()) {
+            if (!mensagem.getVisto() && !mensagem.getUsuario().getId().equals(usuarioID)) {
                 mensagem.setVisto(true);
                 mensagemService.save(mensagem);
             }
         }
 
-        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/chat/" + idChat + "/visto", "visualizar");
+        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/chat/" + idChat + "/visto", "visualizar-novas-mensagens/" + usuarioID);
 
         return ResponseEntity.ok().build();
     }
 
     @MessageMapping("/weg_ssm/mensagem/all")
     @SendTo("/weg_ssm/mensagem/all")
-    public ResponseEntity<Object> receiveAnyMessage(@Payload Mensagem mensagem) {
+    public ResponseEntity<Object> receiveAnyMessage(@Payload() Mensagem mensagem) {
         System.out.println("Chegou aqui");
         return ResponseEntity.ok().body(mensagem);
     }

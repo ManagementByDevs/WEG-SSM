@@ -10,7 +10,6 @@ import TemaContext from "../../service/TemaContext";
 
 // Componente para representar uma pauta no sistema, contendo suas informações e ações
 const ContainerPauta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -58,27 +57,89 @@ const ContainerPauta = (props) => {
     }
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Paper
       className="flex justify-center items-center flex-col w-11/12 h-24 rounded-md cursor-pointer"
-      sx={{ border: '1px solid', borderLeft: "solid 6px", borderColor: "primary.main", p: 4, margin: '1%', backgroundColor: getBackgroundColor() }}
+      sx={{
+        border: "1px solid",
+        borderLeft: "solid 6px",
+        borderColor: "primary.main",
+        p: 4,
+        margin: "1%",
+        backgroundColor: getBackgroundColor(),
+      }}
       onClick={selecionarPauta}
     >
       {/* Cabeçalho da pauta */}
       <Box className="w-full flex justify-between items-center">
-        <Typography fontSize={FontConfig.medium}>
+        <Typography
+          fontSize={FontConfig.medium}
+          onClick={() => {
+            lerTexto(texts.containerPauta.propostas);
+          }}
+        >
           {texts.containerPauta.propostas}:
         </Typography>
-        <Typography fontSize={FontConfig.medium}>
+        <Typography
+          fontSize={FontConfig.medium}
+          onClick={() => {
+            lerTexto(props.pauta.numeroSequencial);
+          }}
+        >
           {props.pauta.numeroSequencial} -&nbsp;
           {getFormattedDate(props.pauta.dataReuniao)}
         </Typography>
       </Box>
 
       {/* Título das propostas que estão na pauta */}
-      <Box className="w-full grid gap-4" sx={{ color: 'primary.main', marginTop: '2%', gridTemplateColumns: "repeat(auto-fit, minmax(15%, 1fr))" }}>
-        <Typography fontSize={FontConfig.medium} className="overflow-hidden whitespace-nowrap text-ellipsis">{props.pauta.propostas[0] ? props.pauta.propostas[0].titulo : ""}</Typography>
-        <Typography className="overflow-hidden whitespace-nowrap text-ellipsis">{props.pauta.propostas[1] ? props.pauta.propostas[0].titulo : ""}</Typography>
+      <Box
+        className="w-full grid gap-4"
+        sx={{
+          color: "primary.main",
+          marginTop: "2%",
+          gridTemplateColumns: "repeat(auto-fit, minmax(15%, 1fr))",
+        }}
+      >
+        <Typography
+          fontSize={FontConfig.medium}
+          className="overflow-hidden whitespace-nowrap text-ellipsis"
+          onClick={() => {
+            lerTexto(
+              props.pauta.propostas[0] ? props.pauta.propostas[0].titulo : ""
+            );
+          }}
+        >
+          {props.pauta.propostas[0] ? props.pauta.propostas[0].titulo : ""}
+        </Typography>
+        <Typography
+          className="overflow-hidden whitespace-nowrap text-ellipsis"
+          onClick={() => {
+            lerTexto(
+              props.pauta.propostas[1] ? props.pauta.propostas[0].titulo : ""
+            );
+          }}
+        >
+          {props.pauta.propostas[1] ? props.pauta.propostas[0].titulo : ""}
+        </Typography>
       </Box>
     </Paper>
   );

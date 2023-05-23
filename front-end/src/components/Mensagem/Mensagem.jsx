@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { Box, Typography, Tooltip } from "@mui/material";
 
-import DoneAllIcon from "@mui/icons-material/DoneAll";
+import DoneIcon from "@mui/icons-material/Done";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 
 import FontContext from "../../service/FontContext";
@@ -61,7 +61,7 @@ const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
       <>
         <Box className="flex w-full justify-end">
           <Box
-            className="flex items-center border py-2 px-4 my-2"
+            className="flex items-center border py-2 my-2"
             sx={{
               backgroundColor: "chat.eu",
               borderRadius: "10px 10px 0px 10px",
@@ -70,7 +70,7 @@ const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
             }}
           >
             <Box className="flex flex-col w-full">
-              <Box className="flex">
+              <Box className="flex pr-2 pl-3">
                 {mensagem.texto != "" ? (
                   <Typography fontSize={FontConfig.default} fontWeight="400">
                     {mensagem.texto.split("\n").map((line, index) => (
@@ -98,7 +98,7 @@ const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
                 )}
               </Box>
 
-              <Box className="flex justify-end items-end w-full">
+              <Box className="flex justify-end items-end w-full px-2">
                 <Typography
                   fontSize={FontConfig.small}
                   fontWeight="600"
@@ -106,11 +106,10 @@ const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
                 >
                   {dateService.getHorasFormatado(mensagem.data)}
                 </Typography>
-                {mensagem.visto ? (
-                  <DoneAllIcon fontSize="small" sx={{ color: "#00579D" }} />
-                ) : (
-                  <DoneAllIcon fontSize="small" sx={{ color: "#FFFF" }} />
-                )}
+                <DoneIcon
+                  fontSize="small"
+                  sx={{ color: mensagem.visto ? "#00579D" : "#FFFF" }}
+                />
               </Box>
             </Box>
           </Box>

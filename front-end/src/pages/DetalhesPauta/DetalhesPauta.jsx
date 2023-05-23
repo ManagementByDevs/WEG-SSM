@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
 import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
 
@@ -34,7 +34,6 @@ import DemandaService from "../../service/demandaService";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -92,12 +91,16 @@ const DetalhesPauta = (props) => {
 
   // Função para passar para a próxima proposta
   const proximo = () => {
-    if (indexProposta == listaProposta.length - 1) {
-      setBotaoProximo(false);
+    if (!props.lendo) {
+      if (indexProposta == listaProposta.length - 1) {
+        setBotaoProximo(false);
+      } else {
+        setProposta(false);
+        setDadosProposta(pauta.propostas[indexProposta + 1]);
+        setIndexProposta(indexProposta + 1);
+      }
     } else {
-      setProposta(false);
-      setDadosProposta(pauta.propostas[indexProposta + 1]);
-      setIndexProposta(indexProposta + 1);
+      lerTexto(texts.detalhesPauta.proximo);
     }
   };
 
@@ -188,20 +191,24 @@ const DetalhesPauta = (props) => {
   };
 
   // Feedback para quando o usuário deletar uma proposta da pauta
-  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] = useState(false);
+  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
+    useState(false);
 
   // Feedback para quando o usuário não preencher todos os campos obrigatórios
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
   // Feedback para quando da erro de incompatibilidade com o navegador
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
 
   // Feedback para quando da erro no reconhecimento de voz
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
   // Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida
   const deletePropostaFromPauta = () => {
-
     pauta.propostas = retornarIdsObjetos(pauta.propostas);
     const indexProposta = pauta.propostas.findIndex(
       (proposta) => proposta.id == dadosProposta.id
@@ -300,6 +307,7 @@ const DetalhesPauta = (props) => {
 
     // Cria a ata caso tenha propostas aprovadas
     if (ata.propostas.length > 0) {
+
       ata.propostas = retornarIdsObjetos(ata.propostas);
 
       AtaService.post(ata).then((response) => {
@@ -391,6 +399,25 @@ const DetalhesPauta = (props) => {
   // useState utilizado para abrir e fechar o modal de adicionar a pauta
   const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <FundoComHeader>
       <VLibras forceOnload />
@@ -398,28 +425,36 @@ const DetalhesPauta = (props) => {
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}
         criarAta={criarAta}
-        setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
+        setFeedbackErroNavegadorIncompativel={
+          setFeedbackErroNavegadorIncompativel
+        }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
       />
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}
-        handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
         open={feedbackErroNavegadorIncompativel}
-        handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
       />
       {/* Feedback campos faltantes */}
       <Feedback
         open={feedbackCamposFaltantes}
-        handleClose={() => { setFeedbackCamposFaltantes(false); }}
+        handleClose={() => {
+          setFeedbackCamposFaltantes(false);
+        }}
         status={"erro"}
         mensagem={texts.modalCriarAta.feedback}
       />
@@ -475,27 +510,50 @@ const DetalhesPauta = (props) => {
                   textAlign: "center",
                   color: "primary.main",
                 }}
+                onClick={() => {
+                  lerTexto(texts.detalhesPauta.pauta);
+                }}
               >
                 {texts.detalhesPauta.pauta}
               </Typography>
               {/* Número sequencial */}
-              <Typography sx={informacoesAta}>
+              <Typography
+                sx={informacoesAta}
+                onClick={() => {
+                  lerTexto(texts.detalhesProposta.numeroSequencial);
+                }}
+              >
                 {texts.detalhesPauta.numeroSequencial}: {pauta.numeroSequencial}
               </Typography>
               {/* Comissão */}
-              <Typography sx={informacoesAta}>
+              <Typography
+                sx={informacoesAta}
+                onClick={() => {
+                  lerTexto(texts.detalhesPauta.comissao);
+                }}
+              >
                 {texts.detalhesPauta.comissao}: {pauta.comissao.siglaForum} -{" "}
                 {pauta.comissao.nomeForum}
               </Typography>
               {/* Data da reunião da comissão */}
-              <Typography sx={informacoesAta}>
+              <Typography
+                sx={informacoesAta}
+                onClick={() => {
+                  lerTexto(texts.detalhesPauta.reuniaoDoForum);
+                }}
+              >
                 {texts.detalhesPauta.reuniaoDoForum}:{" "}
                 {DateService.getFullDateUSFormat(
                   DateService.getDateByMySQLFormat(pauta?.dataReuniao)
                 )}
               </Typography>
               {/* Data da reunião da DG */}
-              <Typography sx={informacoesAta}>
+              <Typography
+                sx={informacoesAta}
+                onClick={() => {
+                  lerTexto(texts.detalhesPauta.analistaResponsavel);
+                }}
+              >
                 {texts.detalhesPauta.analistaResponsavel}:{" "}
                 {pauta.analistaResponsavel.nome}
               </Typography>
@@ -517,6 +575,9 @@ const DetalhesPauta = (props) => {
                     textAlign: "center",
                   }}
                   color="primary.main"
+                  onClick={() => {
+                    lerTexto(texts.detalhesPauta.sumario);
+                  }}
                 >
                   {texts.detalhesPauta.sumario}
                 </Typography>
@@ -532,7 +593,8 @@ const DetalhesPauta = (props) => {
                             borderLeftColor: "primary.main",
                             backgroundColor: "background.default",
                             fontWeight: "300",
-                            cursor: "pointer", "&:hover": { backgroundColor: "component.main", },
+                            cursor: "pointer",
+                            "&:hover": { backgroundColor: "component.main" },
                           }}
                           onClick={() => onClickProposta(index)}
                         >
@@ -551,7 +613,12 @@ const DetalhesPauta = (props) => {
                       );
                     })
                   ) : (
-                    <Typography fontSize={FontConfig.medium}>
+                    <Typography
+                      fontSize={FontConfig.medium}
+                      onClick={() => {
+                        lerTexto(texts.detalhesPauta.nenhumaPropostaAdicionada);
+                      }}
+                    >
                       {texts.detalhesPauta.nenhumaPropostaAdicionada}
                     </Typography>
                   )}
@@ -575,6 +642,9 @@ const DetalhesPauta = (props) => {
                     }}
                     fontSize={FontConfig.title}
                     fontWeight={650}
+                    onClick={() => {
+                      lerTexto(texts.detalhesPauta.proposta);
+                    }}
                   >
                     {texts.detalhesPauta.proposta} {indexProposta + 1}
                   </Typography>
@@ -591,8 +661,13 @@ const DetalhesPauta = (props) => {
                     />
                   </IconButton>
                 </Box>
-                <DetalhesProposta setDadosProposta={setDadosProposta} parecerComissao={dadosProposta.parecerComissao || ""} parecerInformacao={dadosProposta.parecerInformacao || ""}
-                  emAprovacao={true} propostaId={dadosProposta.id} />
+                <DetalhesProposta
+                  setDadosProposta={setDadosProposta}
+                  parecerComissao={dadosProposta.parecerComissao || ""}
+                  parecerInformacao={dadosProposta.parecerInformacao || ""}
+                  emAprovacao={true}
+                  propostaId={dadosProposta.id}
+                />
               </Box>
             )}
           </Box>
@@ -618,7 +693,13 @@ const DetalhesPauta = (props) => {
                       maxHeight: "2.5rem",
                     }}
                     variant="contained"
-                    onClick={() => voltar()}
+                    onClick={() => {
+                      if (props.lendo) {
+                        voltar();
+                      } else {
+                        lerTexto(texts.detalhesPauta.voltar);
+                      }
+                    }}
                   >
                     {texts.detalhesPauta.voltar}
                   </Button>
@@ -642,7 +723,7 @@ const DetalhesPauta = (props) => {
                       maxHeight: "2.5rem",
                     }}
                     variant="contained"
-                    onClick={proximo}
+                    onClick={proximo} fdsfds
                   >
                     <Typography>{texts.detalhesPauta.proximo}</Typography>
                   </Button>

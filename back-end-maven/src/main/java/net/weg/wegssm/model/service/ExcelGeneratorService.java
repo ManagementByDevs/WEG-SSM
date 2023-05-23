@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe service para o gerador de excel
+ */
 @Service
 @AllArgsConstructor
 public class ExcelGeneratorService {
@@ -26,6 +29,13 @@ public class ExcelGeneratorService {
     private PautaService pautaService;
     private AtaService ataService;
 
+    /**
+     * Função para criar uma linha de cabeçalho com o estilo
+     *
+     * @param workbook
+     * @param color
+     * @return
+     */
     private static XSSFCellStyle createRowStyle(XSSFWorkbook workbook, XSSFColor color) {
         XSSFCellStyle style = workbook.createCellStyle();
         style.setFillForegroundColor(color);
@@ -33,6 +43,13 @@ public class ExcelGeneratorService {
         return style;
     }
 
+    /**
+     * Função para exportar demandas back_log para excel
+     *
+     * @param response
+     * @param listaDemandas
+     * @throws IOException
+     */
     public void exportDemandasBackLogToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
         ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
 
@@ -155,6 +172,13 @@ public class ExcelGeneratorService {
         outputStream.close();
     }
 
+    /**
+     * Função para exportar as demandas assessment para excel
+     *
+     * @param response
+     * @param listaDemandas
+     * @throws IOException
+     */
     public void exportDemandasAssessmentToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
         ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
 
@@ -291,6 +315,13 @@ public class ExcelGeneratorService {
         outputStream.close();
     }
 
+    /**
+     * Função para exportar as propostas para excel
+     *
+     * @param response
+     * @param listaPropostas
+     * @throws IOException
+     */
     public void exportPropostasToExcel(HttpServletResponse response, List<Long> listaPropostas) throws IOException {
         ArrayList<Optional<Proposta>> listPropostas = new ArrayList<>();
 
@@ -465,6 +496,13 @@ public class ExcelGeneratorService {
         outputStream.close();
     }
 
+    /**
+     * Função para exportar as pautas para excel
+     *
+     * @param response
+     * @param listaPautas
+     * @throws IOException
+     */
     public void exportPautasToExcel(HttpServletResponse response, List<Long> listaPautas) throws IOException {
         ArrayList<Optional<Pauta>> listPautas = new ArrayList<>();
 
@@ -714,6 +752,13 @@ public class ExcelGeneratorService {
         outputStream.close();
     }
 
+    /**
+     * Função para exportar as atas para excel
+     *
+     * @param response
+     * @param listaAtas
+     * @throws IOException
+     */
     public void exportAtasToExcel(HttpServletResponse response, List<Long> listaAtas) throws IOException {
         ArrayList<Optional<Ata>> listAtas = new ArrayList<>();
 
@@ -966,4 +1011,5 @@ public class ExcelGeneratorService {
         workbook.close();
         outputStream.close();
     }
+
 }

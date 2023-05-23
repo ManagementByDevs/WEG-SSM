@@ -155,8 +155,8 @@ const TextLanguageContext = createContext({
       tenteNovamenteMaisTarde: "Tente novamente mais tarde",
     },
     escopoModoVisualizacao: {
+      titulo: "Título",
       porcentagem: "Porcentagem",
-      titulo: "Titulo",
       excluir: "Excluir",
     },
     DetalhesDemanda: {

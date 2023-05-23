@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.weg.wegssm.dto.DemandaDTO;
 import net.weg.wegssm.dto.NotificacaoDTO;
-import net.weg.wegssm.model.entities.Demanda;
-import net.weg.wegssm.model.entities.Notificacao;
-import net.weg.wegssm.model.entities.Pauta;
-import net.weg.wegssm.model.entities.TipoNotificacao;
+import net.weg.wegssm.model.entities.*;
+import net.weg.wegssm.model.service.ChatService;
 import net.weg.wegssm.model.service.NotificacaoService;
 import net.weg.wegssm.model.service.UsuarioService;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +30,7 @@ public class NotificacaoController {
 
     private NotificacaoService notificacaoService;
     private UsuarioService usuarioService;
+    private ChatService chatService;
 
     /**
      * Método GET para buscar todas as notificações
@@ -140,10 +139,15 @@ public class NotificacaoController {
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid NotificacaoDTO notificacaoDTO) {
-        Notificacao notificcao = new Notificacao();
-        BeanUtils.copyProperties(notificacaoDTO, notificcao);
+        Notificacao notificacao = new Notificacao();
+        BeanUtils.copyProperties(notificacaoDTO, notificacao);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(notificacaoService.save(notificcao));
+        if (notificacao.getTipoNotificacao().equals(TipoNotificacao.MENSAGENS)) {
+            Chat chat = chatService.findById(Long.parseLong(notificacao.getNumeroSequencial())).get();
+            notificacao.setNumeroSequencial(String.valueOf(chat.getIdProposta().getCodigoPPM()));
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(notificacaoService.save(notificacao));
     }
 
     /**

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
 import {
   Box,
@@ -18,7 +18,7 @@ import {
 
 import "./notificacaoStyle.css";
 
-import ClipLoader from 'react-spinners/ClipLoader';
+import ClipLoader from "react-spinners/ClipLoader";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -39,8 +39,7 @@ import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined
 import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutlined";
 
 // Tela para mostrar as notificações do usuário no sistema
-const Notificacao = () => {
-
+const Notificacao = (props) => {
   const [usuario, setUsuario] = useState(null);
 
   // useContext para alterar o idioma do sistema
@@ -84,7 +83,7 @@ const Notificacao = () => {
   useEffect(() => {
     setCarregamento(true);
     buscarUsuario();
-  }, [])
+  }, []);
 
   // UseEffect utilizado para buscar as notificações do usuário
   useEffect(() => {
@@ -108,8 +107,9 @@ const Notificacao = () => {
       // para ter o "titulo da notificação"
       const retornaTitulo = () => {
         if (data.numeroSequencial) {
-          return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial
-            } ${texts.notificacaoComponente.foi} ${formataStatus()}!`;
+          return `${texts.notificacaoComponente.demandaDeNumero} ${
+            data.numeroSequencial
+          } ${texts.notificacaoComponente.foi} ${formataStatus()}!`;
         }
       };
 
@@ -139,10 +139,12 @@ const Notificacao = () => {
   };
 
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((user) => {
-      setUsuario(user);
-    });
-  }
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (user) => {
+        setUsuario(user);
+      }
+    );
+  };
 
   // Formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd
   const formatDate = (fullDate) => {
@@ -286,12 +288,33 @@ const Notificacao = () => {
     buscarNotificacoes();
   }, []);
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <FundoComHeader>
       <VLibras forceOnload />
       <Feedback
         open={feedback.visibilidade}
-        handleClose={() => { setFeedback({ ...feedback, visibilidade: false }); }}
+        handleClose={() => {
+          setFeedback({ ...feedback, visibilidade: false });
+        }}
         status={feedback.tipo}
         mensagem={feedback.mensagem}
       />
@@ -301,7 +324,7 @@ const Notificacao = () => {
         setOpen={setOpenModalConfirmDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onDeleteClick}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         textoBotao={"sim"}
       />
 
@@ -310,7 +333,7 @@ const Notificacao = () => {
         setOpen={setOpenModalConfirmMultiDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onMultiDeleteRowClick}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         textoBotao={"sim"}
       />
 
@@ -322,6 +345,9 @@ const Notificacao = () => {
               fontSize={FontConfig.title}
               color={"icon.main"}
               sx={{ fontWeight: "600", cursor: "default" }}
+              onClick={() => {
+                lerTexto(texts.notificacao.notificacoes);
+              }}
             >
               {texts.notificacao.notificacoes}
             </Typography>
@@ -347,7 +373,9 @@ const Notificacao = () => {
                         <Box className="w-1/12 flex justify-center">
                           <Tooltip title={texts.notificacao.deletar}>
                             <IconButton
-                              onClick={() => { setOpenModalConfirmMultiDelete(true); }}
+                              onClick={() => {
+                                setOpenModalConfirmMultiDelete(true);
+                              }}
                             >
                               <DeleteOutlineOutlinedIcon
                                 sx={{ color: "primary.main" }}
@@ -357,9 +385,13 @@ const Notificacao = () => {
                           <Tooltip title={texts.notificacao.marcarComoLido}>
                             <IconButton onClick={onMultiReadOrUnreadClick}>
                               {rows.every((row) => row.visualizado) ? (
-                                <MarkEmailUnreadOutlinedIcon sx={{ color: "primary.main" }} />
+                                <MarkEmailUnreadOutlinedIcon
+                                  sx={{ color: "primary.main" }}
+                                />
                               ) : (
-                                <MarkEmailReadOutlinedIcon sx={{ color: "primary.main" }} />
+                                <MarkEmailReadOutlinedIcon
+                                  sx={{ color: "primary.main" }}
+                                />
                               )}
                             </IconButton>
                           </Tooltip>
@@ -382,22 +414,42 @@ const Notificacao = () => {
                                     color: "white",
                                   },
                                 }}
-                                checked={rows.every((row) => row.checked) && rows.length > 0}
-                                onChange={(e) => { onSelectAllClick(e.target.checked); }}
+                                checked={
+                                  rows.every((row) => row.checked) &&
+                                  rows.length > 0
+                                }
+                                onChange={(e) => {
+                                  onSelectAllClick(e.target.checked);
+                                }}
                               />
                             </th>
                             <th className="text-white">
-                              <Typography fontSize={FontConfig.big}>
+                              <Typography
+                                fontSize={FontConfig.big}
+                                onClick={() => {
+                                  lerTexto(texts.notificacao.tipo);
+                                }}
+                              >
                                 {texts.notificacao.tipo}
                               </Typography>
                             </th>
                             <th className="text-white">
-                              <Typography fontSize={FontConfig.big}>
+                              <Typography
+                                fontSize={FontConfig.big}
+                                onClick={() => {
+                                  lerTexto(texts.notificacao.titulo);
+                                }}
+                              >
                                 {texts.notificacao.titulo}
                               </Typography>
                             </th>
                             <th className="w-1/10 text-white">
-                              <Typography fontSize={FontConfig.big}>
+                              <Typography
+                                fontSize={FontConfig.big}
+                                onClick={() => {
+                                  lerTexto(texts.notificacao.data);
+                                }}
+                              >
                                 {texts.notificacao.data}
                               </Typography>
                             </th>
@@ -410,12 +462,18 @@ const Notificacao = () => {
                               selected={!row.visualizado}
                               hover
                               key={index}
-                              sx={{ "&:last-child td, &:last-child th": { border: 0 }, }}
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
                             >
                               <td className="text-center">
                                 <Checkbox
                                   checked={row.checked}
-                                  onChange={(e) => { onSelectRowClick(e, index); }}
+                                  onChange={(e) => {
+                                    onSelectRowClick(e, index);
+                                  }}
                                 />
                               </td>
                               <td className="text-center">
@@ -424,7 +482,12 @@ const Notificacao = () => {
                                 />
                               </td>
                               <td className="text-left">
-                                <Typography fontSize={FontConfig.medium}>
+                                <Typography
+                                  fontSize={FontConfig.medium}
+                                  onClick={() => {
+                                    lerTexto(row.titulo);
+                                  }}
+                                >
                                   {row.titulo}
                                 </Typography>
                               </td>
@@ -432,22 +495,33 @@ const Notificacao = () => {
                                 <Typography
                                   className="notificacao-table-row-td"
                                   fontSize={FontConfig.default}
+                                  onClick={() => {
+                                    lerTexto(row.date);
+                                  }}
                                 >
                                   {row.date}
                                 </Typography>
                                 <Typography className="notificacao-table-row-td-action">
                                   {row.visualizado ? (
-                                    <Tooltip title={texts.login.marcarComoNaoLido}>
+                                    <Tooltip
+                                      title={texts.login.marcarComoNaoLido}
+                                    >
                                       <MarkEmailUnreadOutlinedIcon
-                                        onClick={() => onReadOrUnreadClick(index)}
+                                        onClick={() =>
+                                          onReadOrUnreadClick(index)
+                                        }
                                         className="cursor-pointer"
                                         sx={{ color: "primary.main" }}
                                       />
                                     </Tooltip>
                                   ) : (
-                                    <Tooltip title={texts.notificacao.marcarComoLido}>
+                                    <Tooltip
+                                      title={texts.notificacao.marcarComoLido}
+                                    >
                                       <MarkEmailReadOutlinedIcon
-                                        onClick={() => onReadOrUnreadClick(index)}
+                                        onClick={() =>
+                                          onReadOrUnreadClick(index)
+                                        }
                                         className="cursor-pointer"
                                         sx={{ color: "primary.main" }}
                                       />
@@ -489,7 +563,12 @@ const Notificacao = () => {
             </>
           ) : (
             <Box className="flex justify-center items-center h-32">
-              <Typography fontSize={FontConfig.big}>
+              <Typography
+                fontSize={FontConfig.big}
+                onClick={() => {
+                  lerTexto(texts.notificacao.naoHaNotificacoes);
+                }}
+              >
                 {texts.notificacao.naoHaNotificacoes}
               </Typography>
             </Box>
