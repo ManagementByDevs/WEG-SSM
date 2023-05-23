@@ -7,6 +7,9 @@ import net.weg.wegssm.model.entities.Usuario;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * Classe DTO para a criação de um histórico
+ */
 @Data
 public class HistoricoDTO {
 

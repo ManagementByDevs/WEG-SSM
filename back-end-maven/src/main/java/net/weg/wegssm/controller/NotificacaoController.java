@@ -23,13 +23,27 @@ import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe controller para as notificações
+ */
 @AllArgsConstructor
 @RestController
 @RequestMapping("/weg_ssm/notificacoes")
 public class NotificacaoController {
 
+    /**
+     * Service da notificação
+     */
     private NotificacaoService notificacaoService;
+
+    /**
+     * Service do usuário
+     */
     private UsuarioService usuarioService;
+
+    /**
+     * Service do chat
+     */
     private ChatService chatService;
 
     /**
@@ -72,6 +86,13 @@ public class NotificacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.findByUsuario(usuarioService.findById(id).get(), pageable));
     }
 
+    /**
+     * Método GET para buscar notificação através de um id
+     *
+     * @param id
+     * @param pageable
+     * @return
+     */
     @GetMapping("user/modal-notificacao/{id}")
     public ResponseEntity<Page<Notificacao>> findByUsuarioAndVisualizado(@PathVariable(value = "id") Long id, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         if (!usuarioService.existsById(id)) {

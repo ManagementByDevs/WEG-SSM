@@ -23,16 +23,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe controller para o chat
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/chat")
 public class ChatController {
 
+    /**
+     * Service do usuário
+     */
     private UsuarioService usuarioService;
+
+    /**
+     * Service da proposta
+     */
     private PropostaService propostaService;
+
+    /**
+     * Service do chat
+     */
     private ChatService chatService;
+
+    /**
+     * Service da mensagem
+     */
     private MensagemService mensagemService;
 
+    /**
+     * Método MessageMapping para receber qualquer mensagem enviada para o endpoint /weg_ssm/chats
+     *
+     * @param mensagem
+     * @return
+     */
     @MessageMapping("/weg_ssm/chats")
     @SendTo("/weg_ssm/chats")
     public ResponseEntity<Object> receiveAnyMessage(@Payload Mensagem mensagem) {
@@ -89,6 +113,13 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findById(id).get());
     }
 
+    /**
+     * Método GET para buscar um chat através do id do usuário e da proposta
+     *
+     * @param idUser
+     * @param idProposta
+     * @return
+     */
     @GetMapping("/user/{idUser}/proposta/{idProposta}")
     public ResponseEntity<List<Chat>> findByPropostaAndUser(@PathVariable(value = "idUser") Long idUser, @PathVariable(value = "idProposta") Long idProposta) {
         Optional<Usuario> usuario = usuarioService.findById(idUser);
@@ -99,6 +130,12 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.OK).body(chatService.findByIdPropostaAndUsuariosChat(proposta.get(), usuario.get()));
     }
 
+    /**
+     * Método GET para buscar uma lista de chats através do id do remetente
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/remetente/{id}")
     public ResponseEntity<List<Chat>> findByRemetente(@PathVariable(value = "id") Long id) {
         Optional<Usuario> usuario = usuarioService.findById(id);
@@ -117,6 +154,13 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.OK).body(chats);
     }
 
+    /**
+     * Método PUT para editar um chat através de seu id
+     *
+     * @param id
+     * @param chatDto
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody @Valid ChatDTO chatDto) {
         if (!chatService.existsById(id)) {

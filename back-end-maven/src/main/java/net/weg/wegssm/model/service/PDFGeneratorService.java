@@ -23,17 +23,35 @@ import java.util.Date;
 
 import org.jsoup.Jsoup;
 
+/**
+ * Service para gerar pdf
+ */
 @Service
 public class PDFGeneratorService {
 
+    /**
+     * Service da demanda
+     */
     private static DemandaService demandaService;
 
+    /**
+     * Construtor do service
+     *
+     * @param demandaService
+     */
     public PDFGeneratorService(DemandaService demandaService) {
         this.demandaService = demandaService;
     }
 
-    // métodos para criar o modelo de exportação do pdf
-
+    /**
+     * Função para exportar uma demanda para pdf
+     *
+     * @param response
+     * @param demanda
+     * @return
+     * @throws IOException
+     * @throws DocumentException
+     */
     public Document exportDemanda(HttpServletResponse response, Demanda demanda) throws IOException, DocumentException {
 
         // Colors
@@ -256,6 +274,15 @@ public class PDFGeneratorService {
         return document;
     }
 
+    /**
+     * Função para exportar uma proposta para pdf
+     *
+     * @param response
+     * @param proposta
+     * @return
+     * @throws IOException
+     * @throws DocumentException
+     */
     public Document exportProposta(HttpServletResponse response, Proposta proposta) throws IOException, DocumentException {
 
         Demanda demanda = demandaService.findById(proposta.getDemanda().getId()).get();
@@ -325,7 +352,8 @@ public class PDFGeneratorService {
         String stringSolicitante = proposta.getSolicitante().getNome();
         try {
             stringSolicitante += " - " + proposta.getSolicitante().getDepartamento().getNome();
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
         Chunk chunkSolicitante = new Chunk("Solicitante: ", fontSubtitulo);
         Chunk chunkValorSolicitante = new Chunk(stringSolicitante, fontInformacoes);
@@ -337,7 +365,8 @@ public class PDFGeneratorService {
         String stringGerente = proposta.getGerente().getNome();
         try {
             stringGerente += " - " + proposta.getGerente().getDepartamento().getNome();
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
         Chunk chunkGerente = new Chunk("Gerente: ", fontSubtitulo);
         Chunk chunkValorGerente = new Chunk(stringGerente, fontInformacoes);
@@ -655,6 +684,15 @@ public class PDFGeneratorService {
         return document;
     }
 
+    /**
+     * Função para exportar uma pauta para pdf
+     *
+     * @param response
+     * @param pauta
+     * @return
+     * @throws IOException
+     * @throws DocumentException
+     */
     public Document exportPauta(HttpServletResponse response, Pauta pauta) throws IOException, DocumentException {
 
         // Colors
@@ -1125,6 +1163,15 @@ public class PDFGeneratorService {
         return document;
     }
 
+    /**
+     * Função para exportar uma ata para pdf
+     *
+     * @param response
+     * @param ata
+     * @return
+     * @throws IOException
+     * @throws DocumentException
+     */
     public Document exportAta(HttpServletResponse response, Ata ata) throws IOException, DocumentException {
 
         // Colors
@@ -1596,4 +1643,5 @@ public class PDFGeneratorService {
 
         return document;
     }
+
 }

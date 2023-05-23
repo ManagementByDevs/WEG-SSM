@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe repository para os escopos
+ */
 @Repository
 public interface EscopoRepository extends JpaRepository<Escopo, Long> {
 
@@ -45,7 +48,23 @@ public interface EscopoRepository extends JpaRepository<Escopo, Long> {
      */
     List<Object> findByUsuario(Usuario usuario);
 
+    /**
+     * Método para buscar um escopo a partir de um usuário, com paginação
+     *
+     * @param usuario
+     * @param pageable
+     * @return
+     */
     Page<Escopo> findByUsuario(Usuario usuario, Pageable pageable);
 
+    /**
+     * Método para listar um escopo a partir de um usuário e de um título, com paginação
+     *
+     * @param usuario
+     * @param titulo
+     * @param pageable
+     * @return
+     */
     Page<Escopo> findByUsuarioAndTituloContaining(Usuario usuario, String titulo, Pageable pageable);
+
 }

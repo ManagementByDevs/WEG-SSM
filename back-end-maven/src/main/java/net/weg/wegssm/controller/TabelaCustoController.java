@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,9 @@ public class TabelaCustoController {
 
     /**
      * Função para criar uma nova tabela de custos, recebendo o objeto como body
+     *
+     * @param tabelaCustoDTO
+     * @return
      */
     @PostMapping
     public ResponseEntity<TabelaCusto> save(@RequestBody @Valid TabelaCustoDTO tabelaCustoDTO) {
@@ -65,6 +69,9 @@ public class TabelaCustoController {
 
     /**
      * Função para atualizar uma tabela de custos, recebendo o objeto no body
+     *
+     * @param tabelaCusto
+     * @return
      */
     @PutMapping
     public ResponseEntity<TabelaCusto> update(@RequestBody TabelaCusto tabelaCusto) {
@@ -81,6 +88,9 @@ public class TabelaCustoController {
 
     /**
      * Função para excluir uma tabela de custos pelo ID, recebido como variável
+     *
+     * @param id
+     * @return
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
@@ -91,4 +101,5 @@ public class TabelaCustoController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Tabela de custos deletada com sucesso.");
     }
+
 }

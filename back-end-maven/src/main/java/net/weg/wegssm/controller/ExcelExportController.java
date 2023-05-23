@@ -27,33 +27,74 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe controller para exportar os dados para excel
+ */
 @AllArgsConstructor
 @RestController
 @RequestMapping("/weg_ssm")
 public class ExcelExportController {
 
+    /**
+     * Service do excel
+     */
     private ExcelGeneratorService excelGeneratorService;
 
+    /**
+     * Método POST para exportar as demandas do backlog para excel
+     *
+     * @param response
+     * @param listaDemandas
+     * @throws IOException
+     */
     @PostMapping("/excel/demandas_backlog")
     public void exportDemandasBackLogToExcel(HttpServletResponse response, @RequestParam("demandas_backlog") List<Long> listaDemandas) throws IOException {
         excelGeneratorService.exportDemandasBackLogToExcel(response, listaDemandas);
     }
 
+    /**
+     * Método POST para exportar as demandas do assessment para excel
+     *
+     * @param response
+     * @param listaDemandas
+     * @throws IOException
+     */
     @PostMapping("/excel/demandas_assessment")
     public void exportDemandasAssessmentToExcel(HttpServletResponse response, @RequestParam("demandas_assessment") List<Long> listaDemandas) throws IOException {
         excelGeneratorService.exportDemandasAssessmentToExcel(response, listaDemandas);
     }
 
+    /**
+     * Método POST para exportar as propostas para excel
+     *
+     * @param response
+     * @param listaPropostas
+     * @throws IOException
+     */
     @PostMapping("/excel/propostas")
     public void exportPropostasToExcel(HttpServletResponse response, @RequestParam("propostas") List<Long> listaPropostas) throws IOException {
         excelGeneratorService.exportPropostasToExcel(response, listaPropostas);
     }
 
+    /**
+     * Método POST para exportar as pautas para excel
+     *
+     * @param response
+     * @param listaPautas
+     * @throws IOException
+     */
     @PostMapping("/excel/pautas")
     public void exportPautasToExcel(HttpServletResponse response, @RequestParam("pautas") List<Long> listaPautas) throws IOException {
         excelGeneratorService.exportPautasToExcel(response, listaPautas);
     }
 
+    /**
+     * Método POST para exportar as atas para excel
+     *
+     * @param response
+     * @param listaAtas
+     * @throws IOException
+     */
     @PostMapping("/excel/atas")
     public void exportAtasToExcel(HttpServletResponse response, @RequestParam("atas") List<Long> listaAtas) throws IOException {
         excelGeneratorService.exportAtasToExcel(response, listaAtas);

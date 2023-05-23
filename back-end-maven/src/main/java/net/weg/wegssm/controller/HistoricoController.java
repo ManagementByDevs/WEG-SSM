@@ -20,14 +20,32 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Classe controller para os históricos
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/historico")
 public class HistoricoController {
 
+    /**
+     * Service do histórico
+     */
     private HistoricoService historicoService;
+
+    /**
+     * Service do usuário
+     */
     private UsuarioService usuarioService;
+
+    /**
+     * Service do documento histórico
+     */
     private DocumentoHistoricoService documentoHistoricoService;
+
+    /**
+     * Service da demanda
+     */
     private DemandaService demandaService;
 
     /**

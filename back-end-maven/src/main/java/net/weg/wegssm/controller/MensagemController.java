@@ -28,17 +28,42 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Classe controller para as mensagens
+ */
 @RestController
 @AllArgsConstructor
 @CrossOrigin
 @RequestMapping("/weg_ssm/mensagem")
 public class MensagemController {
 
+    /**
+     * Service da mensagem
+     */
     private MensagemService mensagemService;
+
+    /**
+     * Service do chat
+     */
     private ChatService chatService;
+
+    /**
+     * Service do usuário
+     */
     private UsuarioService usuarioService;
+
+    /**
+     * Service do utilitário de mensagens
+     */
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    /**
+     * Método MESSAGEMAPPING utilizado para receber uma mensagem
+     *
+     * @param id
+     * @param mensagemDTO
+     * @return
+     */
     @MessageMapping("/weg_ssm/mensagem/{id}")
     @SendTo("/weg_ssm/mensagem/{id}/chat")
     public ResponseEntity<Object> receiveMessage(@DestinationVariable Long id, @Payload MensagemDTO mensagemDTO) {
@@ -54,6 +79,13 @@ public class MensagemController {
         return ResponseEntity.ok().body(mensagem);
     }
 
+    /**
+     * Método MESSAGEMAPPING para o usuário poder entrar no chat
+     *
+     * @param idChat
+     * @param usuarioID
+     * @return
+     */
     @MessageMapping("/weg_ssm/enter/chat/{idChat}")
     @SendTo("/weg_ssm/enter/chat/{idChat}")
     public ResponseEntity<Object> enteredChat(@DestinationVariable(value = "idChat") Long idChat, @Payload Long usuarioID) {
@@ -71,6 +103,12 @@ public class MensagemController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Método MESSAGEMAPPING para receber qualquer mensagem
+     *
+     * @param mensagem
+     * @return
+     */
     @MessageMapping("/weg_ssm/mensagem/all")
     @SendTo("/weg_ssm/mensagem/all")
     public ResponseEntity<Object> receiveAnyMessage(@Payload() Mensagem mensagem) {
@@ -78,6 +116,13 @@ public class MensagemController {
         return ResponseEntity.ok().body(mensagem);
     }
 
+    /**
+     * Método MESSAGEMAPPING para enviar uma mensagem de um chat específico
+     *
+     * @param mensagemDTO
+     * @param idChat
+     * @return
+     */
     @MessageMapping("/weg_ssm/mensagem/chat/{idChat}/visto")
     @SendTo("/weg_ssm/mensagem/chat/{idChat}/visto")
     public ResponseEntity<Object> verMensagem(
@@ -100,6 +145,14 @@ public class MensagemController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Método PUT para editar uma mensagem
+     *
+     * @param idChat
+     * @param idUser
+     * @param pageable
+     * @return
+     */
     @PutMapping("/chat/{idChat}/user/{idUsuario}")
     public ResponseEntity<Object> updateMessages(
             @PathVariable(value = "idChat") Long idChat,

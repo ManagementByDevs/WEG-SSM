@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.weg.wegssm.model.entities.Departamento;
 import net.weg.wegssm.model.entities.Forum;
 
+/**
+ * Classe Util para o departamento
+ */
 public class DepartamentoUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -15,4 +18,5 @@ public class DepartamentoUtil {
             return null;
         }
     }
+
 }

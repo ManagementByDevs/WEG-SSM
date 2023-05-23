@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -26,7 +27,10 @@ public class CustoController {
     private CustoService custoService;
 
     /**
-     * Função para salvar um custo pelo seu objeto recebido no body
+     * Método POST para salvar um custo
+     *
+     * @param custoDTO
+     * @return
      */
     @PostMapping
     public ResponseEntity<Custo> save(@RequestBody @Valid CustoDTO custoDTO) {
@@ -37,7 +41,10 @@ public class CustoController {
 
 
     /**
-     * Função para excluir um custo pelo seu ID, recebido como variável
+     * Método DELETE para deletar um custo pelo id
+     *
+     * @param id
+     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")

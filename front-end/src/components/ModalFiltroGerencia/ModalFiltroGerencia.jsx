@@ -178,7 +178,6 @@ const ModalFiltroGerencia = (props) => {
 
   /** Função para atualizar os filtros quando em pauta, em ata ou em edição for selecionado */
   const selecionarPresenteEm = (value) => {
-    localStorage.setItem('lastSelectedValue', value);
     props.setFiltro({
       solicitante: props.filtro.solicitante,
       forum: props.filtro.forum,

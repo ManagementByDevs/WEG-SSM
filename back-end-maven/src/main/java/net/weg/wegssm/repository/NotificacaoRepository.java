@@ -12,6 +12,9 @@ import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe repository para a notificação
+ */
 @Repository
 public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> {
 
@@ -25,6 +28,7 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
 
     /**
      * Lista as notificações do usuário
+     *
      * @param usuario
      * @return lista de notificações
      */
@@ -32,9 +36,20 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
 
     /**
      * Lista as notificações pela data escolhida
+     *
      * @param data
      * @return
      */
     List<Notificacao> findByData(Data data);
+
+    /**
+     * Método para buscar as notificações por usuário e se foi visualiada, com paginação
+     *
+     * @param usuario
+     * @param visualizado
+     * @param pageable
+     * @return
+     */
     Page<Notificacao> findByUsuarioAndVisualizado(Usuario usuario, Boolean visualizado, Pageable pageable);
+
 }

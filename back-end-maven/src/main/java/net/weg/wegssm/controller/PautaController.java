@@ -23,15 +23,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller para a classe pauta
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/pauta")
 public class PautaController {
+
+    /**
+     * Service da pauta
+     */
     private PautaService pautaService;
+
+    /**
+     * Service da proposta
+     */
     private PropostaService propostaService;
 
     /**
      * Método GET para listar todas as pautas
+     *
+     * @return
      */
     @GetMapping
     public ResponseEntity<List<Pauta>> findAll() {
@@ -65,6 +78,9 @@ public class PautaController {
 
     /**
      * Método GET para listar uma pauta específica através de um id
+     *
+     * @param id
+     * @return
      */
     @GetMapping("/id/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -77,6 +93,9 @@ public class PautaController {
 
     /**
      * Método GET para listar uma pauta específica através do número sequencial
+     *
+     * @param numeroSequencial
+     * @return
      */
     @GetMapping("/numerosequencial/{numeroSequencial}")
     public ResponseEntity<Object> findByNumeroSequencial(@PathVariable(value = "numeroSequencial") Long numeroSequencial) {
@@ -89,6 +108,9 @@ public class PautaController {
 
     /**
      * Método GET para ordenar as pautas a partir da DATA DE INÍCIO, da mais recente para a mais antiga
+     *
+     * @param pageable
+     * @return
      */
     @GetMapping("/ordenarDataInicioRecente")
     public ResponseEntity<Page<Pauta>> findAllDataInicioRecente(@PageableDefault(
@@ -100,6 +122,9 @@ public class PautaController {
 
     /**
      * Método GET para ordenar as pautas a partir da DATA DE INÍCIO, da mais antiga para a mais recente
+     *
+     * @param pageable
+     * @return
      */
     @GetMapping("/ordenarDataInicioAntiga")
     public ResponseEntity<Page<Pauta>> findAllDataInicioAntiga(@PageableDefault(
@@ -111,6 +136,9 @@ public class PautaController {
 
     /**
      * Método GET para ordenar as pautas a partir da DATA DE FIM, da mais recente para a mais antiga
+     *
+     * @param pageable
+     * @return
      */
     @GetMapping("/ordenarDataFimRecente")
     public ResponseEntity<Page<Pauta>> findAllDataFimRecente(@PageableDefault(
@@ -122,6 +150,9 @@ public class PautaController {
 
     /**
      * Método GET para ordenar as pautas a partir da DATA DE FIM, da mais antiga para a mais recente
+     *
+     * @param pageable
+     * @return
      */
     @GetMapping("/ordenarDataFimAntiga")
     public ResponseEntity<Page<Pauta>> findAllDataFimAntiga(@PageableDefault(
@@ -165,6 +196,9 @@ public class PautaController {
 
     /**
      * Método DELETE para deletar uma pauta do banco de dados
+     *
+     * @param id
+     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")
@@ -179,6 +213,9 @@ public class PautaController {
 
     /**
      * Método DELETE para deletar uma pauta, colocando sua visibilidade como false
+     *
+     * @param id
+     * @return
      */
     @Transactional
     @DeleteMapping("/visibilidade/{id}")

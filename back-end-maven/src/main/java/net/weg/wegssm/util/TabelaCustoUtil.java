@@ -6,7 +6,11 @@ import net.weg.wegssm.model.entities.TabelaCusto;
 
 import javax.validation.Valid;
 
+/**
+ * Classe Util para a tabela de custo
+ */
 public class TabelaCustoUtil {
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public TabelaCusto convertJsonToModel(String tabelaCustoJSON) {
@@ -34,4 +38,5 @@ public class TabelaCustoUtil {
     private TabelaCusto convertDTOToModel(@Valid TabelaCustoDTO tabelaCustoDTO) {
         return this.objectMapper.convertValue(tabelaCustoDTO, TabelaCusto.class);
     }
+
 }
