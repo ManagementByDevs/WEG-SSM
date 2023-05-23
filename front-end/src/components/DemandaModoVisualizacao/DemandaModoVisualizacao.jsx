@@ -1,6 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Typography,
+  Button,
+} from "@mui/material";
 
 import "./DemandaModoVisualizacao.css";
 
@@ -54,8 +63,10 @@ const DemandaTable = ({
   ],
   onDemandaClick,
   myDemandas,
+  setTexto,
+  texto,
+  lendo
 }) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -112,6 +123,25 @@ const DemandaTable = ({
     setOpenModal(true);
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTexto(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (lendo && texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(texto);
+        synthesis.speak(utterance);
+      }
+      setTexto("");
+    }
+  }, [texto]);
+
   return (
     <Paper sx={{ width: "100%" }} square>
       {/* Abrindo o modal de motivo recusa */}
@@ -126,24 +156,44 @@ const DemandaTable = ({
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-3 w-1/10">
-              <Typography fontSize={FontConfig.big}>
+              <Typography
+                fontSize={FontConfig.big}
+                onClick={() => {
+                  lerTexto(texts.demandaModoVisualizacao.codigo);
+                }}
+              >
                 {texts.demandaModoVisualizacao.codigo}
               </Typography>
             </th>
             <th className="text-left text-white p-3 w-3/6">
-              <Typography fontSize={FontConfig.big}>
+              <Typography
+                fontSize={FontConfig.big}
+                onClick={() => {
+                  lerTexto(texts.demandaModoVisualizacao.titulo);
+                }}
+              >
                 {texts.demandaModoVisualizacao.titulo}
               </Typography>
             </th>
             {myDemandas && (
               <th className="text-left text-white p-3 w-1/6">
-                <Typography fontSize={FontConfig.big}>
+                <Typography
+                  fontSize={FontConfig.big}
+                  onClick={() => {
+                    lerTexto(texts.demandaModoVisualizacao.statusString);
+                  }}
+                >
                   {texts.demandaModoVisualizacao.statusString}
                 </Typography>
               </th>
             )}
             <th className="text-white p-3 w-1/12">
-              <Typography fontSize={FontConfig.big}>
+              <Typography
+                fontSize={FontConfig.big}
+                onClick={() => {
+                  lerTexto(texts.demandaModoVisualizacao.data);
+                }}
+              >
                 {texts.demandaModoVisualizacao.data}
               </Typography>
             </th>
@@ -163,12 +213,24 @@ const DemandaTable = ({
               }}
             >
               <td className="text-center p-3" title={row.id}>
-                <Typography className="truncate" fontSize={FontConfig.medium}>
+                <Typography
+                  className="truncate"
+                  fontSize={FontConfig.medium}
+                  onClick={() => {
+                    lerTexto(row.id);
+                  }}
+                >
                   {row.id}
                 </Typography>
               </td>
               <td className="text-left p-3" title={row.titulo}>
-                <Typography className="truncate" fontSize={FontConfig.medium}>
+                <Typography
+                  className="truncate"
+                  fontSize={FontConfig.medium}
+                  onClick={() => {
+                    lerTexto(row.titulo);
+                  }}
+                >
                   {row.titulo}
                 </Typography>
               </td>
@@ -190,16 +252,25 @@ const DemandaTable = ({
                       <Typography
                         className="truncate"
                         fontSize={FontConfig.medium}
+                        onClick={() => {
+                          lerTexto(formatarNomeStatus(row.status));
+                        }}
                       >
                         {formatarNomeStatus(row.status)}
                       </Typography>
                       {row.status == "CANCELLED" ||
-                        row.status == "BACKLOG_EDICAO" ? (
+                      row.status == "BACKLOG_EDICAO" ? (
                         <Button
                           className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
-                            e.stopPropagation();
-                            abrirModalMotivoRecusa(row);
+                            if (lendo) {
+                              lerTexto(
+                                texts.demandaModoVisualizacao.motivo
+                              );
+                            } else {
+                              e.stopPropagation();
+                              abrirModalMotivoRecusa(row);
+                            }
                           }}
                           variant="contained"
                           disableElevation
@@ -216,7 +287,13 @@ const DemandaTable = ({
                 className="text-center p-3"
                 title={DateService.getTodaysDateUSFormat(row.data)}
               >
-                <Typography className="truncate" fontSize={FontConfig.default}>
+                <Typography
+                  className="truncate"
+                  fontSize={FontConfig.default}
+                  onClick={() => {
+                    lerTexto(DateService.getTodaysDateUSFormat(row.data));
+                  }}
+                >
                   {DateService.getTodaysDateUSFormat(row.data)}
                 </Typography>
               </td>
@@ -252,13 +329,31 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
 };
 
 // Componente para exibir nada encontrado
-const NadaEncontrado = () => {
-
+const NadaEncontrado = (props) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <Box
@@ -274,12 +369,18 @@ const NadaEncontrado = () => {
       <Typography
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
+        onClick={() => {
+          lerTexto(texts.demandaModoVisualizacao.nadaEncontrado);
+        }}
       >
         {texts.demandaModoVisualizacao.nadaEncontrado}
       </Typography>
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
+        onClick={() => {
+          lerTexto(texts.demandaModoVisualizacao.tenteNovamenteMaisTarde);
+        }}
       >
         {texts.demandaModoVisualizacao.tenteNovamenteMaisTarde}
       </Typography>

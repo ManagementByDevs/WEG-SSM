@@ -12,7 +12,6 @@ import CookieService from "../../service/cookieService";
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -24,7 +23,9 @@ const Demanda = (props) => {
 
   /** Função para receber a altura da div principal da demanda (é maior caso o solicitante seja o usuário logado) */
   const retornaAlturaDemanda = () => {
-    if (props.demanda?.solicitante?.email != CookieService.getCookie("jwt").sub) {
+    if (
+      props.demanda?.solicitante?.email != CookieService.getCookie("jwt").sub
+    ) {
       return "8rem";
     } else {
       return "10rem";
@@ -84,6 +85,25 @@ const Demanda = (props) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <>
       {/* Modal de motivo recusa */}
@@ -107,7 +127,6 @@ const Demanda = (props) => {
         className={`items-center h-30 text-justify border-t-4 pt-2 pb-3 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
       >
         <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
-
           {/* Título da demanda */}
           <Typography
             className="overflow-hidden text-ellipsis whitespace-nowrap"
@@ -115,14 +134,21 @@ const Demanda = (props) => {
             sx={{ fontWeight: "600", maxWidth: "77%" }}
             color="text.primary"
             title={props.demanda.titulo}
+            onClick={() => lerTexto(props.demanda.titulo)}
           >
             {props.demanda.titulo}
           </Typography>
 
           {/* Lógica para mostrar o status da demanda somente caso o usuário seja o dono dela */}
-          {(props.demanda?.solicitante?.email == CookieService.getCookie("jwt").sub || props.demanda?.solicitante?.tour) && (
+          {(props.demanda?.solicitante?.email ==
+            CookieService.getCookie("jwt").sub ||
+            props.demanda?.solicitante?.tour) && (
             <Box id="oitavo" className={`items-center text-justify flex`}>
-              <Typography fontSize={FontConfig?.default} sx={{ fontWeight: "600" }}>
+              <Typography
+                fontSize={FontConfig?.default}
+                sx={{ fontWeight: "600" }}
+                onClick={() => lerTexto(formatarNomeStatus())}
+              >
                 {formatarNomeStatus()}
               </Typography>
               <Box
@@ -140,27 +166,47 @@ const Demanda = (props) => {
         </Box>
 
         {/* Proposta da demanda */}
-        <Typography gutterBottom fontSize={FontConfig?.default} color="text.secondary" ref={descricaoDemanda} sx={{ maxHeight: "5rem", maxWidth: "70%", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <Typography
+          gutterBottom
+          fontSize={FontConfig?.default}
+          color="text.secondary"
+          ref={descricaoDemanda}
+          sx={{
+            maxHeight: "5rem",
+            maxWidth: "70%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+          onClick={() => lerTexto(getPropostaFomartted(props.demanda.proposta))}
+        >
           {/* Chamando a função de formatação html, passando como parâmetro o texto em html */}
           {getPropostaFomartted(props.demanda.proposta)}
         </Typography>
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
-          {props.demanda?.solicitante?.email != CookieService.getCookie("jwt").sub ? (
+          {props.demanda?.solicitante?.email !=
+          CookieService.getCookie("jwt").sub ? (
             <Typography
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
               color="text.primary"
+              onClick={() => lerTexto(props.demanda.solicitante?.nome)}
             >
               {props.demanda.solicitante?.nome}
             </Typography>
-          ) : (props.demanda?.status == "CANCELLED" || props.demanda?.status == "BACKLOG_EDICAO") &&
-            props.demanda?.solicitante?.email == CookieService.getCookie("jwt").sub ? (
+          ) : (props.demanda?.status == "CANCELLED" ||
+              props.demanda?.status == "BACKLOG_EDICAO") &&
+            props.demanda?.solicitante?.email ==
+              CookieService.getCookie("jwt").sub ? (
             <Button
               id="setimo"
               onClick={(e) => {
-                e.stopPropagation();
-                setModalMotivoRecusa(true);
+                if (!props.lendo) {
+                  e.stopPropagation();
+                  setModalMotivoRecusa(true);
+                } else {
+                  lerTexto(texts.demanda.motivo);
+                }
               }}
               variant="contained"
             >
