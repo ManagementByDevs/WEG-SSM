@@ -43,6 +43,10 @@ public class AutenticacaoController {
 
     /**
      * Método POST para a realização da autenticação, recebendo um userDTO como body da requisição
+     *
+     * @param userDTO
+     * @param response
+     * @return
      */
     @PostMapping("/auth")
     public ResponseEntity<Object> autenticacao(@RequestBody @Valid UserDTO userDTO, HttpServletResponse response) {

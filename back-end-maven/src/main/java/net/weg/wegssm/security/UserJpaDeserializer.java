@@ -21,6 +21,10 @@ public class UserJpaDeserializer extends JsonDeserializer<UserJpa> {
 
     /**
      * Função para transformar o usuário recebido no cookie para a classe Usuario
+     * @param p
+     * @param ctxt
+     * @return
+     * @throws IOException
      */
     @Override
     public UserJpa deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
@@ -39,4 +43,5 @@ public class UserJpaDeserializer extends JsonDeserializer<UserJpa> {
         usuario = new UsuarioFactory().getUsuario(authority, usuario);
         return new UserJpa(usuario);
     }
+
 }

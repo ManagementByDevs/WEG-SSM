@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras";
 
@@ -66,7 +66,9 @@ const Chat = (props) => {
   const navigate = useNavigate();
 
   /** ID do chat passado por params */
-  const idChat = useParams().id;
+  const idChatParam = useParams().id;
+
+  const [idChat, setIdChatState] = useState(idChatParam);
 
   /** Container das mensagens */
   const boxRef = useRef(null);
@@ -320,12 +322,7 @@ const Chat = (props) => {
   /** Busca as mensagens do usuário */
   const carregar = () => {
     MensagemService.getMensagensChat(idChat).then((response) => {
-      let mensagensAux = [];
-      if (response) {
-        mensagensAux = response;
-      }
-
-      setMensagens(mensagensAux);
+      setMensagens(response);
 
       enviar(`/app/weg_ssm/enter/chat/${idChat}`, user.usuario.id);
     });
@@ -333,11 +330,15 @@ const Chat = (props) => {
   };
 
   const clearNewMessages = () => {
-    let listaChatsAux = JSON.parse(JSON.stringify(listaChats));
-    let chatAux = listaChatsAux.find((chat) => chat.id == idChat);
-    chatAux.msgNaoLidas = 0;
+    setListaChats((oldListaChats) => {
+      if (oldListaChats.length == 0) return;
 
-    setListaChats([...listaChatsAux]);
+      let listaChatsAux = JSON.parse(JSON.stringify(oldListaChats));
+      let chatAux = listaChatsAux.find((chat) => chat.id == idChat);
+      chatAux.msgNaoLidas = 0;
+
+      return [...listaChatsAux];
+    });
   };
 
   // ***************************************** UseEffects ***************************************** //
@@ -351,6 +352,11 @@ const Chat = (props) => {
     const receivedAnyMessage = (mensagem) => {
       let mensagemRecebida = EntitiesObjectService.mensagem();
       mensagemRecebida = JSON.parse(mensagem.body);
+      let idChatAux = idChat;
+      setIdChatState((oldIdChat) => {
+        idChatAux = oldIdChat;
+        return oldIdChat;
+      });
 
       // Se a mensagem recebida for do usuário logado, ignore
       if (mensagemRecebida.usuario.id == user.usuario.id) {
@@ -359,17 +365,21 @@ const Chat = (props) => {
       }
 
       // Se a mensagem recebida for do chat atual, ignore
-      if (mensagemRecebida.idChat.id == idChat) {
+      if (mensagemRecebida.idChat.id == idChatAux) {
         console.log("b");
         return;
       }
 
-      let chatAux = listaChats.find(
-        (chat) => chat.id == mensagemRecebida.idChat.id
-      );
+      setListaChats((oldListaChats) => {
+        let listaAux = JSON.parse(JSON.stringify(oldListaChats));
 
-      chatAux.msgNaoLidas += 1;
-      setListaChats([...listaChats]);
+        let chatAux = listaAux.find(
+          (chat) => chat.id == mensagemRecebida.idChat.id
+        );
+
+        chatAux.msgNaoLidas = chatAux.msgNaoLidas + 1;
+        return [...listaAux];
+      });
     };
 
     let inscricaoAllMensagens = inscrever(
@@ -403,6 +413,7 @@ const Chat = (props) => {
             texto: mensagemNova.texto.replace(/\n/g, "%BREAK%"),
           })
         );
+      } else {
         clearNewMessages();
       }
 
@@ -411,16 +422,18 @@ const Chat = (props) => {
 
     const readMessage = (mensagem) => {
       console.log("Mensagem vista: ", mensagem);
+
       if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
+        clearNewMessages();
         return;
       }
+
       setMensagens((oldMensagens) => {
         for (let oldMensagem of oldMensagens) {
           if (!oldMensagem.visto) {
             oldMensagem.visto = true;
           }
         }
-        clearNewMessages();
 
         return [...oldMensagens];
       });
@@ -757,6 +770,7 @@ const Chat = (props) => {
                       <Contato
                         key={index}
                         onClick={() => {
+                          setIdChatState(resultado.id);
                           navigate(`/chat/${resultado.id}`);
                         }}
                         idChat={idChat}

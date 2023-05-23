@@ -7,6 +7,9 @@ import net.weg.wegssm.model.entities.Proposta;
 
 import javax.validation.Valid;
 
+/**
+ * Classe Util para a proposta
+ */
 public class PropostaUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -45,11 +48,11 @@ public class PropostaUtil {
         }
     }
 
-    private Proposta convertDTOToModel(@Valid PropostaDTO propostaDTO){
+    private Proposta convertDTOToModel(@Valid PropostaDTO propostaDTO) {
         return this.objectMapper.convertValue(propostaDTO, Proposta.class);
     }
 
-    private Proposta convertJaCriadaDTOToModel(@Valid PropostaJaCriadaDTO propostaDTO){
+    private Proposta convertJaCriadaDTOToModel(@Valid PropostaJaCriadaDTO propostaDTO) {
         return this.objectMapper.convertValue(propostaDTO, Proposta.class);
     }
 

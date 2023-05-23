@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.Departamento;
 import net.weg.wegssm.model.entities.TipoUsuario;
 import net.weg.wegssm.model.entities.Usuario;
@@ -14,6 +15,7 @@ import java.util.Optional;
  * Classe service para os usuários
  */
 @Service
+@AllArgsConstructor
 public class UsuarioService {
 
     /**
@@ -22,14 +24,10 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     /**
-     * Construtor da classe
-     */
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
-
-    /**
      * Função para buscar um usuário pelo seu ID
+     *
+     * @param id
+     * @return
      */
     public Optional<Usuario> findById(Long id) {
         return usuarioRepository.findById(id);
@@ -37,6 +35,9 @@ public class UsuarioService {
 
     /**
      * Função booleana de verificação caso exista um usuário com o email recebido
+     *
+     * @param email
+     * @return
      */
     public Boolean existsByEmail(String email) {
         return usuarioRepository.existsByEmail(email);
@@ -44,6 +45,9 @@ public class UsuarioService {
 
     /**
      * Função booleana de verificação caso exista um usuário com o ID recebido
+     *
+     * @param id
+     * @return
      */
     public Boolean existsById(Long id) {
         return usuarioRepository.existsById(id);
@@ -51,6 +55,10 @@ public class UsuarioService {
 
     /**
      * Função para salvar um usuário no banco
+     *
+     * @param entity
+     * @param <S>
+     * @return
      */
     public <S extends Usuario> S save(S entity) {
         return usuarioRepository.save(entity);
@@ -58,6 +66,8 @@ public class UsuarioService {
 
     /**
      * Função para excluir um usuário pelo seu ID
+     *
+     * @param id
      */
     public void deleteById(Long id) {
         usuarioRepository.deleteById(id);
@@ -65,6 +75,11 @@ public class UsuarioService {
 
     /**
      * Função para buscar uma lisa de usuários pelo seu nome e tipo de usuário
+     *
+     * @param nome
+     * @param tipo_usuario
+     * @param pageable
+     * @return
      */
     public List<Usuario> findByNomeAndTipoUsuario(String nome, TipoUsuario tipo_usuario, Pageable pageable) {
         return usuarioRepository.findByNomeContainingAndTipoUsuario(nome, tipo_usuario, pageable);
@@ -72,6 +87,10 @@ public class UsuarioService {
 
     /**
      * Função para buscar um usuário pelo seu departamento e tipo de usuário
+     *
+     * @param departamento
+     * @param tipoUsuario
+     * @return
      */
     public Usuario findByDepartamentoAndTipoUsuario(Departamento departamento, TipoUsuario tipoUsuario) {
         return usuarioRepository.findByDepartamentoAndTipoUsuario(departamento, tipoUsuario);
@@ -79,8 +98,12 @@ public class UsuarioService {
 
     /**
      * Função para buscar um usuário pelo seu email
+     *
+     * @param email
+     * @return
      */
     public Optional<Usuario> findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
     }
+
 }

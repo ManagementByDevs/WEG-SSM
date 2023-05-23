@@ -8,6 +8,9 @@ import net.weg.wegssm.model.entities.Usuario;
 
 import javax.validation.Valid;
 
+/**
+ * Classe Util para o usuario
+ */
 public class UsuarioUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -19,4 +22,5 @@ public class UsuarioUtil {
             return null;
         }
     }
+
 }

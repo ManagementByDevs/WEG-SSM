@@ -22,9 +22,19 @@ import java.util.Collection;
 @JsonDeserialize(using = UserJpaDeserializer.class)
 public class UserJpa implements UserDetails {
 
+    /**
+     * Pega o usuário do banco que contém as informações
+     */
     private Usuario usuario;
 
+    /**
+     * Lista de autoridades que esse userJpa possui
+     */
     private Collection<GrantedAuthority> authorities;
+
+    /**
+     * Atributos de conta
+     */
 
     private boolean accountNonExpired;
 
@@ -34,11 +44,21 @@ public class UserJpa implements UserDetails {
 
     private boolean enabled;
 
+    /**
+     * Senha do userJpa
+     */
     @JsonIgnore
     private String password;
 
+    /**
+     * Email do userJpa
+     */
     private String username;
 
+    /**
+     * Constutor que recebe um usuário e cria um userJpa com as informações dele
+     * @param usuario
+     */
     public UserJpa(Usuario usuario) {
         this.usuario = usuario;
         this.accountNonExpired = true;
@@ -50,4 +70,5 @@ public class UserJpa implements UserDetails {
         this.authorities = new ArrayList<>();
         this.authorities.add(new SimpleGrantedAuthority(usuario.getTipoUsuario().toString()));
     }
+
 }

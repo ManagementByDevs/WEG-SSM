@@ -4,6 +4,9 @@ import lombok.Data;
 import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.TipoBeneficio;
 
+/**
+ * Classe DTO para a criação de um benefício
+ */
 @Data
 public class BeneficioDTO {
 

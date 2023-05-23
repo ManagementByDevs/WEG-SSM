@@ -6,6 +6,9 @@ import net.weg.wegssm.model.entities.Usuario;
 
 import java.util.List;
 
+/**
+ * Classe DTO para a criação de um escopo
+ */
 @Data
 public class EscopoDTO {
 

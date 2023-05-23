@@ -35,6 +35,9 @@ public class AutenticacaoConfig {
 
     /**
      * Configurações do serviço utilizado para autenticação e encriptação de senhas
+     *
+     * @param auth
+     * @throws Exception
      */
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -43,6 +46,10 @@ public class AutenticacaoConfig {
 
     /**
      * Configurações das rotas que serão acessadas com e sem autenticação, assim como opções adicionais
+     *
+     * @param httpSecurity
+     * @return
+     * @throws Exception
      */
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
@@ -112,6 +119,10 @@ public class AutenticacaoConfig {
 
     /**
      * Função usada para retornar um "AuthenticationManager" quando for preciso
+     *
+     * @param ac
+     * @return
+     * @throws Exception
      */
     @Bean
     protected AuthenticationManager authenticationManager(AuthenticationConfiguration ac) throws Exception {

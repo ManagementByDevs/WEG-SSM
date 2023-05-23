@@ -3,6 +3,9 @@ package net.weg.wegssm.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.weg.wegssm.model.entities.Pauta;
 
+/**
+ * Classe Util para a pauta
+ */
 public class PautaUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -14,4 +17,5 @@ public class PautaUtil {
             throw new RuntimeException(e);
         }
     }
+
 }

@@ -28,7 +28,8 @@ public class BeneficioController {
     private BeneficioService beneficioService;
 
     /**
-     * Função para salvar um benefício, recebendo o objeto no body
+     * Método POST para salvar um benefício, recebendo o objeto no body
+     * @return
      */
     @PostMapping
     public ResponseEntity<Object> createNew() {
@@ -37,7 +38,12 @@ public class BeneficioController {
     }
 
     /**
-     * Função para atualizar um benefício já existente, recebendo ele atualizado no body
+     * Método PUT para atualizar um benefício já existente, recebendo ele atualizado no body
+     *
+     * @param id
+     * @param beneficioJson
+     * @param memoriaCalculo
+     * @return
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
@@ -56,7 +62,10 @@ public class BeneficioController {
     }
 
     /**
-     * Função para excluir um benefício, recebendo seu ID como variável
+     * Método DELETE para excluir um benefício, recebendo seu ID como variável
+     *
+     * @param id
+     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")

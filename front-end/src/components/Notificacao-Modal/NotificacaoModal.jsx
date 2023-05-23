@@ -70,7 +70,8 @@ const NotificacaoModal = (props) => {
       (user) => {
         NotificacaoService.getByUserIdAndNotVisualizado(user.id)
           .then((response) => {
-            setNotificacoes(response.content);
+            console.log("notificacoes: ", response.content);
+            setNotificacoes([...response.content]);
           })
           .catch((error) => {});
       }
@@ -89,10 +90,12 @@ const NotificacaoModal = (props) => {
     newNotificacao.data = DateService.getTodaysDateMySQL();
     newNotificacao.tipoNotificacao = "MENSAGENS";
     newNotificacao.usuario.id = user.id;
-    console.log("notificacao: ", mensagem);
 
     NotificacaoService.post(newNotificacao).then((notificacaoResponse) => {
-      notificacoes.push(notificacaoResponse);
+      setNotificacoes((oldNotificacoes) => {
+        oldNotificacoes.unshift(notificacaoResponse);
+        return [...oldNotificacoes];
+      });
     });
   };
 

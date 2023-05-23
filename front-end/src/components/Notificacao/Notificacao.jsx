@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import "./Notificacao.css";
 
@@ -12,21 +12,22 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import NotificacaoService from "../../service/notificacaoService";
+import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Componente para exibir as notificações do sistema
 const Notificacao = ({
-  notificacao,
-  onNotificacaoClick,
   index,
   lendo,
   texto,
   setTexto,
+  notificacao = EntitiesObjectService.notificacao(),
+  onNotificacaoClick = () => {},
 }) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Calculo de datas
   let dataAtual = DateService.getTodaysDate();
@@ -38,7 +39,7 @@ const Notificacao = ({
   const handleClick = () => {
     NotificacaoService.put({
       ...notificacao,
-      visualizado: !notificacao.visualizado,
+      visualizado: true,
     }).then((data) => {
       onNotificacaoClick();
     });
@@ -46,20 +47,20 @@ const Notificacao = ({
 
   const retornaTitulo = () => {
     if (notificacao.numeroSequencial) {
-      return `${texts.notificacaoComponente.demandaDeNumero} ${
-        notificacao.numeroSequencial
-      } ${texts.notificacaoComponente.foi} ${formataStatus()}!`;
+      return formataStatus();
     }
   };
 
   const formataStatus = () => {
     switch (notificacao.tipoNotificacao) {
       case "APROVADO":
-        return texts.notificacaoComponente.aprovada;
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada}!`;
       case "REPROVADO":
-        return texts.notificacaoComponente.reprovada;
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada}!`;
+      case "MENSAGENS":
+        return `${texts.notificacaoComponente.vcRecebeuMensagem} ${notificacao.numeroSequencial}!`;
       case "MAIS_INFORMACOES":
-        return texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes;
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes}!`;
     }
   };
 
@@ -83,7 +84,7 @@ const Notificacao = ({
   }, [texto]);
 
   return (
-    // Container da natificacao
+    // Container da notificação
     <Box
       className="notificacao-item-componente flex items-center border rounded px-2 py-1 my-1 delay-120 hover:scale-105 duration-300"
       title={retornaTitulo()}

@@ -18,21 +18,37 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     /**
      * Função de verificação caso exista um usuário com o email recebido
+     *
+     * @param email
+     * @return
      */
     Boolean existsByEmail(String email);
 
     /**
      * Função para buscar uma lista de usuários com o nome (ou parte) e tipo usuário recebidos
+     *
+     * @param nome
+     * @param tipo_usuario
+     * @param pageable
+     * @return
      */
     List<Usuario> findByNomeContainingAndTipoUsuario(String nome, TipoUsuario tipo_usuario, Pageable pageable);
 
     /**
      * Função para buscar um usuário pelo seu departamento e tipo de usuário
+     *
+     * @param departamento
+     * @param tipoUsuario
+     * @return
      */
     Usuario findByDepartamentoAndTipoUsuario(Departamento departamento, TipoUsuario tipoUsuario);
 
     /**
      * Função para buscar um usuário pelo seu email
+     *
+     * @param email
+     * @return
      */
     Optional<Usuario> findByEmail(String email);
+
 }

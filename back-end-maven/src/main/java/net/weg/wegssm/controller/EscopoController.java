@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -36,16 +37,24 @@ import java.util.Optional;
 @RequestMapping("/weg_ssm/escopo")
 public class EscopoController {
 
-    /** Service dos escopos */
+    /**
+     * Service dos escopos
+     */
     private EscopoService escopoService;
 
-    /** Service dos usuários */
+    /**
+     * Service dos usuários
+     */
     private UsuarioService usuarioService;
 
-    /** Service dos benefícios */
+    /**
+     * Service dos benefícios
+     */
     private BeneficioService beneficioService;
 
-    /** Service dos anexo */
+    /**
+     * Service dos anexo
+     */
     private AnexoService anexoService;
 
     /**
@@ -75,22 +84,30 @@ public class EscopoController {
     }
 
     /**
-     * Método para procurar os escopos de um usuário pelo seu ID
+     * Método GET para procurar os escopos de um usuário pelo seu ID
      *
-     * @param pageable Objeto para paginação
+     * @param pageable  Objeto para paginação
      * @param idUsuario ID do usuário
      * @return Página com os escopos do usuário recebido
      */
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<Object> findByUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-                                                      @PathVariable(value = "idUsuario") Long idUsuario) {
+                                                @PathVariable(value = "idUsuario") Long idUsuario) {
         Optional<Usuario> usuarioOptional = usuarioService.findById(idUsuario);
-        if(usuarioOptional.isEmpty()) {
+        if (usuarioOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuario(usuarioOptional.get(), pageable));
     }
 
+    /**
+     * Método GET para buscar um escopo através do título e do id do usuário
+     *
+     * @param pageable
+     * @param idUsuario
+     * @param titulo
+     * @return
+     */
     @GetMapping("/titulo/{idUsuario}/{titulo}")
     public ResponseEntity<Page<Escopo>> findByUsuarioAndTitulo(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                @PathVariable(value = "idUsuario") Long idUsuario,
@@ -99,6 +116,12 @@ public class EscopoController {
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuarioAndTitulo(usuario, titulo, pageable));
     }
 
+    /**
+     * Método POST para salvar um novo escopo
+     *
+     * @param idUsuario
+     * @return
+     */
     @PostMapping("/novo/{idUsuario}")
     public ResponseEntity<Escopo> saveNovo(@PathVariable(value = "idUsuario") Long idUsuario) {
         Usuario usuario = usuarioService.findById(idUsuario).get();
@@ -130,6 +153,12 @@ public class EscopoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(escopoService.save(escopo));
     }
 
+    /**
+     * Método PUT para atualizar um escopo
+     *
+     * @param escopo
+     * @return
+     */
     @PutMapping
     public ResponseEntity<Object> update(@RequestBody Escopo escopo) {
 
@@ -143,7 +172,7 @@ public class EscopoController {
 
         List<Beneficio> listaBeneficiosNova = new ArrayList<>();
         for (Beneficio beneficio : escopo.getBeneficios()) {
-            if(beneficioService.existsById(beneficio.getId())) {
+            if (beneficioService.existsById(beneficio.getId())) {
                 listaBeneficiosNova.add(beneficio);
             }
         }
@@ -151,7 +180,7 @@ public class EscopoController {
 
         List<Anexo> listaAnexosNova = new ArrayList<>();
         for (Anexo anexo : escopo.getAnexo()) {
-            if(anexoService.existsById(anexo.getId())) {
+            if (anexoService.existsById(anexo.getId())) {
                 listaAnexosNova.add(anexo);
             }
         }
@@ -181,6 +210,9 @@ public class EscopoController {
 
     /**
      * Método DELETE para deletar um escopo do banco de dados
+     *
+     * @param id
+     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")

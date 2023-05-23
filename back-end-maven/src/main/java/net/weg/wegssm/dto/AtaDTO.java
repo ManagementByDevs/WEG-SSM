@@ -8,6 +8,9 @@ import net.weg.wegssm.model.entities.Usuario;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe DTO para a criação de uma ata
+ */
 @Data
 public class AtaDTO {
     private Date dataReuniao;

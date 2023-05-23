@@ -20,18 +20,47 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Controller para exportar pdfs
+ */
 @AllArgsConstructor
 @RestController
 @RequestMapping("/weg_ssm")
 public class PDFExportController {
 
+    /**
+     * Service do gerador de pdf
+     */
     private final PDFGeneratorService pdfGeneratorService;
 
+    /**
+     * Service da demanda
+     */
     private DemandaService demandaService;
+
+    /**
+     * Service da proposta
+     */
     private PropostaService propostaService;
+
+    /**
+     * Service da pauta
+     */
     private PautaService pautaService;
+
+    /**
+     * Service da ata
+     */
     private AtaService ataService;
 
+    /**
+     * Método GET para gerar um pdf de uma demanda
+     *
+     * @param demandaId
+     * @param response
+     * @throws IOException
+     * @throws DocumentException
+     */
     @GetMapping("/pdf/demanda/{id}")
     public void generatePDFDemanda(@PathVariable(value = "id") Long demandaId, HttpServletResponse response) throws IOException, DocumentException {
         Demanda demanda = demandaService.findById(demandaId).get();
@@ -55,6 +84,14 @@ public class PDFExportController {
         response.getOutputStream().flush();
     }
 
+    /**
+     * Método GET para gerar o pdf de uma proposta
+     *
+     * @param propostaId
+     * @param response
+     * @throws IOException
+     * @throws DocumentException
+     */
     @GetMapping("/pdf/proposta/{id}")
     public void generatePDFProposta(@PathVariable(value = "id") Long propostaId, HttpServletResponse response) throws IOException, DocumentException {
         Proposta proposta = propostaService.findById(propostaId).get();
@@ -78,8 +115,16 @@ public class PDFExportController {
         response.getOutputStream().flush();
     }
 
+    /**
+     * Método GET para gerar o pdf de uma pauta
+     *
+     * @param idPauta
+     * @param response
+     * @throws IOException
+     * @throws DocumentException
+     */
     @GetMapping("/pdf/pauta/{id}")
-    public void generatePDFPauta(@PathVariable(value = "id") Long idPauta,  HttpServletResponse response) throws IOException, DocumentException {
+    public void generatePDFPauta(@PathVariable(value = "id") Long idPauta, HttpServletResponse response) throws IOException, DocumentException {
         Pauta pauta = pautaService.findById(idPauta).get();
         response.setContentType("application/pdf");
 
@@ -101,6 +146,14 @@ public class PDFExportController {
         response.getOutputStream().flush();
     }
 
+    /**
+     * Método GET para gerar o pdf de uma ata
+     *
+     * @param idAta
+     * @param response
+     * @throws IOException
+     * @throws DocumentException
+     */
     @GetMapping("/pdf/ata/{id}")
     public void generatePDFAta(@PathVariable(value = "id") Long idAta, HttpServletResponse response) throws IOException, DocumentException {
         Ata ata = ataService.findById(idAta).get();
