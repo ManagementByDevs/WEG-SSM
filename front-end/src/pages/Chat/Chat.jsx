@@ -68,8 +68,6 @@ const Chat = (props) => {
   /** ID do chat passado por params */
   const idChatParam = useParams().id;
 
-  const [idChat, setIdChatState] = useState(idChatParam);
-
   /** Container das mensagens */
   const boxRef = useRef(null);
 
@@ -112,6 +110,9 @@ const Chat = (props) => {
     },
   ];
 
+  /** UseState para armazenar o ID do chat */
+  const [idChat, setIdChatState] = useState(idChatParam);
+
   /** UseState para pesquisar um contato da lista */
   const [pesquisaContato, setPesquisaContato] = useState("");
 
@@ -137,7 +138,7 @@ const Chat = (props) => {
   const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
 
   /** Lista de chats do usuário */
-  const [listaChats, setListaChats] = useState([]);
+  const [listaChats, setListaChats] = useState([EntitiesObjectService.chat()]);
 
   /** Mensagem que está sendo digitada */
   const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
@@ -459,21 +460,42 @@ const Chat = (props) => {
     }
   }, [stompClient, idChat]);
 
+  const containsUser = (
+    usuarios = [EntitiesObjectService.usuario()],
+    idUserLogado = 0,
+    nome = ""
+  ) => {
+    return usuarios.some(
+      (usuario) =>
+        usuario.id != idUserLogado && usuario.nome.toLowerCase().includes(nome)
+    );
+  };
+
   /** UseState para armazenar o contato selecionado */
   useEffect(() => {
-    const resultados = [];
-    listaChats.filter((chat) => {
-      for (let userChat of chat.usuariosChat) {
-        if (userChat.id != user.usuario.id) {
-          if (
-            userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
-          ) {
-            resultados.push(chat);
-          }
-        }
+    // if (!pesquisaContato) setResultadosContato([]);
+
+    let listaChatsAux = listaChats.filter((chat) => {
+      // Pesquisa por código PPM
+      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
+        return true;
+      }
+
+      // Pesquisa pelo título da proposta
+      if (
+        chat.idProposta.titulo
+          .toLowerCase()
+          .includes(pesquisaContato.toLowerCase())
+      ) {
+        return true;
+      }
+
+      // Pesquisa pelo nome do contato
+      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
+        return true;
       }
     });
-    setResultadosContato(resultados);
+    setResultadosContato([...listaChatsAux]);
   }, [pesquisaContato, listaChats, idChat]);
 
   useEffect(() => {
