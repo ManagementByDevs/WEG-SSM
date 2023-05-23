@@ -24,7 +24,7 @@ public class AnexoController {
     private AnexoService anexoService;
 
     /**
-     * Função para criar um anexo no banco de dados, recebendo um AnexoDTO no body
+     * Método POST para criar um anexo no banco de dados, recebendo um AnexoDTO no body
      *
      * @param arquivo Arquivo para salvamento
      * @return ResponseEntity com o anexo recém-salvo
@@ -40,7 +40,7 @@ public class AnexoController {
     }
 
     /**
-     * Função para excluir um anexo pelo seu ID, recebido pela variável "id"
+     * Método DELETE para excluir um anexo pelo seu ID, recebido pela variável "id"
      *
      * @param id ID do anexo a ser excluído
      * @return ResponseEntity com string confirmando a deleção
@@ -55,4 +55,5 @@ public class AnexoController {
         anexoService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("Anexo deletado com sucesso!");
     }
+
 }

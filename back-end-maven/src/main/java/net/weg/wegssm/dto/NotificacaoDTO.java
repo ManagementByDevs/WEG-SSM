@@ -6,6 +6,9 @@ import net.weg.wegssm.model.entities.Usuario;
 
 import java.util.Date;
 
+/**
+ * Classe DTO para a criação de uma notificação
+ */
 @Data
 public class NotificacaoDTO {
 

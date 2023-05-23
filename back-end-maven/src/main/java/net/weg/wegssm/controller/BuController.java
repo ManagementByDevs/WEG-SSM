@@ -23,7 +23,8 @@ public class BuController {
     private BuService buService;
 
     /**
-     * Função para buscar todas as BUs salvas
+     * Método GET para buscar todas as BUs salvas
+     * @return
      */
     @GetMapping
     public ResponseEntity<List<Bu>> findAll() {

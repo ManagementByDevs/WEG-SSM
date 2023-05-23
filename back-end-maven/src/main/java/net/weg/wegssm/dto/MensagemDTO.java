@@ -9,6 +9,9 @@ import net.weg.wegssm.model.entities.Usuario;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe DTO para a criação de uma mensagem
+ */
 @Data
 public class MensagemDTO {
 

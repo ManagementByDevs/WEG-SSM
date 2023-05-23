@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe repository para as demandas
+ */
 @Repository
 public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 
@@ -20,8 +23,22 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
      */
     List<Demanda> findByStatus(Status status);
 
+    /**
+     * Método para listar a demanda pelo status, com paginação
+     *
+     * @param status
+     * @param pageable
+     * @return
+     */
     Page<Demanda> findByStatus(Status status, Pageable pageable);
 
+    /**
+     * Método para lista a demanda por id, com paginação
+     *
+     * @param id
+     * @param pageable
+     * @return
+     */
     Page<Demanda> findById(Long id, Pageable pageable);
 
     /**
@@ -32,6 +49,13 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
      */
     List<Demanda> findByForum(Forum forum);
 
+    /**
+     * Método para listar as demandas pelo fórum, com paginação
+     *
+     * @param forum
+     * @param pageable
+     * @return
+     */
     Page<Demanda> findByForum(Forum forum, Pageable pageable);
 
     /**
@@ -50,7 +74,18 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
      */
     List<Demanda> findByDepartamento(Departamento departamento);
 
+    /**
+     * Método para listar as demandas pelo departamento, com paginação
+     *
+     * @param departamento
+     * @param pageable
+     * @return
+     */
     Page<Demanda> findByDepartamento(Departamento departamento, Pageable pageable);
+
+    /**
+     * Métodos utilizados no filtro
+     */
 
     Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable);
 

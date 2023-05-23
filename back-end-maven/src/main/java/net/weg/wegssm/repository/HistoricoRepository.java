@@ -1,15 +1,15 @@
 package net.weg.wegssm.repository;
 
-import net.weg.wegssm.model.entities.Ata;
-import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Historico;
 import net.weg.wegssm.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe repository para o histórico
+ */
 @Repository
 public interface HistoricoRepository extends JpaRepository<Historico, Long> {
 
@@ -28,4 +28,5 @@ public interface HistoricoRepository extends JpaRepository<Historico, Long> {
      * @return
      */
     Boolean existsByAutor(Usuario autor);
+
 }

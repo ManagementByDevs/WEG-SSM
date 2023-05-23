@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe DTO para a criação de uma proposta ja criada
+ */
 @Data
 public class PropostaJaCriadaDTO {
     private Long id;
@@ -46,4 +49,5 @@ public class PropostaJaCriadaDTO {
     private List<Anexo> anexo;
     private List<Historico> historicoProposta;
     private String presenteEm;
+
 }

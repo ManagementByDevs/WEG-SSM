@@ -8,6 +8,9 @@ import net.weg.wegssm.model.entities.EscopoProposta;
 
 import javax.validation.Valid;
 
+/**
+ * Classe Util para o escopo da proposta
+ */
 public class EscopoPropostaUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -25,7 +28,7 @@ public class EscopoPropostaUtil {
         }
     }
 
-    private EscopoPropostaDTO convertJsonToDTO(String escopoPropostaJson){
+    private EscopoPropostaDTO convertJsonToDTO(String escopoPropostaJson) {
         try {
             return this.objectMapper.readValue(escopoPropostaJson, EscopoPropostaDTO.class);
         } catch (Exception e) {
@@ -33,7 +36,8 @@ public class EscopoPropostaUtil {
         }
     }
 
-    private EscopoProposta convertDTOToModel(@Valid EscopoPropostaDTO escopoPropostaDTO){
+    private EscopoProposta convertDTOToModel(@Valid EscopoPropostaDTO escopoPropostaDTO) {
         return this.objectMapper.convertValue(escopoPropostaDTO, EscopoProposta.class);
     }
+
 }

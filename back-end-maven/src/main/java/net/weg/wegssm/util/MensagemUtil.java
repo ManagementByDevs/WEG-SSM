@@ -6,6 +6,9 @@ import net.weg.wegssm.model.entities.Mensagem;
 
 import javax.validation.Valid;
 
+/**
+ * Classe Util para a mensagem
+ */
 public class MensagemUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();

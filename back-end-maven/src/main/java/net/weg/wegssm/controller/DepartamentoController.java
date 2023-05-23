@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -18,12 +19,14 @@ import java.util.List;
 public class DepartamentoController {
 
     /**
-     * Classe service dos departamentos
+     * Service dos departamentos
      */
     private DepartamentoService departamentoService;
 
     /**
      * Função para procurar todos os departamentos salvos
+     *
+     * @return
      */
     @GetMapping
     public ResponseEntity<List<Departamento>> findAll() {

@@ -6,6 +6,9 @@ import net.weg.wegssm.model.entities.DocumentoHistorico;
 
 import javax.validation.Valid;
 
+/**
+ * Classe Util para o documento histórico
+ */
 public class DocumentoHistoricoUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -15,7 +18,7 @@ public class DocumentoHistoricoUtil {
         return convertDTOToModel(documentoHistoricoDTO);
     }
 
-    private DocumentoHistoricoDTO convertJsonToDTO(String documentoHistoricoJSON){
+    private DocumentoHistoricoDTO convertJsonToDTO(String documentoHistoricoJSON) {
         try {
             return this.objectMapper.readValue(documentoHistoricoJSON, DocumentoHistoricoDTO.class);
         } catch (Exception e) {
@@ -23,7 +26,8 @@ public class DocumentoHistoricoUtil {
         }
     }
 
-    private DocumentoHistorico convertDTOToModel(@Valid DocumentoHistoricoDTO documentoHistoricoDTO){
+    private DocumentoHistorico convertDTOToModel(@Valid DocumentoHistoricoDTO documentoHistoricoDTO) {
         return this.objectMapper.convertValue(documentoHistoricoDTO, DocumentoHistorico.class);
     }
+
 }

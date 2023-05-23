@@ -21,6 +21,8 @@ public class TokenUtils {
 
     /**
      * Função que gera os tokens de autenticação, com o email usuário sendo o "subject" principal do token
+     * @param usuario
+     * @return
      */
     public String gerarToken(UserJpa usuario) {
         return Jwts.builder()
@@ -34,6 +36,7 @@ public class TokenUtils {
 
     /**
      * Função que valida se um token recebido é válido para autenticação do usuário
+     * @param token
      */
     public void validarToken(String token) {
         try {
@@ -42,4 +45,5 @@ public class TokenUtils {
             throw new RuntimeException("Token Inválido!");
         }
     }
+
 }

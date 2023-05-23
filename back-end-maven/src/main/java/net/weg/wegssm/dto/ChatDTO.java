@@ -7,8 +7,12 @@ import net.weg.wegssm.model.entities.Usuario;
 
 import java.util.List;
 
+/**
+ * Classe DTO para a criação de um chat
+ */
 @Data
 public class ChatDTO {
+
     private Boolean conversaEncerrada;
     private Proposta idProposta;
     private List<Usuario> usuariosChat;

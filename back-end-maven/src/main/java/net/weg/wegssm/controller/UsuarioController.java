@@ -33,11 +33,14 @@ public class UsuarioController {
 
     /**
      * Função para buscar um usuário pelo seu email, usado na conversão do cookie de autenticação
+     *
+     * @param email
+     * @return
      */
     @GetMapping("/email/{email}")
     public ResponseEntity<Object> findByEmail(@PathVariable(value = "email") String email) {
         Optional<Usuario> usuarioOptional = usuarioService.findByEmail(email);
-        if(usuarioOptional.isEmpty()) {
+        if (usuarioOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(usuarioOptional.get());
@@ -45,6 +48,9 @@ public class UsuarioController {
 
     /**
      * Função para buscar um usuário pelo seu ID, recebido por uma variável
+     *
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -57,6 +63,11 @@ public class UsuarioController {
 
     /**
      * Função para buscar uma lista de usuários pelo nome e tipo de usuário, necessária para filtragem
+     *
+     * @param pageable
+     * @param nome
+     * @param tipo_usuario
+     * @return
      */
     @GetMapping("/filtragem/{nome}/{tipo_usuario}")
     public ResponseEntity<List<Usuario>> findByNomeAndTipoUsuario(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
@@ -67,6 +78,9 @@ public class UsuarioController {
 
     /**
      * Função para criar um novo usuário, recebendo o objeto pelo body
+     *
+     * @param usuarioDTO
+     * @return
      */
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid UsuarioDTO usuarioDTO) {
@@ -86,6 +100,10 @@ public class UsuarioController {
 
     /**
      * Função para atualizar um usuário, recebendo o objeto atualizado no body e o ID como parâmetro
+     *
+     * @param id
+     * @param usuarioDTO
+     * @return
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody UsuarioDTO usuarioDTO) {

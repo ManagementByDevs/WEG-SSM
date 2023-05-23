@@ -9,11 +9,27 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe repository para o chat
+ */
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
+    /**
+     * Método para listar os chats através de um usuário
+     *
+     * @param usuario
+     * @return
+     */
     List<Chat> findByUsuariosChat(Usuario usuario);
 
+    /**
+     * Método para listar os chats através de uma proposta e um usuário
+     *
+     * @param proposta
+     * @param usuario
+     * @return
+     */
     List<Chat> findByIdPropostaAndUsuariosChat(Proposta proposta, Usuario usuario);
 
 //    Boolean existsByUsuario(Usuario usuario);

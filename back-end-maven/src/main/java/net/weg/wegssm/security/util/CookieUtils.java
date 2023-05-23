@@ -3,6 +3,7 @@ package net.weg.wegssm.security.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.weg.wegssm.security.UserJpa;
 import org.springframework.web.util.WebUtils;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
@@ -15,12 +16,15 @@ import java.nio.charset.StandardCharsets;
 public class CookieUtils {
 
     /**
-     * utils para gerenciamento e uso dos tokens de autenticação
+     * Utils para gerenciamento e uso dos tokens de autenticação
      */
     private final TokenUtils tokenUtils = new TokenUtils();
 
     /**
      * Função para gerar um cookie armazenando o token de autenticação
+     *
+     * @param userJpa
+     * @return
      */
     public Cookie gerarTokenCookie(UserJpa userJpa) {
         String token = tokenUtils.gerarToken(userJpa);
@@ -32,6 +36,9 @@ public class CookieUtils {
 
     /**
      * Função para pegar o cookie com o token de autenticação
+     *
+     * @param request
+     * @return
      */
     public String getTokenCookie(HttpServletRequest request) {
         try {
@@ -41,7 +48,7 @@ public class CookieUtils {
             try {
                 Cookie[] cookies = request.getCookies();
                 for (Cookie cookie : cookies) {
-                    if(cookie.getName().equals("jwt")) {
+                    if (cookie.getName().equals("jwt")) {
                         return cookie.getValue();
                     }
                 }
@@ -54,6 +61,9 @@ public class CookieUtils {
 
     /**
      * Função para gerar um cookie armazenando o usuário autenticado
+     *
+     * @param userJpa
+     * @return
      */
     public Cookie gerarUserCookie(UserJpa userJpa) {
         try {
@@ -72,6 +82,9 @@ public class CookieUtils {
 
     /**
      * Função para pegar o cookie com o usuário autenticado
+     *
+     * @param request
+     * @return
      */
     public UserJpa getUserCookie(HttpServletRequest request) {
         try {
@@ -88,7 +101,11 @@ public class CookieUtils {
     }
 
     /**
-     * Função para renovar o tempo de um cookie, recebendo o nome dele como parâmetro
+     * Função para renovar o tempo de um cookie
+     *
+     * @param request
+     * @param nome
+     * @return
      */
     public Cookie renovarCookie(HttpServletRequest request, String nome) {
         Cookie cookie = WebUtils.getCookie(request, nome);
@@ -96,4 +113,5 @@ public class CookieUtils {
         cookie.setMaxAge(3600);
         return cookie;
     }
+
 }
