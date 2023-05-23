@@ -29,14 +29,14 @@ const LerTexto = (props) => {
   return (
     <Tooltip title="Ouvir Texto" placement="left">
       <Box
-        className="flex items-center justify-center absolute cursor-pointer"
+        className="flex items-center justify-center fixed cursor-pointer"
         sx={{
           width: "2.35rem",
           height: "2.35rem",
           borderRadius: "30%",
           background: corButton,
           right: 0,
-          top: 320,
+          top: "33%",
           zIndex: 1000,
         }}
         onClick={lerTexto}

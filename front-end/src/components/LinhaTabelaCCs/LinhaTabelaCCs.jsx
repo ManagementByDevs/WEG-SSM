@@ -126,33 +126,6 @@ const LinhaTabelaCCs = (props) => {
     }
   }, [escutar]);
 
-  {
-    /* Feedback Erro reconhecimento de voz */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroReconhecimentoVoz}
-  handleClose={() => {
-    setFeedbackErroReconhecimentoVoz(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback12}
-/> */
-  }
-  {
-    /* Feedback Não navegador incompativel */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroNavegadorIncompativel}
-  handleClose={() => {
-    setFeedbackErroNavegadorIncompativel(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback13}
-/> */
-  }
-
   // // ********************************************** Fim Gravar audio **********************************************
 
   return (

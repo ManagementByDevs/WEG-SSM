@@ -300,6 +300,25 @@ const FormularioPropostaProposta = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <>
       {/* Feedback anexos existente */}
@@ -326,9 +345,14 @@ const FormularioPropostaProposta = (props) => {
           >
             <>
               <Box className="flex justify-center">
-                <Box className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded" sx={{width: "100%;",
-                      height: "54px",
-                      backgroundColor: "background.default",}}>
+                <Box
+                  className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+                  sx={{
+                    width: "100%;",
+                    height: "54px",
+                    backgroundColor: "background.default",
+                  }}
+                >
                   <Box
                     value={props.dados.titulo}
                     onChange={(e) => {
@@ -374,6 +398,9 @@ const FormularioPropostaProposta = (props) => {
                     fontWeight="600"
                     color="text.primary"
                     className="flex"
+                    onClick={() => {
+                      lerTexto(texts.formularioPropostaProposta.problema);
+                    }}
                   >
                     {texts.formularioPropostaProposta.problema}:
                   </Typography>
@@ -403,6 +430,9 @@ const FormularioPropostaProposta = (props) => {
                     fontWeight="600"
                     color="text.primary"
                     className="flex"
+                    onClick={() => {
+                      lerTexto(texts.formularioPropostaProposta.proposta);
+                    }}
                   >
                     {texts.formularioPropostaProposta.proposta}:
                   </Typography>
@@ -431,6 +461,9 @@ const FormularioPropostaProposta = (props) => {
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
                     color="text.primary"
+                    onClick={() => {
+                      lerTexto(texts.formularioPropostaProposta.beneficios);
+                    }}
                   >
                     {texts.formularioPropostaProposta.beneficios}:
                   </Typography>
@@ -465,6 +498,11 @@ const FormularioPropostaProposta = (props) => {
                     fontWeight="600"
                     color="text.primary"
                     className="flex"
+                    onClick={() => {
+                      lerTexto(
+                        texts.formularioPropostaProposta.frequenciaDeUso
+                      );
+                    }}
                   >
                     {texts.formularioPropostaProposta.frequenciaDeUso}:
                   </Typography>
@@ -478,28 +516,31 @@ const FormularioPropostaProposta = (props) => {
                     *
                   </Typography>
                 </Box>
-                <Box className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded" sx={{
+                <Box
+                  className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
+                  sx={{
                     width: "90%;",
                     backgroundColor: corFundoTextArea,
                     marginLeft: "30px",
-                  }}>
-                <Box
-                  value={props.dados.frequencia}
-                  onChange={(e) => {
-                    alterarTexto(e, "frequencia");
                   }}
-                  fontSize={FontConfig.medium}
-                  className="outline-none"
-                  sx={{
-                    width: "95%;",
-                    backgroundColor: "transparent",
-                  }}
-                  component="input"
-                  placeholder={
-                    texts.formularioPropostaProposta.digiteFrequencia
-                  }
-                />
-                <Tooltip
+                >
+                  <Box
+                    value={props.dados.frequencia}
+                    onChange={(e) => {
+                      alterarTexto(e, "frequencia");
+                    }}
+                    fontSize={FontConfig.medium}
+                    className="outline-none"
+                    sx={{
+                      width: "95%;",
+                      backgroundColor: "transparent",
+                    }}
+                    component="input"
+                    placeholder={
+                      texts.formularioPropostaProposta.digiteFrequencia
+                    }
+                  />
+                  <Tooltip
                     className="hover:cursor-pointer"
                     title={texts.homeGerencia.gravarAudio}
                     onClick={() => {
@@ -573,6 +614,9 @@ const FormularioPropostaProposta = (props) => {
                       label={
                         texts.formularioPropostaProposta.labelSecaoTi + " *"
                       }
+                      onClick={() => {
+                        lerTexto(texts.formularioPropostaProposta.labelSecaoTi);
+                      }}
                     />
                   )}
                 />
@@ -606,6 +650,11 @@ const FormularioPropostaProposta = (props) => {
                       label={
                         texts.formularioPropostaProposta.buSolicitante + " *"
                       }
+                      onClick={() => {
+                        lerTexto(
+                          texts.formularioPropostaProposta.buSolicitante
+                        );
+                      }}
                     />
                   )}
                 />
@@ -648,6 +697,11 @@ const FormularioPropostaProposta = (props) => {
                       placeholder={
                         texts.formularioPropostaProposta.selecioneUmaOuMaisBus
                       }
+                      onClick={() => {
+                        lerTexto(
+                          texts.formularioPropostaProposta.labelBusBeneficiadas
+                        );
+                      }}
                     />
                   )}
                 />
@@ -679,6 +733,9 @@ const FormularioPropostaProposta = (props) => {
                       variant="standard"
                       {...params}
                       label={texts.formularioPropostaProposta.labelForum + " *"}
+                      onClick={() => {
+                        lerTexto(texts.formularioPropostaProposta.labelForum);
+                      }}
                     />
                   )}
                 />
@@ -689,6 +746,9 @@ const FormularioPropostaProposta = (props) => {
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
                     color="text.primary"
+                    onClick={() => {
+                      lerTexto(texts.formularioPropostaProposta.anexos);
+                    }}
                   >
                     {texts.formularioPropostaProposta.anexos}:
                   </Typography>
@@ -724,6 +784,9 @@ const FormularioPropostaProposta = (props) => {
                           sx={{
                             color: "text.primary",
                             fontSize: FontConfig.default,
+                          }}
+                          onClick={() => {
+                            lerTexto(anexo.nome ? anexo.nome : anexo.name);
                           }}
                         >
                           {anexo.nome ? anexo.nome : anexo.name}
@@ -761,6 +824,9 @@ const FormularioPropostaProposta = (props) => {
                   <Typography
                     textAlign="center"
                     sx={{ color: "text.primary", fontSize: FontConfig.default }}
+                    onClick={() => {
+                      lerTexto(texts.formularioPropostaProposta.nenhumAnexo);
+                    }}
                   >
                     {texts.formularioPropostaProposta.nenhumAnexo}
                   </Typography>

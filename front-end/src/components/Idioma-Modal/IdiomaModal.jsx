@@ -1,6 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { Menu, MenuItem, Tooltip, IconButton, Typography, } from "@mui/material/";
+import {
+  Menu,
+  MenuItem,
+  Tooltip,
+  IconButton,
+  Typography,
+} from "@mui/material/";
 
 import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
@@ -15,8 +21,7 @@ import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 
 // Modal para selecionar o idioma do sistema
-const IdiomaModal = () => {
-
+const IdiomaModal = (props) => {
   useEffect(() => {
     arrangePreferences();
   }, []);
@@ -63,12 +68,16 @@ const IdiomaModal = () => {
    */
   const arrangePreferences = () => {
     if (!CookieService.getCookie("jwt")) return;
-    UsuarioService.getPreferencias(CookieService.getCookie("jwt")?.sub).then((preferencias) => {
-      if (preferencias.lang == "pt" && idioma != Brasil) setIdioma(Brasil);
-      else if (preferencias.lang == "ch" && idioma != China) setIdioma(China);
-      else if (preferencias.lang == "en" && idioma != EstadosUnidos) setIdioma(EstadosUnidos);
-      else if (preferencias.lang == "es" && idioma != Espanha) setIdioma(Espanha);
-    });
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt")?.sub).then(
+      (preferencias) => {
+        if (preferencias.lang == "pt" && idioma != Brasil) setIdioma(Brasil);
+        else if (preferencias.lang == "ch" && idioma != China) setIdioma(China);
+        else if (preferencias.lang == "en" && idioma != EstadosUnidos)
+          setIdioma(EstadosUnidos);
+        else if (preferencias.lang == "es" && idioma != Espanha)
+          setIdioma(Espanha);
+      }
+    );
   };
 
   /**
@@ -77,31 +86,33 @@ const IdiomaModal = () => {
   const saveNewPreference = () => {
     if (!CookieService.getCookie("jwt")) return;
 
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt")?.sub).then((user) => {
-      toggleLanguage();
-      let preferencias = JSON.parse(user.preferencias);
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt")?.sub).then(
+      (user) => {
+        toggleLanguage();
+        let preferencias = JSON.parse(user.preferencias);
 
-      switch (idioma) {
-        case Brasil:
-          preferencias.lang = "pt";
-          break;
-        case China:
-          preferencias.lang = "ch";
-          break;
-        case EstadosUnidos:
-          preferencias.lang = "en";
-          break;
-        case Espanha:
-          preferencias.lang = "es";
-          break;
-        default:
-          preferencias.lang = "pt";
+        switch (idioma) {
+          case Brasil:
+            preferencias.lang = "pt";
+            break;
+          case China:
+            preferencias.lang = "ch";
+            break;
+          case EstadosUnidos:
+            preferencias.lang = "en";
+            break;
+          case Espanha:
+            preferencias.lang = "es";
+            break;
+          default:
+            preferencias.lang = "pt";
+        }
+
+        user.preferencias = JSON.stringify(preferencias);
+
+        UsuarioService.updateUser(user.id, user).then((e) => {});
       }
-
-      user.preferencias = JSON.stringify(preferencias);
-
-      UsuarioService.updateUser(user.id, user).then((e) => { });
-    });
+    );
   };
 
   // Toda vez que o idioma for mudado, será salvado a nova preferência do usuário
@@ -109,6 +120,25 @@ const IdiomaModal = () => {
     saveNewPreference();
   }, [idioma]);
   // ********************************************** Fim Preferências **********************************************
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     // Div container do idioma
@@ -137,7 +167,14 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(EstadosUnidos)}>
           <img className="h-5 w-7" src={EstadosUnidos} />
-          <Typography fontSize={FontConfig?.default}>English</Typography>
+          <Typography
+            fontSize={FontConfig?.default}
+            onClick={() => {
+              lerTexto("English");
+            }}
+          >
+            English
+          </Typography>
         </MenuItem>
 
         {/* Divisor entre um item de idioma e outro */}
@@ -148,7 +185,12 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(Brasil)}>
           <img className="h-5 w-7" src={Brasil} />
-          <Typography fontSize={FontConfig?.default}>
+          <Typography
+            fontSize={FontConfig?.default}
+            onClick={() => {
+              lerTexto("Português (Brasil)");
+            }}
+          >
             Português (Brasil)
           </Typography>
         </MenuItem>
@@ -161,7 +203,14 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(China)}>
           <img className="h-5 w-7" src={China} />
-          <Typography fontSize={FontConfig?.default}>中国人</Typography>
+          <Typography
+            fontSize={FontConfig?.default}
+            onClick={() => {
+              lerTexto("中国人");
+            }}
+          >
+            中国人
+          </Typography>
         </MenuItem>
 
         {/* Divisor entre um item de idioma e outro */}
@@ -172,7 +221,14 @@ const IdiomaModal = () => {
         {/* Item de idioma */}
         <MenuItem className="gap-2" onClick={() => handleClose(Espanha)}>
           <img className="h-6 w-7" src={Espanha} />
-          <Typography fontSize={FontConfig?.default}>Español</Typography>
+          <Typography
+            fontSize={FontConfig?.default}
+            onClick={() => {
+              lerTexto("Español");
+            }}
+          >
+            Español
+          </Typography>
         </MenuItem>
       </Menu>
     </div>

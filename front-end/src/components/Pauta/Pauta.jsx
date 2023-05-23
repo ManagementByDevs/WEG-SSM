@@ -58,6 +58,25 @@ const Pautas = (props) => {
     }
   }, []);
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Paper
       onClick={() => props.onItemClick(props.dados)}
@@ -76,6 +95,7 @@ const Pautas = (props) => {
           fontSize={FontConfig.big}
           fontWeight="600"
           sx={{ color: "primary.main" }}
+          onClick={() => lerTexto(props.dados.numeroSequencial)}
         >
           #{props.dados.numeroSequencial}
         </Typography>
@@ -84,6 +104,7 @@ const Pautas = (props) => {
             fontSize={FontConfig.medium}
             fontWeight="600"
             sx={{ color: "text.secondary" }}
+            onClick={() => lerTexto(getDataFormatada(props.dados.dataReuniao))}
           >
             {getDataFormatada(props.dados.dataReuniao)}
           </Typography>
@@ -123,7 +144,11 @@ const Pautas = (props) => {
         </Box>
       </Box>
       <Box className="flex items-center mt-3">
-        <Typography fontSize={FontConfig.medium} fontWeight="600">
+        <Typography
+          fontSize={FontConfig.medium}
+          fontWeight="600"
+          onClick={() => lerTexto(props.dados.titulo)}
+        >
           {texts.pauta.comissao}:
         </Typography>
         <Typography
@@ -131,12 +156,17 @@ const Pautas = (props) => {
           fontSize={FontConfig.default}
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px" }}
+          onClick={() => lerTexto(props.dados.comissao?.nomeForum)}
         >
           {props.dados.comissao?.siglaForum} - {props.dados.comissao?.nomeForum}
         </Typography>
       </Box>
       <Box className="flex items-center">
-        <Typography fontSize={FontConfig.medium} fontWeight="600">
+        <Typography
+          fontSize={FontConfig.medium}
+          fontWeight="600"
+          onClick={() => lerTexto(texts.pauta.analistaResponsavel)}
+        >
           {texts.pauta.analistaResponsavel}:
         </Typography>
         <Typography
@@ -144,6 +174,7 @@ const Pautas = (props) => {
           fontSize={FontConfig.default}
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
+          onClick={() => lerTexto(props.dados.analistaResponsavel?.nome)}
         >
           {props.dados.analistaResponsavel?.nome}
         </Typography>

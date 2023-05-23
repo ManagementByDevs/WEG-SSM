@@ -56,10 +56,10 @@ const ResponsavelNegocio = (props) => {
           event.results[event.results.length - 1][0].transcript;
         switch (localClicado) {
           case "nome":
-            props.setDados({ ...props.dados, nome: transcript })
+            props.setDados({ ...props.dados, nome: transcript });
             break;
           case "area":
-            props.setDados({ ...props.dados, area: transcript })
+            props.setDados({ ...props.dados, area: transcript });
             break;
           default:
             break;
@@ -101,11 +101,34 @@ const ResponsavelNegocio = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Box className="flex w-full mt-5 items-end">
       <Box className="flex flex-col">
         <Box className="flex mb-2">
-          <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
+          <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+            onClick={() => {
+              lerTexto(texts.responsavelNegocio.responsavelDoNegocio);
+            }}
+          >
             {texts.responsavelNegocio.responsavelDoNegocio}:
           </Typography>
           <Typography
@@ -165,7 +188,11 @@ const ResponsavelNegocio = (props) => {
       </Box>
       <Box className="flex flex-col ml-10">
         <Box className="flex mb-2">
-          <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
+          <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+            onClick={() => {
+              lerTexto(texts.responsavelNegocio.area);
+            }}
+          >
             {texts.responsavelNegocio.area}:
           </Typography>
           <Typography
@@ -179,28 +206,31 @@ const ResponsavelNegocio = (props) => {
           </Typography>
         </Box>
         <Box sx={{ width: "20rem" }}>
-          <Box className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4" sx={{
+          <Box
+            className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded border-l-4"
+            sx={{
               width: "100%;",
               height: "30px",
               backgroundColor: "background.default",
               borderLeftColor: "primary.main",
-            }}>
-          <Box
-            fontSize={FontConfig.medium}
-            color="text.primary"
-            className="flex outline-none"
-            sx={{
-              width: "95%;",
-              backgroundColor: "transparent",
             }}
-            component="input"
-            placeholder={texts.responsavelNegocio.insiraAreaDoResponsavel}
-            value={props.dados.area}
-            onChange={(e) =>
-              props.setDados({ ...props.dados, area: e.target.value })
-            }
-          />
-          <Tooltip
+          >
+            <Box
+              fontSize={FontConfig.medium}
+              color="text.primary"
+              className="flex outline-none"
+              sx={{
+                width: "95%;",
+                backgroundColor: "transparent",
+              }}
+              component="input"
+              placeholder={texts.responsavelNegocio.insiraAreaDoResponsavel}
+              value={props.dados.area}
+              onChange={(e) =>
+                props.setDados({ ...props.dados, area: e.target.value })
+              }
+            />
+            <Tooltip
               className="hover:cursor-pointer"
               title={texts.homeGerencia.gravarAudio}
               onClick={() => {

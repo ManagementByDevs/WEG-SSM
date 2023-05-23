@@ -9,7 +9,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente para mostrar os dados do escopo
 const Escopo = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -31,6 +30,25 @@ const Escopo = (props) => {
     return proposta[0]?.toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Paper
       className="flex flex-col gap-1 border-t-4 pt-2 pb-3 px-6 cursor-pointer"
@@ -48,6 +66,9 @@ const Escopo = (props) => {
           className="w-3/4 overflow-hidden text-ellipsis whitespace-nowrap"
           fontSize={FontConfig.veryBig}
           fontWeight="600"
+          onClick={() => {
+            lerTexto(props.escopo.titulo);
+          }}
         >
           {props.escopo.titulo}
         </Typography>
@@ -66,7 +87,12 @@ const Escopo = (props) => {
               }}
             />
           </Box>
-          <Typography fontSize={FontConfig.medium}>
+          <Typography
+            fontSize={FontConfig.medium}
+            onClick={() => {
+              lerTexto(props.escopo.porcentagem);
+            }}
+          >
             {props.escopo.porcentagem}
           </Typography>
         </Box>
@@ -77,7 +103,11 @@ const Escopo = (props) => {
         <Box className="h-16">
           <Typography
             className="w-11/12 h-full overflow-hidden text-ellipsis whitespace-pre-wrap"
-            fontSize={FontConfig.default} ref={propostaEscopo}
+            fontSize={FontConfig.default}
+            ref={propostaEscopo}
+            onClick={() => {
+              lerTexto(getPropostaFomartted(props.escopo.proposta));
+            }}
           >
             {getPropostaFomartted(props.escopo.proposta)}
           </Typography>

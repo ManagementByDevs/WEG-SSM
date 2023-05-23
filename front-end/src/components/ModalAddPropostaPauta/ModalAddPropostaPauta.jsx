@@ -1,6 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Fade, Divider, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Paper, Select, FormControl, MenuItem, TextField } from "@mui/material";
+import {
+  Modal,
+  Fade,
+  Divider,
+  Typography,
+  Box,
+  Button,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Paper,
+  Select,
+  FormControl,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 
 import { red } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,7 +35,6 @@ import ExportPdfService from "../../service/exportPdfService";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalAddPropostaPauta = (props) => {
-  
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -262,57 +276,75 @@ const ModalAddPropostaPauta = (props) => {
 
   // Função para adicionar a proposta na pauta selecionada
   const addPropostaInPauta = () => {
-    let pauta;
-    if (novaPautaSelecionada) {
-      if (!isAllFieldsFilled()) {
-        setFeedbackPreenchaTodosCampos(true);
-        return;
-      }
-
-      pauta = PautaService.createPautaObjectWithPropostas(
-        numSequencial,
-        inputDataReuniao,
-        comissao,
-        getIdAnalistaResponsavel(),
-        [{ id: props.proposta.id }]
-      );
-
-      PautaService.post(pauta).then((res) => {
-        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then((response) => {
-
-          // Salvamento de histórico
-          ExportPdfService.exportProposta(response.id).then((file) => {
-
-            let arquivo = new Blob([file], { type: "application/pdf" });
-            PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.numeroSequencial, arquivo, CookieService.getUser().id).then(() => { });
-          });
-        });
-      });
+    if (props.lendo) {
+      lerTexto(texts.modalAddPropostaPauta.adicionar);
     } else {
-      if (!check.includes(true)) {
-        setFeedbackPreenchaTodosCampos(true);
-        return;
+      let pauta;
+      if (novaPautaSelecionada) {
+        if (!isAllFieldsFilled()) {
+          setFeedbackPreenchaTodosCampos(true);
+          return;
+        }
+
+        pauta = PautaService.createPautaObjectWithPropostas(
+          numSequencial,
+          inputDataReuniao,
+          comissao,
+          getIdAnalistaResponsavel(),
+          [{ id: props.proposta.id }]
+        );
+
+        PautaService.post(pauta).then((res) => {
+          PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then(
+            (response) => {
+              // Salvamento de histórico
+              ExportPdfService.exportProposta(response.id).then((file) => {
+                let arquivo = new Blob([file], { type: "application/pdf" });
+                PropostaService.addHistorico(
+                  response.id,
+                  "Adicionada na Pauta #" + res.numeroSequencial,
+                  arquivo,
+                  CookieService.getUser().id
+                ).then(() => {});
+              });
+            }
+          );
+        });
+      } else {
+        if (!check.includes(true)) {
+          setFeedbackPreenchaTodosCampos(true);
+          return;
+        }
+
+        pauta = listaPautas[indexPautaSelecionada];
+        pauta.propostas = retornarIdsObjetos([
+          ...pauta.propostas,
+          { id: props.proposta.id },
+        ]);
+
+        PautaService.put(pauta).then((res) => {
+          PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then(
+            (response) => {
+              setFeedbackPautaAtualizada(true);
+
+              // Salvamento de histórico
+              ExportPdfService.exportProposta(response.id).then((file) => {
+                let arquivo = new Blob([file], { type: "application/pdf" });
+                PropostaService.addHistorico(
+                  response.id,
+                  "Adicionada na Pauta #" + res.numeroSequencial,
+                  arquivo,
+                  CookieService.getUser().id
+                ).then(() => {});
+              });
+            }
+          );
+        });
       }
 
-      pauta = listaPautas[indexPautaSelecionada];
-      pauta.propostas = retornarIdsObjetos([...pauta.propostas, { id: props.proposta.id }]);
-
-      PautaService.put(pauta).then((res) => {
-        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then((response) => {
-          setFeedbackPautaAtualizada(true);
-
-          // Salvamento de histórico
-          ExportPdfService.exportProposta(response.id).then((file) => {
-
-            let arquivo = new Blob([file], { type: "application/pdf" });
-            PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.numeroSequencial, arquivo, CookieService.getUser().id).then(() => { });
-          });
-        });
-      });
+      handleClose();
+      navigate("/");
     }
-
-    handleClose();
-    navigate("/");
   };
 
   // Verifica se todos os campos necessários para a criação de uma pauta estão preenchidos
@@ -346,6 +378,25 @@ const ModalAddPropostaPauta = (props) => {
 
     return isPropostaInPauta;
   };
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <>
@@ -381,6 +432,9 @@ const ModalAddPropostaPauta = (props) => {
               fontWeight={650}
               fontSize={FontConfig.smallTitle}
               color={"primary.main"}
+              onClick={() => {
+                lerTexto(texts.modalAddPropostaPauta.selecioneAPauta);
+              }}
             >
               {texts.modalAddPropostaPauta.selecioneAPauta}
             </Typography>
@@ -394,6 +448,12 @@ const ModalAddPropostaPauta = (props) => {
                   fontWeight="bold"
                   fontSize={FontConfig.default}
                   color="#000000"
+                  onClick={() => {
+                    lerTexto(
+                      texts.modalAddPropostaPauta
+                        .essaPropostaJaSeEncontraEmUmaPauta
+                    );
+                  }}
                 >
                   {
                     texts.modalAddPropostaPauta
@@ -428,10 +488,22 @@ const ModalAddPropostaPauta = (props) => {
                 })
               ) : (
                 <>
-                  <Typography fontSize={FontConfig.medium}>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    onClick={() => {
+                      lerTexto(
+                        texts.modalAddPropostaPauta.nenhumaPautaEncontrada
+                      );
+                    }}
+                  >
                     {texts.modalAddPropostaPauta.nenhumaPautaEncontrada}
                   </Typography>
-                  <Typography fontSize={FontConfig.default}>
+                  <Typography
+                    fontSize={FontConfig.default}
+                    onClick={() => {
+                      lerTexto(texts.modalAddPropostaPauta.pfvCrieUmaNova);
+                    }}
+                  >
                     {texts.modalAddPropostaPauta.pfvCrieUmaNova}
                   </Typography>
                 </>
@@ -447,7 +519,12 @@ const ModalAddPropostaPauta = (props) => {
                   onClick={selecionarNovaPauta}
                 >
                   <Box sx={{ ...parteCima, colorScheme: mode }}>
-                    <Typography fontSize={FontConfig.medium}>
+                    <Typography
+                      fontSize={FontConfig.medium}
+                      onClick={() => {
+                        lerTexto(texts.modalAddPropostaPauta.propostas);
+                      }}
+                    >
                       {texts.modalAddPropostaPauta.propostas}:
                     </Typography>
                     <input
@@ -505,6 +582,9 @@ const ModalAddPropostaPauta = (props) => {
                 fontWeight={650}
                 fontSize={FontConfig.veryBig}
                 color={"primary.main"}
+                onClick={() => {
+                  lerTexto(texts.modalAddPropostaPauta.adicionarComoProposta);
+                }}
               >
                 {texts.modalAddPropostaPauta.adicionarComoProposta}
               </Typography>
@@ -546,7 +626,12 @@ const ModalAddPropostaPauta = (props) => {
                   onClick={addPauta}
                   disabled={novaPauta}
                 >
-                  <Typography fontSize={FontConfig.default}>
+                  <Typography
+                    fontSize={FontConfig.default}
+                    onClick={() => {
+                      lerTexto(texts.modalAddPropostaPauta.novaPauta);
+                    }}
+                  >
                     {texts.modalAddPropostaPauta.novaPauta}
                   </Typography>
                 </Button>
