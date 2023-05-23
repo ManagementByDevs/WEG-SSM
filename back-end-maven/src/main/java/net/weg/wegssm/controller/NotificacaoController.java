@@ -156,10 +156,11 @@ public class NotificacaoController {
      * @param notificacaoDTO
      * @return
      */
-    @PutMapping
-    public ResponseEntity<Object> update(@RequestBody @Valid NotificacaoDTO notificacaoDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@RequestBody @Valid NotificacaoDTO notificacaoDTO, @PathVariable(value = "id") Long id) {
         Notificacao notificacao = new Notificacao();
         BeanUtils.copyProperties(notificacaoDTO, notificacao);
+        notificacao.setId(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(notificacaoService.save(notificacao));
     }
