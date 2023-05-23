@@ -28,25 +28,29 @@ const FormularioCustosProposta = (props) => {
 
   /** Função para criar uma tabela de custos no banco de dados e adicionar na lista */
   const criarTabelaCusto = () => {
-    CustosService.postTabela({
-      custos: [
-        {
-          tipoDespesa: "",
-          perfilDespesa: "",
-          periodoExecucao: "",
-          horas: "",
-          valorHora: "",
-        },
-      ],
-      ccs: [
-        {
-          codigo: "",
-          porcentagem: "",
-        },
-      ],
-    }).then((response) => {
-      props.setCustos([...props.custos, response]);
-    });
+    if (props.lendo) {
+      lerTexto(texts.formularioCustosProposta.adicionarCustos);
+    } else {
+      CustosService.postTabela({
+        custos: [
+          {
+            tipoDespesa: "",
+            perfilDespesa: "",
+            periodoExecucao: "",
+            horas: "",
+            valorHora: "",
+          },
+        ],
+        ccs: [
+          {
+            codigo: "",
+            porcentagem: "",
+          },
+        ],
+      }).then((response) => {
+        props.setCustos([...props.custos, response]);
+      });
+    }
   };
 
   // UseStates para armazenar as horas e o valor total
@@ -75,21 +79,56 @@ const FormularioCustosProposta = (props) => {
     setValorTotal(aux.toFixed(2));
   }, [props.custos]);
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Box className="flex flex-col">
       <Box className="flex w-full justify-between mt-10 items-end">
         <Box className="flex ml-10">
-          <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
+          <Typography
+            fontSize={FontConfig.medium}
+            sx={{ marginRight: "8px" }}
+            onClick={() => lerTexto(texts.formularioCustosProposta.total)}
+          >
             {texts.formularioCustosProposta.total}:
           </Typography>
-          <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
+          <Typography
+            fontSize={FontConfig.medium}
+            sx={{ marginRight: "15px" }}
+            onClick={() =>
+              lerTexto(horasTotais + " " + texts.formularioCustosProposta.horas)
+            }
+          >
             {horasTotais}
             {texts.formularioCustosProposta.horas}
           </Typography>
           <Typography fontSize={FontConfig.medium} sx={{ marginRight: "15px" }}>
             -
           </Typography>
-          <Typography fontSize={FontConfig.medium} sx={{ marginRight: "8px" }}>
+          <Typography
+            fontSize={FontConfig.medium}
+            sx={{ marginRight: "8px" }}
+            onClick={() =>
+              lerTexto(texts.formularioCustosProposta.moeda + " " + valorTotal)
+            }
+          >
             {texts.formularioCustosProposta.moeda}
             {valorTotal}
           </Typography>
@@ -119,8 +158,12 @@ const FormularioCustosProposta = (props) => {
               setCustos={props.setCustos}
               custos={props.custos}
               deletarCustos={deletarTabelaCustos}
-              setFeedbackErroNavegadorIncompativel={props.setFeedbackErroNavegadorIncompativel}
-              setFeedbackErroReconhecimentoVoz={props.setFeedbackErroReconhecimentoVoz}
+              setFeedbackErroNavegadorIncompativel={
+                props.setFeedbackErroNavegadorIncompativel
+              }
+              setFeedbackErroReconhecimentoVoz={
+                props.setFeedbackErroReconhecimentoVoz
+              }
             />
           );
         })}

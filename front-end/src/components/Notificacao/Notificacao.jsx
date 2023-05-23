@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Box, IconButton, Typography } from "@mui/material";
 
@@ -14,7 +14,14 @@ import DateService from "../../service/dateService";
 import NotificacaoService from "../../service/notificacaoService";
 
 // Componente para exibir as notificações do sistema
-const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
+const Notificacao = ({
+  notificacao,
+  onNotificacaoClick,
+  index,
+  lendo,
+  texto,
+  setTexto,
+}) => {
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -38,10 +45,12 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
   };
 
   const retornaTitulo = () => {
-    if(notificacao.numeroSequencial){
-      return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${formataStatus()}!` 
+    if (notificacao.numeroSequencial) {
+      return `${texts.notificacaoComponente.demandaDeNumero} ${
+        notificacao.numeroSequencial
+      } ${texts.notificacaoComponente.foi} ${formataStatus()}!`;
     }
-  }
+  };
 
   const formataStatus = () => {
     switch (notificacao.tipoNotificacao) {
@@ -52,7 +61,26 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
       case "MAIS_INFORMACOES":
         return texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes;
     }
-  }
+  };
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTexto(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (lendo && texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(texto);
+        synthesis.speak(utterance);
+      }
+      setTexto("");
+    }
+  }, [texto]);
 
   return (
     // Container da natificacao
@@ -81,6 +109,7 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
           fontSize={FontConfig.default}
           color={"text.primary"}
           sx={{ fontWeight: 600 }}
+          onClick={() => lerTexto(retornaTitulo())}
         >
           {retornaTitulo()}
         </Typography>
@@ -90,10 +119,31 @@ const Notificacao = ({ notificacao, onNotificacaoClick, index }) => {
           fontSize={FontConfig.small}
           color={"text.secondary"}
           sx={{ fontWeight: 600 }}
+          onClick={() => {
+            if (diferencaDias < 7 && diferencaDias > 1) {
+              lerTexto(
+                `${diferencaDias.toFixed(0) * 1 - 1} ${
+                  texts.notificacaoComponente.diasAtras
+                }`
+              );
+            } else if (diferencaDias < 1 && diferencaDias > 0) {
+              lerTexto(texts.notificacaoComponente.hoje);
+            } else if (diferencaDias > 7 && diferencaDias < 14) {
+              lerTexto(texts.notificacaoComponente.umaSemanaAtras);
+            } else if (diferencaDias > 14 && diferencaDias < 21) {
+              lerTexto(texts.notificacaoComponente.duasSemanasAtras);
+            } else if (diferencaDias > 21 && diferencaDias < 28) {
+              lerTexto(texts.notificacaoComponente.tresSemanasAtras);
+            } else if (diferencaDias > 28 && diferencaDias < 30) {
+              lerTexto(texts.notificacaoComponente.quatroSemanasAtras);
+            } else if (diferencaDias > 30) {
+              lerTexto(texts.notificacaoComponente.maisDeUmMesAtras);
+            }
+          }}
         >
           {diferencaDias < 7 && diferencaDias > 1
             ? `${diferencaDias.toFixed(0) * 1 - 1} ${
-                (texts.notificacaoComponente.diasAtras)
+                texts.notificacaoComponente.diasAtras
               }`
             : diferencaDias < 1 && diferencaDias > 0
             ? texts.notificacaoComponente.hoje

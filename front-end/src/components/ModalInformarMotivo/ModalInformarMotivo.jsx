@@ -99,6 +99,25 @@ const ModalInformarMotivo = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Modal
       open={props.open}
@@ -141,6 +160,9 @@ const ModalInformarMotivo = (props) => {
             fontWeight={650}
             color={"primary.main"}
             fontSize={FontConfig.smallTitle}
+            onClick={() => {
+              lerTexto(texts.modalInformarMotivo.informarMotivo);
+            }}
           >
             {texts.modalInformarMotivo.informarMotivo}
           </Typography>
@@ -188,7 +210,13 @@ const ModalInformarMotivo = (props) => {
             </Tooltip>
           </Box>
           <Button
-            onClick={handleClose}
+            onClick={() => {
+              if (!props.lendo) {
+                props.handleClose();
+              } else {
+                lerTexto(texts.modalInformarMotivo.confirmar);
+              }
+            }}
             variant="contained"
             disableElevation
             color="primary"

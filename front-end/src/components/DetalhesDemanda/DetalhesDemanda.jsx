@@ -1,7 +1,15 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Typography, Button, Divider, Paper, IconButton, Tooltip, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Paper,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -30,7 +38,6 @@ import CookieService from "../../service/cookieService";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -146,16 +153,16 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || texts.DetalhesDemanda.real,
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: atob(beneficio.memoriaCalculo),
       };
     });
     return aux;
-  }
+  };
 
   // Função para formatar os benefícios recebidos do banco para a lista de benefícios na página
   const formatarBeneficios = (listaBeneficios) => {
@@ -164,9 +171,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || texts.DetalhesDemanda.real,
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -226,13 +233,13 @@ const DetalhesDemanda = (props) => {
       }
     }
     return false;
-  }
+  };
 
   // Função para remover um anexo da lista de anexos
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { })
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -244,8 +251,14 @@ const DetalhesDemanda = (props) => {
   // Função que cria um benefício no banco e usa o id nele em um objeto novo na lista da página
   const adicionarBeneficio = () => {
     BeneficioService.post().then((response) => {
-      setBeneficiosNovos([...beneficiosNovos, { ...response, tipoBeneficio: "", moeda: "" }]);
-      setBeneficios([...beneficios, { ...response, tipoBeneficio: "", moeda: "" }]);
+      setBeneficiosNovos([
+        ...beneficiosNovos,
+        { ...response, tipoBeneficio: "", moeda: "" },
+      ]);
+      setBeneficios([
+        ...beneficios,
+        { ...response, tipoBeneficio: "", moeda: "" },
+      ]);
     });
   };
 
@@ -280,7 +293,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -288,7 +301,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosNovos([]);
   };
@@ -296,16 +309,16 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => { });
+      AnexoService.deleteById(anexo.id).then(() => {});
     }
     setNovosAnexos([]);
-  }
+  };
 
   /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
   const formatarHtml = (texto) => {
-    texto = texto.replace(/<br>/g, '<br/>');
+    texto = texto.replace(/<br>/g, "<br/>");
     return texto;
-  }
+  };
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
   const salvarEdicao = () => {
@@ -319,7 +332,9 @@ const DetalhesDemanda = (props) => {
 
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of listaBeneficiosFinal) {
-        BeneficioService.put(beneficio, beneficio.memoriaCalculo).then((response) => { });
+        BeneficioService.put(beneficio, beneficio.memoriaCalculo).then(
+          (response) => {}
+        );
         contagem++;
 
         if (contagem == listaBeneficiosFinal.length) {
@@ -340,12 +355,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-        props.dados.beneficios[index].moeda.toLowerCase() &&
+          props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -354,7 +369,8 @@ const DetalhesDemanda = (props) => {
   const podeSalvar = () => {
     return (
       checkIfBeneficiosChanged() ||
-      novosAnexos.length > 0 || anexosRemovidos.length > 0 ||
+      novosAnexos.length > 0 ||
+      anexosRemovidos.length > 0 ||
       tituloDemanda != props.dados.titulo ||
       problema != props.dados.problema ||
       proposta != props.dados.proposta ||
@@ -425,12 +441,20 @@ const DetalhesDemanda = (props) => {
 
   // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
-    setOpenModalAceitarDemanda(true);
+    if (!props.lendo) {
+      setOpenModalAceitarDemanda(true);
+    } else {
+      lerTexto(texts.DetalhesDemanda.botaoAceitar);
+    }
   };
 
   // Acionado quando o usuário clicar em "Aprovar" na demanda
   const aprovarDemanda = () => {
-    setModalAprovarDemanda(true);
+    if (!props.lendo) {
+      setModalAprovarDemanda(true);
+    } else {
+      lerTexto(texts.DetalhesDemanda.botaoAceitar);
+    }
   };
 
   // Função para abrir o modal de recusa
@@ -453,7 +477,10 @@ const DetalhesDemanda = (props) => {
       ...props.dados,
       problema: btoa(props.dados.problema),
       proposta: btoa(props.dados.proposta),
-      anexo: [...retornarIdsObjetos(dados.anexos), ...retornarIdsObjetos(props.dados.anexo)],
+      anexo: [
+        ...retornarIdsObjetos(dados.anexos),
+        ...retornarIdsObjetos(props.dados.anexo),
+      ],
       beneficios: retornarIdsObjetos(props.dados.beneficios),
       status: "BACKLOG_APROVACAO",
       tamanho: dados.tamanho,
@@ -735,6 +762,25 @@ const DetalhesDemanda = (props) => {
 
   // ********************************************** Fim Gravar audio **********************************************
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
       {/* Feedback Erro reconhecimento de voz */}
@@ -780,7 +826,9 @@ const DetalhesDemanda = (props) => {
         confirmRecusarDemanda={confirmRecusaDemanda}
         motivo={motivoRecusaDemanda}
         setMotivo={setMotivoRecusaDemanda}
-        setFeedbackErroNavegadorIncompativel={setFeedbackErroNavegadorIncompativel}
+        setFeedbackErroNavegadorIncompativel={
+          setFeedbackErroNavegadorIncompativel
+        }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
       />
       <ModalConfirmacao
@@ -810,8 +858,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -820,8 +868,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -841,6 +889,9 @@ const DetalhesDemanda = (props) => {
                   overflowWrap: "break-word",
                 }}
                 color="primary.main"
+                onClick={() => {
+                  lerTexto(props.dados.titulo);
+                }}
               >
                 {props.dados.titulo}
               </Typography>
@@ -852,6 +903,9 @@ const DetalhesDemanda = (props) => {
                 fontSize={FontConfig.veryBig}
                 fontWeight="600"
                 color="text.primary"
+                onClick={() => {
+                  lerTexto(texts.DetalhesDemanda.problem);
+                }}
               >
                 {texts.DetalhesDemanda.problema}:
               </Typography>
@@ -862,6 +916,9 @@ const DetalhesDemanda = (props) => {
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
                 ref={problemaDaDemanda}
+                onClick={() => {
+                  lerTexto(getProblemaFomartted(props.dados.problema));
+                }}
               >
                 {getProblemaFomartted(props.dados.problema)}
               </Typography>
@@ -872,6 +929,9 @@ const DetalhesDemanda = (props) => {
                 fontSize={FontConfig.veryBig}
                 fontWeight="600"
                 color="text.primary"
+                onClick={() => {
+                  lerTexto(texts.DetalhesDemanda.proposal);
+                }}
               >
                 {texts.DetalhesDemanda.proposta}:
               </Typography>
@@ -881,6 +941,9 @@ const DetalhesDemanda = (props) => {
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
                 ref={propostaDaDemanda}
+                onClick={() => {
+                  lerTexto(getPropostaFomartted(props.dados.proposta));
+                }}
               >
                 {getPropostaFomartted(props.dados.proposta)}
               </Typography>
@@ -891,6 +954,9 @@ const DetalhesDemanda = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  onClick={() => {
+                    lerTexto(texts.DetalhesDemanda.beneficios);
+                  }}
                 >
                   {texts.DetalhesDemanda.beneficios}:
                 </Typography>
@@ -919,6 +985,9 @@ const DetalhesDemanda = (props) => {
                 fontSize={FontConfig.veryBig}
                 fontWeight="600"
                 color="text.primary"
+                onClick={() => {
+                  lerTexto(texts.DetalhesDemanda.frequenciaDeUso);
+                }}
               >
                 {texts.DetalhesDemanda.frequenciaDeUso}:
               </Typography>
@@ -927,6 +996,9 @@ const DetalhesDemanda = (props) => {
                 className="text-justify"
                 color="text.secondary"
                 sx={{ marginLeft: "30px" }}
+                onClick={() => {
+                  lerTexto(props.dados.frequencia);
+                }}
               >
                 {props.dados.frequencia}
               </Typography>
@@ -938,6 +1010,9 @@ const DetalhesDemanda = (props) => {
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
                     color="text.primary"
+                    onClick={() => {
+                      lerTexto(texts.DetalhesDemanda.tamanho);
+                    }}
                   >
                     {texts.DetalhesDemanda.tamanho}:
                   </Typography>
@@ -946,6 +1021,9 @@ const DetalhesDemanda = (props) => {
                     className="text-justify"
                     color="text.secondary"
                     sx={{ marginLeft: "10px" }}
+                    onClick={() => {
+                      lerTexto(props.dados.tamanho);
+                    }}
                   >
                     {props.dados.tamanho}
                   </Typography>
@@ -955,6 +1033,9 @@ const DetalhesDemanda = (props) => {
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
                     color="text.primary"
+                    onClick={() => {
+                      lerTexto(texts.DetalhesDemanda.secaoDeTi);
+                    }}
                   >
                     {texts.DetalhesDemanda.secaoDeTi}:
                   </Typography>
@@ -963,6 +1044,9 @@ const DetalhesDemanda = (props) => {
                     className="text-justify"
                     color="text.secondary"
                     sx={{ marginLeft: "10px", marginRight: "15px" }}
+                    onClick={() => {
+                      lerTexto(props.dados.secaoTI.siglaSecao);
+                    }}
                   >
                     {props.dados.secaoTI.siglaSecao}
                   </Typography>
@@ -976,6 +1060,9 @@ const DetalhesDemanda = (props) => {
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
                     color="text.primary"
+                    onClick={() => {
+                      lerTexto(texts.DetalhesDemanda.buSolicitante);
+                    }}
                   >
                     {texts.DetalhesDemanda.buSolicitante}:
                   </Typography>
@@ -984,6 +1071,9 @@ const DetalhesDemanda = (props) => {
                     className="text-justify"
                     color="text.secondary"
                     sx={{ marginLeft: "10px" }}
+                    onClick={() => {
+                      lerTexto(props.dados.buSolicitante.siglaBu);
+                    }}
                   >
                     {props.dados.buSolicitante.siglaBu}
                   </Typography>
@@ -993,6 +1083,9 @@ const DetalhesDemanda = (props) => {
                     fontSize={FontConfig.veryBig}
                     fontWeight="600"
                     color="text.primary"
+                    onClick={() => {
+                      lerTexto(texts.DetalhesDemanda.buBeneficiadas);
+                    }}
                   >
                     {texts.DetalhesDemanda.busBeneficiadas}:
                   </Typography>
@@ -1001,6 +1094,9 @@ const DetalhesDemanda = (props) => {
                     className="text-justify"
                     color="text.secondary"
                     sx={{ marginLeft: "10px", marginRight: "15px" }}
+                    onClick={() => {
+                      lerTexto(retornarBUsBeneficiadas());
+                    }}
                   >
                     {retornarBUsBeneficiadas()}
                   </Typography>
@@ -1013,6 +1109,9 @@ const DetalhesDemanda = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  onClick={() => {
+                    lerTexto(texts.DetalhesDemanda.forum);
+                  }}
                 >
                   {texts.DetalhesDemanda.forum}:
                 </Typography>
@@ -1021,6 +1120,9 @@ const DetalhesDemanda = (props) => {
                   className="text-justify"
                   color="text.secondary"
                   sx={{ marginLeft: "10px" }}
+                  onClick={() => {
+                    lerTexto(props.dados.forum.nomeForum);
+                  }}
                 >
                   {props.dados.forum.siglaForum} - {props.dados.forum.nomeForum}
                 </Typography>
@@ -1031,6 +1133,9 @@ const DetalhesDemanda = (props) => {
                 fontSize={FontConfig.veryBig}
                 fontWeight="600"
                 color="text.primary"
+                onClick={() => {
+                  lerTexto(texts.DetalhesDemanda.anexos);
+                }}
               >
                 {texts.DetalhesDemanda.anexos}:
               </Typography>
@@ -1054,6 +1159,13 @@ const DetalhesDemanda = (props) => {
                           color: "text.primary",
                           fontSize: FontConfig.default,
                         }}
+                        onClick={() => {
+                          if (anexo.nome) {
+                            lerTexto(anexo.nome);
+                          } else {
+                            lerTexto(anexo.name);
+                          }
+                        }}
                       >
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
@@ -1073,6 +1185,9 @@ const DetalhesDemanda = (props) => {
                 <Typography
                   textAlign="center"
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
+                  onClick={() => {
+                    lerTexto(texts.DetalhesDemanda.nenhumAnexoAdicionado);
+                  }}
                 >
                   {texts.DetalhesDemanda.nenhumAnexoAdicionado}
                 </Typography>
@@ -1128,6 +1243,9 @@ const DetalhesDemanda = (props) => {
                 fontSize={FontConfig.veryBig}
                 fontWeight="600"
                 color="text.primary"
+                onClick={() => {
+                  lerTexto(texts.DetalhesDemanda.problema);
+                }}
               >
                 {texts.DetalhesDemanda.problema}:
               </Typography>
@@ -1145,6 +1263,9 @@ const DetalhesDemanda = (props) => {
                 fontSize={FontConfig.veryBig}
                 fontWeight="600"
                 color="text.primary"
+                onClick={() => {
+                  lerTexto(texts.DetalhesDemanda.proposta);
+                }}
               >
                 {texts.DetalhesDemanda.proposta}:
               </Typography>
@@ -1163,6 +1284,9 @@ const DetalhesDemanda = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  onClick={() => {
+                    lerTexto(texts.DetalhesDemanda.beneficios);
+                  }}
                 >
                   {texts.DetalhesDemanda.beneficios}:
                 </Typography>
@@ -1200,10 +1324,20 @@ const DetalhesDemanda = (props) => {
                 fontSize={FontConfig.veryBig}
                 fontWeight="600"
                 color="text.primary"
+                onClick={() => {
+                  lerTexto(texts.DetalhesDemanda.frequenciaDeUso);
+                }}
               >
                 {texts.DetalhesDemanda.frequenciaDeUso}:
               </Typography>
-              <Box className="flex items-center justify-between border-solid border px-2 py-1.5 drop-shadow-sm rounded" sx={{ backgroundColor: corFundoTextArea, width: "90%", marginLeft: "30px", }}>
+              <Box
+                className="flex items-center justify-between border-solid border px-2 py-1.5 drop-shadow-sm rounded"
+                sx={{
+                  backgroundColor: corFundoTextArea,
+                  width: "90%",
+                  marginLeft: "30px",
+                }}
+              >
                 <Box
                   value={frequencia}
                   onChange={(e) => {
@@ -1243,6 +1377,9 @@ const DetalhesDemanda = (props) => {
                   fontSize={FontConfig.veryBig}
                   fontWeight="600"
                   color="text.primary"
+                  onClick={() => {
+                    lerTexto(texts.DetalhesDemanda.anexos);
+                  }}
                 >
                   {texts.DetalhesDemanda.anexos}:
                 </Typography>
@@ -1279,6 +1416,13 @@ const DetalhesDemanda = (props) => {
                           color: "text.primary",
                           fontSize: FontConfig.default,
                         }}
+                        onClick={() => {
+                          if (anexo.nome) {
+                            lerTexto(anexo.nome);
+                          } else {
+                            lerTexto(anexo.name);
+                          }
+                        }}
                       >
                         {anexo.nome ? anexo.nome : anexo.name}
                       </Typography>
@@ -1309,6 +1453,9 @@ const DetalhesDemanda = (props) => {
                 <Typography
                   textAlign="center"
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
+                  onClick={() => {
+                    lerTexto(texts.DetalhesDemanda.nenhumAnexoAdicionado);
+                  }}
                 >
                   {texts.DetalhesDemanda.nenhumAnexoAdicionado}
                 </Typography>
@@ -1334,7 +1481,11 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  abrirRecusaDemanda("recusa");
+                  if (!props.lendo) {
+                    abrirRecusaDemanda("recusa");
+                  } else {
+                    lerTexto(texts.DetalhesDemanda.botaoRecusar);
+                  }
                 }}
               >
                 {texts.DetalhesDemanda.botaoRecusar}
@@ -1348,7 +1499,11 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  abrirRecusaDemanda("devolucao");
+                  if (!props.lendo) {
+                    abrirRecusaDemanda("devolucao");
+                  } else {
+                    lerTexto(texts.DetalhesDemanda.botaoDevolver);
+                  }
                 }}
               >
                 {texts.DetalhesDemanda.botaoDevolver}
@@ -1381,7 +1536,11 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  abrirRecusaDemanda("recusa");
+                  if (!props.lendo) {
+                    abrirRecusaDemanda("recusa");
+                  } else {
+                    lerTexto(texts.DetalhesDemanda.botaoRecusar);
+                  }
                 }}
               >
                 {texts.DetalhesDemanda.botaoRecusar}
@@ -1409,7 +1568,11 @@ const DetalhesDemanda = (props) => {
             }}
             variant="contained"
             onClick={() => {
-              salvarEdicao();
+              if (!props.lendo) {
+                salvarEdicao();
+              } else {
+                lerTexto(texts.DetalhesDemanda.botaoSalvar);
+              }
             }}
           >
             {texts.DetalhesDemanda.botaoSalvar}

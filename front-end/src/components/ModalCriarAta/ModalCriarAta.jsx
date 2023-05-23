@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { Modal, Fade, Divider, Typography, Box, Button } from "@mui/material";
 
@@ -60,24 +60,53 @@ const ModalCriarAta = (props) => {
   const setOpen = props.setOpen;
 
   // useState para abrir e fechar o modal
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    if (!props.lendo) {
+      setOpen(false);
+    } else {
+      lerTexto(texts.modalCriarAta.botaoCancelar);
+    }
+  };
 
   const [numeroSequencial, setNumeroSequencial] = useState("");
 
   const [dataReuniao, setDataReuniao] = useState("");
 
   const criarAta = () => {
-    if (
-      numeroSequencial == "" ||
-      numeroSequencial == null ||
-      dataReuniao == "" ||
-      dataReuniao == null
-    ) {
-      props.setFeedbackCamposFaltantes(true);
+    if (props.lendo) {
+      lerTexto(texts.modalCriarAta.botaoCriar);
     } else {
-      props.criarAta(numeroSequencial, dataReuniao);
+      if (
+        numeroSequencial == "" ||
+        numeroSequencial == null ||
+        dataReuniao == "" ||
+        dataReuniao == null
+      ) {
+        props.setFeedbackCamposFaltantes(true);
+      } else {
+        props.criarAta(numeroSequencial, dataReuniao);
+      }
     }
   };
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <>
@@ -97,6 +126,7 @@ const ModalCriarAta = (props) => {
                   fontWeight={650}
                   fontSize={FontConfig.smallTitle}
                   color={"primary.main"}
+                  onClick={() => lerTexto(texts.modalCriarAta.criacaoDaAta)}
                 >
                   {texts.modalCriarAta.criacaoDaAta}
                 </Typography>
@@ -145,6 +175,9 @@ const ModalCriarAta = (props) => {
                       fontSize={props.fontConfig}
                       sx={{ fontWeight: "600", cursor: "default" }}
                       gutterBottom
+                      onClick={() =>
+                        lerTexto(texts.modalCriarAta.dataDaReuniao)
+                      }
                     >
                       {texts.modalCriarAta.dataDaReuniao}
                     </Typography>

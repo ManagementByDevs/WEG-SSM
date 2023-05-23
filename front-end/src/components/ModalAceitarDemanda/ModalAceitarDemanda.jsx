@@ -100,9 +100,28 @@ const ModalAceitarDemanda = (props) => {
     for (let arquivo of inputFile.current.files) {
       AnexoService.save(arquivo).then((response) => {
         setAnexos([...anexos, response]);
-      })
+      });
     }
   };
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <Dialog
@@ -120,6 +139,7 @@ const ModalAceitarDemanda = (props) => {
         }}
         fontWeight="bold"
         className="border-t-8 border-solid text-center"
+        onClick={() => lerTexto(texts.modalAceitarDemanda.informacoes)}
       >
         {texts.modalAceitarDemanda.informacoes}
       </DialogTitle>
@@ -273,7 +293,12 @@ const ModalAceitarDemanda = (props) => {
 
         {/* Input de anexos */}
         <Box className="flex w-full justify-between items-center">
-          <Typography sx={{ color: "text.primary", fontSize: FontConfig.big }}>
+          <Typography
+            sx={{ color: "text.primary", fontSize: FontConfig.big }}
+            onClick={() => {
+              lerTexto(texts.modalAceitarDemanda.anexos);
+            }}
+          >
             {texts.modalAceitarDemanda.anexos}
           </Typography>
           <IconButton onClick={adicionarAnexo}>
@@ -295,13 +320,18 @@ const ModalAceitarDemanda = (props) => {
               <Box key={index} className="flex justify-between items-center">
                 <Typography
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
+                  onClick={() => {
+                    lerTexto(anexo.nome);
+                  }}
                 >
                   {anexo.nome}
                 </Typography>
                 <IconButton
                   onClick={() => {
-                    setAnexos(anexos.filter((anexo, i) => i !== index))
-                    AnexoService.deleteById(anexos[index].id).then((response) => { })
+                    setAnexos(anexos.filter((anexo, i) => i !== index));
+                    AnexoService.deleteById(anexos[index].id).then(
+                      (response) => {}
+                    );
                   }}
                 >
                   <CloseIcon sx={{ color: "text.primary" }} />
@@ -313,6 +343,9 @@ const ModalAceitarDemanda = (props) => {
           <Typography
             textAlign="center"
             sx={{ color: "text.primary", fontSize: FontConfig.default }}
+            onClick={() => {
+              lerTexto(texts.modalAceitarDemanda.nenhumAnexoAdicionado);
+            }}
           >
             {texts.modalAceitarDemanda.nenhumAnexoAdicionado}
           </Typography>
@@ -321,22 +354,34 @@ const ModalAceitarDemanda = (props) => {
 
       {/* Botão para confirmar aceite */}
       <DialogActions>
-        <Button onClick={props.handleClose}>
+        <Button
+          onClick={() => {
+            if (!props.lendo) {
+              props.handleClose();
+            } else {
+              lerTexto(texts.modalAceitarDemanda.cancelar);
+            }
+          }}
+        >
           {texts.modalAceitarDemanda.cancelar}
         </Button>
         <Button
           variant="contained"
           disableElevation
           onClick={() => {
-            props.confirmAceitarDemanda({
-              tamanho,
-              buSolicitante,
-              busBeneficiadas,
-              secaoTI,
-              anexos,
-              forum,
-            });
-            props.handleClose();
+            if (!props.lendo) {
+              props.confirmAceitarDemanda({
+                tamanho,
+                buSolicitante,
+                busBeneficiadas,
+                secaoTI,
+                anexos,
+                forum,
+              });
+              props.handleClose();
+            } else {
+              lerTexto(texts.modalAceitarDemanda.aceitar);
+            }
           }}
         >
           {texts.modalAceitarDemanda.aceitar}
