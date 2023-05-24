@@ -123,7 +123,7 @@ const PropostaDeAta = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-          console.log("Não está salvando em nada")
+        console.log("Não está salvando em nada");
         // setValorPesquisa(transcript);
       };
 
@@ -274,6 +274,9 @@ const PropostaDeAta = (props) => {
                   key={index}
                   index={index}
                   beneficio={beneficio}
+                  lendo={props.lendo}
+                  texto={props.texto}
+                  setTexto={props.setTexto}
                 />
               );
             }
@@ -407,7 +410,7 @@ const PropostaDeAta = (props) => {
 
           {parecerComissao ? (
             <Box
-            className="flex items-center justify-between"
+              className="flex items-center justify-between"
               sx={{
                 width: "70%",
                 height: "8rem",

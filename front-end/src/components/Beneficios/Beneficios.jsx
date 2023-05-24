@@ -151,6 +151,9 @@ const Beneficios = (props) => {
                     setFeedbackErroReconhecimentoVoz={
                       props.setFeedbackErroReconhecimentoVoz
                     }
+                    lendo={props.lendo}
+                    textoFala={props.texto}
+                    setTexto={props.setTexto}
                   />
                 </Box>
                 <FormControl

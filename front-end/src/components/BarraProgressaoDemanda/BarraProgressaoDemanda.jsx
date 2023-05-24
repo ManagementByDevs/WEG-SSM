@@ -396,6 +396,9 @@ const BarraProgressaoDemanda = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -405,6 +408,9 @@ const BarraProgressaoDemanda = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       {/* Feedback de dados faltantes */}
       <Feedback
@@ -414,6 +420,9 @@ const BarraProgressaoDemanda = (props) => {
         }}
         status={"erro"}
         mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
 
       {carregamento ? (
@@ -430,6 +439,9 @@ const BarraProgressaoDemanda = (props) => {
               textoModal={"enviarDemanda"}
               textoBotao={"enviar"}
               onConfirmClick={criarDemanda}
+              lendo={props.lendo}
+              texto={props.texto}
+              setTexto={props.setTexto}
             />
           )}
 
@@ -478,6 +490,9 @@ const BarraProgressaoDemanda = (props) => {
                 setFeedbackErroReconhecimentoVoz={
                   setFeedbackErroReconhecimentoVoz
                 }
+                lendo={props.lendo}
+                texto={props.texto}
+                setTexto={props.setTexto}
               />
             </Box>
           )}
@@ -485,6 +500,9 @@ const BarraProgressaoDemanda = (props) => {
             <FormularioAnexosDemanda
               dados={paginaArquivos}
               setDados={setPaginaArquivos}
+              lendo={props.lendo}
+              texto={props.texto}
+              setTexto={props.setTexto}
             />
           )}
 

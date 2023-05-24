@@ -80,7 +80,10 @@ const Login = (props) => {
   };
 
   // Feedback para ver se o navegador é compatível com a API de síntese de fala
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
 
   /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer o login caso seja a tecla "Enter" */
   const eventoTeclado = (e) => {
@@ -111,7 +114,11 @@ const Login = (props) => {
   }, [props.texto]);
 
   return (
-    <FundoComHeader>
+    <FundoComHeader
+      lendo={props.lendo}
+      texto={props.texto}
+      setTexto={props.setTexto}
+    >
       <Paper
         sx={{ height: "100%", minWidth: "89rem", minHeight: "48rem" }}
         className="flex justify-center items-center"
@@ -226,6 +233,9 @@ const Login = (props) => {
                 }}
                 status={"erro"}
                 mensagem={texts.login.feedback.dadosInvalidos}
+                lendo={props.lendo}
+                texto={props.texto}
+                setTexto={props.setTexto}
               />
             )}
 
@@ -238,6 +248,9 @@ const Login = (props) => {
                 }}
                 status={"erro"}
                 mensagem={texts.login.feedback.preenchaTodosOsCampos}
+                lendo={props.lendo}
+                texto={props.texto}
+                setTexto={props.setTexto}
               />
             )}
             {/* Feedback navegador incompativel */}
@@ -248,6 +261,9 @@ const Login = (props) => {
               }}
               status={"erro"}
               mensagem={texts.homeGerencia.feedback.feedback13}
+              lendo={props.lendo}
+              texto={props.texto}
+              setTexto={props.setTexto}
             />
           </Box>
         </Paper>

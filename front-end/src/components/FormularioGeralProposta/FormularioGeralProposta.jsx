@@ -585,6 +585,9 @@ const FormularioGeralProposta = (props) => {
                 setFeedbackErroNavegadorIncompativel={
                   props.setFeedbackErroNavegadorIncompativel
                 }
+                lendo={props.lendo}
+                texto={props.texto}
+                setTexto={props.setTexto}
               />
             );
           })}

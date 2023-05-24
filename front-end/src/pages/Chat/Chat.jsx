@@ -623,6 +623,9 @@ const Chat = (props) => {
           onConfirmClick={deletarChat}
           onCancelClick={fecharModalCancelarChat}
           textoBotao={"sim"}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
       )}
       {abrirModalReabrirChat && (
@@ -633,9 +636,16 @@ const Chat = (props) => {
           onConfirmClick={abrirChat}
           onCancelClick={fecharModalAbrirChat}
           textoBotao={"sim"}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
       )}
-      <FundoComHeader>
+      <FundoComHeader
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
+      >
         {/* Feedback Erro reconhecimento de voz */}
         <Feedback
           open={feedbackErroReconhecimentoVoz}
@@ -644,6 +654,9 @@ const Chat = (props) => {
           }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback Não navegador incompativel */}
         <Feedback
@@ -653,6 +666,9 @@ const Chat = (props) => {
           }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback Chat encerrado com sucesso */}
         <Feedback
@@ -662,6 +678,9 @@ const Chat = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback Anexo pesado */}
         <Feedback
@@ -671,6 +690,9 @@ const Chat = (props) => {
           }}
           status={"erro"}
           mensagem={texts.chat.anexoMuitoPesado}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback Chat reaberto com sucesso */}
         <Feedback
@@ -680,9 +702,16 @@ const Chat = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatReaberto}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         <Box className="p-2">
-          <Caminho />
+          <Caminho
+            lendo={props.lendo}
+            texto={props.texto}
+            setTexto={props.setTexto}
+          />
           <Box className="w-full flex justify-center items-center">
             <Box
               className="flex justify-evenly items-center rounded border mt-4"

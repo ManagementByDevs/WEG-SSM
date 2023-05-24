@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
 import { Box, IconButton } from "@mui/material";
 
@@ -21,8 +21,11 @@ import CookieService from "../../service/cookieService";
 import { ClipLoader } from "react-spinners";
 
 /** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
-const DetalhesDemandaPagina = () => {
-
+const DetalhesDemandaPagina = ({
+  lendo = true,
+  texto = "",
+  setTexto = () => {},
+}) => {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -56,23 +59,31 @@ const DetalhesDemandaPagina = () => {
     if (usuario) {
       setTimeout(() => {
         setCarregamento(false);
-      }, 500)
+      }, 500);
     }
-  }, [usuario])
+  }, [usuario]);
 
   // Função utilizada para buscar o usuário que está logado no sistema
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie("jwt").sub
-    ).then((e) => {
-      setUsuario(e);
-    });
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (e) => {
+        setUsuario(e);
+      }
+    );
   };
 
   // Função utilizada para alterar dados da demanda
   const updateDemandaProps = (demanda) => {
-    setDados({ ...demanda, problema: atob(demanda.problema), proposta: atob(demanda.proposta) });
-    location.state = { ...demanda, problema: atob(demanda.problema), proposta: atob(demanda.proposta) };
+    setDados({
+      ...demanda,
+      problema: atob(demanda.problema),
+      proposta: atob(demanda.proposta),
+    });
+    location.state = {
+      ...demanda,
+      problema: atob(demanda.problema),
+      proposta: atob(demanda.proposta),
+    };
   };
 
   // Variável utilizada para o tour
@@ -128,7 +139,7 @@ const DetalhesDemandaPagina = () => {
   };
 
   return (
-    <FundoComHeader>
+    <FundoComHeader lendo={lendo} texto={texto} setTexto={setTexto}>
       <VLibras forceOnload />
       {/* Tour ao usuário */}
       <Tour
@@ -141,7 +152,6 @@ const DetalhesDemandaPagina = () => {
       />
       <Ajuda onClick={() => setIsTourOpen(true)} />
       <Box className="p-2 w-full" sx={{ minWidth: "58rem" }}>
-
         {carregamento ? (
           <Box className="mt-6 w-full h-full flex justify-center items-center">
             <ClipLoader color="#00579D" size={110} />
@@ -149,8 +159,7 @@ const DetalhesDemandaPagina = () => {
         ) : (
           <>
             <Box className="flex w-full relative">
-
-              <Caminho />
+              <Caminho lendo={lendo} texto={texto} setTexto={setTexto} />
               <Box
                 className=" absolute"
                 sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -174,6 +183,9 @@ const DetalhesDemandaPagina = () => {
                 botao={true}
                 salvar={true}
                 updateDemandaProps={updateDemandaProps}
+                lendo={lendo}
+                texto={texto}
+                setTexto={setTexto}
               />
             </Box>
           </>

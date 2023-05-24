@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
@@ -21,8 +21,11 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import PropostaService from "../../service/propostaService";
 
 // Página que mostra os detalhes da proposta selecionada, com opção de download para pdf
-const DetalhesPropostaPagina = () => {
-
+const DetalhesPropostaPagina = ({
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
+}) => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
 
@@ -59,16 +62,19 @@ const DetalhesPropostaPagina = () => {
   };
 
   return (
-    <FundoComHeader>
+    <FundoComHeader lendo={lendo} texto={texto} setTexto={setTexto}>
       <VLibras forceOnload />
       <ModalAddPropostaPauta
         open={openModalAddPropostaPauta}
         setOpen={setOpenModalAddPropostaPauta}
         proposta={location.state}
+        lendo={lendo}
+        texto={texto}
+        setTexto={setTexto}
       />
       <Box className="relative p-2" sx={{ minWidth: "45rem" }}>
         <Box className="flex w-full relative mb-10">
-          <Caminho />
+          <Caminho lendo={lendo} texto={texto} setTexto={setTexto} />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -85,24 +91,26 @@ const DetalhesPropostaPagina = () => {
           </Box>
         </Box>
         {/* Mostra o conteúdo da proposta */}
-        <DetalhesProposta
-          propostaId={paramsPath.id}
-        />
+        <DetalhesProposta propostaId={paramsPath.id} />
       </Box>
-      {location.state.status != "CANCELLED" && location.state.presenteEm != "Pauta" && location.state.presenteEm != "Ata" && (
-        <Box className="absolute bottom-4 right-6  p-1">
-          {/* Botão de adicionar proposta em pauta */}
-          <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>
-            <Button
-              variant="contained"
-              sx={{ borderRadius: "9999px" }}
-              onClick={adicionarAPauta}
-            >
-              <BookmarkAddIcon sx={{ fontSize: "28px", color: "text.white" }} />
-            </Button>
-          </Tooltip>
-        </Box>
-      )}
+      {location.state.status != "CANCELLED" &&
+        location.state.presenteEm != "Pauta" &&
+        location.state.presenteEm != "Ata" && (
+          <Box className="absolute bottom-4 right-6  p-1">
+            {/* Botão de adicionar proposta em pauta */}
+            <Tooltip title={texts.detalhesPropostaPagina.adicionarAPauta}>
+              <Button
+                variant="contained"
+                sx={{ borderRadius: "9999px" }}
+                onClick={adicionarAPauta}
+              >
+                <BookmarkAddIcon
+                  sx={{ fontSize: "28px", color: "text.white" }}
+                />
+              </Button>
+            </Tooltip>
+          </Box>
+        )}
     </FundoComHeader>
   );
 };

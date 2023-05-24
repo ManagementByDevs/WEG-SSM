@@ -30,6 +30,9 @@ const EscopoModoVisualizacao = ({
   myEscopos,
   handleDelete,
   buscar,
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
 }) => {
   if (listaEscopos && listaEscopos.length === 0) {
     return <NadaEncontrado />;
@@ -42,6 +45,9 @@ const EscopoModoVisualizacao = ({
         onEscopoClick={onEscopoClick}
         myEscopos={myEscopos}
         handleDelete={handleDelete}
+        lendo={lendo}
+        texto={texto}
+        setTexto={setTexto}
       />
     );
   return (
@@ -285,6 +291,9 @@ const EscopoTable = ({
         textoBotao={"sim"}
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
+        lendo={lendo}
+        texto={texto}
+        setTexto={setTexto}
       />
 
       {/* Feedback de escopo deletado com sucesso */}
@@ -295,13 +304,23 @@ const EscopoTable = ({
         }}
         status={"sucesso"}
         mensagem={texts.escopos.escopoDeletadoComSucesso}
+        lendo={lendo}
+        texto={texto}
+        setTexto={setTexto}
       />
     </Paper>
   );
 };
 
 // Componente para exibir as demanda em forma de grid
-const EscopoGrid = ({ listaEscopos, onEscopoClick, handleDelete }) => {
+const EscopoGrid = ({
+  listaEscopos,
+  onEscopoClick,
+  handleDelete,
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
+}) => {
   return (
     <Box
       sx={{
@@ -319,6 +338,9 @@ const EscopoGrid = ({ listaEscopos, onEscopoClick, handleDelete }) => {
             onEscopoClick(escopo);
           }}
           handleDelete={handleDelete}
+          lendo={lendo}
+          texto={texto}
+          setTexto={setTexto}
         />
       ))}
     </Box>

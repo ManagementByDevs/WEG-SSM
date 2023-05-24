@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras"
+import VLibras from "@djpfs/react-vlibras";
 
 import { Box, IconButton, Tooltip } from "@mui/material";
 
@@ -28,8 +28,7 @@ import CookieService from "../../service/cookieService";
 import Tour from "reactour";
 
 // Tela para mostrar os escopos de demandas/propostas não finalizadas
-const Escopos = () => {
-
+const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -71,7 +70,7 @@ const Escopos = () => {
     }
   }, [usuario]);
 
-  // Função para buscar o usuário logado no sistema pelo cookie salvo no navegador 
+  // Função para buscar o usuário logado no sistema pelo cookie salvo no navegador
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
       (user) => {
@@ -333,7 +332,7 @@ const Escopos = () => {
   };
 
   return (
-    <FundoComHeader>
+    <FundoComHeader lendo={lendo} texto={texto} setTexto={setTexto}>
       <VLibras forceOnload />
       {/* Modal de confirmação de exclusão de escopo */}
       <ModalConfirmacao
@@ -345,6 +344,9 @@ const Escopos = () => {
         textoBotao={"sim"}
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
+        lendo={lendo}
+        texto={texto}
+        setTexto={setTexto}
       />
       <Tour
         steps={stepsTour}
@@ -356,7 +358,7 @@ const Escopos = () => {
       />
       <Ajuda onClick={() => setIsTourOpen(true)} />
       <Box className="p-2">
-        <Caminho />
+        <Caminho lendo={lendo} texto={texto} setTexto={setTexto} />
         {/* Div pegando width inteira para fazer o espaçamento das bordas */}
         <Box className="flex justify-center w-full">
           {/* Container conteudo */}
@@ -427,7 +429,9 @@ const Escopos = () => {
                 {nextModoVisualizacao == "TABLE" ? (
                   <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
                     <IconButton
-                      onClick={() => { trocarModoVisualizacao(); }}
+                      onClick={() => {
+                        trocarModoVisualizacao();
+                      }}
                     >
                       <ViewListIcon color="primary" />
                     </IconButton>
@@ -435,7 +439,9 @@ const Escopos = () => {
                 ) : (
                   <Tooltip title={texts.homeGerencia.visualizacaoEmBloco}>
                     <IconButton
-                      onClick={() => { trocarModoVisualizacao(); }}
+                      onClick={() => {
+                        trocarModoVisualizacao();
+                      }}
                     >
                       <ViewModuleIcon color="primary" />
                     </IconButton>
@@ -445,7 +451,7 @@ const Escopos = () => {
             </Box>
 
             {/* Mostrando os escopos de acordo com a forma de visualização */}
-            <Box sx={{ marginTop: '2%' }}>
+            <Box sx={{ marginTop: "2%" }}>
               <EscopoModoVisualizacao
                 listaEscopos={escopos}
                 onEscopoClick={openEscopo}
@@ -454,6 +460,9 @@ const Escopos = () => {
                 handleDelete={onTrashCanClick}
                 buscar={buscarEscopos}
                 isTourOpen={isTourOpen}
+                lendo={lendo}
+                texto={texto}
+                setTexto={setTexto}
               />
             </Box>
 
@@ -465,6 +474,9 @@ const Escopos = () => {
               }}
               status={"erro"}
               mensagem={texts.homeGerencia.feedback.feedback12}
+              lendo={lendo}
+              texto={texto}
+              setTexto={setTexto}
             />
             {/* Feedback Não navegador incompativel */}
             <Feedback
@@ -474,6 +486,9 @@ const Escopos = () => {
               }}
               status={"erro"}
               mensagem={texts.homeGerencia.feedback.feedback13}
+              lendo={lendo}
+              texto={texto}
+              setTexto={setTexto}
             />
             {/* Feedback de escopo deletado com sucesso */}
             <Feedback
@@ -483,6 +498,9 @@ const Escopos = () => {
               }}
               status={"sucesso"}
               mensagem={texts.escopos.escopoDeletadoComSucesso}
+              lendo={lendo}
+              texto={texto}
+              setTexto={setTexto}
             />
           </Box>
         </Box>

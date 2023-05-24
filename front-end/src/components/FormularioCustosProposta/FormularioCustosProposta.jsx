@@ -164,6 +164,9 @@ const FormularioCustosProposta = (props) => {
               setFeedbackErroReconhecimentoVoz={
                 props.setFeedbackErroReconhecimentoVoz
               }
+              lendo={props.lendo}
+              texto={props.texto}
+              setTexto={props.setTexto}
             />
           );
         })}

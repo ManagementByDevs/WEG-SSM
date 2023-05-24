@@ -160,6 +160,9 @@ const NotificacaoModal = (props) => {
         }}
         status={"info"}
         mensagem={texts.notificacaoModal.notificacaoLidaComSucesso}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       {/* Title  */}
       <Tooltip title={texts.notificacaoModal.notificacoes}>

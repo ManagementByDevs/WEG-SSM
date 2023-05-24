@@ -329,6 +329,9 @@ const FormularioPropostaProposta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.formularioPropostaProposta.feedbacks.feedback1}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <Box
         className="flex flex-col justify-center relative items-center"
@@ -486,6 +489,9 @@ const FormularioPropostaProposta = (props) => {
                         beneficio={beneficio}
                         setBeneficio={alterarTextoBeneficio}
                         carregamento={props.carregamento}
+                        lendo={props.lendo}
+                        texto={props.texto}
+                        setTexto={props.setTexto}
                       />
                     );
                   })}

@@ -791,6 +791,9 @@ const DetalhesDemanda = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -800,24 +803,36 @@ const DetalhesDemanda = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <Feedback
         open={feedbackFacaAlteracao}
         handleClose={() => setFeedbackFacaAlteracao(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
         setOpen={setOpenModalAceitarDemanda}
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <ModalRecusarDemanda
         open={openModalRecusa}
@@ -830,6 +845,9 @@ const DetalhesDemanda = (props) => {
           setFeedbackErroNavegadorIncompativel
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <ModalConfirmacao
         open={openModal}
@@ -839,6 +857,9 @@ const DetalhesDemanda = (props) => {
         textoModal="cancelarEdicao"
         textoBotao="sim"
         atualizarTexto={true}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <ModalConfirmacao
         open={modalAprovarDemanda}
@@ -846,6 +867,9 @@ const DetalhesDemanda = (props) => {
         onConfirmClick={aprovarDemandaGerencia}
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <Box
         id="primeiro"
@@ -975,6 +999,9 @@ const DetalhesDemanda = (props) => {
                       setFeedbackErroReconhecimentoVoz={
                         setFeedbackErroReconhecimentoVoz
                       }
+                      lendo={props.lendo}
+                      texto={props.texto}
+                      setTexto={props.setTexto}
                     />
                   );
                 })}
@@ -1314,6 +1341,9 @@ const DetalhesDemanda = (props) => {
                       setFeedbackErroReconhecimentoVoz={
                         setFeedbackErroReconhecimentoVoz
                       }
+                      lendo={props.lendo}
+                      texto={props.texto}
+                      setTexto={props.setTexto}
                     />
                   );
                 })}

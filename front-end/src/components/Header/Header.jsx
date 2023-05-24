@@ -15,8 +15,7 @@ import ChatContext from "../../service/ChatContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Header padrão usado no topo de todas as páginas do sistema */
-const Header = () => {
-
+const Header = ({ lendo = false, texto = "", setTexto = () => {} }) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -32,14 +31,17 @@ const Header = () => {
   return (
     // Div Principal com width preenchendo a tela
     <Paper
-      sx={{ backgroundColor: "primary.main", padding: "1rem", width: "100%", minWidth: "27rem" }}
+      sx={{
+        backgroundColor: "primary.main",
+        padding: "1rem",
+        width: "100%",
+        minWidth: "27rem",
+      }}
       className={`flex justify-between items-center h-header-weg min-h-header-weg`}
       square
     >
       {/* Aparecer o chat em qualquer lugar */}
-      {visibilidade && (
-        <ChatMinimizado idChat={idChat}/>
-      )}
+      {visibilidade && <ChatMinimizado idChat={idChat} />}
 
       {/* Link para página inicial */}
       <Link to={"/"}>
@@ -59,13 +61,17 @@ const Header = () => {
       {/* Parte direita do header */}
       <div className="flex items-center gap-4">
         {/* Caso não esteja no /login, aparecerá o Icon de notificações */}
-        {rota != "/login" ? <NotificacaoModal /> : null}
+        {rota != "/login" ? (
+          <NotificacaoModal lendo={lendo} texto={texto} setTexto={setTexto} />
+        ) : null}
 
         {/* Componente da parte do idioma da página */}
-        <IdiomaModal />
+        <IdiomaModal lendo={lendo} texto={texto} setTexto={setTexto} />
 
         {/* Caso a rota não seja a do login, irá aparecer o componente do usuário */}
-        {rota != "/login" ? <UserModal /> : null}
+        {rota != "/login" ? (
+          <UserModal lendo={lendo} texto={texto} setTexto={setTexto} />
+        ) : null}
       </div>
     </Paper>
   );

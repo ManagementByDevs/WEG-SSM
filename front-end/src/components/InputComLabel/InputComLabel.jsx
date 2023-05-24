@@ -99,15 +99,15 @@ const InputComLabel = (props) => {
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (props.lendo && props.texto != "") {
+    if (props.lendo && props.textoFala != "") {
       if ("speechSynthesis" in window) {
         const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(props.texto);
+        const utterance = new SpeechSynthesisUtterance(props.textoFala);
         synthesis.speak(utterance);
       }
       props.setTexto("");
     }
-  }, [props.texto]);
+  }, [props.textoFala]);
 
   return (
     <Box sx={{ width: "100%" }}>

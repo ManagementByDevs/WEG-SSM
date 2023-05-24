@@ -91,7 +91,13 @@ const ModalHistoricoDemanda = (props) => {
           <Box className="flex flex-col items-center overflow-auto w-full h-4/5">
             {/* Lista de históricos sendo usada */}
             {props?.historico?.map((e) => (
-              <ContainerHistorico key={e.id} historico={e} />
+              <ContainerHistorico
+                key={e.id}
+                historico={e}
+                lendo={props.lendo}
+                texto={props.texto}
+                setTexto={props.setTexto}
+              />
             ))}
           </Box>
         </Box>

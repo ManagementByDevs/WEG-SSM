@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import VLibras from "@djpfs/react-vlibras";
 
 import { keyframes } from "@emotion/react";
-import { Box, Typography, Button, Divider, Tooltip, } from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -96,7 +96,7 @@ const DetalhesAta = (props) => {
 
   // Função para voltar para uma proposta
   const voltar = () => {
-    if(!props.lendo) {
+    if (!props.lendo) {
       if (indexProposta <= 0) {
         setProposta(false);
         setIndexProposta(-1);
@@ -107,13 +107,13 @@ const DetalhesAta = (props) => {
         setIndexProposta(indexProposta - 1);
       }
     } else {
-        lerTexto(texts.detalhesAta.voltar);
+      lerTexto(texts.detalhesAta.voltar);
     }
   };
 
   // Função para passar para a próxima proposta
   const proximo = () => {
-    if(!props.lendo) {
+    if (!props.lendo) {
       if (indexProposta == ata.propostas.length - 1) {
         setBotaoProximo(false);
       } else {
@@ -122,7 +122,7 @@ const DetalhesAta = (props) => {
         setIndexProposta(indexProposta + 1);
       }
     } else {
-        lerTexto(texts.detalhesAta.proximo);
+      lerTexto(texts.detalhesAta.proximo);
     }
   };
 
@@ -191,27 +191,45 @@ const DetalhesAta = (props) => {
   };
 
   // Atualiza a lista de propostas passada por parâmetro
-  const updatePropostas = (listaPropostasToUpdate = [EntitiesObjectService.proposta()]) => {
+  const updatePropostas = (
+    listaPropostasToUpdate = [EntitiesObjectService.proposta()]
+  ) => {
     for (let proposta of listaPropostasToUpdate) {
-      PropostaService.atualizacaoDg(proposta.id, proposta.parecerDG, proposta.parecerInformacaoDG).then((response) => {
-
+      PropostaService.atualizacaoDg(
+        proposta.id,
+        proposta.parecerDG,
+        proposta.parecerInformacaoDG
+      ).then((response) => {
         // Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {
-
           let arquivo = new Blob([file], { type: "application/pdf" });
           switch (response.parecerDG) {
             case "REPROVADO":
-              PropostaService.addHistorico(response.id, "Reprovada pela DG", arquivo, CookieService.getUser().id).then(() => { });
-              DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(() => { })
+              PropostaService.addHistorico(
+                response.id,
+                "Reprovada pela DG",
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
+              DemandaService.atualizarStatus(
+                proposta.demanda.id,
+                "CANCELLED"
+              ).then(() => {});
               break;
             case "APROVADO":
-              PropostaService.addHistorico(response.id, "Aprovada pela DG", arquivo, CookieService.getUser().id).then(() => { });
-              DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(() => { })
+              PropostaService.addHistorico(
+                response.id,
+                "Aprovada pela DG",
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
+              DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
+                () => {}
+              );
               break;
           }
         });
-      }
-      );
+      });
     }
   };
 
@@ -289,7 +307,11 @@ const DetalhesAta = (props) => {
 
   return (
     // Começo com o header da página
-    <FundoComHeader>
+    <FundoComHeader
+      lendo={props.lendo}
+      texto={props.texto}
+      setTexto={props.setTexto}
+    >
       <VLibras forceOnload />
       {/* Feedback campos faltantes */}
       <Feedback
@@ -299,11 +321,18 @@ const DetalhesAta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.detalhesPauta.feedbacks.feedback2}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <Box className="p-2">
         {/* caminho da página */}
         <Box className="flex w-full relative">
-          <Caminho />
+          <Caminho
+            lendo={props.lendo}
+            texto={props.texto}
+            setTexto={props.setTexto}
+          />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -471,6 +500,9 @@ const DetalhesAta = (props) => {
                   parecerInformacaoDG={dadosProposta.parecerInformacaoDG || ""}
                   emAprovacao={true}
                   propostaId={dadosProposta.id}
+                  lendo={props.lendo}
+                  texto={props.texto}
+                  setTexto={props.setTexto}
                 />
               </Box>
             )}

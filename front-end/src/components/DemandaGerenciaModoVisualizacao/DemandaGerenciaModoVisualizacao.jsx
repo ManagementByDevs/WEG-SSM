@@ -33,6 +33,9 @@ const DemandaGerenciaModoVisualizacao = ({
   nextModoVisualizacao,
   isProposta = false,
   setFeedbackAbrirChat,
+  lendo = false,
+  setTexto = () => {},
+  texto = "",
 }) => {
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
@@ -45,6 +48,9 @@ const DemandaGerenciaModoVisualizacao = ({
         onDemandaClick={onDemandaClick}
         isProposta={isProposta}
         setFeedbackAbrirChat={setFeedbackAbrirChat}
+        lendo={lendo}
+        texto={texto}
+        setTexto={setTexto}
       />
     );
 
@@ -162,6 +168,9 @@ const DemandaTable = ({
           open={modalHistorico}
           setOpen={setModalHistorico}
           historico={historicoSelecionado}
+          lendo={lendo}
+          texto={texto}
+          setTexto={setTexto}
         />
       )}
       <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
@@ -482,6 +491,9 @@ const DemandaGrid = ({
   onDemandaClick,
   isProposta = false,
   setFeedbackAbrirChat,
+  lendo = false,
+  setTexto = () => {},
+  texto = "",
 }) => {
   return (
     <Box
@@ -501,6 +513,9 @@ const DemandaGrid = ({
             onClick={() => {
               onDemandaClick(demanda);
             }}
+            lendo={lendo}
+            texto={texto}
+            setTexto={setTexto}
           />
         );
       })}
@@ -516,8 +531,8 @@ const NadaEncontrado = (props) => {
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-   // Função que irá setar o texto que será "lido" pela a API
-   const lerTexto = (texto) => {
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
     if (props.lendo) {
       props.setTexto(texto);
     }
@@ -559,7 +574,9 @@ const NadaEncontrado = (props) => {
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
         onClick={() => {
-          lerTexto(texts.demandaGerenciaModoVisualizacao.tenteNovamenteMaisTarde);
+          lerTexto(
+            texts.demandaGerenciaModoVisualizacao.tenteNovamenteMaisTarde
+          );
         }}
       >
         {texts.demandaGerenciaModoVisualizacao.tenteNovamenteMaisTarde}

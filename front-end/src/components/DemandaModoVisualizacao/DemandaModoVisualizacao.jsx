@@ -26,6 +26,9 @@ const DemandaModoVisualizacao = ({
   onDemandaClick,
   nextModoVisualizacao,
   myDemandas,
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
 }) => {
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
@@ -37,6 +40,9 @@ const DemandaModoVisualizacao = ({
         listaDemandas={listaDemandas}
         onDemandaClick={onDemandaClick}
         myDemandas={myDemandas}
+        lendo={lendo}
+        texto={texto}
+        setTexto={setTexto}
       />
     );
   return (
@@ -65,7 +71,7 @@ const DemandaTable = ({
   myDemandas,
   setTexto,
   texto,
-  lendo
+  lendo,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -113,7 +119,7 @@ const DemandaTable = ({
     } else if (status == "ASSESSMENT_APROVACAO") {
       return texts.demandaModoVisualizacao.statusDemanda?.emAndamento;
     } else if (status == "DONE") {
-      return texts.demandaModoVisualizacao.statusDemanda?.emDesenvolvimento
+      return texts.demandaModoVisualizacao.statusDemanda?.emDesenvolvimento;
     }
   };
 
@@ -150,6 +156,9 @@ const DemandaTable = ({
           open={true}
           setOpen={setOpenModal}
           motivoRecusa={demandaSelecionada?.motivoRecusa}
+          lendo={lendo}
+                    texto={texto}
+                    setTexto={setTexto}
         />
       )}
       <Table className="mb-8 table-fixed" sx={{ width: "100%" }}>
@@ -264,9 +273,7 @@ const DemandaTable = ({
                           className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
                             if (lendo) {
-                              lerTexto(
-                                texts.demandaModoVisualizacao.motivo
-                              );
+                              lerTexto(texts.demandaModoVisualizacao.motivo);
                             } else {
                               e.stopPropagation();
                               abrirModalMotivoRecusa(row);
@@ -306,7 +313,13 @@ const DemandaTable = ({
 };
 
 // Componente para exibir as demanda em forma de grid
-const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
+const DemandaGrid = ({
+  listaDemandas,
+  onDemandaClick,
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
+}) => {
   return (
     <Box
       sx={{
@@ -322,6 +335,9 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
           onClick={() => {
             onDemandaClick(e);
           }}
+          lendo={lendo}
+          texto={texto}
+          setTexto={setTexto}
         />
       ))}
     </Box>

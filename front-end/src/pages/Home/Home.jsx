@@ -538,7 +538,11 @@ const Home = (props) => {
   }, [props.texto]);
 
   return (
-    <FundoComHeader>
+    <FundoComHeader
+      lendo={props.lendo}
+      texto={props.texto}
+      setTexto={props.setTexto}
+    >
       <VLibras forceOnload />
       {/* Div container */}
       <Tour
@@ -562,6 +566,9 @@ const Home = (props) => {
           }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback navegador incompativel */}
         <Feedback
@@ -571,6 +578,9 @@ const Home = (props) => {
           }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback de demanda criada */}
         <Feedback
@@ -580,6 +590,9 @@ const Home = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.home.demandaCriadaComSucesso}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         {/* Div container para o conteúdo da home */}
@@ -741,6 +754,9 @@ const Home = (props) => {
                           setOrdenacaoScore={setOrdenacaoScore}
                           ordenacaoDate={ordenacaoDate}
                           setOrdenacaoDate={setOrdenacaoDate}
+                          lendo={props.lendo}
+                          texto={props.texto}
+                          setTexto={props.setTexto}
                         />
                       )}
                     </Box>
@@ -777,6 +793,9 @@ const Home = (props) => {
                       }}
                       listaFiltros={listaFiltros}
                       setListaFiltros={setListaFiltros}
+                      lendo={props.lendo}
+                      texto={props.texto}
+                      setTexto={props.setTexto}
                     />
                   )}
                 </Box>
@@ -795,10 +814,10 @@ const Home = (props) => {
                   variant="contained"
                   disableElevation
                   onClick={() => {
-                    if(!props.lendo) {
+                    if (!props.lendo) {
                       navigate("/criar-demanda");
                     } else {
-                        lerTexto(texts.home.criarDemanda)
+                      lerTexto(texts.home.criarDemanda);
                     }
                   }}
                 >
@@ -833,6 +852,9 @@ const Home = (props) => {
                                 tour: true,
                               },
                             }}
+                            lendo={props.lendo}
+                            texto={props.texto}
+                            setTexto={props.setTexto}
                           />
                         ) : (
                           <DemandaModoVisualizacao
@@ -840,6 +862,9 @@ const Home = (props) => {
                             onDemandaClick={verDemanda}
                             myDemandas={true}
                             nextModoVisualizacao={nextModoVisualizacao}
+                            lendo={props.lendo}
+                            texto={props.texto}
+                            setTexto={props.setTexto}
                           />
                         )}
                       </Box>
@@ -850,6 +875,9 @@ const Home = (props) => {
                         onDemandaClick={verDemanda}
                         myDemandas={false}
                         nextModoVisualizacao={nextModoVisualizacao}
+                        lendo={props.lendo}
+                        texto={props.texto}
+                        setTexto={props.setTexto}
                       />
                     </TabPanel>
                   </>

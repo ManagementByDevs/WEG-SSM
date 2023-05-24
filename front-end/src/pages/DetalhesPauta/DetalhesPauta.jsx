@@ -3,7 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras";
 
-import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import { keyframes } from "@emotion/react";
 
@@ -218,15 +225,20 @@ const DetalhesPauta = (props) => {
 
     PautaService.put(pauta).then((newPauta) => {
       setFeedbackPropostaDeletada(true);
-      PropostaService.removerPresenca(propostasDeleted[0].id).then((response) => {
-
-        // Salvamento de histórico
-        ExportPdfService.exportProposta(response.id).then((file) => {
-
-          let arquivo = new Blob([file], { type: "application/pdf" });
-          PropostaService.addHistorico(response.id, "Removida da Pauta #" + newPauta.numeroSequencial, arquivo, CookieService.getUser().id).then(() => { });
-        });
-      });
+      PropostaService.removerPresenca(propostasDeleted[0].id).then(
+        (response) => {
+          // Salvamento de histórico
+          ExportPdfService.exportProposta(response.id).then((file) => {
+            let arquivo = new Blob([file], { type: "application/pdf" });
+            PropostaService.addHistorico(
+              response.id,
+              "Removida da Pauta #" + newPauta.numeroSequencial,
+              arquivo,
+              CookieService.getUser().id
+            ).then(() => {});
+          });
+        }
+      );
 
       location.state = { pauta: newPauta }; // Atualizando a pauta na página
       setPauta(newPauta); // Atualizando a pauta na variável do front
@@ -307,7 +319,6 @@ const DetalhesPauta = (props) => {
 
     // Cria a ata caso tenha propostas aprovadas
     if (ata.propostas.length > 0) {
-
       ata.propostas = retornarIdsObjetos(ata.propostas);
 
       AtaService.post(ata).then((response) => {
@@ -321,22 +332,43 @@ const DetalhesPauta = (props) => {
 
   const handlePautaWithNoApprovedProposals = () => {
     for (let proposta of pauta.propostas) {
-      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then((response) => {
-
+      PropostaService.atualizacaoAta(
+        proposta.id,
+        proposta.parecerComissao,
+        proposta.parecerInformacao
+      ).then((response) => {
         //Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {
           let arquivo = new Blob([file], { type: "application/pdf" });
 
           switch (response.parecerComissao) {
             case "REPROVADO":
-              PropostaService.addHistorico(response.id, "Proposta Reprovada", arquivo, CookieService.getUser().id).then(() => { });
-              DemandaService.atualizarStatus(response.demanda.id, "CANCELLED").then(() => { })
+              PropostaService.addHistorico(
+                response.id,
+                "Proposta Reprovada",
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
+              DemandaService.atualizarStatus(
+                response.demanda.id,
+                "CANCELLED"
+              ).then(() => {});
               break;
             case "MAIS_INFORMACOES":
-              PropostaService.addHistorico(response.id, "Enviada para Edição", arquivo, CookieService.getUser().id).then(() => { });
+              PropostaService.addHistorico(
+                response.id,
+                "Enviada para Edição",
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
               break;
             case "BUSINESS_CASE":
-              PropostaService.addHistorico(response.id, "Enviada para Business Case", arquivo, CookieService.getUser().id).then(() => { });
+              PropostaService.addHistorico(
+                response.id,
+                "Enviada para Business Case",
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
               break;
           }
         });
@@ -350,33 +382,58 @@ const DetalhesPauta = (props) => {
 
   /** Função para salvar o histórico da proposta após criação da ata, seguindo um texto diferente dependendo do parecer da comissão */
   const salvarHistoricoAprovacao = (proposta, idAta) => {
-
     //Salvamento do histórico e atualização da demanda
     ExportPdfService.exportProposta(proposta.id).then((file) => {
       let arquivo = new Blob([file], { type: "application/pdf" });
 
       switch (proposta.parecerComissao) {
         case "REPROVADO":
-          PropostaService.addHistorico(proposta.id, "Proposta Reprovada", arquivo, CookieService.getUser().id).then(() => { });
-          DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(() => { })
+          PropostaService.addHistorico(
+            proposta.id,
+            "Proposta Reprovada",
+            arquivo,
+            CookieService.getUser().id
+          ).then(() => {});
+          DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(
+            () => {}
+          );
           break;
         case "MAIS_INFORMACOES":
-          PropostaService.addHistorico(proposta.id, "Enviada para Edição", arquivo, CookieService.getUser().id).then(() => { });
+          PropostaService.addHistorico(
+            proposta.id,
+            "Enviada para Edição",
+            arquivo,
+            CookieService.getUser().id
+          ).then(() => {});
           break;
         case "BUSINESS_CASE":
-          PropostaService.addHistorico(proposta.id, "Entrada em Business Case", arquivo, CookieService.getUser().id).then(() => { });
+          PropostaService.addHistorico(
+            proposta.id,
+            "Entrada em Business Case",
+            arquivo,
+            CookieService.getUser().id
+          ).then(() => {});
           break;
         case "APROVADO":
-          PropostaService.addHistorico(proposta.id, "Adicionada na Ata #" + idAta, arquivo, CookieService.getUser().id).then(() => { });
+          PropostaService.addHistorico(
+            proposta.id,
+            "Adicionada na Ata #" + idAta,
+            arquivo,
+            CookieService.getUser().id
+          ).then(() => {});
           break;
       }
     });
-  }
+  };
 
   // Atualiza a lista de propostas passada por parâmetro
   const updatePropostas = (listaPropostasToUpdate = [], idAta) => {
     for (let proposta of listaPropostasToUpdate) {
-      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then((response) => {
+      PropostaService.atualizacaoAta(
+        proposta.id,
+        proposta.parecerComissao,
+        proposta.parecerInformacao
+      ).then((response) => {
         salvarHistoricoAprovacao(response, idAta);
       });
     }
@@ -419,7 +476,11 @@ const DetalhesPauta = (props) => {
   }, [props.texto]);
 
   return (
-    <FundoComHeader>
+    <FundoComHeader
+      lendo={props.lendo}
+      texto={props.texto}
+      setTexto={props.setTexto}
+    >
       <VLibras forceOnload />
       <ModalCriarAta
         open={openModalCriarAta}
@@ -430,6 +491,9 @@ const DetalhesPauta = (props) => {
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
@@ -439,6 +503,9 @@ const DetalhesPauta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -448,6 +515,9 @@ const DetalhesPauta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       {/* Feedback campos faltantes */}
       <Feedback
@@ -457,6 +527,9 @@ const DetalhesPauta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.modalCriarAta.feedback}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       {/* Feedback proposta deletada da pauta */}
       <Feedback
@@ -466,6 +539,9 @@ const DetalhesPauta = (props) => {
         }}
         status={"sucesso"}
         mensagem={texts.detalhesPauta.feedbacks.feedback1}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <ModalConfirmacao
         open={modal}
@@ -473,11 +549,18 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
       <Box className="p-2" sx={{ minWidth: "60rem" }}>
         <Box className="flex w-full relative">
-          <Caminho />
+          <Caminho
+            lendo={props.lendo}
+            texto={props.texto}
+            setTexto={props.setTexto}
+          />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -723,7 +806,8 @@ const DetalhesPauta = (props) => {
                       maxHeight: "2.5rem",
                     }}
                     variant="contained"
-                    onClick={proximo} fdsfds
+                    onClick={proximo}
+                    fdsfds
                   >
                     <Typography>{texts.detalhesPauta.proximo}</Typography>
                   </Button>

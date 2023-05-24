@@ -597,9 +597,11 @@ const HomeGerencia = (props) => {
 
   /** Função para buscar o usuário logado no sistema pelo cookie salvo no navegador */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((e) => {
-      setUsuario(e);
-    });
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (e) => {
+        setUsuario(e);
+      }
+    );
   };
 
   /** Função para buscar a lista de fóruns e departamentos do sistema para o modal de filtros */
@@ -943,16 +945,18 @@ const HomeGerencia = (props) => {
   const deletePauta = () => {
     // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
     for (let propostaAux of pautaSelecionada.propostas) {
-
       PropostaService.removerPresenca(propostaAux.id).then((response) => {
         // Salvamento de histórico
         ExportPdfService.exportProposta(response.id).then((file) => {
-
           let arquivo = new Blob([file], { type: "application/pdf" });
-          PropostaService.addHistorico(response.id, "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída", arquivo, CookieService.getUser().id).then(() => { });
+          PropostaService.addHistorico(
+            response.id,
+            "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
+            arquivo,
+            CookieService.getUser().id
+          ).then(() => {});
         });
-      }
-      );
+      });
     }
 
     // Deleta a pauta
@@ -1065,7 +1069,7 @@ const HomeGerencia = (props) => {
           break;
       }
 
-      recognition.onstart = () => { };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
@@ -1124,7 +1128,11 @@ const HomeGerencia = (props) => {
   }, [props.texto]);
 
   return (
-    <FundoComHeader>
+    <FundoComHeader
+      lendo={props.lendo}
+      texto={props.texto}
+      setTexto={props.setTexto}
+    >
       {/* {!fecharChatMinimizado && (
         <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado}/>
       )} */}
@@ -1187,6 +1195,9 @@ const HomeGerencia = (props) => {
         onCancelClick={() => {
           handleOnCancelClickDeletePauta();
         }}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
 
       {/* Div container */}
@@ -1202,6 +1213,9 @@ const HomeGerencia = (props) => {
           }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback Não navegador incompativel */}
         <Feedback
@@ -1211,6 +1225,9 @@ const HomeGerencia = (props) => {
           }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback Não pode abrir chat com você mesmo */}
         <Feedback
@@ -1220,6 +1237,9 @@ const HomeGerencia = (props) => {
           }}
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback11}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback ata publicada */}
         <Feedback
@@ -1229,6 +1249,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback1}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         {/* Feedback ata criada */}
@@ -1239,6 +1262,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback8}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         {/* Feedback propostas atualizadas */}
@@ -1249,6 +1275,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback9}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         {/* Feedback demanda criada  */}
@@ -1259,6 +1288,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback10}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         <Feedback
@@ -1268,6 +1300,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback2}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         <Feedback
@@ -1277,6 +1312,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback3}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         <Feedback
@@ -1286,6 +1324,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback4}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         <Feedback
@@ -1295,6 +1336,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback5}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         {/* Feedback pauta deletada */}
@@ -1305,6 +1349,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback6}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
         {/* Feedback proposta atualizada */}
         <Feedback
@@ -1314,6 +1361,9 @@ const HomeGerencia = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback7}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
 
         {/* Div container para o conteúdo da home */}
@@ -1556,6 +1606,9 @@ const HomeGerencia = (props) => {
                       ordenacaoDate={ordenacaoDate}
                       setOrdenacaoDate={setOrdenacaoDate}
                       fecharModal={() => setOpenOrdenacao(false)}
+                      lendo={props.lendo}
+                      texto={props.texto}
+                      setTexto={props.setTexto}
                     />
                   )}
 
@@ -1599,6 +1652,9 @@ const HomeGerencia = (props) => {
                       listaAnalistas={listaAnalistas}
                       setListaAnalistas={setListaAnalistas}
                       filtroProposta={filtroProposta}
+                      lendo={props.lendo}
+                      texto={props.texto}
+                      setTexto={props.setTexto}
                     />
                   )}
 
@@ -1636,7 +1692,7 @@ const HomeGerencia = (props) => {
                   variant="contained"
                   disableElevation
                   onClick={() => {
-                    if(!props.lendo) {
+                    if (!props.lendo) {
                       navigate("/criar-demanda");
                     } else {
                       lerTexto(texts.homeGerencia.criarDemanda);
@@ -1687,6 +1743,9 @@ const HomeGerencia = (props) => {
                             }}
                             semHistorico={true}
                             tipo="demanda"
+                            lendo={props.lendo}
+                            texto={props.texto}
+                            setTexto={props.setTexto}
                           />
                         ) : (
                           <DemandaModoVisualizacao
@@ -1694,6 +1753,9 @@ const HomeGerencia = (props) => {
                             onDemandaClick={verDemanda}
                             myDemandas={true}
                             nextModoVisualizacao={nextModoVisualizacao}
+                            lendo={props.lendo}
+                            texto={props.texto}
+                            setTexto={props.setTexto}
                           />
                         )}
                       </Box>
@@ -1729,6 +1791,9 @@ const HomeGerencia = (props) => {
                             },
                           }}
                           tipo="demanda"
+                          lendo={props.lendo}
+                          texto={props.texto}
+                          setTexto={props.setTexto}
                         />
                       ) : (
                         <DemandaGerenciaModoVisualizacao
@@ -1736,6 +1801,9 @@ const HomeGerencia = (props) => {
                           onDemandaClick={verDemanda}
                           setFeedbackAbrirChat={setFeedbackAbrirChat}
                           nextModoVisualizacao={nextModoVisualizacao}
+                          lendo={props.lendo}
+                          texto={props.texto}
+                          setTexto={props.setTexto}
                         />
                       )}
                     </TabPanel>
@@ -1763,6 +1831,9 @@ const HomeGerencia = (props) => {
                             onDemandaClick={verDemanda}
                             setFeedbackAbrirChat={setFeedbackAbrirChat}
                             nextModoVisualizacao={nextModoVisualizacao}
+                            lendo={props.lendo}
+                            texto={props.texto}
+                            setTexto={props.setTexto}
                           />
                         </Box>
                       </TabPanel>
@@ -1806,6 +1877,9 @@ const HomeGerencia = (props) => {
                                 },
                               }}
                               tipo="proposta"
+                              lendo={props.lendo}
+                              texto={props.texto}
+                              setTexto={props.setTexto}
                             />
                           ) : (
                             <Box
@@ -1822,6 +1896,9 @@ const HomeGerencia = (props) => {
                                 setFeedbackAbrirChat={setFeedbackAbrirChat}
                                 nextModoVisualizacao={nextModoVisualizacao}
                                 isProposta={true}
+                                lendo={props.lendo}
+                                texto={props.texto}
+                                setTexto={props.setTexto}
                               />
                             </Box>
                           )}
@@ -1838,6 +1915,9 @@ const HomeGerencia = (props) => {
                                 numeroSequencial: "Pauta para Tour",
                               }}
                               tipo="pauta"
+                              lendo={props.lendo}
+                              texto={props.texto}
+                              setTexto={props.setTexto}
                             />
                           ) : (
                             <PautaAtaModoVisualizacao
@@ -1849,6 +1929,9 @@ const HomeGerencia = (props) => {
                               }}
                               nextModoVisualizacao={nextModoVisualizacao}
                               setPautaSelecionada={setPautaSelecionada}
+                              lendo={props.lendo}
+                              texto={props.texto}
+                              setTexto={props.setTexto}
                             />
                           )}
                         </TabPanel>
@@ -1864,6 +1947,9 @@ const HomeGerencia = (props) => {
                                 numeroSequencial: "Ata para Tour",
                               }}
                               tipo="ata"
+                              lendo={props.lendo}
+                              texto={props.texto}
+                              setTexto={props.setTexto}
                             />
                           ) : (
                             <PautaAtaModoVisualizacao

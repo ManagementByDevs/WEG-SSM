@@ -20,7 +20,6 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
-import Feedback from "../../components/Feedback/Feedback";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 
 import ColorModeContext from "../../service/TemaContext";

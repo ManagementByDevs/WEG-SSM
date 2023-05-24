@@ -4,7 +4,6 @@ import { Modal, Fade, Divider, Typography, Box, Button } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-import Feedback from "../Feedback/Feedback";
 import InputComLabel from "../InputComLabel/InputComLabel";
 
 import ColorModeContext from "../../service/TemaContext";
@@ -167,6 +166,9 @@ const ModalCriarAta = (props) => {
                   setFeedbackErroReconhecimentoVoz={
                     props.setFeedbackErroReconhecimentoVoz
                   }
+                  lendo={props.lendo}
+                  textoFala={props.texto}
+                  setTexto={props.setTexto}
                 />
                 {/* input de data */}
                 <Box className="mt-4">

@@ -112,6 +112,9 @@ const Demanda = (props) => {
           open={true}
           setOpen={setModalMotivoRecusa}
           motivoRecusa={props.demanda?.motivoRecusa}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
         />
       )}
       <Paper

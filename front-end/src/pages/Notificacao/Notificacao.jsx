@@ -315,7 +315,11 @@ const Notificacao = (props) => {
   }, [props.texto]);
 
   return (
-    <FundoComHeader>
+    <FundoComHeader
+      lendo={props.lendo}
+      texto={props.texto}
+      setTexto={props.setTexto}
+    >
       <VLibras forceOnload />
       <Feedback
         open={feedback.visibilidade}
@@ -324,6 +328,9 @@ const Notificacao = (props) => {
         }}
         status={feedback.tipo}
         mensagem={feedback.mensagem}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
 
       <ModalConfirmacao
@@ -333,6 +340,9 @@ const Notificacao = (props) => {
         onConfirmClick={onDeleteClick}
         onCancelClick={() => {}}
         textoBotao={"sim"}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
 
       <ModalConfirmacao
@@ -342,10 +352,17 @@ const Notificacao = (props) => {
         onConfirmClick={onMultiDeleteRowClick}
         onCancelClick={() => {}}
         textoBotao={"sim"}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
       />
 
       <Box className="p-2" sx={{ minWidth: "40rem" }}>
-        <Caminho />
+        <Caminho
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
+        />
         <Box className="w-full flex flex-col items-center">
           <Box className="w-full flex justify-center m-2">
             <Typography
