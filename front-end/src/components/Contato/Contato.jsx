@@ -21,13 +21,18 @@ const Contato = ({
 
   // UseEffect para alterar a cor do contato quando ele for selecionado
   useEffect(() => {
-    if (idChat == chat.id) {
-      setCorSelecionado("chat.eu");
+    console.log("chat: ", chat);
+    if (idChat == 0) {
+      setCorSelecionado("transparent");
     } else {
-      if (chat.conversaEncerrada) {
-        setCorSelecionado("divider.claro");
+      if (idChat == chat.id) {
+        setCorSelecionado("chat.eu");
       } else {
-        setCorSelecionado("transparent");
+        if (chat.conversaEncerrada) {
+          setCorSelecionado("divider.claro");
+        } else {
+          setCorSelecionado("transparent");
+        }
       }
     }
   }, [idChat]);
@@ -79,7 +84,6 @@ const Conteudo = ({
   }, []);
 
   const retornaNomeContato = () => {
-    console.log("User id: ", usuarioLogado.usuario.id);
     for (let user of chat.usuariosChat) {
       if (usuarioLogado.usuario.id != user.id) {
         setNomeContato(user.nome);
@@ -94,7 +98,7 @@ const Conteudo = ({
     }
   };
 
-  // // Função que irá "ouvir" o texto que será "lido" pela a API
+  // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
