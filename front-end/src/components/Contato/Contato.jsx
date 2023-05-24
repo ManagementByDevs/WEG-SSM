@@ -32,10 +32,6 @@ const Contato = ({
     }
   }, [idChat]);
 
-  useEffect(() => {
-    console.log("Chat: ", chat);
-  });
-
   return (
     <>
       <Tooltip title={chat.idProposta.titulo} placement="right">

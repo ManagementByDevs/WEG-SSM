@@ -188,6 +188,17 @@ const Chat = (props) => {
     setOpenModalReabrirChat(false);
   };
 
+  const getIdDestinatario = () => {
+    if (!idChat) return 0;
+
+    let chatAux = listaChats.find((chat) => chat.id == idChat);
+
+    if (!chatAux) return 0;
+
+    let userAux = chatAux.usuariosChat.find((e) => e.id != user.usuario.id);
+    return userAux.id;
+  };
+
   /** Seta a mensagem padrão */
   const setDefaultMensagem = () => {
     setMensagem({
@@ -197,6 +208,7 @@ const Chat = (props) => {
       status: "MESSAGE",
       usuario: { id: user.usuario.id },
       idChat: { id: idChat },
+      idDestinatario: getIdDestinatario(),
     });
   };
 
@@ -384,7 +396,7 @@ const Chat = (props) => {
     };
 
     let inscricaoAllMensagens = inscrever(
-      "/weg_ssm/mensagem/all",
+      `/weg_ssm/mensagem/all/user/${user.usuario.id}`,
       receivedAnyMessage
     );
 
@@ -473,8 +485,6 @@ const Chat = (props) => {
 
   /** UseState para armazenar o contato selecionado */
   useEffect(() => {
-    // if (!pesquisaContato) setResultadosContato([]);
-
     let listaChatsAux = listaChats.filter((chat) => {
       // Pesquisa por código PPM
       if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {

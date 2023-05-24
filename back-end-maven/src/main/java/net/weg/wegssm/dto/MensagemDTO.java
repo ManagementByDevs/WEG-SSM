@@ -20,6 +20,7 @@ public class MensagemDTO {
     private Boolean visto;
     private String texto;
     private StatusChat status;
+    private Long idDestinatario;
     private Usuario usuario;
     private Chat idChat;
     private Anexo anexo;
