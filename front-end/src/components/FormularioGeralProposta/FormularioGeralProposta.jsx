@@ -181,6 +181,25 @@ const FormularioGeralProposta = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Box className="flex flex-col">
       <Box className="mt-12" sx={{ minWidth: "55rem" }}>
@@ -195,7 +214,12 @@ const FormularioGeralProposta = (props) => {
         >
           <Box>
             <Box className="flex mb-2">
-              <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
+              <Typography
+                sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+                onClick={() => {
+                  lerTexto(texts.formularioGeralProposta.periodoDeExecucao);
+                }}
+              >
                 {texts.formularioGeralProposta.periodoDeExecucao}:
               </Typography>
               <Typography
@@ -234,7 +258,12 @@ const FormularioGeralProposta = (props) => {
                 />
               </Box>
               <Box>
-                <Typography sx={{ fontSize: FontConfig.big }}>
+                <Typography
+                  sx={{ fontSize: FontConfig.big }}
+                  onClick={() => {
+                    lerTexto(texts.formularioGeralProposta.a);
+                  }}
+                >
                   {texts.formularioGeralProposta.a}
                 </Typography>
               </Box>
@@ -266,7 +295,12 @@ const FormularioGeralProposta = (props) => {
           </Box>
           <Box>
             <Box className="flex mb-2">
-              <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
+              <Typography
+                sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+                onClick={() => {
+                  lerTexto(texts.formularioGeralProposta.paybackSimples);
+                }}
+              >
                 {texts.formularioGeralProposta.paybackSimples}:
               </Typography>
               <Typography
@@ -355,7 +389,12 @@ const FormularioGeralProposta = (props) => {
           </Box>
           <Box>
             <Box className="flex mb-2">
-              <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
+              <Typography
+                sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+                onClick={() => {
+                  lerTexto(texts.formularioGeralProposta.codigoPpm);
+                }}
+              >
                 {texts.formularioGeralProposta.codigoPpm}:
               </Typography>
               <Typography
@@ -419,7 +458,12 @@ const FormularioGeralProposta = (props) => {
         </Box>
         <Box className="flex flex-col mb-8" sx={{ marginLeft: "6.1rem" }}>
           <Box className="flex mb-2">
-            <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}>
+            <Typography
+              sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+              onClick={() => {
+                lerTexto(texts.formularioGeralProposta.linkDoJira);
+              }}
+            >
               {texts.formularioGeralProposta.linkDoJira}:
             </Typography>
             <Typography
@@ -490,6 +534,9 @@ const FormularioGeralProposta = (props) => {
                 marginRight: "5px",
                 color: "primary.main",
               }}
+              onClick={() => {
+                lerTexto(texts.formularioGeralProposta.responsavelResponsaveis);
+              }}
             >
               {texts.formularioGeralProposta.responsavelResponsaveis}:
             </Typography>
@@ -532,8 +579,12 @@ const FormularioGeralProposta = (props) => {
                 index={index}
                 deleteResponsavel={deleteResponsavel}
                 key={index}
-                setFeedbackErroReconhecimentoVoz={props.setFeedbackErroReconhecimentoVoz}
-                setFeedbackErroNavegadorIncompativel={props.setFeedbackErroNavegadorIncompativel}
+                setFeedbackErroReconhecimentoVoz={
+                  props.setFeedbackErroReconhecimentoVoz
+                }
+                setFeedbackErroNavegadorIncompativel={
+                  props.setFeedbackErroNavegadorIncompativel
+                }
               />
             );
           })}
@@ -547,6 +598,9 @@ const FormularioGeralProposta = (props) => {
                   fontSize: FontConfig.big,
                   fontWeight: "600",
                   marginRight: "5px",
+                }}
+                onClick={() => {
+                  lerTexto(texts.formularioGeralProposta.anexos);
                 }}
               >
                 {texts.formularioGeralProposta.anexos}:
@@ -586,6 +640,9 @@ const FormularioGeralProposta = (props) => {
                           color: "text.primary",
                           fontSize: FontConfig.default,
                         }}
+                        onClick={() => {
+                          lerTexto(anexo.name || anexo.nome);
+                        }}
                       >
                         {anexo.name || anexo.nome}
                       </Typography>
@@ -623,6 +680,11 @@ const FormularioGeralProposta = (props) => {
                 <Typography
                   textAlign="center"
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
+                  onClick={() => {
+                    lerTexto(
+                      texts.formularioGeralProposta.nenhumAnexoAdicionado
+                    );
+                  }}
                 >
                   {texts.formularioGeralProposta.nenhumAnexoAdicionado}
                 </Typography>

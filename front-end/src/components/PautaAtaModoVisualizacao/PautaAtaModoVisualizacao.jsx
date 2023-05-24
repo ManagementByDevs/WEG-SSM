@@ -66,6 +66,9 @@ const PautaTable = ({
   onItemClick,
   isAta,
   setPautaSelecionada = () => {},
+  lendo,
+  texto,
+  setTexto,
 }) => {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -96,28 +99,67 @@ const PautaTable = ({
     return ata.propostas[0]?.parecerDG != null;
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTexto(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (lendo && texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(texto);
+        synthesis.speak(utterance);
+      }
+      setTexto("");
+    }
+  }, [texto]);
+
   return (
     <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
       <Table sx={{ width: "100%" }} className="table-fixed">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-2 width-75/1000">
-              <Typography fontSize={FontConfig.big}>
+              <Typography
+                fontSize={FontConfig.big}
+                onClick={() => {
+                  lerTexto(texts.pautaAtaModoVisualizacao.numeroSequencial);
+                }}
+              >
                 {texts.pautaAtaModoVisualizacao.numeroSequencial}
               </Typography>
             </th>
             <th className="text-left text-white p-3">
-              <Typography fontSize={FontConfig.big}>
+              <Typography
+                fontSize={FontConfig.big}
+                onClick={() => {
+                  lerTexto(texts.pautaAtaModoVisualizacao.comissao);
+                }}
+              >
                 {texts.pautaAtaModoVisualizacao.comissao}
               </Typography>
             </th>
             <th className="text-left text-white p-3 width-3/10">
-              <Typography fontSize={FontConfig.big}>
+              <Typography
+                fontSize={FontConfig.big}
+                onClick={() => {
+                  lerTexto(texts.pautaAtaModoVisualizacao.analistaResponsavel);
+                }}
+              >
                 {texts.pautaAtaModoVisualizacao.analistaResponsavel}
               </Typography>
             </th>
             <th className="text-center text-white p-3 width-2/10">
-              <Typography fontSize={FontConfig.big}>
+              <Typography
+                fontSize={FontConfig.big}
+                onClick={() => {
+                  lerTexto(texts.pautaAtaModoVisualizacao.data);
+                }}
+              >
                 {texts.pautaAtaModoVisualizacao.data}
               </Typography>
             </th>
@@ -137,12 +179,24 @@ const PautaTable = ({
               }}
             >
               <td className="text-center p-3" title={row.numeroSequencial}>
-                <Typography className="truncate" fontSize={FontConfig.medium}>
+                <Typography
+                  className="truncate"
+                  fontSize={FontConfig.medium}
+                  onClick={() => {
+                    lerTexto(row.numeroSequencial);
+                  }}
+                >
                   {row.numeroSequencial}
                 </Typography>
               </td>
               <td className="text-left p-3" title={row.comissao}>
-                <Typography className="truncate" fontSize={FontConfig.medium}>
+                <Typography
+                  className="truncate"
+                  fontSize={FontConfig.medium}
+                  onClick={() => {
+                    lerTexto(row.comissao.nomeForum);
+                  }}
+                >
                   {row.comissao.siglaForum} - {row.comissao.nomeForum}
                 </Typography>
               </td>
@@ -150,7 +204,13 @@ const PautaTable = ({
                 className="text-left p-3"
                 title={row.analistaResponsavel?.nome}
               >
-                <Typography className="truncate" fontSize={FontConfig.medium}>
+                <Typography
+                  className="truncate"
+                  fontSize={FontConfig.medium}
+                  onClick={() => {
+                    lerTexto(row.analistaResponsavel?.nome);
+                  }}
+                >
                   {row.analistaResponsavel?.nome}
                 </Typography>
               </td>
@@ -162,6 +222,9 @@ const PautaTable = ({
                   <Typography
                     className="tabela-linha-pauta-data truncate"
                     fontSize={FontConfig.medium}
+                    onClick={() => {
+                      lerTexto(getDataFormatada(row.dataReuniao));
+                    }}
                   >
                     {getDataFormatada(row.dataReuniao)}
                   </Typography>
@@ -185,7 +248,13 @@ const PautaTable = ({
                   className="flex justify-center items-center text-right p-3"
                   title={getDataFormatada(row.dataReuniao)}
                 >
-                  <Typography className="truncate" fontSize={FontConfig.medium}>
+                  <Typography
+                    className="truncate"
+                    fontSize={FontConfig.medium}
+                    onClick={() => {
+                      lerTexto(getDataFormatada(row.dataReuniao));
+                    }}
+                  >
                     {getDataFormatada(row.dataReuniao)}
                   </Typography>
 
@@ -249,12 +318,31 @@ const PautaGrid = ({
   );
 };
 
-const NadaEncontrado = () => {
+const NadaEncontrado = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <Box
@@ -269,12 +357,18 @@ const NadaEncontrado = () => {
       <Typography
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
+        onClick={() => {
+          lerTexto(texts.pautaAtaModoVisualizacao.nadaEncontrado);
+        }}
       >
         {texts.pautaAtaModoVisualizacao.nadaEncontrado}
       </Typography>
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
+        onClick={() => {
+          lerTexto(texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde);
+        }}
       >
         {texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde}
       </Typography>

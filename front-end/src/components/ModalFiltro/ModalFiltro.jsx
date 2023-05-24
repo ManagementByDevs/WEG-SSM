@@ -1,4 +1,4 @@
-import { React, useContext } from "react";
+import { React, useContext, useEffect } from "react";
 
 import {
   Modal,
@@ -96,6 +96,25 @@ const ModalFiltro = (props) => {
     ]);
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Modal
       open={true}
@@ -108,7 +127,7 @@ const ModalFiltro = (props) => {
         width: "10rem",
         position: "absolute",
         left: "35%",
-        top: "2%"
+        top: "2%",
       }}
     >
       <Fade in={true}>
@@ -145,6 +164,9 @@ const ModalFiltro = (props) => {
                     color: "secundary.main",
                     fontSize: FontConfig.big,
                     fontWeight: "600",
+                  }}
+                  onClick={() => {
+                    lerTexto(texts.modalFiltro.status);
                   }}
                 >
                   {texts.modalFiltro.status}:

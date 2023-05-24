@@ -70,7 +70,8 @@ const NotificacaoModal = (props) => {
       (user) => {
         NotificacaoService.getByUserIdAndNotVisualizado(user.id)
           .then((response) => {
-            setNotificacoes(response.content);
+            console.log("notificacoes: ", response.content);
+            setNotificacoes([...response.content]);
           })
           .catch((error) => {});
       }
@@ -89,10 +90,12 @@ const NotificacaoModal = (props) => {
     newNotificacao.data = DateService.getTodaysDateMySQL();
     newNotificacao.tipoNotificacao = "MENSAGENS";
     newNotificacao.usuario.id = user.id;
-    console.log("notificacao: ", mensagem);
 
     NotificacaoService.post(newNotificacao).then((notificacaoResponse) => {
-      notificacoes.push(notificacaoResponse);
+      setNotificacoes((oldNotificacoes) => {
+        oldNotificacoes.unshift(notificacaoResponse);
+        return [...oldNotificacoes];
+      });
     });
   };
 
@@ -128,6 +131,25 @@ const NotificacaoModal = (props) => {
       };
     }
   }, [stompClient]);
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <>
@@ -193,6 +215,9 @@ const NotificacaoModal = (props) => {
                   sx={{
                     fontWeight: 600,
                   }}
+                  onClick={() => {
+                    lerTexto(texts.notificacaoModal.nenhumaNotificaçaoEncontrada);
+                  }}
                 >
                   {texts.notificacaoModal.nenhumaNotificaçaoEncontrada}
                 </Typography>
@@ -213,7 +238,11 @@ const NotificacaoModal = (props) => {
               }}
               // Se clicar ir para a pagina de notificacao
               onClick={() => {
-                navigate("/notificacao");
+                if(!props.lendo) {
+                  navigate("/notificacao");
+                } else {
+                  lerTexto(texts.notificacaoModal.verTudo);
+                }
               }}
             >
               {notificacoes.length > 0

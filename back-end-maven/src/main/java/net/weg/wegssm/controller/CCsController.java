@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 /**
@@ -25,7 +26,10 @@ public class CCsController {
     private CCsService ccsService;
 
     /**
-     * Função para salvar uma CC nova no banco, recebendo o objeto no body
+     * Método POST para salvar uma CC, recebendo o objeto no body
+     *
+     * @param ccDTO
+     * @return
      */
     @PostMapping
     public ResponseEntity<CC> save(@RequestBody @Valid CcDTO ccDTO) {
@@ -35,7 +39,10 @@ public class CCsController {
     }
 
     /**
-     * Função para excluir uma CC pelo seu ID, recebido como variável
+     * Método DELETE para excluir uma CC pelo seu ID
+     *
+     * @param id
+     * @return
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
@@ -46,4 +53,5 @@ public class CCsController {
         ccsService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body("CC deletado com sucesso.");
     }
+
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Box, Typography } from "@mui/material";
 
@@ -39,6 +39,25 @@ const FormularioDadosDemanda = (props) => {
     props.setDados({ ...props.dados, frequencia: texto });
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <>
       <Box
@@ -68,7 +87,13 @@ const FormularioDadosDemanda = (props) => {
 
           <Box>
             <Box className="flex" sx={{ marginTop: "3rem" }}>
-              <Typography fontSize={FontConfig.default} fontWeight={600}>
+              <Typography
+                fontSize={FontConfig.default}
+                fontWeight={600}
+                onClick={() => {
+                  lerTexto(texts.formularioDadosDemanda.problema);
+                }}
+              >
                 {texts.formularioDadosDemanda.problema}
               </Typography>
 
@@ -103,7 +128,11 @@ const FormularioDadosDemanda = (props) => {
 
           <Box>
             <Box className="flex" sx={{ marginTop: "3rem" }}>
-              <Typography fontSize={FontConfig.default} fontWeight={600}>
+              <Typography
+                fontSize={FontConfig.default}
+                fontWeight={600}
+                onClick={() => lerTexto(texts.formularioDadosDemanda.proposta)}
+              >
                 {texts.formularioDadosDemanda.proposta}
               </Typography>
 

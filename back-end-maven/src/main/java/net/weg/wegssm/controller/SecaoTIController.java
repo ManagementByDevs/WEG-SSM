@@ -13,20 +13,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/** Classe controller para as seções de TI */
+/**
+ * Classe controller para as seções de TI
+ */
 @RestController
 @AllArgsConstructor
 @RequestMapping("/weg_ssm/secao_ti")
 public class SecaoTIController {
 
-    /** Classe service das seções de TI */
+    /**
+     * Service das seções de TI
+     */
     private SecaoTIService secaoTIService;
 
     /**
      * Função para buscar todas as seções de TI
+     *
+     * @return
      */
     @GetMapping
     public ResponseEntity<List<SecaoTI>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(secaoTIService.findAll());
     }
+
 }

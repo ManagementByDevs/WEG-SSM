@@ -62,6 +62,25 @@ const ModalConfirmacao = (props) => {
     }
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Modal
       open={props.open}
@@ -88,6 +107,9 @@ const ModalConfirmacao = (props) => {
             fontSize={FontConfig.veryBig}
             className="text-center"
             sx={{ mt: 2 }}
+            onClick={() => {
+              lerTexto(mensagemModal(props.textoModal));
+            }}
           >
             {mensagemModal(props.textoModal)}
           </Typography>
@@ -95,8 +117,12 @@ const ModalConfirmacao = (props) => {
             {/* Botão de cancelar */}
             <Button
               onClick={() => {
-                props.setOpen(false);
-                props.onCancelClick(true);
+                if (!props.lendo) {
+                  props.setOpen(false);
+                  props.onCancelClick(true);
+                } else {
+                  lerTexto(texts.modalConfirmacao.cancelar);
+                }
               }}
               variant="container"
               disableElevation
@@ -115,8 +141,12 @@ const ModalConfirmacao = (props) => {
             {/* Botão de confirmação */}
             <Button
               onClick={() => {
-                props.setOpen(false);
-                props.onConfirmClick(false);
+                if (!props.lendo) {
+                  props.setOpen(false);
+                  props.onConfirmClick(false);
+                } else {
+                  lerTexto(mensagemBotao(props.textoBotao));
+                }
               }}
               variant="contained"
               disableElevation

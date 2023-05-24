@@ -9,18 +9,32 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe repository para a proposta
+ */
 @Repository
 public interface PropostaRepository extends JpaRepository<Proposta, Long> {
 
     /**
      * Método para encontrar uma proposta pelo código PPM
+     *
+     * @param ppm
+     * @param pageable
+     * @return
      */
     Page<Proposta> findByCodigoPPM(Long ppm, Pageable pageable);
 
     /**
      * Método para verificar se existe uma proposta com o código PPM
+     *
+     * @param ppm
+     * @return
      */
     Boolean existsByCodigoPPM(Long ppm);
+
+    /**
+     * Métodos utilizados pelo filtro
+     */
 
     Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Boolean visibilidade, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
 

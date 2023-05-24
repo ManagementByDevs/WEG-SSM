@@ -9,6 +9,9 @@ import net.weg.wegssm.model.entities.Usuario;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe DTO para a criação de uma mensagem
+ */
 @Data
 public class MensagemDTO {
 
@@ -17,6 +20,7 @@ public class MensagemDTO {
     private Boolean visto;
     private String texto;
     private StatusChat status;
+    private Long idDestinatario;
     private Usuario usuario;
     private Chat idChat;
     private Anexo anexo;

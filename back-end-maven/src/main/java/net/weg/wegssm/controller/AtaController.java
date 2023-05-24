@@ -29,7 +29,14 @@ import java.util.Optional;
 @RequestMapping("/weg_ssm/ata")
 public class AtaController {
 
+    /**
+     * Service da ata
+     */
     private AtaService ataService;
+
+    /**
+     * Service da proposta
+     */
     private PropostaService propostaService;
 
     /**
@@ -41,7 +48,7 @@ public class AtaController {
     }
 
     /**
-     * Método principal de busca das atas, com filtro de título das propostas presentes e paginação / ordenação
+     * Método GET de busca das atas, com filtro de título das propostas presentes e paginação / ordenação
      *
      * @param pageable - String de paginação e ordenação
      * @param titulo   - String com o título de uma proposta, para pesquisar as atas que contém tal proposta
@@ -67,6 +74,9 @@ public class AtaController {
 
     /**
      * Método GET para listar uma ata específica através do id
+     *
+     * @param id
+     * @return
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable(value = "id") Long id) {
@@ -79,6 +89,9 @@ public class AtaController {
 
     /**
      * Método GET para listar uma ata através de seu número sequencial
+     *
+     * @param numeroSequencial
+     * @return
      */
     @GetMapping("numeroSequencial/{numeroSequencial}")
     public ResponseEntity<Object> findByNumeroSequencial(@PathVariable(value = "numeroSequencial") String numeroSequencial) {
@@ -92,6 +105,9 @@ public class AtaController {
 
     /**
      * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais antiga para a mais recente
+     *
+     * @param pageable
+     * @return
      */
     @GetMapping("/ordenarInicioDataReuniaoAntiga")
     public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoAntiga(
@@ -102,6 +118,9 @@ public class AtaController {
 
     /**
      * Método GET para ordenar as atas por DATA DE INICIO REUNIAO, da mais recente para a mais antiga
+     *
+     * @param pageable
+     * @return
      */
     @GetMapping("/ordenarInicioDataReuniaoRecente")
     public ResponseEntity<Page<Ata>> findAllInicioDataReuniaoRecente(
@@ -112,6 +131,9 @@ public class AtaController {
 
     /**
      * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais antiga para a mais recente
+     *
+     * @param pageable
+     * @return
      */
     @GetMapping("/ordenarFimDataReuniaoAntiga")
     public ResponseEntity<Page<Ata>> findAllFimDataReuniaoAntiga(
@@ -122,6 +144,9 @@ public class AtaController {
 
     /**
      * Método GET para ordenar as atas por DATA DE FIM REUNIAO, da mais recente para a mais antiga
+     *
+     * @param pageable
+     * @return
      */
     @GetMapping("/ordenarFimDataReuniaoRecente")
     public ResponseEntity<Page<Ata>> findAllFimDataReuniaoRecente(
@@ -167,6 +192,13 @@ public class AtaController {
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));
     }
 
+    /**
+     * Método PUT para atualizar uma ata no banco de dados
+     *
+     * @param id
+     * @param ataDTO
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody AtaDTO ataDTO) {
         Optional<Ata> ataOptional = ataService.findById(id);
@@ -184,6 +216,9 @@ public class AtaController {
 
     /**
      * Método DELETE para colocar sua visibilidade como false
+     *
+     * @param id
+     * @return
      */
     @Transactional
     @DeleteMapping("/visibilidade/{id}")
@@ -201,6 +236,9 @@ public class AtaController {
 
     /**
      * Método DELETE para deletar uma ata
+     *
+     * @param id
+     * @return
      */
     @Transactional
     @DeleteMapping("/{id}")

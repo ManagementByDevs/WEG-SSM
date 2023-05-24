@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Modal, Typography, Box, Fade } from "@mui/material";
 
@@ -14,6 +14,25 @@ const ModalMotivoRecusa = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <Modal
@@ -49,7 +68,11 @@ const ModalMotivoRecusa = (props) => {
               cursor: "pointer",
             }}
           />
-          <Typography fontSize={FontConfig.veryBig}>
+          <Typography fontSize={FontConfig.veryBig}
+            onClick={() => {
+              lerTexto(texts.modalMotivoRecusa.motivoDaRecusa);
+            }}
+          >
             {texts.modalMotivoRecusa.motivoDaRecusa}
           </Typography>
           <Box
@@ -62,7 +85,11 @@ const ModalMotivoRecusa = (props) => {
             }}
           >
             {/* Motivo da recusa */}
-            <Typography fontSize={FontConfig.normal}>
+            <Typography fontSize={FontConfig.normal}
+              onClick={() => {
+                lerTexto(props.motivoRecusa);
+              }}
+            >
               {props.motivoRecusa}
             </Typography>
           </Box>

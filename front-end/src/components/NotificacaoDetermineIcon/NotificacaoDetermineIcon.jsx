@@ -6,7 +6,6 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 const NotificacaoDetermineIcon = ({ tipoIcone }) => {
-  
   // Determina o tipo do ícone da notificação
   return tipoIcone == "APROVADO" ? (
     <CheckCircleOutlineIcon
@@ -23,12 +22,12 @@ const NotificacaoDetermineIcon = ({ tipoIcone }) => {
       color="primary"
       sx={{ fontSize: "35px", marginX: "0.5rem" }}
     />
-  ) : (
+  ) : tipoIcone == "MENSAGENS" ? (
     <ChatBubbleOutlineIcon
       color="primary"
       sx={{ fontSize: "35px", marginX: "0.5rem" }}
     />
-  );
+  ) : null;
 };
 
 export default NotificacaoDetermineIcon;

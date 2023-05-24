@@ -17,7 +17,6 @@ import AnexoService from "../../service/anexoService";
 
 /** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -47,7 +46,7 @@ const FormularioAnexosDemanda = (props) => {
     for (let arquivo of arquivos) {
       AnexoService.save(arquivo).then((response) => {
         props.setDados([...props.dados, response]);
-      })
+      });
     }
   };
 
@@ -60,7 +59,9 @@ const FormularioAnexosDemanda = (props) => {
   /** Função para mudar o "textoCaixa" quando o usuário arrastar um arquivo para fora da caixa de seleção */
   const textoArrastarArquivo = (event) => {
     event.preventDefault();
-    setTextoCaixa(texts.formularioAnexosDemanda.arrasteSolteParaAdicionarUmArquivo);
+    setTextoCaixa(
+      texts.formularioAnexosDemanda.arrasteSolteParaAdicionarUmArquivo
+    );
   };
 
   /** Função para salvar os arquivos que forem arrastados para a caixa de seleção */
@@ -79,8 +80,30 @@ const FormularioAnexosDemanda = (props) => {
     });
   };
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
-    <Box className="flex justify-center items-center" sx={{ height: "45rem", minWidth: "50.5rem" }}>
+    <Box
+      className="flex justify-center items-center"
+      sx={{ height: "45rem", minWidth: "50.5rem" }}
+    >
       {/* Caixa de seleção */}
       <Box
         ref={areaArquivos}
@@ -91,7 +114,9 @@ const FormularioAnexosDemanda = (props) => {
         sx={{ width: "85%", height: "85%" }}
       >
         <input
-          onChange={() => { salvarArquivos(inputArquivos.current?.files) }}
+          onChange={() => {
+            salvarArquivos(inputArquivos.current?.files);
+          }}
           ref={inputArquivos}
           type="file"
           multiple
@@ -103,19 +128,42 @@ const FormularioAnexosDemanda = (props) => {
             <Typography
               fontSize={FontConfig.veryBig}
               color="text.secondary"
-              sx={{ fontWeight: "600", cursor: "default", marginBottom: "1rem", }}
+              sx={{
+                fontWeight: "600",
+                cursor: "default",
+                marginBottom: "1rem",
+              }}
+              onClick={() => {
+                lerTexto(textoCaixa);
+              }}
             >
               {textoCaixa}
             </Typography>
             <Typography
               fontSize={FontConfig.veryBig}
               color="text.secondary"
-              sx={{ fontWeight: "600", cursor: "default", marginBottom: "1rem", }}
+              sx={{
+                fontWeight: "600",
+                cursor: "default",
+                marginBottom: "1rem",
+              }}
+              onClick={() => {
+                lerTexto(texts.formularioAnexosDemanda.ou);
+              }}
             >
               {texts.formularioAnexosDemanda.ou}
             </Typography>
-            <Button onClick={clickInputArquivos} variant="contained" disableElevation >
-              <Typography fontSize={FontConfig.medium}>
+            <Button
+              onClick={clickInputArquivos}
+              variant="contained"
+              disableElevation
+            >
+              <Typography
+                fontSize={FontConfig.medium}
+                onClick={() => {
+                  lerTexto(texts.formularioAnexosDemanda.pesquisarArquivos);
+                }}
+              >
                 {texts.formularioAnexosDemanda.pesquisarArquivos}
               </Typography>
             </Button>
@@ -133,17 +181,38 @@ const FormularioAnexosDemanda = (props) => {
                 <TableHead className="border-b">
                   <TableRow>
                     <th>
-                      <Typography fontSize={FontConfig.big} color="text.primary" sx={{ fontWeight: "700", cursor: "default" }} >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        color="text.primary"
+                        sx={{ fontWeight: "700", cursor: "default" }}
+                        onClick={() => {
+                          lerTexto(texts.formularioAnexosDemanda.nome);
+                        }}
+                      >
                         {texts.formularioAnexosDemanda.nome}
                       </Typography>
                     </th>
                     <th>
-                      <Typography fontSize={FontConfig.big} color="text.primary" sx={{ fontWeight: "700", cursor: "default" }} >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        color="text.primary"
+                        sx={{ fontWeight: "700", cursor: "default" }}
+                        onClick={() => {
+                          lerTexto(texts.formularioAnexosDemanda.tipo);
+                        }}
+                      >
                         {texts.formularioAnexosDemanda.tipo}
                       </Typography>
                     </th>
                     <th>
-                      <Typography fontSize={FontConfig.big} color="text.primary" sx={{ fontWeight: "700", cursor: "default" }} >
+                      <Typography
+                        fontSize={FontConfig.big}
+                        color="text.primary"
+                        sx={{ fontWeight: "700", cursor: "default" }}
+                        onClick={() => {
+                          lerTexto(texts.formularioAnexosDemanda.remover);
+                        }}
+                      >
                         {texts.formularioAnexosDemanda.remover}
                       </Typography>
                     </th>
@@ -155,12 +224,26 @@ const FormularioAnexosDemanda = (props) => {
                     return (
                       <TableRow key={index} className="border-b">
                         <td className="text-center">
-                          <Typography fontSize={FontConfig.medium} color="text.secondary" sx={{ fontWeight: "500", cursor: "default" }} >
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            color="text.secondary"
+                            sx={{ fontWeight: "500", cursor: "default" }}
+                            onClick={() => {
+                              lerTexto(file.nome);
+                            }}
+                          >
                             {file.nome}
                           </Typography>
                         </td>
                         <td className="text-center">
-                          <Typography fontSize={FontConfig.medium} color="text.secondary" sx={{ fontWeight: "500", cursor: "default" }} >
+                          <Typography
+                            fontSize={FontConfig.medium}
+                            color="text.secondary"
+                            sx={{ fontWeight: "500", cursor: "default" }}
+                            onClick={() => {
+                              lerTexto(file.tipo);
+                            }}
+                          >
                             {file.tipo}
                           </Typography>
                         </td>

@@ -10,29 +10,49 @@ class NotificacaoService {
   mensagens = "MENSAGENS";
 
   async getByUserId(userId, page) {
-    return (await axios.get(`${notificacaoPath}/user/${userId}?${page}`, { withCredentials: true })).data;
+    return (
+      await axios.get(`${notificacaoPath}/user/${userId}?${page}`, {
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async getByDate(date) {
-    return (await axios.get(`${notificacaoPath}/date/${date}`, { withCredentials: true })).data;
+    return (
+      await axios.get(`${notificacaoPath}/date/${date}`, {
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async getByUserIdAndNotVisualizado(userId) {
     return (
-      await axios.get(`${notificacaoPath}/user/modal-notificacao/${userId}`, { withCredentials: true })
+      await axios.get(`${notificacaoPath}/user/modal-notificacao/${userId}`, {
+        withCredentials: true,
+      })
     ).data;
   }
 
   async post(notificacao) {
-    return (await axios.post(`${notificacaoPath}`, notificacao, { withCredentials: true })).data;
+    return (
+      await axios.post(`${notificacaoPath}`, notificacao, {
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async put(notificacao) {
-    return (await axios.put(`${notificacaoPath}`, notificacao, { withCredentials: true })).data;
+    return (
+      await axios.put(`${notificacaoPath}/${notificacao.id}`, notificacao, {
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async delete(id) {
-    return (await axios.delete(`${notificacaoPath}/${id}`, { withCredentials: true })).data;
+    return (
+      await axios.delete(`${notificacaoPath}/${id}`, { withCredentials: true })
+    ).data;
   }
 
   /**
@@ -50,7 +70,6 @@ class NotificacaoService {
       usuario: { id: demanda.solicitante.id },
     };
   }
-  
 }
 
 export default new NotificacaoService();

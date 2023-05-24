@@ -1,5 +1,21 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
-import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField, FormGroup, FormControlLabel, Checkbox, RadioGroup, Radio } from "@mui/material";
+import {
+  Modal,
+  Typography,
+  Box,
+  Button,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+  Autocomplete,
+  TextField,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  RadioGroup,
+  Radio,
+} from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
@@ -10,7 +26,6 @@ import UsuarioService from "../../service/usuarioService";
 
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -18,10 +33,10 @@ const ModalFiltroGerencia = (props) => {
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   /** Variável para armazenar o valor do radio button */
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState("");
 
   /** Variável para manter a seleção do radio button caso feche o modal */
-  const lastSelectedValueRef = useRef('');
+  const lastSelectedValueRef = useRef("");
 
   /** useEffect para pegar o valor do radio button caso o modal seja fechado */
   useEffect(() => {
@@ -38,16 +53,21 @@ const ModalFiltroGerencia = (props) => {
 
   /** Função para limpar os filtros ativos e fechar o modal */
   const limparFiltro = () => {
-    props.setFiltro({
-      solicitante: null,
-      forum: "",
-      tamanho: "",
-      gerente: null,
-      departamento: "",
-      analista: null,
-      presenteEm: "",
-    });
-    props.fecharModal();
+
+    if(!props.lendo) {
+      props.setFiltro({
+        solicitante: null,
+        forum: "",
+        tamanho: "",
+        gerente: null,
+        departamento: "",
+        analista: null,
+        presenteEm: "",
+      });
+      props.fecharModal();
+    } else {
+      lerTexto(texts.modalFiltroGerencia.limparFilros);
+    }
   };
 
   /** Pesquisa de solicitantes feita quando algum input é digitado */
@@ -178,7 +198,6 @@ const ModalFiltroGerencia = (props) => {
 
   /** Função para atualizar os filtros quando em pauta, em ata ou em edição for selecionado */
   const selecionarPresenteEm = (value) => {
-    localStorage.setItem('lastSelectedValue', value);
     props.setFiltro({
       solicitante: props.filtro.solicitante,
       forum: props.filtro.forum,
@@ -190,16 +209,9 @@ const ModalFiltroGerencia = (props) => {
       codigoPPM: props.filtro.codigoPPM,
       presenteEm: value,
     });
-  }
+  };
 
   // // ********************************************** Gravar audio **********************************************
-
-  // const [
-  //   feedbackErroNavegadorIncompativel,
-  //   setFeedbackErroNavegadorIncompativel,
-  // ] = useState(false);
-  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-  //   useState(false);
 
   const recognitionRef = useRef(null);
 
@@ -281,34 +293,26 @@ const ModalFiltroGerencia = (props) => {
     }
   }, [escutar]);
 
-  {
-    /* Feedback Erro reconhecimento de voz */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroReconhecimentoVoz}
-  handleClose={() => {
-    setFeedbackErroReconhecimentoVoz(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback12}
-/> */
-  }
-  {
-    /* Feedback Não navegador incompativel */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroNavegadorIncompativel}
-  handleClose={() => {
-    setFeedbackErroNavegadorIncompativel(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback13}
-/> */
-  }
-
   // // ********************************************** Fim Gravar audio **********************************************
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
 
   return (
     <Modal open={true} onClose={props.fecharModal} closeAfterTransition>
@@ -341,6 +345,9 @@ const ModalFiltroGerencia = (props) => {
             fontWeight={650}
             color={"primary.main"}
             fontSize={FontConfig.smallTitle}
+            onClick={() => {
+              lerTexto(texts.modalFiltroGerencia.filtros);
+            }}
           >
             {texts.modalFiltroGerencia.filtros}
           </Typography>
@@ -398,7 +405,12 @@ const ModalFiltroGerencia = (props) => {
 
               {/* Select de tamanho */}
               <FormControl sx={{ width: "15rem" }}>
-                <InputLabel id="demo-simple-select-label">
+                <InputLabel
+                  id="demo-simple-select-label"
+                  onClick={() => {
+                    lerTexto(texts.modalFiltroGerencia.tamanho);
+                  }}
+                >
                   {texts.modalFiltroGerencia.tamanho}
                 </InputLabel>
                 <Select
@@ -457,7 +469,11 @@ const ModalFiltroGerencia = (props) => {
 
               {/* Select de departamento */}
               <FormControl sx={{ width: "15rem" }}>
-                <InputLabel id="demo-simple-select-label">
+                <InputLabel id="demo-simple-select-label"
+                onClick={() => {
+                  lerTexto(texts.modalFiltroGerencia.departamento);
+                }}
+                >
                   {texts.modalFiltroGerencia.departamento}
                 </InputLabel>
                 <Select
@@ -516,14 +532,25 @@ const ModalFiltroGerencia = (props) => {
                 value={selectedValue}
                 onChange={handleChange}
               >
-                <FormControlLabel value="Ata" control={<Radio />} label="Em Ata" />
-                <FormControlLabel value="Pauta" control={<Radio />} label="Em Pauta" />
-                <FormControlLabel value="Nada" control={<Radio />} label="Em Edição" />
+                <FormControlLabel
+                  value="Ata"
+                  control={<Radio />}
+                  label="Em Ata"
+                />
+                <FormControlLabel
+                  value="Pauta"
+                  control={<Radio />}
+                  label="Em Pauta"
+                />
+                <FormControlLabel
+                  value="Nada"
+                  control={<Radio />}
+                  label="Em Edição"
+                />
               </RadioGroup>
-            </Box>) 
-            : null
-          }
-          
+            </Box>
+          ) : null}
+
           {/* Botão de limpar filtros */}
           <Button
             onClick={limparFiltro}

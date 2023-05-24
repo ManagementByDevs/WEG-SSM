@@ -59,7 +59,12 @@ const Contato = ({
   );
 };
 
-const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
+const Conteudo = ({
+  chat = EntitiesObjectService.chat(),
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
+}) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -74,32 +79,32 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
   }, []);
 
   const retornaNomeContato = () => {
+    console.log("User id: ", usuarioLogado.usuario.id);
     for (let user of chat.usuariosChat) {
-      if (usuarioLogado.usuario.id !== user.id) {
+      if (usuarioLogado.usuario.id != user.id) {
         setNomeContato(user.nome);
-        return;
       }
     }
   };
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (texto) => {
-    //   if (props.lendo) {
-    //     props.setTexto(texto);
-    //   }
+    if (lendo) {
+      setTexto(texto);
+    }
   };
 
   // // Função que irá "ouvir" o texto que será "lido" pela a API
-  // useEffect(() => {
-  //   if (props.lendo && props.texto != "") {
-  //     if ("speechSynthesis" in window) {
-  //       const synthesis = window.speechSynthesis;
-  //       const utterance = new SpeechSynthesisUtterance(props.texto);
-  //       synthesis.speak(utterance);
-  //     }
-  //     props.setTexto("");
-  //   }
-  // }, [props.texto]);
+  useEffect(() => {
+    if (lendo && texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(texto);
+        synthesis.speak(utterance);
+      }
+      setTexto("");
+    }
+  }, [texto]);
 
   return (
     <>

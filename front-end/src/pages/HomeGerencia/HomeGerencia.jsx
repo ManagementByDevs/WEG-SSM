@@ -40,9 +40,7 @@ import PautaService from "../../service/pautaService";
 import AtaService from "../../service/ataService";
 import CookieService from "../../service/cookieService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
-import { WebSocketContext } from "../../service/WebSocketService";
 import ColorModeContext from "../../service/TemaContext";
-import chatService from "../../service/chatService";
 import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
@@ -603,9 +601,11 @@ const HomeGerencia = (props) => {
 
   /** Função para buscar o usuário logado no sistema pelo cookie salvo no navegador */
   const buscarUsuario = () => {
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then((e) => {
-      setUsuario(e);
-    });
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (e) => {
+        setUsuario(e);
+      }
+    );
   };
 
   /** Função para buscar a lista de fóruns e departamentos do sistema para o modal de filtros */
@@ -949,16 +949,18 @@ const HomeGerencia = (props) => {
   const deletePauta = () => {
     // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
     for (let propostaAux of pautaSelecionada.propostas) {
-
       PropostaService.removerPresenca(propostaAux.id).then((response) => {
         // Salvamento de histórico
         ExportPdfService.exportProposta(response.id).then((file) => {
-
           let arquivo = new Blob([file], { type: "application/pdf" });
-          PropostaService.addHistorico(response.id, "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída", arquivo, CookieService.getUser().id).then(() => { });
+          PropostaService.addHistorico(
+            response.id,
+            "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
+            arquivo,
+            CookieService.getUser().id
+          ).then(() => {});
         });
-      }
-      );
+      });
     }
 
     // Deleta a pauta
@@ -1071,7 +1073,7 @@ const HomeGerencia = (props) => {
           break;
       }
 
-      recognition.onstart = () => { };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =

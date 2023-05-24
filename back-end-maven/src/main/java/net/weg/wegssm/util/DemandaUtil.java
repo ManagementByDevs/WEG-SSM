@@ -6,6 +6,9 @@ import net.weg.wegssm.model.entities.Demanda;
 
 import javax.validation.Valid;
 
+/**
+ * Classe Util para a demanda
+ */
 public class DemandaUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -23,7 +26,7 @@ public class DemandaUtil {
         }
     }
 
-    private DemandaDTO convertJsonToDTO(String demandaJSON){
+    private DemandaDTO convertJsonToDTO(String demandaJSON) {
         try {
             return this.objectMapper.readValue(demandaJSON, DemandaDTO.class);
         } catch (Exception e) {
@@ -31,7 +34,7 @@ public class DemandaUtil {
         }
     }
 
-    private Demanda convertDTOToModel(@Valid DemandaDTO demandaDTO){
+    private Demanda convertDTOToModel(@Valid DemandaDTO demandaDTO) {
         return this.objectMapper.convertValue(demandaDTO, Demanda.class);
     }
 

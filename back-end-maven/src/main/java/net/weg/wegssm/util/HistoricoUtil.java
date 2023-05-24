@@ -6,6 +6,9 @@ import net.weg.wegssm.model.entities.Historico;
 
 import javax.validation.Valid;
 
+/**
+ * Classe Util para o histórico
+ */
 public class HistoricoUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -15,7 +18,7 @@ public class HistoricoUtil {
         return convertDTOToModel(historicoDTO);
     }
 
-    private HistoricoDTO convertJsonToDTO(String historicoJson){
+    private HistoricoDTO convertJsonToDTO(String historicoJson) {
         try {
             return this.objectMapper.readValue(historicoJson, HistoricoDTO.class);
         } catch (Exception e) {
@@ -23,7 +26,8 @@ public class HistoricoUtil {
         }
     }
 
-    private Historico convertDTOToModel(@Valid HistoricoDTO historicoDTO){
+    private Historico convertDTOToModel(@Valid HistoricoDTO historicoDTO) {
         return this.objectMapper.convertValue(historicoDTO, Historico.class);
     }
+
 }

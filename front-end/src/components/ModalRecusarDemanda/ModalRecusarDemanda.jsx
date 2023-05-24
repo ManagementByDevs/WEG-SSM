@@ -103,6 +103,25 @@ const ModalRecusarDemanda = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <Modal
       open={props.open}
@@ -136,7 +155,12 @@ const ModalRecusarDemanda = (props) => {
               cursor: "pointer",
             }}
           />
-          <Typography fontSize={FontConfig.veryBig}>
+          <Typography
+            fontSize={FontConfig.veryBig}
+            onClick={() => {
+              lerTexto(texts.modalRecusarDemanda.motivoDaRecusa);
+            }}
+          >
             {texts.modalRecusarDemanda.motivoDaRecusa}
           </Typography>
 
@@ -187,7 +211,13 @@ const ModalRecusarDemanda = (props) => {
                 marginTop: "2%",
               }}
               variant="contained"
-              onClick={props.confirmRecusarDemanda}
+              onClick={() => {
+                if (!props.lendo) {
+                  props.confirmRecusarDemanda();
+                } else {
+                  lerTexto(texts.modalRecusarDemanda.enviar);
+                }
+              }}
             >
               {texts.modalRecusarDemanda.enviar}
             </Button>

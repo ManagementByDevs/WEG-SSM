@@ -40,8 +40,18 @@ import Feedback from "../Feedback/Feedback";
 const propostaExample = EntitiesObjectService.proposta();
 
 // Componente  para mostrar os detalhes de uma proposta e suas respectivas funções
-const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosProposta = () => { },
-  parecerComissao = "", parecerInformacao = "", parecerDG = "", parecerInformacaoDG = "" }) => {
+const DetalhesProposta = ({
+  propostaId = 0,
+  emAprovacao = false,
+  setDadosProposta = () => {},
+  parecerComissao = "",
+  parecerInformacao = "",
+  parecerDG = "",
+  parecerInformacaoDG = "",
+  lendo,
+  setTexto,
+  texto,
+}) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -228,6 +238,25 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
     });
   }, []);
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTexto(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (lendo && texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(texto);
+        synthesis.speak(utterance);
+      }
+      setTexto("");
+    }
+  }, [texto]);
+
   if (Object.values(proposta).some((value) => value === undefined))
     return <></>;
 
@@ -292,6 +321,7 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
               color="primary"
               fontWeight="bold"
               fontSize={FontConfig.big}
+              onClick={() => lerTexto(texts.detalhesProposta.ppm)}
             >
               {texts.detalhesProposta.ppm} {proposta.codigoPPM}{" "}
             </Typography>
@@ -299,6 +329,7 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
               color="primary"
               fontWeight="bold"
               fontSize={FontConfig.big}
+              onClick={() => lerTexto(texts.detalhesProposta.data)}
             >
               {texts.detalhesProposta.data}{" "}
               {DateService.getTodaysDateUSFormat(
@@ -309,6 +340,13 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
               color="primary"
               fontWeight="bold"
               fontSize={FontConfig.big}
+              onClick={() => {
+                if (proposta.publicada != null && proposta.publicada) {
+                  lerTexto(texts.detalhesProposta.publicada.toUpperCase());
+                } else {
+                  lerTexto(texts.detalhesProposta.naoPublicada.toUpperCase());
+                }
+              }}
             >
               {proposta.publicada != null
                 ? proposta.publicada
@@ -326,7 +364,11 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
         <Box className="w-full">
           {/* Titulo */}
           <Box>
-            <Typography color={"primary.main"} fontSize={FontConfig.smallTitle}>
+            <Typography
+              color={"primary.main"}
+              fontSize={FontConfig.smallTitle}
+              onClick={() => lerTexto(proposta.titulo)}
+            >
               {proposta.titulo}
             </Typography>
           </Box>
@@ -348,10 +390,23 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
             )}
             {/* Solicitante */}
             <Box className="flex mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.solicitante)}
+              >
                 {texts.detalhesProposta.solicitante}:&nbsp;
               </Typography>
-              <Typography fontSize={FontConfig.medium}>
+              <Typography
+                fontSize={FontConfig.medium}
+                onClick={() =>
+                  lerTexto(
+                    proposta.solicitante?.nome +
+                      " - " +
+                      proposta.solicitante?.departamento?.nome
+                  )
+                }
+              >
                 {proposta.solicitante?.nome} -{" "}
                 {proposta.solicitante?.departamento?.nome}
               </Typography>
@@ -359,10 +414,23 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
             {/* Bu solicitante */}
             <Box className="flex mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.buSolicitante)}
+              >
                 {texts.detalhesProposta.buSolicitante}:&nbsp;
               </Typography>
-              <Typography fontSize={FontConfig.medium}>
+              <Typography
+                fontSize={FontConfig.medium}
+                onClick={() =>
+                  lerTexto(
+                    proposta.buSolicitante?.siglaBu +
+                      " - " +
+                      proposta.buSolicitante?.nomeBu
+                  )
+                }
+              >
                 {proposta.buSolicitante?.siglaBu} -{" "}
                 {proposta.buSolicitante?.nomeBu}
               </Typography>
@@ -370,11 +438,25 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
             {/* Gerente */}
             <Box className="flex mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.gerente)}
+              >
                 {texts.detalhesProposta.gerente}:&nbsp;
               </Typography>
-              <Typography fontSize={FontConfig.medium}>
-                {proposta.gerente?.nome} - {proposta.gerente?.departamento?.nome}
+              <Typography
+                fontSize={FontConfig.medium}
+                onClick={() =>
+                  lerTexto(
+                    proposta.gerente?.nome +
+                      " - " +
+                      proposta.gerente?.departamento?.nome
+                  )
+                }
+              >
+                {proposta.gerente?.nome} -{" "}
+                {proposta.gerente?.departamento?.nome}
               </Typography>
             </Box>
 
@@ -382,21 +464,41 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
             <Box className="flex w-full justify-between mt-4">
               {/* Fórum */}
               <Box className="flex flex-row w-3/4">
-                <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                <Typography
+                  fontSize={FontConfig.medium}
+                  fontWeight="bold"
+                  onClick={() => lerTexto(texts.detalhesProposta.forum)}
+                >
                   {texts.detalhesProposta.forum}:&nbsp;
                 </Typography>
 
-                <Typography fontSize={FontConfig.medium}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  onClick={() =>
+                    lerTexto(
+                      proposta.forum?.siglaForum +
+                        " - " +
+                        proposta.forum?.nomeForum
+                    )
+                  }
+                >
                   {proposta.forum?.siglaForum} - {proposta.forum?.nomeForum}
                 </Typography>
               </Box>
               {/* Tamanho */}
               <Box className="flex flex-row">
-                <Typography fontSize={FontConfig.medium} fontWeight="bold">
+                <Typography
+                  fontSize={FontConfig.medium}
+                  fontWeight="bold"
+                  onClick={() => lerTexto(texts.detalhesProposta.tamanho)}
+                >
                   {texts.detalhesProposta.tamanho}:&nbsp;
                 </Typography>
 
-                <Typography fontSize={FontConfig.medium}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  onClick={() => lerTexto(proposta.tamanho)}
+                >
                   {proposta.tamanho}
                 </Typography>
               </Box>
@@ -404,57 +506,113 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
             {/* Secao TI */}
             <Box className="flex mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.secaoTi)}
+              >
                 {texts.detalhesProposta.secaoTi}:&nbsp;
               </Typography>
-              <Typography fontSize={FontConfig.medium}>
+              <Typography
+                fontSize={FontConfig.medium}
+                onClick={() =>
+                  lerTexto(
+                    proposta.secaoTI.siglaSecao +
+                      " - " +
+                      proposta.secaoTI.nomeSecao
+                  )
+                }
+              >
                 {proposta.secaoTI.siglaSecao} - {proposta.secaoTI.nomeSecao}
               </Typography>
             </Box>
 
             {/* Proposta / Objetivo */}
             <Box className="mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.proposta)}
+              >
                 {texts.detalhesProposta.proposta}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium} ref={propostaText} />
+                <Typography
+                  fontSize={FontConfig.medium}
+                  ref={propostaText}
+                  onClick={() => {
+                    lerTexto(propostaText);
+                  }}
+                />
               </Box>
             </Box>
 
             {/* Problema / Situação atual */}
             <Box className="mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.problema)}
+              >
                 {texts.detalhesProposta.problema}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium} ref={problemaText} />
+                <Typography
+                  fontSize={FontConfig.medium}
+                  ref={problemaText}
+                  onClick={() => {
+                    lerTexto(problemaText);
+                  }}
+                />
               </Box>
             </Box>
 
             {/* Escopo da proposta */}
             <Box className="mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() =>
+                  lerTexto(texts.detalhesProposta.escopoDaProposta)
+                }
+              >
                 {texts.detalhesProposta.escopoDaProposta}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                <Typography fontSize={FontConfig.medium} ref={textoEscopo} />
+                <Typography
+                  fontSize={FontConfig.medium}
+                  ref={textoEscopo}
+                  onClick={() => {
+                    lerTexto(textoEscopo);
+                  }}
+                />
               </Box>
             </Box>
 
             {/* Frequência */}
             <Box className="flex mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.frequencia)}
+              >
                 {texts.detalhesProposta.frequencia}:&nbsp;
               </Typography>
-              <Typography fontSize={FontConfig.medium}>
+              <Typography
+                fontSize={FontConfig.medium}
+                onClick={() => lerTexto(proposta.frequencia)}
+              >
                 {proposta.frequencia}
               </Typography>
             </Box>
 
             {/* Tabela de custos */}
             <Box className="mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.tabelaDeCustos)}
+              >
                 {texts.detalhesProposta.tabelaDeCustos}:&nbsp;
               </Typography>
               <Box className="mx-4">
@@ -466,7 +624,11 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
             {/* Benefícios */}
             <Box className="mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.beneficios)}
+              >
                 {texts.detalhesProposta.beneficios}:&nbsp;
               </Typography>
               <Box className="mx-4">
@@ -479,6 +641,9 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
                     className="text-center"
                     fontSize={FontConfig.medium}
                     color="text.secondary"
+                    onClick={() =>
+                      lerTexto(texts.detalhesProposta.semBeneficios)
+                    }
                   >
                     {texts.detalhesProposta.semBeneficios}
                   </Typography>
@@ -488,7 +653,11 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
             {/* BUs beneficiadas */}
             <Box className="mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.busBeneficiadas)}
+              >
                 {texts.detalhesProposta.busBeneficiadas}:&nbsp;
               </Typography>
               <Box className="mx-8">
@@ -496,7 +665,12 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
                   <ol className="list-disc">
                     {proposta.busBeneficiadas.map((bu, index) => {
                       return (
-                        <li key={index}>
+                        <li
+                          key={index}
+                          onClick={() => {
+                            lerTexto(bu.nomeBu);
+                          }}
+                        >
                           {bu.siglaBu} - {bu.nomeBu}
                         </li>
                       );
@@ -507,6 +681,9 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
                     className="text-center"
                     fontSize={FontConfig.medium}
                     color="text.secondary"
+                    onClick={() =>
+                      lerTexto(texts.detalhesProposta.semBuBeneficiada)
+                    }
                   >
                     {texts.detalhesProposta.semBuBeneficiada}
                   </Typography>
@@ -516,21 +693,49 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
             {/* Link do Jira */}
             <Box className="flex mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.linkJira)}
+              >
                 {texts.detalhesProposta.linkJira}:&nbsp;
               </Typography>
-              <Typography fontSize={FontConfig.medium}>
+              <Typography
+                fontSize={FontConfig.medium}
+                onClick={() => lerTexto(proposta.linkJira)}
+              >
                 {proposta.linkJira}
               </Typography>
             </Box>
 
             {/* Período de execução */}
             <Box className="flex flex-row mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() =>
+                  lerTexto(texts.detalhesProposta.periodoDeExecucao)
+                }
+              >
                 {texts.detalhesProposta.periodoDeExecucao}:&nbsp;
               </Typography>
 
-              <Typography fontSize={FontConfig.medium}>
+              <Typography
+                fontSize={FontConfig.medium}
+                onClick={() =>
+                  lerTexto(
+                    DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.inicioExecucao)
+                    ) +
+                      " " +
+                      texts.detalhesProposta.ate +
+                      " " +
+                      DateService.getTodaysDateUSFormat(
+                        DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                      )
+                  )
+                }
+              >
                 {DateService.getTodaysDateUSFormat(
                   DateService.getDateByMySQLFormat(proposta.inicioExecucao)
                 )}{" "}
@@ -543,11 +748,24 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
             {/* Payback */}
             <Box className="flex mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.payback)}
+              >
                 {texts.detalhesProposta.payback}:&nbsp;
               </Typography>
               <Box>
-                <Typography fontSize={FontConfig.medium}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  onClick={() =>
+                    lerTexto(
+                      proposta.paybackValor +
+                        " " +
+                        proposta.paybackTipo.toLowerCase()
+                    )
+                  }
+                >
                   {proposta.paybackValor} {proposta.paybackTipo.toLowerCase()}
                 </Typography>
               </Box>
@@ -555,7 +773,11 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
             {/* Anexos */}
             <Box className="mt-4">
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.anexos)}
+              >
                 {texts.detalhesProposta.anexos}:&nbsp;
               </Typography>
               <Box className="mx-4">
@@ -569,7 +791,12 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
                         sx={{ borderLeftColor: "primary.main" }}
                         square
                       >
-                        <Typography fontSize={FontConfig.medium}>
+                        <Typography
+                          fontSize={FontConfig.medium}
+                          onClick={() =>
+                            lerTexto(anexo.nome + " - " + anexo.tipo)
+                          }
+                        >
                           {anexo.nome} - {anexo.tipo}
                         </Typography>
                         <Tooltip title={texts.detalhesProposta.download}>
@@ -585,6 +812,7 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
                     className="text-center"
                     fontSize={FontConfig.medium}
                     color="text.secondary"
+                    onClick={() => lerTexto(texts.detalhesProposta.semAnexos)}
                   >
                     {texts.detalhesProposta.semAnexos}
                   </Typography>
@@ -596,12 +824,24 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
             <Box className="mt-6 mb-4 text-center">
               {proposta.responsavelNegocio.map((responsavel, index) => {
                 return (
-                  <Typography key={index} fontSize={FontConfig.medium}>
+                  <Typography
+                    key={index}
+                    fontSize={FontConfig.medium}
+                    onClick={() =>
+                      lerTexto(responsavel.nome + " - " + responsavel.area)
+                    }
+                  >
                     {responsavel.nome} - {responsavel.area}
                   </Typography>
                 );
               })}
-              <Typography fontSize={FontConfig.medium} fontWeight="bold">
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight="bold"
+                onClick={() =>
+                  lerTexto(texts.detalhesProposta.reponsaveisPeloNegocio)
+                }
+              >
                 {texts.detalhesProposta.reponsaveisPeloNegocio}
               </Typography>
             </Box>
@@ -611,7 +851,11 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
                 <Divider />
                 {/* Pareceres */}
                 <Box className="mt-3">
-                  <Typography fontSize={FontConfig.big} fontWeight="bold">
+                  <Typography
+                    fontSize={FontConfig.big}
+                    fontWeight="bold"
+                    onClick={() => lerTexto(texts.detalhesProposta.pareceres)}
+                  >
                     {texts.detalhesProposta.pareceres}:&nbsp;
                   </Typography>
                   <Box className="mx-4">
@@ -631,14 +875,14 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
                       "ASSESSMENT_EDICAO",
                       "CANCELLED",
                     ].includes(proposta.status) && (
-                        <ParecerDG
-                          proposta={proposta}
-                          setProposta={setProposta}
-                          setDadosProposta={setDadosProposta}
-                          parecerDG={parecerDG}
-                          parecerInformacaoDG={parecerInformacaoDG}
-                        />
-                      )}
+                      <ParecerDG
+                        proposta={proposta}
+                        setProposta={setProposta}
+                        setDadosProposta={setDadosProposta}
+                        parecerDG={parecerDG}
+                        parecerInformacaoDG={parecerInformacaoDG}
+                      />
+                    )}
                   </Box>
                 </Box>
               </>
@@ -799,9 +1043,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-        style: "currency",
-        currency: tipoMoeda,
-      })
+          style: "currency",
+          currency: tipoMoeda,
+        })
       : 0.0;
   };
 
@@ -956,10 +1200,10 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerComissao = "",
-  parecerInformacao = ""
+  parecerInformacao = "",
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
@@ -975,10 +1219,22 @@ const ParecerComissao = ({
 };
 
 // Chamar o parecer da DG
-const ParecerDG = ({ proposta = propostaExample, setProposta = () => { }, setDadosProposta = () => { }, parecerDG = "", parecerInformacaoDG = "" }) => {
+const ParecerDG = ({
+  proposta = propostaExample,
+  setProposta = () => {},
+  setDadosProposta = () => {},
+  parecerDG = "",
+  parecerInformacaoDG = "",
+}) => {
   if (proposta.status == "ASSESSMENT_DG")
     return (
-      <ParecerDGInsertText proposta={proposta} setProposta={setProposta} setDadosProposta={setDadosProposta} parecerDG={parecerDG} parecerInformacaoDG={parecerInformacaoDG} />
+      <ParecerDGInsertText
+        proposta={proposta}
+        setProposta={setProposta}
+        setDadosProposta={setDadosProposta}
+        parecerDG={parecerDG}
+        parecerInformacaoDG={parecerInformacaoDG}
+      />
     );
   return <ParecerDGOnlyRead proposta={proposta} />;
 };
@@ -986,10 +1242,10 @@ const ParecerDG = ({ proposta = propostaExample, setProposta = () => { }, setDad
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerComissao = "",
-  parecerInformacao = ""
+  parecerInformacao = "",
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1010,10 +1266,12 @@ const ParecerComissaoInsertText = ({
           label={texts.detalhesProposta.parecer}
           value={parecerComissao}
           onChange={(event) => {
-            setProposta({ ...proposta, parecerComissao: event.target.value })
-            setDadosProposta({ ...proposta, parecerComissao: event.target.value })
-          }
-          }
+            setProposta({ ...proposta, parecerComissao: event.target.value });
+            setDadosProposta({
+              ...proposta,
+              parecerComissao: event.target.value,
+            });
+          }}
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
         >
@@ -1043,8 +1301,8 @@ const ParecerComissaoInsertText = ({
         <CaixaTextoQuill
           texto={parecerInformacao}
           onChange={(e) => {
-            setProposta({ ...proposta, parecerInformacao: e })
-            setDadosProposta({ ...proposta, parecerInformacao: e })
+            setProposta({ ...proposta, parecerInformacao: e });
+            setDadosProposta({ ...proposta, parecerInformacao: e });
           }}
         />
       </Box>
@@ -1116,10 +1374,10 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerDG = "",
-  parecerInformacaoDG = ""
+  parecerInformacaoDG = "",
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1138,8 +1396,8 @@ const ParecerDGInsertText = ({
           label={texts.detalhesProposta.parecer}
           value={parecerDG || ""}
           onChange={(event) => {
-            setProposta({ ...proposta, parecerDG: event.target.value })
-            setDadosProposta({ ...proposta, parecerDG: event.target.value })
+            setProposta({ ...proposta, parecerDG: event.target.value });
+            setDadosProposta({ ...proposta, parecerDG: event.target.value });
           }}
           variant="standard"
           sx={{ width: "10rem", marginLeft: "0.5rem" }}
@@ -1160,8 +1418,8 @@ const ParecerDGInsertText = ({
         <CaixaTextoQuill
           texto={parecerInformacaoDG || ""}
           onChange={(e) => {
-            setProposta({ ...proposta, parecerInformacaoDG: e })
-            setDadosProposta({ ...proposta, parecerInformacaoDG: e })
+            setProposta({ ...proposta, parecerInformacaoDG: e });
+            setDadosProposta({ ...proposta, parecerInformacaoDG: e });
           }}
         />
       </Box>
@@ -1220,9 +1478,9 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  getCorStatus = () => { },
-  getStatusFormatted = () => { },
+  setProposta = () => {},
+  getCorStatus = () => {},
+  getStatusFormatted = () => {},
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1328,11 +1586,9 @@ const StatusProposta = ({
     setConfirmEditStatus(false);
 
     // Requisição para atualizar a proposta com o novo status
-    PropostaService.atualizarStatus(proposta.id, newStatus).then(
-      (response) => {
-        setProposta({ ...proposta, status: response.status });
-      }
-    );
+    PropostaService.atualizarStatus(proposta.id, newStatus).then((response) => {
+      setProposta({ ...proposta, status: response.status });
+    });
   };
 
   useEffect(() => {
@@ -1362,7 +1618,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
       />
       <Menu
         id="basic-menu"

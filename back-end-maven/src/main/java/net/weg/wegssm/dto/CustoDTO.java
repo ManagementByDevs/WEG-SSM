@@ -2,6 +2,9 @@ package net.weg.wegssm.dto;
 
 import lombok.Data;
 
+/**
+ * Classe DTO para a criação de um custo
+ */
 @Data
 public class CustoDTO {
 

@@ -278,9 +278,13 @@ const UserModal = (props) => {
 
   // Função para sair da conta do usuário
   const sair = () => {
-    CookieService.limparCookie('jwt');
-    CookieService.limparCookie('user');
-    navigate("/");
+    if(!props.lendo) {
+      CookieService.limparCookie('jwt');
+      CookieService.limparCookie('user');
+      navigate("/");
+    } else {
+      lerTexto(texts.userModal.sair);
+    }
   };
 
   // Personalizar o slider da fonte
@@ -464,6 +468,25 @@ const UserModal = (props) => {
     }
   }, [valueSlider]);
 
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (texto) => {
+    if (props.lendo) {
+      props.setTexto(texto);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (props.lendo && props.texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(props.texto);
+        synthesis.speak(utterance);
+      }
+      props.setTexto("");
+    }
+  }, [props.texto]);
+
   return (
     <>
       {/* Botão para abrir o menu */}
@@ -504,6 +527,9 @@ const UserModal = (props) => {
             color={"text.primary"}
             fontSize={FontConfig?.medium}
             sx={{ fontWeight: 600 }}
+            onClick={() => {
+              lerTexto(usuario.nome);
+            }}
           >
             {usuario.nome}
           </Typography>
@@ -512,6 +538,9 @@ const UserModal = (props) => {
               className="px-4"
               color={"text.secondary"}
               fontSize={FontConfig?.medium}
+              onClick={() => {
+                lerTexto(usuario.departamento.nome);
+              }}
             >
               {usuario.departamento.nome}
             </Typography>
@@ -555,6 +584,9 @@ const UserModal = (props) => {
               color={"text.primary"}
               fontSize={FontConfig?.medium}
               sx={{ fontWeight: 500 }}
+              onClick={() => {
+                lerTexto(texts.userModal.chats);
+              }}
             >
               {texts.userModal.chats}
             </Typography>

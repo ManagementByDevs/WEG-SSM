@@ -21,6 +21,7 @@ import ExportPdfService from "../../service/exportPdfService";
 import SecaoTIService from "../../service/secaoTIService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CookieService from "../../service/cookieService";
+import MoedasService from "../../service/moedasService";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
@@ -121,6 +122,28 @@ const BarraProgressaoProposta = (props) => {
     pesquisarSecoesTI();
   }, []);
 
+  const [valorDolar, setValorDolar] = useState(null);
+
+  useEffect(() => {
+    let valorTotal = 0;
+
+    for (const object in listaBeneficios) {
+      if (listaBeneficios[object].tipoBeneficio == "Real") {
+        valorTotal = valorTotal + parseFloat(listaBeneficios[object].valor_mensal);
+      }
+    }
+
+    MoedasService.getDolar().then((response) => {
+      setValorDolar(response);
+    });
+
+    const json = JSON.stringify(valorDolar);
+    
+
+    console.log("Valor total: " + valorTotal);
+    console.log("Valor dolar: " + json);
+  }, [listaBeneficios])
+
   useEffect(() => {
     if (!idEscopo) {
       if (!location.state.tabelaCustos) {
@@ -186,7 +209,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) {}
+      } catch (error) { }
 
       listaNova.push({
         id: beneficio.id,
@@ -275,7 +298,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -324,7 +347,7 @@ const BarraProgressaoProposta = (props) => {
     for (let beneficio of listaBeneficios) {
       beneficioService
         .put(beneficio, beneficio.memoriaCalculo)
-        .then((response) => {});
+        .then((response) => { });
     }
   };
 
@@ -441,7 +464,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
     for (const beneficio of listaBeneficiosExcluidos) {
-      beneficioService.delete(beneficio.id).then((response) => {});
+      beneficioService.delete(beneficio.id).then((response) => { });
     }
   };
 

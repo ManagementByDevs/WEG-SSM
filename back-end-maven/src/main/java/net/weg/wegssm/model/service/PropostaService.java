@@ -1,5 +1,6 @@
 package net.weg.wegssm.model.service;
 
+import lombok.AllArgsConstructor;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.repository.PropostaRepository;
 import org.springframework.data.domain.Page;
@@ -10,46 +11,99 @@ import javax.sound.sampled.Port;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Service para a entidade Proposta
+ */
 @Service
+@AllArgsConstructor
 public class PropostaService {
 
     private PropostaRepository propostaRepository;
 
-    public PropostaService(PropostaRepository propostaRepository) {
-        this.propostaRepository = propostaRepository;
-    }
-
+    /**
+     * Função para buscar todas as propostas
+     *
+     * @return
+     */
     public List<Proposta> findAll() {
         return propostaRepository.findAll();
     }
 
+    /**
+     * Função para buscar todas as propostas com paginação
+     *
+     * @param pageable
+     * @return
+     */
     public Page<Proposta> findAll(Pageable pageable) {
         return propostaRepository.findAll(pageable);
     }
 
+    /**
+     * Função para buscar uma proposta por id
+     *
+     * @param id
+     * @return
+     */
     public Optional<Proposta> findById(Long id) {
         return propostaRepository.findById(id);
     }
 
+    /**
+     * Função para buscar uma proposta por código ppm
+     *
+     * @param ppm
+     * @param pageable
+     * @return
+     */
     public Page<Proposta> findByPpm(Long ppm, Pageable pageable) {
         return propostaRepository.findByCodigoPPM(ppm, pageable);
     }
 
+    /**
+     * Função para verificar se existe uma proposta por id
+     *
+     * @param id
+     * @return
+     */
     public Boolean existsById(Long id) {
         return propostaRepository.existsById(id);
     }
 
+    /**
+     * Função para verificar se existe uma proposta por ppm
+     *
+     * @param ppm
+     * @return
+     */
     public Boolean existsByPpm(Long ppm) {
         return propostaRepository.existsByCodigoPPM(ppm);
     }
 
+    /**
+     * Função para salvar uma proposta
+     *
+     * @param entity
+     * @param <S>
+     * @return
+     */
     public <S extends Proposta> S save(S entity) {
         return propostaRepository.save(entity);
     }
 
+    /**
+     * Função para deletar uma proposta por id
+     *
+     * @param id
+     */
     public void deleteById(Long id) {
         propostaRepository.deleteById(id);
     }
+
+    /**
+     * Funções utilizadas para o filtro
+     */
 
     public Page<Proposta> findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Boolean visibilidade, Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
         return propostaRepository.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(visibilidade, status, titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
