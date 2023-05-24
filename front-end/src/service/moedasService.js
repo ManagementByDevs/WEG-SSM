@@ -11,7 +11,7 @@ class MoedasService {
                 headers: { "Content-Type": "application/json" },
 
             })
-        );
+        ).data;
     }
 
     async getEuro() {
@@ -20,7 +20,7 @@ class MoedasService {
                 headers: { "Content-Type": "application/json" },
 
             })
-        );
+        ).data;
     }
 }
 

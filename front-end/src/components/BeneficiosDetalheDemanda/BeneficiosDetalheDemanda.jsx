@@ -399,8 +399,8 @@ const BeneficiosDetalheDemanda = (props) => {
                               );
                             }}
                           >
-                            <MenuItem value={"Real"}>BR</MenuItem>
-                            <MenuItem value={"Dolar"}>UR</MenuItem>
+                            <MenuItem value={"Real"}>BRL</MenuItem>
+                            <MenuItem value={"Dolar"}>USD</MenuItem>
                             <MenuItem value={"Euro"}>EUR</MenuItem>
                           </Select>
                         </FormControl>
