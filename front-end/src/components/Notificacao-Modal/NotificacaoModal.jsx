@@ -70,7 +70,6 @@ const NotificacaoModal = (props) => {
       (user) => {
         NotificacaoService.getByUserIdAndNotVisualizado(user.id)
           .then((response) => {
-            console.log("notificacoes: ", response.content);
             setNotificacoes([...response.content]);
           })
           .catch((error) => {});
@@ -219,7 +218,9 @@ const NotificacaoModal = (props) => {
                     fontWeight: 600,
                   }}
                   onClick={() => {
-                    lerTexto(texts.notificacaoModal.nenhumaNotificaçaoEncontrada);
+                    lerTexto(
+                      texts.notificacaoModal.nenhumaNotificaçaoEncontrada
+                    );
                   }}
                 >
                   {texts.notificacaoModal.nenhumaNotificaçaoEncontrada}
@@ -241,7 +242,7 @@ const NotificacaoModal = (props) => {
               }}
               // Se clicar ir para a pagina de notificacao
               onClick={() => {
-                if(!props.lendo) {
+                if (!props.lendo) {
                   navigate("/notificacao");
                 } else {
                   lerTexto(texts.notificacaoModal.verTudo);

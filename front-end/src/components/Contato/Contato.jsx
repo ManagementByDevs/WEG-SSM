@@ -21,13 +21,18 @@ const Contato = ({
 
   // UseEffect para alterar a cor do contato quando ele for selecionado
   useEffect(() => {
-    if (idChat == chat.id) {
-      setCorSelecionado("chat.eu");
+    console.log("chat: ", chat);
+    if (idChat == 0) {
+      setCorSelecionado("transparent");
     } else {
-      if (chat.conversaEncerrada) {
-        setCorSelecionado("divider.claro");
+      if (idChat == chat.id) {
+        setCorSelecionado("chat.eu");
       } else {
-        setCorSelecionado("transparent");
+        if (chat.conversaEncerrada) {
+          setCorSelecionado("divider.claro");
+        } else {
+          setCorSelecionado("transparent");
+        }
       }
     }
   }, [idChat]);
@@ -59,7 +64,12 @@ const Contato = ({
   );
 };
 
-const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
+const Conteudo = ({
+  chat = EntitiesObjectService.chat(),
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
+}) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -75,31 +85,30 @@ const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
 
   const retornaNomeContato = () => {
     for (let user of chat.usuariosChat) {
-      if (usuarioLogado.usuario.id !== user.id) {
+      if (usuarioLogado.usuario.id != user.id) {
         setNomeContato(user.nome);
-        return;
       }
     }
   };
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (texto) => {
-    //   if (props.lendo) {
-    //     props.setTexto(texto);
-    //   }
+    if (lendo) {
+      setTexto(texto);
+    }
   };
 
-  // // Função que irá "ouvir" o texto que será "lido" pela a API
-  // useEffect(() => {
-  //   if (props.lendo && props.texto != "") {
-  //     if ("speechSynthesis" in window) {
-  //       const synthesis = window.speechSynthesis;
-  //       const utterance = new SpeechSynthesisUtterance(props.texto);
-  //       synthesis.speak(utterance);
-  //     }
-  //     props.setTexto("");
-  //   }
-  // }, [props.texto]);
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    if (lendo && texto != "") {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(texto);
+        synthesis.speak(utterance);
+      }
+      setTexto("");
+    }
+  }, [texto]);
 
   return (
     <>

@@ -58,4 +58,7 @@ public class Pauta {
     @JoinColumn(name = "pauta_id")
     private List<Proposta> propostas;
 
+    @Column
+    private Double score;
+
 }

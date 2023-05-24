@@ -21,6 +21,7 @@ import ExportPdfService from "../../service/exportPdfService";
 import SecaoTIService from "../../service/secaoTIService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CookieService from "../../service/cookieService";
+import MoedasService from "../../service/moedasService";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
@@ -121,6 +122,69 @@ const BarraProgressaoProposta = (props) => {
     pesquisarSecoesTI();
   }, []);
 
+  /** UseState utilizado para armazenar o valor mais atualizado do dólar */
+  const [valorDolar, setValorDolar] = useState(null);
+
+  /** UseState utilizado para armazenar o valor mais atualizado do euro */
+  const [valorEuro, setValorEuro] = useState(null);
+
+  /** UseState utilizado para armazenar a soma dos valores dos benefícios */
+  const [somaBeneficios, setSomaBeneficios] = useState(0.0);
+
+  /** UseState utilizado para armazenar a soma dos CCs */
+  const [somaCCs, setSomaCCs] = useState(0.0);
+
+  /** UseEffect utilizado para chamar a função de soma dos benefícios a cada mudança na lista */
+  useEffect(() => {
+    somaValorBeneficiosReais();
+  }, [listaBeneficios]);
+
+  /** UseEffect utilizado para chamar a função de soma dos CC a cada mudança na tabela de custos */
+  useEffect(() => {
+    somaCCPayback();
+  }, [custos])
+
+  /** Função para somar os valores dos benefícios */
+  const somaValorBeneficiosReais = () => {
+
+    let valorBeneficio = 0;
+
+    MoedasService.getDolar().then((response) => {
+      setValorDolar(response);
+    });
+
+    MoedasService.getEuro().then((response) => {
+      setValorEuro(response);
+    })
+
+    for (const object in listaBeneficios) {
+      if (listaBeneficios[object].tipoBeneficio == "Real") {
+        if (listaBeneficios[object].moeda == "Dolar") {
+          valorBeneficio = valorBeneficio + (parseFloat(listaBeneficios[object].valor_mensal) * valorDolar.USDBRL.bid);
+        } else if (listaBeneficios[object].moeda == "Euro") {
+          valorBeneficio = valorBeneficio + (parseFloat(listaBeneficios[object].valor_mensal) * valorEuro.EURBRL.bid);
+        } else {
+          valorBeneficio = valorBeneficio + parseFloat(listaBeneficios[object].valor_mensal);
+        }
+      }
+    }
+
+    setSomaBeneficios(valorBeneficio);
+  }
+
+  /** Função para salvar a soma dos CCs */
+  const somaCCPayback = () => {
+    let valorCC = 0;
+
+    for (const object in custos) {
+      for (const object2 in custos[object].custos) {
+        valorCC = valorCC + (parseFloat(custos[object].custos[object2].horas) * parseFloat(custos[object].custos[object2].valorHora));
+      }
+    }
+
+    setSomaCCs(valorCC);
+  }
+
   useEffect(() => {
     if (!idEscopo) {
       if (!location.state.tabelaCustos) {
@@ -186,7 +250,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) {}
+      } catch (error) { }
 
       listaNova.push({
         id: beneficio.id,
@@ -275,7 +339,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -324,7 +388,7 @@ const BarraProgressaoProposta = (props) => {
     for (let beneficio of listaBeneficios) {
       beneficioService
         .put(beneficio, beneficio.memoriaCalculo)
-        .then((response) => {});
+        .then((response) => { });
     }
   };
 
@@ -441,7 +505,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
     for (const beneficio of listaBeneficiosExcluidos) {
-      beneficioService.delete(beneficio.id).then((response) => {});
+      beneficioService.delete(beneficio.id).then((response) => { });
     }
   };
 

@@ -3,6 +3,7 @@ package net.weg.wegssm.controller;
 import lombok.AllArgsConstructor;
 import net.weg.wegssm.dto.AtaDTO;
 import net.weg.wegssm.model.entities.Ata;
+import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.service.AtaService;
 import net.weg.wegssm.model.service.PropostaService;
@@ -155,6 +156,23 @@ public class AtaController {
     }
 
     /**
+     * Função para calcular o score de uma ata através da soma dos scores das propostas presentes
+     *
+     * @param ata Ata a se calcular o score
+     * @return Score final da ata
+     */
+    private Double calcularScore(Ata ata) {
+        Double scoreFinal = 0.0;
+        for (Proposta proposta : ata.getPropostas()) {
+            proposta = propostaService.findById(proposta.getId()).get();
+
+            scoreFinal += proposta.getScore();
+        }
+
+        return scoreFinal;
+    }
+
+    /**
      * Método POST para cadastrar uma ata no banco de dados
      *
      * @param ataDto ( Objeto a ser cadastrado = req.body )
@@ -169,6 +187,7 @@ public class AtaController {
         Ata ata = new Ata();
         ata.setVisibilidade(true);
         BeanUtils.copyProperties(ataDto, ata);
+        ata.setScore(calcularScore(ata));
 
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));
     }
@@ -190,6 +209,7 @@ public class AtaController {
 
         Ata ata = ataOptional.get();
         BeanUtils.copyProperties(ataDTO, ata, "id");
+        ata.setScore(calcularScore(ata));
 
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));
     }

@@ -74,7 +74,7 @@ public class MensagemController {
 
         mensagem = mensagemService.save(mensagem);
 
-        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/all", mensagem);
+        simpMessagingTemplate.convertAndSend("/weg_ssm/mensagem/all/user/" + mensagemDTO.getIdDestinatario(), mensagem);
 
         return ResponseEntity.ok().body(mensagem);
     }
@@ -109,8 +109,8 @@ public class MensagemController {
      * @param mensagem
      * @return
      */
-    @MessageMapping("/weg_ssm/mensagem/all")
-    @SendTo("/weg_ssm/mensagem/all")
+    @MessageMapping("/weg_ssm/mensagem/all/user/{idUser}")
+    @SendTo("/weg_ssm/mensagem/all/user/{idUser}")
     public ResponseEntity<Object> receiveAnyMessage(@Payload() Mensagem mensagem) {
         System.out.println("Chegou aqui");
         return ResponseEntity.ok().body(mensagem);

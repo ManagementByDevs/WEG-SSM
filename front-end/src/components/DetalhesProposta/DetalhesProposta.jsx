@@ -388,20 +388,18 @@ const DetalhesProposta = ({
 
           {/* Box Informações gerais */}
           <Box className="relative">
-            {proposta.status != "CANCELLED" &&
-              proposta.presenteEm != "Pauta" &&
-              proposta.presenteEm != "Ata" && (
-                <Tooltip title={texts.detalhesProposta.editar}>
-                  <Box className="absolute -right-8 -top-2">
-                    <IconButton
-                      sx={{ color: "primary.main" }}
-                      onClick={handleOnEditClick}
-                    >
-                      {!isEditing ? <EditIcon /> : <EditOffIcon />}
-                    </IconButton>
-                  </Box>
-                </Tooltip>
-              )}
+            {proposta.status != "CANCELLED" && proposta.status != "DONE" && proposta.presenteEm != "Pauta" && (
+              <Tooltip title={texts.detalhesProposta.editar}>
+                <Box className="absolute -right-8 -top-2">
+                  <IconButton
+                    sx={{ color: "primary.main" }}
+                    onClick={handleOnEditClick}
+                  >
+                    {!isEditing ? <EditIcon /> : <EditOffIcon />}
+                  </IconButton>
+                </Box>
+              </Tooltip>
+            )}
             {/* Solicitante */}
             <Box className="flex mt-4">
               <Typography

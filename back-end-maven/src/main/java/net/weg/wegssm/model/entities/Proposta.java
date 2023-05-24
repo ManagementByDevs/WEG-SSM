@@ -72,6 +72,12 @@ public class Proposta {
     private Status status;
 
     /**
+     * Score da demanda
+     */
+    @Column(nullable = false)
+    private Double score;
+
+    /**
      * Data de criação da proposta
      */
     @Column

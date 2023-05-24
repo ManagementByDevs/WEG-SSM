@@ -58,6 +58,8 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
      */
     Page<Demanda> findByForum(Forum forum, Pageable pageable);
 
+    List<Demanda> findByStatusNotAndStatusNot(Status status, Status statusSecundario);
+
     /**
      * Método para listar as demandas a partir de um usuário ( id )
      *

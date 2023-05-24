@@ -63,4 +63,10 @@ public class Ata {
     @JoinColumn(name = "analista_id")
     private Usuario analistaResponsavel;
 
+    @Column
+    private Double score;
+
+    @Column
+    private Boolean publicadaDg;
+
 }

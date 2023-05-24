@@ -40,9 +40,7 @@ import PautaService from "../../service/pautaService";
 import AtaService from "../../service/ataService";
 import CookieService from "../../service/cookieService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
-import { WebSocketContext } from "../../service/WebSocketService";
 import ColorModeContext from "../../service/TemaContext";
-import chatService from "../../service/chatService";
 import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
@@ -557,6 +555,12 @@ const HomeGerencia = (props) => {
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
   useEffect(() => {
     let textoNovo = "";
+    if (ordenacaoScore[1]) {
+      textoNovo += "sort=score,desc&";
+    }
+    if (ordenacaoScore[0]) {
+      textoNovo += "sort=score,asc&";
+    }
     if (ordenacaoTitulo[1]) {
       textoNovo += "sort=titulo,asc&";
     }
@@ -1813,7 +1817,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
@@ -1840,7 +1844,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="4"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Box
                           sx={{

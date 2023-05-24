@@ -68,8 +68,6 @@ const Chat = (props) => {
   /** ID do chat passado por params */
   const idChatParam = useParams().id;
 
-  const [idChat, setIdChatState] = useState(idChatParam);
-
   /** Container das mensagens */
   const boxRef = useRef(null);
 
@@ -112,11 +110,16 @@ const Chat = (props) => {
     },
   ];
 
+  /** UseState para armazenar o ID do chat */
+  const [idChat, setIdChatState] = useState(idChatParam);
+
   /** UseState para pesquisar um contato da lista */
   const [pesquisaContato, setPesquisaContato] = useState("");
 
   /** UseState para armazenar os resultados da pesquisa */
-  const [resultadosContato, setResultadosContato] = useState([]);
+  const [resultadosContato, setResultadosContato] = useState([
+    EntitiesObjectService.chat(),
+  ]);
 
   /** UseState para controlar o loading de mensagens */
   const [buscandoMensagens, setBuscandoMensagens] = useState(true);
@@ -137,7 +140,7 @@ const Chat = (props) => {
   const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
 
   /** Lista de chats do usuário */
-  const [listaChats, setListaChats] = useState([]);
+  const [listaChats, setListaChats] = useState([EntitiesObjectService.chat()]);
 
   /** Mensagem que está sendo digitada */
   const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
@@ -187,6 +190,17 @@ const Chat = (props) => {
     setOpenModalReabrirChat(false);
   };
 
+  const getIdDestinatario = () => {
+    if (!idChat) return 0;
+
+    let chatAux = listaChats.find((chat) => chat.id == idChat);
+
+    if (!chatAux) return 0;
+
+    let userAux = chatAux.usuariosChat.find((e) => e.id != user.usuario.id);
+    return userAux.id;
+  };
+
   /** Seta a mensagem padrão */
   const setDefaultMensagem = () => {
     setMensagem({
@@ -196,6 +210,7 @@ const Chat = (props) => {
       status: "MESSAGE",
       usuario: { id: user.usuario.id },
       idChat: { id: idChat },
+      idDestinatario: getIdDestinatario(),
     });
   };
 
@@ -383,7 +398,7 @@ const Chat = (props) => {
     };
 
     let inscricaoAllMensagens = inscrever(
-      "/weg_ssm/mensagem/all",
+      `/weg_ssm/mensagem/all/user/${user.usuario.id}`,
       receivedAnyMessage
     );
 
@@ -459,26 +474,42 @@ const Chat = (props) => {
     }
   }, [stompClient, idChat]);
 
+  const containsUser = (
+    usuarios = [EntitiesObjectService.usuario()],
+    idUserLogado = 0,
+    nome = ""
+  ) => {
+    return usuarios.some(
+      (usuario) =>
+        usuario.id != idUserLogado && usuario.nome.toLowerCase().includes(nome)
+    );
+  };
+
   /** UseState para armazenar o contato selecionado */
   useEffect(() => {
-    const resultados = [];
-    listaChats.filter((chat) => {
-      for (let userChat of chat.usuariosChat) {
-        if (userChat.id != user.usuario.id) {
-          if (
-            userChat.nome.toLowerCase().includes(pesquisaContato.toLowerCase())
-          ) {
-            resultados.push(chat);
-          }
-        }
+    let listaChatsAux = listaChats.filter((chat) => {
+      // Pesquisa por código PPM
+      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
+        return true;
+      }
+
+      // Pesquisa pelo título da proposta
+      if (
+        chat.idProposta.titulo
+          .toLowerCase()
+          .includes(pesquisaContato.toLowerCase())
+      ) {
+        return true;
+      }
+
+      // Pesquisa pelo nome do contato
+      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
+        return true;
       }
     });
-    setResultadosContato(resultados);
+    setResultadosContato([...listaChatsAux]);
+    console.log("Lista de chats: ", listaChatsAux);
   }, [pesquisaContato, listaChats, idChat]);
-
-  useEffect(() => {
-    console.log("mensagens: ", mensagens);
-  }, [mensagens]);
 
   useEffect(() => {
     setBuscandoMensagens(false);
@@ -793,7 +824,7 @@ const Chat = (props) => {
                     }}
                     index={0}
                   />
-                ) : (
+                ) : resultadosContato[0].id != 0 ? (
                   resultadosContato.map((resultado, index) => {
                     return (
                       <Contato
@@ -808,7 +839,7 @@ const Chat = (props) => {
                       />
                     );
                   })
-                )}
+                ) : null}
               </Box>
               {!idChat ? (
                 <Box
