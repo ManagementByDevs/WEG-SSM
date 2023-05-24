@@ -1047,4 +1047,6 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, String presenteEm, Pageable pageable);
 
     Page<Proposta> findByVisibilidadeAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(boolean b, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, String presenteEm, Pageable pageable);
+
+    List<Proposta> findByStatusNotAndStatusNot(Status status, Status statusSecundario);
 }

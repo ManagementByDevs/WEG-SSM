@@ -557,6 +557,12 @@ const HomeGerencia = (props) => {
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
   useEffect(() => {
     let textoNovo = "";
+    if (ordenacaoScore[1]) {
+      textoNovo += "sort=score,desc&";
+    }
+    if (ordenacaoScore[0]) {
+      textoNovo += "sort=score,asc&";
+    }
     if (ordenacaoTitulo[1]) {
       textoNovo += "sort=titulo,asc&";
     }
@@ -1636,7 +1642,7 @@ const HomeGerencia = (props) => {
                   variant="contained"
                   disableElevation
                   onClick={() => {
-                    if(!props.lendo) {
+                    if (!props.lendo) {
                       navigate("/criar-demanda");
                     } else {
                       lerTexto(texts.homeGerencia.criarDemanda);
@@ -1745,7 +1751,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
@@ -1769,7 +1775,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="4"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Box
                           sx={{

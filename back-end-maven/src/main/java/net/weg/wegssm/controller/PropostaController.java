@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Classe controller para todas as ações envolvendo propostas
@@ -89,7 +90,7 @@ public class PropostaController {
      * @return ResponseEntity com a proposta buscada pelo código PPM
      */
     @GetMapping("/ppm/{ppm}")
-    public ResponseEntity<Page<Proposta>> findByPpm(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<Page<Proposta>> findByPpm(@PageableDefault(size = 20, sort = "score", direction = Sort.Direction.DESC) Pageable pageable,
                                                     @PathVariable(value = "ppm") Long ppm) {
         return ResponseEntity.status(200).body(propostaService.findByPpm(ppm, pageable));
     }
@@ -4002,8 +4003,68 @@ public class PropostaController {
             }
             tabelaCustoService.save(tabelaCusto);
         }
+        proposta.setScore(calcularScore(proposta));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(propostaService.save(proposta));
+    }
+
+    /**
+     * Função para calcular e retornar o score de uma proposta
+     * @param proposta Proposta usada para o cálculo de seu Score
+     * @return Score calculado da proposta recebida
+     */
+    private Double calcularScore(Proposta proposta) {
+        Double valorBeneficiosReais = 0.0;
+        Double valorBeneficiosPotenciais = 0.0;
+
+        for (Beneficio beneficio : proposta.getBeneficios()) {
+            beneficio = beneficioService.findById(beneficio.getId()).get();
+
+            if(beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
+                valorBeneficiosReais += beneficio.getValor_mensal();
+            }
+
+            if(beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
+                valorBeneficiosPotenciais += beneficio.getValor_mensal();
+            }
+        }
+        System.out.println("Reais:" + valorBeneficiosReais);
+        System.out.println("Potenciais: " + valorBeneficiosPotenciais);
+
+        Integer valorTamanhoDemanda;
+        if(proposta.getTamanho() == null) {
+            valorTamanhoDemanda = 1000000000;
+        } else if (proposta.getTamanho().equals("Muito Pequeno")) {
+            valorTamanhoDemanda = 40;
+        } else if(proposta.getTamanho().equals("Pequeno")) {
+            valorTamanhoDemanda = 300;
+        } else if(proposta.getTamanho().equals("Médio")) {
+            valorTamanhoDemanda = 1000;
+        } else if(proposta.getTamanho().equals("Grande")) {
+            valorTamanhoDemanda = 3000;
+        } else {
+            valorTamanhoDemanda = 5000;
+        }
+        System.out.println("Tamanho: " + valorTamanhoDemanda);
+
+        Long agingMilisegundos = Math.abs(new Date().getTime() - proposta.getData().getTime());
+        Long agingFinal = TimeUnit.DAYS.convert(agingMilisegundos, TimeUnit.MILLISECONDS);
+        System.out.println("Aging: " + agingFinal);
+
+        Usuario solicitante = usuarioService.findById(proposta.getSolicitante().getId()).get();
+        Integer valorPrioridade;
+        if(solicitante.getTipoUsuario().equals(TipoUsuario.SOLICITANTE)) {
+            valorPrioridade = 1;
+        } else if(solicitante.getTipoUsuario().equals(TipoUsuario.ANALISTA)) {
+            valorPrioridade = 2;
+        } else if(solicitante.getTipoUsuario().equals(TipoUsuario.GERENTE)) {
+            valorPrioridade = 4;
+        } else {
+            valorPrioridade = 16;
+        }
+        System.out.println("Valor Prioridade: " + valorPrioridade);
+
+        return (((2 * valorBeneficiosReais) + (1 * valorBeneficiosPotenciais) + agingFinal) / valorTamanhoDemanda) * valorPrioridade;
     }
 
     /**
@@ -4151,6 +4212,7 @@ public class PropostaController {
         }
 
         deleteAllObjectsRemoved(proposta);
+        proposta.setScore(calcularScore(proposta));
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }
@@ -4236,6 +4298,7 @@ public class PropostaController {
 
         Proposta proposta = propostaOptional.get();
         BeanUtils.copyProperties(propostaJaCriadaDTO, proposta, "id");
+        proposta.setScore(calcularScore(proposta));
 
         return ResponseEntity.status(HttpStatus.OK).body(propostaService.save(proposta));
     }

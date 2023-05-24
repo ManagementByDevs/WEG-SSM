@@ -334,7 +334,7 @@ const DetalhesProposta = ({ propostaId = 0, emAprovacao = false, setDadosPropost
 
           {/* Box Informações gerais */}
           <Box className="relative">
-            {proposta.status != "CANCELLED" && proposta.presenteEm != "Pauta" && proposta.presenteEm != "Ata" && (
+            {proposta.status != "CANCELLED" && proposta.status != "DONE" && proposta.presenteEm != "Pauta" && (
               <Tooltip title={texts.detalhesProposta.editar}>
                 <Box className="absolute -right-8 -top-2">
                   <IconButton

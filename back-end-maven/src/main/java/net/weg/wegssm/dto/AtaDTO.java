@@ -16,4 +16,5 @@ public class AtaDTO {
     private Boolean visibilidade;
     private List<Proposta> propostas;
     private Usuario analistaResponsavel;
+    private Boolean publicadaDg;
 }

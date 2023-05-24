@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Classe controller da demanda
@@ -44,6 +45,7 @@ public class DemandaController {
     private HistoricoService historicoService;
 
     private PDFGeneratorService pdfGeneratorService;
+    private BeneficioService beneficioService;
 
     /**
      * Método GET para buscar todas as demandas
@@ -77,7 +79,7 @@ public class DemandaController {
      * @return - Retorna uma página com as demandas encontradas
      */
     @GetMapping("/page")
-    public ResponseEntity<Page<Demanda>> findPage(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<Page<Demanda>> findPage(@PageableDefault(size = 20, sort = "score", direction = Sort.Direction.DESC) Pageable pageable,
                                                   @RequestParam(value = "id", required = false) Long id,
                                                   @RequestParam(value = "titulo", required = false) String titulo,
                                                   @RequestParam(value = "solicitante", required = false) String solicitanteJson,
@@ -3432,11 +3434,68 @@ public class DemandaController {
 
         Usuario solicitante = usuarioService.findById(demanda.getSolicitante().getId()).get();
         Usuario gerente = usuarioService.findByDepartamentoAndTipoUsuario(solicitante.getDepartamento(), TipoUsuario.GERENTE);
+
         demanda.setData(new Date());
         demanda.setDepartamento(solicitante.getDepartamento());
         demanda.setGerente(gerente);
+        demanda.setScore(calcularScore(demanda));
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
+    }
+
+    /**
+     * Função para calcular e retornar o score de uma demanda
+     *
+     * @param demanda Demanda usada para o cálculo de seu Score
+     * @return Score calculado da demanda recebida
+     */
+    private Double calcularScore(Demanda demanda) {
+        Double valorBeneficiosReais = 0.0;
+        Double valorBeneficiosPotenciais = 0.0;
+
+        for (Beneficio beneficio : demanda.getBeneficios()) {
+            beneficio = beneficioService.findById(beneficio.getId()).get();
+
+            if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
+                valorBeneficiosReais += beneficio.getValor_mensal();
+            }
+
+            if (beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
+                valorBeneficiosPotenciais += beneficio.getValor_mensal();
+            }
+        }
+
+        Integer valorTamanhoDemanda;
+        if (demanda.getTamanho() == null) {
+            valorTamanhoDemanda = 1000000000;
+        } else if (demanda.getTamanho().equals("Muito Pequeno")) {
+            valorTamanhoDemanda = 40;
+        } else if (demanda.getTamanho().equals("Pequeno")) {
+            valorTamanhoDemanda = 300;
+        } else if (demanda.getTamanho().equals("Médio")) {
+            valorTamanhoDemanda = 1000;
+        } else if (demanda.getTamanho().equals("Grande")) {
+            valorTamanhoDemanda = 3000;
+        } else {
+            valorTamanhoDemanda = 5000;
+        }
+
+        Long agingMilisegundos = Math.abs(new Date().getTime() - demanda.getData().getTime());
+        Long agingFinal = TimeUnit.DAYS.convert(agingMilisegundos, TimeUnit.MILLISECONDS);
+
+        Usuario solicitante = usuarioService.findById(demanda.getSolicitante().getId()).get();
+        Integer valorPrioridade;
+        if (solicitante.getTipoUsuario().equals(TipoUsuario.SOLICITANTE)) {
+            valorPrioridade = 1;
+        } else if (solicitante.getTipoUsuario().equals(TipoUsuario.ANALISTA)) {
+            valorPrioridade = 2;
+        } else if (solicitante.getTipoUsuario().equals(TipoUsuario.GERENTE)) {
+            valorPrioridade = 4;
+        } else {
+            valorPrioridade = 16;
+        }
+
+        return (((2 * valorBeneficiosReais) + (1 * valorBeneficiosPotenciais) + agingFinal) / valorTamanhoDemanda) * valorPrioridade;
     }
 
     /**
@@ -3446,6 +3505,7 @@ public class DemandaController {
     public ResponseEntity<Object> update(@RequestParam("demanda") String demandaJSON) {
         DemandaUtil demandaUtil = new DemandaUtil();
         Demanda demanda = demandaUtil.convertJsonToModelDirect(demandaJSON);
+        demanda.setScore(calcularScore(demanda));
 
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
@@ -3462,21 +3522,36 @@ public class DemandaController {
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.save(demanda));
     }
 
+    /**
+     * Função para adicionar um novo objeto Historico em uma demanda, salvando sua edição
+     * @param idDemanda ID da demanda a receber o histórico
+     * @param historicoJson Objeto com os dados principais do histórico em formato String
+     * @param documento Arquivo para ser transferido em DocumentoHistorico e salvo no histórico
+     * @return ResponseEntity com a demanda atualizada
+     */
     @PutMapping("/add-historico/{idDemanda}")
-    public ResponseEntity<Demanda> addHistorico(@PathVariable(value = "idDemanda") Long idDemanda,
+    public ResponseEntity<Object> addHistorico(@PathVariable(value = "idDemanda") Long idDemanda,
                                                 @RequestParam(value = "historico") String historicoJson,
                                                 @RequestParam(value = "documento") MultipartFile documento) {
+        Optional<Demanda> demandaOptional = demandaService.findById(idDemanda);
+        if(demandaOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Demanda não encontrada!");
+        }
+        Demanda demanda = demandaOptional.get();
 
+        // Conversão do históricoJson
         HistoricoUtil util = new HistoricoUtil();
         Historico historico = util.convertJsonToModel(historicoJson);
-        Demanda demanda = demandaService.findById(idDemanda).get();
 
+        // Conversão e atribuição do DocumentoHistorico
         historico.setDocumentoMultipart(documento);
-        List<Historico> listaHistorico = demanda.getHistoricoDemanda();
 
+        // Salvamento do nome do DocumentoHistorico, baseando seu número de versão no número de históricos total da demanda
+        List<Historico> listaHistorico = demanda.getHistoricoDemanda();
         DocumentoHistorico documentoHistorico = historico.getDocumentoHistorico();
         documentoHistorico.setNome(demanda.getTitulo() + " - Versão " + (listaHistorico.size() + 1));
 
+        // Adição e atribuição do novo histórico na lista de históricos da demanda
         listaHistorico.add(historicoService.save(historico));
         demanda.setHistoricoDemanda(listaHistorico);
 
@@ -3484,22 +3559,9 @@ public class DemandaController {
     }
 
     /**
-     * Método DELETE para editar uma demanda, editando sua visibilidade para false
-     */
-    @Transactional
-    @DeleteMapping("/visibilidade/{id}")
-    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
-        if (!demandaService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma demanda com este id.");
-        }
-
-        Demanda demanda = demandaService.findById(id).get();
-        demandaService.save(demanda);
-        return ResponseEntity.status(HttpStatus.OK).body(demanda);
-    }
-
-    /**
-     * Método DELETE para deletar uma demanda
+     * Função para excluir uma demanda a partir do seu ID, sendo passado como variável
+     * @param id ID da demanda a ser excluída
+     * @return ResponseEntity com uma String indicando o resultado da exclusão
      */
     @Transactional
     @DeleteMapping("/{id}")

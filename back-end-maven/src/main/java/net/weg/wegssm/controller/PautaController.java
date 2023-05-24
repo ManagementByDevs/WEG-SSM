@@ -132,6 +132,22 @@ public class PautaController {
     }
 
     /**
+     * Função para calcular o score de uma pauta através da soma dos scores das propostas presentes
+     * @param pauta Pauta a se calcular o score
+     * @return Score final da pauta
+     */
+    private Double calcularScore(Pauta pauta) {
+        Double scoreFinal = 0.0;
+        for (Proposta proposta : pauta.getPropostas()) {
+            proposta = propostaService.findById(proposta.getId()).get();
+
+            scoreFinal += proposta.getScore();
+        }
+
+        return scoreFinal;
+    }
+
+    /**
      * Método POST para criar uma pauta no banco de dados
      *
      * @param pautaDto ( Objeto a ser cadastrado = req.body )
@@ -140,6 +156,7 @@ public class PautaController {
     public ResponseEntity<Object> save(@RequestBody @Valid PautaDTO pautaDto) {
         Pauta pauta = new Pauta();
         BeanUtils.copyProperties(pautaDto, pauta);
+        pauta.setScore(calcularScore(pauta));
 
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
     }
@@ -159,6 +176,7 @@ public class PautaController {
 
         Pauta pauta = pautaOptinal.get();
         BeanUtils.copyProperties(pautaDto, pauta, "id");
+        pauta.setScore(calcularScore(pauta));
 
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.save(pauta));
     }

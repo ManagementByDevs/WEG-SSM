@@ -233,6 +233,7 @@ const DetalhesAta = (props) => {
 
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };
+    ataPublished.publicadaDg = true;
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
