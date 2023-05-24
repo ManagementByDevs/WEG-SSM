@@ -117,7 +117,9 @@ const Chat = (props) => {
   const [pesquisaContato, setPesquisaContato] = useState("");
 
   /** UseState para armazenar os resultados da pesquisa */
-  const [resultadosContato, setResultadosContato] = useState([]);
+  const [resultadosContato, setResultadosContato] = useState([
+    EntitiesObjectService.chat(),
+  ]);
 
   /** UseState para controlar o loading de mensagens */
   const [buscandoMensagens, setBuscandoMensagens] = useState(true);
@@ -506,11 +508,8 @@ const Chat = (props) => {
       }
     });
     setResultadosContato([...listaChatsAux]);
+    console.log("Lista de chats: ", listaChatsAux);
   }, [pesquisaContato, listaChats, idChat]);
-
-  useEffect(() => {
-    console.log("mensagens: ", mensagens);
-  }, [mensagens]);
 
   useEffect(() => {
     setBuscandoMensagens(false);
@@ -796,7 +795,7 @@ const Chat = (props) => {
                     }}
                     index={0}
                   />
-                ) : (
+                ) : resultadosContato[0].id != 0 ? (
                   resultadosContato.map((resultado, index) => {
                     return (
                       <Contato
@@ -811,7 +810,7 @@ const Chat = (props) => {
                       />
                     );
                   })
-                )}
+                ) : null}
               </Box>
               {!idChat ? (
                 <Box
