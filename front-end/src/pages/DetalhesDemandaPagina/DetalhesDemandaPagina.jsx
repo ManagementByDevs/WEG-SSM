@@ -76,13 +76,13 @@ const DetalhesDemandaPagina = ({
   const updateDemandaProps = (demanda) => {
     setDados({
       ...demanda,
-      problema: atob(demanda.problema),
-      proposta: atob(demanda.proposta),
+      problema: atob(demanda.problema).toString("utf-8"),
+      proposta: atob(demanda.proposta).toString("utf-8"),
     });
     location.state = {
       ...demanda,
-      problema: atob(demanda.problema),
-      proposta: atob(demanda.proposta),
+      problema: atob(demanda.problema).toString("utf-8"),
+      proposta: atob(demanda.proposta).toString("utf-8"),
     };
   };
 

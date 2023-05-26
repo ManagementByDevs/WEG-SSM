@@ -450,11 +450,6 @@ const DetalhesPropostaEditMode = ({
       propostaAux.parecerComissao = null;
     if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
 
-    console.log(
-      "Proposta a ser salva: ",
-      JSON.parse(JSON.stringify(propostaAux))
-    );
-
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
@@ -463,7 +458,6 @@ const DetalhesPropostaEditMode = ({
       novosAnexos,
       listaIdsAnexos
     ).then((response) => {
-      console.log("Proposta response: ", JSON.parse(JSON.stringify(response)));
       setPropostaData(response);
       setIsEditing(false);
 
@@ -967,16 +961,14 @@ const DetalhesPropostaEditMode = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
       setTexto("");
-    } else if (!lendo || countFala > 0) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
@@ -2019,16 +2011,14 @@ const TabelaCustos = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
       setTexto("");
-    } else if (!lendo || countFala > 0) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
@@ -2586,16 +2576,14 @@ const CustosRow = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
       setTexto("");
-    } else if (!lendo || countFala > 0) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
@@ -3010,16 +2998,14 @@ const Beneficio = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
       setTexto("");
-    } else if (!lendo || countFala > 0) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
@@ -3264,16 +3250,14 @@ const ParecerComissaoInsertText = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
       setTexto("");
-    } else if (!lendo || countFala > 0) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
@@ -3401,16 +3385,14 @@ const ParecerDGInsertText = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
       setTexto("");
-    } else if (!lendo || countFala > 0) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }

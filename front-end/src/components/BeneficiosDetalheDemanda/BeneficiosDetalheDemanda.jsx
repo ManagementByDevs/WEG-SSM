@@ -32,7 +32,7 @@ const BeneficiosDetalheDemanda = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // UseState utilizado para mudar a cor do textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -73,7 +73,7 @@ const BeneficiosDetalheDemanda = (props) => {
   });
 
   /** Função para formatar o texto html */
-  const getMemoriaCalculoFomartted = (memoria) => {
+  const getMemoriaCalculoFormatted = (memoria) => {
     return memoria[0].toUpperCase() + memoria.substring(1).toLowerCase();
   };
 
@@ -184,7 +184,7 @@ const BeneficiosDetalheDemanda = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != "" && countFala == 0) {
+    if (props.lendo && props.texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
@@ -532,13 +532,13 @@ const BeneficiosDetalheDemanda = (props) => {
                     ref={memoriaCalculo}
                     onClick={() => {
                       lerTexto(
-                        getMemoriaCalculoFomartted(
+                        getMemoriaCalculoFormatted(
                           props.beneficio.memoriaCalculo
                         )
                       );
                     }}
                   >
-                    {getMemoriaCalculoFomartted(props.beneficio.memoriaCalculo)}
+                    {getMemoriaCalculoFormatted(props.beneficio.memoriaCalculo)}
                   </Typography>
                 </td>
               </StyledTableRow>
