@@ -34,12 +34,12 @@ const ModalOrdenacao = (props) => {
     props.setOrdenacaoScore([false, !props.ordenacaoScore[1]]);
   };
 
-  /** Função para mudar o valor do checkbox de ordenação por título "Z-A" */
+  /** Função para mudar o valor do checkbox de ordenação por título "Z-A" ou por número sequencial "Decrescente" */
   const mudarCheck3 = () => {
     props.setOrdenacaoTitulo([!props.ordenacaoTitulo[0], false]);
   };
 
-  /** Função para mudar o valor do checkbox de ordenação por título "A-Z" */
+  /** Função para mudar o valor do checkbox de ordenação por título "A-Z" ou por número sequencial "Crescente" */
   const mudarCheck4 = () => {
     props.setOrdenacaoTitulo([false, !props.ordenacaoTitulo[1]]);
   };
@@ -204,7 +204,7 @@ const ModalOrdenacao = (props) => {
             <>
               {/* Checkboxes de número sequencial */}
               <Grid container spacing={0}>
-                <Grid item xs={9.2}>
+                <Grid item xs={12}>
                   <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
                     <Typography
                       sx={{
@@ -212,29 +212,29 @@ const ModalOrdenacao = (props) => {
                         fontSize: FontConfig.big,
                         fontWeight: "600",
                       }}
-                      onClick={() => lerTexto(texts.modalOrdenacao.titulo)}
+                      onClick={() => lerTexto(texts.modalOrdenacao.numeroSequencial)}
                     >
-                      {texts.modalOrdenacao.titulo}:
+                      {texts.modalOrdenacao.numeroSequencial}:
                     </Typography>
                     <div className="w-full flex justify-between items-center">
                       <FormControlLabel
                         checked={props.ordenacaoTitulo[1]}
                         onChange={mudarCheck4}
                         control={<Checkbox />}
-                        label={texts.modalOrdenacao.az}
+                        label={texts.modalOrdenacao.crescente}
                       />
                       <FormControlLabel
                         checked={props.ordenacaoTitulo[0]}
                         onChange={mudarCheck3}
                         control={<Checkbox />}
-                        label={texts.modalOrdenacao.za}
+                        label={texts.modalOrdenacao.decrescente}
                       />
                     </div>
                   </FormGroup>
                 </Grid>
               </Grid>
 
-              {/* Checkboxes de Data */}
+              {/* Checkboxes de Data da Reunião */}
               <Grid container spacing={0}>
                 <Grid item xs={"auto"}>
                   <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
@@ -244,9 +244,9 @@ const ModalOrdenacao = (props) => {
                         fontSize: FontConfig.big,
                         fontWeight: "600",
                       }}
-                      onClick={() => lerTexto(texts.modalOrdenacao.data)}
+                      onClick={() => lerTexto(texts.modalOrdenacao.dataReuniao)}
                     >
-                      {texts.modalOrdenacao.data}:
+                      {texts.modalOrdenacao.dataReuniao}:
                     </Typography>
                     <div className="w-full flex justify-between items-center">
                       <FormControlLabel
