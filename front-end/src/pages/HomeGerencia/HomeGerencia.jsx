@@ -1618,6 +1618,7 @@ const HomeGerencia = (props) => {
                       lendo={props.lendo}
                       texto={props.texto}
                       setTexto={props.setTexto}
+                      valorAba={valorAba}
                     />
                   )}
 
