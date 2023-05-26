@@ -160,9 +160,7 @@ public class PDFGeneratorService {
             tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
             tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
             tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
-            tableBeneficios.addCell(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
-
-//            tableBeneficios.addCell(XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(beneficio.getMemoriaCalculo().getBytes())));
+            tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
             document.add(tableBeneficios);
         }
@@ -260,7 +258,7 @@ public class PDFGeneratorService {
         // Adicionando o nome dos arquivos
 
         for (Anexo anexo : demanda.getAnexo()) {
-            Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontInformacoes);
+            Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + " - " + anexo.getTipo(), fontInformacoes);
             paragraphInfoAnexos.setIndentationLeft(40);
             paragraphInfoAnexos.setSpacingBefore(5);
 
@@ -605,7 +603,7 @@ public class PDFGeneratorService {
             tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
             tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
             tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
-            tableBeneficios.addCell(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+            tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
             document.add(tableBeneficios);
         }
@@ -654,7 +652,7 @@ public class PDFGeneratorService {
         // Adicionando o nome dos anexos
 
         for (Anexo anexo : proposta.getDemanda().getAnexo()) {
-            Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontInformacoes);
+            Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + " - " + anexo.getTipo(), fontInformacoes);
             paragraphInfoAnexos.setIndentationLeft(40);
             paragraphInfoAnexos.setSpacingBefore(5);
 
@@ -1065,7 +1063,7 @@ public class PDFGeneratorService {
                 tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
                 tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
                 tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
-                tableBeneficios.addCell(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
                 document.add(tableBeneficios);
             }
@@ -1114,7 +1112,7 @@ public class PDFGeneratorService {
             // Adicionando o nome dos anexos
 
             for (Anexo anexo : proposta.getDemanda().getAnexo()) {
-                Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontInformacoes);
+                Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + " - " + anexo.getTipo(), fontInformacoes);
                 paragraphInfoAnexos.setIndentationLeft(40);
                 paragraphInfoAnexos.setSpacingBefore(5);
 
@@ -1536,7 +1534,7 @@ public class PDFGeneratorService {
                 tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
                 tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
                 tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
-                tableBeneficios.addCell(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8));
+                tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
                 document.add(tableBeneficios);
             }
@@ -1585,7 +1583,7 @@ public class PDFGeneratorService {
             // Adicionando o nome dos anexos
 
             for (Anexo anexo : proposta.getDemanda().getAnexo()) {
-                Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + "." + anexo.getTipo(), fontInformacoes);
+                Paragraph paragraphInfoAnexos = new Paragraph(anexo.getNome() + " - " + anexo.getTipo(), fontInformacoes);
                 paragraphInfoAnexos.setIndentationLeft(40);
                 paragraphInfoAnexos.setSpacingBefore(5);
 
