@@ -172,7 +172,7 @@ public class Proposta {
     /**
      * Lista de benefícios da proposta
      */
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "proposta_id")
     private List<Beneficio> beneficios = new ArrayList<>();
 

@@ -144,6 +144,10 @@ const BarraProgressaoProposta = (props) => {
     somaCCPayback();
   }, [custos])
 
+  useEffect(() => {
+    calculoDiasPayback();
+  }, [listaBeneficios, custos])
+
   /** Função para somar os valores dos benefícios */
   const somaValorBeneficiosReais = () => {
 
@@ -183,6 +187,12 @@ const BarraProgressaoProposta = (props) => {
     }
 
     setSomaCCs(valorCC);
+  }
+
+  /** Cálculo para calcular a quantidade automático */
+  const calculoDiasPayback = () => {
+    console.log("Valor benefício: " + somaBeneficios);
+    console.log("Valor custos: " + somaCCs);
   }
 
   useEffect(() => {

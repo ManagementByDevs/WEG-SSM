@@ -797,7 +797,6 @@ const Chat = (props) => {
                 </Box>
                 {isTourOpen ? (
                   <Contato
-                    key={0}
                     idChat={idChat}
                     chat={{
                       conversa_encerrada: false,
@@ -824,7 +823,7 @@ const Chat = (props) => {
                     }}
                     index={0}
                   />
-                ) : resultadosContato[0].id != 0 ? (
+                ) : resultadosContato[0]?.id != 0 ? (
                   resultadosContato.map((resultado, index) => {
                     return (
                       <Contato
