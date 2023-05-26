@@ -482,6 +482,7 @@ const HomeGerencia = (props) => {
 
   // UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada
   useEffect(() => {
+    formatarOrdenacao();
     switch (valorAba) {
       case "1":
         setParams({
@@ -552,32 +553,9 @@ const HomeGerencia = (props) => {
     buscarItens();
   }, [params, paginaAtual, tamanhoPagina, paramsPautas, paramsAtas, ordenacao]);
 
-  // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal
+  // UseEffect para chamar a função "formatarOrdenacao" quando o modal de ordenação for editado
   useEffect(() => {
-    let textoNovo = "";
-    if (ordenacaoScore[1]) {
-      textoNovo += "sort=score,desc&";
-    }
-    if (ordenacaoScore[0]) {
-      textoNovo += "sort=score,asc&";
-    }
-    if (ordenacaoTitulo[1]) {
-      textoNovo += "sort=titulo,asc&";
-    }
-    if (ordenacaoTitulo[0]) {
-      textoNovo += "sort=titulo,desc&";
-    }
-    if (ordenacaoDate[0]) {
-      textoNovo += "sort=data,asc&";
-    }
-    if (ordenacaoDate[1]) {
-      textoNovo += "sort=data,desc&";
-    }
-    if (textoNovo == "") {
-      textoNovo = "sort=id,asc&";
-    }
-
-    setOrdenacao(textoNovo);
+    formatarOrdenacao();
   }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
 
   // UseEffect para retirar o ícone de carregamento quando os itens forem buscados do banco de dados
@@ -637,6 +615,50 @@ const HomeGerencia = (props) => {
       setTotalPaginas(response.totalPages);
     });
   };
+
+  /** Função para formatar o texto de ordenação para envio como pageable à API */
+  const formatarOrdenacao = () => {
+    let textoNovo = "";
+    if (ordenacaoScore[1]) {
+      textoNovo += "sort=score,desc&";
+    }
+    if (ordenacaoScore[0]) {
+      textoNovo += "sort=score,asc&";
+    }
+    if (ordenacaoTitulo[1]) {
+      if(valorAba < 5) {
+        textoNovo += "sort=titulo,asc&";
+      } else {
+        textoNovo += "sort=numeroSequencial,asc&"
+      }
+    }
+    if (ordenacaoTitulo[0]) {
+      if(valorAba < 5) {
+        textoNovo += "sort=titulo,desc&";
+      } else {
+        textoNovo += "sort=numeroSequencial,desc&"
+      }
+    }
+    if (ordenacaoDate[0]) {
+      if(valorAba < 5) {
+        textoNovo += "sort=data,asc&";
+      } else {
+        textoNovo += "sort=dataReuniao,asc&"
+      }
+    }
+    if (ordenacaoDate[1]) {
+      if(valorAba < 5) {
+        textoNovo += "sort=data,desc&";
+      } else {
+        textoNovo += "sort=dataReuniao,desc&"
+      }
+    }
+    if (textoNovo == "") {
+      textoNovo = "sort=id,asc&";
+    }
+
+    setOrdenacao(textoNovo);
+  }
 
   /** Função para formatar os campos necessários das demandas e propostas para HTML */
   const formatarItens = (listaDemandas) => {
@@ -1121,15 +1143,21 @@ const HomeGerencia = (props) => {
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (props.lendo && props.texto != "") {
+    let countFala = 0;
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(props.texto);
+    if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(props.texto);
         synthesis.speak(utterance);
+        countFala++;
       }
       props.setTexto("");
+    } else if (!props.lendo || countFala > 0) {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <FundoComHeader
@@ -1613,6 +1641,7 @@ const HomeGerencia = (props) => {
                       lendo={props.lendo}
                       texto={props.texto}
                       setTexto={props.setTexto}
+                      valorAba={valorAba}
                     />
                   )}
 

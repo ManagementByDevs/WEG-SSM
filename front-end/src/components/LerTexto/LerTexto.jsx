@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Box, Tooltip } from "@mui/material";
 import { styled } from "@mui/system";
 
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 const LerTexto = (props) => {
   // ********************************************** Funções de ler texto **********************************************
@@ -13,7 +13,7 @@ const LerTexto = (props) => {
   );
 
   const lerTexto = () => {
-      props.setLendo(!props.lendo);
+    props.setLendo(!props.lendo);
   };
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const LerTexto = (props) => {
           background: corButton,
           right: 0,
           top: "33%",
-          zIndex: 1000,
+          zIndex: 9999999,
         }}
         onClick={lerTexto}
       >

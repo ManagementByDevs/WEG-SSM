@@ -34,12 +34,12 @@ const ModalOrdenacao = (props) => {
     props.setOrdenacaoScore([false, !props.ordenacaoScore[1]]);
   };
 
-  /** Função para mudar o valor do checkbox de ordenação por título "Z-A" */
+  /** Função para mudar o valor do checkbox de ordenação por título "Z-A" ou por número sequencial "Decrescente" */
   const mudarCheck3 = () => {
     props.setOrdenacaoTitulo([!props.ordenacaoTitulo[0], false]);
   };
 
-  /** Função para mudar o valor do checkbox de ordenação por título "A-Z" */
+  /** Função para mudar o valor do checkbox de ordenação por título "A-Z" ou por número sequencial "Crescente" */
   const mudarCheck4 = () => {
     props.setOrdenacaoTitulo([false, !props.ordenacaoTitulo[1]]);
   };
@@ -63,15 +63,21 @@ const ModalOrdenacao = (props) => {
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (props.lendo && props.texto != "") {
+    let countFala = 0;
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(props.texto);
+    if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(props.texto);
         synthesis.speak(utterance);
+        countFala++;
       }
       props.setTexto("");
+    } else if (!props.lendo || countFala > 0) {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <Modal
@@ -134,68 +140,139 @@ const ModalOrdenacao = (props) => {
               </FormGroup>
             </Grid>
           </Grid>
-          {/* Checkboxes de título */}
-          <Grid container spacing={0}>
-            <Grid item xs={9.2}>
-              <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
-                <Typography
-                  sx={{
-                    color: "secundary.main",
-                    fontSize: FontConfig.big,
-                    fontWeight: "600",
-                  }}
-                  onClick={() => lerTexto(texts.modalOrdenacao.titulo)}
-                >
-                  {texts.modalOrdenacao.titulo}:
-                </Typography>
-                <div className="w-full flex justify-between items-center">
-                  <FormControlLabel
-                    checked={props.ordenacaoTitulo[1]}
-                    onChange={mudarCheck4}
-                    control={<Checkbox />}
-                    label={texts.modalOrdenacao.az}
-                  />
-                  <FormControlLabel
-                    checked={props.ordenacaoTitulo[0]}
-                    onChange={mudarCheck3}
-                    control={<Checkbox />}
-                    label={texts.modalOrdenacao.za}
-                  />
-                </div>
-              </FormGroup>
-            </Grid>
-          </Grid>
-          {/* Checkboxes de Data */}
-          <Grid container spacing={0}>
-            <Grid item xs={"auto"}>
-              <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
-                <Typography
-                  sx={{
-                    color: "secundary.main",
-                    fontSize: FontConfig.big,
-                    fontWeight: "600",
-                  }}
-                  onClick={() => lerTexto(texts.modalOrdenacao.data)}
-                >
-                  {texts.modalOrdenacao.data}:
-                </Typography>
-                <div className="w-full flex justify-between items-center">
-                  <FormControlLabel
-                    checked={props.ordenacaoDate[1]}
-                    onChange={mudarCheck6}
-                    control={<Checkbox />}
-                    label={texts.modalOrdenacao.maisRecente}
-                  />
-                  <FormControlLabel
-                    checked={props.ordenacaoDate[0]}
-                    onChange={mudarCheck5}
-                    control={<Checkbox />}
-                    label={texts.modalOrdenacao.maisAntiga}
-                  />
-                </div>
-              </FormGroup>
-            </Grid>
-          </Grid>
+          {props.valorAba < 5 ? (
+            <>
+              {/* Checkboxes de título */}
+              <Grid container spacing={0}>
+                <Grid item xs={9.2}>
+                  <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
+                    <Typography
+                      sx={{
+                        color: "secundary.main",
+                        fontSize: FontConfig.big,
+                        fontWeight: "600",
+                      }}
+                      onClick={() => lerTexto(texts.modalOrdenacao.titulo)}
+                    >
+                      {texts.modalOrdenacao.titulo}:
+                    </Typography>
+                    <div className="w-full flex justify-between items-center">
+                      <FormControlLabel
+                        checked={props.ordenacaoTitulo[1]}
+                        onChange={mudarCheck4}
+                        control={<Checkbox />}
+                        label={texts.modalOrdenacao.az}
+                      />
+                      <FormControlLabel
+                        checked={props.ordenacaoTitulo[0]}
+                        onChange={mudarCheck3}
+                        control={<Checkbox />}
+                        label={texts.modalOrdenacao.za}
+                      />
+                    </div>
+                  </FormGroup>
+                </Grid>
+              </Grid>
+
+              {/* Checkboxes de Data */}
+              <Grid container spacing={0}>
+                <Grid item xs={"auto"}>
+                  <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
+                    <Typography
+                      sx={{
+                        color: "secundary.main",
+                        fontSize: FontConfig.big,
+                        fontWeight: "600",
+                      }}
+                      onClick={() => lerTexto(texts.modalOrdenacao.data)}
+                    >
+                      {texts.modalOrdenacao.data}:
+                    </Typography>
+                    <div className="w-full flex justify-between items-center">
+                      <FormControlLabel
+                        checked={props.ordenacaoDate[1]}
+                        onChange={mudarCheck6}
+                        control={<Checkbox />}
+                        label={texts.modalOrdenacao.maisRecente}
+                      />
+                      <FormControlLabel
+                        checked={props.ordenacaoDate[0]}
+                        onChange={mudarCheck5}
+                        control={<Checkbox />}
+                        label={texts.modalOrdenacao.maisAntiga}
+                      />
+                    </div>
+                  </FormGroup>
+                </Grid>
+              </Grid>
+            </>
+          ) : (
+            <>
+              {/* Checkboxes de número sequencial */}
+              <Grid container spacing={0}>
+                <Grid item xs={12}>
+                  <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
+                    <Typography
+                      sx={{
+                        color: "secundary.main",
+                        fontSize: FontConfig.big,
+                        fontWeight: "600",
+                      }}
+                      onClick={() => lerTexto(texts.modalOrdenacao.numeroSequencial)}
+                    >
+                      {texts.modalOrdenacao.numeroSequencial}:
+                    </Typography>
+                    <div className="w-full flex justify-between items-center">
+                      <FormControlLabel
+                        checked={props.ordenacaoTitulo[1]}
+                        onChange={mudarCheck4}
+                        control={<Checkbox />}
+                        label={texts.modalOrdenacao.crescente}
+                      />
+                      <FormControlLabel
+                        checked={props.ordenacaoTitulo[0]}
+                        onChange={mudarCheck3}
+                        control={<Checkbox />}
+                        label={texts.modalOrdenacao.decrescente}
+                      />
+                    </div>
+                  </FormGroup>
+                </Grid>
+              </Grid>
+
+              {/* Checkboxes de Data da Reunião */}
+              <Grid container spacing={0}>
+                <Grid item xs={"auto"}>
+                  <FormGroup className="flex w-full h-full justify-evenly items-start flex-col">
+                    <Typography
+                      sx={{
+                        color: "secundary.main",
+                        fontSize: FontConfig.big,
+                        fontWeight: "600",
+                      }}
+                      onClick={() => lerTexto(texts.modalOrdenacao.dataReuniao)}
+                    >
+                      {texts.modalOrdenacao.dataReuniao}:
+                    </Typography>
+                    <div className="w-full flex justify-between items-center">
+                      <FormControlLabel
+                        checked={props.ordenacaoDate[1]}
+                        onChange={mudarCheck6}
+                        control={<Checkbox />}
+                        label={texts.modalOrdenacao.maisRecente}
+                      />
+                      <FormControlLabel
+                        checked={props.ordenacaoDate[0]}
+                        onChange={mudarCheck5}
+                        control={<Checkbox />}
+                        label={texts.modalOrdenacao.maisAntiga}
+                      />
+                    </div>
+                  </FormGroup>
+                </Grid>
+              </Grid>
+            </>
+          )}
         </Box>
       </Fade>
     </Modal>
