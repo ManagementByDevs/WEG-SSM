@@ -970,7 +970,7 @@ const DetalhesPropostaEditMode = ({
     let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
         countFala++;
@@ -2022,7 +2022,7 @@ const TabelaCustos = ({
     let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
         countFala++;
@@ -2589,7 +2589,7 @@ const CustosRow = ({
     let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
         countFala++;
@@ -3013,7 +3013,7 @@ const Beneficio = ({
     let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
         countFala++;
@@ -3267,7 +3267,7 @@ const ParecerComissaoInsertText = ({
     let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
         countFala++;
@@ -3404,7 +3404,7 @@ const ParecerDGInsertText = ({
     let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
         countFala++;

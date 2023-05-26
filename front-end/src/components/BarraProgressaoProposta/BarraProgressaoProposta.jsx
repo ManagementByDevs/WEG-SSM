@@ -743,7 +743,7 @@ const BarraProgressaoProposta = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != "" && countFala == 0) {
+    if (props.lendo && props.texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }

@@ -154,7 +154,7 @@ const DemandaTable = ({
     let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
         countFala++;
@@ -548,7 +548,7 @@ const NadaEncontrado = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != "" && countFala == 0) {
+    if (props.lendo && props.texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
