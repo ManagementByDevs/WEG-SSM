@@ -109,17 +109,17 @@ const Conteudo = ({
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+    const utterance = new SpeechSynthesisUtterance(texto);
+    if (lendo && texto != ""  ) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
-    } else if (!props.lendo) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
     }
-  }, [props.texto, props.lendo]);
+  }, [texto, lendo]);
 
   return (
     <>
