@@ -564,6 +564,7 @@ const TextLanguage = (linguagem) => {
         feedbacks: {
           feedback1: "Proposta removida da pauta com sucesso!",
           feedback2: "Preencha todos os campos!",
+          feedback3: "A pauta não possui propostas!"
         },
         baixarPDF: "Baixar PDF",
         pauta: "Pauta",
@@ -1446,6 +1447,7 @@ const TextLanguage = (linguagem) => {
           feedbacks: {
             feedback1: "Proposal removed from the agenda successfully!",
             feedback2: "Fill in all fields!",
+            feedback3: "The schedule has no proposals!"
           },
           baixarPDF: "PDF Download",
           pauta: "Minutes",
@@ -2314,6 +2316,7 @@ const TextLanguage = (linguagem) => {
             feedbacks: {
               feedback1: "提案已成功从议程中删除！",
               feedback2: "填写所有字段！",
+              feedback3: "议程没有提案!",
             },
             baixarPDF: "PDF下载",
             pauta: "会议记录",
@@ -3183,6 +3186,7 @@ const TextLanguage = (linguagem) => {
               feedbacks: {
                 feedback1: "Propuesta eliminada de la pauta con éxito!",
                 feedback2: "¡Complete todos los campos!",
+                feedback3: "¡La agenda no tiene propuestas!",
               },
               baixarPDF: "Descargar PDF",
               pauta: "Pauta",

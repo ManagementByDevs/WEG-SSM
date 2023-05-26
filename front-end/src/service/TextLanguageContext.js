@@ -553,6 +553,8 @@ const TextLanguageContext = createContext({
     detalhesPauta: {
       feedbacks: {
         feedback1: "Proposta removida da pauta com sucesso!",
+        feedback2: "Preencha todos os campos!",
+        feedback3: "A pauta não possui propostas!",
       },
       baixarPDF: "Baixar PDF",
       pauta: "Pauta",
