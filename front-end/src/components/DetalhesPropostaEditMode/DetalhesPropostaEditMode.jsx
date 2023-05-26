@@ -450,11 +450,6 @@ const DetalhesPropostaEditMode = ({
       propostaAux.parecerComissao = null;
     if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
 
-    console.log(
-      "Proposta a ser salva: ",
-      JSON.parse(JSON.stringify(propostaAux))
-    );
-
     PropostaService.putComNovosDados(
       propostaAux,
       proposta.id,
@@ -463,7 +458,6 @@ const DetalhesPropostaEditMode = ({
       novosAnexos,
       listaIdsAnexos
     ).then((response) => {
-      console.log("Proposta response: ", JSON.parse(JSON.stringify(response)));
       setPropostaData(response);
       setIsEditing(false);
 

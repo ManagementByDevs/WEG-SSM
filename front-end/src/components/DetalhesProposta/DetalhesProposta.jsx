@@ -191,7 +191,6 @@ const DetalhesProposta = ({
         beneficio.memoriaCalculo
       );
     }
-    console.log("Depois: ", JSON.parse(JSON.stringify(proposal)));
   };
 
   const editProposta = (proposal) => {
@@ -216,7 +215,6 @@ const DetalhesProposta = ({
   useEffect(() => {
     // Buscando os dados da proposta usando o propostaId
     PropostaService.getById(propostaId).then((proposal) => {
-      console.log("Antes: ", JSON.parse(JSON.stringify(proposal)));
       // Arrumando alguns textos
       formatData(proposal);
       setProposta(proposal);
@@ -1561,28 +1559,6 @@ const StatusProposta = ({
     return false;
   };
 
-  // Formata o HTML em casos como a falta de fechamentos em tags "<br>"
-  const formatarHtml = (texto) => {
-    texto = texto.replace(/<br>/g, "<br/>");
-    return texto;
-  };
-
-  // Formata alguns dados da proposta para outro tipo de dado
-  const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
-    propostaObj.problema = btoa(formatarHtml(propostaObj.problema));
-    propostaObj.proposta = btoa(formatarHtml(propostaObj.proposta));
-    propostaObj.escopo = btoa(formatarHtml(propostaObj.escopo));
-
-    for (let beneficio of propostaObj.beneficios) {
-      beneficio.memoriaCalculo = btoa(formatarHtml(beneficio.memoriaCalculo));
-    }
-  };
-
-  // Função para transformar um base64 em uma string
-  const convertByteArrayToString = (byteArray = []) => {
-    return window.atob(byteArray).toString("utf-8");
-  };
-
   const userHasAuthority = () => {
     let userCookie = UsuarioService.getUserCookies();
     let user = userCookie.usuario;
@@ -1594,7 +1570,13 @@ const StatusProposta = ({
   // Função para editar o status da proposta
   const editarStatus = () => {
     if (newStatus == "") {
+      // Em teoria isso nunca vai acontecer já que o status é um select box
       console.log("Status não pode ser vazio!");
+      return;
+    }
+
+    if (!userHasAuthority()) {
+      setFeedbackErrorAuthority(true);
       return;
     }
 

@@ -144,16 +144,15 @@ const BarraProgressaoProposta = (props) => {
   /** UseEffect utilizado para chamar a função de soma dos CC a cada mudança na tabela de custos */
   useEffect(() => {
     somaCCPayback();
-  }, [custos])
+  }, [custos]);
 
   /** UseEffect utilizado para chamar a função do cálculo automático do payback */
   useEffect(() => {
     calculoDiasPayback();
-  }, [listaBeneficios, custos])
+  }, [listaBeneficios, custos]);
 
   /** Função para somar os valores dos benefícios */
   const somaValorBeneficiosReais = () => {
-
     let valorBeneficio = 0;
 
     MoedasService.getDolar().then((response) => {
@@ -162,22 +161,29 @@ const BarraProgressaoProposta = (props) => {
 
     MoedasService.getEuro().then((response) => {
       setValorEuro(response);
-    })
+    });
 
     for (const object in listaBeneficios) {
       if (listaBeneficios[object].tipoBeneficio == "Real") {
         if (listaBeneficios[object].moeda == "Dolar") {
-          valorBeneficio = valorBeneficio + (parseFloat(listaBeneficios[object].valor_mensal) * valorDolar.USDBRL.bid);
+          valorBeneficio =
+            valorBeneficio +
+            parseFloat(listaBeneficios[object].valor_mensal) *
+              valorDolar.USDBRL.bid;
         } else if (listaBeneficios[object].moeda == "Euro") {
-          valorBeneficio = valorBeneficio + (parseFloat(listaBeneficios[object].valor_mensal) * valorEuro.EURBRL.bid);
+          valorBeneficio =
+            valorBeneficio +
+            parseFloat(listaBeneficios[object].valor_mensal) *
+              valorEuro.EURBRL.bid;
         } else {
-          valorBeneficio = valorBeneficio + parseFloat(listaBeneficios[object].valor_mensal);
+          valorBeneficio =
+            valorBeneficio + parseFloat(listaBeneficios[object].valor_mensal);
         }
       }
     }
 
     setSomaBeneficios(valorBeneficio);
-  }
+  };
 
   /** Função para salvar a soma dos CCs */
   const somaCCPayback = () => {
@@ -186,19 +192,23 @@ const BarraProgressaoProposta = (props) => {
 
     for (const object in custos) {
       for (const object2 in custos[object].custos) {
-        valorCC = valorCC + (parseFloat(custos[object].custos[object2].horas) * parseFloat(custos[object].custos[object2].valorHora));
+        valorCC =
+          valorCC +
+          parseFloat(custos[object].custos[object2].horas) *
+            parseFloat(custos[object].custos[object2].valorHora);
       }
     }
 
     for (const object in custos) {
       for (const object2 in custos[object].custos) {
-        valorHora = valorHora + parseFloat(custos[object].custos[object2].horas);
+        valorHora =
+          valorHora + parseFloat(custos[object].custos[object2].horas);
       }
     }
 
     setHoraCC(valorHora);
     setSomaCCs(valorCC);
-  }
+  };
 
   /** Cálculo para calcular a quantidade automático */
   const calculoDiasPayback = () => {
@@ -220,23 +230,23 @@ const BarraProgressaoProposta = (props) => {
         setGerais({
           ...gerais,
           qtdPaybackSimples: contadorDia,
-          unidadePaybackSimples: "DIAS"
-        })
+          unidadePaybackSimples: "DIAS",
+        });
       } else {
         setGerais({
           ...gerais,
           qtdPaybackSimples: Math.ceil(semanas),
-          unidadePaybackSimples: "SEMANAS"
-        })
+          unidadePaybackSimples: "SEMANAS",
+        });
       }
     } else {
       setGerais({
         ...gerais,
         qtdPaybackSimples: Math.ceil(meses),
-        unidadePaybackSimples: "MESES"
-      })
+        unidadePaybackSimples: "MESES",
+      });
     }
-  }
+  };
 
   useEffect(() => {
     if (!idEscopo) {
@@ -303,7 +313,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) { }
+      } catch (error) {}
 
       listaNova.push({
         id: beneficio.id,
@@ -392,7 +402,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -441,7 +451,7 @@ const BarraProgressaoProposta = (props) => {
     for (let beneficio of listaBeneficios) {
       beneficioService
         .put(beneficio, beneficio.memoriaCalculo)
-        .then((response) => { });
+        .then((response) => {});
     }
   };
 
@@ -558,7 +568,7 @@ const BarraProgressaoProposta = (props) => {
   // Função para excluir os benefícios retirados da lista que foram criados no banco
   const excluirBeneficios = () => {
     for (const beneficio of listaBeneficiosExcluidos) {
-      beneficioService.delete(beneficio.id).then((response) => { });
+      beneficioService.delete(beneficio.id).then((response) => {});
     }
   };
 
@@ -633,7 +643,7 @@ const BarraProgressaoProposta = (props) => {
       responsavelNegocio: formatarResponsaveisNegocio(),
       inicioExecucao: gerais.periodoExecucacaoInicio,
       fimExecucao: gerais.periodoExecucacaoFim,
-      paybackValor: gerais.valorPaybackSimples,
+      paybackValor: gerais.qtdPaybackSimples,
       paybackTipo: gerais.unidadePaybackSimples,
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
