@@ -233,15 +233,21 @@ const DetalhesProposta = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (lendo && texto != "") {
+    let countFala = 0;
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(texto);
+    if (lendo && texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(texto);
         synthesis.speak(utterance);
+        countFala++;
       }
       setTexto("");
+    } else if (!lendo || countFala > 0) {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   if (Object.values(proposta).some((value) => value === undefined))
     return <></>;

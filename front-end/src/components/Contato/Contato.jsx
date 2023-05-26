@@ -15,6 +15,9 @@ const Contato = ({
   onClick = () => {},
   idChat = 0,
   chat = EntitiesObjectService.chat(),
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
 }) => {
   // UseState para saber se o contato foi selecionado ou não
   const [corSelecionado, setCorSelecionado] = useState("transparent");
@@ -57,7 +60,12 @@ const Contato = ({
             },
           }}
         >
-          <Conteudo chat={chat} />
+          <Conteudo
+            chat={chat}
+            lendo={lendo}
+            texto={texto}
+            setTexto={setTexto}
+          />
         </Box>
       </Tooltip>
     </>
@@ -100,15 +108,18 @@ const Conteudo = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (lendo && texto != "") {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(props.texto);
+    if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(texto);
         synthesis.speak(utterance);
       }
-      setTexto("");
+    } else if (!props.lendo) {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <>

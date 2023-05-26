@@ -134,6 +134,8 @@ const BarraProgressaoProposta = (props) => {
   /** UseState utilizado para armazenar a soma dos CCs */
   const [somaCCs, setSomaCCs] = useState(0.0);
 
+  const [horaCC, setHoraCC] = useState(0);
+
   /** UseEffect utilizado para chamar a função de soma dos benefícios a cada mudança na lista */
   useEffect(() => {
     somaValorBeneficiosReais();
@@ -144,6 +146,7 @@ const BarraProgressaoProposta = (props) => {
     somaCCPayback();
   }, [custos])
 
+  /** UseEffect utilizado para chamar a função do cálculo automático do payback */
   useEffect(() => {
     calculoDiasPayback();
   }, [listaBeneficios, custos])
@@ -179,6 +182,7 @@ const BarraProgressaoProposta = (props) => {
   /** Função para salvar a soma dos CCs */
   const somaCCPayback = () => {
     let valorCC = 0;
+    let valorHora = 0;
 
     for (const object in custos) {
       for (const object2 in custos[object].custos) {
@@ -186,13 +190,52 @@ const BarraProgressaoProposta = (props) => {
       }
     }
 
+    for (const object in custos) {
+      for (const object2 in custos[object].custos) {
+        valorHora = valorHora + parseFloat(custos[object].custos[object2].horas);
+      }
+    }
+
+    setHoraCC(valorHora);
     setSomaCCs(valorCC);
   }
 
   /** Cálculo para calcular a quantidade automático */
   const calculoDiasPayback = () => {
-    console.log("Valor benefício: " + somaBeneficios);
-    console.log("Valor custos: " + somaCCs);
+    let valorDia = somaBeneficios / 30;
+    let valorTotalCC = somaCCs;
+
+    let contadorDia = 1;
+
+    while (valorTotalCC > valorDia) {
+      valorTotalCC = valorTotalCC - valorDia;
+      contadorDia++;
+    }
+
+    let meses = contadorDia / 30;
+    let semanas = contadorDia / 7;
+
+    if (meses < 1) {
+      if (semanas < 1) {
+        setGerais({
+          ...gerais,
+          qtdPaybackSimples: contadorDia,
+          unidadePaybackSimples: "DIAS"
+        })
+      } else {
+        setGerais({
+          ...gerais,
+          qtdPaybackSimples: Math.ceil(semanas),
+          unidadePaybackSimples: "SEMANAS"
+        })
+      }
+    } else {
+      setGerais({
+        ...gerais,
+        qtdPaybackSimples: Math.ceil(meses),
+        unidadePaybackSimples: "MESES"
+      })
+    }
   }
 
   useEffect(() => {
@@ -590,7 +633,7 @@ const BarraProgressaoProposta = (props) => {
       responsavelNegocio: formatarResponsaveisNegocio(),
       inicioExecucao: gerais.periodoExecucacaoInicio,
       fimExecucao: gerais.periodoExecucacaoFim,
-      paybackValor: gerais.qtdPaybackSimples,
+      paybackValor: gerais.valorPaybackSimples,
       paybackTipo: gerais.unidadePaybackSimples,
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
@@ -698,15 +741,18 @@ const BarraProgressaoProposta = (props) => {
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (props.lendo && props.texto != "") {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(props.texto);
+    if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(props.texto);
         synthesis.speak(utterance);
       }
-      props.setTexto("");
+    } else if (!props.lendo) {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <>
