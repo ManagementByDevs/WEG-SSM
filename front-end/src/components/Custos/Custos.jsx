@@ -10,6 +10,10 @@ import {
   Typography,
   Box,
   Tooltip,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -119,7 +123,7 @@ const Custos = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+    if (props.lendo && props.texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
@@ -147,6 +151,28 @@ const Custos = (props) => {
           </Tooltip>
         </Box>
         <Box>
+          {/* Dropdown tipo despesa */}
+          <Box>
+            <FormControl sx={{width: "10rem"}}>
+              <InputLabel id="demo-simple-select-helper-label">Tipo Despesa</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Tipo Despesa"
+              >
+                <MenuItem value={"Interna"}>
+                  <Typography fontSize={FontConfig.medium}>
+                    Interna
+                  </Typography>
+                </MenuItem>
+                <MenuItem value={"Externa"}>
+                  <Typography fontSize={FontConfig.medium}>
+                    Externa
+                  </Typography>
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
           {/* Criação da tabela e adicionando as informações nela */}
           <Paper className="w-full mr-3 pb-1">
             <TableContainer component={Paper}>
@@ -156,23 +182,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "5%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                        onClick={() => {
-                          lerTexto(texts.custos.tipoDaDespesa);
-                        }}
-                      >
-                        {texts.custos.tipoDaDespesa}
-                      </Typography>
-                    </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "5%" }}
+                      style={{ width: "20%" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -188,7 +198,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "10%", minWidth: "200px" }}
+                      style={{ width: "15%", minWidth: "200px" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -204,7 +214,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "7%" }}
+                      style={{ width: "15%" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -220,7 +230,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "8%" }}
+                      style={{ width: "20%" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -236,7 +246,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "10%" }}
+                      style={{ width: "20%" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}

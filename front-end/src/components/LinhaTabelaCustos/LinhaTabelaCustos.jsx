@@ -12,6 +12,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente para criar uma linha na tabela de custos
 const LinhaTabelaCustos = (props) => {
+  
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -151,16 +152,7 @@ const LinhaTabelaCustos = (props) => {
 
   return (
     <TableRow className="border-b">
-      <td align="center" className="pt-5 pb-5">
-        <Box
-          className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          sx={{
-            width: "80%",
-            backgroundColor: corFundoTextArea,
-            marginTop: "0.8rem",
-          }}
-        >
-          <TextareaAutosize
+          {/* <TextareaAutosize
             style={{
               width: "95%",
               resize: "none",
@@ -180,26 +172,7 @@ const LinhaTabelaCustos = (props) => {
                 e.target.value;
               props.setCustos(aux);
             }}
-          />
-          <Tooltip
-            className="hover:cursor-pointer"
-            title={texts.homeGerencia.gravarAudio}
-            onClick={() => {
-              startRecognition("tipoDespesa");
-            }}
-          >
-            {escutar && localClicou == "tipoDespesa" ? (
-              <MicOutlinedIcon
-                sx={{ color: "primary.main", fontSize: "1.3rem" }}
-              />
-            ) : (
-              <MicNoneOutlinedIcon
-                sx={{ color: "text.secondary", fontSize: "1.3rem" }}
-              />
-            )}
-          </Tooltip>
-        </Box>
-      </td>
+          /> */}
       <td align="center" className="pt-5 pb-5">
         <Box
           className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
