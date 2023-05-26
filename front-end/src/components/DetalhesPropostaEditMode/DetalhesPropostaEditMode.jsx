@@ -967,20 +967,26 @@ const DetalhesPropostaEditMode = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else if (!lendo) {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   if (isLoading)
@@ -2019,20 +2025,26 @@ const TabelaCustos = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else if (!lendo) {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   return (
@@ -2586,20 +2598,26 @@ const CustosRow = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else if (!lendo) {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   return (
@@ -3010,20 +3028,26 @@ const Beneficio = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else if (!lendo) {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   if (beneficio.id === 0) return null;
@@ -3264,20 +3288,26 @@ const ParecerComissaoInsertText = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else if (!lendo) {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   return (
@@ -3401,20 +3431,26 @@ const ParecerDGInsertText = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else if (!lendo) {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   return (

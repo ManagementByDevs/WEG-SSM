@@ -103,16 +103,33 @@ const Login = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else if (!props.lendo) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (props.texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [props.texto, props.lendo]);
+
+  useEffect(() => {
+    console.log("texto alterou: " + props.texto);
+  }, [props.texto])
+
+  useEffect(() => {
+    console.log("lendo alterou: " + props.lendo);
+  }, [props.lendo])
 
   return (
     <FundoComHeader

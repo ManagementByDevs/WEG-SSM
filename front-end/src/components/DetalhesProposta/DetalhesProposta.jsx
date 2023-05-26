@@ -233,20 +233,26 @@ const DetalhesProposta = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else if (!lendo) {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   if (Object.values(proposta).some((value) => value === undefined))

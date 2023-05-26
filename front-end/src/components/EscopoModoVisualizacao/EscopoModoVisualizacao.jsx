@@ -179,20 +179,26 @@ const EscopoTable = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && texto !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else if (!lendo) {
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   return (
@@ -372,15 +378,24 @@ const NadaEncontrado = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (props.lendo && props.texto !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
     } else if (!props.lendo) {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [props.texto, props.lendo]);
 
   return (
