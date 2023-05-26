@@ -49,5 +49,5 @@ public class PropostaJaCriadaDTO {
     private List<Anexo> anexo;
     private List<Historico> historicoProposta;
     private String presenteEm;
-
+    private Double score;
 }
