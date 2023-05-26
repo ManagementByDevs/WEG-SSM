@@ -303,16 +303,17 @@ const Notificacao = (props) => {
   }, []);
 
   useEffect(() => {
-    if (props.lendo && props.texto != "") {
+    let countFala = 0;
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(props.texto);
+    if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(props.texto);
         synthesis.speak(utterance);
+        countFala++;
       }
       props.setTexto("");
-    } else if (!props.lendo) {
+    } else if (!props.lendo || countFala > 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
         synthesis.cancel();
       }
     }

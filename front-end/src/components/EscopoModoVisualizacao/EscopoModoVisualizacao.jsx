@@ -179,16 +179,17 @@ const EscopoTable = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (lendo && texto != "") {
+    let countFala = 0;
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(texto);
+    if (lendo && texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(texto);
         synthesis.speak(utterance);
+        countFala++;
       }
       setTexto("");
-    } else if (!lendo) {
+    } else if (!lendo || countFala > 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
         synthesis.cancel();
       }
     }
@@ -369,16 +370,17 @@ const NadaEncontrado = (props) => {
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (props.lendo && props.texto != "") {
+    let countFala = 0;
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(props.texto);
+    if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(props.texto);
         synthesis.speak(utterance);
+        countFala++;
       }
       props.setTexto("");
-    } else if (!props.lendo) {
+    } else if (!props.lendo || countFala > 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
         synthesis.cancel();
       }
     }
