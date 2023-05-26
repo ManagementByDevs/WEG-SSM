@@ -197,6 +197,9 @@ const DetalhesPauta = (props) => {
     setModal(true);
   };
 
+  // Feedback para quando a pauta não possuir propostas
+  const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
+
   // Feedback para quando o usuário deletar uma proposta da pauta
   const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
     useState(false);
@@ -503,9 +506,11 @@ const DetalhesPauta = (props) => {
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
+        setFeedbackSemPropostas={setFeedbackSemPropostas}
         lendo={props.lendo}
         texto={props.texto}
         setTexto={props.setTexto}
+        listaPropostas={pauta.propostas}
       />
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
@@ -554,6 +559,15 @@ const DetalhesPauta = (props) => {
         lendo={props.lendo}
         texto={props.texto}
         setTexto={props.setTexto}
+      />
+      {/* Feedback pauta sem propostas */}
+      <Feedback
+        open={feedbackSemPropostas}
+        handleClose={() => {
+          setFeedbackSemPropostas(false);
+        }}
+        status={"erro"}
+        mensagem={texts.detalhesPauta.feedbacks.feedback3}
       />
       <ModalConfirmacao
         open={modal}
