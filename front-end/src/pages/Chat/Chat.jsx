@@ -624,15 +624,21 @@ const Chat = (props) => {
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    if (props.lendo && props.texto != "") {
+    let countFala = 0;
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(props.texto);
+    if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(props.texto);
         synthesis.speak(utterance);
+        countFala++;
       }
       props.setTexto("");
+    } else if (!props.lendo || countFala > 0) {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <>
@@ -821,6 +827,9 @@ const Chat = (props) => {
                       },
                       usuariosChat: [{ id: 0, nome: "Tour", email: "" }],
                     }}
+                    lendo={props.lendo}
+                    texto={props.texto}
+                    setTexto={props.setTexto}
                     index={0}
                   />
                 ) : resultadosContato[0]?.id != 0 ? (
@@ -835,6 +844,9 @@ const Chat = (props) => {
                         idChat={idChat}
                         chat={resultado}
                         index={index}
+                        lendo={props.lendo}
+                        texto={props.texto}
+                        setTexto={props.setTexto}
                       />
                     );
                   })
