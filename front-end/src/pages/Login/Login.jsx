@@ -106,12 +106,15 @@ const Login = (props) => {
         const synthesis = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(props.texto);
         synthesis.speak(utterance);
-      } else {
-        setFeedbackErroNavegadorIncompativel(true);
       }
       props.setTexto("");
+    } else if (!props.lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <FundoComHeader

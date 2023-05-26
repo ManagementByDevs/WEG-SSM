@@ -89,8 +89,13 @@ const FormularioBeneficiosDemanda = (props) => {
         synthesis.speak(utterance);
       }
       props.setTexto("");
+    } else if (!props.lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
@@ -140,7 +145,7 @@ const FormularioBeneficiosDemanda = (props) => {
                 }
                 lendo={props.lendo}
                 texto={props.texto}
-                setTexto={props.setDados}
+                setTexto={props.setTexto}
               />
             );
           })}

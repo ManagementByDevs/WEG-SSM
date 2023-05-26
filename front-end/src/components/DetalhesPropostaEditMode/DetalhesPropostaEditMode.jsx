@@ -1001,8 +1001,13 @@ const DetalhesPropostaEditMode = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   if (isLoading)
     return (
@@ -2047,8 +2052,13 @@ const TabelaCustos = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   return (
     <Paper className="w-full mt-2 mb-6" square>
@@ -2608,8 +2618,13 @@ const CustosRow = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   return (
     <TableRow>
@@ -3026,8 +3041,13 @@ const Beneficio = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   if (beneficio.id === 0) return null;
 
@@ -3274,8 +3294,13 @@ const ParecerComissaoInsertText = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   return (
     <Box>
@@ -3405,8 +3430,13 @@ const ParecerDGInsertText = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   return (
     <Box className="mt-4">

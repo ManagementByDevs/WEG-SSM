@@ -115,8 +115,13 @@ const ModalInformarMotivo = (props) => {
         synthesis.speak(utterance);
       }
       props.setTexto("");
+    } else if (!props.lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <Modal

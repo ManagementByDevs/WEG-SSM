@@ -186,8 +186,13 @@ const EscopoTable = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   return (
     <Paper sx={{ width: "100%" }} square>
@@ -371,8 +376,13 @@ const NadaEncontrado = (props) => {
         synthesis.speak(utterance);
       }
       props.setTexto("");
+    } else if (!props.lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <Box

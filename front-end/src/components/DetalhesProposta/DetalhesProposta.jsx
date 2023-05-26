@@ -254,8 +254,13 @@ const DetalhesProposta = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   if (Object.values(proposta).some((value) => value === undefined))
     return <></>;

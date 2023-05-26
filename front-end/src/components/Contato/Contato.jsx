@@ -15,6 +15,9 @@ const Contato = ({
   onClick = () => {},
   idChat = 0,
   chat = EntitiesObjectService.chat(),
+  lendo = false,
+  texto = "",
+  setTexto = () => {},
 }) => {
   // UseState para saber se o contato foi selecionado ou não
   const [corSelecionado, setCorSelecionado] = useState("transparent");
@@ -57,7 +60,12 @@ const Contato = ({
             },
           }}
         >
-          <Conteudo chat={chat} />
+          <Conteudo
+            chat={chat}
+            lendo={lendo}
+            texto={texto}
+            setTexto={setTexto}
+          />
         </Box>
       </Tooltip>
     </>
@@ -107,8 +115,13 @@ const Conteudo = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   return (
     <>

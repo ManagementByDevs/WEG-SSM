@@ -631,8 +631,13 @@ const Chat = (props) => {
         synthesis.speak(utterance);
       }
       props.setTexto("");
+    } else if (!props.lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [props.texto]);
+  }, [props.texto, props.lendo]);
 
   return (
     <>
@@ -821,6 +826,9 @@ const Chat = (props) => {
                       },
                       usuariosChat: [{ id: 0, nome: "Tour", email: "" }],
                     }}
+                    lendo={props.lendo}
+                    texto={props.texto}
+                    setTexto={props.setTexto}
                     index={0}
                   />
                 ) : resultadosContato[0]?.id != 0 ? (
@@ -835,6 +843,9 @@ const Chat = (props) => {
                         idChat={idChat}
                         chat={resultado}
                         index={index}
+                        lendo={props.lendo}
+                        texto={props.texto}
+                        setTexto={props.setTexto}
                       />
                     );
                   })

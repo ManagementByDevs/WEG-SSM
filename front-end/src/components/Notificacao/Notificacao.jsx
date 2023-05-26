@@ -80,8 +80,13 @@ const Notificacao = ({
         synthesis.speak(utterance);
       }
       setTexto("");
+    } else if (!lendo) {
+      if ("speechSynthesis" in window) {
+        const synthesis = window.speechSynthesis;
+        synthesis.cancel();
+      }
     }
-  }, [texto]);
+  }, [texto, lendo]);
 
   return (
     // Container da notificação
