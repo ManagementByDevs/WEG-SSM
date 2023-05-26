@@ -303,16 +303,13 @@ const Notificacao = (props) => {
   }, []);
 
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
     if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
-      props.setTexto("");
-    } else if (!props.lendo || countFala > 0) {
+    } else if (!props.lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }

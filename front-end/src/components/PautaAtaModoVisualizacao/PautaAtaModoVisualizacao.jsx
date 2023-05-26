@@ -114,16 +114,13 @@ const PautaTable = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != "" && countFala == 0) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
-      setTexto("");
-    } else if (!lendo || countFala > 0) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
@@ -352,16 +349,13 @@ const NadaEncontrado = (props) => {
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    let countFala = 0;
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
     if (props.lendo && props.texto != "" && countFala == 0) {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-        countFala++;
       }
-      props.setTexto("");
-    } else if (!props.lendo || countFala > 0) {
+    } else if (!props.lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
