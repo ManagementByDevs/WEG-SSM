@@ -79,7 +79,7 @@ const DetalhesProposta = ({
   /** Referência para o texto de escopo */
   const textoEscopo = useRef(null);
 
-  // Função para baixar um anexo
+  /** Função para baixar um anexo */
   const downloadAnexo = (anexo = EntitiesObjectService.anexo()) => {
     const file = anexo;
     let blob = new Blob([base64ToArrayBuffer(file.dados)]);
@@ -102,7 +102,7 @@ const DetalhesProposta = ({
     }
   };
 
-  // Retorna o texto do status da proposta
+  /** Retorna o texto do status da proposta */
   const getStatusFormatted = () => {
     switch (proposta.status) {
       case "ASSESSMENT_APROVACAO": //#F7DC6F
@@ -124,7 +124,7 @@ const DetalhesProposta = ({
     }
   };
 
-  // Retorna a cor hexadecimal do status da proposta
+  /** Retorna a cor hexadecimal do status da proposta */
   const getCorStatus = (status) => {
     switch (status) {
       case "ASSESSMENT_APROVACAO":
@@ -146,18 +146,19 @@ const DetalhesProposta = ({
     }
   };
 
-  // Função para transformar uma string em base64 para um ArrayBuffer
+  /** Função para transformar uma string em base64 para um ArrayBuffer */
   const base64ToArrayBuffer = (base64) => {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
-  // Função para transformar um base64 em uma string
+  /** Função para transformar um base64 em uma string */
   const convertByteArrayToString = (byteArray = []) => {
     return window.atob(byteArray).toString("utf-8");
   };
 
+  /** Função passada para o componente detalhes proposta edit mode */
   const setPropostaNewData = (proposta = EntitiesObjectService.proposta()) => {
     proposta.proposta = convertByteArrayToString(proposta.proposta);
     proposta.problema = convertByteArrayToString(proposta.problema);
@@ -174,39 +175,23 @@ const DetalhesProposta = ({
     setProposta(JSON.parse(JSON.stringify(proposta)));
   };
 
-  // Função acionada quando o usúario clica no ícone de editar
+  /** Função acionada quando o usúario clica no ícone de editar */
   const handleOnEditClick = () => {
     setIsEditing(!isEditing);
   };
 
-  // Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco
-  const carregarTextoEscopo = (escopo) => {
-    try {
-      let reader = new FileReader();
-      reader.onload = function () {
-        textoEscopo.current.innerHTML = reader.result;
-      };
-
-      if (escopo) {
-        let blob = new Blob([base64ToArrayBuffer(escopo)]);
-        reader.readAsText(blob);
-      }
-    } catch (error) {
-      textoEscopo.current.innerHTML = escopo;
-    }
-  };
-
-  // Formata o objeto proposta pego do banco de dados
+  /** Formata o objeto proposta pego do banco de dados */
   const formatData = (proposal = EntitiesObjectService.proposta()) => {
     proposal.problema = convertByteArrayToString(proposal.problema);
     proposal.proposta = convertByteArrayToString(proposal.proposta);
-    carregarTextoEscopo(proposal.escopo);
+    proposal.escopo = convertByteArrayToString(proposal.escopo);
 
     for (let beneficio of proposal.beneficios) {
       beneficio.memoriaCalculo = convertByteArrayToString(
         beneficio.memoriaCalculo
       );
     }
+    console.log("Depois: ", JSON.parse(JSON.stringify(proposal)));
   };
 
   const editProposta = (proposal) => {
@@ -224,13 +209,14 @@ const DetalhesProposta = ({
     }
 
     if (textoEscopo.current) {
-      carregarTextoEscopo(proposta.escopo);
+      textoEscopo.current.innerHTML = proposta.escopo;
     }
   }, [proposta, isEditing]);
 
   useEffect(() => {
     // Buscando os dados da proposta usando o propostaId
     PropostaService.getById(propostaId).then((proposal) => {
+      console.log("Antes: ", JSON.parse(JSON.stringify(proposal)));
       // Arrumando alguns textos
       formatData(proposal);
       setProposta(proposal);
@@ -388,18 +374,20 @@ const DetalhesProposta = ({
 
           {/* Box Informações gerais */}
           <Box className="relative">
-            {proposta.status != "CANCELLED" && proposta.status != "DONE" && proposta.presenteEm != "Pauta" && (
-              <Tooltip title={texts.detalhesProposta.editar}>
-                <Box className="absolute -right-8 -top-2">
-                  <IconButton
-                    sx={{ color: "primary.main" }}
-                    onClick={handleOnEditClick}
-                  >
-                    {!isEditing ? <EditIcon /> : <EditOffIcon />}
-                  </IconButton>
-                </Box>
-              </Tooltip>
-            )}
+            {proposta.status != "CANCELLED" &&
+              proposta.status != "DONE" &&
+              proposta.presenteEm != "Pauta" && (
+                <Tooltip title={texts.detalhesProposta.editar}>
+                  <Box className="absolute -right-8 -top-2">
+                    <IconButton
+                      sx={{ color: "primary.main" }}
+                      onClick={handleOnEditClick}
+                    >
+                      {!isEditing ? <EditIcon /> : <EditOffIcon />}
+                    </IconButton>
+                  </Box>
+                </Tooltip>
+              )}
             {/* Solicitante */}
             <Box className="flex mt-4">
               <Typography

@@ -10,11 +10,14 @@ class PropostaService {
   }
 
   async getById(id) {
-    return (await axios.get(proposta + "/" + id, { withCredentials: true })).data;
+    return (await axios.get(proposta + "/" + id, { withCredentials: true }))
+      .data;
   }
 
   async getByPPM(ppm) {
-    return (await axios.get(proposta + `/ppm/${ppm}`, { withCredentials: true })).data;
+    return (
+      await axios.get(proposta + `/ppm/${ppm}`, { withCredentials: true })
+    ).data;
   }
 
   async getPage(params, page) {
@@ -47,7 +50,12 @@ class PropostaService {
     let form = new FormData();
 
     form.append("proposta", JSON.stringify(proposta));
-    return (await axios.post(`/proposta`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+    return (
+      await axios.post(`/proposta`, form, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async atualizarStatus(idProposta, statusNovo) {
@@ -89,14 +97,23 @@ class PropostaService {
   }
 
   async removerPresenca(idProposta) {
-    return (await axios.put(`${proposta}/presente/${idProposta}`, { withCredentials: true })).data;
+    return (
+      await axios.put(`${proposta}/presente/${idProposta}`, {
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async atualizacaoPauta(idProposta, publicada) {
     let form = new FormData();
     form.set("publicada", publicada);
 
-    return (await axios.put(`${proposta}/pauta/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+    return (
+      await axios.put(`${proposta}/pauta/${idProposta}`, form, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async atualizacaoAta(idProposta, parecerComissao, parecerInformacao) {
@@ -104,7 +121,12 @@ class PropostaService {
     form.set("parecerComissao", parecerComissao);
     form.set("parecerInformacao", parecerInformacao);
 
-    return (await axios.put(`${proposta}/ata/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+    return (
+      await axios.put(`${proposta}/ata/${idProposta}`, form, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async atualizacaoDg(idProposta, parecerComissao, parecerInformacao) {
@@ -112,7 +134,12 @@ class PropostaService {
     form.set("parecerComissao", parecerComissao);
     form.set("parecerInformacao", parecerInformacao);
 
-    return (await axios.put(`${proposta}/dg/${idProposta}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+    return (
+      await axios.put(`${proposta}/dg/${idProposta}`, form, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      })
+    ).data;
   }
 
   async putWithoutArquivos(propostaObj, idProposta) {
@@ -134,8 +161,7 @@ class PropostaService {
     novasTabelasCusto = [],
     novosBeneficios = [],
     novosAnexos = [],
-    listaIdsAnexos = [],
-    escopoTexto
+    listaIdsAnexos = []
   ) {
     let form = new FormData();
     let propostaNovosDados = { ...propostaObj };
@@ -145,7 +171,6 @@ class PropostaService {
 
     form.append("proposta", JSON.stringify(propostaObj));
     form.append("propostaComDadosNovos", JSON.stringify(propostaNovosDados));
-    form.append("escopo", escopoTexto);
 
     if (novosAnexos.length > 0) {
       for (let anexo of novosAnexos) {

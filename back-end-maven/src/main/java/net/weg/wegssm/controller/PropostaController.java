@@ -4102,7 +4102,6 @@ public class PropostaController {
                                                       @RequestParam(value = "proposta") String propostaJSON,
                                                       @RequestParam(value = "propostaComDadosNovos", required = false) String novaPropostaJSON,
                                                       @RequestParam(value = "listaIdsAnexos", required = false) List<String> listaIdsAnexos,
-                                                      @RequestParam(value = "escopo", required = false) byte[] escopoProposta,
                                                       @RequestParam(value = "listaAnexosNovos", required = false) List<MultipartFile> files
     ) {
         Optional<Proposta> propostaOptional = propostaService.findById(id);
@@ -4115,10 +4114,6 @@ public class PropostaController {
         Proposta proposta = propostaUtil.convertJaCriadaJsonToModel(propostaJSON);
 
         proposta.setId(id);
-
-        if (escopoProposta != null) {
-            proposta.setEscopo(escopoProposta);
-        }
 
         deleteTabelaCustosRows(propostaOptional.get(), proposta);
 

@@ -109,9 +109,6 @@ const DetalhesPropostaEditMode = ({
   // State para atualizar as tabelas de custo na tela
   const [isTabelaCustosVisile, setIsTabelaCustosVisible] = useState(false);
 
-  // State para conseguir
-  const [escopoAux, setEscopoAux] = useState("");
-
   // Visibilidade do feedback de dados inválidos
   const [feedbackDadosInvalidos, setFeedbackDadosInvalidos] = useState(false);
 
@@ -137,21 +134,21 @@ const DetalhesPropostaEditMode = ({
     ],
   };
 
-  // Função para transformar uma string em base64 para um ArrayBuffer
+  /** Função para transformar uma string em base64 para um ArrayBuffer */
   const base64ToArrayBuffer = (base64) => {
     const binaryString = window.atob(base64);
     const bytes = new Uint8Array(binaryString.length);
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
-  // Função para saber se as listas necessárias para a edição da proposta fizeram a requisição
+  /** Função para saber se as listas necessárias para a edição da proposta fizeram a requisição */
   const isAllsListsPopulated = () => {
     return (
       listaBus.length > 1 && listaForuns.length > 1 && listaSecoesTI.length > 1
     );
   };
 
-  // Função para verificar se o nome do anexo selecionado já existe dentro da proposta
+  /** Função para verificar se o nome do anexo selecionado já existe dentro da proposta */
   const existsInAnexos = (jsFiles) => {
     let exists = false;
 
@@ -166,14 +163,14 @@ const DetalhesPropostaEditMode = ({
     return exists;
   };
 
-  // Função que retorna o nome do anexo formatado a ser mostrado para o usuário
+  /** Função que retorna o nome do anexo formatado a ser mostrado para o usuário */
   const getAnexoNome = (file) => {
     return file.nome
       ? file.nome + " - " + file.tipo
       : file.name + " - " + file.type;
   };
 
-  // Retorna booleano indicando se o parecer da comissão deve aparecer na tela
+  /** Retorna booleano indicando se o parecer da comissão deve aparecer na tela */
   const isParecerGerenciaVisible = () => {
     let possibleStatus = [
       "CANCELLED",
@@ -187,38 +184,24 @@ const DetalhesPropostaEditMode = ({
     return false;
   };
 
-  // Formata o HTML em casos como a falta de fechamentos em tags "<br>"
+  /** Formata o HTML em casos como a falta de fechamentos em tags "<br>" */
   const formatarHtml = (texto) => {
     texto = texto.replace(/<br>/g, "<br/>");
     return texto;
   };
 
-  // Função para carregar o escopo da proposta (campo de texto) quando recebido de um escopo (Objeto salvo) do banco
-  const carregarTextoEscopo = (escopo) => {
-    let reader = new FileReader();
-    reader.onload = () => {
-      setEscopoAux(reader.result);
-    };
-
-    if (escopo) {
-      let blob = new Blob([base64ToArrayBuffer(escopo)]);
-      reader.readAsText(blob);
-    }
-  };
-
-  // Formata alguns dados da proposta para outro tipo de dado
+  /** Formata alguns dados da proposta para outro tipo de dado */
   const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
-    // Manda o escopo velho no objeto, pois o escopo novo está sendo mandado como outro param
-    propostaObj.escopo = propostaData.escopo;
-
-    propostaObj.problema = btoa(propostaObj.problema);
-    propostaObj.proposta = btoa(propostaObj.proposta);
+    propostaObj.escopo = btoa(formatarHtml(propostaObj.escopo));
+    propostaObj.problema = btoa(formatarHtml(propostaObj.problema));
+    propostaObj.proposta = btoa(formatarHtml(propostaObj.proposta));
 
     for (let beneficio of propostaObj.beneficios) {
-      beneficio.memoriaCalculo = btoa(beneficio.memoriaCalculo);
+      beneficio.memoriaCalculo = btoa(formatarHtml(beneficio.memoriaCalculo));
     }
   };
 
+  /** Valida se os CCs são válidos */
   const areCCsValid = (
     tabelasCustos = [EntitiesObjectService.tabelaCustos()]
   ) => {
@@ -234,7 +217,7 @@ const DetalhesPropostaEditMode = ({
     return true;
   };
 
-  // Verifica se todos os campos estão preenchidos corretamente
+  /** Verifica se todos os campos estão preenchidos corretamente */
   const isAllFieldsValid = () => {
     let propostaAux = EntitiesObjectService.proposta();
     let msgs = texts.detalhesPropostaEditMode;
@@ -286,9 +269,10 @@ const DetalhesPropostaEditMode = ({
       setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.problema}`);
       return false;
     }
-    // if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>")
-    // setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.escopo}`);
-    //   return false;
+    if (!propostaAux.escopo || propostaAux.escopo == "<p><br></p>") {
+      setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.escopo}`);
+      return false;
+    }
     if (!propostaAux.frequencia) {
       setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.frequencia}`);
       return false;
@@ -399,7 +383,7 @@ const DetalhesPropostaEditMode = ({
     return true;
   };
 
-  // Salva as edições da proposta no banco de dados
+  /** Salva as edições da proposta no banco de dados */
   const saveProposal = () => {
     // Verificação dos campos
     if (!isAllFieldsValid()) return;
@@ -408,9 +392,6 @@ const DetalhesPropostaEditMode = ({
 
     let propostaAux = EntitiesObjectService.proposta();
     propostaAux = JSON.parse(JSON.stringify(proposta));
-
-    let propostaEscopo = "";
-    propostaEscopo = formatarHtml(propostaAux.escopo);
 
     arrangeData(propostaAux);
 
@@ -463,9 +444,16 @@ const DetalhesPropostaEditMode = ({
     }
 
     propostaAux.anexo = []; // Setando como lista vazia porque os anexos estão sendo mandados em outras variáveis
+
+    // Se o usuário quiser setar algum parecer como NONE, deve-se apagar o parecer no banco
     if (propostaAux.parecerComissao == "NONE")
       propostaAux.parecerComissao = null;
     if (propostaAux.parecerDG == "NONE") propostaAux.parecerDG = null;
+
+    console.log(
+      "Proposta a ser salva: ",
+      JSON.parse(JSON.stringify(propostaAux))
+    );
 
     PropostaService.putComNovosDados(
       propostaAux,
@@ -473,9 +461,9 @@ const DetalhesPropostaEditMode = ({
       novasTabelasCusto,
       novosBeneficios,
       novosAnexos,
-      listaIdsAnexos,
-      propostaEscopo
+      listaIdsAnexos
     ).then((response) => {
+      console.log("Proposta response: ", JSON.parse(JSON.stringify(response)));
       setPropostaData(response);
       setIsEditing(false);
 
@@ -494,51 +482,50 @@ const DetalhesPropostaEditMode = ({
 
   // ***************************************** Handlers ***************************************** //
 
-  // Handler cancelar edição
+  /** Handler cancelar edição */
   const handleOnCancelEditClick = () => {
     setTextoModalConfirmacao("cancelarEdicao");
     setModalConfirmacao(true);
   };
 
-  // Handler salvar edição
+  /** Handler salvar edição */
   const handleOnSaveEditClick = () => {
     setTextoModalConfirmacao("confirmEditar");
     setModalConfirmacao(true);
   };
 
-  // Função disparada quando clicado em confirmar no modal de confirmação
+  /** Função disparada quando clicado em confirmar no modal de confirmação */
   const handleOnConfirmClick = () => {
     if (textoModalConfirmacao == "cancelarEdicao") {
       setIsEditing(false);
     } else if (textoModalConfirmacao == "confirmEditar") {
-      // setIsLoading(true);
       saveProposal();
     }
 
     setModalConfirmacao(false);
   };
 
-  // Handler do códigoPPM
+  /** Handler do códigoPPM */
   const handleOnPPMChange = (event) => {
     setProposta({ ...proposta, codigoPPM: event.target.value });
   };
 
-  // Handler da data da proposta
+  /** Handler da data da proposta */
   const handleOnDataChange = (event) => {
     setProposta({ ...proposta, data: event.target.value });
   };
 
-  // Handler do isPublicada da proposta
+  /** Handler do isPublicada da proposta */
   const handleOnPublicadaClick = () => {
     setProposta({ ...proposta, publicada: !proposta.publicada });
   };
 
-  // Handler do título da proposta
+  /** Handler do título da proposta */
   const handleOnTituloChange = (event) => {
     setProposta({ ...proposta, titulo: event.target.value });
   };
 
-  // Handler para quando for selecionado uma nova BU
+  /** Handler para quando for selecionado uma nova BU */
   const handleOnBuSolicitanteSelect = (event) => {
     setProposta({
       ...proposta,
@@ -546,7 +533,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler para quando for selecionado um novo fórum
+  /** Handler para quando for selecionado um novo fórum */
   const handleOnForumSelect = (event) => {
     setProposta({
       ...proposta,
@@ -554,7 +541,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler para quando for selecionado um novo tamanho
+  /** Handler para quando for selecionado um novo tamanho */
   const handleOnTamanhoSelect = (event) => {
     setProposta({
       ...proposta,
@@ -562,7 +549,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler para a seção de TI
+  /** Handler para a seção de TI */
   const handleOnSecaoTISelect = (event) => {
     setProposta({
       ...proposta,
@@ -572,7 +559,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler da proposta da proposta
+  /** Handler da proposta da proposta */
   const handleOnPropostaChange = (event) => {
     setProposta({
       ...proposta,
@@ -580,7 +567,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler do problema da proposta
+  /** Handler do problema da proposta */
   const handleOnProblemaChange = (event) => {
     setProposta({
       ...proposta,
@@ -588,7 +575,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler do escopo da proposta
+  /** Handler do escopo da proposta */
   const handleOnEscopoChange = (event) => {
     setProposta({
       ...proposta,
@@ -596,7 +583,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler da frequência da proposta
+  /** Handler da frequência da proposta */
   const handleOnFrequenciaChange = (event) => {
     setProposta({
       ...proposta,
@@ -630,7 +617,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler do benefício da proposta
+  /** Handler do benefício da proposta */
   const handleOnBeneficioChange = (newBeneficio) => {
     let beneficiosAux = proposta.beneficios.map((beneficio) => {
       if (beneficio.id == newBeneficio.id) {
@@ -642,7 +629,7 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, beneficios: [...beneficiosAux] });
   };
 
-  // Handler para deletar um benefício
+  /** Handler para deletar um benefício */
   const handleDeleteBeneficio = (idBeneficio) => {
     let beneficiosAux = [...proposta.beneficios];
     beneficiosAux.splice(
@@ -654,7 +641,7 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, beneficios: [...beneficiosAux] });
   };
 
-  // Handler do link do jira da proposta
+  /** Handler do link do jira da proposta */
   const handleOnLinkJiraChange = (event) => {
     setProposta({
       ...proposta,
@@ -662,7 +649,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler do início de execução da proposta
+  /** Handler do início de execução da proposta */
   const handleOnInicioExecucaoChange = (event) => {
     setProposta({
       ...proposta,
@@ -670,7 +657,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler do fim de execução da proposta
+  /** Handler do fim de execução da proposta */
   const handleOnFimExecucaoChange = (event) => {
     setProposta({
       ...proposta,
@@ -678,7 +665,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler do payback valor da proposta
+  /** Handler do payback valor da proposta */
   const handleOnPaybackValorChange = (event) => {
     setProposta({
       ...proposta,
@@ -686,7 +673,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler do payback tipo da proposta
+  /** Handler do payback tipo da proposta */
   const handlePaybackTIpoSelect = (event) => {
     setProposta({
       ...proposta,
@@ -694,6 +681,7 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
+  /** Handler para quando for selecionado uma nova bu beneficiada */
   const handleOnBuBeneficiadaSelect = (event, newValue) => {
     setProposta({
       ...proposta,
@@ -701,12 +689,12 @@ const DetalhesPropostaEditMode = ({
     });
   };
 
-  // Handler para quando clicar no ícone de add anexo
+  /** Handler para quando clicar no ícone de add anexo */
   const handleAnexosAddOnClick = () => {
     inputFile.current.click();
   };
 
-  // Handler para quando for selecionado um ou mais arquivos
+  /** Handler para quando for selecionado um ou mais arquivos */
   const handleOnFilesSelect = () => {
     if (!existsInAnexos(inputFile.current.files)) {
       setProposta({
@@ -720,7 +708,7 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
-  // Handler para baixar um anexo
+  /** Handler para baixar um anexo */
   const handleOnDownloadAnexo = (anexo) => {
     const file = anexo;
     let blob;
@@ -751,7 +739,7 @@ const DetalhesPropostaEditMode = ({
     }
   };
 
-  // Handler para deletar um anexo
+  /** Handler para deletar um anexo */
   const handleOnDeleteAnexo = (file) => {
     let anexosAux = [...proposta.anexo];
     anexosAux.splice(
@@ -762,7 +750,7 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, anexo: [...anexosAux] });
   };
 
-  // Handler para quando a tabela de custos for alterada
+  /** Handler para quando a tabela de custos for alterada */
   const handleOnTabelaCustosChange = (
     newTabelaCustos = EntitiesObjectService.tabelaCustos()
   ) => {
@@ -776,6 +764,7 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, tabelaCustos: [...tabelaCustosAux] });
   };
 
+  /** Handle de quando uma tabela de custo for deletada */
   const handleDeleteTabelaCusto = (idTabela) => {
     let tabelaCustosAux = proposta.tabelaCustos;
     tabelaCustosAux.splice(
@@ -787,7 +776,7 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, tabelaCustos: tabelaCustosAux });
   };
 
-  // Handler para quando clicar no botão de adicionar criar uma nova tabela de custos
+  /** Handler para quando clicar no botão de adicionar criar uma nova tabela de custos */
   const handleOnTabelaCustosAddClick = () => {
     let newTabelaCustos = EntitiesObjectService.tabelaCustos();
     let ultimoEl;
@@ -822,9 +811,8 @@ const DetalhesPropostaEditMode = ({
     }
   }, [listaBus, listaForuns, listaSecoesTI]);
 
+  // Carrega as informações iniciais (listas)
   useEffect(() => {
-    carregarTextoEscopo();
-
     BuService.getAll().then((busReponse) => {
       setListaBus(busReponse);
     });
@@ -845,21 +833,10 @@ const DetalhesPropostaEditMode = ({
       return beneficio;
     });
 
-    try {
-      setProposta({
-        ...proposta,
-        beneficios: [...beneficiosAux],
-        escopo: atob(proposta.escopo),
-      });
-      setEscopoAux(atob(proposta.escopo));
-    } catch (error) {
-      setProposta({
-        ...proposta,
-        beneficios: [...beneficiosAux],
-        escopo: proposta.escopo,
-      });
-      setEscopoAux(proposta.escopo);
-    }
+    setProposta({
+      ...proposta,
+      beneficios: [...beneficiosAux],
+    });
   }, []);
 
   useEffect(() => {
@@ -871,10 +848,6 @@ const DetalhesPropostaEditMode = ({
       setIsTabelaCustosVisible(true);
     }
   }, [isBeneficiosVisible, isTabelaCustosVisile]);
-
-  useEffect(() => {
-    setProposta({ ...proposta, escopo: escopoAux });
-  }, [escopoAux]);
 
   useEffect(() => {
     if (textoDadosInvalidos) setFeedbackDadosInvalidos(true);
@@ -1021,8 +994,8 @@ const DetalhesPropostaEditMode = ({
         onConfirmClick={handleOnConfirmClick}
         onCancelClick={() => {}}
         lendo={lendo}
-                    texto={texto}
-                    setTexto={setTexto}
+        texto={texto}
+        setTexto={setTexto}
       />
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
