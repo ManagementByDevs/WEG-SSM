@@ -42,7 +42,7 @@ const DetalhesDemanda = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
@@ -567,7 +567,7 @@ const DetalhesDemanda = (props) => {
 
   /** Função para transformar uma string em base64 para um ArrayBuffer, usada para baixar anexos */
   function converterBase64(base64) {
-    const textoBinario = window.atob(base64);
+    const textoBinario = window.atob(base64).toString("utf-8");
     const bytes = new Uint8Array(textoBinario.length);
     return bytes.map((byte, i) => textoBinario.charCodeAt(i));
   }
@@ -761,15 +761,24 @@ const DetalhesDemanda = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (props.lendo && props.texto !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
     } else if (!props.lendo) {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [props.texto, props.lendo]);
 
   return (

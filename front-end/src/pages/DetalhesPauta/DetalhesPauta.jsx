@@ -197,6 +197,9 @@ const DetalhesPauta = (props) => {
     setModal(true);
   };
 
+  // Feedback para quando a pauta não possuir propostas
+  const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
+
   // Feedback para quando o usuário deletar uma proposta da pauta
   const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
     useState(false);
@@ -467,15 +470,24 @@ const DetalhesPauta = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (props.lendo && props.texto !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
     } else if (!props.lendo) {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [props.texto, props.lendo]);
 
   return (
@@ -494,9 +506,11 @@ const DetalhesPauta = (props) => {
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
+        setFeedbackSemPropostas={setFeedbackSemPropostas}
         lendo={props.lendo}
         texto={props.texto}
         setTexto={props.setTexto}
+        listaPropostas={pauta.propostas}
       />
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
@@ -545,6 +559,15 @@ const DetalhesPauta = (props) => {
         lendo={props.lendo}
         texto={props.texto}
         setTexto={props.setTexto}
+      />
+      {/* Feedback pauta sem propostas */}
+      <Feedback
+        open={feedbackSemPropostas}
+        handleClose={() => {
+          setFeedbackSemPropostas(false);
+        }}
+        status={"erro"}
+        mensagem={texts.detalhesPauta.feedbacks.feedback3}
       />
       <ModalConfirmacao
         open={modal}
@@ -810,7 +833,6 @@ const DetalhesPauta = (props) => {
                     }}
                     variant="contained"
                     onClick={proximo}
-                    fdsfds
                   >
                     <Typography>{texts.detalhesPauta.proximo}</Typography>
                   </Button>

@@ -111,6 +111,7 @@ const App = () => {
                         texto={textoSelecionado}
                         setTexto={setTextoSelecionado}
                         lendo={lendoTexto}
+                        setLendo={setLendoTexto}
                       />
                     }
                   />

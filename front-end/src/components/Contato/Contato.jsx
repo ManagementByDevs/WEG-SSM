@@ -110,15 +110,24 @@ const Conteudo = ({
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (lendo && texto !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
     } else if (!lendo) {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [texto, lendo]);
 
   return (

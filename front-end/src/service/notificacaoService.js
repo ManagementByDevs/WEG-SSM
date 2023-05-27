@@ -58,10 +58,11 @@ class NotificacaoService {
   /**
    * Cria e retorna um objeto notificação
    * @param {APROVADO, REPROVADO, MAIS_INFORMACOES, MENSAGENS} tipoNotificacao
+   * @param {Demanda} demanda
    * @returns Notificação Object
    */
   createNotificationObject(tipoNotificacao, demanda) {
-    let numeroSequencial = demanda.id;
+    let numeroSequencial = demanda.codigoPPM ? demanda.codigoPPM : demanda.id;
     return {
       numeroSequencial,
       data: DateService.getTodaysDateMySQL(),

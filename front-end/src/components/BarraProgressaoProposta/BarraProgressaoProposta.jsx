@@ -121,7 +121,6 @@ const BarraProgressaoProposta = (props) => {
 
   /** Função para somar os valores dos benefícios */
   const retornarTotalBeneficios = () => {
-
     let valorBeneficio = 0;
     let valorDolar, valorEuro;
     MoedasService.getDolar().then((response) => {
@@ -193,23 +192,23 @@ const BarraProgressaoProposta = (props) => {
         setGerais({
           ...gerais,
           qtdPaybackSimples: contadorDia,
-          unidadePaybackSimples: "DIAS"
-        })
+          unidadePaybackSimples: "DIAS",
+        });
       } else {
         setGerais({
           ...gerais,
           qtdPaybackSimples: Math.ceil(semanas),
-          unidadePaybackSimples: "SEMANAS"
-        })
+          unidadePaybackSimples: "SEMANAS",
+        });
       }
     } else {
       setGerais({
         ...gerais,
         qtdPaybackSimples: Math.ceil(meses),
-        unidadePaybackSimples: "MESES"
-      })
+        unidadePaybackSimples: "MESES",
+      });
     }
-  }
+  };
 
   useEffect(() => {
     if (!idEscopo) {
@@ -720,15 +719,23 @@ const BarraProgressaoProposta = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != "") {
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (props.lendo && props.texto !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
     } else if (!props.lendo) {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [props.texto, props.lendo]);
 
   return (

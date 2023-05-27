@@ -12,6 +12,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalCriarAta = (props) => {
+
   // Variável para alterar o tema
   const { mode } = useContext(ColorModeContext);
 
@@ -20,38 +21,6 @@ const ModalCriarAta = (props) => {
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
-
-  // variáveis de estilo para os itens do componente
-  const cssModal = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    borderRadius: "5px",
-    borderTop: "10px solid #00579D",
-    boxShadow: 24,
-    p: 2,
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "column",
-  };
-
-  const botaoCancelar = {
-    width: "7rem",
-    border: "solid 1px",
-    color: "tertiary.main",
-    p: 1,
-  };
-
-  const botaoDesabilitado = {
-    width: "7rem",
-    backgroundColor: "primary.main",
-    color: "white",
-    border: "solid 1px #000",
-    p: 1,
-  };
 
   // props para abrir o modal através de outra tela
   let open = false;
@@ -67,10 +36,13 @@ const ModalCriarAta = (props) => {
     }
   };
 
+  // useState utilizado para armazenar o número sequencial da ata
   const [numeroSequencial, setNumeroSequencial] = useState("");
 
+  // useState utilizado para armazenar a data de reunião da ata
   const [dataReuniao, setDataReuniao] = useState("");
 
+  // função utilizada para verificações de criação da ata
   const criarAta = () => {
     if (props.lendo) {
       lerTexto(texts.modalCriarAta.botaoCriar);
@@ -82,6 +54,8 @@ const ModalCriarAta = (props) => {
         dataReuniao == null
       ) {
         props.setFeedbackCamposFaltantes(true);
+      } else if (props.listaPropostas == null || props.listaPropostas.lenght == 0) {
+        props.setFeedbackSemPropostas(true);
       } else {
         props.criarAta(numeroSequencial, dataReuniao);
       }
@@ -99,15 +73,24 @@ const ModalCriarAta = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (props.lendo && props.texto !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
     } else if (!props.lendo) {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
+      finalizarLeitura();
     }
+
+    return () => {
+      finalizarLeitura();
+    };
   }, [props.texto, props.lendo]);
 
   return (
@@ -119,7 +102,7 @@ const ModalCriarAta = (props) => {
         sx={{ minWidth: "40rem" }}
       >
         <Fade in={open}>
-          <Box sx={cssModal}>
+          <Box className="flex flex-col justify-evenly absolute top-2/4 left-2/4" sx={{ transform: "translate(-50%, -50%)", width: 500, height: 380, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 2 }}>
             {/* Topo modal*/}
             <Box className="flex flex-col w-full items-center">
               <Box className="flex">
@@ -135,27 +118,19 @@ const ModalCriarAta = (props) => {
                 {/* Botao fechar modal */}
                 <CloseIcon
                   onClick={handleClose}
-                  sx={{
-                    position: "absolute",
-                    left: "93%",
-                    top: "3%",
-                    cursor: "pointer",
-                  }}
+                  sx={{ position: "absolute", left: "93%", top: "3%", cursor: "pointer" }}
                 />
               </Box>
               {/* Divisor */}
               <Divider
-                sx={{
-                  width: "80%",
-                  borderColor: "tertiary.main",
-                }}
+                sx={{ width: "80%", marginTop: "1%", borderColor: "tertiary.main" }}
               />
             </Box>
             {/* Conteudo modal */}
             <Box className="w-full flex justify-center">
               <Box
-                className="flex flex-col mt-8"
-                sx={{ width: "80%", height: "10rem" }}
+                className="flex flex-col justify-between mt-8"
+                sx={{ width: "80%", height: "10.5rem" }}
               >
                 <InputComLabel
                   label={"Número Sequencial: "}
@@ -174,7 +149,7 @@ const ModalCriarAta = (props) => {
                   setTexto={props.setTexto}
                 />
                 {/* input de data */}
-                <Box className="mt-4">
+                <Box className="mt-5">
                   <Box className="flex">
                     <Typography
                       fontSize={props.fontConfig}
@@ -188,11 +163,7 @@ const ModalCriarAta = (props) => {
                     </Typography>
                     <Typography
                       fontSize={props.fontConfig}
-                      sx={{
-                        fontWeight: "800",
-                        cursor: "default",
-                        margin: "0 .2% .2% .2%",
-                      }}
+                      sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
                       className="text-red-600"
                       gutterBottom
                     >
@@ -227,11 +198,11 @@ const ModalCriarAta = (props) => {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  marginTop: "3%",
+                  marginTop: "5%",
                 }}
               >
                 <Button
-                  sx={botaoCancelar}
+                  sx={{ width: "7rem", border: "solid 1px", color: "tertiary.main", p: 1 }}
                   disableElevation
                   onClick={handleClose}
                 >
@@ -240,7 +211,7 @@ const ModalCriarAta = (props) => {
                   </Typography>
                 </Button>
                 <Button
-                  sx={botaoDesabilitado}
+                  sx={{ width: "7rem", backgroundColor: "primary.main", color: "white", border: "solid 1px #000", p: 1, }}
                   disableElevation
                   variant="contained"
                   onClick={criarAta}
