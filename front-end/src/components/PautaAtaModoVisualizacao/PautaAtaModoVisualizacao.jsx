@@ -105,17 +105,19 @@ const PautaTable = ({
     return ata.propostas[0]?.parecerDG != null;
   };
 
+  const [textoLeitura,setTextoLeitura] = useState("");
+
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTexto(escrita);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(texto);
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
 
     const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
@@ -123,18 +125,18 @@ const PautaTable = ({
       }
     };
 
-    if (lendo && texto !== "") {
+    if (lendo && textoLeitura !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
-    } else if (!lendo) {
+    } else {
       finalizarLeitura();
     }
 
     return () => {
       finalizarLeitura();
     };
-  }, [texto, lendo]);
+  }, [textoLeitura]);
 
   return (
     <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
@@ -348,18 +350,19 @@ const NadaEncontrado = (props) => {
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+  const [textoLeitura,setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
 
     const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
@@ -367,18 +370,18 @@ const NadaEncontrado = (props) => {
       }
     };
 
-    if (props.lendo && props.texto !== "") {
+    if (props.lendo && textoLeitura !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
-    } else if (!props.lendo) {
+    } else {
       finalizarLeitura();
     }
 
     return () => {
       finalizarLeitura();
     };
-  }, [props.texto, props.lendo]);
+  }, [textoLeitura]);
 
   return (
     <Box

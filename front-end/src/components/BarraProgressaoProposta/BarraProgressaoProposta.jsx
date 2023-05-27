@@ -742,36 +742,38 @@ const BarraProgressaoProposta = (props) => {
   const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
     useState(false);
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
-    if (props.lendo) {
-      props.setTexto(texto);
-    }
-  };
+    const [textoLeitura,setTextoLeitura] = useState("");
 
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
+    // Função que irá setar o texto que será "lido" pela a API
+    const lerTexto = (escrita) => {
+      if (props.lendo) {
+        setTextoLeitura(escrita);
       }
     };
-
-    if (props.lendo && props.texto !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
+  
+    // Função que irá "ouvir" o texto que será "lido" pela a API
+    useEffect(() => {
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(textoLeitura);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (props.lendo && textoLeitura !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
       }
-    } else if (!props.lendo) {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [props.texto, props.lendo]);
+  
+      return () => {
+        finalizarLeitura();
+      };
+    }, [textoLeitura]);
 
   return (
     <>

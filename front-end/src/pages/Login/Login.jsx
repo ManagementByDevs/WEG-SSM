@@ -92,17 +92,19 @@ const Login = (props) => {
     }
   };
 
+  const [textoLeitura,setTextoLeitura] = useState("");
+
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
 
     const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
@@ -110,7 +112,7 @@ const Login = (props) => {
       }
     };
 
-    if (props.texto !== "") {
+    if (props.lendo && textoLeitura !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
@@ -121,15 +123,7 @@ const Login = (props) => {
     return () => {
       finalizarLeitura();
     };
-  }, [props.texto, props.lendo]);
-
-  useEffect(() => {
-    console.log("texto alterou: " + props.texto);
-  }, [props.texto])
-
-  useEffect(() => {
-    console.log("lendo alterou: " + props.lendo);
-  }, [props.lendo])
+  }, [textoLeitura]);
 
   return (
     <FundoComHeader
