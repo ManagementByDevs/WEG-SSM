@@ -101,7 +101,7 @@ const PautaTable = ({
     return ata.propostas[0]?.parecerDG != null;
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -135,7 +135,7 @@ const PautaTable = ({
   }, [textoLeitura]);
 
   return (
-    <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
+    <Paper sx={{ width: "100%", minWidth: "74rem" }} square>
       <Table sx={{ width: "100%" }} className="table-fixed">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
@@ -344,7 +344,7 @@ const NadaEncontrado = (props) => {
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {

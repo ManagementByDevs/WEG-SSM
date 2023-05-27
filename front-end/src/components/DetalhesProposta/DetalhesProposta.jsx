@@ -44,10 +44,7 @@ const DetalhesProposta = ({
   propostaId = 0,
   emAprovacao = false,
   setDadosProposta = () => {},
-  parecerComissao = "",
-  parecerInformacao = "",
-  parecerDG = "",
-  parecerInformacaoDG = "",
+  setFeedbackEditSuccess = () => {},
   lendo,
   setTexto,
   texto,
@@ -66,9 +63,6 @@ const DetalhesProposta = ({
 
   // Estado para saber qual estado da proposta mostrar, a estática ou editável
   const [isEditing, setIsEditing] = useState(false);
-
-  // Estado para feedback de edição feita com sucesso
-  const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   // Referência para o texto do problema
   const problemaText = useRef(null);
@@ -277,15 +271,6 @@ const DetalhesProposta = ({
           className="border rounded px-10 py-4 border-t-6 relative"
           sx={{ width: "55rem", borderTopColor: "primary.main" }}
         >
-          <StatusProposta
-            proposta={proposta}
-            setProposta={editProposta}
-            getCorStatus={getCorStatus}
-            getStatusFormatted={getStatusFormatted}
-            lendo={lendo}
-            texto={texto}
-            setTexto={setTexto}
-          />
           <DetalhesPropostaEditMode
             propostaData={proposta}
             setPropostaData={setPropostaNewData}
@@ -302,13 +287,6 @@ const DetalhesProposta = ({
 
   return (
     <Box className="flex justify-center">
-      <Feedback
-        open={feedbackEditSuccess}
-        handleClose={() => setFeedbackEditSuccess(false)}
-        status={"sucesso"}
-        mensagem={texts.detalhesProposta.editadoComSucesso}
-        lendo={lendo}
-      />
       <Box
         className="border rounded px-10 py-4 border-t-6 relative"
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
@@ -874,8 +852,8 @@ const DetalhesProposta = ({
                       proposta={proposta}
                       setProposta={setProposta}
                       setDadosProposta={setDadosProposta}
-                      parecerComissao={parecerComissao}
-                      parecerInformacao={parecerInformacao}
+                      parecerComissao={proposta.parecerComissao}
+                      parecerInformacao={proposta.parecerInformacao}
                     />
 
                     {/* Parecer da Diretoria */}
@@ -889,8 +867,8 @@ const DetalhesProposta = ({
                         proposta={proposta}
                         setProposta={setProposta}
                         setDadosProposta={setDadosProposta}
-                        parecerDG={parecerDG}
-                        parecerInformacaoDG={parecerInformacaoDG}
+                        parecerDG={proposta.parecerDG}
+                        parecerInformacaoDG={proposta.parecerInformacaoDG}
                       />
                     )}
                   </Box>

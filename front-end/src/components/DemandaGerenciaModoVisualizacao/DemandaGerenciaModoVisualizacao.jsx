@@ -94,7 +94,7 @@ const DemandaTable = ({
   texto,
 }) => {
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Controla o estado do modal de histórico da demanda
   const [modalHistorico, setModalHistorico] = useState(false);
@@ -140,7 +140,7 @@ const DemandaTable = ({
     setModalHistorico(true);
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -185,7 +185,7 @@ const DemandaTable = ({
           setTexto={setTexto}
         />
       )}
-      <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
+      <Paper sx={{ width: "100%", minWidth: "74rem" }} square>
         <Table sx={{ width: "100%" }} className="table-fixed">
           <TableHead sx={{ width: "100%" }}>
             <TableRow
@@ -543,7 +543,7 @@ const NadaEncontrado = (props) => {
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {

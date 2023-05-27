@@ -125,7 +125,7 @@ const DemandaTable = ({
     setOpenModal(true);
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -167,11 +167,14 @@ const DemandaTable = ({
           setOpen={setOpenModal}
           motivoRecusa={demandaSelecionada?.motivoRecusa}
           lendo={lendo}
-                    texto={texto}
-                    setTexto={setTexto}
+          texto={texto}
+          setTexto={setTexto}
         />
       )}
-      <Table className="mb-8 table-fixed" sx={{ width: "100%" }}>
+      <Table
+        className="mb-8 table-fixed"
+        sx={{ width: "100%", minWidth: "74rem" }}
+      >
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-3 w-1/10">
@@ -361,7 +364,7 @@ const NadaEncontrado = (props) => {
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Função que irá setar o texto que será "lido" pela a API
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {

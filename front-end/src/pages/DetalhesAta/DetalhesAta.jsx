@@ -67,6 +67,9 @@ const DetalhesAta = (props) => {
   // Feedback para quando o usuário não preencher todos os campos obrigatórios
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
+  // Estado para feedback de edição feita com sucesso
+  const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
+
   // useEffect usado para feedback
   useEffect(() => {
     if (location.state?.feedback) {
@@ -286,7 +289,7 @@ const DetalhesAta = (props) => {
 
     return hora + ":" + minuto;
   };
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -339,12 +342,21 @@ const DetalhesAta = (props) => {
         texto={props.texto}
         setTexto={props.setTexto}
       />
+      {/* Feedback edição bem sucedida */}
+      <Feedback
+        open={feedbackEditSuccess}
+        handleClose={() => setFeedbackEditSuccess(false)}
+        status={"sucesso"}
+        mensagem={texts.detalhesProposta.editadoComSucesso}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
+      />
+
       <Box className="p-2">
         {/* caminho da página */}
         <Box className="flex w-full relative">
-          <Caminho
-            lendo={props.lendo}
-          />
+          <Caminho lendo={props.lendo} />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -507,14 +519,12 @@ const DetalhesAta = (props) => {
                   </Typography>
                 </Box>
                 <DetalhesProposta
-                  setDadosProposta={setDadosProposta}
-                  parecerDG={dadosProposta.parecerDG || ""}
-                  parecerInformacaoDG={dadosProposta.parecerInformacaoDG || ""}
                   emAprovacao={true}
                   propostaId={dadosProposta.id}
                   lendo={props.lendo}
                   texto={props.texto}
                   setTexto={props.setTexto}
+                  setFeedbackEditSuccess={setFeedbackEditSuccess}
                 />
               </Box>
             )}
