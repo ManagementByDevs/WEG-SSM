@@ -1,5 +1,6 @@
 import "./App.css";
 import React, { useEffect, useMemo, useState } from "react";
+import { Box } from "@mui/material";
 import {
   BrowserRouter as Router,
   Routes,
@@ -80,10 +81,7 @@ const App = () => {
     [chatMinimizado]
   );
 
-  const [textoSelecionado, setTextoSelecionado] = useState("");
   const [lendoTexto, setLendoTexto] = useState(false);
-
-
 
   /*
   Tipos possíveis de usuários:
@@ -97,10 +95,8 @@ const App = () => {
             <WebSocketService>
               <Router>
                 <LerTexto
-                  texto={textoSelecionado}
-                  setTexto={setTextoSelecionado}
-                  lendo={lendoTexto}
                   setLendo={setLendoTexto}
+                  lendo={lendoTexto}
                 />
                 <VLibras forceOnload />
                 <Routes>
@@ -108,8 +104,6 @@ const App = () => {
                     path="/login"
                     element={
                       <Login
-                        texto={textoSelecionado}
-                        setTexto={setTextoSelecionado}
                         lendo={lendoTexto}
                       />
                     }
@@ -119,8 +113,6 @@ const App = () => {
                       path="/criar-demanda"
                       element={
                         <CriarDemanda
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       }
@@ -129,8 +121,6 @@ const App = () => {
                       path="/notificacao"
                       element={
                         <Notificacao
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       }
@@ -139,8 +129,6 @@ const App = () => {
                       path="/chat"
                       element={
                         <Chat
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       }
@@ -149,8 +137,6 @@ const App = () => {
                       path="/chat/:id"
                       element={
                         <Chat
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       }
@@ -159,8 +145,6 @@ const App = () => {
                       path="/detalhes-demanda"
                       element={
                         <DetalhesDemandaPagina
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       }
@@ -169,8 +153,6 @@ const App = () => {
                       path="/editar-escopo"
                       element={
                         <EditarEscopo
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       }
@@ -179,8 +161,6 @@ const App = () => {
                       path="/escopos"
                       element={
                         <Escopos
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       }
@@ -189,8 +169,6 @@ const App = () => {
                       path="*"
                       element={
                         <NotFound
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       }
@@ -201,8 +179,6 @@ const App = () => {
                     path="/editar-escopo"
                     element={
                       <EditarEscopo
-                        texto={textoSelecionado}
-                        setTexto={setTextoSelecionado}
                         lendo={lendoTexto}
                       />
                     }
@@ -211,8 +187,6 @@ const App = () => {
                     path="/escopos"
                     element={
                       <Escopos
-                        texto={textoSelecionado}
-                        setTexto={setTextoSelecionado}
                         lendo={lendoTexto}
                       />
                     }
@@ -221,8 +195,6 @@ const App = () => {
                     path="*"
                     element={
                       <NotFound
-                        texto={textoSelecionado}
-                        setTexto={setTextoSelecionado}
                         lendo={lendoTexto}
                       />
                     }
@@ -233,8 +205,6 @@ const App = () => {
                     element={
                       <ProtectedRoute>
                         <DetermineHomeUser
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       </ProtectedRoute>
@@ -248,8 +218,6 @@ const App = () => {
                         redirectPath="/"
                       >
                         <CriarProposta
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       </ProtectedRoute>
@@ -263,8 +231,6 @@ const App = () => {
                         redirectPath="/"
                       >
                         <DetalhesPropostaPagina
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       </ProtectedRoute>
@@ -278,8 +244,6 @@ const App = () => {
                         redirectPath="/"
                       >
                         <DetalhesAta
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       </ProtectedRoute>
@@ -293,8 +257,6 @@ const App = () => {
                         redirectPath="/"
                       >
                         <DetalhesPauta
-                          texto={textoSelecionado}
-                          setTexto={setTextoSelecionado}
                           lendo={lendoTexto}
                         />
                       </ProtectedRoute>
@@ -334,13 +296,15 @@ const DetermineHomeUser = (props) => {
   const userJpa = CookieService.getCookie("user");
 
   if (userJpa.authorities[0].authority == "SOLICITANTE") {
-    return <Home texto={props.texto}
-    setTexto={props.setTexto}
-    lendo={props.lendo}/>;
+    return (
+      <Home lendo={props.lendo} />
+    );
   } else {
-    return <HomeGerencia texto={props.texto}
-    setTexto={props.setTexto}
-    lendo={props.lendo}/>;
+    return (
+      <HomeGerencia
+        lendo={props.lendo}
+      />
+    );
   }
 };
 

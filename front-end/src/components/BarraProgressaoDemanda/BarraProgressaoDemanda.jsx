@@ -191,11 +191,15 @@ const BarraProgressaoDemanda = (props) => {
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-      const tipoBeneficioNovo =
-        beneficio.tipoBeneficio.charAt(0) +
-        beneficio.tipoBeneficio
-          .substring(1, beneficio.tipoBeneficio.length)
-          .toLowerCase();
+
+      let tipoBeneficioNovo = "";
+      if (beneficio.tipoBeneficio) {
+        tipoBeneficioNovo =
+          beneficio.tipoBeneficio.charAt(0) +
+          beneficio.tipoBeneficio
+            .substring(1, beneficio.tipoBeneficio.length)
+            .toLowerCase();
+      }
 
       listaNova.push({
         id: beneficio.id,
@@ -203,6 +207,7 @@ const BarraProgressaoDemanda = (props) => {
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: atob(beneficio.memoriaCalculo),
+        visible: true
       });
     }
     setPaginaBeneficios(listaNova);
@@ -259,12 +264,12 @@ const BarraProgressaoDemanda = (props) => {
           //Confirmação de salvamento (se sobrar tempo)
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
@@ -320,22 +325,24 @@ const BarraProgressaoDemanda = (props) => {
           let precisaFeedback = false;
           if (paginaBeneficios.length > 0) {
             paginaBeneficios.map((beneficio) => {
-              if (
-                beneficio.tipoBeneficio == "Qualitativo" &&
-                beneficio.memoriaCalculo == ""
-              ) {
-                precisaFeedback = true;
-              } else if (
-                (beneficio.tipoBeneficio == "Real" ||
-                  beneficio.tipoBeneficio == "Potencial") &&
-                (beneficio.valor_mensal == "" ||
-                  beneficio.moeda == "" ||
-                  beneficio.memoriaCalculo == "")
-              ) {
-                precisaFeedback = true;
-              }
-              if (beneficio.tipoBeneficio == "") {
-                precisaFeedback = true;
+              if (beneficio.visible) {
+                if (
+                  beneficio.tipoBeneficio == "Qualitativo" &&
+                  beneficio.memoriaCalculo == ""
+                ) {
+                  precisaFeedback = true;
+                } else if (
+                  (beneficio.tipoBeneficio == "Real" ||
+                    beneficio.tipoBeneficio == "Potencial") &&
+                  (beneficio.valor_mensal == "" ||
+                    beneficio.moeda == "" ||
+                    beneficio.memoriaCalculo == "")
+                ) {
+                  precisaFeedback = true;
+                }
+                if (beneficio.tipoBeneficio == "") {
+                  precisaFeedback = true;
+                }
               }
             });
             if (precisaFeedback) {
@@ -355,9 +362,11 @@ const BarraProgressaoDemanda = (props) => {
   /** Função para salvar a lista de benefícios */
   const salvarBeneficios = () => {
     for (let beneficio of paginaBeneficios) {
-      beneficioService
-        .put(beneficio, beneficio.memoriaCalculo)
-        .then((response) => {});
+      if (beneficio.visible) {
+        let beneficioFinal = { ...beneficio };
+        delete beneficioFinal.visible;
+        beneficioService.put(beneficioFinal, beneficioFinal.memoriaCalculo).then((response) => { });
+      }
     }
   };
 
@@ -367,27 +376,38 @@ const BarraProgressaoDemanda = (props) => {
     navigate("/");
   };
 
+  const [textoLeitura,setTextoLeitura] = useState("");
+
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else if (!props.lendo) {
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (props.lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
     }
-  }, [props.texto, props.lendo]);
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   return (
     <>
@@ -479,6 +499,7 @@ const BarraProgressaoDemanda = (props) => {
               setFeedbackErroNavegadorIncompativel={
                 setFeedbackErroNavegadorIncompativel
               }
+              lendo={props.lendo}
             />
           )}
           {etapaAtiva == 1 && (

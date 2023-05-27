@@ -197,6 +197,9 @@ const DetalhesPauta = (props) => {
     setModal(true);
   };
 
+  // Feedback para quando a pauta não possuir propostas
+  const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
+
   // Feedback para quando o usuário deletar uma proposta da pauta
   const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
     useState(false);
@@ -455,28 +458,38 @@ const DetalhesPauta = (props) => {
 
   // useState utilizado para abrir e fechar o modal de adicionar a pauta
   const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
+  const [textoLeitura,setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else if (!props.lendo) {
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (props.lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
     }
-  }, [props.texto, props.lendo]);
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   return (
     <FundoComHeader
@@ -494,9 +507,11 @@ const DetalhesPauta = (props) => {
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
+        setFeedbackSemPropostas={setFeedbackSemPropostas}
         lendo={props.lendo}
         texto={props.texto}
         setTexto={props.setTexto}
+        listaPropostas={pauta.propostas}
       />
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
@@ -545,6 +560,15 @@ const DetalhesPauta = (props) => {
         lendo={props.lendo}
         texto={props.texto}
         setTexto={props.setTexto}
+      />
+      {/* Feedback pauta sem propostas */}
+      <Feedback
+        open={feedbackSemPropostas}
+        handleClose={() => {
+          setFeedbackSemPropostas(false);
+        }}
+        status={"erro"}
+        mensagem={texts.detalhesPauta.feedbacks.feedback3}
       />
       <ModalConfirmacao
         open={modal}
@@ -810,7 +834,6 @@ const DetalhesPauta = (props) => {
                     }}
                     variant="contained"
                     onClick={proximo}
-                    fdsfds
                   >
                     <Typography>{texts.detalhesPauta.proximo}</Typography>
                   </Button>

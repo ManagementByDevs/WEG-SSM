@@ -43,6 +43,7 @@ const FormularioBeneficiosDemanda = (props) => {
           valor_mensal: "",
           moeda: "",
           memoriaCalculo: "",
+          visible: true
         },
       ]);
     });
@@ -67,33 +68,46 @@ const FormularioBeneficiosDemanda = (props) => {
       for (let contagem = 0; contagem < beneficios.length; contagem++) {
         if (contagem != desiredIndex) {
           listaNova.push({ ...beneficios[contagem] });
+        } else {
+          listaNova.push({ ...beneficios[contagem], visible: false });
         }
       }
       setBeneficios(listaNova);
     });
   }
 
+  const [textoLeitura,setTextoLeitura] = useState("");
+
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else if (!props.lendo) {
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (props.lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
     }
-  }, [props.texto, props.lendo]);
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
@@ -128,24 +142,26 @@ const FormularioBeneficiosDemanda = (props) => {
         >
           {/* Lista de benefícios */}
           {beneficios?.map((beneficio, index) => {
-            return (
-              <Beneficios
-                key={index}
-                save={salvarDados}
-                index={index}
-                removerBeneficio={removerBeneficio}
-                dados={beneficio}
-                setFeedbackErroNavegadorIncompativel={
-                  props.setFeedbackErroNavegadorIncompativel
-                }
-                setFeedbackErroReconhecimentoVoz={
-                  props.setFeedbackErroReconhecimentoVoz
-                }
-                lendo={props.lendo}
-                texto={props.texto}
-                setTexto={props.setTexto}
-              />
-            );
+            if(beneficio.visible) {
+              return (
+                <Beneficios
+                  key={index}
+                  save={salvarDados}
+                  index={index}
+                  removerBeneficio={removerBeneficio}
+                  dados={beneficio}
+                  setFeedbackErroNavegadorIncompativel={
+                    props.setFeedbackErroNavegadorIncompativel
+                  }
+                  setFeedbackErroReconhecimentoVoz={
+                    props.setFeedbackErroReconhecimentoVoz
+                  }
+                  lendo={props.lendo}
+                  texto={props.texto}
+                  setTexto={props.setTexto}
+                />
+              );
+            }
           })}
         </Box>
       </Box>

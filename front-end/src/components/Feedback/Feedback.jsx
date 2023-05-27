@@ -7,6 +7,8 @@ const Feedback = (props) => {
   const vertical = "top";
   const horizontal = "right";
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
   const getStatus = () => {
     switch (props.status) {
       case "sucesso":
@@ -23,26 +25,35 @@ const Feedback = (props) => {
   };
 
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else if (!props.lendo) {
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (props.lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
     }
-  }, [props.texto, props.lendo]);
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   return (
     <Snackbar

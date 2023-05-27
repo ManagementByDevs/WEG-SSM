@@ -136,7 +136,8 @@ const DetalhesDemanda = (props) => {
   function resetarTextoInput() {
     excluirBeneficiosAdicionados();
     excluirAnexosAdicionados();
-    setBeneficios(resetarBeneficios());
+    setBeneficios(formatarBeneficios(props.dados.beneficios));
+    setBeneficiosExcluidos([]);
     setVisualizarTexto(true);
     setEditar(false);
     setTituloDemanda(props.dados.titulo);
@@ -146,24 +147,6 @@ const DetalhesDemanda = (props) => {
     setAnexosDemanda(props.dados.anexo);
   }
 
-  /** Função para resetar a formatação dos benefícios (em específico da memória de cálculo) após cancelamento de edição */
-  const resetarBeneficios = () => {
-    const aux = props.dados.beneficios.map((beneficio) => {
-      return {
-        id: beneficio.id,
-        tipoBeneficio:
-          beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || texts.DetalhesDemanda.real,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: atob(beneficio.memoriaCalculo).toString("utf-8"),
-      };
-    });
-    return aux;
-  };
-
   // Função para formatar os benefícios recebidos do banco para a lista de benefícios na página
   const formatarBeneficios = (listaBeneficios) => {
     const aux = listaBeneficios.map((beneficio) => {
@@ -171,12 +154,13 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || texts.DetalhesDemanda.real,
+          beneficio.tipoBeneficio
+            ?.substring(1, beneficio.tipoBeneficio?.length)
+            ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
+        visible: true
       };
     });
     return aux;
@@ -186,13 +170,15 @@ const DetalhesDemanda = (props) => {
   const formatarBeneficiosRequisicao = (listaBeneficios) => {
     let listaNova = [];
     for (let beneficio of listaBeneficios) {
-      listaNova.push({
-        id: beneficio.id,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        moeda: beneficio.moeda,
-        valor_mensal: beneficio.valor_mensal,
-        tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
-      });
+      if (beneficio.visible) {
+        listaNova.push({
+          id: beneficio.id,
+          memoriaCalculo: beneficio.memoriaCalculo,
+          moeda: beneficio.moeda,
+          valor_mensal: beneficio.valor_mensal,
+          tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
+        });
+      }
     }
     return listaNova;
   };
@@ -239,7 +225,7 @@ const DetalhesDemanda = (props) => {
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { });
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -253,11 +239,11 @@ const DetalhesDemanda = (props) => {
     BeneficioService.post().then((response) => {
       setBeneficiosNovos([
         ...beneficiosNovos,
-        { ...response, tipoBeneficio: "", moeda: "" },
+        { ...response, tipoBeneficio: "", moeda: "", visible: true },
       ]);
       setBeneficios([
         ...beneficios,
-        { ...response, tipoBeneficio: "", moeda: "" },
+        { ...response, tipoBeneficio: "", moeda: "", visible: true },
       ]);
     });
   };
@@ -271,6 +257,7 @@ const DetalhesDemanda = (props) => {
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
+        visible: true
       };
     });
     aux[index] = beneficio;
@@ -284,6 +271,7 @@ const DetalhesDemanda = (props) => {
       if (contagem != indexBeneficio) {
         listaNova.push({ ...beneficios[contagem] });
       } else {
+        listaNova.push({ ...beneficios[contagem], visible: false });
         setBeneficiosExcluidos([...beneficiosExcluidos, beneficios[contagem]]);
       }
     }
@@ -293,7 +281,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -301,7 +289,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosNovos([]);
   };
@@ -309,7 +297,7 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => {});
+      AnexoService.deleteById(anexo.id).then(() => { });
     }
     setNovosAnexos([]);
   };
@@ -333,7 +321,7 @@ const DetalhesDemanda = (props) => {
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of listaBeneficiosFinal) {
         BeneficioService.put(beneficio, beneficio.memoriaCalculo).then(
-          (response) => {}
+          (response) => { }
         );
         contagem++;
 
@@ -355,12 +343,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-          props.dados.beneficios[index].moeda.toLowerCase() &&
+        props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -762,27 +750,38 @@ const DetalhesDemanda = (props) => {
 
   // ********************************************** Fim Gravar audio **********************************************
 
+  const [textoLeitura,setTextoLeitura] = useState("");
+
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else if (!props.lendo) {
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (props.lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
     }
-  }, [props.texto, props.lendo]);
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
@@ -885,8 +884,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -895,8 +894,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -1330,25 +1329,27 @@ const DetalhesDemanda = (props) => {
               </Box>
               <Box className="mt-2 flex flex-col gap-5">
                 {beneficios?.map((beneficio, index) => {
-                  return (
-                    <BeneficiosDetalheDemanda
-                      editavel={true}
-                      key={index}
-                      index={index}
-                      delete={deleteBeneficio}
-                      beneficio={beneficio}
-                      setBeneficio={alterarTextoBeneficio}
-                      setFeedbackErroNavegadorIncompativel={
-                        setFeedbackErroNavegadorIncompativel
-                      }
-                      setFeedbackErroReconhecimentoVoz={
-                        setFeedbackErroReconhecimentoVoz
-                      }
-                      lendo={props.lendo}
-                      texto={props.texto}
-                      setTexto={props.setTexto}
-                    />
-                  );
+                  if (beneficio.visible) {
+                    return (
+                      <BeneficiosDetalheDemanda
+                        editavel={true}
+                        key={index}
+                        index={index}
+                        delete={deleteBeneficio}
+                        beneficio={beneficio}
+                        setBeneficio={alterarTextoBeneficio}
+                        setFeedbackErroNavegadorIncompativel={
+                          setFeedbackErroNavegadorIncompativel
+                        }
+                        setFeedbackErroReconhecimentoVoz={
+                          setFeedbackErroReconhecimentoVoz
+                        }
+                        lendo={props.lendo}
+                        texto={props.texto}
+                        setTexto={props.setTexto}
+                      />
+                    );
+                  }
                 })}
               </Box>
             </Box>

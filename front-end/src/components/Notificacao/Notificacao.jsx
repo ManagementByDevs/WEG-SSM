@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Box, Typography } from "@mui/material";
 
@@ -64,30 +64,38 @@ const Notificacao = ({
     }
   };
 
+  const [textoLeitura,setTextoLeitura] = useState("");
+
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTexto(escrita);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-         
-      }
-      setTexto("");
-    } else if (!lendo ) {
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
     }
-  }, [texto, lendo]);
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   return (
     // Container da notificação

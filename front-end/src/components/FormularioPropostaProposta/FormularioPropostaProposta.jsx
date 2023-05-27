@@ -139,6 +139,7 @@ const FormularioPropostaProposta = (props) => {
         ...response,
         tipoBeneficio: "",
         moeda: "",
+        visible: true
       };
 
       try {
@@ -167,14 +168,15 @@ const FormularioPropostaProposta = (props) => {
 
   /** Função para excluir um benefício da lista e do banco de dados, recebendo seu index na lista */
   const deleteBeneficio = (indexBeneficio) => {
-    let listaNova = [...props.beneficios];
-    let beneficioExcluido = listaNova.splice(indexBeneficio, 1)[0];
-
-    BeneficioService.delete(beneficioExcluido.id).then((response) => {
-      props.setBeneficiosExcluidos([
-        ...props.beneficiosExcluidos,
-        beneficioExcluido,
-      ]);
+    BeneficioService.delete(props.beneficios[indexBeneficio].id).then((response) => {
+      let listaNova = [];
+      for (let contagem = 0; contagem < props.beneficios.length; contagem++) {
+        if (contagem != indexBeneficio) {
+          listaNova.push({ ...props.beneficios[contagem] });
+        } else {
+          listaNova.push({ ...props.beneficios[contagem], visible: false });
+        }
+      }
       props.setBeneficios(listaNova);
     });
   };
@@ -300,27 +302,38 @@ const FormularioPropostaProposta = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else if (!props.lendo) {
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
+    };
+
+    if (props.lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
     }
-  }, [props.texto, props.lendo]);
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   return (
     <>
@@ -483,20 +496,22 @@ const FormularioPropostaProposta = (props) => {
                 </Box>
                 <Box className="mt-2 flex flex-col gap-5">
                   {props.beneficios?.map((beneficio, index) => {
-                    return (
-                      <BeneficiosDetalheDemanda
-                        editavel={true}
-                        key={index}
-                        index={index}
-                        delete={deleteBeneficio}
-                        beneficio={beneficio}
-                        setBeneficio={alterarTextoBeneficio}
-                        carregamento={props.carregamento}
-                        lendo={props.lendo}
-                        texto={props.texto}
-                        setTexto={props.setTexto}
-                      />
-                    );
+                    if (beneficio.visible) {
+                      return (
+                        <BeneficiosDetalheDemanda
+                          editavel={true}
+                          key={index}
+                          index={index}
+                          delete={deleteBeneficio}
+                          beneficio={beneficio}
+                          setBeneficio={alterarTextoBeneficio}
+                          carregamento={props.carregamento}
+                          lendo={props.lendo}
+                          texto={props.texto}
+                          setTexto={props.setTexto}
+                        />
+                      );
+                    }
                   })}
                 </Box>
               </Box>
