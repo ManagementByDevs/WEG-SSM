@@ -145,8 +145,6 @@ const ModalCriarAta = (props) => {
                     props.setFeedbackErroReconhecimentoVoz
                   }
                   lendo={props.lendo}
-                  textoFala={props.texto}
-                  setTexto={props.setTexto}
                 />
                 {/* input de data */}
                 <Box className="mt-5">

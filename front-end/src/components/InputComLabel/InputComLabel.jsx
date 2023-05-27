@@ -132,6 +132,7 @@ const InputComLabel = (props) => {
           sx={{ fontWeight: "600", cursor: "default" }}
           gutterBottom
           onClick={() => {
+            console.log("input")
             lerTexto(props.label);
           }}
         >

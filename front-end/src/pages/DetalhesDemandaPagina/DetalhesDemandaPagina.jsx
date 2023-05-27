@@ -184,8 +184,6 @@ const DetalhesDemandaPagina = ({
                 salvar={true}
                 updateDemandaProps={updateDemandaProps}
                 lendo={lendo}
-                texto={texto}
-                setTexto={setTexto}
               />
             </Box>
           </>

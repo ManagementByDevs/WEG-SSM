@@ -344,8 +344,6 @@ const DetalhesAta = (props) => {
         <Box className="flex w-full relative">
           <Caminho
             lendo={props.lendo}
-            texto={props.texto}
-            setTexto={props.setTexto}
           />
           <Box
             className=" absolute"

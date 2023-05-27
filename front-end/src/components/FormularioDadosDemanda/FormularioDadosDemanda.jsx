@@ -98,8 +98,6 @@ const FormularioDadosDemanda = (props) => {
               props.setFeedbackErroNavegadorIncompativel
             }
             lendo={props.lendo}
-            textoFala={props.texto}
-            setTexto={props.setTexto}
           />
 
           <Box>
@@ -197,6 +195,7 @@ const FormularioDadosDemanda = (props) => {
               setFeedbackErroNavegadorIncompativel={
                 props.setFeedbackErroNavegadorIncompativel
               }
+              lendo={props.lendo}
             />
           </Box>
         </Box>

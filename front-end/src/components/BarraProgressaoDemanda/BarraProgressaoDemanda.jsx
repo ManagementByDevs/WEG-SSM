@@ -490,6 +490,7 @@ const BarraProgressaoDemanda = (props) => {
               setFeedbackErroNavegadorIncompativel={
                 setFeedbackErroNavegadorIncompativel
               }
+              lendo={props.lendo}
             />
           )}
           {etapaAtiva == 1 && (
