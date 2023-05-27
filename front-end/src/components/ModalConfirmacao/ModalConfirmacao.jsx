@@ -61,7 +61,7 @@ const ModalConfirmacao = (props) => {
         return texts.modalConfirmacao.mensagensBotao.aceitar;
     }
   };
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -132,7 +132,9 @@ const ModalConfirmacao = (props) => {
               onClick={() => {
                 if (!props.lendo) {
                   props.setOpen(false);
-                  props.onCancelClick(true);
+                  if (props.onCancelClick) {
+                    props.onCancelClick(true);
+                  }
                 } else {
                   lerTexto(texts.modalConfirmacao.cancelar);
                 }

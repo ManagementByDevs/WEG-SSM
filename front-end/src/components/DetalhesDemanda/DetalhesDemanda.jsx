@@ -35,6 +35,7 @@ import NotificacaoService from "../../service/notificacaoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
 import CookieService from "../../service/cookieService";
+import { set } from "lodash";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
@@ -312,7 +313,7 @@ const DetalhesDemanda = (props) => {
   const salvarEdicao = () => {
     if (!podeSalvar()) {
       setFeedbackFacaAlteracao(true);
-      return null;
+      return;
     }
 
     let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
