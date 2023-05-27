@@ -28,6 +28,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para representar a tabela de custos utilizada na proposta
 const Custos = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -134,6 +135,14 @@ const Custos = (props) => {
     }
   }, [props.texto, props.lendo]);
 
+  const [tipoDespesa, setTipoDespesa] = useState(null);
+
+  const handleChange = (tipo) => {
+    setTipoDespesa(tipo.target.value);
+    let aux = [...props.custos];
+    console.log("props: " + aux[props.indexCusto].custos[props.index].tipoDespesa)
+  }
+
   return (
     <Box className="flex w-full mt-5">
       <Box className="flex items-top mr-2">
@@ -153,12 +162,14 @@ const Custos = (props) => {
         <Box>
           {/* Dropdown tipo despesa */}
           <Box>
-            <FormControl sx={{width: "10rem"}}>
+            <FormControl sx={{ width: "15rem" }}>
               <InputLabel id="demo-simple-select-helper-label">Tipo Despesa</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Tipo Despesa"
+                value={tipoDespesa}
+                onChange={handleChange}
               >
                 <MenuItem value={"Interna"}>
                   <Typography fontSize={FontConfig.medium}>
@@ -174,7 +185,7 @@ const Custos = (props) => {
             </FormControl>
           </Box>
           {/* Criação da tabela e adicionando as informações nela */}
-          <Paper className="w-full mr-3 pb-1">
+          <Paper className="w-full mr-3 pb-1" sx={{ marginTop: "1%" }}>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: "90%" }} aria-label="customized table">
                 <TableHead sx={{ backgroundColor: "primary.main" }}>
