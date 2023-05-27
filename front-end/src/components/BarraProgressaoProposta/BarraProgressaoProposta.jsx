@@ -88,9 +88,6 @@ const BarraProgressaoProposta = (props) => {
   // Variável utilizada para armazenar a lista de benefícios
   const [listaBeneficios, setListaBeneficios] = useState([]);
 
-  // Variável utilizada para armazenar a lista de benefícios excluídos
-  const [listaBeneficiosExcluidos, setListaBeneficiosExcluidos] = useState([]);
-
   // Variável para guardar os custos
   const [custos, setCustos] = useState([]);
 
@@ -122,94 +119,70 @@ const BarraProgressaoProposta = (props) => {
     pesquisarSecoesTI();
   }, []);
 
-  /** UseState utilizado para armazenar o valor mais atualizado do dólar */
-  const [valorDolar, setValorDolar] = useState(null);
-
-  /** UseState utilizado para armazenar o valor mais atualizado do euro */
-  const [valorEuro, setValorEuro] = useState(null);
-
-  /** UseState utilizado para armazenar a soma dos valores dos benefícios */
-  const [somaBeneficios, setSomaBeneficios] = useState(0.0);
-
-  /** UseState utilizado para armazenar a soma dos CCs */
-  const [somaCCs, setSomaCCs] = useState(0.0);
-
-  const [horaCC, setHoraCC] = useState(0);
-
-  /** UseEffect utilizado para chamar a função de soma dos benefícios a cada mudança na lista */
-  useEffect(() => {
-    somaValorBeneficiosReais();
-  }, [listaBeneficios]);
-
-  /** UseEffect utilizado para chamar a função de soma dos CC a cada mudança na tabela de custos */
-  useEffect(() => {
-    somaCCPayback();
-  }, [custos])
-
-  /** UseEffect utilizado para chamar a função do cálculo automático do payback */
-  useEffect(() => {
-    calculoDiasPayback();
-  }, [listaBeneficios, custos])
-
   /** Função para somar os valores dos benefícios */
-  const somaValorBeneficiosReais = () => {
+  const retornarTotalBeneficios = () => {
 
     let valorBeneficio = 0;
-
+    let valorDolar, valorEuro;
     MoedasService.getDolar().then((response) => {
-      setValorDolar(response);
+      valorDolar = response;
     });
 
     MoedasService.getEuro().then((response) => {
-      setValorEuro(response);
+      valorEuro = response;
     })
 
     for (const object in listaBeneficios) {
       if (listaBeneficios[object].tipoBeneficio == "Real") {
         if (listaBeneficios[object].moeda == "Dolar") {
-          valorBeneficio = valorBeneficio + (parseFloat(listaBeneficios[object].valor_mensal) * valorDolar.USDBRL.bid);
+          valorBeneficio += (parseFloat(listaBeneficios[object].valor_mensal) * valorDolar.USDBRL.bid);
         } else if (listaBeneficios[object].moeda == "Euro") {
-          valorBeneficio = valorBeneficio + (parseFloat(listaBeneficios[object].valor_mensal) * valorEuro.EURBRL.bid);
+          valorBeneficio += (parseFloat(listaBeneficios[object].valor_mensal) * valorEuro.EURBRL.bid);
         } else {
-          valorBeneficio = valorBeneficio + parseFloat(listaBeneficios[object].valor_mensal);
+          valorBeneficio += parseFloat(listaBeneficios[object].valor_mensal);
+        }
+      } else if (listaBeneficios[object].tipoBeneficio == "Potencial") {
+        if (listaBeneficios[object].moeda == "Dolar") {
+          valorBeneficio += (parseFloat(listaBeneficios[object].valor_mensal) * valorDolar.USDBRL.bid) / 2;
+        } else if (listaBeneficios[object].moeda == "Euro") {
+          valorBeneficio += (parseFloat(listaBeneficios[object].valor_mensal) * valorEuro.EURBRL.bid) / 2;
+        } else {
+          valorBeneficio += parseFloat(listaBeneficios[object].valor_mensal) / 2;
         }
       }
     }
 
-    setSomaBeneficios(valorBeneficio);
+    return valorBeneficio;
   }
 
-  /** Função para salvar a soma dos CCs */
-  const somaCCPayback = () => {
-    let valorCC = 0;
-    let valorHora = 0;
+  /** Função para calcular e retornar a soma de todos os custos da proposta */
+  const retornarCustosTotais = () => {
+    let valorTotal = 0;
 
-    for (const object in custos) {
-      for (const object2 in custos[object].custos) {
-        valorCC = valorCC + (parseFloat(custos[object].custos[object2].horas) * parseFloat(custos[object].custos[object2].valorHora));
+    for (const tabelaCustos of custos) {
+      for (const custo of tabelaCustos.custos) {
+        valorTotal += custo.total;
       }
     }
 
-    for (const object in custos) {
-      for (const object2 in custos[object].custos) {
-        valorHora = valorHora + parseFloat(custos[object].custos[object2].horas);
-      }
-    }
-
-    setHoraCC(valorHora);
-    setSomaCCs(valorCC);
+    return valorTotal;
   }
 
   /** Cálculo para calcular a quantidade automático */
   const calculoDiasPayback = () => {
-    let valorDia = somaBeneficios / 30;
-    let valorTotalCC = somaCCs;
+    let valorDia = retornarTotalBeneficios() / 30;
+    let valorTotalCustos = retornarCustosTotais();
 
     let contadorDia = 1;
 
-    while (valorTotalCC > valorDia) {
-      valorTotalCC = valorTotalCC - valorDia;
-      contadorDia++;
+    if (valorDia > 0) {
+      while (valorTotalCustos > valorDia) {
+        valorTotalCustos = valorTotalCustos - valorDia;
+        contadorDia++;
+      }
+    } else {
+      setGerais({ ...gerais, qtdPaybackSimples: null, unidadePaybackSimples: "DIAS" });
+      return;
     }
 
     let meses = contadorDia / 30;
@@ -311,6 +284,7 @@ const BarraProgressaoProposta = (props) => {
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: memoriaCalculo,
+        visible: true
       });
     }
     setListaBeneficios(listaNova);
@@ -436,12 +410,14 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  /** Função para salvar os benefícios a etapa inicial da criação for concluída */
+  /** Função para salvar os benefícios quando a etapa inicial da criação for concluída */
   const salvarBeneficios = () => {
     for (let beneficio of listaBeneficios) {
-      beneficioService
-        .put(beneficio, beneficio.memoriaCalculo)
-        .then((response) => { });
+      if (beneficio.visible) {
+        let beneficioFinal = { ...beneficio };
+        delete beneficioFinal.visible;
+        beneficioService.put(beneficioFinal, beneficioFinal.memoriaCalculo).then((response) => { });
+      }
     }
   };
 
@@ -469,16 +445,18 @@ const BarraProgressaoProposta = (props) => {
             setFeedbackFaltante(true);
           } else {
             listaBeneficios.map((beneficio) => {
-              if (
-                beneficio.tipoBeneficio == "" ||
-                beneficio.memoriaCalculo == ""
-              ) {
+              if (beneficio.visible) {
                 if (
-                  beneficio.tipoBeneficio != "Qualitativo" &&
-                  (beneficio.valor_mensal == "" || beneficio.moeda == "")
+                  beneficio.tipoBeneficio == "" ||
+                  beneficio.memoriaCalculo == ""
                 ) {
-                  dadosFaltantes = true;
-                  setFeedbackFaltante(true);
+                  if (
+                    beneficio.tipoBeneficio != "Qualitativo" &&
+                    (beneficio.valor_mensal == "" || beneficio.moeda == "")
+                  ) {
+                    dadosFaltantes = true;
+                    setFeedbackFaltante(true);
+                  }
                 }
               }
             });
@@ -517,6 +495,7 @@ const BarraProgressaoProposta = (props) => {
               porcentagemCcs = 0;
             }
           });
+          calculoDiasPayback();
           break;
       }
       if (dadosFaltantes == false && fechar100porcentoCcs == false) {
@@ -553,13 +532,6 @@ const BarraProgressaoProposta = (props) => {
     SecaoTIService.getAll().then((response) => {
       setListaSecoesTI(response);
     });
-  };
-
-  // Função para excluir os benefícios retirados da lista que foram criados no banco
-  const excluirBeneficios = () => {
-    for (const beneficio of listaBeneficiosExcluidos) {
-      beneficioService.delete(beneficio.id).then((response) => { });
-    }
   };
 
   /** Função para formatar a lista de responsáveis do negócio, retirando o atributo "visible" */
@@ -605,7 +577,13 @@ const BarraProgressaoProposta = (props) => {
   const retornarIdsObjetos = (listaObjetos) => {
     let listaNova = [];
     for (let objeto of listaObjetos) {
-      listaNova.push({ id: objeto.id });
+      if (objeto.tipoBeneficio) {
+        if (objeto.visible) {
+          listaNova.push({ id: objeto.id });
+        }
+      } else {
+        listaNova.push({ id: objeto.id });
+      }
     }
     return listaNova;
   };
@@ -633,7 +611,7 @@ const BarraProgressaoProposta = (props) => {
       responsavelNegocio: formatarResponsaveisNegocio(),
       inicioExecucao: gerais.periodoExecucacaoInicio,
       fimExecucao: gerais.periodoExecucacaoFim,
-      paybackValor: gerais.valorPaybackSimples,
+      paybackValor: gerais.qtdPaybackSimples,
       paybackTipo: gerais.unidadePaybackSimples,
       codigoPPM: gerais.ppm,
       linkJira: gerais.linkJira,
@@ -681,7 +659,6 @@ const BarraProgressaoProposta = (props) => {
             }
           });
           if (feedbackFaltante != true) {
-            excluirBeneficios();
 
             propostaService.post(retornaObjetoProposta()).then((response) => {
               DemandaService.atualizarStatus(
@@ -743,7 +720,7 @@ const BarraProgressaoProposta = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+    if (props.lendo && props.texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
@@ -774,8 +751,6 @@ const BarraProgressaoProposta = (props) => {
           setDadosDemanda={setDadosDemanda}
           beneficios={listaBeneficios}
           setBeneficios={setListaBeneficios}
-          beneficiosExcluidos={listaBeneficiosExcluidos}
-          setBeneficiosExcluidos={setListaBeneficiosExcluidos}
           listaForuns={listaForuns}
           listaBU={listaBU}
           listaSecoesTI={listaSecoesTI}

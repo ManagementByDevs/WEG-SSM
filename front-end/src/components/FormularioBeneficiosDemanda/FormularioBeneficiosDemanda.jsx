@@ -43,6 +43,7 @@ const FormularioBeneficiosDemanda = (props) => {
           valor_mensal: "",
           moeda: "",
           memoriaCalculo: "",
+          visible: true
         },
       ]);
     });
@@ -67,6 +68,8 @@ const FormularioBeneficiosDemanda = (props) => {
       for (let contagem = 0; contagem < beneficios.length; contagem++) {
         if (contagem != desiredIndex) {
           listaNova.push({ ...beneficios[contagem] });
+        } else {
+          listaNova.push({ ...beneficios[contagem], visible: false });
         }
       }
       setBeneficios(listaNova);
@@ -128,24 +131,26 @@ const FormularioBeneficiosDemanda = (props) => {
         >
           {/* Lista de benefícios */}
           {beneficios?.map((beneficio, index) => {
-            return (
-              <Beneficios
-                key={index}
-                save={salvarDados}
-                index={index}
-                removerBeneficio={removerBeneficio}
-                dados={beneficio}
-                setFeedbackErroNavegadorIncompativel={
-                  props.setFeedbackErroNavegadorIncompativel
-                }
-                setFeedbackErroReconhecimentoVoz={
-                  props.setFeedbackErroReconhecimentoVoz
-                }
-                lendo={props.lendo}
-                texto={props.texto}
-                setTexto={props.setTexto}
-              />
-            );
+            if(beneficio.visible) {
+              return (
+                <Beneficios
+                  key={index}
+                  save={salvarDados}
+                  index={index}
+                  removerBeneficio={removerBeneficio}
+                  dados={beneficio}
+                  setFeedbackErroNavegadorIncompativel={
+                    props.setFeedbackErroNavegadorIncompativel
+                  }
+                  setFeedbackErroReconhecimentoVoz={
+                    props.setFeedbackErroReconhecimentoVoz
+                  }
+                  lendo={props.lendo}
+                  texto={props.texto}
+                  setTexto={props.setTexto}
+                />
+              );
+            }
           })}
         </Box>
       </Box>
