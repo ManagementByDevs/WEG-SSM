@@ -290,22 +290,24 @@ const Notificacao = (props) => {
     buscarNotificacoes();
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
-    if (props.lendo) {
-      props.setTexto(texto);
-    }
-  };
-
   // Busca as notificações do usuário ao carregar a página
   useEffect(() => {
     buscarNotificacoes();
   }, []);
 
+  const [textoLeitura,setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (props.lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
 
     const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
@@ -313,18 +315,18 @@ const Notificacao = (props) => {
       }
     };
 
-    if (props.lendo && props.texto !== "") {
+    if (props.lendo && textoLeitura !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
-    } else if (!props.lendo) {
+    } else {
       finalizarLeitura();
     }
 
     return () => {
       finalizarLeitura();
     };
-  }, [props.texto, props.lendo]);
+  }, [textoLeitura]);
 
   return (
     <FundoComHeader

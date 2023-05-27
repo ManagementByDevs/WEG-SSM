@@ -286,18 +286,19 @@ const DetalhesAta = (props) => {
 
     return hora + ":" + minuto;
   };
+  const [textoLeitura,setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (props.lendo) {
-      props.setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(props.texto);
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
 
     const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
@@ -305,18 +306,18 @@ const DetalhesAta = (props) => {
       }
     };
 
-    if (props.lendo && props.texto !== "") {
+    if (props.lendo && textoLeitura !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
-    } else if (!props.lendo) {
+    } else {
       finalizarLeitura();
     }
 
     return () => {
       finalizarLeitura();
     };
-  }, [props.texto, props.lendo]);
+  }, [textoLeitura]);
 
   return (
     // Começo com o header da página
