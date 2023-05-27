@@ -69,8 +69,6 @@ const PautaTable = ({
   isAta,
   setPautaSelecionada = () => {},
   lendo,
-  texto,
-  setTexto,
 }) => {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -329,8 +327,6 @@ const PautaGrid = ({
             onItemClick={onItemClick}
             setPautaSelecionada={setPautaSelecionada}
             lendo={lendo}
-            texto={texto}
-            setTexto={setTexto}
           />
         );
       })}

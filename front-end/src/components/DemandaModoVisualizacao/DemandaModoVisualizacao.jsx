@@ -167,8 +167,6 @@ const DemandaTable = ({
           setOpen={setOpenModal}
           motivoRecusa={demandaSelecionada?.motivoRecusa}
           lendo={lendo}
-          texto={texto}
-          setTexto={setTexto}
         />
       )}
       <Table
@@ -347,8 +345,6 @@ const DemandaGrid = ({
             onDemandaClick(e);
           }}
           lendo={lendo}
-          texto={texto}
-          setTexto={setTexto}
         />
       ))}
     </Box>

@@ -60,7 +60,7 @@ const DetalhesPropostaPagina = ({
   };
 
   return (
-    <FundoComHeader lendo={lendo} texto={texto} setTexto={setTexto}>
+    <FundoComHeader lendo={lendo}>
       <VLibras forceOnload />
       {/* Feedback edição bem sucedida */}
       <Feedback
@@ -69,8 +69,6 @@ const DetalhesPropostaPagina = ({
         status={"sucesso"}
         mensagem={texts.detalhesProposta.editadoComSucesso}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <ModalAddPropostaPauta
         open={openModalAddPropostaPauta}
@@ -80,7 +78,7 @@ const DetalhesPropostaPagina = ({
       />
       <Box className="relative p-2" sx={{ minWidth: "45rem" }}>
         <Box className="flex w-full relative mb-10">
-          <Caminho lendo={lendo} texto={texto} setTexto={setTexto} />
+          <Caminho lendo={lendo} />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}

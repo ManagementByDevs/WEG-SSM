@@ -17,8 +17,6 @@ const CriarDemanda = ({ lendo = false, texto = "", setTexto = () => {} }) => {
         <Caminho
           feedback={true}
           lendo={lendo}
-          texto={texto}
-          setTexto={setTexto}
         />
         <Box className="w-full flex justify-center">
           <Box className="w-5/6 relative">

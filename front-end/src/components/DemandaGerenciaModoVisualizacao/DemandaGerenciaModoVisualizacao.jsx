@@ -181,8 +181,6 @@ const DemandaTable = ({
           setOpen={setModalHistorico}
           historico={historicoSelecionado}
           lendo={lendo}
-          texto={texto}
-          setTexto={setTexto}
         />
       )}
       <Paper sx={{ width: "100%", minWidth: "74rem" }} square>

@@ -343,8 +343,6 @@ const EscopoGrid = ({
           }}
           handleDelete={handleDelete}
           lendo={lendo}
-          texto={texto}
-          setTexto={setTexto}
         />
       ))}
     </Box>

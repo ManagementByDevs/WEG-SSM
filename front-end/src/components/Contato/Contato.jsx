@@ -61,8 +61,6 @@ const Contato = ({
           <Conteudo
             chat={chat}
             lendo={lendo}
-            texto={texto}
-            setTexto={setTexto}
           />
         </Box>
       </Tooltip>
@@ -95,17 +93,19 @@ const Conteudo = ({
     }
   };
 
+  const [textoLeitura,setTextoLeitura] = useState("");
+
   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (texto) => {
+  const lerTexto = (escrita) => {
     if (lendo) {
-      setTexto(texto);
+      setTextoLeitura(escrita);
     }
   };
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(texto);
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
 
     const finalizarLeitura = () => {
       if ("speechSynthesis" in window) {
@@ -113,18 +113,18 @@ const Conteudo = ({
       }
     };
 
-    if (lendo && texto !== "") {
+    if (lendo && textoLeitura !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
-    } else if (!lendo) {
+    } else {
       finalizarLeitura();
     }
 
     return () => {
       finalizarLeitura();
     };
-  }, [texto, lendo]);
+  }, [textoLeitura]);
 
   return (
     <>

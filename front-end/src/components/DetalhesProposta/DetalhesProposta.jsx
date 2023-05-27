@@ -297,8 +297,6 @@ const DetalhesProposta = ({
           getCorStatus={getCorStatus}
           getStatusFormatted={getStatusFormatted}
           lendo={lendo}
-          texto={texto}
-          setTexto={setTexto}
         />
         {/* Box header */}
         <Box className="w-full flex justify-between">
