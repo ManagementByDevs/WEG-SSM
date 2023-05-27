@@ -127,7 +127,7 @@ const FormularioCustosProposta = (props) => {
             fontSize={FontConfig.medium}
             sx={{ marginRight: "15px" }}
             onClick={() =>
-              lerTexto(horasTotais + " " + texts.formularioCustosProposta.horas)
+              lerTexto(horasTotais, " " , texts.formularioCustosProposta.horas)
             }
           >
             {horasTotais}
@@ -140,7 +140,7 @@ const FormularioCustosProposta = (props) => {
             fontSize={FontConfig.medium}
             sx={{ marginRight: "8px" }}
             onClick={() =>
-              lerTexto(texts.formularioCustosProposta.moeda + " " + valorTotal)
+              lerTexto(texts.formularioCustosProposta.moeda , " " , valorTotal)
             }
           >
             {texts.formularioCustosProposta.moeda}

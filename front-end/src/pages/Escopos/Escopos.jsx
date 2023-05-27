@@ -345,8 +345,6 @@ const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <Tour
         steps={stepsTour}

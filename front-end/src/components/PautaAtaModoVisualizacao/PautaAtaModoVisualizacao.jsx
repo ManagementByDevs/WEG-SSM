@@ -29,8 +29,6 @@ const PautaAtaModoVisualizacao = ({
   isAta = false,
   setPautaSelecionada = () => {},
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   if (listaPautas.length == 0) {
     return <NadaEncontrado />;
@@ -44,8 +42,6 @@ const PautaAtaModoVisualizacao = ({
         isAta={isAta}
         setPautaSelecionada={setPautaSelecionada}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
     );
   return (
@@ -315,8 +311,6 @@ const PautaGrid = ({
   isAta,
   setPautaSelecionada = () => {},
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   return (
     <Box

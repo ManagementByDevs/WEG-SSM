@@ -302,7 +302,7 @@ const Custos = (props) => {
                   fontSize={FontConfig.medium}
                   sx={{ marginRight: "15px" }}
                   onClick={() => {
-                    lerTexto(texts.custos.h);
+                    lerTexto(horasTotais, " " ,texts.custos.h);
                   }}
                 >
                   {horasTotais}
@@ -318,7 +318,7 @@ const Custos = (props) => {
                   fontSize={FontConfig.medium}
                   sx={{ marginRight: "8px" }}
                   onClick={() => {
-                    lerTexto(texts.custos.moeda);
+                    lerTexto(texts.custos.moeda, " " ,texts.custos.moeda);
                   }}
                 >
                   {texts.custos.moeda}
@@ -353,7 +353,7 @@ const Custos = (props) => {
                     fontWeight="800"
                     color="text.white"
                     onClick={() => {
-                      lerTexto(texts.custos.cc);
+                      lerTexto(texts.custos.ccs);
                     }}
                   >
                     {texts.custos.ccs}

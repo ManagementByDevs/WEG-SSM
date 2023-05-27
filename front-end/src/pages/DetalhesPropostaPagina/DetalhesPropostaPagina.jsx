@@ -23,8 +23,6 @@ import PropostaService from "../../service/propostaService";
 // Página que mostra os detalhes da proposta selecionada, com opção de download para pdf
 const DetalhesPropostaPagina = ({
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
@@ -69,8 +67,6 @@ const DetalhesPropostaPagina = ({
         setOpen={setOpenModalAddPropostaPauta}
         proposta={location.state}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <Box className="relative p-2" sx={{ minWidth: "45rem" }}>
         <Box className="flex w-full relative mb-10">

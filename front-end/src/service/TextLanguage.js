@@ -244,7 +244,7 @@ const TextLanguage = (linguagem) => {
           digiteProblema: "Digite o problema...",
           proposta: "Proposta",
           digiteProposta: "Digite a proposta...",
-          beneficios: "Beneficios",
+          beneficios: "Benefícios",
           frequenciaDeUso: "Frequência de uso",
           digiteFrequencia: "Digite a frequência...",
           labelTamanho: "Tamanho",

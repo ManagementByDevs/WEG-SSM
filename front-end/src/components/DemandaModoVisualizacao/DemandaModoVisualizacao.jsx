@@ -27,8 +27,6 @@ const DemandaModoVisualizacao = ({
   nextModoVisualizacao,
   myDemandas,
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
@@ -41,8 +39,6 @@ const DemandaModoVisualizacao = ({
         onDemandaClick={onDemandaClick}
         myDemandas={myDemandas}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
     );
   return (
@@ -331,8 +327,6 @@ const DemandaGrid = ({
   listaDemandas,
   onDemandaClick,
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   return (
     <Box

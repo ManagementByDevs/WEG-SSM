@@ -49,8 +49,6 @@ const DemandaGerenciaModoVisualizacao = ({
         isProposta={isProposta}
         setFeedbackAbrirChat={setFeedbackAbrirChat}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
     );
 

@@ -308,8 +308,6 @@ const DetalhesProposta = ({
         status={"sucesso"}
         mensagem={texts.detalhesProposta.editadoComSucesso}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <Box
         className="border rounded px-10 py-4 border-t-6 relative"
@@ -1494,8 +1492,6 @@ const StatusProposta = ({
   getCorStatus = () => {},
   getStatusFormatted = () => {},
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1605,8 +1601,6 @@ const StatusProposta = ({
         status={"erro"}
         mensagem={texts.detalhesProposta.feedbackErrorAuthority}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <Feedback
         open={feedbackStatusError}
@@ -1614,8 +1608,6 @@ const StatusProposta = ({
         status={"erro"}
         mensagem={texts.detalhesProposta.mesmoStatus}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <ModalConfirmacao
         open={confirmEditStatus}
@@ -1625,8 +1617,6 @@ const StatusProposta = ({
         onConfirmClick={editarStatus}
         onCancelClick={() => {}}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <Menu
         id="basic-menu"

@@ -16,8 +16,6 @@ const Contato = ({
   idChat = 0,
   chat = EntitiesObjectService.chat(),
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   // UseState para saber se o contato foi selecionado ou não
   const [corSelecionado, setCorSelecionado] = useState("transparent");
@@ -75,8 +73,6 @@ const Contato = ({
 const Conteudo = ({
   chat = EntitiesObjectService.chat(),
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);

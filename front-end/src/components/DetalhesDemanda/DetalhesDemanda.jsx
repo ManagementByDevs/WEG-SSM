@@ -930,7 +930,7 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
-                  lerTexto(texts.DetalhesDemanda.problem);
+                  lerTexto(texts.DetalhesDemanda.problema);
                 }}
               >
                 {texts.DetalhesDemanda.problema}:
@@ -956,7 +956,7 @@ const DetalhesDemanda = (props) => {
                 fontWeight="600"
                 color="text.primary"
                 onClick={() => {
-                  lerTexto(texts.DetalhesDemanda.proposal);
+                  lerTexto(texts.DetalhesDemanda.proposta);
                 }}
               >
                 {texts.DetalhesDemanda.proposta}:

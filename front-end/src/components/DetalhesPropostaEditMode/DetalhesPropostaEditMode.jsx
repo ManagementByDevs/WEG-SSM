@@ -1002,8 +1002,6 @@ const DetalhesPropostaEditMode = ({
         onConfirmClick={handleOnConfirmClick}
         onCancelClick={() => {}}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
@@ -1014,8 +1012,6 @@ const DetalhesPropostaEditMode = ({
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -1026,8 +1022,6 @@ const DetalhesPropostaEditMode = ({
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <Feedback
         open={feedbackDadosInvalidos}
@@ -1035,8 +1029,6 @@ const DetalhesPropostaEditMode = ({
         status={"erro"}
         mensagem={textoDadosInvalidos}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
@@ -1044,8 +1036,6 @@ const DetalhesPropostaEditMode = ({
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
       {/* Box header */}
       <Box className="w-full flex justify-between">

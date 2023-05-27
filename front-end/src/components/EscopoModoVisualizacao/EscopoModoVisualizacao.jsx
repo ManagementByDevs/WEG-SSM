@@ -31,8 +31,6 @@ const EscopoModoVisualizacao = ({
   handleDelete,
   buscar,
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   if (listaEscopos && listaEscopos.length === 0) {
     return <NadaEncontrado />;
@@ -46,8 +44,6 @@ const EscopoModoVisualizacao = ({
         myEscopos={myEscopos}
         handleDelete={handleDelete}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
     );
   return (
@@ -306,8 +302,6 @@ const EscopoTable = ({
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
 
       {/* Feedback de escopo deletado com sucesso */}
@@ -319,8 +313,6 @@ const EscopoTable = ({
         status={"sucesso"}
         mensagem={texts.escopos.escopoDeletadoComSucesso}
         lendo={lendo}
-        texto={texto}
-        setTexto={setTexto}
       />
     </Paper>
   );
@@ -332,8 +324,6 @@ const EscopoGrid = ({
   onEscopoClick,
   handleDelete,
   lendo = false,
-  texto = "",
-  setTexto = () => {},
 }) => {
   return (
     <Box
