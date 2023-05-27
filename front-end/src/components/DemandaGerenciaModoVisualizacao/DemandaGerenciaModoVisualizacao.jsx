@@ -96,7 +96,7 @@ const DemandaTable = ({
   texto,
 }) => {
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Controla o estado do modal de histórico da demanda
   const [modalHistorico, setModalHistorico] = useState(false);
@@ -151,16 +151,14 @@ const DemandaTable = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-    
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-         
       }
       setTexto("");
-    } else if (!lendo ) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
@@ -179,7 +177,7 @@ const DemandaTable = ({
           setTexto={setTexto}
         />
       )}
-      <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
+      <Paper sx={{ width: "100%", minWidth: "74rem" }} square>
         <Table sx={{ width: "100%" }} className="table-fixed">
           <TableHead sx={{ width: "100%" }}>
             <TableRow
@@ -548,7 +546,7 @@ const NadaEncontrado = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+    if (props.lendo && props.texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }

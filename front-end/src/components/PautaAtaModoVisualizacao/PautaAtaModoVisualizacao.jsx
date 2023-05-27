@@ -128,7 +128,7 @@ const PautaTable = ({
   }, [texto, lendo]);
 
   return (
-    <Paper sx={{ width: "100%", minWidth: "81rem" }} square>
+    <Paper sx={{ width: "100%", minWidth: "74rem" }} square>
       <Table sx={{ width: "100%" }} className="table-fixed">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
@@ -351,7 +351,7 @@ const NadaEncontrado = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+    if (props.lendo && props.texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }

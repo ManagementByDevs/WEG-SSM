@@ -138,16 +138,14 @@ const DemandaTable = ({
 
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
-     
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    if (lendo && texto != ""  ) {
+    if (lendo && texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
-         
       }
       setTexto("");
-    } else if (!lendo ) {
+    } else if (!lendo) {
       if ("speechSynthesis" in window) {
         synthesis.cancel();
       }
@@ -163,11 +161,14 @@ const DemandaTable = ({
           setOpen={setOpenModal}
           motivoRecusa={demandaSelecionada?.motivoRecusa}
           lendo={lendo}
-                    texto={texto}
-                    setTexto={setTexto}
+          texto={texto}
+          setTexto={setTexto}
         />
       )}
-      <Table className="mb-8 table-fixed" sx={{ width: "100%" }}>
+      <Table
+        className="mb-8 table-fixed"
+        sx={{ width: "100%", minWidth: "74rem" }}
+      >
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-3 w-1/10">
@@ -369,7 +370,7 @@ const NadaEncontrado = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+    if (props.lendo && props.texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }

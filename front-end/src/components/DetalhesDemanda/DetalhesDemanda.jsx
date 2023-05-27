@@ -1505,7 +1505,7 @@ const DetalhesDemanda = (props) => {
           props.botao &&
           !editar &&
           props.dados.status == "BACKLOG_REVISAO" && (
-            <Box className="flex justify-around w-full">
+            <Box className="flex justify-around w-full gap-3 mr-2">
               <Button
                 sx={{
                   backgroundColor: "primary.main",

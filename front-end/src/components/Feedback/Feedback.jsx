@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useEffect } from "react";
 import { Snackbar, Alert } from "@mui/material";
 
 /** Feedback padrão para avisos do sistema sobre processos concluídos / problemas no sistema */
@@ -6,6 +6,21 @@ const Feedback = (props) => {
   // Variáveis de estilo para o componente (definir a posição)
   const vertical = "top";
   const horizontal = "right";
+
+  const getStatus = () => {
+    switch (props.status) {
+      case "sucesso":
+        return "success";
+      case "erro":
+        return "error";
+      case "aviso":
+        return "warning";
+      case "info":
+        return "info";
+      default:
+        return "info";
+    }
+  };
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (texto) => {
@@ -18,7 +33,7 @@ const Feedback = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+    if (props.lendo && props.texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
@@ -36,51 +51,16 @@ const Feedback = (props) => {
       autoHideDuration={5000}
       onClose={props.handleClose}
     >
-      {props.status === "sucesso" ? (
-        <Alert
-          onClose={props.handleClose}
-          severity="success"
-          sx={{ width: "100%" }}
-          onClick={() => {
-            lerTexto(props.mensagem);
-          }}
-        >
-          {props.mensagem}
-        </Alert>
-      ) : props.status === "erro" ? (
-        <Alert
-          onClose={props.handleClose}
-          severity="error"
-          sx={{ width: "100%" }}
-          onClick={() => {
-            lerTexto(props.mensagem);
-          }}
-        >
-          {props.mensagem}
-        </Alert>
-      ) : props.status === "aviso" ? (
-        <Alert
-          onClose={props.handleClose}
-          severity="warning"
-          sx={{ width: "100%" }}
-          onClick={() => {
-            lerTexto(props.mensagem);
-          }}
-        >
-          {props.mensagem}
-        </Alert>
-      ) : props.status === "info" ? (
-        <Alert
-          onClose={props.handleClose}
-          severity="info"
-          sx={{ width: "100%" }}
-          onClick={() => {
-            lerTexto(props.mensagem);
-          }}
-        >
-          {props.mensagem}
-        </Alert>
-      ) : null}
+      <Alert
+        onClose={props.handleClose}
+        severity={getStatus()}
+        sx={{ width: "100%" }}
+        onClick={() => {
+          lerTexto(props.mensagem);
+        }}
+      >
+        {props.mensagem}
+      </Alert>
     </Snackbar>
   );
 };

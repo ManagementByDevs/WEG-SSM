@@ -67,6 +67,9 @@ const DetalhesAta = (props) => {
   // Feedback para quando o usuário não preencher todos os campos obrigatórios
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
+  // Estado para feedback de edição feita com sucesso
+  const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
+
   // useEffect usado para feedback
   useEffect(() => {
     if (location.state?.feedback) {
@@ -298,7 +301,7 @@ const DetalhesAta = (props) => {
   useEffect(() => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(props.texto);
-    if (props.lendo && props.texto != ""  ) {
+    if (props.lendo && props.texto != "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
       }
@@ -329,6 +332,17 @@ const DetalhesAta = (props) => {
         texto={props.texto}
         setTexto={props.setTexto}
       />
+      {/* Feedback edição bem sucedida */}
+      <Feedback
+        open={feedbackEditSuccess}
+        handleClose={() => setFeedbackEditSuccess(false)}
+        status={"sucesso"}
+        mensagem={texts.detalhesProposta.editadoComSucesso}
+        lendo={props.lendo}
+        texto={props.texto}
+        setTexto={props.setTexto}
+      />
+
       <Box className="p-2">
         {/* caminho da página */}
         <Box className="flex w-full relative">
@@ -499,14 +513,12 @@ const DetalhesAta = (props) => {
                   </Typography>
                 </Box>
                 <DetalhesProposta
-                  setDadosProposta={setDadosProposta}
-                  parecerDG={dadosProposta.parecerDG || ""}
-                  parecerInformacaoDG={dadosProposta.parecerInformacaoDG || ""}
                   emAprovacao={true}
                   propostaId={dadosProposta.id}
                   lendo={props.lendo}
                   texto={props.texto}
                   setTexto={props.setTexto}
+                  setFeedbackEditSuccess={setFeedbackEditSuccess}
                 />
               </Box>
             )}

@@ -6,19 +6,19 @@ import VLibras from "@djpfs/react-vlibras";
 
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
+import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
+import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
 import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalAddPropostaPauta";
-
-import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import Feedback from "../../components/Feedback/Feedback";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ExportPdfService from "../../service/exportPdfService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
-import PropostaService from "../../service/propostaService";
 
 // Página que mostra os detalhes da proposta selecionada, com opção de download para pdf
 const DetalhesPropostaPagina = ({
@@ -37,12 +37,12 @@ const DetalhesPropostaPagina = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  // Estado da proposta
-  const [proposta, setProposta] = useState(EntitiesObjectService.proposta());
-
   // useState utilizado para abrir e fechar o modal de adicionar a pauta
   const [openModalAddPropostaPauta, setOpenModalAddPropostaPauta] =
     useState(false);
+
+  // Estado para feedback de edição feita com sucesso
+  const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   // função para abrir o modal de adicionar a pauta
   const adicionarAPauta = () => {
@@ -64,6 +64,16 @@ const DetalhesPropostaPagina = ({
   return (
     <FundoComHeader lendo={lendo} texto={texto} setTexto={setTexto}>
       <VLibras forceOnload />
+      {/* Feedback edição bem sucedida */}
+      <Feedback
+        open={feedbackEditSuccess}
+        handleClose={() => setFeedbackEditSuccess(false)}
+        status={"sucesso"}
+        mensagem={texts.detalhesProposta.editadoComSucesso}
+        lendo={lendo}
+        texto={texto}
+        setTexto={setTexto}
+      />
       <ModalAddPropostaPauta
         open={openModalAddPropostaPauta}
         setOpen={setOpenModalAddPropostaPauta}
@@ -91,7 +101,10 @@ const DetalhesPropostaPagina = ({
           </Box>
         </Box>
         {/* Mostra o conteúdo da proposta */}
-        <DetalhesProposta propostaId={paramsPath.id} />
+        <DetalhesProposta
+          propostaId={paramsPath.id}
+          setFeedbackEditSuccess={setFeedbackEditSuccess}
+        />
       </Box>
       {location.state.status != "CANCELLED" &&
         location.state.presenteEm != "Pauta" &&
