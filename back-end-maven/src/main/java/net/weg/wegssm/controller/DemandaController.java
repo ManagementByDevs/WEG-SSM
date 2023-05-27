@@ -3456,12 +3456,14 @@ public class DemandaController {
         for (Beneficio beneficio : demanda.getBeneficios()) {
             beneficio = beneficioService.findById(beneficio.getId()).get();
 
-            if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
-                valorBeneficiosReais += beneficio.getValor_mensal();
-            }
+            if(beneficio.getTipoBeneficio() != null) {
+                if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
+                    valorBeneficiosReais += beneficio.getValor_mensal();
+                }
 
-            if (beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
-                valorBeneficiosPotenciais += beneficio.getValor_mensal();
+                if (beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
+                    valorBeneficiosPotenciais += beneficio.getValor_mensal();
+                }
             }
         }
 
