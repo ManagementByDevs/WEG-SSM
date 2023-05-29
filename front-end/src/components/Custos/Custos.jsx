@@ -1,16 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  Tooltip,
-} from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip, FormControl, Select, MenuItem, InputLabel, } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -24,6 +14,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente utilizado para representar a tabela de custos utilizada na proposta
 const Custos = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -108,7 +99,7 @@ const Custos = (props) => {
     });
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -120,6 +111,7 @@ const Custos = (props) => {
   // Função que irá "ouvir" o texto que será "lido" pela a API
   useEffect(() => {
     const synthesis = window.speechSynthesis;
+
     const utterance = new SpeechSynthesisUtterance(textoLeitura);
 
     const finalizarLeitura = () => {
@@ -141,6 +133,18 @@ const Custos = (props) => {
     };
   }, [textoLeitura]);
 
+  const [tipoDespesa, setTipoDespesa] = useState("");
+
+  useEffect(() => {
+    setTipoDespesa(props.custos[props.index].tipoDespesa);
+  }, [props.custos])
+
+  const handleChange = (tipo) => {
+    let aux = [...props.custos];
+    aux[props.index].tipoDespesa = tipo.target.value;
+    props.setCustos(aux);
+  }
+
   return (
     <Box className="flex w-full mt-5">
       <Box className="flex items-top mr-2">
@@ -158,8 +162,32 @@ const Custos = (props) => {
           </Tooltip>
         </Box>
         <Box>
+          {/* Dropdown tipo despesa */}
+          <Box>
+            <FormControl sx={{ width: "15rem" }}>
+              <InputLabel id="demo-simple-select-helper-label">Tipo Despesa</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Tipo Despesa"
+                value={tipoDespesa}
+                onChange={handleChange}
+              >
+                <MenuItem value={"Interna"}>
+                  <Typography fontSize={FontConfig.medium}>
+                    Interna
+                  </Typography>
+                </MenuItem>
+                <MenuItem value={"Externa"}>
+                  <Typography fontSize={FontConfig.medium}>
+                    Externa
+                  </Typography>
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
           {/* Criação da tabela e adicionando as informações nela */}
-          <Paper className="w-full mr-3 pb-1">
+          <Paper className="w-full mr-3 pb-1" sx={{ marginTop: "1%" }}>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: "90%" }} aria-label="customized table">
                 <TableHead sx={{ backgroundColor: "primary.main" }}>
@@ -167,23 +195,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "5%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                        onClick={() => {
-                          lerTexto(texts.custos.tipoDaDespesa);
-                        }}
-                      >
-                        {texts.custos.tipoDaDespesa}
-                      </Typography>
-                    </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "5%" }}
+                      style={{ width: "20%" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -199,7 +211,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "10%", minWidth: "200px" }}
+                      style={{ width: "15%", minWidth: "200px" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -215,7 +227,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "7%" }}
+                      style={{ width: "15%" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -231,7 +243,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "8%" }}
+                      style={{ width: "20%" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -247,7 +259,7 @@ const Custos = (props) => {
                     <th
                       align="center"
                       className="p-4 w-0"
-                      style={{ width: "10%" }}
+                      style={{ width: "20%" }}
                     >
                       <Typography
                         fontSize={FontConfig.big}
@@ -302,7 +314,7 @@ const Custos = (props) => {
                   fontSize={FontConfig.medium}
                   sx={{ marginRight: "15px" }}
                   onClick={() => {
-                    lerTexto(horasTotais, " " ,texts.custos.h);
+                    lerTexto(horasTotais, " ", texts.custos.h);
                   }}
                 >
                   {horasTotais}
@@ -318,7 +330,7 @@ const Custos = (props) => {
                   fontSize={FontConfig.medium}
                   sx={{ marginRight: "8px" }}
                   onClick={() => {
-                    lerTexto(texts.custos.moeda, " " ,texts.custos.moeda);
+                    lerTexto(texts.custos.moeda, " ", texts.custos.moeda);
                   }}
                 >
                   {texts.custos.moeda}
@@ -339,7 +351,7 @@ const Custos = (props) => {
           </Paper>
         </Box>
       </Box>
-      <Paper className="h-full pb-1" sx={{ width: "25%", minWidth: "263px" }}>
+      <Paper className="h-full pb-1" sx={{ width: "25%", minWidth: "263px", marginTop: "3.8%" }}>
         {/* Outra tabela para os CCs */}
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">

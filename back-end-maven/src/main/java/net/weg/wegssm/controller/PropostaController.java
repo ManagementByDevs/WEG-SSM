@@ -4122,7 +4122,6 @@ public class PropostaController {
         if (novaPropostaJSON != null) {
             propostaNovosDados = propostaUtil.convertJaCriadaJsonToModel(novaPropostaJSON);
 
-
             ArrayList<Beneficio> beneficios = new ArrayList<>(); // Array aux que vai receber os novos beneficios
             for (Beneficio beneficio : propostaNovosDados.getBeneficios()) {
                 beneficio.setId(null); // Setando como null pq o id vem pra cá como negativo

@@ -200,6 +200,8 @@ const TextLanguage = (linguagem) => {
         },
         formularioBeneficiosDemanda: {
           adicionar: "Adicionar",
+          listaDeBeneficios: "Lista de Benefícios",
+          semBeneficios: "Sem Benefícios Adicionados",
         },
         formularioCustosProposta: {
           total: "Total",
@@ -1084,6 +1086,8 @@ const TextLanguage = (linguagem) => {
         },
         formularioBeneficiosDemanda: {
           adicionar: "Add",
+          listaDeBeneficios: "Benefits List",
+          semBeneficios: "No Added Benefits",
         },
         formularioCustosProposta: {
           total: "Total",
@@ -1962,6 +1966,8 @@ const TextLanguage = (linguagem) => {
         },
         formularioBeneficiosDemanda: {
           adicionar: "添加",
+          listaDeBeneficios: "福利清单",
+          semBeneficios: "没有额外的好处",
         },
         formularioCustosProposta: {
           total: "总",
@@ -2822,6 +2828,8 @@ const TextLanguage = (linguagem) => {
         },
         formularioBeneficiosDemanda: {
           adicionar: "Añadir",
+          listaDeBeneficios: "Lista de Beneficios",
+          semBeneficios: "Sin Beneficios Adicionales",
         },
         formularioCustosProposta: {
           total: "Total",

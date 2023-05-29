@@ -55,7 +55,7 @@ const Beneficios = (props) => {
     props.removerBeneficio(props.index);
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
