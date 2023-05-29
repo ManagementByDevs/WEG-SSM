@@ -138,6 +138,7 @@ const Notificacao = (props) => {
         tipo_icone: data.tipoNotificacao,
         id: data.id,
         userId: data.usuario.id,
+        remetenteId: data.remetente.id,
       });
     }
 
@@ -266,7 +267,11 @@ const Notificacao = (props) => {
     switch (tipo) {
       case "APROVADO":
         return 0;
+      case "APROVADO_GERENTE":
+        return 0;
       case "REPROVADO":
+        return 1;
+      case "REPROVADO_GERENTE":
         return 1;
       case "MAIS_INFORMACOES":
         return 2;
@@ -277,6 +282,7 @@ const Notificacao = (props) => {
 
   // Atualiza a notificação no banco de dados
   const updateNotificacao = (notificacao) => {
+    console.log("Notificação: ", notificacao);
     NotificacaoService.put({
       id: notificacao.id,
       numeroSequencial: notificacao.numeroSequencial,
@@ -284,6 +290,7 @@ const Notificacao = (props) => {
       tipoNotificacao: convertTipoIconeToEnum(notificacao.tipo_icone),
       visualizado: notificacao.visualizado,
       usuario: { id: notificacao.userId },
+      remetente: { id: notificacao.remetenteId },
     }).then(() => {
       buscarNotificacoes();
     });
@@ -333,10 +340,7 @@ const Notificacao = (props) => {
   }, [textoLeitura]);
 
   return (
-    <FundoComHeader
-      lendo={props.lendo}
-        
-    >
+    <FundoComHeader lendo={props.lendo}>
       <VLibras forceOnload />
       <Feedback
         open={feedback.visibilidade}
@@ -346,7 +350,6 @@ const Notificacao = (props) => {
         status={feedback.tipo}
         mensagem={feedback.mensagem}
         lendo={props.lendo}
-         
       />
 
       <ModalConfirmacao
@@ -357,7 +360,6 @@ const Notificacao = (props) => {
         onCancelClick={() => {}}
         textoBotao={"sim"}
         lendo={props.lendo}
-         
       />
 
       <ModalConfirmacao
@@ -368,14 +370,10 @@ const Notificacao = (props) => {
         onCancelClick={() => {}}
         textoBotao={"sim"}
         lendo={props.lendo}
-         
       />
 
       <Box className="p-2" sx={{ minWidth: "40rem" }}>
-        <Caminho
-          lendo={props.lendo}
-           
-        />
+        <Caminho lendo={props.lendo} />
         <Box className="w-full flex flex-col items-center">
           <Box className="w-full flex justify-center m-2">
             <Typography
@@ -459,7 +457,7 @@ const Notificacao = (props) => {
                           }}
                         />
                       </th>
-                      <th className="text-white">
+                      <th className="text-white w-1/12">
                         <Typography
                           fontSize={FontConfig.big}
                           onClick={() => {

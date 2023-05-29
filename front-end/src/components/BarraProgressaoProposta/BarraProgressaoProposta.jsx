@@ -22,6 +22,7 @@ import SecaoTIService from "../../service/secaoTIService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CookieService from "../../service/cookieService";
 import MoedasService from "../../service/moedasService";
+import NotificacaoService from "../../service/notificacaoService";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
@@ -121,7 +122,7 @@ const BarraProgressaoProposta = (props) => {
 
   useEffect(() => {
     valoresMoedas();
-  }, [dadosDemanda.beneficios])
+  }, [dadosDemanda.beneficios]);
 
   const [valorDolar, setValorDolar] = useState(null);
   const [valorEuro, setValorEuro] = useState(null);
@@ -133,37 +134,48 @@ const BarraProgressaoProposta = (props) => {
 
     MoedasService.getEuro().then((response) => {
       setValorEuro(response);
-    })
-  }
+    });
+  };
 
   /** Função para somar os valores dos benefícios */
   const retornarTotalBeneficios = () => {
     let valorBeneficio = 0;
 
-    console.log("Valor dolar: " + valorDolar)
+    console.log("Valor dolar: " + valorDolar);
 
     for (const object in listaBeneficios) {
       if (listaBeneficios[object].tipoBeneficio == "Real") {
         if (listaBeneficios[object].moeda == "Dolar") {
-          valorBeneficio += (parseFloat(listaBeneficios[object].valor_mensal) * valorDolar.USDBRL.bid);
+          valorBeneficio +=
+            parseFloat(listaBeneficios[object].valor_mensal) *
+            valorDolar.USDBRL.bid;
         } else if (listaBeneficios[object].moeda == "Euro") {
-          valorBeneficio += (parseFloat(listaBeneficios[object].valor_mensal) * valorEuro.EURBRL.bid);
+          valorBeneficio +=
+            parseFloat(listaBeneficios[object].valor_mensal) *
+            valorEuro.EURBRL.bid;
         } else {
           valorBeneficio += parseFloat(listaBeneficios[object].valor_mensal);
         }
       } else if (listaBeneficios[object].tipoBeneficio == "Potencial") {
         if (listaBeneficios[object].moeda == "Dolar") {
-          valorBeneficio += (parseFloat(listaBeneficios[object].valor_mensal) * valorDolar.USDBRL.bid) / 2;
+          valorBeneficio +=
+            (parseFloat(listaBeneficios[object].valor_mensal) *
+              valorDolar.USDBRL.bid) /
+            2;
         } else if (listaBeneficios[object].moeda == "Euro") {
-          valorBeneficio += (parseFloat(listaBeneficios[object].valor_mensal) * valorEuro.EURBRL.bid) / 2;
+          valorBeneficio +=
+            (parseFloat(listaBeneficios[object].valor_mensal) *
+              valorEuro.EURBRL.bid) /
+            2;
         } else {
-          valorBeneficio += parseFloat(listaBeneficios[object].valor_mensal) / 2;
+          valorBeneficio +=
+            parseFloat(listaBeneficios[object].valor_mensal) / 2;
         }
       }
     }
 
     return valorBeneficio;
-  }
+  };
 
   /** Função para calcular e retornar a soma de todos os custos da proposta */
   const retornarCustosTotais = () => {
@@ -176,7 +188,7 @@ const BarraProgressaoProposta = (props) => {
     }
 
     return valorTotal;
-  }
+  };
 
   /** Cálculo para calcular a quantidade automático */
   const calculoDiasPayback = () => {
@@ -191,7 +203,11 @@ const BarraProgressaoProposta = (props) => {
         contadorDia++;
       }
     } else {
-      setGerais({ ...gerais, qtdPaybackSimples: null, unidadePaybackSimples: "DIAS" });
+      setGerais({
+        ...gerais,
+        qtdPaybackSimples: null,
+        unidadePaybackSimples: "DIAS",
+      });
       return;
     }
 
@@ -286,7 +302,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) { }
+      } catch (error) {}
 
       listaNova.push({
         id: beneficio.id,
@@ -294,7 +310,7 @@ const BarraProgressaoProposta = (props) => {
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: memoriaCalculo,
-        visible: true
+        visible: true,
       });
     }
     setListaBeneficios(listaNova);
@@ -376,7 +392,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -413,7 +429,7 @@ const BarraProgressaoProposta = (props) => {
             },
           ],
         }).then((response) => {
-          setCustos([...custos, {...response, tipoDespesa: ""}]);
+          setCustos([...custos, { ...response, tipoDespesa: "" }]);
           setCarregamento(false);
         });
       }
@@ -426,14 +442,16 @@ const BarraProgressaoProposta = (props) => {
       if (beneficio.visible) {
         let beneficioFinal = { ...beneficio };
         delete beneficioFinal.visible;
-        beneficioService.put(beneficioFinal, beneficioFinal.memoriaCalculo).then((response) => { });
+        beneficioService
+          .put(beneficioFinal, beneficioFinal.memoriaCalculo)
+          .then((response) => {});
       }
     }
   };
 
   useEffect(() => {
     console.log(custos);
-  }, [custos])
+  }, [custos]);
 
   // Função para passar para próxima página
   const proximaEtapa = () => {
@@ -678,7 +696,6 @@ const BarraProgressaoProposta = (props) => {
             }
           });
           if (feedbackFaltante != true) {
-
             propostaService.post(retornaObjetoProposta()).then((response) => {
               DemandaService.atualizarStatus(
                 dadosDemanda.id,
@@ -699,7 +716,17 @@ const BarraProgressaoProposta = (props) => {
                             arquivo,
                             CookieService.getUser().id
                           )
-                          .then(() => {
+                          .then((propostaResponse) => {
+                            console.log(propostaResponse);
+                            // Criar notificação
+                            NotificacaoService.post(
+                              NotificacaoService.createNotificationObject(
+                                NotificacaoService.criadoProposta,
+                                propostaResponse.body,
+                                CookieService.getUser().id
+                              )
+                            );
+
                             localStorage.setItem("tipoFeedback", "5");
                             navigate("/");
                           });
@@ -768,9 +795,13 @@ const BarraProgressaoProposta = (props) => {
           const stepProps = {};
           const labelProps = {};
           return (
-            <Step key={label} {...stepProps} onClick={() => {
-              lerTexto(label)
-            }}>
+            <Step
+              key={label}
+              {...stepProps}
+              onClick={() => {
+                lerTexto(label);
+              }}
+            >
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
@@ -809,7 +840,6 @@ const BarraProgressaoProposta = (props) => {
           }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
           lendo={props.lendo}
-           
         />
       )}
       {activeStep == 3 && (
@@ -823,7 +853,6 @@ const BarraProgressaoProposta = (props) => {
           }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
           lendo={props.lendo}
-           
         />
       )}
       <Button
@@ -867,7 +896,6 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-         
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -878,7 +906,6 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-         
       />
       {/* Feedback de dados faltantes */}
       <Feedback
@@ -891,7 +918,6 @@ const BarraProgressaoProposta = (props) => {
           texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
         }
         lendo={props.lendo}
-         
       />
       {/* Feedback de que não fechou 100% de CCs */}
       <Feedback
@@ -902,7 +928,6 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
         lendo={props.lendo}
-         
       />
     </>
   );

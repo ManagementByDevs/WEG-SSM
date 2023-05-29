@@ -10,6 +10,7 @@ class NotificacaoService {
   mensagens = "MENSAGENS";
   aprovadoGerente = "APROVADO_GERENTE";
   reprovadoGerente = "REPROVADO_GERENTE";
+  criadoProposta = "CRIADO_PROPOSTA";
 
   async getByUserId(userId, page) {
     return (

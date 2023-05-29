@@ -57,7 +57,7 @@ const Pautas = (props) => {
       setIsApreciada(props.dados.propostas[0].parecerDG != null);
     }
   }, []);
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -89,7 +89,7 @@ const Pautas = (props) => {
       finalizarLeitura();
     };
   }, [textoLeitura]);
-  
+
   return (
     <Paper
       onClick={() => props.onItemClick(props.dados)}
