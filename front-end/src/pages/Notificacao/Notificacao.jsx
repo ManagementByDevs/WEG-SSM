@@ -115,13 +115,17 @@ const Notificacao = (props) => {
       const formataStatus = () => {
         switch (data.tipoNotificacao) {
           case "APROVADO":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada}!`;
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
           case "REPROVADO":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada}!`;
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
           case "MENSAGENS":
             return `${texts.notificacaoComponente.vcRecebeuMensagem} ${data.numeroSequencial}!`;
           case "MAIS_INFORMACOES":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes}!`;
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+          case "APROVADO_GERENTE":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+          case "REPROVADO_GERENTE":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
         }
       };
 
@@ -295,7 +299,7 @@ const Notificacao = (props) => {
     buscarNotificacoes();
   }, []);
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -470,7 +474,7 @@ const Notificacao = (props) => {
                           {texts.notificacao.tipo}
                         </Typography>
                       </th>
-                      <th className="text-white">
+                      <th className="text-white text-start">
                         <Typography
                           fontSize={FontConfig.big}
                           onClick={() => {

@@ -408,7 +408,7 @@ const TextLanguage = (linguagem) => {
           foi: "foi",
           aprovada: "aprovada",
           reprovada: "reprovada",
-          reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
+          reprovadaPorFaltaDeInformacoes: "devolvida por falta de informações",
           diasAtras: "dias atrás",
           hoje: "hoje",
           umaSemanaAtras: "1 semana atrás",
@@ -417,6 +417,7 @@ const TextLanguage = (linguagem) => {
           quatroSemanasAtras: "4 semanas atrás",
           maisDeUmMesAtras: "mais de 1 mês atrás",
           vcRecebeuMensagem: "Você recebeu uma mensagem da demanda de PPM",
+          por: "por",
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notificação lida com sucesso!",
