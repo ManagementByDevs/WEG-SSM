@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 import "./FormularioBeneficiosDemanda.css";
@@ -43,7 +50,7 @@ const FormularioBeneficiosDemanda = (props) => {
           valor_mensal: "",
           moeda: "",
           memoriaCalculo: "",
-          visible: true
+          visible: true,
         },
       ]);
     });
@@ -76,7 +83,7 @@ const FormularioBeneficiosDemanda = (props) => {
     });
   }
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -109,29 +116,32 @@ const FormularioBeneficiosDemanda = (props) => {
     };
   }, [textoLeitura]);
 
+  useEffect(() => {
+    console.log(beneficios);
+  }, [beneficios]);
+
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
-      <Box className="flex flex-col" sx={{ height: "85%", width: "48rem" }}>
-        <Box>
+      <Box
+        className="flex flex-col w-3/4"
+        sx={{ height: "85%", minWidth: "44rem" }}
+      >
+        <Box
+          className="flex justify-between items-center border-l-4 px-2"
+          sx={{ borderColor: "primary.main" }}
+        >
+          <Typography fontSize={FontConfig.big} fontWeight={500}>
+            {texts.formularioBeneficiosDemanda.listaDeBeneficios}
+          </Typography>
+
           {/* Botão para adicionar novo benefício */}
-          <Button
-            className="rounded flex justify-evenly"
-            color="primary"
-            variant="contained"
-            disableElevation
-            onClick={adicionarBeneficio}
-          >
-            <Typography
-              fontSize={FontConfig.default}
-              onClick={() =>
-                lerTexto(texts.formularioBeneficiosDemanda.adicionar)
-              }
-            >
-              {texts.formularioBeneficiosDemanda.adicionar}
-            </Typography>
-            <AddOutlinedIcon />
-          </Button>
+          <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
+            <IconButton color="primary" onClick={adicionarBeneficio}>
+              <AddOutlinedIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
+        <Divider />
         <Box
           className="flex flex-col w-full"
           sx={{
@@ -141,28 +151,37 @@ const FormularioBeneficiosDemanda = (props) => {
           }}
         >
           {/* Lista de benefícios */}
-          {beneficios?.map((beneficio, index) => {
-            if(beneficio.visible) {
-              return (
-                <Beneficios
-                  key={index}
-                  save={salvarDados}
-                  index={index}
-                  removerBeneficio={removerBeneficio}
-                  dados={beneficio}
-                  setFeedbackErroNavegadorIncompativel={
-                    props.setFeedbackErroNavegadorIncompativel
-                  }
-                  setFeedbackErroReconhecimentoVoz={
-                    props.setFeedbackErroReconhecimentoVoz
-                  }
-                  lendo={props.lendo}
-                  texto={props.texto}
-                  setTexto={props.setTexto}
-                />
-              );
-            }
-          })}
+          {beneficios.some((beneficioAux) => beneficioAux.visible) ? (
+            beneficios?.map((beneficio, index) => {
+              if (beneficio.visible) {
+                return (
+                  <Beneficios
+                    key={index}
+                    save={salvarDados}
+                    index={index}
+                    removerBeneficio={removerBeneficio}
+                    dados={beneficio}
+                    setFeedbackErroNavegadorIncompativel={
+                      props.setFeedbackErroNavegadorIncompativel
+                    }
+                    setFeedbackErroReconhecimentoVoz={
+                      props.setFeedbackErroReconhecimentoVoz
+                    }
+                    lendo={props.lendo}
+                    texto={props.texto}
+                    setTexto={props.setTexto}
+                  />
+                );
+              }
+            })
+          ) : (
+            <Box color="text.secondary" className="text-center">
+              <Typography>...</Typography>
+              <Typography fontSize={FontConfig.big} fontWeight={400}>
+                {texts.formularioBeneficiosDemanda.semBeneficios}
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
