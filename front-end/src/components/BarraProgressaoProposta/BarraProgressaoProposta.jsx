@@ -119,17 +119,28 @@ const BarraProgressaoProposta = (props) => {
     pesquisarSecoesTI();
   }, []);
 
-  /** Função para somar os valores dos benefícios */
-  const retornarTotalBeneficios = () => {
-    let valorBeneficio = 0;
-    let valorDolar, valorEuro;
+  useEffect(() => {
+    valoresMoedas();
+  }, [dadosDemanda.beneficios])
+
+  const [valorDolar, setValorDolar] = useState(null);
+  const [valorEuro, setValorEuro] = useState(null);
+
+  const valoresMoedas = () => {
     MoedasService.getDolar().then((response) => {
-      valorDolar = response;
+      setValorDolar(response);
     });
 
     MoedasService.getEuro().then((response) => {
-      valorEuro = response;
+      setValorEuro(response);
     })
+  }
+
+  /** Função para somar os valores dos benefícios */
+  const retornarTotalBeneficios = () => {
+    let valorBeneficio = 0;
+
+    console.log("Valor dolar: " + valorDolar)
 
     for (const object in listaBeneficios) {
       if (listaBeneficios[object].tipoBeneficio == "Real") {
@@ -386,9 +397,9 @@ const BarraProgressaoProposta = (props) => {
 
       if (custos.length == 0) {
         CustosService.postTabela({
+          tipoDespesa: "",
           custos: [
             {
-              tipoDespesa: "",
               perfilDespesa: "",
               periodoExecucao: "",
               horas: "",
@@ -402,7 +413,7 @@ const BarraProgressaoProposta = (props) => {
             },
           ],
         }).then((response) => {
-          setCustos([...custos, response]);
+          setCustos([...custos, {...response, tipoDespesa: ""}]);
           setCarregamento(false);
         });
       }
@@ -419,6 +430,10 @@ const BarraProgressaoProposta = (props) => {
       }
     }
   };
+
+  useEffect(() => {
+    console.log(custos);
+  }, [custos])
 
   // Função para passar para próxima página
   const proximaEtapa = () => {
@@ -465,28 +480,32 @@ const BarraProgressaoProposta = (props) => {
         case 2:
           let porcentagemCcs = 0;
           custos.map((custo) => {
-            custo.custos.map((custolinha) => {
-              if (
-                custolinha.tipoDespesa == "" ||
-                custolinha.perfilDespesa == "" ||
-                custolinha.periodoExecucao == "" ||
-                custolinha.periodoExecucao == null ||
-                custolinha.horas == "" ||
-                custolinha.horas == null ||
-                custolinha.valorHora == "" ||
-                custolinha.valorHora == null
-              ) {
-                dadosFaltantes = true;
-                setFeedbackFaltante(true);
-              }
-            });
-            custo.ccs.map((cc) => {
-              if (cc.codigo == "" || cc.porcentagem == "") {
-                dadosFaltantes = true;
-                setFeedbackFaltante(true);
-              }
-              porcentagemCcs += cc.porcentagem;
-            });
+            if (custo.tipoDespesa == "") {
+              dadosFaltantes = true;
+              setFeedbackFaltante(true);
+            } else {
+              custo.custos.map((custolinha) => {
+                if (
+                  custolinha.perfilDespesa == "" ||
+                  custolinha.periodoExecucao == "" ||
+                  custolinha.periodoExecucao == null ||
+                  custolinha.horas == "" ||
+                  custolinha.horas == null ||
+                  custolinha.valorHora == "" ||
+                  custolinha.valorHora == null
+                ) {
+                  dadosFaltantes = true;
+                  setFeedbackFaltante(true);
+                }
+              });
+              custo.ccs.map((cc) => {
+                if (cc.codigo == "" || cc.porcentagem == "") {
+                  dadosFaltantes = true;
+                  setFeedbackFaltante(true);
+                }
+                porcentagemCcs += cc.porcentagem;
+              });
+            }
             if (dadosFaltantes == false && porcentagemCcs != 100) {
               fechar100porcentoCcs = true;
               setFeedback100porcentoCcs(true);
@@ -567,6 +586,7 @@ const BarraProgressaoProposta = (props) => {
         id: tabelaCustos.id,
         custos: listaCustos,
         ccs: listaCCs,
+        tipoDespesa: tabelaCustos.tipoDespesa,
       });
     }
     return listaNova;
@@ -748,7 +768,9 @@ const BarraProgressaoProposta = (props) => {
           const stepProps = {};
           const labelProps = {};
           return (
-            <Step key={label} {...stepProps}>
+            <Step key={label} {...stepProps} onClick={() => {
+              lerTexto(label)
+            }}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
@@ -769,8 +791,6 @@ const BarraProgressaoProposta = (props) => {
           }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
         />
       )}
       {activeStep == 1 && (
@@ -789,8 +809,7 @@ const BarraProgressaoProposta = (props) => {
           }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
       )}
       {activeStep == 3 && (
@@ -804,8 +823,7 @@ const BarraProgressaoProposta = (props) => {
           }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
       )}
       <Button
@@ -849,8 +867,7 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -861,8 +878,7 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       {/* Feedback de dados faltantes */}
       <Feedback
@@ -875,8 +891,7 @@ const BarraProgressaoProposta = (props) => {
           texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
         }
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       {/* Feedback de que não fechou 100% de CCs */}
       <Feedback
@@ -887,8 +902,7 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
     </>
   );

@@ -18,8 +18,6 @@ const FundoComHeader = (props) => {
     >
       <Header
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
 
       {/* O box aqui precisa ter o height = 100vh - (h-header-weg) */}

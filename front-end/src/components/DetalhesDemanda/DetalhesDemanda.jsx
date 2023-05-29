@@ -806,8 +806,7 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -818,8 +817,7 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <Feedback
         open={feedbackFacaAlteracao}
@@ -827,8 +825,7 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
@@ -836,8 +833,7 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
@@ -845,8 +841,7 @@ const DetalhesDemanda = (props) => {
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <ModalRecusarDemanda
         open={openModalRecusa}
@@ -860,8 +855,7 @@ const DetalhesDemanda = (props) => {
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <ModalConfirmacao
         open={openModal}
@@ -872,8 +866,7 @@ const DetalhesDemanda = (props) => {
         textoBotao="sim"
         atualizarTexto={true}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <ModalConfirmacao
         open={modalAprovarDemanda}
@@ -882,8 +875,7 @@ const DetalhesDemanda = (props) => {
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <Box
         id="primeiro"
@@ -1268,11 +1260,19 @@ const DetalhesDemanda = (props) => {
                 >
                   {escutar && localClique == "tituloDemanda" ? (
                     <MicOutlinedIcon
-                      sx={{ color: "primary.main", fontSize: "2rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "primary.main",
+                        fontSize: "2rem",
+                      }}
                     />
                   ) : (
                     <MicNoneOutlinedIcon
-                      sx={{ color: "text.secondary", fontSize: "2rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "text.secondary",
+                        fontSize: "2rem",
+                      }}
                     />
                   )}
                 </Tooltip>
@@ -1407,11 +1407,19 @@ const DetalhesDemanda = (props) => {
                 >
                   {escutar && localClique == "frequenciaUso" ? (
                     <MicOutlinedIcon
-                      sx={{ color: "primary.main", fontSize: "1.8rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "primary.main",
+                        fontSize: "1.8rem",
+                      }}
                     />
                   ) : (
                     <MicNoneOutlinedIcon
-                      sx={{ color: "text.secondary", fontSize: "1.8rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "text.secondary",
+                        fontSize: "1.8rem",
+                      }}
                     />
                   )}
                 </Tooltip>

@@ -90,7 +90,7 @@ const InputComLabel = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -132,7 +132,7 @@ const InputComLabel = (props) => {
           sx={{ fontWeight: "600", cursor: "default" }}
           gutterBottom
           onClick={() => {
-            console.log("input")
+            console.log("input");
             lerTexto(props.label);
           }}
         >
@@ -181,11 +181,19 @@ const InputComLabel = (props) => {
           >
             {escutar ? (
               <MicOutlinedIcon
-                sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                sx={{
+                  cursor: "pointer",
+                  color: "primary.main",
+                  fontSize: "1.3rem",
+                }}
               />
             ) : (
               <MicNoneOutlinedIcon
-                sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                sx={{
+                  cursor: "pointer",
+                  color: "text.secondary",
+                  fontSize: "1.3rem",
+                }}
               />
             )}
           </Tooltip>
@@ -225,11 +233,19 @@ const InputComLabel = (props) => {
           >
             {escutar ? (
               <MicOutlinedIcon
-                sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                sx={{
+                  cursor: "pointer",
+                  color: "primary.main",
+                  fontSize: "1.3rem",
+                }}
               />
             ) : (
               <MicNoneOutlinedIcon
-                sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                sx={{
+                  cursor: "pointer",
+                  color: "text.secondary",
+                  fontSize: "1.3rem",
+                }}
               />
             )}
           </Tooltip>

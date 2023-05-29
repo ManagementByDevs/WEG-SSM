@@ -98,6 +98,7 @@ const DetalhesPropostaPagina = ({
         <DetalhesProposta
           propostaId={paramsPath.id}
           setFeedbackEditSuccess={setFeedbackEditSuccess}
+          lendo={lendo}
         />
       </Box>
       {location.state.status != "CANCELLED" &&

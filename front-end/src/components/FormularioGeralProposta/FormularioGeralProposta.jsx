@@ -181,7 +181,7 @@ const FormularioGeralProposta = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -364,11 +364,19 @@ const FormularioGeralProposta = (props) => {
                 >
                   {escutar && localClique == "qtdPaybackSimples" ? (
                     <MicOutlinedIcon
-                      sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "primary.main",
+                        fontSize: "1.3rem",
+                      }}
                     />
                   ) : (
                     <MicNoneOutlinedIcon
-                      sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "text.secondary",
+                        fontSize: "1.3rem",
+                      }}
                     />
                   )}
                 </Tooltip>
@@ -458,11 +466,19 @@ const FormularioGeralProposta = (props) => {
                 >
                   {escutar && localClique == "ppm" ? (
                     <MicOutlinedIcon
-                      sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "primary.main",
+                        fontSize: "1.3rem",
+                      }}
                     />
                   ) : (
                     <MicNoneOutlinedIcon
-                      sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "text.secondary",
+                        fontSize: "1.3rem",
+                      }}
                     />
                   )}
                 </Tooltip>
@@ -527,11 +543,19 @@ const FormularioGeralProposta = (props) => {
               >
                 {escutar && localClique == "linkJira" ? (
                   <MicOutlinedIcon
-                    sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                    sx={{
+                      cursor: "pointer",
+                      color: "primary.main",
+                      fontSize: "1.3rem",
+                    }}
                   />
                 ) : (
                   <MicNoneOutlinedIcon
-                    sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                    sx={{
+                      cursor: "pointer",
+                      color: "text.secondary",
+                      fontSize: "1.3rem",
+                    }}
                   />
                 )}
               </Tooltip>

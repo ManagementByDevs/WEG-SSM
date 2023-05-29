@@ -34,4 +34,7 @@ public class TabelaCusto {
     @JoinColumn(name = "tabela_custo_id")
     private List<CC> ccs;
 
+    @Column
+    private String tipoDespesa;
+
 }

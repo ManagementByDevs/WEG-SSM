@@ -524,8 +524,7 @@ const DemandaGrid = ({
               onDemandaClick(demanda);
             }}
             lendo={lendo}
-            texto={texto}
-            setTexto={setTexto}
+            
           />
         );
       })}

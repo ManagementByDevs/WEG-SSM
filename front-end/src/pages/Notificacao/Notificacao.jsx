@@ -335,8 +335,7 @@ const Notificacao = (props) => {
   return (
     <FundoComHeader
       lendo={props.lendo}
-      texto={props.texto}
-      setTexto={props.setTexto}
+        
     >
       <VLibras forceOnload />
       <Feedback
@@ -347,8 +346,7 @@ const Notificacao = (props) => {
         status={feedback.tipo}
         mensagem={feedback.mensagem}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
 
       <ModalConfirmacao
@@ -359,8 +357,7 @@ const Notificacao = (props) => {
         onCancelClick={() => {}}
         textoBotao={"sim"}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
 
       <ModalConfirmacao
@@ -371,15 +368,13 @@ const Notificacao = (props) => {
         onCancelClick={() => {}}
         textoBotao={"sim"}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
 
       <Box className="p-2" sx={{ minWidth: "40rem" }}>
         <Caminho
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         <Box className="w-full flex flex-col items-center">
           <Box className="w-full flex justify-center m-2">

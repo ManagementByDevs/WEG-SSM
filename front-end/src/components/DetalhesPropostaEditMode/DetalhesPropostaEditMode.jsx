@@ -62,9 +62,7 @@ const DetalhesPropostaEditMode = ({
   setPropostaData = () => {},
   setIsEditing = () => {},
   emAprovacao = false,
-  lendo,
-  texto,
-  setTexto,
+  lendo = false,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -952,7 +950,7 @@ const DetalhesPropostaEditMode = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -1141,6 +1139,7 @@ const DetalhesPropostaEditMode = ({
             {escutar && localClique == "titulo" ? (
               <MicOutlinedIcon
                 sx={{
+                  cursor: "pointer",
                   color: "primary.main",
                   fontSize: "2rem",
                   position: "absolute",
@@ -1150,6 +1149,7 @@ const DetalhesPropostaEditMode = ({
             ) : (
               <MicNoneOutlinedIcon
                 sx={{
+                  cursor: "pointer",
                   color: "text.secondary",
                   fontSize: "2rem",
                   position: "absolute",
@@ -1462,6 +1462,7 @@ const DetalhesPropostaEditMode = ({
                 {escutar && localClique == "frequencia" ? (
                   <MicOutlinedIcon
                     sx={{
+                      cursor: "pointer",
                       color: "primary.main",
                       fontSize: "1.6rem",
                       position: "absolute",
@@ -1471,6 +1472,7 @@ const DetalhesPropostaEditMode = ({
                 ) : (
                   <MicNoneOutlinedIcon
                     sx={{
+                      cursor: "pointer",
                       color: "text.secondary",
                       fontSize: "1.6rem",
                       position: "absolute",
@@ -1509,6 +1511,7 @@ const DetalhesPropostaEditMode = ({
                         dados={tabela}
                         handleOnTabelaCustosChange={handleOnTabelaCustosChange}
                         handleDeleteTabelaCusto={handleDeleteTabelaCusto}
+                        lendo={lendo}
                       />
                     );
                   })
@@ -1668,6 +1671,7 @@ const DetalhesPropostaEditMode = ({
                 {escutar && localClique == "linkJira" ? (
                   <MicOutlinedIcon
                     sx={{
+                      cursor: "pointer",
                       color: "primary.main",
                       fontSize: "1.6rem",
                       position: "absolute",
@@ -1677,6 +1681,7 @@ const DetalhesPropostaEditMode = ({
                 ) : (
                   <MicNoneOutlinedIcon
                     sx={{
+                      cursor: "pointer",
                       color: "text.secondary",
                       fontSize: "1.6rem",
                       position: "absolute",
@@ -1909,9 +1914,7 @@ const TabelaCustos = ({
     newTabela = EntitiesObjectService.tabelaCustos()
   ) => {},
   handleDeleteTabelaCusto = () => {},
-  texto,
-  setTexto,
-  lendo,
+  lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2002,7 +2005,7 @@ const TabelaCustos = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -2115,6 +2118,7 @@ const TabelaCustos = ({
                 key={index}
                 custo={custo}
                 handleOnCustoChange={handleOnCustoChange}
+                lendo={lendo}
               />
             );
           })}
@@ -2169,7 +2173,7 @@ const TabelaCustos = ({
         <TableBody>
           {dados.ccs.map((cc, index) => {
             return (
-              <CC key={index} cc={cc} handleOnCCChange={handleOnCCChange} />
+              <CC key={index} cc={cc} handleOnCCChange={handleOnCCChange} lendo={lendo} />
             );
           })}
         </TableBody>
@@ -2206,6 +2210,7 @@ const TabelaCustos = ({
 const CC = ({
   cc = EntitiesObjectService.cc(),
   handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
+  lendo = false,
 }) => {
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -2318,6 +2323,39 @@ const CC = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
+
   return (
     <TableRow className="w-full border rounded">
       <td className="text-center p-2">
@@ -2340,6 +2378,7 @@ const CC = ({
           {escutar && localClique == "codigo" ? (
             <MicOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "primary.main",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2349,6 +2388,7 @@ const CC = ({
           ) : (
             <MicNoneOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "text.secondary",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2378,6 +2418,7 @@ const CC = ({
           {escutar && localClique == "porcentagem" ? (
             <MicOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "primary.main",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2387,6 +2428,7 @@ const CC = ({
           ) : (
             <MicNoneOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "text.secondary",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2404,9 +2446,7 @@ const CC = ({
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
   handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
-  lendo,
-  texto,
-  setTexto,
+  lendo = false,
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2577,7 +2617,7 @@ const CustosRow = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -2633,6 +2673,7 @@ const CustosRow = ({
           {escutar && localClique == "tipoDespesa" ? (
             <MicOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "primary.main",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2642,6 +2683,7 @@ const CustosRow = ({
           ) : (
             <MicNoneOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "text.secondary",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2672,6 +2714,7 @@ const CustosRow = ({
           {escutar && localClique == "perfilDespesa" ? (
             <MicOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "primary.main",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2681,6 +2724,7 @@ const CustosRow = ({
           ) : (
             <MicNoneOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "text.secondary",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2711,6 +2755,7 @@ const CustosRow = ({
           {escutar && localClique == "periodoExecucao" ? (
             <MicOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "primary.main",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2720,6 +2765,7 @@ const CustosRow = ({
           ) : (
             <MicNoneOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "text.secondary",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2750,6 +2796,7 @@ const CustosRow = ({
           {escutar && localClique == "horas" ? (
             <MicOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "primary.main",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2759,6 +2806,7 @@ const CustosRow = ({
           ) : (
             <MicNoneOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "text.secondary",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2789,6 +2837,7 @@ const CustosRow = ({
           {escutar && localClique == "valorHora" ? (
             <MicOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "primary.main",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2798,6 +2847,7 @@ const CustosRow = ({
           ) : (
             <MicNoneOutlinedIcon
               sx={{
+                cursor: "pointer",
                 color: "text.secondary",
                 fontSize: "1.4rem",
                 position: "absolute",
@@ -2828,8 +2878,6 @@ const Beneficio = ({
   handleOnBeneficioChange = () => {},
   handleDeleteBeneficio = () => {},
   lendo,
-  texto,
-  setTexto,
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -3009,7 +3057,7 @@ const Beneficio = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -3157,6 +3205,7 @@ const Beneficio = ({
                     {escutar && localClique == "valorMensal" ? (
                       <MicOutlinedIcon
                         sx={{
+                          cursor: "pointer",
                           color: "primary.main",
                           fontSize: "1.4rem",
                           position: "absolute",
@@ -3166,6 +3215,7 @@ const Beneficio = ({
                     ) : (
                       <MicNoneOutlinedIcon
                         sx={{
+                          cursor: "pointer",
                           color: "text.secondary",
                           fontSize: "1.4rem",
                           position: "absolute",
@@ -3226,9 +3276,7 @@ const Beneficio = ({
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
   setProposta = () => {},
-  lendo,
-  texto,
-  setTexto,
+  lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -3271,7 +3319,7 @@ const ParecerComissaoInsertText = ({
     }
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -3371,9 +3419,7 @@ const ParecerComissaoInsertText = ({
 const ParecerDGInsertText = ({
   proposta = propostaExample,
   setProposta = () => {},
-  lendo,
-  texto,
-  setTexto,
+  lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -3416,7 +3462,7 @@ const ParecerDGInsertText = ({
     }
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
