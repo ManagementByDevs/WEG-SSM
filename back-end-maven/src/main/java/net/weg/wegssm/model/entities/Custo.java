@@ -20,12 +20,6 @@ public class Custo {
     private Long id;
 
     /**
-     * Tipo da despesa do custo
-     */
-    @Column
-    private String tipoDespesa;
-
-    /**
      * Perfil da despesa do custo
      */
     @Column

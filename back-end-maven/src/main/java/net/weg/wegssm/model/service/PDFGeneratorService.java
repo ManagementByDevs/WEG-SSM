@@ -488,7 +488,7 @@ public class PDFGeneratorService {
             tableCustos.addCell(cell);
 
             for (Custo custos : tableCusto.getCustos()) {
-                tableCustos.addCell(custos.getTipoDespesa());
+//                tableCustos.addCell(custos.getTipoDespesa());
                 tableCustos.addCell(custos.getPerfilDespesa());
                 tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                 tableCustos.addCell(String.valueOf(custos.getHoras()));
@@ -952,7 +952,7 @@ public class PDFGeneratorService {
                 tableCustos.addCell(cell);
 
                 for (Custo custos : tableCusto.getCustos()) {
-                    tableCustos.addCell(custos.getTipoDespesa());
+//                    tableCustos.addCell(custos.getTipoDespesa());
                     tableCustos.addCell(custos.getPerfilDespesa());
                     tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                     tableCustos.addCell(String.valueOf(custos.getHoras()));
@@ -1423,7 +1423,7 @@ public class PDFGeneratorService {
                 tableCustos.addCell(cell);
 
                 for (Custo custos : tableCusto.getCustos()) {
-                    tableCustos.addCell(custos.getTipoDespesa());
+//                    tableCustos.addCell(custos.getTipoDespesa());
                     tableCustos.addCell(custos.getPerfilDespesa());
                     tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                     tableCustos.addCell(String.valueOf(custos.getHoras()));

@@ -133,28 +133,17 @@ const Custos = (props) => {
     };
   }, [textoLeitura]);
 
-  const [tipoDespesa, setTipoDespesa] = useState(null);
+  const [tipoDespesa, setTipoDespesa] = useState("");
+
+  useEffect(() => {
+    setTipoDespesa(props.custos[props.index].tipoDespesa);
+  }, [props.custos])
 
   const handleChange = (tipo) => {
-    setTipoDespesa(tipo.target.value);
     let aux = [...props.custos];
     aux[props.index].tipoDespesa = tipo.target.value;
     props.setCustos(aux);
   }
-
-  useEffect(() => {
-    console.log("Tipo despesa atualizado: " + props.custos[props.index].tipoDespesa);
-  }, [props.custos])
-
-
-  // value={props.dados.custos[props.index].tipoDespesa || ""}
-  // onChange={(e) => {
-  //   let aux = [...props.custos];
-  //   aux[props.indexCusto].custos[props.index].tipoDespesa =
-  //     e.target.value;
-  //   props.setCustos(aux);
-  // }}
-
 
   return (
     <Box className="flex w-full mt-5">
