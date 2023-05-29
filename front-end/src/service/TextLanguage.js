@@ -201,6 +201,8 @@ const TextLanguage = (linguagem) => {
         },
         formularioBeneficiosDemanda: {
           adicionar: "Adicionar",
+          listaDeBeneficios: "Lista de Benefícios",
+          semBeneficios: "Sem Benefícios Adicionados",
         },
         formularioCustosProposta: {
           total: "Total",
@@ -407,7 +409,7 @@ const TextLanguage = (linguagem) => {
           foi: "foi",
           aprovada: "aprovada",
           reprovada: "reprovada",
-          reprovadaPorFaltaDeInformacoes: "reprovada por falta de informações",
+          reprovadaPorFaltaDeInformacoes: "devolvida por falta de informações",
           diasAtras: "dias atrás",
           hoje: "hoje",
           umaSemanaAtras: "1 semana atrás",
@@ -416,6 +418,7 @@ const TextLanguage = (linguagem) => {
           quatroSemanasAtras: "4 semanas atrás",
           maisDeUmMesAtras: "mais de 1 mês atrás",
           vcRecebeuMensagem: "Você recebeu uma mensagem da demanda de PPM",
+          por: "por",
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notificação lida com sucesso!",
@@ -1087,6 +1090,8 @@ const TextLanguage = (linguagem) => {
         },
         formularioBeneficiosDemanda: {
           adicionar: "Add",
+          listaDeBeneficios: "Benefits List",
+          semBeneficios: "No Added Benefits",
         },
         formularioCustosProposta: {
           total: "Total",
@@ -1967,6 +1972,8 @@ const TextLanguage = (linguagem) => {
         },
         formularioBeneficiosDemanda: {
           adicionar: "添加",
+          listaDeBeneficios: "福利清单",
+          semBeneficios: "没有额外的好处",
         },
         formularioCustosProposta: {
           total: "总",
@@ -2829,6 +2836,8 @@ const TextLanguage = (linguagem) => {
         },
         formularioBeneficiosDemanda: {
           adicionar: "Añadir",
+          listaDeBeneficios: "Lista de Beneficios",
+          semBeneficios: "Sin Beneficios Adicionales",
         },
         formularioCustosProposta: {
           total: "Total",

@@ -154,10 +154,10 @@ const Home = (props) => {
   // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal de ordenação
   useEffect(() => {
     let textoNovo = "";
-    if(ordenacaoScore[1]) {
+    if (ordenacaoScore[1]) {
       textoNovo += "sort=score,desc&";
     }
-    if(ordenacaoScore[0]) {
+    if (ordenacaoScore[0]) {
       textoNovo += "sort=score,asc&";
     }
     if (ordenacaoTitulo[1]) {
@@ -523,7 +523,7 @@ const Home = (props) => {
   }, [escutar]);
 
   // ********************************************** Fim Gravar audio **********************************************
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -559,8 +559,7 @@ const Home = (props) => {
   return (
     <FundoComHeader
       lendo={props.lendo}
-      texto={props.texto}
-      setTexto={props.setTexto}
+        
     >
       <VLibras forceOnload />
       {/* Div container */}
@@ -586,8 +585,7 @@ const Home = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback navegador incompativel */}
         <Feedback
@@ -598,8 +596,7 @@ const Home = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback de demanda criada */}
         <Feedback
@@ -610,8 +607,7 @@ const Home = (props) => {
           status={"sucesso"}
           mensagem={texts.home.demandaCriadaComSucesso}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         {/* Div container para o conteúdo da home */}
@@ -731,11 +727,19 @@ const Home = (props) => {
                       >
                         {escutar ? (
                           <MicOutlinedIcon
-                            sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                            sx={{
+                              cursor: "pointer",
+                              color: "primary.main",
+                              fontSize: "1.3rem",
+                            }}
                           />
                         ) : (
                           <MicNoneOutlinedIcon
-                            sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                            sx={{
+                              cursor: "pointer",
+                              color: "text.secondary",
+                              fontSize: "1.3rem",
+                            }}
                           />
                         )}
                       </Tooltip>

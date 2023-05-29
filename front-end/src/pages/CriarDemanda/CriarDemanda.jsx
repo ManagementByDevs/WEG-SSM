@@ -9,9 +9,9 @@ import Caminho from "../../components/Caminho/Caminho";
 import BarraProgressaoDemanda from "../../components/BarraProgressaoDemanda/BarraProgressaoDemanda";
 
 /** Componente de página para a criação de demanda, chamando a barra de progressão para as etapas de criação */
-const CriarDemanda = ({ lendo = false, texto = "", setTexto = () => {} }) => {
+const CriarDemanda = ({ lendo = false}) => {
   return (
-    <FundoComHeader lendo={lendo} texto={texto} setTexto={setTexto}>
+    <FundoComHeader lendo={lendo}>
       <VLibras forceOnload />
       <Box className="p-2">
         <Caminho
@@ -23,8 +23,7 @@ const CriarDemanda = ({ lendo = false, texto = "", setTexto = () => {} }) => {
             {/* Chamada do componente principal para criação da demanda */}
             <BarraProgressaoDemanda
               lendo={lendo}
-              texto={texto}
-              setTexto={setTexto}
+              
             />
           </Box>
         </Box>

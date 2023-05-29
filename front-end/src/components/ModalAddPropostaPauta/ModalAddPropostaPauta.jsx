@@ -420,8 +420,7 @@ const ModalAddPropostaPauta = (props) => {
         status={"erro"}
         mensagem={texts.modalAddPropostaPauta.feedbacks.feedback1}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       {/* Feedback pauta atualizada */}
       <Feedback
@@ -432,8 +431,7 @@ const ModalAddPropostaPauta = (props) => {
         status={"sucesso"}
         mensagem={texts.modalAddPropostaPauta.feedbacks.feedback2}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <Modal
         open={open}

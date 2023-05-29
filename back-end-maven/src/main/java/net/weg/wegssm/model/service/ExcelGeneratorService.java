@@ -416,10 +416,10 @@ public class ExcelGeneratorService {
                 for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                     for (Custo custo : tbCusto.getCustos()) {
                         if (contadorCusto == 0) {
-                            row.createCell(9).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            row.createCell(9).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */  "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                         } else {
                             Row rowCusto = sheet.createRow(rowIndex);
-                            rowCusto.createCell(9).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            rowCusto.createCell(9).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                             rowIndex++;
                         }
 
@@ -628,10 +628,10 @@ public class ExcelGeneratorService {
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
                                 if (contadorCusto == 0) {
-                                    row.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    row.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 } else {
                                     Row rowCusto = sheet.createRow(rowIndexProposta++);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */  "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 }
                                 contadorCusto++;
                             }
@@ -692,10 +692,10 @@ public class ExcelGeneratorService {
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
                                 if (contadorCusto == 0) {
-                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 } else {
                                     Row rowCusto = sheet.createRow(rowIndexProposta++);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 }
                                 contadorCusto++;
                             }
@@ -858,10 +858,10 @@ public class ExcelGeneratorService {
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
                                 if (contadorCusto == 0) {
-                                    row.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    row.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 } else {
                                     Row rowCusto = sheet.createRow(rowIndexProposta);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                     rowIndexProposta++;
                                 }
 
@@ -924,10 +924,10 @@ public class ExcelGeneratorService {
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
                                 if (contadorCusto == 0) {
-                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 } else {
                                     Row rowCusto = sheet.createRow(rowIndexProposta++);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + custo.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 }
 
                                 contadorCusto++;

@@ -130,7 +130,8 @@ const NotificacaoModal = (props) => {
       };
     }
   }, [stompClient]);
-  const [textoLeitura,setTextoLeitura] = useState("");
+
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -173,8 +174,6 @@ const NotificacaoModal = (props) => {
         status={"info"}
         mensagem={texts.notificacaoModal.notificacaoLidaComSucesso}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
       {/* Title  */}
       <Tooltip title={texts.notificacaoModal.notificacoes}>
@@ -203,7 +202,6 @@ const NotificacaoModal = (props) => {
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-        {...props}
       >
         <Box className="w-72 px-3 py-2 max-h-60 overflow-hidden">
           <Box
@@ -218,6 +216,7 @@ const NotificacaoModal = (props) => {
                   notificacao={notificacao}
                   onNotificacaoClick={onNotificationItemClick}
                   index={index}
+                  lendo={props.lendo}
                 />
               );
             })}

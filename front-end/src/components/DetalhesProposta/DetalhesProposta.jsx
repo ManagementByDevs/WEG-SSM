@@ -46,8 +46,6 @@ const DetalhesProposta = ({
   setDadosProposta = () => {},
   setFeedbackEditSuccess = () => {},
   lendo,
-  setTexto,
-  texto,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -216,7 +214,7 @@ const DetalhesProposta = ({
     });
   }, []);
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -277,8 +275,6 @@ const DetalhesProposta = ({
             setIsEditing={setIsEditing}
             emAprovacao={emAprovacao}
             lendo={lendo}
-            texto={texto}
-            setTexto={setTexto}
           />
         </Box>
       </Box>
@@ -603,7 +599,7 @@ const DetalhesProposta = ({
               </Typography>
               <Box className="mx-4">
                 {proposta.tabelaCustos?.map((tabela, index) => {
-                  return <TabelaCustos key={index} dados={tabela} />;
+                  return <TabelaCustos key={index} dados={tabela} lendo={lendo}/>;
                 })}
               </Box>
             </Box>
@@ -620,7 +616,13 @@ const DetalhesProposta = ({
               <Box className="mx-4">
                 {proposta.beneficios.length > 0 ? (
                   proposta.beneficios.map((beneficio, index) => {
-                    return <Beneficio key={index} beneficio={beneficio} />;
+                    return (
+                      <Beneficio
+                        key={index}
+                        beneficio={beneficio}
+                        lendo={lendo}
+                      />
+                    );
                   })
                 ) : (
                   <Typography
@@ -852,6 +854,7 @@ const DetalhesProposta = ({
                       setDadosProposta={setDadosProposta}
                       parecerComissao={proposta.parecerComissao}
                       parecerInformacao={proposta.parecerInformacao}
+                      lendo={lendo}
                     />
 
                     {/* Parecer da Diretoria */}
@@ -867,6 +870,7 @@ const DetalhesProposta = ({
                         setDadosProposta={setDadosProposta}
                         parecerDG={proposta.parecerDG}
                         parecerInformacaoDG={proposta.parecerInformacaoDG}
+                        lendo={lendo}
                       />
                     )}
                   </Box>
@@ -896,6 +900,7 @@ const TabelaCustos = ({
     ],
     ccs: [{ id: 0, codigo: 0, porcentagem: 0.0 }],
   },
+  lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -903,38 +908,97 @@ const TabelaCustos = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
+
   return (
     <Paper className="w-full mt-2 mb-6" square>
       <Table className="table-fixed w-full">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
             <th className="text-white p-1">
-              <Typography fontWeight="bold" fontSize={FontConfig.default}>
+              <Typography
+                fontWeight="bold"
+                fontSize={FontConfig.default}
+                onClick={() => lerTexto(texts.detalhesProposta.tipoDaDespesa)}
+              >
                 {texts.detalhesProposta.tipoDaDespesa}
               </Typography>
             </th>
             <th className="text-white p-1">
-              <Typography fontWeight="bold" fontSize={FontConfig.default}>
+              <Typography
+                fontWeight="bold"
+                fontSize={FontConfig.default}
+                onClick={() => lerTexto(texts.detalhesProposta.perfilDaDespesa)}
+              >
                 {texts.detalhesProposta.perfilDaDespesa}
               </Typography>
             </th>
             <th className="text-white p-1">
-              <Typography fontWeight="bold" fontSize={FontConfig.default}>
+              <Typography
+                fontWeight="bold"
+                fontSize={FontConfig.default}
+                onClick={() =>
+                  lerTexto(texts.detalhesProposta.periodoDeExecucao)
+                }
+              >
                 {texts.detalhesProposta.periodoDeExecucaoTabela}
               </Typography>
             </th>
             <th className="text-white p-1">
-              <Typography fontWeight="bold" fontSize={FontConfig.default}>
+              <Typography
+                fontWeight="bold"
+                fontSize={FontConfig.default}
+                onClick={() => lerTexto(texts.detalhesProposta.horas)}
+              >
                 {texts.detalhesProposta.horas}
               </Typography>
             </th>
             <th className="text-white p-1">
-              <Typography fontWeight="bold" fontSize={FontConfig.default}>
+              <Typography
+                fontWeight="bold"
+                fontSize={FontConfig.default}
+                onClick={() => lerTexto(texts.detalhesProposta.valorHora)}
+              >
                 {texts.detalhesProposta.valorHora}
               </Typography>
             </th>
             <th className="text-white p-1">
-              <Typography fontWeight="bold" fontSize={FontConfig.default}>
+              <Typography
+                fontWeight="bold"
+                fontSize={FontConfig.default}
+                onClick={() => lerTexto(texts.detalhesProposta.total)}
+              >
                 {texts.detalhesProposta.total}
               </Typography>
             </th>
@@ -942,7 +1006,7 @@ const TabelaCustos = ({
         </TableHead>
         <TableBody>
           {dados.custos.map((custo, index) => {
-            return <CustosRow key={index} custo={custo} />;
+            return <CustosRow key={index} custo={custo} lendo={lendo} />;
           })}
         </TableBody>
       </Table>
@@ -951,12 +1015,18 @@ const TabelaCustos = ({
           <TableHead>
             <TableRow sx={{ backgroundColor: "primary.main" }}>
               <th className="text-white p-1">
-                <Typography fontSize={FontConfig.medium}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  onClick={() => lerTexto(texts.detalhesProposta.ccs)}
+                >
                   {texts.detalhesProposta.ccs}
                 </Typography>
               </th>
               <th className="text-white p-1">
-                <Typography fontSize={FontConfig.medium}>
+                <Typography
+                  fontSize={FontConfig.medium}
+                  onClick={() => lerTexto(texts.detalhesProposta.porcentagem)}
+                >
                   {texts.detalhesProposta.porcentagem}
                 </Typography>
               </th>
@@ -967,12 +1037,18 @@ const TabelaCustos = ({
               return (
                 <TableRow key={index} className="w-full border rounded">
                   <td className="text-center p-1">
-                    <Typography fontSize={FontConfig.medium}>
+                    <Typography
+                      fontSize={FontConfig.medium}
+                      onClick={() => lerTexto(cc.codigo)}
+                    >
                       {cc.codigo}
                     </Typography>
                   </td>
                   <td className="text-center p-1">
-                    <Typography fontSize={FontConfig.medium}>
+                    <Typography
+                      fontSize={FontConfig.medium}
+                      onClick={() => lerTexto(cc.porcentagem + "%")}
+                    >
                       {cc.porcentagem}%
                     </Typography>
                   </td>
@@ -996,6 +1072,7 @@ const CustosRow = ({
     horas: 0,
     valorHora: 0,
   },
+  lendo = false,
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1035,33 +1112,88 @@ const CustosRow = ({
       : 0.0;
   };
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
+
   return (
     <TableRow>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
+        <Typography
+          fontSize={FontConfig.default}
+          onClick={() => lerTexto(custo.tipoDespesa)}
+        >
           {custo.tipoDespesa}
         </Typography>
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
+        <Typography
+          fontSize={FontConfig.default}
+          onClick={() => lerTexto(custo.perfilDespesa)}
+        >
           {custo.perfilDespesa}
         </Typography>
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
+        <Typography
+          fontSize={FontConfig.default}
+          onClick={() => lerTexto(custo.periodoExecucao)}
+        >
           {custo.periodoExecucao}
         </Typography>
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>{custo.horas}</Typography>
+        <Typography
+          fontSize={FontConfig.default}
+          onClick={() => lerTexto(custo.horas)}
+        >
+          {custo.horas}
+        </Typography>
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
+        <Typography
+          fontSize={FontConfig.default}
+          onClick={() => lerTexto(getValorFormatted(custo.valorHora))}
+        >
           {getValorFormatted(custo.valorHora)}
         </Typography>
       </td>
       <td className="p-2 text-center">
-        <Typography fontSize={FontConfig.default}>
+        <Typography
+          fontSize={FontConfig.default}
+          onClick={() =>
+            lerTexto(getValorFormatted(custo.horas * custo.valorHora))
+          }
+        >
           {getValorFormatted(custo.horas * custo.valorHora)}
         </Typography>
       </td>
@@ -1070,17 +1202,53 @@ const CustosRow = ({
 };
 
 // Mostrar os benefícios da proposta
-const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
+const Beneficio = ({
+  beneficio = EntitiesObjectService.beneficio(),
+  lendo = false,
+}) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
 
   const memoriaCalculoText = useRef(null);
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   // Verifica se o benefício é do tipo qualitativo
   useEffect(() => {
@@ -1109,6 +1277,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 color="primary"
                 fontWeight="bold"
                 fontSize={FontConfig.medium}
+                onClick={() => lerTexto(texts.detalhesProposta.tipoBeneficio)}
               >
                 {texts.detalhesProposta.tipoBeneficio}
               </Typography>
@@ -1120,6 +1289,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                     color="primary"
                     fontWeight="bold"
                     fontSize={FontConfig.medium}
+                    onClick={() => lerTexto(texts.detalhesProposta.valorMensal)}
                   >
                     {texts.detalhesProposta.valorMensal}
                   </Typography>
@@ -1129,6 +1299,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                     color="primary"
                     fontWeight="bold"
                     fontSize={FontConfig.medium}
+                    onClick={() => lerTexto(texts.detalhesProposta.moeda)}
                   >
                     {texts.detalhesProposta.moeda}
                   </Typography>
@@ -1140,6 +1311,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 color="primary"
                 fontWeight="bold"
                 fontSize={FontConfig.medium}
+                onClick={() => lerTexto(texts.detalhesProposta.memoriaCalculo)}
               >
                 {texts.detalhesProposta.memoriaCalculo}
               </Typography>
@@ -1149,7 +1321,15 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
         <TableBody className="border-t">
           <TableRow>
             <td className="text-center p-1">
-              <Typography fontSize={FontConfig.default}>
+              <Typography
+                fontSize={FontConfig.default}
+                onClick={() =>
+                  lerTexto(
+                    beneficio.tipoBeneficio[0].toUpperCase() +
+                      beneficio.tipoBeneficio.substring(1).toLowerCase()
+                  )
+                }
+              >
                 {beneficio.tipoBeneficio[0].toUpperCase() +
                   beneficio.tipoBeneficio.substring(1).toLowerCase()}
               </Typography>
@@ -1157,12 +1337,18 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
             {!isQualitativo && (
               <>
                 <td className="text-center p-1">
-                  <Typography fontSize={FontConfig.default}>
+                  <Typography
+                    fontSize={FontConfig.default}
+                    onClick={() => lerTexto(beneficio.valor_mensal)}
+                  >
                     {beneficio.valor_mensal}
                   </Typography>
                 </td>
                 <td className="text-center p-1">
-                  <Typography fontSize={FontConfig.default}>
+                  <Typography
+                    fontSize={FontConfig.default}
+                    onClick={() => lerTexto(beneficio.moeda)}
+                  >
                     {beneficio.moeda}
                   </Typography>
                 </td>
@@ -1172,6 +1358,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
               <Typography
                 ref={memoriaCalculoText}
                 fontSize={FontConfig.default}
+                onClick={() => lerTexto(beneficio.memoriaCalculo)}
               >
                 {beneficio.memoriaCalculo}
               </Typography>
@@ -1190,6 +1377,7 @@ const ParecerComissao = ({
   setDadosProposta = () => {},
   parecerComissao = "",
   parecerInformacao = "",
+  lendo = false,
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO")
     return (
@@ -1199,9 +1387,10 @@ const ParecerComissao = ({
         setDadosProposta={setDadosProposta}
         parecerComissao={parecerComissao}
         parecerInformacao={parecerInformacao}
+        lendo={lendo}
       />
     );
-  return <ParecerComissaoOnlyRead proposta={proposta} />;
+  return <ParecerComissaoOnlyRead proposta={proposta} lendo={lendo} />;
 };
 
 // Chamar o parecer da DG
@@ -1211,6 +1400,7 @@ const ParecerDG = ({
   setDadosProposta = () => {},
   parecerDG = "",
   parecerInformacaoDG = "",
+  lendo = false,
 }) => {
   if (proposta.status == "ASSESSMENT_DG")
     return (
@@ -1220,9 +1410,10 @@ const ParecerDG = ({
         setDadosProposta={setDadosProposta}
         parecerDG={parecerDG}
         parecerInformacaoDG={parecerInformacaoDG}
+        lendo={lendo}
       />
     );
-  return <ParecerDGOnlyRead proposta={proposta} />;
+  return <ParecerDGOnlyRead proposta={proposta} lendo={lendo} />;
 };
 
 // Escrever o parecer da comissão
@@ -1232,6 +1423,7 @@ const ParecerComissaoInsertText = ({
   setDadosProposta = () => {},
   parecerComissao = "",
   parecerInformacao = "",
+  lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1239,11 +1431,51 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
+
   return (
     <Box>
       <Box className="flex">
         <Box className="flex items-center mt-4">
-          <Typography fontSize={FontConfig.medium}>
+          <Typography
+            fontSize={FontConfig.medium}
+            onClick={() =>
+              lerTexto(
+                texts.detalhesProposta.comissao + " " + proposta.forum.nome
+              )
+            }
+          >
             {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
           </Typography>
         </Box>
@@ -1290,6 +1522,7 @@ const ParecerComissaoInsertText = ({
             setProposta({ ...proposta, parecerInformacao: e });
             setDadosProposta({ ...proposta, parecerInformacao: e });
           }}
+          lendo={lendo}
         />
       </Box>
     </Box>
@@ -1297,7 +1530,10 @@ const ParecerComissaoInsertText = ({
 };
 
 // Visualizar o parecer da comissão
-const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
+const ParecerComissaoOnlyRead = ({
+  proposta = propostaExample,
+  lendo = false,
+}) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1335,11 +1571,51 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
     }
   };
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
+
   return (
     <Box>
       <Box className="flex">
         <Box className="flex items-center mt-4">
-          <Typography fontSize={FontConfig.medium}>
+          <Typography
+            fontSize={FontConfig.medium}
+            onClick={() =>
+              lerTexto(
+                texts.detalhesProposta.comissao + " " + proposta.forum.nome
+              )
+            }
+          >
             {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
           </Typography>
           <Typography fontSize={FontConfig.medium} fontWeight="bold">
@@ -1364,6 +1640,7 @@ const ParecerDGInsertText = ({
   setDadosProposta = () => {},
   parecerDG = "",
   parecerInformacaoDG = "",
+  lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1407,6 +1684,7 @@ const ParecerDGInsertText = ({
             setProposta({ ...proposta, parecerInformacaoDG: e });
             setDadosProposta({ ...proposta, parecerInformacaoDG: e });
           }}
+          lendo={lendo}
         />
       </Box>
     </Box>
@@ -1414,7 +1692,7 @@ const ParecerDGInsertText = ({
 };
 
 // Visualizar o parecer da DG
-const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
+const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1440,14 +1718,54 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
       : texts.detalhesProposta.semParecer;
   };
 
+  const [textoLeitura, setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
+
   return (
     <Box>
       <Box className="flex">
         <Box className="flex items-center mt-4">
-          <Typography fontSize={FontConfig.medium}>
+          <Typography
+            fontSize={FontConfig.medium}
+            onClick={() => lerTexto(texts.detalhesProposta.direcaoGeral)}
+          >
             {texts.detalhesProposta.direcaoGeral}:&nbsp;
           </Typography>
-          <Typography fontSize={FontConfig.medium} fontWeight="bold">
+          <Typography
+            fontSize={FontConfig.medium}
+            fontWeight="bold"
+            onClick={() => lerTexto(getParecerDGFomartted(proposta.parecerDG))}
+          >
             {getParecerDGFomartted(proposta.parecerDG)}
           </Typography>
         </Box>

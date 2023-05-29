@@ -8,6 +8,8 @@ class NotificacaoService {
   reprovado = "REPROVADO";
   maisInformacoes = "MAIS_INFORMACOES";
   mensagens = "MENSAGENS";
+  aprovadoGerente = "APROVADO_GERENTE";
+  reprovadoGerente = "REPROVADO_GERENTE";
 
   async getByUserId(userId, page) {
     return (
@@ -57,11 +59,11 @@ class NotificacaoService {
 
   /**
    * Cria e retorna um objeto notificação
-   * @param {APROVADO, REPROVADO, MAIS_INFORMACOES, MENSAGENS} tipoNotificacao
+   * @param {string} tipoNotificacao - "APROVADO", "REPROVADO", "MAIS_INFORMACOES", "MENSAGENS", "APROVADO_GERENTE", "REPROVADO_GERENTE"
    * @param {Demanda} demanda
    * @returns Notificação Object
    */
-  createNotificationObject(tipoNotificacao, demanda) {
+  createNotificationObject(tipoNotificacao, demanda, idRemetente) {
     let numeroSequencial = demanda.codigoPPM ? demanda.codigoPPM : demanda.id;
     return {
       numeroSequencial,
@@ -69,6 +71,7 @@ class NotificacaoService {
       tipoNotificacao: tipoNotificacao,
       visualizado: false,
       usuario: { id: demanda.solicitante.id },
+      remetente: { id: idRemetente },
     };
   }
 }

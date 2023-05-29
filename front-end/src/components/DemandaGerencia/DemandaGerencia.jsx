@@ -159,8 +159,7 @@ const DemandaGerencia = (props) => {
             props.dados.historicoDemanda || props.dados.historicoProposta
           }
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
       )}
       <Paper
