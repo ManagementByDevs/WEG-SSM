@@ -748,7 +748,9 @@ const BarraProgressaoProposta = (props) => {
           const stepProps = {};
           const labelProps = {};
           return (
-            <Step key={label} {...stepProps}>
+            <Step key={label} {...stepProps} onClick={() => {
+              lerTexto(label)
+            }}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
@@ -769,8 +771,6 @@ const BarraProgressaoProposta = (props) => {
           }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
         />
       )}
       {activeStep == 1 && (
@@ -789,8 +789,7 @@ const BarraProgressaoProposta = (props) => {
           }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
       )}
       {activeStep == 3 && (
@@ -804,8 +803,7 @@ const BarraProgressaoProposta = (props) => {
           }
           setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
       )}
       <Button
@@ -849,8 +847,7 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -861,8 +858,7 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       {/* Feedback de dados faltantes */}
       <Feedback
@@ -875,8 +871,7 @@ const BarraProgressaoProposta = (props) => {
           texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
         }
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       {/* Feedback de que não fechou 100% de CCs */}
       <Feedback
@@ -887,8 +882,7 @@ const BarraProgressaoProposta = (props) => {
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
     </>
   );

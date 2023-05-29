@@ -440,11 +440,19 @@ const PropostaDeAta = (props) => {
               >
                 {escutar ? (
                   <MicOutlinedIcon
-                    sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                    sx={{
+                      cursor: "pointer",
+                      color: "primary.main",
+                      fontSize: "1.3rem",
+                    }}
                   />
                 ) : (
                   <MicNoneOutlinedIcon
-                    sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                    sx={{
+                      cursor: "pointer",
+                      color: "text.secondary",
+                      fontSize: "1.3rem",
+                    }}
                   />
                 )}
               </Tooltip>

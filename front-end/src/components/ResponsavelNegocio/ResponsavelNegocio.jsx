@@ -100,7 +100,7 @@ const ResponsavelNegocio = (props) => {
   }, [escutar]);
 
   // // ********************************************** Fim Gravar audio **********************************************
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -137,7 +137,8 @@ const ResponsavelNegocio = (props) => {
     <Box className="flex w-full mt-5 items-end">
       <Box className="flex flex-col">
         <Box className="flex mb-2">
-          <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+          <Typography
+            sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
             onClick={() => {
               lerTexto(texts.responsavelNegocio.responsavelDoNegocio);
             }}
@@ -188,11 +189,19 @@ const ResponsavelNegocio = (props) => {
             >
               {escutar && localClicado == "nome" ? (
                 <MicOutlinedIcon
-                  sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                  sx={{
+                    cursor: "pointer",
+                    color: "primary.main",
+                    fontSize: "1.3rem",
+                  }}
                 />
               ) : (
                 <MicNoneOutlinedIcon
-                  sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                  sx={{
+                    cursor: "pointer",
+                    color: "text.secondary",
+                    fontSize: "1.3rem",
+                  }}
                 />
               )}
             </Tooltip>
@@ -201,7 +210,8 @@ const ResponsavelNegocio = (props) => {
       </Box>
       <Box className="flex flex-col ml-10">
         <Box className="flex mb-2">
-          <Typography sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
+          <Typography
+            sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
             onClick={() => {
               lerTexto(texts.responsavelNegocio.area);
             }}
@@ -252,11 +262,19 @@ const ResponsavelNegocio = (props) => {
             >
               {escutar && localClicado == "area" ? (
                 <MicOutlinedIcon
-                  sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                  sx={{
+                    cursor: "pointer",
+                    color: "primary.main",
+                    fontSize: "1.3rem",
+                  }}
                 />
               ) : (
                 <MicNoneOutlinedIcon
-                  sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                  sx={{
+                    cursor: "pointer",
+                    color: "text.secondary",
+                    fontSize: "1.3rem",
+                  }}
                 />
               )}
             </Tooltip>

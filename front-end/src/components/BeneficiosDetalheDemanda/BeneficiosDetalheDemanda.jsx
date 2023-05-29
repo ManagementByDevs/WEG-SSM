@@ -376,6 +376,7 @@ const BeneficiosDetalheDemanda = (props) => {
                               {escutar ? (
                                 <MicOutlinedIcon
                                   sx={{
+                                    cursor: "pointer",
                                     color: "primary.main",
                                     fontSize: "1.3rem",
                                   }}
@@ -383,6 +384,7 @@ const BeneficiosDetalheDemanda = (props) => {
                               ) : (
                                 <MicNoneOutlinedIcon
                                   sx={{
+                                    cursor: "pointer",
                                     color: "text.secondary",
                                     fontSize: "1.3rem",
                                   }}

@@ -324,11 +324,7 @@ const DetalhesAta = (props) => {
 
   return (
     // Começo com o header da página
-    <FundoComHeader
-      lendo={props.lendo}
-      texto={props.texto}
-      setTexto={props.setTexto}
-    >
+    <FundoComHeader lendo={props.lendo}>
       <VLibras forceOnload />
       {/* Feedback campos faltantes */}
       <Feedback
@@ -339,8 +335,6 @@ const DetalhesAta = (props) => {
         status={"erro"}
         mensagem={texts.detalhesPauta.feedbacks.feedback2}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
       {/* Feedback edição bem sucedida */}
       <Feedback
@@ -349,8 +343,6 @@ const DetalhesAta = (props) => {
         status={"sucesso"}
         mensagem={texts.detalhesProposta.editadoComSucesso}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
 
       <Box className="p-2">
@@ -398,7 +390,11 @@ const DetalhesAta = (props) => {
                 className="cursor-default mt-2"
                 fontWeight={600}
                 onClick={() => {
-                  lerTexto(texts.detalhesAta.numeroSequencial);
+                  lerTexto(
+                    texts.detalhesAta.numeroSequencial +
+                      ": " +
+                      ata.numeroSequencial
+                  );
                 }}
               >
                 {texts.detalhesAta.numeroSequencial}: {ata.numeroSequencial}
@@ -407,7 +403,11 @@ const DetalhesAta = (props) => {
                 className="cursor-default mt-2"
                 fontWeight={600}
                 onClick={() => {
-                  lerTexto(texts.detalhesAta.dataReuniao);
+                  lerTexto(
+                    texts.detalhesAta.dataReuniao +
+                      ": " +
+                      DateService.getTodaysDateUSFormat(ata.dataReuniao)
+                  );
                 }}
               >
                 {/* {data reunião} */}
@@ -418,7 +418,11 @@ const DetalhesAta = (props) => {
                 className="cursor-default mt-2"
                 fontWeight={600}
                 onClick={() => {
-                  lerTexto(texts.detalhesAta.horaReuniao);
+                  lerTexto(
+                    texts.detalhesAta.horaReuniao +
+                      ": " +
+                      trazerHoraData(ata.dataReuniao)
+                  );
                 }}
               >
                 {/* {Hora reunião} */}
@@ -429,7 +433,11 @@ const DetalhesAta = (props) => {
                 className="cursor-default mt-2"
                 fontWeight={600}
                 onClick={() => {
-                  lerTexto(texts.detalhesAta.analistaResponsavel);
+                  lerTexto(
+                    texts.detalhesAta.analistaResponsavel +
+                      ": " +
+                      ata.analistaResponsavel.nome
+                  );
                 }}
               >
                 {/* {analista responsavel} */}
@@ -440,7 +448,9 @@ const DetalhesAta = (props) => {
                 className="cursor-default mt-2"
                 fontWeight={600}
                 onClick={() => {
-                  lerTexto(texts.detalhesAta.comissao);
+                  lerTexto(
+                    texts.detalhesAta.comissao + ": " + ata.comissao.nomeForum
+                  );
                 }}
               >
                 {/* {props.inicio} */}
@@ -480,15 +490,37 @@ const DetalhesAta = (props) => {
                 >
                   {ata.propostas?.map((proposta, index) => {
                     return (
-                      <Typography
-                        fontSize={FontConfig.big}
-                        color={"primary.main"}
-                        className="underline cursor-pointer overflow-hidden whitespace-nowrap text-ellipsis text-center"
+                      <Box
                         key={index}
-                        onClick={() => onClickProposta(index)}
+                        className="w-full border-solid border border-l-4 px-4 drop-shadow-sm rounded flex items-center mt-4"
+                        sx={{
+                          height: "2.5rem",
+                          borderLeftColor: "primary.main",
+                          backgroundColor: "background.default",
+                          fontWeight: "300",
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "component.main" },
+                        }}
+                        onClick={() => {
+                          if (props.lendo) {
+                            lerTexto(proposta.titulo);
+                          } else {
+                            onClickProposta(index);
+                          }
+                        }}
                       >
-                        {index + 1} - {proposta.titulo}
-                      </Typography>
+                        <Typography
+                          fontSize={FontConfig.medium}
+                          sx={{
+                            color: "primary.main",
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {index + 1} - {proposta.titulo}
+                        </Typography>
+                      </Box>
                     );
                   })}
                 </Box>

@@ -626,31 +626,31 @@ const HomeGerencia = (props) => {
       textoNovo += "sort=score,asc&";
     }
     if (ordenacaoTitulo[1]) {
-      if(valorAba < 5) {
+      if (valorAba < 5) {
         textoNovo += "sort=titulo,asc&";
       } else {
-        textoNovo += "sort=numeroSequencial,asc&"
+        textoNovo += "sort=numeroSequencial,asc&";
       }
     }
     if (ordenacaoTitulo[0]) {
-      if(valorAba < 5) {
+      if (valorAba < 5) {
         textoNovo += "sort=titulo,desc&";
       } else {
-        textoNovo += "sort=numeroSequencial,desc&"
+        textoNovo += "sort=numeroSequencial,desc&";
       }
     }
     if (ordenacaoDate[0]) {
-      if(valorAba < 5) {
+      if (valorAba < 5) {
         textoNovo += "sort=data,asc&";
       } else {
-        textoNovo += "sort=dataReuniao,asc&"
+        textoNovo += "sort=dataReuniao,asc&";
       }
     }
     if (ordenacaoDate[1]) {
-      if(valorAba < 5) {
+      if (valorAba < 5) {
         textoNovo += "sort=data,desc&";
       } else {
-        textoNovo += "sort=dataReuniao,desc&"
+        textoNovo += "sort=dataReuniao,desc&";
       }
     }
     if (textoNovo == "") {
@@ -658,7 +658,7 @@ const HomeGerencia = (props) => {
     }
 
     setOrdenacao(textoNovo);
-  }
+  };
 
   /** Função para formatar os campos necessários das demandas e propostas para HTML */
   const formatarItens = (listaDemandas) => {
@@ -1100,7 +1100,11 @@ const HomeGerencia = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        setValorPesquisa(transcript);
+        if (valorPesquisa == "") {
+          setValorPesquisa(transcript);
+        } else {
+          setValorPesquisa(valorPesquisa + " " + transcript);
+        }
       };
 
       recognition.onerror = (event) => {
@@ -1169,8 +1173,7 @@ const HomeGerencia = (props) => {
   return (
     <FundoComHeader
       lendo={props.lendo}
-      texto={props.texto}
-      setTexto={props.setTexto}
+        
     >
       {/* {!fecharChatMinimizado && (
         <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado}/>
@@ -1235,8 +1238,7 @@ const HomeGerencia = (props) => {
           handleOnCancelClickDeletePauta();
         }}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
 
       {/* Div container */}
@@ -1253,8 +1255,7 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback Não navegador incompativel */}
         <Feedback
@@ -1265,8 +1266,7 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback Não pode abrir chat com você mesmo */}
         <Feedback
@@ -1277,8 +1277,7 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback11}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback ata publicada */}
         <Feedback
@@ -1289,8 +1288,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback1}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         {/* Feedback ata criada */}
@@ -1302,8 +1300,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback8}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         {/* Feedback propostas atualizadas */}
@@ -1315,8 +1312,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback9}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         {/* Feedback demanda criada  */}
@@ -1328,8 +1324,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback10}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         <Feedback
@@ -1340,8 +1335,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback2}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         <Feedback
@@ -1352,8 +1346,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback3}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         <Feedback
@@ -1364,8 +1357,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback4}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         <Feedback
@@ -1376,8 +1368,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback5}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         {/* Feedback pauta deletada */}
@@ -1389,8 +1380,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback6}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback proposta atualizada */}
         <Feedback
@@ -1401,8 +1391,7 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback7}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
 
         {/* Div container para o conteúdo da home */}
@@ -1591,11 +1580,19 @@ const HomeGerencia = (props) => {
                       >
                         {escutar ? (
                           <MicOutlinedIcon
-                            sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                            sx={{
+                              cursor: "pointer",
+                              color: "primary.main",
+                              fontSize: "1.3rem",
+                            }}
                           />
                         ) : (
                           <MicNoneOutlinedIcon
-                            sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                            sx={{
+                              cursor: "pointer",
+                              color: "text.secondary",
+                              fontSize: "1.3rem",
+                            }}
                           />
                         )}
                       </Tooltip>
@@ -1853,7 +1850,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
@@ -1880,7 +1877,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="4"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <Box
                           sx={{
