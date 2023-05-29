@@ -183,6 +183,7 @@ const DetalhesAta = (props) => {
   const isAllFieldsFilled = () => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = ata.propostas.every((proposta) => {
+      console.log(proposta);
       return (
         proposta.parecerDG != null &&
         proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
@@ -213,11 +214,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -225,9 +226,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => {}
+                () => { }
               );
               break;
           }
@@ -258,7 +259,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
+    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
 
     navigate("/", { state: { feedback: true } });
   };
@@ -392,8 +393,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                      ": " +
-                      ata.numeroSequencial
+                    ": " +
+                    ata.numeroSequencial
                   );
                 }}
               >
@@ -405,8 +406,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
-                      ": " +
-                      DateService.getTodaysDateUSFormat(ata.dataReuniao)
+                    ": " +
+                    DateService.getTodaysDateUSFormat(ata.dataReuniao)
                   );
                 }}
               >
@@ -420,8 +421,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                      ": " +
-                      trazerHoraData(ata.dataReuniao)
+                    ": " +
+                    trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -435,8 +436,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                      ": " +
-                      ata.analistaResponsavel.nome
+                    ": " +
+                    ata.analistaResponsavel.nome
                   );
                 }}
               >
@@ -555,8 +556,10 @@ const DetalhesAta = (props) => {
                   propostaId={dadosProposta.id}
                   lendo={props.lendo}
                   texto={props.texto}
-                  setTexto={props.setTexto}
                   setFeedbackEditSuccess={setFeedbackEditSuccess}
+                  parecerDG={dadosProposta.parecerDG || ""}
+                  parecerInformacaoDG={dadosProposta.parecerInformacaoDG || ""}
+                  setDadosProposta={setDadosProposta}
                 />
               </Box>
             )}
