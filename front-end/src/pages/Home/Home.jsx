@@ -557,10 +557,7 @@ const Home = (props) => {
   }, [textoLeitura]);
 
   return (
-    <FundoComHeader
-      lendo={props.lendo}
-        
-    >
+    <FundoComHeader lendo={props.lendo}>
       <VLibras forceOnload />
       {/* Div container */}
       <Tour
@@ -585,7 +582,6 @@ const Home = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
           lendo={props.lendo}
-           
         />
         {/* Feedback navegador incompativel */}
         <Feedback
@@ -596,7 +592,6 @@ const Home = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
           lendo={props.lendo}
-           
         />
         {/* Feedback de demanda criada */}
         <Feedback
@@ -607,7 +602,6 @@ const Home = (props) => {
           status={"sucesso"}
           mensagem={texts.home.demandaCriadaComSucesso}
           lendo={props.lendo}
-           
         />
 
         {/* Div container para o conteúdo da home */}
@@ -651,6 +645,20 @@ const Home = (props) => {
                 </TabList>
 
                 <Box className="absolute right-0 top-2" id="sexto">
+                  {/* Ícone de ordenação */}
+                  <Tooltip title={texts.home.ordenacao}>
+                    <IconButton
+                      onClick={() => {
+                        setOpenOrdenacao(true);
+                      }}
+                    >
+                      <SwapVertIcon
+                        id="segundo"
+                        className="cursor-pointer"
+                        color="primary"
+                      />
+                    </IconButton>
+                  </Tooltip>
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.home.visualizacaoEmTabela}>
                       <IconButton
@@ -671,6 +679,21 @@ const Home = (props) => {
                         <ViewModuleIcon color="primary" />
                       </IconButton>
                     </Tooltip>
+                  )}
+                  {/* Modal de ordenação */}
+                  {abrirOrdenacao && (
+                    <ModalOrdenacao
+                      fecharModal={() => {
+                        setOpenOrdenacao(false);
+                      }}
+                      ordenacaoTitulo={ordenacaoTitulo}
+                      setOrdenacaoTitulo={setOrdenacaoTitulo}
+                      ordenacaoScore={ordenacaoScore}
+                      setOrdenacaoScore={setOrdenacaoScore}
+                      ordenacaoDate={ordenacaoDate}
+                      setOrdenacaoDate={setOrdenacaoDate}
+                      lendo={props.lendo}
+                    />
                   )}
                 </Box>
               </Box>
@@ -752,36 +775,6 @@ const Home = (props) => {
                           sx={{ color: "text.secondary" }}
                         />
                       </Tooltip>
-
-                      {/* Ícone de ordenação */}
-                      <Tooltip title={texts.home.ordenacao}>
-                        <SwapVertIcon
-                          id="segundo"
-                          onClick={() => {
-                            setOpenOrdenacao(true);
-                          }}
-                          className="cursor-pointer"
-                          sx={{ color: "text.secondary" }}
-                        />
-                      </Tooltip>
-
-                      {/* Modal de ordenação */}
-                      {abrirOrdenacao && (
-                        <ModalOrdenacao
-                          fecharModal={() => {
-                            setOpenOrdenacao(false);
-                          }}
-                          ordenacaoTitulo={ordenacaoTitulo}
-                          setOrdenacaoTitulo={setOrdenacaoTitulo}
-                          ordenacaoScore={ordenacaoScore}
-                          setOrdenacaoScore={setOrdenacaoScore}
-                          ordenacaoDate={ordenacaoDate}
-                          setOrdenacaoDate={setOrdenacaoDate}
-                          lendo={props.lendo}
-                          texto={props.texto}
-                          setTexto={props.setTexto}
-                        />
-                      )}
                     </Box>
                   </Box>
                   <Box id="terceiro" className="flex gap-2">
@@ -876,8 +869,6 @@ const Home = (props) => {
                               },
                             }}
                             lendo={props.lendo}
-                            texto={props.texto}
-                            setTexto={props.setTexto}
                           />
                         ) : (
                           <DemandaModoVisualizacao
@@ -886,8 +877,6 @@ const Home = (props) => {
                             myDemandas={true}
                             nextModoVisualizacao={nextModoVisualizacao}
                             lendo={props.lendo}
-                            texto={props.texto}
-                            setTexto={props.setTexto}
                           />
                         )}
                       </Box>
@@ -899,8 +888,6 @@ const Home = (props) => {
                         myDemandas={false}
                         nextModoVisualizacao={nextModoVisualizacao}
                         lendo={props.lendo}
-                        texto={props.texto}
-                        setTexto={props.setTexto}
                       />
                     </TabPanel>
                   </>
@@ -917,6 +904,7 @@ const Home = (props) => {
             setTamanho={setTamanhoPagina}
             tamanhoPagina={tamanhoPagina}
             setPaginaAtual={setPaginaAtual}
+            lendo={props.lendo}
           />
         ) : null}
       </Box>

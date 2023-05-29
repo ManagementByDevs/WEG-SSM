@@ -1,7 +1,14 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Box, Button, IconButton, Tab, Tooltip } from "@mui/material";
+import {
+  AvatarGroup,
+  Box,
+  Button,
+  IconButton,
+  Tab,
+  Tooltip,
+} from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -1100,6 +1107,7 @@ const HomeGerencia = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
+        console.log("teste: ", valorPesquisa);
         if (valorPesquisa == "") {
           setValorPesquisa(transcript);
         } else {
@@ -1171,10 +1179,7 @@ const HomeGerencia = (props) => {
   }, [textoLeitura]);
 
   return (
-    <FundoComHeader
-      lendo={props.lendo}
-        
-    >
+    <FundoComHeader lendo={props.lendo}>
       {/* {!fecharChatMinimizado && (
         <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado}/>
       )} */}
@@ -1238,7 +1243,6 @@ const HomeGerencia = (props) => {
           handleOnCancelClickDeletePauta();
         }}
         lendo={props.lendo}
-         
       />
 
       {/* Div container */}
@@ -1255,7 +1259,6 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
           lendo={props.lendo}
-           
         />
         {/* Feedback Não navegador incompativel */}
         <Feedback
@@ -1266,7 +1269,6 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
           lendo={props.lendo}
-           
         />
         {/* Feedback Não pode abrir chat com você mesmo */}
         <Feedback
@@ -1277,7 +1279,6 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback11}
           lendo={props.lendo}
-           
         />
         {/* Feedback ata publicada */}
         <Feedback
@@ -1288,7 +1289,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback1}
           lendo={props.lendo}
-           
         />
 
         {/* Feedback ata criada */}
@@ -1300,7 +1300,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback8}
           lendo={props.lendo}
-           
         />
 
         {/* Feedback propostas atualizadas */}
@@ -1312,7 +1311,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback9}
           lendo={props.lendo}
-           
         />
 
         {/* Feedback demanda criada  */}
@@ -1324,7 +1322,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback10}
           lendo={props.lendo}
-           
         />
 
         <Feedback
@@ -1335,7 +1332,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback2}
           lendo={props.lendo}
-           
         />
 
         <Feedback
@@ -1346,7 +1342,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback3}
           lendo={props.lendo}
-           
         />
 
         <Feedback
@@ -1357,7 +1352,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback4}
           lendo={props.lendo}
-           
         />
 
         <Feedback
@@ -1368,7 +1362,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback5}
           lendo={props.lendo}
-           
         />
 
         {/* Feedback pauta deletada */}
@@ -1380,7 +1373,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback6}
           lendo={props.lendo}
-           
         />
         {/* Feedback proposta atualizada */}
         <Feedback
@@ -1391,7 +1383,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback7}
           lendo={props.lendo}
-           
         />
 
         {/* Div container para o conteúdo da home */}
@@ -1407,7 +1398,7 @@ const HomeGerencia = (props) => {
                 sx={{
                   borderBottom: 1,
                   borderColor: "divider.main",
-                  minWidth: "47rem",
+                  minWidth: "50rem",
                 }}
               >
                 <TabList
@@ -1494,6 +1485,20 @@ const HomeGerencia = (props) => {
                   )}
                 </TabList>
                 <Box id="nonoDemandas" className="absolute right-0 top-2">
+                  {/* Ícone de ordenação */}
+                  <Tooltip title={texts.homeGerencia.ordenacao}>
+                    <IconButton
+                      onClick={() => {
+                        setOpenOrdenacao(true);
+                      }}
+                    >
+                      <SwapVertIcon
+                        id="segundoDemandas"
+                        className="cursor-pointer"
+                        color="primary"
+                      />
+                    </IconButton>
+                  </Tooltip>
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
                       <IconButton
@@ -1514,6 +1519,23 @@ const HomeGerencia = (props) => {
                         <ViewModuleIcon color="primary" />
                       </IconButton>
                     </Tooltip>
+                  )}
+                  {/* Modal de ordenação */}
+                  {abrirOrdenacao && (
+                    <ModalOrdenacao
+                      tipoComponente="demanda"
+                      ordenacaoTitulo={ordenacaoTitulo}
+                      setOrdenacaoTitulo={setOrdenacaoTitulo}
+                      ordenacaoScore={ordenacaoScore}
+                      setOrdenacaoScore={setOrdenacaoScore}
+                      ordenacaoDate={ordenacaoDate}
+                      setOrdenacaoDate={setOrdenacaoDate}
+                      fecharModal={() => setOpenOrdenacao(false)}
+                      lendo={props.lendo}
+                      texto={props.texto}
+                      setTexto={props.setTexto}
+                      valorAba={valorAba}
+                    />
                   )}
                 </Box>
               </Box>
@@ -1606,48 +1628,8 @@ const HomeGerencia = (props) => {
                       >
                         <SearchOutlinedIcon sx={{ color: "text.secondary" }} />
                       </Tooltip>
-
-                      {/* Ícone de ordenação */}
-                      <Tooltip title={texts.homeGerencia.ordenacao}>
-                        <SwapVertIcon
-                          id="segundoDemandas"
-                          onClick={() => {
-                            setOpenOrdenacao(true);
-                          }}
-                          className="cursor-pointer"
-                          sx={{ color: "text.secondary" }}
-                        />
-                      </Tooltip>
                     </Box>
                   </Box>
-
-                  {/* <Tooltip title={texts.homeGerencia.ordenacao}>
-                  <SwapVertIcon
-                    id="segundoDemandas"
-                    onClick={() => {
-                      setOpenOrdenacao(true);
-                    }}
-                    className="cursor-pointer"
-                    sx={{ color: "text.secondary" }}
-                  />
-                </Tooltip> */}
-                  {/* Modal de ordenação */}
-                  {abrirOrdenacao && (
-                    <ModalOrdenacao
-                      tipoComponente="demanda"
-                      ordenacaoTitulo={ordenacaoTitulo}
-                      setOrdenacaoTitulo={setOrdenacaoTitulo}
-                      ordenacaoScore={ordenacaoScore}
-                      setOrdenacaoScore={setOrdenacaoScore}
-                      ordenacaoDate={ordenacaoDate}
-                      setOrdenacaoDate={setOrdenacaoDate}
-                      fecharModal={() => setOpenOrdenacao(false)}
-                      lendo={props.lendo}
-                      texto={props.texto}
-                      setTexto={props.setTexto}
-                      valorAba={valorAba}
-                    />
-                  )}
 
                   {/* Botão de filtrar */}
                   {valorAba < 5 && (
@@ -1781,8 +1763,6 @@ const HomeGerencia = (props) => {
                             semHistorico={true}
                             tipo="demanda"
                             lendo={props.lendo}
-                            texto={props.texto}
-                            setTexto={props.setTexto}
                           />
                         ) : (
                           <DemandaModoVisualizacao
@@ -1791,8 +1771,6 @@ const HomeGerencia = (props) => {
                             myDemandas={true}
                             nextModoVisualizacao={nextModoVisualizacao}
                             lendo={props.lendo}
-                            texto={props.texto}
-                            setTexto={props.setTexto}
                           />
                         )}
                       </Box>
@@ -1829,8 +1807,6 @@ const HomeGerencia = (props) => {
                           }}
                           tipo="demanda"
                           lendo={props.lendo}
-                          texto={props.texto}
-                          setTexto={props.setTexto}
                         />
                       ) : (
                         <DemandaGerenciaModoVisualizacao
@@ -1839,8 +1815,6 @@ const HomeGerencia = (props) => {
                           setFeedbackAbrirChat={setFeedbackAbrirChat}
                           nextModoVisualizacao={nextModoVisualizacao}
                           lendo={props.lendo}
-                          texto={props.texto}
-                          setTexto={props.setTexto}
                         />
                       )}
                     </TabPanel>
@@ -1862,23 +1836,48 @@ const HomeGerencia = (props) => {
                             gridTemplateColumns:
                               "repeat(auto-fit, minmax(720px, 1fr))",
                           }}
+                          id="primeiroCriarPropostas"
                         >
-                          <DemandaGerenciaModoVisualizacao
-                            listaDemandas={listaItens}
-                            onDemandaClick={verDemanda}
-                            setFeedbackAbrirChat={setFeedbackAbrirChat}
-                            nextModoVisualizacao={nextModoVisualizacao}
-                            lendo={props.lendo}
-                            texto={props.texto}
-                            setTexto={props.setTexto}
-                          />
+                          {isTourCriarPropostasOpen ? (
+                            <DemandaGerencia
+                              key={1}
+                              isTourDemandasOpen={isTourDemandasOpen}
+                              setFeedbackAbrirChat={setFeedbackAbrirChat}
+                              dados={{
+                                analista: {},
+                                beneficios: [{}],
+                                buSolicitante: {},
+                                busBeneficiados: [{}],
+                                departamento: {},
+                                frequencia: "",
+                                gerente: {},
+                                tamanho: "",
+                                id: 0,
+                                titulo: texts.homeGerencia.demandaParaTour,
+                                problema: "",
+                                proposta: "",
+                                motivoRecusa: "",
+                                status: "BACKLOG_REVISAO",
+                                data: "",
+                                solicitante: {
+                                  nome: texts.homeGerencia.demandaParaTour,
+                                },
+                              }}
+                              tipo="demanda"
+                              lendo={props.lendo}
+                            />
+                          ) : (
+                            <DemandaGerenciaModoVisualizacao
+                              listaDemandas={listaItens}
+                              onDemandaClick={verDemanda}
+                              setFeedbackAbrirChat={setFeedbackAbrirChat}
+                              nextModoVisualizacao={nextModoVisualizacao}
+                              lendo={props.lendo}
+                            />
+                          )}
                         </Box>
                       </TabPanel>
-                      <TabPanel
-                        sx={{ padding: 0 }}
-                        value="4"
-                        onClick={() => {}}
-                      >
+                      <TabPanel sx={{ padding: 0 }} value="4">
                         <Box
                           sx={{
                             display: "grid",
@@ -1886,6 +1885,7 @@ const HomeGerencia = (props) => {
                             gridTemplateColumns:
                               "repeat(auto-fit, minmax(720px, 1fr))",
                           }}
+                          id="primeiroPropostas"
                         >
                           <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                           {isTourPropostasOpen ? (
@@ -1915,8 +1915,6 @@ const HomeGerencia = (props) => {
                               }}
                               tipo="proposta"
                               lendo={props.lendo}
-                              texto={props.texto}
-                              setTexto={props.setTexto}
                             />
                           ) : (
                             <Box
@@ -1934,8 +1932,6 @@ const HomeGerencia = (props) => {
                                 nextModoVisualizacao={nextModoVisualizacao}
                                 isProposta={true}
                                 lendo={props.lendo}
-                                texto={props.texto}
-                                setTexto={props.setTexto}
                               />
                             </Box>
                           )}
@@ -1953,8 +1949,6 @@ const HomeGerencia = (props) => {
                               }}
                               tipo="pauta"
                               lendo={props.lendo}
-                              texto={props.texto}
-                              setTexto={props.setTexto}
                             />
                           ) : (
                             <PautaAtaModoVisualizacao
@@ -1967,8 +1961,6 @@ const HomeGerencia = (props) => {
                               nextModoVisualizacao={nextModoVisualizacao}
                               setPautaSelecionada={setPautaSelecionada}
                               lendo={props.lendo}
-                              texto={props.texto}
-                              setTexto={props.setTexto}
                             />
                           )}
                         </TabPanel>
@@ -1985,8 +1977,6 @@ const HomeGerencia = (props) => {
                               }}
                               tipo="ata"
                               lendo={props.lendo}
-                              texto={props.texto}
-                              setTexto={props.setTexto}
                             />
                           ) : (
                             <PautaAtaModoVisualizacao
@@ -1997,6 +1987,7 @@ const HomeGerencia = (props) => {
                               nextModoVisualizacao={nextModoVisualizacao}
                               setPautaSelecionada={setPautaSelecionada}
                               isAta={true}
+                              lendo={props.lendo}
                             />
                           )}
                         </TabPanel>
@@ -2016,6 +2007,7 @@ const HomeGerencia = (props) => {
             setTamanho={setTamanhoPagina}
             tamanhoPagina={tamanhoPagina}
             setPaginaAtual={setPaginaAtual}
+            lendo={props.lendo}
           />
         ) : null}
       </Box>

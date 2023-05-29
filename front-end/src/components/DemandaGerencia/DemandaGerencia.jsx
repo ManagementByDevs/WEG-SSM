@@ -116,7 +116,7 @@ const DemandaGerencia = (props) => {
     }
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -159,7 +159,6 @@ const DemandaGerencia = (props) => {
             props.dados.historicoDemanda || props.dados.historicoProposta
           }
           lendo={props.lendo}
-           
         />
       )}
       <Paper
@@ -184,8 +183,11 @@ const DemandaGerencia = (props) => {
               fontWeight="600"
               className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
               title={props.dados.titulo}
-              onClick={() => {
-                lerTexto(props.dados.titulo);
+              onClick={(e) => {
+                if (props.lendo) {
+                  e.stopPropagation();
+                  lerTexto(props.dados.titulo);
+                }
               }}
             >
               {tipo === "proposta" && (
@@ -193,8 +195,13 @@ const DemandaGerencia = (props) => {
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   sx={{ color: "primary.main" }}
-                  onClick={() => {
-                    lerTexto(texts.demandaGerencia.ppm);
+                  onClick={(e) => {
+                    if (props.lendo) {
+                      e.stopPropagation();
+                      lerTexto(
+                        texts.demandaGerencia.ppm + ": " + props.dados.codigoPPM
+                      );
+                    }
                   }}
                 >
                   {texts.demandaGerencia.ppm} {props.dados.codigoPPM}
@@ -212,8 +219,11 @@ const DemandaGerencia = (props) => {
                   <Typography
                     fontSize={FontConfig.medium}
                     fontWeight="600"
-                    onClick={() => {
-                      lerTexto(formatarStatus(props.dados.status));
+                    onClick={(e) => {
+                      if (props.lendo) {
+                        e.stopPropagation();
+                        lerTexto(formatarStatus(props.dados.status));
+                      }
                     }}
                   >
                     {formatarStatus(props.dados.status)}
@@ -241,11 +251,14 @@ const DemandaGerencia = (props) => {
                       borderRadius: "5px",
                       padding: "2px 15px",
                     }}
-                    onClick={() => {
-                      if (props.dados.presenteEm == "Pauta") {
-                        lerTexto(texts.demandaGerencia.emPauta);
-                      } else {
-                        lerTexto(texts.demandaGerencia.emAta);
+                    onClick={(e) => {
+                      if (props.lendo) {
+                        e.stopPropagation();
+                        if (props.dados.presenteEm == "Pauta") {
+                          lerTexto(texts.demandaGerencia.emPauta);
+                        } else {
+                          lerTexto(texts.demandaGerencia.emAta);
+                        }
                       }
                     }}
                   >
@@ -269,8 +282,11 @@ const DemandaGerencia = (props) => {
                 <Typography
                   fontSize={FontConfig.default}
                   fontWeight="600"
-                  onClick={() => {
-                    lerTexto(texts.demandaGerencia.solicitante);
+                  onClick={(e) => {
+                    if (props.lendo) {
+                      e.stopPropagation();
+                      lerTexto(texts.demandaGerencia.solicitante);
+                    }
                   }}
                 >
                   {texts.demandaGerencia.solicitante}:
@@ -280,8 +296,11 @@ const DemandaGerencia = (props) => {
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginLeft: "5px" }}
-                  onClick={() => {
-                    lerTexto(props.dados.solicitante?.nome);
+                  onClick={(e) => {
+                    if (props.lendo) {
+                      e.stopPropagation();
+                      lerTexto(props.dados.solicitante?.nome);
+                    }
                   }}
                 >
                   {props.dados.solicitante?.nome}
@@ -293,8 +312,11 @@ const DemandaGerencia = (props) => {
                 <Typography
                   fontSize={FontConfig.default}
                   fontWeight="600"
-                  onClick={() => {
-                    lerTexto(texts.demandaGerencia.departamento);
+                  onClick={(e) => {
+                    if (props.lendo) {
+                      e.stopPropagation();
+                      lerTexto(texts.demandaGerencia.departamento);
+                    }
                   }}
                 >
                   {texts.demandaGerencia.departamento}:
@@ -304,11 +326,14 @@ const DemandaGerencia = (props) => {
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginLeft: "5px" }}
-                  onClick={() => {
-                    if (props.dados.departamento?.nome) {
-                      lerTexto(props.dados.departamento?.nome);
-                    } else {
-                      lerTexto(texts.demandaGerencia.naoAtribuido);
+                  onClick={(e) => {
+                    if (props.lendo) {
+                      e.stopPropagation();
+                      if (props.dados.departamento?.nome) {
+                        lerTexto(props.dados.departamento?.nome);
+                      } else {
+                        lerTexto(texts.demandaGerencia.naoAtribuido);
+                      }
                     }
                   }}
                 >
@@ -328,8 +353,11 @@ const DemandaGerencia = (props) => {
                     className="overflow-hidden truncate"
                     fontSize={FontConfig.default}
                     fontWeight="600"
-                    onClick={() => {
-                      lerTexto(texts.demandaGerencia.analistaResponsavel);
+                    onClick={(e) => {
+                      if (props.lendo) {
+                        e.stopPropagation();
+                        lerTexto(texts.demandaGerencia.analistaResponsavel);
+                      }
                     }}
                   >
                     {texts.demandaGerencia.analistaResponsavel}:
@@ -343,11 +371,14 @@ const DemandaGerencia = (props) => {
                       marginLeft: "5px",
                       width: "50%",
                     }}
-                    onClick={() => {
-                      if (props.dados.analista?.nome) {
-                        lerTexto(props.dados.analista?.nome);
-                      } else {
-                        lerTexto(texts.demandaGerencia.naoAtribuido);
+                    onClick={(e) => {
+                      if (props.lendo) {
+                        e.stopPropagation();
+                        if (props.dados.analista?.nome) {
+                          lerTexto(props.dados.analista?.nome);
+                        } else {
+                          lerTexto(texts.demandaGerencia.naoAtribuido);
+                        }
                       }
                     }}
                   >
@@ -360,8 +391,11 @@ const DemandaGerencia = (props) => {
                     className="overflow-hidden truncate"
                     fontSize={FontConfig.default}
                     fontWeight="600"
-                    onClick={() => {
-                      lerTexto(texts.demandaGerencia.gerenteResponsavel);
+                    onClick={(e) => {
+                      if (props.lendo) {
+                        e.stopPropagation();
+                        lerTexto(texts.demandaGerencia.gerenteResponsavel);
+                      }
                     }}
                   >
                     {texts.demandaGerencia.gerenteResponsavel}:
@@ -375,11 +409,14 @@ const DemandaGerencia = (props) => {
                       marginLeft: "5px",
                       width: "50%",
                     }}
-                    onClick={() => {
-                      if (props.dados.gerente?.nome) {
-                        lerTexto(props.dados.gerente?.nome);
-                      } else {
-                        lerTexto(texts.demandaGerencia.naoAtribuido);
+                    onClick={(e) => {
+                      if (props.lendo) {
+                        e.stopPropagation();
+                        if (props.dados.gerente?.nome) {
+                          lerTexto(props.dados.gerente?.nome);
+                        } else {
+                          lerTexto(texts.demandaGerencia.naoAtribuido);
+                        }
                       }
                     }}
                   >

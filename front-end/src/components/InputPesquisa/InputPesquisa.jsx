@@ -8,8 +8,6 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import debounce from "lodash/debounce";
 
-import SwapVertIcon from "@mui/icons-material/SwapVert";
-
 const Label = styled("label")({
   display: "block",
 });

@@ -82,13 +82,6 @@ const PropostaDeAta = (props) => {
 
   // // ********************************************** Gravar audio **********************************************
 
-  // const [
-  //   feedbackErroNavegadorIncompativel,
-  //   setFeedbackErroNavegadorIncompativel,
-  // ] = useState(false);
-  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-  //   useState(false);
-
   const recognitionRef = useRef(null);
 
   const [escutar, setEscutar] = useState(false);
@@ -158,33 +151,6 @@ const PropostaDeAta = (props) => {
       stopRecognition();
     }
   }, [escutar]);
-
-  {
-    /* Feedback Erro reconhecimento de voz */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroReconhecimentoVoz}
-  handleClose={() => {
-    setFeedbackErroReconhecimentoVoz(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback12}
-/> */
-  }
-  {
-    /* Feedback Não navegador incompativel */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroNavegadorIncompativel}
-  handleClose={() => {
-    setFeedbackErroNavegadorIncompativel(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback13}
-/> */
-  }
 
   // // ********************************************** Fim Gravar audio **********************************************
 

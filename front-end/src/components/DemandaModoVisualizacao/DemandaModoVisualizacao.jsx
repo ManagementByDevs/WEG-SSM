@@ -46,6 +46,7 @@ const DemandaModoVisualizacao = ({
       listaDemandas={listaDemandas}
       onDemandaClick={onDemandaClick}
       myDemandas={myDemandas}
+      lendo={lendo}
     />
   );
 };
@@ -65,9 +66,7 @@ const DemandaTable = ({
   ],
   onDemandaClick,
   myDemandas,
-  setTexto,
-  texto,
-  lendo,
+  lendo = false,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
@@ -178,8 +177,11 @@ const DemandaTable = ({
             <th className="text-white p-3 w-1/10">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => {
-                  lerTexto(texts.demandaModoVisualizacao.codigo);
+                onClick={(e) => {
+                  if (lendo) {
+                    e.preventDefault();
+                    lerTexto(texts.demandaModoVisualizacao.codigo);
+                  }
                 }}
               >
                 {texts.demandaModoVisualizacao.codigo}
@@ -188,8 +190,11 @@ const DemandaTable = ({
             <th className="text-left text-white p-3 w-3/6">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => {
-                  lerTexto(texts.demandaModoVisualizacao.titulo);
+                onClick={(e) => {
+                  if (lendo) {
+                    e.preventDefault();
+                    lerTexto(texts.demandaModoVisualizacao.titulo);
+                  }
                 }}
               >
                 {texts.demandaModoVisualizacao.titulo}
@@ -199,8 +204,11 @@ const DemandaTable = ({
               <th className="text-left text-white p-3 w-1/6">
                 <Typography
                   fontSize={FontConfig.big}
-                  onClick={() => {
-                    lerTexto(texts.demandaModoVisualizacao.statusString);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(texts.demandaModoVisualizacao.statusString);
+                    }
                   }}
                 >
                   {texts.demandaModoVisualizacao.statusString}
@@ -210,8 +218,11 @@ const DemandaTable = ({
             <th className="text-white p-3 w-1/12">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => {
-                  lerTexto(texts.demandaModoVisualizacao.data);
+                onClick={(e) => {
+                  if (lendo) {
+                    e.preventDefault();
+                    lerTexto(texts.demandaModoVisualizacao.data);
+                  }
                 }}
               >
                 {texts.demandaModoVisualizacao.data}
@@ -229,15 +240,20 @@ const DemandaTable = ({
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
               onClick={() => {
-                onDemandaClick(row);
+                if (!lendo) {
+                  onDemandaClick(row);
+                }
               }}
             >
               <td className="text-center p-3" title={row.id}>
                 <Typography
                   className="truncate"
                   fontSize={FontConfig.medium}
-                  onClick={() => {
-                    lerTexto(row.id);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(row.id);
+                    }
                   }}
                 >
                   {row.id}
@@ -247,8 +263,11 @@ const DemandaTable = ({
                 <Typography
                   className="truncate"
                   fontSize={FontConfig.medium}
-                  onClick={() => {
-                    lerTexto(row.titulo);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(row.titulo);
+                    }
                   }}
                 >
                   {row.titulo}
@@ -272,8 +291,11 @@ const DemandaTable = ({
                       <Typography
                         className="truncate"
                         fontSize={FontConfig.medium}
-                        onClick={() => {
-                          lerTexto(formatarNomeStatus(row.status));
+                        onClick={(e) => {
+                          if (lendo) {
+                            e.preventDefault();
+                            lerTexto(formatarNomeStatus(row.status));
+                          }
                         }}
                       >
                         {formatarNomeStatus(row.status)}
@@ -283,10 +305,10 @@ const DemandaTable = ({
                         <Button
                           className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
+                            e.preventDefault();
                             if (lendo) {
                               lerTexto(texts.demandaModoVisualizacao.motivo);
                             } else {
-                              e.stopPropagation();
                               abrirModalMotivoRecusa(row);
                             }
                           }}
@@ -308,8 +330,11 @@ const DemandaTable = ({
                 <Typography
                   className="truncate"
                   fontSize={FontConfig.default}
-                  onClick={() => {
-                    lerTexto(DateService.getTodaysDateUSFormat(row.data));
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(DateService.getTodaysDateUSFormat(row.data));
+                    }
                   }}
                 >
                   {DateService.getTodaysDateUSFormat(row.data)}
@@ -324,11 +349,7 @@ const DemandaTable = ({
 };
 
 // Componente para exibir as demanda em forma de grid
-const DemandaGrid = ({
-  listaDemandas,
-  onDemandaClick,
-  lendo = false,
-}) => {
+const DemandaGrid = ({ listaDemandas, onDemandaClick, lendo = false }) => {
   return (
     <Box
       sx={{

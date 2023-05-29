@@ -516,8 +516,7 @@ const FormularioPropostaProposta = (props) => {
                           setBeneficio={alterarTextoBeneficio}
                           carregamento={props.carregamento}
                           lendo={props.lendo}
-                          texto={props.texto}
-                          setTexto={props.setTexto}
+                           
                         />
                       );
                     }

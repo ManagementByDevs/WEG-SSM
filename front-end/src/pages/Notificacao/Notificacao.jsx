@@ -577,6 +577,7 @@ const Notificacao = (props) => {
                       setTamanho={setTamanhoPagina}
                       tamanhoPagina={tamanhoPagina}
                       setPaginaAtual={setPaginaAtual}
+                      lendo={props.lendo}
                     />
                   </Box>
                 )}

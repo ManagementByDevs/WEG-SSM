@@ -34,11 +34,9 @@ const DemandaGerenciaModoVisualizacao = ({
   isProposta = false,
   setFeedbackAbrirChat,
   lendo = false,
-  setTexto = () => {},
-  texto = "",
 }) => {
   if (listaDemandas.length == 0) {
-    return <NadaEncontrado />;
+    return <NadaEncontrado lendo={lendo} />;
   }
 
   if (nextModoVisualizacao == "TABLE")
@@ -58,6 +56,7 @@ const DemandaGerenciaModoVisualizacao = ({
       onDemandaClick={onDemandaClick}
       isProposta={isProposta}
       setFeedbackAbrirChat={setFeedbackAbrirChat}
+      lendo={lendo}
     />
   );
 };
@@ -89,9 +88,7 @@ const DemandaTable = ({
   ],
   onDemandaClick,
   isProposta = false,
-  lendo,
-  setTexto,
-  texto,
+  lendo = false,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -196,11 +193,14 @@ const DemandaTable = ({
               <th className="text-white p-2 width-75/1000">
                 <Typography
                   fontSize={FontConfig.big}
-                  onClick={() => {
-                    if (!isProposta) {
-                      lerTexto(texts.demandaGerenciaModoVisualizacao.codigo);
-                    } else {
-                      lerTexto("PPM");
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      if (!isProposta) {
+                        lerTexto(texts.demandaGerenciaModoVisualizacao.codigo);
+                      } else {
+                        lerTexto("PPM");
+                      }
                     }
                   }}
                 >
@@ -212,8 +212,11 @@ const DemandaTable = ({
               <th className="text-left text-white p-3 width-4/10">
                 <Typography
                   fontSize={FontConfig.big}
-                  onClick={() => {
-                    lerTexto(texts.demandaGerenciaModoVisualizacao.titulo);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(texts.demandaGerenciaModoVisualizacao.titulo);
+                    }
                   }}
                 >
                   {texts.demandaGerenciaModoVisualizacao.titulo}
@@ -222,8 +225,13 @@ const DemandaTable = ({
               <th className="text-left text-white p-3">
                 <Typography
                   fontSize={FontConfig.big}
-                  onClick={() => {
-                    lerTexto(texts.demandaGerenciaModoVisualizacao.solicitante);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(
+                        texts.demandaGerenciaModoVisualizacao.solicitante
+                      );
+                    }
                   }}
                 >
                   {texts.demandaGerenciaModoVisualizacao.solicitante}
@@ -232,10 +240,13 @@ const DemandaTable = ({
               <th className="text-left text-white p-3">
                 <Typography
                   fontSize={FontConfig.big}
-                  onClick={() => {
-                    lerTexto(
-                      texts.demandaGerenciaModoVisualizacao.departamento
-                    );
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(
+                        texts.demandaGerenciaModoVisualizacao.departamento
+                      );
+                    }
                   }}
                 >
                   {texts.demandaGerenciaModoVisualizacao.departamento}
@@ -244,10 +255,13 @@ const DemandaTable = ({
               <th className="text-left text-white p-3">
                 <Typography
                   fontSize={FontConfig.big}
-                  onClick={() => {
-                    lerTexto(
-                      texts.demandaGerenciaModoVisualizacao.gerenteResponsavel
-                    );
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(
+                        texts.demandaGerenciaModoVisualizacao.gerenteResponsavel
+                      );
+                    }
                   }}
                 >
                   {texts.demandaGerenciaModoVisualizacao.gerenteResponsavel}
@@ -256,8 +270,11 @@ const DemandaTable = ({
               <th className="text-left text-white p-3 ">
                 <Typography
                   fontSize={FontConfig.big}
-                  onClick={() => {
-                    lerTexto(texts.demandaGerenciaModoVisualizacao.status);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(texts.demandaGerenciaModoVisualizacao.status);
+                    }
                   }}
                 >
                   {texts.demandaGerenciaModoVisualizacao.status}
@@ -266,8 +283,11 @@ const DemandaTable = ({
               <th className="text-white p-3 width-75/1000">
                 <Typography
                   fontSize={FontConfig.big}
-                  onClick={() => {
-                    lerTexto(texts.demandaGerenciaModoVisualizacao.data);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.preventDefault();
+                      lerTexto(texts.demandaGerenciaModoVisualizacao.data);
+                    }
                   }}
                 >
                   {texts.demandaGerenciaModoVisualizacao.data}
@@ -287,7 +307,9 @@ const DemandaTable = ({
                   width: "100%",
                 }}
                 onClick={() => {
-                  onDemandaClick(row);
+                  if (!lendo) {
+                    onDemandaClick(row);
+                  }
                 }}
               >
                 <td
@@ -297,11 +319,14 @@ const DemandaTable = ({
                   <Typography
                     className="truncate"
                     fontSize={FontConfig.medium}
-                    onClick={() => {
-                      if (!isProposta) {
-                        lerTexto(row.id);
-                      } else {
-                        lerTexto(row.codigoPPM);
+                    onClick={(e) => {
+                      if (lendo) {
+                        e.preventDefault();
+                        if (!isProposta) {
+                          lerTexto(row.id);
+                        } else {
+                          lerTexto(row.codigoPPM);
+                        }
                       }
                     }}
                   >
@@ -330,8 +355,11 @@ const DemandaTable = ({
                   <Typography
                     className="truncate"
                     fontSize={FontConfig.medium}
-                    onClick={() => {
-                      lerTexto(row.titulo);
+                    onClick={(e) => {
+                      if (lendo) {
+                        e.preventDefault();
+                        lerTexto(row.titulo);
+                      }
                     }}
                   >
                     {row.titulo}
@@ -344,8 +372,11 @@ const DemandaTable = ({
                   <Typography
                     className="truncate"
                     fontSize={FontConfig.medium}
-                    onClick={() => {
-                      lerTexto(row.solicitante.nome);
+                    onClick={(e) => {
+                      if (lendo) {
+                        e.preventDefault();
+                        lerTexto(row.solicitante.nome);
+                      }
                     }}
                   >
                     {row.solicitante.nome}
@@ -362,13 +393,16 @@ const DemandaTable = ({
                   <Typography
                     className="truncate"
                     fontSize={FontConfig.medium}
-                    onClick={() => {
-                      if (row.departamento) {
-                        lerTexto(row.departamento.nome);
-                      } else {
-                        lerTexto(
-                          texts.demandaGerenciaModoVisualizacao.naoAtribuido
-                        );
+                    onClick={(e) => {
+                      if (lendo) {
+                        e.preventDefault();
+                        if (row.departamento) {
+                          lerTexto(row.departamento.nome);
+                        } else {
+                          lerTexto(
+                            texts.demandaGerenciaModoVisualizacao.naoAtribuido
+                          );
+                        }
                       }
                     }}
                   >
@@ -388,13 +422,16 @@ const DemandaTable = ({
                   <Typography
                     className="truncate"
                     fontSize={FontConfig.medium}
-                    onClick={() => {
-                      if (row.gerente?.nome) {
-                        lerTexto(row.gerente.nome);
-                      } else {
-                        lerTexto(
-                          texts.demandaGerenciaModoVisualizacao.naoAtribuido
-                        );
+                    onClick={(e) => {
+                      if (lendo) {
+                        e.preventDefault();
+                        if (row.gerente?.nome) {
+                          lerTexto(row.gerente.nome);
+                        } else {
+                          lerTexto(
+                            texts.demandaGerenciaModoVisualizacao.naoAtribuido
+                          );
+                        }
                       }
                     }}
                   >
@@ -420,8 +457,11 @@ const DemandaTable = ({
                       <Typography
                         className="truncate"
                         fontSize={FontConfig.medium}
-                        onClick={() => {
-                          lerTexto(formatarNomeStatus(row.status));
+                        onClick={(e) => {
+                          if (lendo) {
+                            e.preventDefault();
+                            lerTexto(formatarNomeStatus(row.status));
+                          }
                         }}
                       >
                         {formatarNomeStatus(row.status)}
@@ -437,12 +477,15 @@ const DemandaTable = ({
                     <Typography
                       className="visualizacao-tabela-gerencia-data truncate"
                       fontSize={FontConfig.default}
-                      onClick={() => {
-                        lerTexto(
-                          DateService.getTodaysDateUSFormat(
-                            DateService.getDateByMySQLFormat(row.data)
-                          )
-                        );
+                      onClick={(e) => {
+                        if (lendo) {
+                          e.preventDefault();
+                          lerTexto(
+                            DateService.getTodaysDateUSFormat(
+                              DateService.getDateByMySQLFormat(row.data)
+                            )
+                          );
+                        }
                       }}
                     >
                       {DateService.getTodaysDateUSFormat(
@@ -502,8 +545,6 @@ const DemandaGrid = ({
   isProposta = false,
   setFeedbackAbrirChat,
   lendo = false,
-  setTexto = () => {},
-  texto = "",
 }) => {
   return (
     <Box
@@ -524,7 +565,6 @@ const DemandaGrid = ({
               onDemandaClick(demanda);
             }}
             lendo={lendo}
-            
           />
         );
       })}
