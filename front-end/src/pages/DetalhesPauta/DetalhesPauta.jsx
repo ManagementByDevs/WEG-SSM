@@ -3,14 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip, IconButton, } from "@mui/material";
 
 import { keyframes } from "@emotion/react";
 
@@ -24,23 +17,23 @@ import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
+import ModalCriarAta from "../../components/ModalCriarAta/ModalCriarAta";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import PautaService from "../../service/pautaService";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import PropostaService from "../../service/propostaService";
 import ExportPdfService from "../../service/exportPdfService";
 import AtaService from "../../service/ataService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
-import ModalCriarAta from "../../components/ModalCriarAta/ModalCriarAta";
-
 import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -52,13 +45,6 @@ const DetalhesPauta = (props) => {
 
   // Variável do react-router-dom que guarda as informações da rota atual
   const location = useLocation();
-
-  // Variáveis de estilo para o componente
-  const informacoesAta = {
-    fontWeight: "600",
-    cursor: "default",
-    marginTop: "1%",
-  };
 
   // UseState para guardar a pauta atual
   const [pauta, setPauta] = useState(EntitiesObjectService.pauta());
@@ -137,6 +123,7 @@ const DetalhesPauta = (props) => {
     setProposta(false);
   };
 
+  // useState utilizado para abrir ou fechar o menu de ícones
   const [fecharMenu, setFecharMenu] = useState(true);
 
   // Função para fechar os botões da página
@@ -172,10 +159,16 @@ const DetalhesPauta = (props) => {
     "100%": { width: "8rem", opacity: "0" },
   });
 
+  // useState utilizado para colocar efeito no ícone
   const [girarIcon, setGirarIcon] = useState(false);
 
+  // useState utilizado para tirar os ícones de navegação
   const [aparecerSumir, setAparecerSumir] = useState(false);
 
+  // useState de estilo para desaparecer os botões de navegação
+  const [display, setDisplay] = useState("hidden");
+
+  // Função para animação dos botões de navegação
   const animarBotoes = () => {
     if (minimizar) {
       setGirarIcon(girar);
@@ -189,8 +182,6 @@ const DetalhesPauta = (props) => {
       setAparecerSumir(sumir);
     }
   };
-
-  const [display, setDisplay] = useState("hidden");
 
   // Função acionada quando é clicado no botão de delete de alguma proposta
   const onDeletePropostaClick = () => {
@@ -238,7 +229,7 @@ const DetalhesPauta = (props) => {
               "Removida da Pauta #" + newPauta.numeroSequencial,
               arquivo,
               CookieService.getUser().id
-            ).then(() => {});
+            ).then(() => { });
           });
         }
       );
@@ -351,11 +342,11 @@ const DetalhesPauta = (props) => {
                 "Proposta Reprovada",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 response.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "MAIS_INFORMACOES":
               PropostaService.addHistorico(
@@ -363,7 +354,7 @@ const DetalhesPauta = (props) => {
                 "Enviada para Edição",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "BUSINESS_CASE":
               PropostaService.addHistorico(
@@ -371,7 +362,7 @@ const DetalhesPauta = (props) => {
                 "Enviada para Business Case",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               break;
           }
         });
@@ -396,9 +387,9 @@ const DetalhesPauta = (props) => {
             "Proposta Reprovada",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(
-            () => {}
+            () => { }
           );
           break;
         case "MAIS_INFORMACOES":
@@ -407,7 +398,7 @@ const DetalhesPauta = (props) => {
             "Enviada para Edição",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           break;
         case "BUSINESS_CASE":
           PropostaService.addHistorico(
@@ -415,7 +406,7 @@ const DetalhesPauta = (props) => {
             "Entrada em Business Case",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           break;
         case "APROVADO":
           PropostaService.addHistorico(
@@ -423,7 +414,7 @@ const DetalhesPauta = (props) => {
             "Adicionada na Ata #" + idAta,
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           break;
       }
     });
@@ -458,7 +449,7 @@ const DetalhesPauta = (props) => {
 
   // useState utilizado para abrir e fechar o modal de adicionar a pauta
   const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -576,7 +567,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         lendo={props.lendo}
         texto={props.texto}
         setTexto={props.setTexto}
@@ -628,7 +619,7 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Número sequencial */}
               <Typography
-                sx={informacoesAta}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
                 onClick={() => {
                   lerTexto(texts.detalhesProposta.numeroSequencial);
                 }}
@@ -637,7 +628,7 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Comissão */}
               <Typography
-                sx={informacoesAta}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
                 onClick={() => {
                   lerTexto(texts.detalhesPauta.comissao);
                 }}
@@ -647,7 +638,7 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Data da reunião da comissão */}
               <Typography
-                sx={informacoesAta}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
                 onClick={() => {
                   lerTexto(texts.detalhesPauta.reuniaoDoForum);
                 }}
@@ -659,7 +650,7 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Data da reunião da DG */}
               <Typography
-                sx={informacoesAta}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
                 onClick={() => {
                   lerTexto(texts.detalhesPauta.analistaResponsavel);
                 }}
