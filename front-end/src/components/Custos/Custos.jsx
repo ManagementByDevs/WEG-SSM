@@ -140,8 +140,23 @@ const Custos = (props) => {
   const handleChange = (tipo) => {
     setTipoDespesa(tipo.target.value);
     let aux = [...props.custos];
-    console.log("props: " + aux[props.indexCusto].custos[props.index].tipoDespesa)
+    aux[props.index].tipoDespesa = tipo.target.value;
+    props.setCustos(aux);
   }
+
+  useEffect(() => {
+    console.log("Tipo despesa atualizado: " + props.custos[props.index].tipoDespesa);
+  }, [props.custos])
+
+
+  // value={props.dados.custos[props.index].tipoDespesa || ""}
+  // onChange={(e) => {
+  //   let aux = [...props.custos];
+  //   aux[props.indexCusto].custos[props.index].tipoDespesa =
+  //     e.target.value;
+  //   props.setCustos(aux);
+  // }}
+
 
   return (
     <Box className="flex w-full mt-5">
@@ -349,7 +364,7 @@ const Custos = (props) => {
           </Paper>
         </Box>
       </Box>
-      <Paper className="h-full pb-1" sx={{ width: "25%", minWidth: "263px" }}>
+      <Paper className="h-full pb-1" sx={{ width: "25%", minWidth: "263px", marginTop: "3.8%" }}>
         {/* Outra tabela para os CCs */}
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">
