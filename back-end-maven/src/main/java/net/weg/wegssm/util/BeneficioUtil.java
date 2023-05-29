@@ -3,7 +3,6 @@ package net.weg.wegssm.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.weg.wegssm.dto.BeneficioDTO;
 import net.weg.wegssm.model.entities.Beneficio;
-
 import javax.validation.Valid;
 
 /**

@@ -184,6 +184,7 @@ const TextLanguage = (linguagem) => {
           botaoDevolver: "Devolver",
           botaoAceitar: "Aceitar",
           botaoSalvar: "Salvar",
+          feedbackDemandaEditada: "Demanda Editada com Sucesso!"
         },
         escopo: {
           titleExcluir: "Excluir",
@@ -693,6 +694,7 @@ const TextLanguage = (linguagem) => {
             feedback11: "Você não pode abrir um chat com você mesmo!",
             feedback12: "Erro ao reconhcer a voz!",
             feedback13: "Navegador não é compatível!",
+            feedback14: "Proposta Adicionada à Pauta!"
           },
           demandas: "Demandas",
           criarPropostas: "Criar Propostas",
@@ -1069,6 +1071,7 @@ const TextLanguage = (linguagem) => {
           botaoDevolver: "Return",
           botaoAceitar: "Accept",
           botaoSalvar: "Save",
+          feedbackDemandaEditada: "Demand Edited Sucessfully!"
         },
         escopo: {
           titleExcluir: "Delete",
@@ -1574,6 +1577,7 @@ const TextLanguage = (linguagem) => {
             feedback11: "You cannot open a chat with yourself!",
             feedback12: "Error recognizing voice!",
             feedback13: "Browser not supported!",
+            feedback14: "Proposal Added to the Agenda!"
           },
           demandas: "Demands",
           criarPropostas: "Create Proposals",
@@ -1947,6 +1951,7 @@ const TextLanguage = (linguagem) => {
           botaoDevolver: "返回",
           botaoAceitar: "接受",
           botaoSalvar: "保存",
+          feedbackDemandaEditada: "需求编辑成功"
         },
         escopo: {
           titleExcluir: "删除",
@@ -2430,6 +2435,7 @@ const TextLanguage = (linguagem) => {
             feedback11: "您不能与自己打开聊天！",
             feedback12: "语音识别错误！",
             feedback13: "浏览器不支持！",
+            feedback14: "添加到议程的提案"
           },
           demandas: "需求",
           criarPropostas: "创建提案",
@@ -2806,6 +2812,7 @@ const TextLanguage = (linguagem) => {
           botaoDevolver: "Devolver",
           botaoAceitar: "Aceptar",
           botaoSalvar: "Guardar",
+          feedbackDemandaEditada: "Demanda editada con éxito"
         },
         escopo: {
           titleExcluir: "Eliminar",
@@ -3317,6 +3324,7 @@ const TextLanguage = (linguagem) => {
             feedback11: "No puedes abrir un chat contigo mismo!",
             feedback12: "¡Error al reconocer la voz!",
             feedback13: "¡Navegador no es compatible!",
+            feedback14: "¡Propuesta añadida al orden del día!"
           },
           demandas: "Demandas",
           criarPropostas: "Crear Propuestas",

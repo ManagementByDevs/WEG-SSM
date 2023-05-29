@@ -183,6 +183,7 @@ const DetalhesAta = (props) => {
   const isAllFieldsFilled = () => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = ata.propostas.every((proposta) => {
+      console.log(proposta);
       return (
         proposta.parecerDG != null &&
         proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
@@ -525,6 +526,8 @@ const DetalhesAta = (props) => {
                   texto={props.texto}
                   setTexto={props.setTexto}
                   setFeedbackEditSuccess={setFeedbackEditSuccess}
+                  parecerDG={dadosProposta.parecerComissao || ""}
+                  parecerInformacaoDG={dadosProposta.parecerInformacao || ""}
                 />
               </Box>
             )}

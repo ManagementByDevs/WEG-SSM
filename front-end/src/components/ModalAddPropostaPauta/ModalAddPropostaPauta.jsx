@@ -297,15 +297,11 @@ const ModalAddPropostaPauta = (props) => {
         PautaService.post(pauta).then((res) => {
           PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then(
             (response) => {
+
               // Salvamento de histórico
               ExportPdfService.exportProposta(response.id).then((file) => {
                 let arquivo = new Blob([file], { type: "application/pdf" });
-                PropostaService.addHistorico(
-                  response.id,
-                  "Adicionada na Pauta #" + res.numeroSequencial,
-                  arquivo,
-                  CookieService.getUser().id
-                ).then(() => {});
+                PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.numeroSequencial, arquivo, CookieService.getUser().id).then(() => { });
               });
             }
           );
@@ -335,13 +331,14 @@ const ModalAddPropostaPauta = (props) => {
                   "Adicionada na Pauta #" + res.numeroSequencial,
                   arquivo,
                   CookieService.getUser().id
-                ).then(() => {});
+                ).then(() => { });
               });
             }
           );
         });
       }
 
+      localStorage.setItem("tipoFeedback", "6");
       handleClose();
       navigate("/");
     }
@@ -379,7 +376,7 @@ const ModalAddPropostaPauta = (props) => {
     return isPropostaInPauta;
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {

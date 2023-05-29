@@ -94,6 +94,9 @@ const DetalhesDemanda = (props) => {
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
 
+  /** Feedback ativado quando a demanda é editada */
+  const [feedbackDemandaEditada, setFeedbackDemandaEditada] = useState(false);
+
   // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
   useEffect(() => {
     temaPagina === "dark"
@@ -392,7 +395,9 @@ const DetalhesDemanda = (props) => {
         excluirBeneficiosRemovidos();
         setDemandaEmEdicao(false);
         props.updateDemandaProps(response);
+        
         salvarHistorico("Demanda Editada");
+        setFeedbackDemandaEditada(true);
       });
 
       if (anexosRemovidos.length > 0) {
@@ -751,7 +756,7 @@ const DetalhesDemanda = (props) => {
 
   // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -797,6 +802,14 @@ const DetalhesDemanda = (props) => {
         lendo={props.lendo}
         texto={props.texto}
         setTexto={props.setTexto}
+      />
+      {/* Feedback demanda Editada */}
+      <Feedback
+        open={feedbackDemandaEditada}
+        handleClose={() => setFeedbackDemandaEditada(false)}
+        status={"sucesso"}
+        mensagem={texts.DetalhesDemanda.feedbackDemandaEditada}
+        lendo={props.lendo}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
