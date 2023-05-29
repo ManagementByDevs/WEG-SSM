@@ -12,6 +12,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente para criar uma linha na tabela de custos
 const LinhaTabelaCustos = (props) => {
+
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -106,7 +107,7 @@ const LinhaTabelaCustos = (props) => {
             break;
           case "valorHora":
             aux[props.indexCusto].custos[props.index].valorHora =
-            transcript;
+              transcript;
             props.setCustos(aux);
             break;
           default:
@@ -151,55 +152,6 @@ const LinhaTabelaCustos = (props) => {
 
   return (
     <TableRow className="border-b">
-      <td align="center" className="pt-5 pb-5">
-        <Box
-          className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          sx={{
-            width: "80%",
-            backgroundColor: corFundoTextArea,
-            marginTop: "0.8rem",
-          }}
-        >
-          <TextareaAutosize
-            style={{
-              width: "95%",
-              resize: "none",
-              textAlign: "center",
-              backgroundColor: "transparent",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-            fontSize={FontConfig.medium}
-            className="flex outline-none"
-            placeholder={texts.linhaTabelaCustos.digiteTipo}
-            value={props.dados.custos[props.index].tipoDespesa || ""}
-            onChange={(e) => {
-              let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].tipoDespesa =
-                e.target.value;
-              props.setCustos(aux);
-            }}
-          />
-          <Tooltip
-            className="hover:cursor-pointer"
-            title={texts.homeGerencia.gravarAudio}
-            onClick={() => {
-              startRecognition("tipoDespesa");
-            }}
-          >
-            {escutar && localClicou == "tipoDespesa" ? (
-              <MicOutlinedIcon
-                sx={{ color: "primary.main", fontSize: "1.3rem" }}
-              />
-            ) : (
-              <MicNoneOutlinedIcon
-                sx={{ color: "text.secondary", fontSize: "1.3rem" }}
-              />
-            )}
-          </Tooltip>
-        </Box>
-      </td>
       <td align="center" className="pt-5 pb-5">
         <Box
           className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
@@ -339,27 +291,29 @@ const LinhaTabelaCustos = (props) => {
         </Box>
       </td>
       <td align="center" className="pt-5 pb-5">
-        <Box className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded" sx={{ width: "95%", backgroundColor: corFundoTextArea,
-            marginTop: "0.8rem",}}>
-        <TextareaAutosize
-          style={{
-            width: "95%",
-            resize: "none",
-            textAlign: "center",
-            backgroundColor: "transparent",
-          }}
-          fontSize={FontConfig.medium}
-          className="flex outline-none"
-          placeholder={texts.linhaTabelaCustos.digiteValor}
-          value={props.dados.custos[props.index].valorHora || ""}
-          onChange={(e) => {
-            let aux = [...props.custos];
-            aux[props.indexCusto].custos[props.index].valorHora =
-              e.target.value;
-            props.setCustos(aux);
-          }}
-        />
-        <Tooltip
+        <Box className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded" sx={{
+          width: "95%", backgroundColor: corFundoTextArea,
+          marginTop: "0.8rem",
+        }}>
+          <TextareaAutosize
+            style={{
+              width: "95%",
+              resize: "none",
+              textAlign: "center",
+              backgroundColor: "transparent",
+            }}
+            fontSize={FontConfig.medium}
+            className="flex outline-none"
+            placeholder={texts.linhaTabelaCustos.digiteValor}
+            value={props.dados.custos[props.index].valorHora || ""}
+            onChange={(e) => {
+              let aux = [...props.custos];
+              aux[props.indexCusto].custos[props.index].valorHora =
+                e.target.value;
+              props.setCustos(aux);
+            }}
+          />
+          <Tooltip
             className="hover:cursor-pointer"
             title={texts.homeGerencia.gravarAudio}
             onClick={() => {
