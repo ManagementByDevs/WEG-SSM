@@ -780,6 +780,18 @@ const TextLanguageContext = createContext({
       direcaoGeral: "Direção Geral",
       semInformacoesAdicionais: "Sem informações adicionais",
       semParecer: "Sem parecer",
+      status: {
+        assessmentAprovacao: "Assessment",
+        businessCase: "Business Case",
+        cancelled: "Cancelled",
+        done: "Done"
+      },
+      statusText: {
+        assessment: "Assessment",
+        bussinessCase: "Business Case",
+        cancelled: "Cancelada",
+        done: "Concluída",
+      },
     },
     modalAddPropostaPauta: {
       feedbacks: {

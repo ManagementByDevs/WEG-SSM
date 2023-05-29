@@ -1,20 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-
-import {
-  Box,
-  Divider,
-  IconButton,
-  Menu,
-  MenuItem,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import {Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography,} from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -36,6 +21,9 @@ import UsuarioService from "../../service/usuarioService";
 import ClipLoader from "react-spinners/ClipLoader";
 import Feedback from "../Feedback/Feedback";
 
+import CookieService from "../../service/cookieService";
+import ExportPdfService from "../../service/exportPdfService";
+
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -43,8 +31,12 @@ const propostaExample = EntitiesObjectService.proposta();
 const DetalhesProposta = ({
   propostaId = 0,
   emAprovacao = false,
-  setDadosProposta = () => {},
-  setFeedbackEditSuccess = () => {},
+  parecerComissao = "",
+  parecerInformacao = "",
+  parecerDG = "",
+  parecerInformacaoDG = "",
+  setDadosProposta = () => { },
+  setFeedbackEditSuccess = () => { },
   lendo,
 }) => {
   // Context para alterar o tamanho da fonte
@@ -291,7 +283,6 @@ const DetalhesProposta = ({
           proposta={proposta}
           setProposta={editProposta}
           getCorStatus={getCorStatus}
-          getStatusFormatted={getStatusFormatted}
           lendo={lendo}
         />
         {/* Box header */}
@@ -384,8 +375,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.solicitante?.nome +
-                      " - " +
-                      proposta.solicitante?.departamento?.nome
+                    " - " +
+                    proposta.solicitante?.departamento?.nome
                   )
                 }
               >
@@ -408,8 +399,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.buSolicitante?.siglaBu +
-                      " - " +
-                      proposta.buSolicitante?.nomeBu
+                    " - " +
+                    proposta.buSolicitante?.nomeBu
                   )
                 }
               >
@@ -432,8 +423,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.gerente?.nome +
-                      " - " +
-                      proposta.gerente?.departamento?.nome
+                    " - " +
+                    proposta.gerente?.departamento?.nome
                   )
                 }
               >
@@ -459,8 +450,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.forum?.siglaForum +
-                        " - " +
-                        proposta.forum?.nomeForum
+                      " - " +
+                      proposta.forum?.nomeForum
                     )
                   }
                 >
@@ -500,8 +491,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.secaoTI.siglaSecao +
-                      " - " +
-                      proposta.secaoTI.nomeSecao
+                    " - " +
+                    proposta.secaoTI.nomeSecao
                   )
                 }
               >
@@ -599,7 +590,7 @@ const DetalhesProposta = ({
               </Typography>
               <Box className="mx-4">
                 {proposta.tabelaCustos?.map((tabela, index) => {
-                  return <TabelaCustos key={index} dados={tabela} lendo={lendo}/>;
+                  return <TabelaCustos key={index} dados={tabela} lendo={lendo} />;
                 })}
               </Box>
             </Box>
@@ -715,12 +706,12 @@ const DetalhesProposta = ({
                     DateService.getTodaysDateUSFormat(
                       DateService.getDateByMySQLFormat(proposta.inicioExecucao)
                     ) +
-                      " " +
-                      texts.detalhesProposta.ate +
-                      " " +
-                      DateService.getTodaysDateUSFormat(
-                        DateService.getDateByMySQLFormat(proposta.fimExecucao)
-                      )
+                    " " +
+                    texts.detalhesProposta.ate +
+                    " " +
+                    DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                    )
                   )
                 }
               >
@@ -749,8 +740,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.paybackValor +
-                        " " +
-                        proposta.paybackTipo.toLowerCase()
+                      " " +
+                      proposta.paybackTipo.toLowerCase()
                     )
                   }
                 >
@@ -852,8 +843,8 @@ const DetalhesProposta = ({
                       proposta={proposta}
                       setProposta={setProposta}
                       setDadosProposta={setDadosProposta}
-                      parecerComissao={proposta.parecerComissao}
-                      parecerInformacao={proposta.parecerInformacao}
+                      parecerComissao={parecerComissao}
+                      parecerInformacao={parecerInformacao}
                       lendo={lendo}
                     />
 
@@ -864,15 +855,15 @@ const DetalhesProposta = ({
                       "ASSESSMENT_EDICAO",
                       "CANCELLED",
                     ].includes(proposta.status) && (
-                      <ParecerDG
-                        proposta={proposta}
-                        setProposta={setProposta}
-                        setDadosProposta={setDadosProposta}
-                        parecerDG={proposta.parecerDG}
-                        parecerInformacaoDG={proposta.parecerInformacaoDG}
-                        lendo={lendo}
-                      />
-                    )}
+                        <ParecerDG
+                          proposta={proposta}
+                          setProposta={setProposta}
+                          setDadosProposta={setDadosProposta}
+                          parecerDG={parecerDG}
+                          parecerInformacaoDG={parecerInformacaoDG}
+                          lendo={lendo}
+                        />
+                      )}
                   </Box>
                 </Box>
               </>
@@ -1106,9 +1097,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -1326,7 +1317,7 @@ const Beneficio = ({
                 onClick={() =>
                   lerTexto(
                     beneficio.tipoBeneficio[0].toUpperCase() +
-                      beneficio.tipoBeneficio.substring(1).toLowerCase()
+                    beneficio.tipoBeneficio.substring(1).toLowerCase()
                   )
                 }
               >
@@ -1373,8 +1364,8 @@ const Beneficio = ({
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
@@ -1396,8 +1387,8 @@ const ParecerComissao = ({
 // Chamar o parecer da DG
 const ParecerDG = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
@@ -1419,8 +1410,8 @@ const ParecerDG = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
@@ -1636,8 +1627,8 @@ const ParecerComissaoOnlyRead = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
@@ -1782,9 +1773,8 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  getCorStatus = () => {},
-  getStatusFormatted = () => {},
+  setProposta = () => { },
+  getCorStatus = () => { },
   lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
@@ -1877,7 +1867,35 @@ const StatusProposta = ({
     // Requisição para atualizar a proposta com o novo status
     PropostaService.atualizarStatus(proposta.id, newStatus).then((response) => {
       setProposta({ ...proposta, status: response.status });
+
+      // Salvamento de histórico
+      ExportPdfService.exportProposta(response.id).then((file) => {
+        let arquivo = new Blob([file], { type: "application/pdf" });
+        PropostaService.addHistorico(response.id, "Status Editado para " + getStatusFormatted(newStatus), arquivo, CookieService.getUser().id).then(() => { });
+      });
     });
+  };
+
+  /** Retorna o texto do status recebido */
+  const getStatusFormatted = (status) => {
+    switch (status) {
+      case "ASSESSMENT_APROVACAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_EDICAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_COMISSAO": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "ASSESSMENT_DG": //#F7DC6F
+        return texts.detalhesProposta.status.assessmentAprovacao;
+      case "BUSINESS_CASE": // #C8CA5F
+        return texts.detalhesProposta.status.businessCase;
+      case "CANCELLED": //#DA0303
+        return texts.detalhesProposta.status.cancelled;
+      case "DONE": //#62A265
+        return texts.detalhesProposta.status.done;
+      default:
+        return "";
+    }
   };
 
   useEffect(() => {
@@ -1909,7 +1927,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         lendo={lendo}
       />
       <Menu
@@ -1968,7 +1986,7 @@ const StatusProposta = ({
         </MenuItem>
       </Menu>
 
-      <Tooltip title={getStatusFormatted()}>
+      <Tooltip title={getStatusFormatted(proposta.status)}>
         <Box
           className="flex absolute right-2 top-0 cursor-pointer"
           onClick={handleOpenModalStatus}
