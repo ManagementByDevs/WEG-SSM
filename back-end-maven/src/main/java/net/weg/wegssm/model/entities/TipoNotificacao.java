@@ -8,7 +8,10 @@ public enum TipoNotificacao {
     APROVADO("Aprovado"),
     REPROVADO("Reprovado"),
     MAIS_INFORMACOES("Mais Informações"),
-    MENSAGENS("Mensagens");
+    MENSAGENS("Mensagens"),
+    APROVADO_GERENTE("Aprovado Gerente"),
+    REPROVADO_GERENTE("Reprovado Gerente"),
+    CRIADO_PROPOSTA("Criado Proposta");
 
     String tipo;
 }

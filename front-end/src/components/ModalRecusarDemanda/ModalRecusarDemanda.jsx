@@ -8,6 +8,7 @@ import {
   TextareaAutosize,
   Button,
   Tooltip,
+  TextField,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -145,16 +146,17 @@ const ModalRecusarDemanda = (props) => {
     >
       <Fade in={props.open}>
         <Box
+          id="teste"
           className="absolute top-2/4 left-2/4 flex flex-col justify-between items-center"
           sx={{
             transform: "translate(-50%, -50%)",
-            width: 480,
-            height: 350,
             bgcolor: "background.paper",
             borderRadius: "5px",
             borderTop: "10px solid #00579D",
             boxShadow: 24,
             p: 4,
+            width: 480,
+            height: 350,
           }}
         >
           <CloseIcon
@@ -178,27 +180,21 @@ const ModalRecusarDemanda = (props) => {
           </Typography>
 
           {/* Textarea para escrita do motivo da recusa */}
-          <Box
-            className="flex justify-center border-solid border px-1 py-1.5 drop-shadow-sm rounded text-center text-justify"
-            sx={{ width: "90%", height: "70%", marginTop: "4%" }}
-          >
-            <TextareaAutosize
-              style={{
-                width: "95%",
-                resize: "none",
-                overflow: "auto",
-                background: "transparent",
-              }}
+          <Box className="drop-shadow-sm rounded text-center text-justify max-h-96 overflow-y-auto w-full px-2 mt-2">
+            <TextField
+              multiline
+              minRows={6}
+              variant="outlined"
+              fullWidth
               value={props.motivo}
               fontSize={FontConfig.medium}
               onChange={(e) => {
                 alterarTexto(e, "problema");
               }}
-              className="flex outline-none "
               placeholder={texts.modalRecusarDemanda.informeMotivo}
             />
             <Tooltip
-              className="hover:cursor-pointer"
+              className="absolute cursor-pointer right-3 top-2 "
               title={texts.homeGerencia.gravarAudio}
               onClick={() => {
                 startRecognition();

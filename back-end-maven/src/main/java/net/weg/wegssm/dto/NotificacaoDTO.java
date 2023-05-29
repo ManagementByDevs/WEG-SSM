@@ -17,5 +17,6 @@ public class NotificacaoDTO {
     private Date data;
     private TipoNotificacao tipoNotificacao;
     private Usuario usuario;
+    private Usuario remetente;
 
 }

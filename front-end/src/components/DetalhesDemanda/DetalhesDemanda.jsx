@@ -94,6 +94,9 @@ const DetalhesDemanda = (props) => {
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
 
+  /** Feedback ativado quando a demanda é editada */
+  const [feedbackDemandaEditada, setFeedbackDemandaEditada] = useState(false);
+
   // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
   useEffect(() => {
     temaPagina === "dark"
@@ -392,7 +395,9 @@ const DetalhesDemanda = (props) => {
         excluirBeneficiosRemovidos();
         setDemandaEmEdicao(false);
         props.updateDemandaProps(response);
+        
         salvarHistorico("Demanda Editada");
+        setFeedbackDemandaEditada(true);
       });
 
       if (anexosRemovidos.length > 0) {
@@ -458,6 +463,14 @@ const DetalhesDemanda = (props) => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
     });
+
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        NotificacaoService.aprovadoGerente,
+        props.dados,
+        CookieService.getUser().id
+      )
+    );
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -484,10 +497,12 @@ const DetalhesDemanda = (props) => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
     });
+
     NotificacaoService.post(
       NotificacaoService.createNotificationObject(
         NotificacaoService.aprovado,
-        props.dados
+        props.dados,
+        CookieService.getUser().id
       )
     );
   };
@@ -554,7 +569,8 @@ const DetalhesDemanda = (props) => {
       NotificacaoService.post(
         NotificacaoService.createNotificationObject(
           tipoNotificacao,
-          props.dados
+          props.dados,
+          CookieService.getUser().id
         )
       );
       salvarHistorico(
@@ -796,6 +812,14 @@ const DetalhesDemanda = (props) => {
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
          
+      />
+      {/* Feedback demanda Editada */}
+      <Feedback
+        open={feedbackDemandaEditada}
+        handleClose={() => setFeedbackDemandaEditada(false)}
+        status={"sucesso"}
+        mensagem={texts.DetalhesDemanda.feedbackDemandaEditada}
+        lendo={props.lendo}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback

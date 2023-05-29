@@ -430,6 +430,9 @@ const HomeGerencia = (props) => {
 
   const [feedbackAbrirChat, setFeedbackAbrirChat] = useState(false);
 
+  /** Feedback ativado quando uma proposta é adicionada a uma pauta */
+  const [feedbackAdicionarPauta, setFeedbackAdicionarPauta] = useState(false);
+
   // useState para fechar o chat minimizado
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
@@ -580,6 +583,8 @@ const HomeGerencia = (props) => {
       setFeedbackDemandaRecusada(true);
     } else if (localStorage.getItem("tipoFeedback") == "5") {
       setFeedbackPropostaCriada(true);
+    } else if (localStorage.getItem("tipoFeedback") == "6") {
+      setFeedbackAdicionarPauta(true);
     }
     localStorage.removeItem("tipoFeedback");
   };
@@ -1250,6 +1255,18 @@ const HomeGerencia = (props) => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
+        {/* Feedback proposta adicionada à pauta */}
+        <Feedback
+          open={feedbackAdicionarPauta}
+          handleClose={() => {
+            setFeedbackAdicionarPauta(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback14}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
+        />
         {/* Feedback Erro reconhecimento de voz */}
         <Feedback
           open={feedbackErroReconhecimentoVoz}

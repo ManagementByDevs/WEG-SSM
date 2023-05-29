@@ -185,6 +185,7 @@ const TextLanguageContext = createContext({
       botaoDevolver: "Devolver",
       botaoAceitar: "Aceitar",
       botaoSalvar: "Salvar",
+      feedbackDemandaEditada: "Demanda Editada com Sucesso!"
     },
     escopo: {
       titleExcluir: "Excluir",
@@ -677,6 +678,7 @@ const TextLanguageContext = createContext({
         feedback11: "Você não pode abrir um chat com você mesmo!",
         feedback12: "Erro ao reconhcer a voz!",
         feedback13: "Navegador não é compatível!",
+        feedback14: "Proposta Adicionada à Pauta"
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",
@@ -778,6 +780,18 @@ const TextLanguageContext = createContext({
       direcaoGeral: "Direção Geral",
       semInformacoesAdicionais: "Sem informações adicionais",
       semParecer: "Sem parecer",
+      status: {
+        assessmentAprovacao: "Assessment",
+        businessCase: "Business Case",
+        cancelled: "Cancelled",
+        done: "Done"
+      },
+      statusText: {
+        assessment: "Assessment",
+        bussinessCase: "Business Case",
+        cancelled: "Cancelada",
+        done: "Concluída",
+      },
     },
     modalAddPropostaPauta: {
       feedbacks: {
