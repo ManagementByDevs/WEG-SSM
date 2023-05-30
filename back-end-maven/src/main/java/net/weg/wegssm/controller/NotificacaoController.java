@@ -15,6 +15,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -169,6 +173,20 @@ public class NotificacaoController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(notificacaoService.save(notificacao));
+    }
+
+    @MessageMapping("/weg_ssm/notificacao/{userId}")
+    @SendTo("/weg_ssm/{userId}/notificacao")
+    public Notificacao salvarNotificacao(@DestinationVariable Long userId,
+                                         @Payload NotificacaoDTO notificacaoDTO) {
+        Notificacao notificacao = new Notificacao();
+        BeanUtils.copyProperties(notificacaoDTO, notificacao);
+
+        if (notificacao.getTipoNotificacao().equals(TipoNotificacao.MENSAGENS)) {
+            Chat chat = chatService.findById(Long.parseLong(notificacao.getNumeroSequencial())).get();
+            notificacao.setNumeroSequencial(String.valueOf(chat.getIdProposta().getCodigoPPM()));
+        }
+        return notificacaoService.save(notificacao);
     }
 
     /**
