@@ -17,10 +17,10 @@ import NotificacaoService from "../../service/notificacaoService";
 import UsuarioService from "../../service/usuarioService";
 import DateService from "../../service/dateService";
 import { WebSocketContext } from "../../service/WebSocketService";
-// import {  } from "react";
 
 // Modal de notificações do sistema
 const NotificacaoModal = (props) => {
+
   /** Variável para pegar informações da URL */
   const location = useLocation();
 
@@ -75,7 +75,7 @@ const NotificacaoModal = (props) => {
           .then((response) => {
             setNotificacoes([...response.content]);
           })
-          .catch((error) => {});
+          .catch((error) => { });
       }
     );
   };
@@ -137,7 +137,20 @@ const NotificacaoModal = (props) => {
     }
   }, [stompClient]);
 
-   // Função que irá setar o texto que será "lido" pela a API
+  useEffect(() => {
+    const acaoNovaNotificacao = (response) => {
+      const notificacao = JSON.parse(response.body);
+      setNotificacoes([...notificacoes, notificacao]);
+    }
+    if (stompClient) {
+      let userId = CookieService.getUser().id;
+      inscrever(`/weg_ssm/${userId}/notificacao`, acaoNovaNotificacao);
+    }
+  }, [stompClient, notificacoes])
+
+  const [textoLeitura, setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
@@ -262,9 +275,9 @@ const NotificacaoModal = (props) => {
             >
               {notificacoes.length > 0
                 ? texts.notificacaoModal.verTudo +
-                  "(" +
-                  notificacoes.length +
-                  ")"
+                "(" +
+                notificacoes.length +
+                ")"
                 : texts.notificacaoModal.verNotificacoes}
             </Typography>
           </Box>
