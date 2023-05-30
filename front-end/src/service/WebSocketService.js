@@ -44,7 +44,6 @@ export const WebSocketService = ({ children }) => {
 
   const inscrever = (caminho, acao) => {
     if (stompClient) {
-      // console.log("Conexões: ", stompClient.subscriptions);
       return stompClient.subscribe(caminho, acao);
     }
   };

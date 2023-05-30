@@ -360,8 +360,7 @@ const DetalhesPauta = (props) => {
         JSON.parse(JSON.stringify(propostaAux.demanda)),
         CookieService.getUser().id
       )
-    ).catch((error) =>
-      console.log("Um erro ocorreu na criação de uma notificação: ", error)
+    ).catch((error) => {}
     );
   };
 
@@ -493,38 +492,31 @@ const DetalhesPauta = (props) => {
 
   // useState utilizado para abrir e fechar o modal de adicionar a pauta
   const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (props.lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (props.lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <FundoComHeader lendo={props.lendo}>

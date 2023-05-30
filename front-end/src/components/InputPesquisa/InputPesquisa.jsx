@@ -75,7 +75,6 @@ export default function UseAutocomplete(props) {
   };
 
   const handleInputChange = (valorInput) => {
-    console.log("O valor de entrada é:", valorInput);
   };
 
   const handleInputChangeDebounced = debounce(handleInputChange, 5000);

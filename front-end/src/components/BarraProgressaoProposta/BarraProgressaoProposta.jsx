@@ -141,8 +141,6 @@ const BarraProgressaoProposta = (props) => {
   const retornarTotalBeneficios = () => {
     let valorBeneficio = 0;
 
-    console.log("Valor dolar: " + valorDolar);
-
     for (const object in listaBeneficios) {
       if (listaBeneficios[object].tipoBeneficio == "Real") {
         if (listaBeneficios[object].moeda == "Dolar") {
@@ -587,7 +585,6 @@ const BarraProgressaoProposta = (props) => {
       for (const custo of tabelaCustos.custos) {
         listaCustos.push({
           id: custo.id,
-          tipoDespesa: custo.tipoDespesa,
           perfilDespesa: custo.perfilDespesa,
           periodoExecucao: custo.periodoExecucao,
           horas: custo.horas,
@@ -713,10 +710,7 @@ const BarraProgressaoProposta = (props) => {
                             CookieService.getUser().id
                           )
                           .then((propostaResponse) => {
-                            console.log(
-                              "Proposta response: ",
-                              propostaResponse
-                            );
+                            
 
                             try {
                               // Criar notificação
@@ -728,10 +722,7 @@ const BarraProgressaoProposta = (props) => {
                                 )
                               );
                             } catch (error) {
-                              console.log(
-                                "Um erro ocorreu na criação de uma notificação: ",
-                                error
-                              );
+                              
                             }
                             localStorage.setItem("tipoFeedback", "5");
                             navigate("/");
@@ -761,38 +752,31 @@ const BarraProgressaoProposta = (props) => {
   const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
     useState(false);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (props.lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (props.lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <>

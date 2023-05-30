@@ -17,10 +17,10 @@ import NotificacaoService from "../../service/notificacaoService";
 import UsuarioService from "../../service/usuarioService";
 import DateService from "../../service/dateService";
 import { WebSocketContext } from "../../service/WebSocketService";
-// import {  } from "react";
 
 // Modal de notificações do sistema
 const NotificacaoModal = (props) => {
+
   /** Variável para pegar informações da URL */
   const location = useLocation();
 
@@ -75,7 +75,7 @@ const NotificacaoModal = (props) => {
           .then((response) => {
             setNotificacoes([...response.content]);
           })
-          .catch((error) => {});
+          .catch((error) => { });
       }
     );
   };
@@ -117,7 +117,6 @@ const NotificacaoModal = (props) => {
       mensagemRecebida = JSON.parse(mensagem.body);
       // Se a mensagem recebida for do usuário logado, ignore
       if (mensagemRecebida.usuario.id == user.id) {
-        console.log("a");
         return;
       }
 
@@ -138,38 +137,44 @@ const NotificacaoModal = (props) => {
     }
   }, [stompClient]);
 
+  useEffect(() => {
+    const acaoNovaNotificacao = (response) => {
+      const notificacao = JSON.parse(response.body);
+      setNotificacoes([...notificacoes, notificacao]);
+    }
+    if (stompClient) {
+      let userId = CookieService.getUser().id;
+      inscrever(`/weg_ssm/${userId}/notificacao`, acaoNovaNotificacao);
+    }
+  }, [stompClient, notificacoes])
+
   const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (props.lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (props.lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <>
@@ -270,9 +275,9 @@ const NotificacaoModal = (props) => {
             >
               {notificacoes.length > 0
                 ? texts.notificacaoModal.verTudo +
-                  "(" +
-                  notificacoes.length +
-                  ")"
+                "(" +
+                notificacoes.length +
+                ")"
                 : texts.notificacaoModal.verNotificacoes}
             </Typography>
           </Box>

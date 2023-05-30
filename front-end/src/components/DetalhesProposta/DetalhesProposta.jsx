@@ -233,38 +233,31 @@ const DetalhesProposta = ({
     });
   }, []);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   if (Object.values(proposta).some((value) => value === undefined))
     return <></>;
@@ -919,38 +912,31 @@ const TabelaCustos = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Paper className="w-full mt-2 mb-6" square>
@@ -1131,38 +1117,31 @@ const CustosRow = ({
       : 0.0;
   };
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <TableRow>
@@ -1234,8 +1213,6 @@ const Beneficio = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
 
@@ -1244,33 +1221,28 @@ const Beneficio = ({
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   // Verifica se o benefício é do tipo qualitativo
   useEffect(() => {
@@ -1455,38 +1427,31 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Box>
@@ -1595,38 +1560,31 @@ const ParecerComissaoOnlyRead = ({
     }
   };
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Box>
@@ -1742,38 +1700,31 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
       : texts.detalhesProposta.semParecer;
   };
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Box>
@@ -1912,9 +1863,7 @@ const StatusProposta = ({
         JSON.parse(JSON.stringify(propostaAux.demanda)),
         CookieService.getUser().id
       )
-    ).catch((error) =>
-      console.log("Um erro ocorreu na criação de uma notificação: ", error)
-    );
+    ).catch((error) => {});
   };
 
   // Função para editar o status da proposta

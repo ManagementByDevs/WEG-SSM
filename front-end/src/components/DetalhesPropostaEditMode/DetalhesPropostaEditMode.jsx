@@ -47,6 +47,7 @@ const DetalhesPropostaEditMode = ({
   emAprovacao = false,
   lendo = false,
 }) => {
+  
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -870,7 +871,6 @@ const DetalhesPropostaEditMode = ({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -919,7 +919,7 @@ const DetalhesPropostaEditMode = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -938,38 +938,31 @@ const DetalhesPropostaEditMode = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   if (isLoading)
     return (
@@ -1972,7 +1965,6 @@ const TabelaCustos = ({
       newCusto.id = dados.custos.length * -1 - 1;
     }
 
-    console.log(newCusto.id)
 
     handleOnTabelaCustosChange({
       ...dados,
@@ -2000,38 +1992,31 @@ const TabelaCustos = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Paper className="w-full mt-2 mb-6" square>
@@ -2116,6 +2101,7 @@ const TabelaCustos = ({
                 tipoDespesa={dados.tipoDespesa}
                 handleOnCustoChange={handleOnCustoChange}
                 lendo={lendo}
+                index={index}
               />
             );
           })}
@@ -2275,7 +2261,6 @@ const CC = ({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -2314,7 +2299,7 @@ const CC = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -2333,38 +2318,31 @@ const CC = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <TableRow className="w-full border rounded">
@@ -2461,6 +2439,7 @@ const CustosRow = ({
   setTexto,
   tipoDespesa,
   lendo = false,
+  index = 0,
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2574,7 +2553,6 @@ const CustosRow = ({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -2622,7 +2600,7 @@ const CustosRow = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -2641,43 +2619,36 @@ const CustosRow = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <TableRow>
       <td className="p-2 text-center">
-        {true ?
+        {index == 0 ?
           <FormControl sx={{ width: "7rem" }}>
             <Select
               labelId="demo-simple-select-label"
@@ -2699,7 +2670,7 @@ const CustosRow = ({
           </FormControl>
           :
           <Box>
-
+            
           </Box>
         }
       </td>
@@ -3016,7 +2987,6 @@ const Beneficio = ({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -3054,7 +3024,7 @@ const Beneficio = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -3073,38 +3043,31 @@ const Beneficio = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   if (beneficio.id === 0) return null;
 
@@ -3337,38 +3300,31 @@ const ParecerComissaoInsertText = ({
     }
   };
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Box>
@@ -3482,38 +3438,31 @@ const ParecerDGInsertText = ({
     }
   };
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Box className="mt-4">

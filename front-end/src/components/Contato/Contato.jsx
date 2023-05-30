@@ -22,7 +22,6 @@ const Contato = ({
 
   // UseEffect para alterar a cor do contato quando ele for selecionado
   useEffect(() => {
-    console.log("chat: ", chat);
     if (idChat == 0) {
       setCorSelecionado("transparent");
     } else {
@@ -93,38 +92,31 @@ const Conteudo = ({
     }
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <>

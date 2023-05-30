@@ -40,8 +40,6 @@ const ChatMinimizado = (props) => {
   // Contexto para controlar a visibilidade do chat
   const { visibilidade, setVisibilidade, idChat } = useContext(ChatContext);
 
-  console.log("idChat: ", idChat);
-
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -288,7 +286,6 @@ const ChatMinimizado = (props) => {
           inputRef.current.value = "";
         })
         .catch((error) => {
-          console.log(error);
         });
     } else {
       setFeedbackAnexoGrande(true);
@@ -340,13 +337,11 @@ const ChatMinimizado = (props) => {
 
       // Se a mensagem recebida for do usuário logado, ignore
       if (mensagemRecebida.usuario.id == user.usuario.id) {
-        console.log("a");
         return;
       }
 
       // Se a mensagem recebida for do chat atual, ignore
       if (mensagemRecebida.idChat.id == idChatAux) {
-        console.log("b");
         return;
       }
 
@@ -385,7 +380,6 @@ const ChatMinimizado = (props) => {
       // Se o remetente não for o usuário, tenho que notificar a visualização
       if (mensagemNova.usuario.id != user.usuario.id) {
         mensagemNova.visto = true;
-        console.log("Mensagem nova visto: ", mensagemNova);
         enviar(
           `/app/weg_ssm/mensagem/chat/${idChat}/visto`,
           JSON.stringify({
@@ -401,7 +395,6 @@ const ChatMinimizado = (props) => {
     };
 
     const readMessage = (mensagem) => {
-      console.log("Mensagem vista: ", mensagem);
 
       if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
         clearNewMessages();
@@ -473,7 +466,6 @@ const ChatMinimizado = (props) => {
       }
     });
     setResultadosContato([...listaChatsAux]);
-    console.log("Lista de chats: ", listaChatsAux);
   }, [pesquisaContato, listaChats, idChat]);
 
   useEffect(() => {
@@ -528,7 +520,6 @@ const ChatMinimizado = (props) => {
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -567,7 +558,6 @@ const ChatMinimizado = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
     }
   };
 
@@ -585,38 +575,31 @@ const ChatMinimizado = (props) => {
   }, [escutar]);
 
   // // ********************************************** Fim Gravar audio **********************************************
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
+   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+  
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+  
+      if (props.lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+  
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (props.lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
    // Função para minimizar o chat
    const sumir = keyframes({

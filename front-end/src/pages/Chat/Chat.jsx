@@ -326,7 +326,6 @@ const Chat = (props) => {
           inputRef.current.value = "";
         })
         .catch((error) => {
-          console.log(error);
         });
     } else {
       setFeedbackAnexoGrande(true);
@@ -382,13 +381,11 @@ const Chat = (props) => {
 
       // Se a mensagem recebida for do usuário logado, ignore
       if (mensagemRecebida.usuario.id == user.usuario.id) {
-        console.log("a");
         return;
       }
 
       // Se a mensagem recebida for do chat atual, ignore
       if (mensagemRecebida.idChat.id == idChatAux) {
-        console.log("b");
         return;
       }
 
@@ -570,7 +567,6 @@ const Chat = (props) => {
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -609,7 +605,7 @@ const Chat = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -650,6 +646,7 @@ const Chat = (props) => {
     if (props.lendo && textoLeitura !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
+        // setTextoLeitura("");
       }
     } else {
       finalizarLeitura();

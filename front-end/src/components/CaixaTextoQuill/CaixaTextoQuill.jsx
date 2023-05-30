@@ -81,7 +81,6 @@ function CaixaTextoQuill({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -111,7 +110,6 @@ function CaixaTextoQuill({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
     }
   };
 
