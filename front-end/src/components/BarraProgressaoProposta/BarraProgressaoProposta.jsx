@@ -24,8 +24,14 @@ import CookieService from "../../service/cookieService";
 import MoedasService from "../../service/moedasService";
 import NotificacaoService from "../../service/notificacaoService";
 
+import { WebSocketContext } from "../../service/WebSocketService";
+
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
+
+   /**  Context do WebSocket */
+   const { enviar } = useContext(WebSocketContext);
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -300,7 +306,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) {}
+      } catch (error) { }
 
       listaNova.push({
         id: beneficio.id,
@@ -390,7 +396,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -442,7 +448,7 @@ const BarraProgressaoProposta = (props) => {
         delete beneficioFinal.visible;
         beneficioService
           .put(beneficioFinal, beneficioFinal.memoriaCalculo)
-          .then((response) => {});
+          .then((response) => { });
       }
     }
   };
@@ -690,47 +696,26 @@ const BarraProgressaoProposta = (props) => {
           });
           if (feedbackFaltante != true) {
             propostaService.post(retornaObjetoProposta()).then((response) => {
-              DemandaService.atualizarStatus(
-                dadosDemanda.id,
-                "ASSESSMENT_APROVACAO"
-              ).then(() => {
-                EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
-                  () => {
-                    // Salvamento de histórico
-                    ExportPdfService.exportProposta(response.id).then(
-                      (file) => {
-                        let arquivo = new Blob([file], {
-                          type: "application/pdf",
-                        });
-                        propostaService
-                          .addHistorico(
-                            response.id,
-                            "Proposta Criada",
-                            arquivo,
-                            CookieService.getUser().id
-                          )
-                          .then((propostaResponse) => {
-                            
 
-                            try {
-                              // Criar notificação
-                              NotificacaoService.post(
-                                NotificacaoService.createNotificationObject(
-                                  NotificacaoService.criadoProposta,
-                                  dadosDemanda,
-                                  CookieService.getUser().id
-                                )
-                              );
-                            } catch (error) {
-                              
-                            }
-                            localStorage.setItem("tipoFeedback", "5");
-                            navigate("/");
-                          });
-                      }
-                    );
-                  }
-                );
+              DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
+                EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
+
+                  // Salvamento de histórico
+                  ExportPdfService.exportProposta(response.id).then((file) => {
+                    let arquivo = new Blob([file], {
+                      type: "application/pdf",
+                    });
+                    propostaService.addHistorico(response.id, "Proposta Criada", arquivo, CookieService.getUser().id).then((propostaResponse) => {
+
+                      // Envio de Notificação ao Solicitante
+                      const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.criadoProposta, dadosDemanda, CookieService.getUser().id);
+                      enviar(`/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`, JSON.stringify(notificacao));
+
+                      localStorage.setItem("tipoFeedback", "5");
+                      navigate("/");
+                    });
+                  });
+                });
               });
             });
           }
@@ -752,18 +737,18 @@ const BarraProgressaoProposta = (props) => {
   const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
     useState(false);
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -771,7 +756,7 @@ const BarraProgressaoProposta = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
