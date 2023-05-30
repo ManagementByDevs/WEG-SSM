@@ -920,7 +920,10 @@ const DetalhesDemanda = (props) => {
         </Box>
         {!editar ? (
           <>
-            <Box className="flex justify-center">
+            <Box>
+              <Typography fontSize={FontConfig.medium} fontWeight={600}>
+                # {props.dados.id}
+              </Typography>
               <Typography
                 fontSize={FontConfig.title}
                 sx={{
@@ -1010,6 +1013,7 @@ const DetalhesDemanda = (props) => {
                       key={index}
                       index={index}
                       beneficio={beneficio}
+                      setBeneficio={alterarTextoBeneficio}
                       setFeedbackErroNavegadorIncompativel={
                         setFeedbackErroNavegadorIncompativel
                       }
@@ -1017,8 +1021,6 @@ const DetalhesDemanda = (props) => {
                         setFeedbackErroReconhecimentoVoz
                       }
                       lendo={props.lendo}
-                      texto={props.texto}
-                      setTexto={props.setTexto}
                     />
                   );
                 })}
@@ -1368,8 +1370,6 @@ const DetalhesDemanda = (props) => {
                           setFeedbackErroReconhecimentoVoz
                         }
                         lendo={props.lendo}
-                        texto={props.texto}
-                        setTexto={props.setTexto}
                       />
                     );
                   }

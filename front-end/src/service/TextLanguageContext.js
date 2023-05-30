@@ -95,7 +95,7 @@ const TextLanguageContext = createContext({
         emAprovacao: "Em Aprovação",
         aprovada: "Aprovada",
         emAndamento: "Em Andamento",
-        emDesenvolvimento: "Em Desenvolvimento"
+        emDesenvolvimento: "Em Desenvolvimento",
       },
       motivo: "Motivo",
     },
@@ -144,7 +144,7 @@ const TextLanguageContext = createContext({
         emAprovacao: "Em Aprovação",
         aprovada: "Aprovada",
         emAndamento: "Em Andamento",
-        emDesenvolvimento: "Em Desenvolvimento"
+        emDesenvolvimento: "Em Desenvolvimento",
       },
       codigo: "Código",
       titulo: "Titulo",
@@ -185,7 +185,7 @@ const TextLanguageContext = createContext({
       botaoDevolver: "Devolver",
       botaoAceitar: "Aceitar",
       botaoSalvar: "Salvar",
-      feedbackDemandaEditada: "Demanda Editada com Sucesso!"
+      feedbackDemandaEditada: "Demanda Editada com Sucesso!",
     },
     escopo: {
       titleExcluir: "Excluir",
@@ -318,7 +318,7 @@ const TextLanguageContext = createContext({
         aceitarDemanda: "Deseja aceitar a demanda?",
         confirmarExclusao: "Tem certeza que deseja excluir?",
         fecharChat: "Deseja realmente fechar este chat?",
-        publicarAta: "Deseja publicar a ata?"
+        publicarAta: "Deseja publicar a ata?",
       },
       mensagensBotao: {
         sim: "Sim",
@@ -391,7 +391,7 @@ const TextLanguageContext = createContext({
       numeroSequencial: "Número Sequencial",
       crescente: "Crescente",
       decrescente: "Decrescente",
-      dataReuniao: "Data de Reunião"
+      dataReuniao: "Data de Reunião",
     },
     modalRecusarDemanda: {
       motivoDaRecusa: "Motivo da recusa",
@@ -525,6 +525,7 @@ const TextLanguageContext = createContext({
       inputChatEncerrado:
         "Não é possível enviar mensagens, pois o chat foi encerrado.",
       anexoMuitoPesado: "O anexo é muito pesado!",
+      miniChatAberto: "Mini chat está aberto!",
     },
     detalhesAta: {
       ataCriadaComSucesso: "Ata criada com sucesso!",
@@ -679,7 +680,7 @@ const TextLanguageContext = createContext({
         feedback11: "Você não pode abrir um chat com você mesmo!",
         feedback12: "Erro ao reconhcer a voz!",
         feedback13: "Navegador não é compatível!",
-        feedback14: "Proposta Adicionada à Pauta"
+        feedback14: "Proposta Adicionada à Pauta",
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",
@@ -785,7 +786,7 @@ const TextLanguageContext = createContext({
         assessmentAprovacao: "Assessment",
         businessCase: "Business Case",
         cancelled: "Cancelled",
-        done: "Done"
+        done: "Done",
       },
       statusText: {
         assessment: "Assessment",
@@ -815,7 +816,7 @@ const TextLanguageContext = createContext({
       gravarAudio: "Gravar áudio",
     },
   },
-  setTexts: () => { },
+  setTexts: () => {},
 });
 
 export default TextLanguageContext;

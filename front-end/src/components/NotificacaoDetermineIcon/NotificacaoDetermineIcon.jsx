@@ -10,11 +10,15 @@ const NotificacaoDetermineIcon = ({ tipoIcone }) => {
   const properties = { fontSize: "30px" };
 
   // Determina o tipo do ícone da notificação
-  return tipoIcone.startsWith("APROVADO") ? (
+  return tipoIcone.startsWith("APROVADO") ||
+    tipoIcone == "CRIADO_PROPOSTA" ||
+    tipoIcone.startsWith("ASSESSMENT") ||
+    tipoIcone.startsWith("DONE") ? (
     <CheckCircleOutlineIcon color="primary" sx={properties} />
-  ) : tipoIcone.startsWith("REPROVADO") ? (
+  ) : tipoIcone.startsWith("REPROVADO") || tipoIcone.startsWith("CANCELLED") ? (
     <ErrorOutlineOutlinedIcon color="primary" sx={properties} />
-  ) : tipoIcone == "MAIS_INFORMACOES" ? (
+  ) : tipoIcone.startsWith("MAIS_INFORMACOES") ||
+    tipoIcone.startsWith("BUSINESS") ? (
     <HelpOutlineIcon color="primary" sx={properties} />
   ) : tipoIcone == "MENSAGENS" ? (
     <ChatBubbleOutlineIcon color="primary" sx={properties} />

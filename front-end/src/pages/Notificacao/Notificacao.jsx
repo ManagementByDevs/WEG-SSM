@@ -45,7 +45,7 @@ const Notificacao = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   const [usuario, setUsuario] = useState(null);
 
@@ -113,19 +113,45 @@ const Notificacao = (props) => {
       };
 
       const formataStatus = () => {
+        let textAux = texts.notificacaoComponente;
+
         switch (data.tipoNotificacao) {
           case "APROVADO":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.aprovada} ${textAux.por} ${data.remetente.nome}!`;
           case "REPROVADO":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.reprovada} ${textAux.por} ${data.remetente.nome}!`;
           case "MENSAGENS":
-            return `${texts.notificacaoComponente.vcRecebeuMensagem} ${data.numeroSequencial}!`;
+            return `${textAux.vcRecebeuMensagem} ${data.numeroSequencial}!`;
           case "MAIS_INFORMACOES":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.reprovadaPorFaltaDeInformacoes} ${textAux.por} ${data.remetente.nome}!`;
           case "APROVADO_GERENTE":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.aprovada} ${textAux.por} ${data.remetente.nome}!`;
           case "REPROVADO_GERENTE":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.reprovada} ${textAux.por} ${data.remetente.nome}!`;
+          case "CRIADO_PROPOSTA":
+            return `${textAux.propostaDeDemanda} ${data.numeroSequencial} ${textAux.por} ${data.remetente.nome}!`;
+          case "APROVADO_COMISSAO":
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.aprovada} ${textAux.noForum}!`;
+          case "REPROVADO_COMISSAO":
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.reprovada} ${textAux.noForum}!`;
+          case "BUSINESS_CASE_COMISSAO":
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.entrouEm} ${textAux.businessCase}!`;
+          case "MAIS_INFORMACOES_COMISSAO":
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.reprovadaPorFaltaDeInformacoes} ${textAux.noForum}!`;
+          case "APROVADO_DG":
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.aprovada} ${textAux.naDG}!`;
+          case "REPROVADO_DG":
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.reprovada} ${textAux.naDG}!`;
+          case "ASSESSMENT_ANALISTA":
+            return `${textAux.oAnalistaResposnavel} ${textAux.mudouStatusDemanda} ${data.numeroSequencial} ${textAux.para} ${textAux.assessment}!`;
+          case "BUSINESS_CASE_ANALISTA":
+            return `${textAux.oAnalistaResposnavel} ${textAux.mudouStatusDemanda} ${data.numeroSequencial} ${textAux.para} ${textAux.businessCase}!`;
+          case "CANCELLED_ANALISTA":
+            return `${textAux.oAnalistaResposnavel} ${textAux.mudouStatusDemanda} ${data.numeroSequencial} ${textAux.para} ${textAux.cancelled}!`;
+          case "DONE_ANALISTA":
+            return `${textAux.oAnalistaResposnavel} ${textAux.mudouStatusDemanda} ${data.numeroSequencial} ${textAux.para} ${textAux.done}!`;
+          default:
+            return `${textAux.demandaDeNumero} ${data.numeroSequencial} ${textAux.foi} ${textAux.reprovadaPorFaltaDeInformacoes} ${textAux.por} ${data.remetente.nome}!`;
         }
       };
 
@@ -277,6 +303,22 @@ const Notificacao = (props) => {
         return 2;
       case "MENSAGENS":
         return 3;
+      case "CRIADO_PROPOSTA":
+        return 0;
+      case "APROVADO_COMISSAO":
+        return 0;
+      case "REPROVADO_COMISSAO":
+        return 1;
+      case "BUSINESS_CASE_COMISSAO":
+        return 2;
+      case "MAIS_INFORMACOES_COMISSAO":
+        return 2;
+      case "APROVADO_DG":
+        return 0;
+      case "REPROVADO_DG":
+        return 1;
+      default:
+        return 2;
     }
   };
 

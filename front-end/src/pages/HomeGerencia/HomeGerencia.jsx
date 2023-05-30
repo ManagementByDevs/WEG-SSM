@@ -441,7 +441,6 @@ const HomeGerencia = (props) => {
     verificarFeedbacks();
     buscarUsuario();
     buscarFiltros();
-    // inscreverSocket();
   }, []);
 
   useEffect(() => {

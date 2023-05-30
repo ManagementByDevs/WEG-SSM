@@ -54,7 +54,7 @@ const Chat = (props) => {
   /** Context para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
-  const { setVisibilidade, setIdChat } = useContext(ChatContext);
+  const { visibilidade, setVisibilidade, setIdChat } = useContext(ChatContext);
 
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
@@ -124,10 +124,13 @@ const Chat = (props) => {
   /** UseState para controlar o loading de mensagens */
   const [buscandoMensagens, setBuscandoMensagens] = useState(true);
 
+  /** UseState para feedback de chat encerrado */
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
 
+  /** UseState para feedback de chat aberto */
   const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
 
+  /** UseState para feedback de que anexo é muito grande */
   const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
 
   /** useState para abrir e fechar o tour */
@@ -174,18 +177,22 @@ const Chat = (props) => {
     setPesquisaContato(evt.target.value);
   };
 
+  // Função para abrir o modal de confirmação para encerrar o chat
   const abrirModalCancelarChat = () => {
     setOpenModalEncerrarChat(true);
   };
 
+  // Função para fechar o modal de confirmação para encerrar o chat
   const fecharModalCancelarChat = () => {
     setOpenModalEncerrarChat(false);
   };
 
+  // Função para abrir o modal de confirmação para reabrir o chat
   const abrirModalAbrirChat = () => {
     setOpenModalReabrirChat(true);
   };
 
+  // Função para fechar o modal de confirmação para reabrir o chat
   const fecharModalAbrirChat = () => {
     setOpenModalReabrirChat(false);
   };
@@ -855,7 +862,7 @@ const Chat = (props) => {
                   })
                 ) : null}
               </Box>
-              {!idChat ? (
+              {!idChat && !visibilidade ? (
                 <Box
                   className="flex flex-col items-center justify-center rounded border"
                   sx={{ width: "75%", height: "95%", cursor: "default" }}
@@ -1069,6 +1076,23 @@ const Chat = (props) => {
                       </Tooltip>
                     </Box>
                   </Box>
+                </Box>
+              ) : visibilidade ? (
+                <Box
+                  className="flex flex-col items-center justify-center rounded border"
+                  sx={{ width: "75%", height: "95%", cursor: "default" }}
+                >
+                  <img src={logoWeg} alt="chat" />
+                  <Typography
+                    fontSize={FontConfig.title}
+                    color={"text.secondary"}
+                    sx={{ fontWeight: "600" }}
+                    onClick={() => {
+                      lerTexto(texts.chat.miniChatAberto);
+                    }}
+                  >
+                    {texts.chat.miniChatAberto}
+                  </Typography>
                 </Box>
               ) : (
                 <Box

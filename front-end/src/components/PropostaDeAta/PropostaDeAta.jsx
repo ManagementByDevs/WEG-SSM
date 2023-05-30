@@ -247,9 +247,8 @@ const PropostaDeAta = (props) => {
                   key={index}
                   index={index}
                   beneficio={beneficio}
+                  setBeneficios={setBeneficios}
                   lendo={props.lendo}
-                  texto={props.texto}
-                  setTexto={props.setTexto}
                 />
               );
             }
