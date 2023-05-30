@@ -4,12 +4,22 @@ import { useNavigate, useLocation } from "react-router-dom";
 import VLibras from "@djpfs/react-vlibras";
 
 import { keyframes } from "@emotion/react";
-import { Box, Typography, Button, Divider, Tooltip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+  ButtonBase,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -56,7 +66,7 @@ const DetalhesAta = (props) => {
   const [botaoProximo, setBotaoProximo] = useState(true);
 
   // Variável utilizada para minimizar os botões da página
-  const [minimizar, setMinimizar] = useState(true);
+  const [minimizar, setMinimizar] = useState(false);
 
   // feedback para ata criada com sucesso
   const [feedbackAta, setFeedbackAta] = useState(false);
@@ -153,9 +163,9 @@ const DetalhesAta = (props) => {
   });
 
   // useStates utilizados para animar os botões de navegação na ata
-  const [girarIcon, setGirarIcon] = useState(false);
-  const [aparecerSumir, setAparecerSumir] = useState(false);
-  const [display, setDisplay] = useState("hidden");
+  const [girarIcon, setGirarIcon] = useState(true);
+  const [aparecerSumir, setAparecerSumir] = useState(true);
+  const [display, setDisplay] = useState("flex");
 
   // Função para animar os botões de acordo com o click
   const animarBotoes = () => {
@@ -614,60 +624,56 @@ const DetalhesAta = (props) => {
           {actionButtons && (
             <Box
               className="flex fixed justify-end items-center"
-              sx={{ width: "30rem", bottom: "20px", right: "20px" }}
+              sx={{ width: "22rem", bottom: "20px", right: "20px" }}
             >
-              <Box className="flex justify-center">
+              <Box className="flex justify-center gap-3">
                 <Box className="flex justify-end">
                   <Box
-                    className={`w-full ${display} items-center mr-1`}
+                    className={`${display} items-center mr-1 justify-end`}
                     sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
                   >
-                    <Box className="flex justify-around w-full">
-                      <Button
-                        sx={{
-                          backgroundColor: "primary.main",
-                          color: "text.white",
-                          fontSize: FontConfig.default,
-                          maxHeight: "2.5rem",
-                        }}
-                        variant="contained"
-                        onClick={() => voltar()}
-                      >
-                        {texts.detalhesAta.voltar}
-                      </Button>
-                      <Button
-                        sx={{
-                          backgroundColor: "primary.main",
-                          color: "text.white",
-                          fontSize: FontConfig.default,
-                          maxHeight: "2.5rem",
-                        }}
-                        variant="contained"
-                        onClick={voltarSumario}
-                      >
-                        <OtherHousesIcon />
-                      </Button>
-                      <Button
-                        sx={{
-                          backgroundColor: "primary.main",
-                          color: "text.white",
-                          fontSize: FontConfig.default,
-                          maxHeight: "2.5rem",
-                        }}
-                        variant="contained"
-                        onClick={proximo}
-                      >
-                        <Typography>{texts.detalhesAta.proximo}</Typography>
-                      </Button>
+                    <Box className="flex gap-2">
+                      <Tooltip title={texts.detalhesAta.voltar}>
+                        <IconButton
+                          color="primary"
+                          size="large"
+                          onClick={voltar}
+                        >
+                          <ArrowBackIosNewIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip>
+                        <IconButton
+                          color="primary"
+                          size="large"
+                          onClick={voltarSumario}
+                        >
+                          <OtherHousesIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title={texts.detalhesAta.proximo}>
+                        <IconButton
+                          color="primary"
+                          size="large"
+                          onClick={proximo}
+                        >
+                          <ArrowForwardIosIcon />
+                        </IconButton>
+                      </Tooltip>
                     </Box>
                   </Box>
                   <Tooltip title={texts.detalhesAta.navegacao}>
-                    <Box
-                      className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
+                    <ButtonBase
+                      variant="contained"
+                      color="primary"
+                      className="!rounded-full !p-3 hover:!outline-none"
                       sx={{
                         backgroundColor: "primary.main",
-                        color: "text.white",
-                        fontSize: FontConfig.default,
+                        "&:hover": {
+                          boxShadow:
+                            "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+                          backgroundColor: "rgb(0, 60, 109)",
+                        },
                       }}
                       onClick={() => {
                         animarBotoes();
@@ -678,24 +684,29 @@ const DetalhesAta = (props) => {
                         sx={{
                           rotate: "90deg",
                           animation: `${girarIcon} 1.2s forwards`,
+                          color: "white",
                         }}
                       ></DensitySmallIcon>
-                    </Box>
+                    </ButtonBase>
                   </Tooltip>
                 </Box>
                 <Tooltip title={texts.detalhesAta.publicarAta}>
-                  <Box
-                    onClick={verificarPublicarAta}
-                    className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
+                  <ButtonBase
+                    variant="contained"
+                    color="primary"
+                    className="!rounded-full !p-3 hover:!outline-none"
                     sx={{
                       backgroundColor: "primary.main",
-                      fontSize: FontConfig.default,
-                      marginLeft: "1rem",
-                      color: "#FFFF",
+                      "&:hover": {
+                        boxShadow:
+                          "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+                        backgroundColor: "rgb(0, 60, 109)",
+                      },
                     }}
+                    onClick={verificarPublicarAta}
                   >
-                    <DoneOutlinedIcon fontSize="large" />
-                  </Box>
+                    <DoneOutlinedIcon sx={{ color: "white " }} />
+                  </ButtonBase>
                 </Tooltip>
               </Box>
             </Box>

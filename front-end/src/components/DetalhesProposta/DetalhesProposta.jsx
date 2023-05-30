@@ -191,9 +191,18 @@ const DetalhesProposta = ({
     }
   };
 
+  /** Função da edição de status da proposta  */
   const editProposta = (proposal) => {
     setFeedbackEditSuccess(true);
     setProposta(proposal);
+  };
+
+  const isEscopoVazio = () => {
+    return (
+      proposta.escopo == "" ||
+      proposta.escopo == null ||
+      proposta.escopo == "<p><br/></p>"
+    );
   };
 
   useEffect(() => {
@@ -206,8 +215,12 @@ const DetalhesProposta = ({
     }
 
     if (textoEscopo.current) {
-      textoEscopo.current.innerHTML = proposta.escopo;
+      textoEscopo.current.innerHTML = !isEscopoVazio()
+        ? proposta.escopo
+        : texts.detalhesProposta.escopoVazio;
     }
+
+    console.log(proposta);
   }, [proposta, isEditing]);
 
   useEffect(() => {

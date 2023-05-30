@@ -13,12 +13,12 @@ const NotificacaoDetermineIcon = ({ tipoIcone }) => {
   return tipoIcone.startsWith("APROVADO") ||
     tipoIcone == "CRIADO_PROPOSTA" ||
     tipoIcone.startsWith("ASSESSMENT") ||
-    tipoIcone.startsWith("DONE") ? (
+    tipoIcone.startsWith("DONE") ||
+    tipoIcone.startsWith("BUSINESS") ? (
     <CheckCircleOutlineIcon color="primary" sx={properties} />
   ) : tipoIcone.startsWith("REPROVADO") || tipoIcone.startsWith("CANCELLED") ? (
     <ErrorOutlineOutlinedIcon color="primary" sx={properties} />
-  ) : tipoIcone.startsWith("MAIS_INFORMACOES") ||
-    tipoIcone.startsWith("BUSINESS") ? (
+  ) : tipoIcone.startsWith("MAIS_INFORMACOES") ? (
     <HelpOutlineIcon color="primary" sx={properties} />
   ) : tipoIcone == "MENSAGENS" ? (
     <ChatBubbleOutlineIcon color="primary" sx={properties} />

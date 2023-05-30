@@ -835,6 +835,7 @@ const TextLanguage = (linguagem) => {
             cancelled: "Cancelled",
             done: "Done",
           },
+          escopoVazio: "Escopo vazio",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Dado inválido!",
@@ -1741,6 +1742,7 @@ const TextLanguage = (linguagem) => {
             cancelled: "Cancelled",
             done: "Done",
           },
+          escopoVazio: "Empty scope",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Invalid data!",
@@ -2615,6 +2617,7 @@ const TextLanguage = (linguagem) => {
             cancelled: "取消",
             done: "完毕",
           },
+          escopoVazio: "空范围",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "无效数据",
@@ -3533,6 +3536,7 @@ const TextLanguage = (linguagem) => {
             cancelled: "Cancelled",
             done: "Done",
           },
+          escopoVazio: "Alcance vacío",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "¡Datos inválidos!",
