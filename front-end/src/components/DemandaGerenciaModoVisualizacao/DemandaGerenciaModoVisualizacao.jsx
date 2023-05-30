@@ -137,18 +137,18 @@ const DemandaTable = ({
     setModalHistorico(true);
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -156,7 +156,7 @@ const DemandaTable = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -330,21 +330,6 @@ const DemandaTable = ({
                   className="text-left p-3 width-4/12 flex"
                   title={row.titulo}
                 >
-                  {(row.presenteEm == "Pauta" || row.presenteEm == "Ata") && (
-                    <Box className="mr-4">
-                      {row.presenteEm == "Pauta" ? (
-                        <Box title="Em pauta">
-                          <ContentPasteOutlinedIcon
-                            sx={{ color: "icon.main" }}
-                          />
-                        </Box>
-                      ) : (
-                        <Box title="Em ata">
-                          <BeenhereOutlinedIcon sx={{ color: "icon.main" }} />
-                        </Box>
-                      )}
-                    </Box>
-                  )}
                   <Typography
                     className="truncate"
                     fontSize={FontConfig.medium}
@@ -460,6 +445,21 @@ const DemandaTable = ({
                         {formatarNomeStatus(row.status)}
                       </Typography>
                     </Box>
+                    {(row.presenteEm == "Pauta" || row.presenteEm == "Ata") && (
+                      <Box className="flex items-center">
+                        {row.presenteEm == "Pauta" ? (
+                          <Box title="Em pauta">
+                            <ContentPasteOutlinedIcon
+                              sx={{ color: "icon.main" }}
+                            />
+                          </Box>
+                        ) : (
+                          <Box title="Em ata">
+                            <BeenhereOutlinedIcon sx={{ color: "icon.main" }} />
+                          </Box>
+                        )}
+                      </Box>
+                    )}
                   </Box>
                 </td>
                 <td
@@ -573,18 +573,18 @@ const NadaEncontrado = (props) => {
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -592,7 +592,7 @@ const NadaEncontrado = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
