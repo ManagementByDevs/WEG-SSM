@@ -318,6 +318,7 @@ const TextLanguageContext = createContext({
         aceitarDemanda: "Deseja aceitar a demanda?",
         confirmarExclusao: "Tem certeza que deseja excluir?",
         fecharChat: "Deseja realmente fechar este chat?",
+        publicarAta: "Deseja publicar a ata?"
       },
       mensagensBotao: {
         sim: "Sim",

@@ -76,15 +76,19 @@ public class ScoreDemandaThread extends Thread implements Runnable {
         Double valorBeneficiosReais = 0.0;
         Double valorBeneficiosPotenciais = 0.0;
 
-        for (Beneficio beneficio : demanda.getBeneficios()) {
+        try {
+            for (Beneficio beneficio : demanda.getBeneficios()) {
 
-            if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
-                valorBeneficiosReais += beneficio.getValor_mensal();
-            }
+                if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
+                    valorBeneficiosReais += beneficio.getValor_mensal();
+                }
 
-            if (beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
-                valorBeneficiosPotenciais += beneficio.getValor_mensal();
+                if (beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
+                    valorBeneficiosPotenciais += beneficio.getValor_mensal();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         Integer valorTamanhoDemanda;

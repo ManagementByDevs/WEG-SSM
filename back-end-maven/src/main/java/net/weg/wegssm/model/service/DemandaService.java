@@ -63,16 +63,6 @@ public class DemandaService {
     }
 
     /**
-     * Função para buscar uma demanda pelo seu status
-     *
-     * @param status
-     * @return
-     */
-    public List<Demanda> findByStatus(Status status) {
-        return demandaRepository.findByStatus(status);
-    }
-
-    /**
      * Função para buscar uma demanda pelo seu status com paginação
      *
      * @param status
@@ -84,16 +74,6 @@ public class DemandaService {
     }
 
     /**
-     * Função para buscar uma demanda pelo fórum
-     *
-     * @param forum
-     * @return
-     */
-    public List<Demanda> findByForum(Forum forum) {
-        return demandaRepository.findByForum(forum);
-    }
-
-    /**
      * Função para buscar uma demanda pelo fórum com paginação
      *
      * @param forum
@@ -102,16 +82,6 @@ public class DemandaService {
      */
     public Page<Demanda> findByForum(Forum forum, Pageable pageable) {
         return demandaRepository.findByForum(forum, pageable);
-    }
-
-    /**
-     * Função para buscar uma demanda pelo departamento
-     *
-     * @param departamento
-     * @return
-     */
-    public List<Demanda> findByDepartamento(Departamento departamento) {
-        return demandaRepository.findByDepartamento(departamento);
     }
 
     /**

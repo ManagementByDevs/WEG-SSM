@@ -1,10 +1,15 @@
 package net.weg.wegssm.repository;
 
+import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.Proposta;
+import net.weg.wegssm.model.entities.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,4 +40,6 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
      */
     Pauta findByPropostasContaining(Proposta proposta);
 
+    @Query("SELECT p FROM Pauta p LEFT JOIN FETCH p.propostas")
+    List<Pauta> findAllScore();
 }

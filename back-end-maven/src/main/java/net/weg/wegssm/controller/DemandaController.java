@@ -1,8 +1,6 @@
 package net.weg.wegssm.controller;
 
-import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.HistoricoDTO;
 import net.weg.wegssm.model.entities.*;
 import net.weg.wegssm.model.service.*;
 import net.weg.wegssm.util.*;
@@ -12,18 +10,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.Doc;
-import javax.servlet.http.HttpServletResponse;
-
-import com.itextpdf.text.*;
-
 import javax.transaction.Transactional;
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,14 +27,24 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/weg_ssm/demanda")
 public class DemandaController {
 
+    /**
+     * Service da Demanda
+     */
     private DemandaService demandaService;
-    private UsuarioService usuarioService;
-    private PropostaService propostaService;
 
-    private DocumentoHistoricoService documentoHistoricoService;
+    /**
+     * Service do Usuário
+     */
+    private UsuarioService usuarioService;
+
+    /**
+     * Service do Histórico
+     */
     private HistoricoService historicoService;
 
-    private PDFGeneratorService pdfGeneratorService;
+    /**
+     * Service dos Benefícios
+     */
     private BeneficioService beneficioService;
 
     /**

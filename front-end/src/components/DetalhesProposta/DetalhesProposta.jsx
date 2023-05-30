@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import {Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography,} from "@mui/material";
+import { Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -825,49 +825,41 @@ const DetalhesProposta = ({
               </Typography>
             </Box>
 
-            {!(proposta.status == "ASSESSMENT_APROVACAO") && (
-              <>
-                <Divider />
-                {/* Pareceres */}
-                <Box className="mt-3">
-                  <Typography
-                    fontSize={FontConfig.big}
-                    fontWeight="bold"
-                    onClick={() => lerTexto(texts.detalhesProposta.pareceres)}
-                  >
-                    {texts.detalhesProposta.pareceres}:&nbsp;
-                  </Typography>
-                  <Box className="mx-4">
-                    {/* Parecer da Comissão */}
-                    <ParecerComissao
-                      proposta={proposta}
-                      setProposta={setProposta}
-                      setDadosProposta={setDadosProposta}
-                      parecerComissao={parecerComissao}
-                      parecerInformacao={parecerInformacao}
-                      lendo={lendo}
-                    />
+            <Divider />
+            {/* Pareceres */}
+            <Box className="mt-3">
+              <Typography
+                fontSize={FontConfig.big}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.pareceres)}
+              >
+                {texts.detalhesProposta.pareceres}:&nbsp;
+              </Typography>
+              <Box className="mx-4">
+                {/* Parecer da Comissão */}
+                <ParecerComissao
+                  proposta={proposta}
+                  setProposta={setProposta}
+                  setDadosProposta={setDadosProposta}
+                  parecerComissao={parecerComissao}
+                  parecerInformacao={parecerInformacao}
+                  lendo={lendo}
+                  emAprovacao={emAprovacao}
+                />
 
-                    {/* Parecer da Diretoria */}
-                    {[
-                      "ASSESSMENT_DG",
-                      "DONE",
-                      "ASSESSMENT_EDICAO",
-                      "CANCELLED",
-                    ].includes(proposta.status) && (
-                        <ParecerDG
-                          proposta={proposta}
-                          setProposta={setProposta}
-                          setDadosProposta={setDadosProposta}
-                          parecerDG={parecerDG}
-                          parecerInformacaoDG={parecerInformacaoDG}
-                          lendo={lendo}
-                        />
-                      )}
-                  </Box>
-                </Box>
-              </>
-            )}
+                {/* Parecer da Diretoria */}
+                <ParecerDG
+                  proposta={proposta}
+                  setProposta={setProposta}
+                  setDadosProposta={setDadosProposta}
+                  parecerDG={parecerDG}
+                  parecerInformacaoDG={parecerInformacaoDG}
+                  lendo={lendo}
+                  emAprovacao={emAprovacao}
+                />
+              </Box>
+            </Box>
+
           </Box>
         </Box>
       </Box>
@@ -1369,8 +1361,9 @@ const ParecerComissao = ({
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
+  emAprovacao = false
 }) => {
-  if (proposta.status == "ASSESSMENT_COMISSAO")
+  if (proposta.status == "ASSESSMENT_COMISSAO" && emAprovacao)
     return (
       <ParecerComissaoInsertText
         proposta={proposta}
@@ -1392,8 +1385,9 @@ const ParecerDG = ({
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
+  emAprovacao = false
 }) => {
-  if (proposta.status == "ASSESSMENT_DG")
+  if (proposta.status == "ASSESSMENT_DG" && emAprovacao)
     return (
       <ParecerDGInsertText
         proposta={proposta}

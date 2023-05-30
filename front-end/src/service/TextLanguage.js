@@ -325,6 +325,7 @@ const TextLanguage = (linguagem) => {
             "Essa ação pode excluir dados da proposta! Deseja mesmo alterar seu status?",
           confirmEditar:
             "Deseja realmente editar? Essa ação não pode ser revertida!",
+          publicarAta: "Deseja publicar a ata?"
         },
         mensagensBotao: {
           sim: "Sim",
@@ -1218,6 +1219,7 @@ const TextLanguage = (linguagem) => {
               "This action may delete some proposal data! Do you really want to change its status?",
             confirmEditar:
               "Do you really want to edit it? This action can't be reversed!",
+            publicarAta: "Do you want to publish the minutes?"
           },
           mensagensBotao: {
             sim: "Yes",
@@ -2101,6 +2103,7 @@ const TextLanguage = (linguagem) => {
               alterarStatusProposta:
                 "此操作可能会删除一些提案数据！ 您真的要更改其状态吗？",
               confirmEditar: "您真的要编辑它吗？ 此操作不可逆转！",
+              publicarAta: "你想公布会议记录吗？"
             },
             mensagensBotao: {
               sim: "是",
@@ -2970,6 +2973,7 @@ const TextLanguage = (linguagem) => {
                   "¡Esta acción puede eliminar algunos datos de la propuesta! ¿Realmente quieres cambiar su estado?",
                 confirmEditar:
                   "¿De verdad quieres editarlo? ¡Esta acción no se puede revertir!",
+                publicarAta: "¿Quieres publicar el acta?"
               },
               mensagensBotao: {
                 sim: "Sí",

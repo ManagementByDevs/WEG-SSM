@@ -26,6 +26,7 @@ import DateService from "../../service/dateService";
 
 import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
+import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 // Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
 const DetalhesAta = (props) => {
@@ -69,6 +70,9 @@ const DetalhesAta = (props) => {
 
   // Estado para feedback de edição feita com sucesso
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
+
+  /** Modal de confirmação para a publicação de uma ata */
+  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] = useState(false);
 
   // useEffect usado para feedback
   useEffect(() => {
@@ -183,7 +187,6 @@ const DetalhesAta = (props) => {
   const isAllFieldsFilled = () => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = ata.propostas.every((proposta) => {
-      console.log(proposta);
       return (
         proposta.parecerDG != null &&
         proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
@@ -246,12 +249,18 @@ const DetalhesAta = (props) => {
     return listaNova;
   };
 
-  // Função de criar ata e enviar feedback
-  const publicarAta = () => {
+  /** Função para abrir o modal de publicação de ata */
+  const verificarPublicarAta = () => {
     if (!isAllFieldsFilled()) {
       setFeedbackCamposFaltantes(true);
       return;
     }
+
+    setModalConfirmacaoPublicacao(true);
+  }
+
+  // Função de criar ata e enviar feedback
+  const publicarAta = () => {
 
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };
@@ -345,6 +354,20 @@ const DetalhesAta = (props) => {
         mensagem={texts.detalhesProposta.editadoComSucesso}
         lendo={props.lendo}
       />
+
+      {/* Modal de confirmação de publicar a ata */}
+      {modalConfirmacaoPublicacao && (
+            <ModalConfirmacao
+              open={true}
+              setOpen={setModalConfirmacaoPublicacao}
+              textoModal={"publicarAta"}
+              textoBotao={"sim"}
+              onConfirmClick={publicarAta}
+              lendo={props.lendo}
+              texto={props.texto}
+              setTexto={props.setTexto}
+            />
+          )}
 
       <Box className="p-2">
         {/* caminho da página */}
@@ -640,7 +663,7 @@ const DetalhesAta = (props) => {
                 </Box>
                 <Tooltip title={texts.detalhesAta.publicarAta}>
                   <Box
-                    onClick={publicarAta}
+                    onClick={verificarPublicarAta}
                     className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                     sx={{
                       backgroundColor: "primary.main",
