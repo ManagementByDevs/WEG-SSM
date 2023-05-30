@@ -228,6 +228,8 @@ const FormularioPropostaProposta = (props) => {
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -258,14 +260,8 @@ const FormularioPropostaProposta = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "titulo":
-            props.setDadosDemanda({ ...props.dados, titulo: transcript });
-            break;
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
 
-          default:
-            break;
-        }
         // setValorPesquisa(transcript);
       };
 
@@ -281,6 +277,16 @@ const FormularioPropostaProposta = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "titulo":
+        props.setDadosDemanda({ ...props.dados, titulo: palavrasJuntas });
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -348,7 +354,6 @@ const FormularioPropostaProposta = (props) => {
         status={"erro"}
         mensagem={texts.formularioPropostaProposta.feedbacks.feedback1}
         lendo={props.lendo}
-         
       />
       <Box
         className="flex flex-col justify-center relative items-center"
@@ -516,7 +521,6 @@ const FormularioPropostaProposta = (props) => {
                           setBeneficio={alterarTextoBeneficio}
                           carregamento={props.carregamento}
                           lendo={props.lendo}
-                           
                         />
                       );
                     }

@@ -227,6 +227,8 @@ const Escopos = ({ lendo = false }) => {
 
   const [escutar, setEscutar] = useState(false);
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -257,7 +259,9 @@ const Escopos = ({ lendo = false }) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        setInputPesquisa(transcript);
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+
+        
       };
 
       recognition.onerror = (event) => {
@@ -272,6 +276,10 @@ const Escopos = ({ lendo = false }) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    setInputPesquisa(palavrasJuntas);
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {

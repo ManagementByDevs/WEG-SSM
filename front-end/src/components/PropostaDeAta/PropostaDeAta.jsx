@@ -86,6 +86,8 @@ const PropostaDeAta = (props) => {
 
   const [escutar, setEscutar] = useState(false);
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -116,7 +118,8 @@ const PropostaDeAta = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        console.log("Não está salvando em nada");
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+        
         // setValorPesquisa(transcript);
       };
 
@@ -132,6 +135,10 @@ const PropostaDeAta = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    console.log("Não está salvando em nada");
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {

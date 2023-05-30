@@ -23,6 +23,8 @@ const InputComLabel = (props) => {
 
   const [escutar, setEscutar] = useState(false);
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -53,7 +55,8 @@ const InputComLabel = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        props.saveInputValue(transcript);
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+        
       };
 
       recognition.onerror = (event) => {
@@ -68,6 +71,10 @@ const InputComLabel = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    props.saveInputValue(palavrasJuntas);
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {

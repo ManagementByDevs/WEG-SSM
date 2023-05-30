@@ -48,6 +48,8 @@ const LinhaTabelaCCs = (props) => {
 
   const [localClicado, setLocalClicado] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -78,19 +80,8 @@ const LinhaTabelaCCs = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        let aux = [...props.custos];
-        switch (localClicado) {
-          case "codigoCcs":
-            aux[props.indexCusto].ccs[props.index].codigo = transcript;
-            props.setCustos(aux);
-            break;
-          case "porcentagemCcs":
-            aux[props.indexCusto].ccs[props.index].porcentagem = transcript;
-            props.setCustos(aux);
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+        
       };
 
       recognition.onerror = (event) => {
@@ -105,6 +96,22 @@ const LinhaTabelaCCs = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    let aux = [...props.custos];
+        switch (localClicado) {
+          case "codigoCcs":
+            aux[props.indexCusto].ccs[props.index].codigo = palavrasJuntas;
+            props.setCustos(aux);
+            break;
+          case "porcentagemCcs":
+            aux[props.indexCusto].ccs[props.index].porcentagem = palavrasJuntas;
+            props.setCustos(aux);
+            break;
+          default:
+            break;
+        }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {

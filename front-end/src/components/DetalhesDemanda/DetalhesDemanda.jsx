@@ -395,7 +395,7 @@ const DetalhesDemanda = (props) => {
         excluirBeneficiosRemovidos();
         setDemandaEmEdicao(false);
         props.updateDemandaProps(response);
-        
+
         salvarHistorico("Demanda Editada");
         setFeedbackDemandaEditada(true);
       });
@@ -690,6 +690,8 @@ const DetalhesDemanda = (props) => {
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -720,16 +722,7 @@ const DetalhesDemanda = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "tituloDemanda":
-            setTituloDemanda(transcript);
-            break;
-          case "frequenciaUso":
-            setFrequencia(transcript);
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -744,6 +737,19 @@ const DetalhesDemanda = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "tituloDemanda":
+        setTituloDemanda(palavrasJuntas);
+        break;
+      case "frequenciaUso":
+        setFrequencia(palavrasJuntas);
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -811,7 +817,6 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-         
       />
       {/* Feedback demanda Editada */}
       <Feedback
@@ -830,7 +835,6 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-         
       />
       <Feedback
         open={feedbackFacaAlteracao}
@@ -838,7 +842,6 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
         lendo={props.lendo}
-         
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
@@ -846,7 +849,6 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
         lendo={props.lendo}
-         
       />
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
@@ -854,7 +856,6 @@ const DetalhesDemanda = (props) => {
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
         lendo={props.lendo}
-         
       />
       <ModalRecusarDemanda
         open={openModalRecusa}
@@ -868,7 +869,6 @@ const DetalhesDemanda = (props) => {
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         lendo={props.lendo}
-         
       />
       <ModalConfirmacao
         open={openModal}
@@ -879,7 +879,6 @@ const DetalhesDemanda = (props) => {
         textoBotao="sim"
         atualizarTexto={true}
         lendo={props.lendo}
-         
       />
       <ModalConfirmacao
         open={modalAprovarDemanda}
@@ -888,7 +887,6 @@ const DetalhesDemanda = (props) => {
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
         lendo={props.lendo}
-         
       />
       <Box
         id="primeiro"

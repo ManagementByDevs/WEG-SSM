@@ -862,6 +862,8 @@ const DetalhesPropostaEditMode = ({
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -892,27 +894,7 @@ const DetalhesPropostaEditMode = ({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "titulo":
-            setProposta({
-              ...proposta,
-              titulo: transcript,
-            });
-            break;
-          case "frequencia":
-            setProposta({
-              ...proposta,
-              frequencia: transcript,
-            });
-            break;
-          case "linkJira":
-            setProposta({
-              ...proposta,
-              linkJira: transcript,
-            });
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -927,6 +909,30 @@ const DetalhesPropostaEditMode = ({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "titulo":
+        setProposta({
+          ...proposta,
+          titulo: palavrasJuntas,
+        });
+        break;
+      case "frequencia":
+        setProposta({
+          ...proposta,
+          frequencia: palavrasJuntas,
+        });
+        break;
+      case "linkJira":
+        setProposta({
+          ...proposta,
+          linkJira: palavrasJuntas,
+        });
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -2173,7 +2179,12 @@ const TabelaCustos = ({
         <TableBody>
           {dados.ccs.map((cc, index) => {
             return (
-              <CC key={index} cc={cc} handleOnCCChange={handleOnCCChange} lendo={lendo} />
+              <CC
+                key={index}
+                cc={cc}
+                handleOnCCChange={handleOnCCChange}
+                lendo={lendo}
+              />
             );
           })}
         </TableBody>
@@ -2245,6 +2256,8 @@ const CC = ({
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -2275,17 +2288,7 @@ const CC = ({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "codigo":
-            handleOnCCChange({ ...cc, codigo: transcript });
-            break;
-          case "porcentagem":
-            handleOnCCChange({ ...cc, porcentagem: transcript });
-            break;
-          case "linkJira":
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -2300,6 +2303,20 @@ const CC = ({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "codigo":
+        handleOnCCChange({ ...cc, codigo: palavrasJuntas });
+        break;
+      case "porcentagem":
+        handleOnCCChange({ ...cc, porcentagem: palavrasJuntas });
+        break;
+      case "linkJira":
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -2530,6 +2547,8 @@ const CustosRow = ({
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -2560,26 +2579,7 @@ const CustosRow = ({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "tipoDespesa":
-            handleOnCustoChange({ ...custo, tipoDespesa: transcript });
-            break;
-          case "porcentagem":
-            break;
-          case "perfilDespesa":
-            handleOnCustoChange({ ...custo, perfilDespesa: transcript });
-            break;
-          case "periodoExecucao":
-            handleOnCustoChange({ ...custo, periodoExecucao: transcript });
-            break;
-          case "horas":
-            handleOnCustoChange({ ...custo, horas: transcript });
-            break;
-          case "valorHora":
-            handleOnCustoChange({ ...custo, valorHora: transcript });
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -2594,6 +2594,29 @@ const CustosRow = ({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "tipoDespesa":
+        handleOnCustoChange({ ...custo, tipoDespesa: palavrasJuntas });
+        break;
+      case "porcentagem":
+        break;
+      case "perfilDespesa":
+        handleOnCustoChange({ ...custo, perfilDespesa: palavrasJuntas });
+        break;
+      case "periodoExecucao":
+        handleOnCustoChange({ ...custo, periodoExecucao: palavrasJuntas });
+        break;
+      case "horas":
+        handleOnCustoChange({ ...custo, horas: palavrasJuntas });
+        break;
+      case "valorHora":
+        handleOnCustoChange({ ...custo, valorHora: palavrasJuntas });
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -2980,6 +3003,8 @@ const Beneficio = ({
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -3010,16 +3035,7 @@ const Beneficio = ({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "valorMensal":
-            handleOnBeneficioChange({
-              ...beneficio,
-              valor_mensal: event.target.value,
-            });
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -3034,6 +3050,19 @@ const Beneficio = ({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "valorMensal":
+        handleOnBeneficioChange({
+          ...beneficio,
+          valor_mensal: palavrasJuntas,
+        });
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {

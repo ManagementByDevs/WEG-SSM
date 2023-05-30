@@ -537,6 +537,8 @@ const Chat = (props) => {
 
   const [localClicado, setLocalClicado] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -567,16 +569,7 @@ const Chat = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClicado) {
-          case "titulo":
-            setPesquisaContato(transcript);
-            break;
-          case "mensagem":
-            setMensagem({ ...mensagem, texto: transcript });
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
         // setValorPesquisa(transcript);
       };
 
@@ -592,6 +585,19 @@ const Chat = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClicado) {
+      case "titulo":
+        setPesquisaContato(palavrasJuntas);
+        break;
+      case "mensagem":
+        setMensagem({ ...mensagem, texto: palavrasJuntas });
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -668,7 +674,6 @@ const Chat = (props) => {
           onCancelClick={fecharModalCancelarChat}
           textoBotao={"sim"}
           lendo={props.lendo}
-           
         />
       )}
       {abrirModalReabrirChat && (
@@ -680,7 +685,6 @@ const Chat = (props) => {
           onCancelClick={fecharModalAbrirChat}
           textoBotao={"sim"}
           lendo={props.lendo}
-           
         />
       )}
       <FundoComHeader lendo={props.lendo}>
@@ -693,7 +697,6 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
           lendo={props.lendo}
-           
         />
         {/* Feedback Não navegador incompativel */}
         <Feedback
@@ -704,7 +707,6 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
           lendo={props.lendo}
-           
         />
         {/* Feedback Chat encerrado com sucesso */}
         <Feedback
@@ -715,7 +717,6 @@ const Chat = (props) => {
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
           lendo={props.lendo}
-           
         />
         {/* Feedback Anexo pesado */}
         <Feedback
@@ -726,7 +727,6 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.chat.anexoMuitoPesado}
           lendo={props.lendo}
-           
         />
         {/* Feedback Chat reaberto com sucesso */}
         <Feedback
@@ -737,7 +737,6 @@ const Chat = (props) => {
           status={"sucesso"}
           mensagem={texts.chat.chatReaberto}
           lendo={props.lendo}
-           
         />
         <Box className="p-2">
           <Caminho

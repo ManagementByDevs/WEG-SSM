@@ -1087,6 +1087,8 @@ const HomeGerencia = (props) => {
 
   const [escutar, setEscutar] = useState(false);
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -1112,12 +1114,7 @@ const HomeGerencia = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        console.log("teste: ", valorPesquisa);
-        if (valorPesquisa == "") {
-          setValorPesquisa(transcript);
-        } else {
-          setValorPesquisa(valorPesquisa + " " + transcript);
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -1130,6 +1127,10 @@ const HomeGerencia = (props) => {
       setFeedbackErroNavegadorIncompativel(true);
     }
   };
+
+  useEffect(() => {
+    setValorPesquisa(palavrasJuntas);
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
