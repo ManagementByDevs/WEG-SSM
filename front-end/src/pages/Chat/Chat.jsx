@@ -650,6 +650,7 @@ const Chat = (props) => {
     if (props.lendo && textoLeitura !== "") {
       if ("speechSynthesis" in window) {
         synthesis.speak(utterance);
+        // setTextoLeitura("");
       }
     } else {
       finalizarLeitura();

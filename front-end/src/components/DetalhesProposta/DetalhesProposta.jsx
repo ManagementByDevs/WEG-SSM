@@ -1,5 +1,19 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import { Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Menu,
+  MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -35,11 +49,10 @@ const DetalhesProposta = ({
   parecerInformacao = "",
   parecerDG = "",
   parecerInformacaoDG = "",
-  setDadosProposta = () => { },
-  setFeedbackEditSuccess = () => { },
+  setDadosProposta = () => {},
+  setFeedbackEditSuccess = () => {},
   lendo,
 }) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -207,38 +220,31 @@ const DetalhesProposta = ({
     });
   }, []);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   if (Object.values(proposta).some((value) => value === undefined))
     return <></>;
@@ -376,8 +382,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.solicitante?.nome +
-                    " - " +
-                    proposta.solicitante?.departamento?.nome
+                      " - " +
+                      proposta.solicitante?.departamento?.nome
                   )
                 }
               >
@@ -400,8 +406,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.buSolicitante?.siglaBu +
-                    " - " +
-                    proposta.buSolicitante?.nomeBu
+                      " - " +
+                      proposta.buSolicitante?.nomeBu
                   )
                 }
               >
@@ -424,8 +430,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.gerente?.nome +
-                    " - " +
-                    proposta.gerente?.departamento?.nome
+                      " - " +
+                      proposta.gerente?.departamento?.nome
                   )
                 }
               >
@@ -451,8 +457,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.forum?.siglaForum +
-                      " - " +
-                      proposta.forum?.nomeForum
+                        " - " +
+                        proposta.forum?.nomeForum
                     )
                   }
                 >
@@ -492,8 +498,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.secaoTI.siglaSecao +
-                    " - " +
-                    proposta.secaoTI.nomeSecao
+                      " - " +
+                      proposta.secaoTI.nomeSecao
                   )
                 }
               >
@@ -591,7 +597,9 @@ const DetalhesProposta = ({
               </Typography>
               <Box className="mx-4">
                 {proposta.tabelaCustos?.map((tabela, index) => {
-                  return <TabelaCustos key={index} dados={tabela} lendo={lendo} />;
+                  return (
+                    <TabelaCustos key={index} dados={tabela} lendo={lendo} />
+                  );
                 })}
               </Box>
             </Box>
@@ -707,12 +715,12 @@ const DetalhesProposta = ({
                     DateService.getTodaysDateUSFormat(
                       DateService.getDateByMySQLFormat(proposta.inicioExecucao)
                     ) +
-                    " " +
-                    texts.detalhesProposta.ate +
-                    " " +
-                    DateService.getTodaysDateUSFormat(
-                      DateService.getDateByMySQLFormat(proposta.fimExecucao)
-                    )
+                      " " +
+                      texts.detalhesProposta.ate +
+                      " " +
+                      DateService.getTodaysDateUSFormat(
+                        DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                      )
                   )
                 }
               >
@@ -741,8 +749,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.paybackValor +
-                      " " +
-                      proposta.paybackTipo.toLowerCase()
+                        " " +
+                        proposta.paybackTipo.toLowerCase()
                     )
                   }
                 >
@@ -860,7 +868,6 @@ const DetalhesProposta = ({
                 />
               </Box>
             </Box>
-
           </Box>
         </Box>
       </Box>
@@ -886,45 +893,37 @@ const TabelaCustos = ({
   },
   lendo = false,
 }) => {
-
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Paper className="w-full mt-2 mb-6" square>
@@ -991,7 +990,14 @@ const TabelaCustos = ({
         </TableHead>
         <TableBody>
           {dados.custos.map((custo, index) => {
-            return <CustosRow key={index} custo={custo} lendo={lendo} despesa={dados} />;
+            return (
+              <CustosRow
+                key={index}
+                custo={custo}
+                lendo={lendo}
+                despesa={dados}
+              />
+            );
           })}
         </TableBody>
       </Table>
@@ -1060,7 +1066,6 @@ const CustosRow = ({
   },
   lendo = false,
 }) => {
-
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1093,44 +1098,37 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-        style: "currency",
-        currency: tipoMoeda,
-      })
+          style: "currency",
+          currency: tipoMoeda,
+        })
       : 0.0;
   };
-
-  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <TableRow>
@@ -1202,8 +1200,6 @@ const Beneficio = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
 
@@ -1212,33 +1208,28 @@ const Beneficio = ({
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   // Verifica se o benefício é do tipo qualitativo
   useEffect(() => {
@@ -1316,7 +1307,7 @@ const Beneficio = ({
                 onClick={() =>
                   lerTexto(
                     beneficio.tipoBeneficio[0].toUpperCase() +
-                    beneficio.tipoBeneficio.substring(1).toLowerCase()
+                      beneficio.tipoBeneficio.substring(1).toLowerCase()
                   )
                 }
               >
@@ -1363,12 +1354,12 @@ const Beneficio = ({
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
-  emAprovacao = false
+  emAprovacao = false,
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO" && emAprovacao)
     return (
@@ -1387,12 +1378,12 @@ const ParecerComissao = ({
 // Chamar o parecer da DG
 const ParecerDG = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
-  emAprovacao = false
+  emAprovacao = false,
 }) => {
   if (proposta.status == "ASSESSMENT_DG" && emAprovacao)
     return (
@@ -1411,8 +1402,8 @@ const ParecerDG = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
@@ -1423,38 +1414,31 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Box>
@@ -1563,38 +1547,31 @@ const ParecerComissaoOnlyRead = ({
     }
   };
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Box>
@@ -1628,8 +1605,8 @@ const ParecerComissaoOnlyRead = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
@@ -1710,38 +1687,31 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
       : texts.detalhesProposta.semParecer;
   };
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
-      setTextoLeitura(escrita);
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
     }
   };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <Box>
@@ -1774,8 +1744,8 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  getCorStatus = () => { },
+  setProposta = () => {},
+  getCorStatus = () => {},
   lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
@@ -1872,7 +1842,12 @@ const StatusProposta = ({
       // Salvamento de histórico
       ExportPdfService.exportProposta(response.id).then((file) => {
         let arquivo = new Blob([file], { type: "application/pdf" });
-        PropostaService.addHistorico(response.id, "Status Editado para " + getStatusFormatted(newStatus), arquivo, CookieService.getUser().id).then(() => { });
+        PropostaService.addHistorico(
+          response.id,
+          "Status Editado para " + getStatusFormatted(newStatus),
+          arquivo,
+          CookieService.getUser().id
+        ).then(() => {});
       });
     });
   };
@@ -1928,7 +1903,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         lendo={lendo}
       />
       <Menu
