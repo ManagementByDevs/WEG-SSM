@@ -434,7 +434,6 @@ const HomeGerencia = (props) => {
     verificarFeedbacks();
     buscarUsuario();
     buscarFiltros();
-    // inscreverSocket();
   }, []);
 
   useEffect(() => {
@@ -1176,10 +1175,7 @@ const HomeGerencia = (props) => {
   }, [textoLeitura]);
 
   return (
-    <FundoComHeader
-      lendo={props.lendo}
-        
-    >
+    <FundoComHeader lendo={props.lendo}>
       {/* {!fecharChatMinimizado && (
         <ChatMinimizado fecharChatMinimizado={fecharChatMinimizado} setFecharChatMinimizado={setFecharChatMinimizado}/>
       )} */}
@@ -1243,7 +1239,6 @@ const HomeGerencia = (props) => {
           handleOnCancelClickDeletePauta();
         }}
         lendo={props.lendo}
-         
       />
 
       {/* Div container */}
@@ -1272,7 +1267,6 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
           lendo={props.lendo}
-           
         />
         {/* Feedback Não navegador incompativel */}
         <Feedback
@@ -1283,7 +1277,6 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
           lendo={props.lendo}
-           
         />
         {/* Feedback Não pode abrir chat com você mesmo */}
         <Feedback
@@ -1294,7 +1287,6 @@ const HomeGerencia = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback11}
           lendo={props.lendo}
-           
         />
         {/* Feedback ata publicada */}
         <Feedback
@@ -1305,7 +1297,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback1}
           lendo={props.lendo}
-           
         />
 
         {/* Feedback ata criada */}
@@ -1317,7 +1308,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback8}
           lendo={props.lendo}
-           
         />
 
         {/* Feedback propostas atualizadas */}
@@ -1329,7 +1319,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback9}
           lendo={props.lendo}
-           
         />
 
         {/* Feedback demanda criada  */}
@@ -1341,7 +1330,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback10}
           lendo={props.lendo}
-           
         />
 
         <Feedback
@@ -1352,7 +1340,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback2}
           lendo={props.lendo}
-           
         />
 
         <Feedback
@@ -1363,7 +1350,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback3}
           lendo={props.lendo}
-           
         />
 
         <Feedback
@@ -1374,7 +1360,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback4}
           lendo={props.lendo}
-           
         />
 
         <Feedback
@@ -1385,7 +1370,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback5}
           lendo={props.lendo}
-           
         />
 
         {/* Feedback pauta deletada */}
@@ -1397,7 +1381,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback6}
           lendo={props.lendo}
-           
         />
         {/* Feedback proposta atualizada */}
         <Feedback
@@ -1408,7 +1391,6 @@ const HomeGerencia = (props) => {
           status={"sucesso"}
           mensagem={texts.homeGerencia.feedback.feedback7}
           lendo={props.lendo}
-           
         />
 
         {/* Div container para o conteúdo da home */}

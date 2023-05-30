@@ -45,7 +45,7 @@ const Notificacao = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   const [usuario, setUsuario] = useState(null);
 
@@ -126,6 +126,22 @@ const Notificacao = (props) => {
             return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
           case "REPROVADO_GERENTE":
             return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+          case "CRIADO_PROPOSTA":
+            return `${texts.notificacaoComponente.propostaDeDemanda} ${data.numeroSequencial} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+          case "APROVADO_COMISSAO":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.noForum}!`;
+          case "REPROVADO_COMISSAO":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.noForum}!`;
+          case "BUSINESS_CASE_COMISSAO":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.entrouEm} ${texts.notificacaoComponente.businessCase}!`;
+          case "MAIS_INFORMACOES_COMISSAO":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes} ${texts.notificacaoComponente.noForum}!`;
+          case "APROVADO_DG":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.naDG}!`;
+          case "REPROVADO_DG":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.naDG}!`;
+          default:
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
         }
       };
 
@@ -277,6 +293,22 @@ const Notificacao = (props) => {
         return 2;
       case "MENSAGENS":
         return 3;
+      case "CRIADO_PROPOSTA":
+        return 0;
+      case "APROVADO_COMISSAO":
+        return 0;
+      case "REPROVADO_COMISSAO":
+        return 1;
+      case "BUSINESS_CASE_COMISSAO":
+        return 2;
+      case "MAIS_INFORMACOES_COMISSAO":
+        return 2;
+      case "APROVADO_DG":
+        return 0;
+      case "REPROVADO_DG":
+        return 1;
+      default:
+        return 2;
     }
   };
 

@@ -12,6 +12,14 @@ class NotificacaoService {
   reprovadoGerente = "REPROVADO_GERENTE";
   criadoProposta = "CRIADO_PROPOSTA";
 
+  aprovadoComissao = "APROVADO_COMISSAO";
+  reprovadoComissao = "REPROVADO_COMISSAO";
+  businessComissao = "BUSINESS_CASE_COMISSAO";
+  maisInformacoesComissao = "MAIS_INFORMACOES_COMISSAO";
+
+  aprovadoDG = "APROVADO_DG";
+  reprovadoDG = "REPROVADO_DG";
+
   async getByUserId(userId, page) {
     return (
       await axios.get(`${notificacaoPath}/user/${userId}?${page}`, {

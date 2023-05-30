@@ -65,6 +65,22 @@ const Notificacao = ({
         return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.por} ${notificacao.remetente.nome}!`;
       case "REPROVADO_GERENTE":
         return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.por} ${notificacao.remetente.nome}!`;
+      case "CRIADO_PROPOSTA":
+        return `${texts.notificacaoComponente.propostaDeDemanda} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.por} ${notificacao.remetente.nome}!`;
+      case "APROVADO_COMISSAO":
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.noForum}!`;
+      case "REPROVADO_COMISSAO":
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.noForum}!`;
+      case "BUSINESS_CASE_COMISSAO":
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.entrouEm} ${texts.notificacaoComponente.businessCase}!`;
+      case "MAIS_INFORMACOES_COMISSAO":
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes} ${texts.notificacaoComponente.noForum}!`;
+      case "APROVADO_DG":
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.naDG}!`;
+      case "REPROVADO_DG":
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.naDG}!`;
+      default:
+        return `${texts.notificacaoComponente.demandaDeNumero} ${notificacao.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes} ${texts.notificacaoComponente.por} ${notificacao.remetente.nome}!`;
     }
   };
 

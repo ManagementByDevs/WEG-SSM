@@ -395,7 +395,7 @@ const DetalhesDemanda = (props) => {
         excluirBeneficiosRemovidos();
         setDemandaEmEdicao(false);
         props.updateDemandaProps(response);
-        
+
         salvarHistorico("Demanda Editada");
         setFeedbackDemandaEditada(true);
       });
@@ -811,7 +811,6 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-         
       />
       {/* Feedback demanda Editada */}
       <Feedback
@@ -830,7 +829,6 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-         
       />
       <Feedback
         open={feedbackFacaAlteracao}
@@ -838,7 +836,6 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
         lendo={props.lendo}
-         
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
@@ -846,7 +843,6 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
         lendo={props.lendo}
-         
       />
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
@@ -854,7 +850,6 @@ const DetalhesDemanda = (props) => {
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
         lendo={props.lendo}
-         
       />
       <ModalRecusarDemanda
         open={openModalRecusa}
@@ -868,7 +863,6 @@ const DetalhesDemanda = (props) => {
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         lendo={props.lendo}
-         
       />
       <ModalConfirmacao
         open={openModal}
@@ -879,7 +873,6 @@ const DetalhesDemanda = (props) => {
         textoBotao="sim"
         atualizarTexto={true}
         lendo={props.lendo}
-         
       />
       <ModalConfirmacao
         open={modalAprovarDemanda}
@@ -888,7 +881,6 @@ const DetalhesDemanda = (props) => {
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
         lendo={props.lendo}
-         
       />
       <Box
         id="primeiro"
@@ -922,7 +914,10 @@ const DetalhesDemanda = (props) => {
         </Box>
         {!editar ? (
           <>
-            <Box className="flex justify-center">
+            <Box>
+              <Typography fontSize={FontConfig.medium} fontWeight={600}>
+                # {props.dados.id}
+              </Typography>
               <Typography
                 fontSize={FontConfig.title}
                 sx={{

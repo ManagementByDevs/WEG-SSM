@@ -16,7 +16,7 @@ const Demanda = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // UseState determinando o estado do modal de motivo recusa
   const [modalMotivoRecusa, setModalMotivoRecusa] = useState(false);
@@ -85,7 +85,7 @@ const Demanda = (props) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -127,7 +127,6 @@ const Demanda = (props) => {
           setOpen={setModalMotivoRecusa}
           motivoRecusa={props.demanda?.motivoRecusa}
           lendo={props.lendo}
-           
         />
       )}
       <Paper
