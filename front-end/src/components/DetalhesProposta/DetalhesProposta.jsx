@@ -1,5 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import {Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography,} from "@mui/material";
+
+import { Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -39,6 +40,7 @@ const DetalhesProposta = ({
   setFeedbackEditSuccess = () => { },
   lendo,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -879,10 +881,10 @@ const DetalhesProposta = ({
 const TabelaCustos = ({
   dados = {
     id: 0,
+    tipoDespesa: "",
     custos: [
       {
         id: 0,
-        tipoDespesa: "",
         perfilDespesa: "",
         periodoExecucao: 0,
         horas: 0,
@@ -893,6 +895,7 @@ const TabelaCustos = ({
   },
   lendo = false,
 }) => {
+
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -997,7 +1000,7 @@ const TabelaCustos = ({
         </TableHead>
         <TableBody>
           {dados.custos.map((custo, index) => {
-            return <CustosRow key={index} custo={custo} lendo={lendo} />;
+            return <CustosRow key={index} custo={custo} lendo={lendo} despesa={dados} />;
           })}
         </TableBody>
       </Table>
@@ -1055,6 +1058,7 @@ const TabelaCustos = ({
 
 // Mostrar os custos na proposta
 const CustosRow = ({
+  despesa = { tipoDespesa: "" },
   custo = {
     id: 0,
     tipoDespesa: "",
@@ -1065,6 +1069,7 @@ const CustosRow = ({
   },
   lendo = false,
 }) => {
+
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1139,6 +1144,9 @@ const CustosRow = ({
   return (
     <TableRow>
       <td className="p-2 text-center">
+        <Typography fontSize={FontConfig.default}>
+          {despesa.tipoDespesa}
+        </Typography>
         <Typography
           fontSize={FontConfig.default}
           onClick={() => lerTexto(custo.tipoDespesa)}

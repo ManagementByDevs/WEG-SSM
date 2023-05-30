@@ -24,6 +24,7 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 const DetalhesPropostaPagina = ({
   lendo = false,
 }) => {
+  
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
 
