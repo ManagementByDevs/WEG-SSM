@@ -3,7 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras";
 
-import { Box, Typography, Button, Divider, Tooltip, IconButton, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import { keyframes } from "@emotion/react";
 
@@ -30,10 +37,10 @@ import AtaService from "../../service/ataService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
+import NotificacaoService from "../../service/notificacaoService";
 
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
-
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -229,7 +236,7 @@ const DetalhesPauta = (props) => {
               "Removida da Pauta #" + newPauta.numeroSequencial,
               arquivo,
               CookieService.getUser().id
-            ).then(() => { });
+            ).then(() => {});
           });
         }
       );
@@ -324,6 +331,40 @@ const DetalhesPauta = (props) => {
     }
   };
 
+  /** Cria a notificacao da demanda */
+  const sendNotification = (propostaAux) => {
+    let tipoNotificacao;
+
+    switch (propostaAux.parecerComissao) {
+      case "APROVADO":
+        tipoNotificacao = NotificacaoService.aprovadoComissao;
+        break;
+      case "REPROVADO":
+        tipoNotificacao = NotificacaoService.reprovadoComissao;
+        break;
+      case "BUSINESS_CASE":
+        tipoNotificacao = NotificacaoService.businessComissao;
+        break;
+      case "MAIS_INFORMACOES":
+        tipoNotificacao = NotificacaoService.maisInformacoesComissao;
+        break;
+      default:
+        tipoNotificacao = NotificacaoService.reprovadoComissao;
+        break;
+    }
+
+    // Criar notificação
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        tipoNotificacao,
+        JSON.parse(JSON.stringify(propostaAux.demanda)),
+        CookieService.getUser().id
+      )
+    ).catch((error) =>
+      console.log("Um erro ocorreu na criação de uma notificação: ", error)
+    );
+  };
+
   const handlePautaWithNoApprovedProposals = () => {
     for (let proposta of pauta.propostas) {
       PropostaService.atualizacaoAta(
@@ -342,11 +383,11 @@ const DetalhesPauta = (props) => {
                 "Proposta Reprovada",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 response.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "MAIS_INFORMACOES":
               PropostaService.addHistorico(
@@ -354,7 +395,7 @@ const DetalhesPauta = (props) => {
                 "Enviada para Edição",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "BUSINESS_CASE":
               PropostaService.addHistorico(
@@ -362,10 +403,12 @@ const DetalhesPauta = (props) => {
                 "Enviada para Business Case",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               break;
           }
         });
+
+        sendNotification(JSON.parse(JSON.stringify(proposta)));
       });
     }
 
@@ -387,9 +430,9 @@ const DetalhesPauta = (props) => {
             "Proposta Reprovada",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
           DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(
-            () => { }
+            () => {}
           );
           break;
         case "MAIS_INFORMACOES":
@@ -398,7 +441,7 @@ const DetalhesPauta = (props) => {
             "Enviada para Edição",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
           break;
         case "BUSINESS_CASE":
           PropostaService.addHistorico(
@@ -406,7 +449,7 @@ const DetalhesPauta = (props) => {
             "Entrada em Business Case",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
           break;
         case "APROVADO":
           PropostaService.addHistorico(
@@ -414,7 +457,7 @@ const DetalhesPauta = (props) => {
             "Adicionada na Ata #" + idAta,
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
           break;
       }
     });
@@ -428,6 +471,7 @@ const DetalhesPauta = (props) => {
         proposta.parecerComissao,
         proposta.parecerInformacao
       ).then((response) => {
+        sendNotification(JSON.parse(JSON.stringify(proposta)));
         salvarHistoricoAprovacao(response, idAta);
       });
     }
@@ -547,7 +591,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         lendo={props.lendo}
       />
       <Box className="p-2" sx={{ minWidth: "60rem" }}>
@@ -593,7 +637,7 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Número sequencial */}
               <Typography
-                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.numeroSequencial +
@@ -606,7 +650,7 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Comissão */}
               <Typography
-                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.comissao +
@@ -620,7 +664,7 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Data da reunião da comissão */}
               <Typography
-                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.reuniaoDoForum +
@@ -638,9 +682,13 @@ const DetalhesPauta = (props) => {
               </Typography>
               {/* Data da reunião da DG */}
               <Typography
-                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
+                sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
                 onClick={() => {
-                  lerTexto(texts.detalhesPauta.analistaResponsavel + ": " + pauta.analistaResponsavel.nome);
+                  lerTexto(
+                    texts.detalhesPauta.analistaResponsavel +
+                      ": " +
+                      pauta.analistaResponsavel.nome
+                  );
                 }}
               >
                 {texts.detalhesPauta.analistaResponsavel}:{" "}

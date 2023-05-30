@@ -913,7 +913,10 @@ const DetalhesDemanda = (props) => {
         </Box>
         {!editar ? (
           <>
-            <Box className="flex justify-center">
+            <Box>
+              <Typography fontSize={FontConfig.medium} fontWeight={600}>
+                # {props.dados.id}
+              </Typography>
               <Typography
                 fontSize={FontConfig.title}
                 sx={{

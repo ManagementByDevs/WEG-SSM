@@ -11,7 +11,17 @@ public enum TipoNotificacao {
     MENSAGENS("Mensagens"),
     APROVADO_GERENTE("Aprovado Gerente"),
     REPROVADO_GERENTE("Reprovado Gerente"),
-    CRIADO_PROPOSTA("Criado Proposta");
+    CRIADO_PROPOSTA("Criado Proposta"),
+    APROVADO_COMISSAO("Aprovado Comissão"),
+    REPROVADO_COMISSAO("Reprovado Comissão"),
+    BUSINESS_CASE_COMISSAO("Business Case Comissão"),
+    MAIS_INFORMACOES_COMISSAO("Mais Informações Comissão"),
+    APROVADO_DG("Aprovado DG"),
+    REPROVADO_DG("Reprovado DG"),
+    ASSESSMENT_ANALISTA("Assessment Analista"),
+    BUSINESS_CASE_ANALISTA("Business Case Analista"),
+    CANCELLED_ANALISTA("Cancelled Analista"),
+    DONE_ANALISTA("Done Analista");
 
     String tipo;
 }

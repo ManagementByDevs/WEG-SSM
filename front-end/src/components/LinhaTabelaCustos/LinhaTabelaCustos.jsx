@@ -159,63 +159,7 @@ const LinhaTabelaCustos = (props) => {
 
   return (
     <TableRow className="border-b">
-      <td align="center" className="pt-5 pb-5">
-        <Box
-          className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
-          sx={{
-            width: "80%",
-            backgroundColor: corFundoTextArea,
-            marginTop: "0.8rem",
-          }}
-        >
-          <TextareaAutosize
-            style={{
-              width: "95%",
-              resize: "none",
-              textAlign: "center",
-              backgroundColor: "transparent",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-            fontSize={FontConfig.medium}
-            className="flex outline-none"
-            placeholder={texts.linhaTabelaCustos.digiteTipo}
-            value={props.dados.custos[props.index].tipoDespesa || ""}
-            onChange={(e) => {
-              let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].tipoDespesa =
-                e.target.value;
-              props.setCustos(aux);
-            }}
-          />
-          <Tooltip
-            className="hover:cursor-pointer"
-            title={texts.homeGerencia.gravarAudio}
-            onClick={() => {
-              startRecognition("tipoDespesa");
-            }}
-          >
-            {escutar && localClicou == "tipoDespesa" ? (
-              <MicOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "primary.main",
-                  fontSize: "1.3rem",
-                }}
-              />
-            ) : (
-              <MicNoneOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "text.secondary",
-                  fontSize: "1.3rem",
-                }}
-              />
-            )}
-          </Tooltip>
-        </Box>
-      </td>
+      
       <td align="center" className="pt-5 pb-5">
         <Box
           className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"

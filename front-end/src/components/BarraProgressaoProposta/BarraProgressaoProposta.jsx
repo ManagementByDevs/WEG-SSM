@@ -449,10 +449,6 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  useEffect(() => {
-    console.log(custos);
-  }, [custos]);
-
   // Função para passar para próxima página
   const proximaEtapa = () => {
     if (props.lendo) {
@@ -591,7 +587,6 @@ const BarraProgressaoProposta = (props) => {
       for (const custo of tabelaCustos.custos) {
         listaCustos.push({
           id: custo.id,
-          tipoDespesa: custo.tipoDespesa,
           perfilDespesa: custo.perfilDespesa,
           periodoExecucao: custo.periodoExecucao,
           horas: custo.horas,
@@ -717,16 +712,26 @@ const BarraProgressaoProposta = (props) => {
                             CookieService.getUser().id
                           )
                           .then((propostaResponse) => {
-                            console.log(propostaResponse);
-                            // Criar notificação
-                            NotificacaoService.post(
-                              NotificacaoService.createNotificationObject(
-                                NotificacaoService.criadoProposta,
-                                propostaResponse.body,
-                                CookieService.getUser().id
-                              )
+                            console.log(
+                              "Proposta response: ",
+                              propostaResponse
                             );
 
+                            try {
+                              // Criar notificação
+                              NotificacaoService.post(
+                                NotificacaoService.createNotificationObject(
+                                  NotificacaoService.criadoProposta,
+                                  dadosDemanda,
+                                  CookieService.getUser().id
+                                )
+                              );
+                            } catch (error) {
+                              console.log(
+                                "Um erro ocorreu na criação de uma notificação: ",
+                                error
+                              );
+                            }
                             localStorage.setItem("tipoFeedback", "5");
                             navigate("/");
                           });

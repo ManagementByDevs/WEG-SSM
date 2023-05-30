@@ -31,12 +31,12 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import PropostaService from "../../service/propostaService";
 import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
+import ExportPdfService from "../../service/exportPdfService";
+import NotificacaoService from "../../service/notificacaoService";
 
 import ClipLoader from "react-spinners/ClipLoader";
 import Feedback from "../Feedback/Feedback";
-
-import CookieService from "../../service/cookieService";
-import ExportPdfService from "../../service/exportPdfService";
 
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
@@ -1812,12 +1812,47 @@ const StatusProposta = ({
     return false;
   };
 
+  /** Verifica se o usuário logado pode alterar o status da proposta */
   const userHasAuthority = () => {
     let userCookie = UsuarioService.getUserCookies();
     let user = userCookie.usuario;
     if (proposta.analista.id == user.id) return true;
 
     return false;
+  };
+
+  /** Cria a notificacao da demanda */
+  const sendNotification = (propostaAux) => {
+    let tipoNotificacao;
+
+    switch (propostaAux.status) {
+      case "ASSESSMENT_APROVACAO":
+        tipoNotificacao = NotificacaoService.assessmentAnalista;
+        break;
+      case "BUSINESS_CASE":
+        tipoNotificacao = NotificacaoService.businessCaseAnalista;
+        break;
+      case "CANCELLED":
+        tipoNotificacao = NotificacaoService.cancelledAnalista;
+        break;
+      case "DONE":
+        tipoNotificacao = NotificacaoService.doneAnalista;
+        break;
+      default:
+        tipoNotificacao = NotificacaoService.assessmentAnalista;
+        break;
+    }
+
+    // Criar notificação
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        tipoNotificacao,
+        JSON.parse(JSON.stringify(propostaAux.demanda)),
+        CookieService.getUser().id
+      )
+    ).catch((error) =>
+      console.log("Um erro ocorreu na criação de uma notificação: ", error)
+    );
   };
 
   // Função para editar o status da proposta
@@ -1838,6 +1873,11 @@ const StatusProposta = ({
     // Requisição para atualizar a proposta com o novo status
     PropostaService.atualizarStatus(proposta.id, newStatus).then((response) => {
       setProposta({ ...proposta, status: response.status });
+
+      // Criar notificação
+      sendNotification(
+        JSON.parse(JSON.stringify({ ...proposta, status: response.status }))
+      );
 
       // Salvamento de histórico
       ExportPdfService.exportProposta(response.id).then((file) => {

@@ -23,9 +23,9 @@ import ExportPdfService from "../../service/exportPdfService";
 import PropostaService from "../../service/propostaService";
 import AtaService from "../../service/ataService";
 import DateService from "../../service/dateService";
-
 import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
+import NotificacaoService from "../../service/notificacaoService";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 // Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
@@ -72,7 +72,8 @@ const DetalhesAta = (props) => {
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   /** Modal de confirmação para a publicação de uma ata */
-  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] = useState(false);
+  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] =
+    useState(false);
 
   // useEffect usado para feedback
   useEffect(() => {
@@ -197,6 +198,34 @@ const DetalhesAta = (props) => {
     return isFilled;
   };
 
+  /** Cria a notificacao da demanda */
+  const sendNotification = (propostaAux) => {
+    let tipoNotificacao;
+
+    switch (propostaAux.parecerDG) {
+      case "APROVADO":
+        tipoNotificacao = NotificacaoService.aprovadoDG;
+        break;
+      case "REPROVADO":
+        tipoNotificacao = NotificacaoService.reprovadoDG;
+        break;
+      default:
+        tipoNotificacao = NotificacaoService.reprovadoDG;
+        break;
+    }
+
+    // Criar notificação
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        tipoNotificacao,
+        JSON.parse(JSON.stringify(propostaAux.demanda)),
+        CookieService.getUser().id
+      )
+    ).catch((error) =>
+      console.log("Um erro ocorreu na criação de uma notificação: ", error)
+    );
+  };
+
   // Atualiza a lista de propostas passada por parâmetro
   const updatePropostas = (
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
@@ -217,11 +246,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -229,13 +258,15 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => { }
+                () => {}
               );
               break;
           }
         });
+
+        sendNotification(JSON.parse(JSON.stringify(proposta)));
       });
     }
   };
@@ -257,18 +288,17 @@ const DetalhesAta = (props) => {
     }
 
     setModalConfirmacaoPublicacao(true);
-  }
+  };
 
   // Função de criar ata e enviar feedback
   const publicarAta = () => {
-
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };
     ataPublished.publicadaDg = true;
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
+    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
 
     navigate("/", { state: { feedback: true } });
   };
@@ -350,17 +380,17 @@ const DetalhesAta = (props) => {
 
       {/* Modal de confirmação de publicar a ata */}
       {modalConfirmacaoPublicacao && (
-            <ModalConfirmacao
-              open={true}
-              setOpen={setModalConfirmacaoPublicacao}
-              textoModal={"publicarAta"}
-              textoBotao={"sim"}
-              onConfirmClick={publicarAta}
-              lendo={props.lendo}
-              texto={props.texto}
-              setTexto={props.setTexto}
-            />
-          )}
+        <ModalConfirmacao
+          open={true}
+          setOpen={setModalConfirmacaoPublicacao}
+          textoModal={"publicarAta"}
+          textoBotao={"sim"}
+          onConfirmClick={publicarAta}
+          lendo={props.lendo}
+          texto={props.texto}
+          setTexto={props.setTexto}
+        />
+      )}
 
       <Box className="p-2">
         {/* caminho da página */}
@@ -409,8 +439,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                    ": " +
-                    ata.numeroSequencial
+                      ": " +
+                      ata.numeroSequencial
                   );
                 }}
               >
@@ -422,8 +452,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
-                    ": " +
-                    DateService.getTodaysDateUSFormat(ata.dataReuniao)
+                      ": " +
+                      DateService.getTodaysDateUSFormat(ata.dataReuniao)
                   );
                 }}
               >
@@ -437,8 +467,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                    ": " +
-                    trazerHoraData(ata.dataReuniao)
+                      ": " +
+                      trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -452,8 +482,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                    ": " +
-                    ata.analistaResponsavel.nome
+                      ": " +
+                      ata.analistaResponsavel.nome
                   );
                 }}
               >

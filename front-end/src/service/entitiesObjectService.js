@@ -63,7 +63,7 @@ class EntitiesObjectService {
       busBeneficiadas: [this.bu()],
       codigoPPM: 0,
       data: "",
-      demanda: 0,
+      demanda: {},
       departamento: this.departamento(),
       escopo: 0,
       fimExecucao: "",
