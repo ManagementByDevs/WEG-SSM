@@ -149,13 +149,13 @@ const BeneficiosDetalheDemanda = (props) => {
   };
 
   useEffect(() => {
-    props.setBeneficio(
-      {
-        ...props.beneficio,
-        valor_mensal: palavrasJuntas,
-      },
-      props.index
-    );
+    // props.setBeneficio(
+    //   {
+    //     ...props.beneficio,
+    //     valor_mensal: palavrasJuntas,
+    //   },
+    //   props.index
+    // );
   }, [palavrasJuntas]);
 
   const stopRecognition = () => {

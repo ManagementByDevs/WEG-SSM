@@ -591,7 +591,6 @@ const BarraProgressaoProposta = (props) => {
       for (const custo of tabelaCustos.custos) {
         listaCustos.push({
           id: custo.id,
-          tipoDespesa: custo.tipoDespesa,
           perfilDespesa: custo.perfilDespesa,
           periodoExecucao: custo.periodoExecucao,
           horas: custo.horas,

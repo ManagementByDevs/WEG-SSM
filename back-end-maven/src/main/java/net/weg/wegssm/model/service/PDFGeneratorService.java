@@ -487,8 +487,9 @@ public class PDFGeneratorService {
             cell.setPhrase(new Phrase("Horas", font));
             tableCustos.addCell(cell);
 
+            int tamanhoLista = 0;
             for (Custo custos : tableCusto.getCustos()) {
-//                tableCustos.addCell(custos.getTipoDespesa());
+                tableCustos.addCell(tableCusto.getTipoDespesa());
                 tableCustos.addCell(custos.getPerfilDespesa());
                 tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                 tableCustos.addCell(String.valueOf(custos.getHoras()));
