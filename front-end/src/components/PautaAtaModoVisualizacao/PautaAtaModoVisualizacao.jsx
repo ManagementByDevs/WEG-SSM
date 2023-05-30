@@ -31,7 +31,7 @@ const PautaAtaModoVisualizacao = ({
   lendo = false,
 }) => {
   if (listaPautas.length == 0) {
-    return <NadaEncontrado />;
+    return <NadaEncontrado lendo = {lendo}/>;
   }
 
   if (nextModoVisualizacao == "TABLE")
@@ -50,6 +50,7 @@ const PautaAtaModoVisualizacao = ({
       onItemClick={onItemClick}
       isAta={isAta}
       setPautaSelecionada={setPautaSelecionada}
+      lendo = {lendo}
     />
   );
 };
@@ -68,7 +69,7 @@ const PautaTable = ({
   onItemClick,
   isAta,
   setPautaSelecionada = () => {},
-  lendo,
+  lendo = false,
 }) => {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -140,18 +141,24 @@ const PautaTable = ({
             <th className="text-white p-2 width-75/1000">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => {
-                  lerTexto(texts.pautaAtaModoVisualizacao.numeroSequencial);
+                onClick={(e) => {
+                  if (lendo) {
+                    e.stopPropagation();
+                    lerTexto(texts.pautaAtaModoVisualizacao.numeroSequencial);
+                  }
                 }}
               >
-                {texts.pautaAtaModoVisualizacao.numeroSequencial}
+                {texts.pautaAtaModoVisualizacao.numeroSequencial} 
               </Typography>
             </th>
             <th className="text-left text-white p-3">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => {
-                  lerTexto(texts.pautaAtaModoVisualizacao.comissao);
+                onClick={(e) => {
+                  if (lendo) {
+                    e.stopPropagation();
+                    lerTexto(texts.pautaAtaModoVisualizacao.comissao);
+                  }
                 }}
               >
                 {texts.pautaAtaModoVisualizacao.comissao}
@@ -160,8 +167,13 @@ const PautaTable = ({
             <th className="text-left text-white p-3 width-3/10">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => {
-                  lerTexto(texts.pautaAtaModoVisualizacao.analistaResponsavel);
+                onClick={(e) => {
+                  if (lendo) {
+                    e.stopPropagation();
+                    lerTexto(
+                      texts.pautaAtaModoVisualizacao.analistaResponsavel
+                    );
+                  }
                 }}
               >
                 {texts.pautaAtaModoVisualizacao.analistaResponsavel}
@@ -170,8 +182,11 @@ const PautaTable = ({
             <th className="text-center text-white p-3 width-2/10">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => {
-                  lerTexto(texts.pautaAtaModoVisualizacao.data);
+                onClick={(e) => {
+                  if (lendo) {
+                    e.stopPropagation();
+                    lerTexto(texts.pautaAtaModoVisualizacao.data);
+                  }
                 }}
               >
                 {texts.pautaAtaModoVisualizacao.data}
@@ -196,8 +211,11 @@ const PautaTable = ({
                 <Typography
                   className="truncate"
                   fontSize={FontConfig.medium}
-                  onClick={() => {
-                    lerTexto(row.numeroSequencial);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.stopPropagation();
+                      lerTexto(row.numeroSequencial);
+                    }
                   }}
                 >
                   {row.numeroSequencial}
@@ -207,8 +225,11 @@ const PautaTable = ({
                 <Typography
                   className="truncate"
                   fontSize={FontConfig.medium}
-                  onClick={() => {
-                    lerTexto(row.comissao.nomeForum);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.stopPropagation();
+                      lerTexto(row.comissao.nomeForum);
+                    }
                   }}
                 >
                   {row.comissao.siglaForum} - {row.comissao.nomeForum}
@@ -221,8 +242,11 @@ const PautaTable = ({
                 <Typography
                   className="truncate"
                   fontSize={FontConfig.medium}
-                  onClick={() => {
-                    lerTexto(row.analistaResponsavel?.nome);
+                  onClick={(e) => {
+                    if (lendo) {
+                      e.stopPropagation();
+                      lerTexto(row.analistaResponsavel?.nome);
+                    }
                   }}
                 >
                   {row.analistaResponsavel?.nome}
@@ -236,8 +260,11 @@ const PautaTable = ({
                   <Typography
                     className="tabela-linha-pauta-data truncate"
                     fontSize={FontConfig.medium}
-                    onClick={() => {
-                      lerTexto(getDataFormatada(row.dataReuniao));
+                    onClick={(e) => {
+                      if (lendo) {
+                        e.stopPropagation();
+                        lerTexto(getDataFormatada(row.dataReuniao));
+                      }
                     }}
                   >
                     {getDataFormatada(row.dataReuniao)}
@@ -265,8 +292,11 @@ const PautaTable = ({
                   <Typography
                     className="truncate"
                     fontSize={FontConfig.medium}
-                    onClick={() => {
-                      lerTexto(getDataFormatada(row.dataReuniao));
+                    onClick={(e) => {
+                      if (lendo) {
+                        e.stopPropagation();
+                        lerTexto(getDataFormatada(row.dataReuniao));
+                      }
                     }}
                   >
                     {getDataFormatada(row.dataReuniao)}
@@ -386,8 +416,11 @@ const NadaEncontrado = (props) => {
       <Typography
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
-        onClick={() => {
-          lerTexto(texts.pautaAtaModoVisualizacao.nadaEncontrado);
+        onClick={(e) => {
+          if (props.lendo) {
+            e.stopPropagation();
+            lerTexto(texts.pautaAtaModoVisualizacao.nadaEncontrado);
+          }
         }}
       >
         {texts.pautaAtaModoVisualizacao.nadaEncontrado}
@@ -395,8 +428,11 @@ const NadaEncontrado = (props) => {
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
-        onClick={() => {
-          lerTexto(texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde);
+        onClick={(e) => {
+          if (props.lendo) {
+            e.stopPropagation();
+            lerTexto(texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde);
+          }
         }}
       >
         {texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde}

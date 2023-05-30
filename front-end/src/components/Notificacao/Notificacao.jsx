@@ -130,7 +130,12 @@ const Notificacao = ({
           fontSize={FontConfig.default}
           color={"text.primary"}
           sx={{ fontWeight: 600 }}
-          onClick={() => lerTexto(retornaTitulo())}
+          onClick={(e) => {
+            if (lendo) {
+              e.preventDefault();
+              lerTexto(retornaTitulo());
+            }
+          }}
         >
           {retornaTitulo()}
         </Typography>
@@ -140,25 +145,28 @@ const Notificacao = ({
           fontSize={FontConfig.small}
           color={"text.secondary"}
           sx={{ fontWeight: 600 }}
-          onClick={() => {
-            if (diferencaDias < 7 && diferencaDias > 1) {
-              lerTexto(
-                `${diferencaDias.toFixed(0) * 1 - 1} ${
-                  texts.notificacaoComponente.diasAtras
-                }`
-              );
-            } else if (diferencaDias < 1 && diferencaDias > 0) {
-              lerTexto(texts.notificacaoComponente.hoje);
-            } else if (diferencaDias > 7 && diferencaDias < 14) {
-              lerTexto(texts.notificacaoComponente.umaSemanaAtras);
-            } else if (diferencaDias > 14 && diferencaDias < 21) {
-              lerTexto(texts.notificacaoComponente.duasSemanasAtras);
-            } else if (diferencaDias > 21 && diferencaDias < 28) {
-              lerTexto(texts.notificacaoComponente.tresSemanasAtras);
-            } else if (diferencaDias > 28 && diferencaDias < 30) {
-              lerTexto(texts.notificacaoComponente.quatroSemanasAtras);
-            } else if (diferencaDias > 30) {
-              lerTexto(texts.notificacaoComponente.maisDeUmMesAtras);
+          onClick={(e) => {
+            if (lendo) {
+              e.preventDefault();
+              if (diferencaDias < 7 && diferencaDias > 1) {
+                lerTexto(
+                  `${diferencaDias.toFixed(0) * 1 - 1} ${
+                    texts.notificacaoComponente.diasAtras
+                  }`
+                );
+              } else if (diferencaDias < 1 && diferencaDias > 0) {
+                lerTexto(texts.notificacaoComponente.hoje);
+              } else if (diferencaDias > 7 && diferencaDias < 14) {
+                lerTexto(texts.notificacaoComponente.umaSemanaAtras);
+              } else if (diferencaDias > 14 && diferencaDias < 21) {
+                lerTexto(texts.notificacaoComponente.duasSemanasAtras);
+              } else if (diferencaDias > 21 && diferencaDias < 28) {
+                lerTexto(texts.notificacaoComponente.tresSemanasAtras);
+              } else if (diferencaDias > 28 && diferencaDias < 30) {
+                lerTexto(texts.notificacaoComponente.quatroSemanasAtras);
+              } else if (diferencaDias > 30) {
+                lerTexto(texts.notificacaoComponente.maisDeUmMesAtras);
+              }
             }
           }}
         >

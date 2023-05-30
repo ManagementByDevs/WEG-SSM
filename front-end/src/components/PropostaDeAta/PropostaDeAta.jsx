@@ -82,16 +82,11 @@ const PropostaDeAta = (props) => {
 
   // // ********************************************** Gravar audio **********************************************
 
-  // const [
-  //   feedbackErroNavegadorIncompativel,
-  //   setFeedbackErroNavegadorIncompativel,
-  // ] = useState(false);
-  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-  //   useState(false);
-
   const recognitionRef = useRef(null);
 
   const [escutar, setEscutar] = useState(false);
+
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
@@ -123,7 +118,8 @@ const PropostaDeAta = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        console.log("Não está salvando em nada");
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+        
         // setValorPesquisa(transcript);
       };
 
@@ -139,6 +135,10 @@ const PropostaDeAta = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    console.log("Não está salvando em nada");
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -158,33 +158,6 @@ const PropostaDeAta = (props) => {
       stopRecognition();
     }
   }, [escutar]);
-
-  {
-    /* Feedback Erro reconhecimento de voz */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroReconhecimentoVoz}
-  handleClose={() => {
-    setFeedbackErroReconhecimentoVoz(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback12}
-/> */
-  }
-  {
-    /* Feedback Não navegador incompativel */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroNavegadorIncompativel}
-  handleClose={() => {
-    setFeedbackErroNavegadorIncompativel(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback13}
-/> */
-  }
 
   // // ********************************************** Fim Gravar audio **********************************************
 

@@ -55,6 +55,8 @@ function CaixaTextoQuill({
 
   const [escutar, setEscutar] = useState(false);
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -85,7 +87,8 @@ function CaixaTextoQuill({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        onChange(transcript);
+          setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+        
       };
 
       recognition.onerror = (event) => {
@@ -100,6 +103,10 @@ function CaixaTextoQuill({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    onChange(palavrasJuntas);
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
