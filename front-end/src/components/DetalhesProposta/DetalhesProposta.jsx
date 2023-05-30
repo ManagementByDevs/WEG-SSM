@@ -1783,7 +1783,6 @@ const StatusProposta = ({
   proposta = propostaExample,
   setProposta = () => { },
   getCorStatus = () => { },
-  getStatusFormatted = () => { },
   lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
