@@ -28,7 +28,7 @@ import CookieService from "../../service/cookieService";
 import Tour from "reactour";
 
 // Tela para mostrar os escopos de demandas/propostas não finalizadas
-const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
+const Escopos = ({ lendo = false }) => {
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -332,7 +332,7 @@ const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
   };
 
   return (
-    <FundoComHeader lendo={lendo} texto={texto} setTexto={setTexto}>
+    <FundoComHeader lendo={lendo}>
       <VLibras forceOnload />
       {/* Modal de confirmação de exclusão de escopo */}
       <ModalConfirmacao
@@ -356,7 +356,7 @@ const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
       />
       <Ajuda onClick={() => setIsTourOpen(true)} />
       <Box className="p-2">
-        <Caminho lendo={lendo} texto={texto} setTexto={setTexto} />
+        <Caminho lendo={lendo} />
         {/* Div pegando width inteira para fazer o espaçamento das bordas */}
         <Box className="flex justify-center w-full">
           {/* Container conteudo */}
@@ -413,11 +413,19 @@ const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
                   >
                     {escutar ? (
                       <MicOutlinedIcon
-                        sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                        sx={{
+                          cursor: "pointer",
+                          color: "primary.main",
+                          fontSize: "1.3rem",
+                        }}
                       />
                     ) : (
                       <MicNoneOutlinedIcon
-                        sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                        sx={{
+                          cursor: "pointer",
+                          color: "text.secondary",
+                          fontSize: "1.3rem",
+                        }}
                       />
                     )}
                   </Tooltip>
@@ -459,8 +467,6 @@ const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
                 buscar={buscarEscopos}
                 isTourOpen={isTourOpen}
                 lendo={lendo}
-                texto={texto}
-                setTexto={setTexto}
               />
             </Box>
 
@@ -473,8 +479,6 @@ const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
               status={"erro"}
               mensagem={texts.homeGerencia.feedback.feedback12}
               lendo={lendo}
-              texto={texto}
-              setTexto={setTexto}
             />
             {/* Feedback Não navegador incompativel */}
             <Feedback
@@ -485,8 +489,6 @@ const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
               status={"erro"}
               mensagem={texts.homeGerencia.feedback.feedback13}
               lendo={lendo}
-              texto={texto}
-              setTexto={setTexto}
             />
             {/* Feedback de escopo deletado com sucesso */}
             <Feedback
@@ -497,8 +499,7 @@ const Escopos = ({ lendo = false, texto = "", setTexto = () => {} }) => {
               status={"sucesso"}
               mensagem={texts.escopos.escopoDeletadoComSucesso}
               lendo={lendo}
-              texto={texto}
-              setTexto={setTexto}
+              s
             />
           </Box>
         </Box>

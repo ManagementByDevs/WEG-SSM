@@ -115,13 +115,17 @@ const Notificacao = (props) => {
       const formataStatus = () => {
         switch (data.tipoNotificacao) {
           case "APROVADO":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada}!`;
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
           case "REPROVADO":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada}!`;
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
           case "MENSAGENS":
             return `${texts.notificacaoComponente.vcRecebeuMensagem} ${data.numeroSequencial}!`;
           case "MAIS_INFORMACOES":
-            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes}!`;
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovadaPorFaltaDeInformacoes} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+          case "APROVADO_GERENTE":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.aprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
+          case "REPROVADO_GERENTE":
+            return `${texts.notificacaoComponente.demandaDeNumero} ${data.numeroSequencial} ${texts.notificacaoComponente.foi} ${texts.notificacaoComponente.reprovada} ${texts.notificacaoComponente.por} ${data.remetente.nome}!`;
         }
       };
 
@@ -134,6 +138,7 @@ const Notificacao = (props) => {
         tipo_icone: data.tipoNotificacao,
         id: data.id,
         userId: data.usuario.id,
+        remetenteId: data.remetente.id,
       });
     }
 
@@ -262,7 +267,11 @@ const Notificacao = (props) => {
     switch (tipo) {
       case "APROVADO":
         return 0;
+      case "APROVADO_GERENTE":
+        return 0;
       case "REPROVADO":
+        return 1;
+      case "REPROVADO_GERENTE":
         return 1;
       case "MAIS_INFORMACOES":
         return 2;
@@ -273,6 +282,7 @@ const Notificacao = (props) => {
 
   // Atualiza a notificação no banco de dados
   const updateNotificacao = (notificacao) => {
+    console.log("Notificação: ", notificacao);
     NotificacaoService.put({
       id: notificacao.id,
       numeroSequencial: notificacao.numeroSequencial,
@@ -280,6 +290,7 @@ const Notificacao = (props) => {
       tipoNotificacao: convertTipoIconeToEnum(notificacao.tipo_icone),
       visualizado: notificacao.visualizado,
       usuario: { id: notificacao.userId },
+      remetente: { id: notificacao.remetenteId },
     }).then(() => {
       buscarNotificacoes();
     });
@@ -295,7 +306,7 @@ const Notificacao = (props) => {
     buscarNotificacoes();
   }, []);
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -329,11 +340,7 @@ const Notificacao = (props) => {
   }, [textoLeitura]);
 
   return (
-    <FundoComHeader
-      lendo={props.lendo}
-      texto={props.texto}
-      setTexto={props.setTexto}
-    >
+    <FundoComHeader lendo={props.lendo}>
       <VLibras forceOnload />
       <Feedback
         open={feedback.visibilidade}
@@ -343,8 +350,6 @@ const Notificacao = (props) => {
         status={feedback.tipo}
         mensagem={feedback.mensagem}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
 
       <ModalConfirmacao
@@ -355,8 +360,6 @@ const Notificacao = (props) => {
         onCancelClick={() => {}}
         textoBotao={"sim"}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
 
       <ModalConfirmacao
@@ -367,16 +370,10 @@ const Notificacao = (props) => {
         onCancelClick={() => {}}
         textoBotao={"sim"}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
 
       <Box className="p-2" sx={{ minWidth: "40rem" }}>
-        <Caminho
-          lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
-        />
+        <Caminho lendo={props.lendo} />
         <Box className="w-full flex flex-col items-center">
           <Box className="w-full flex justify-center m-2">
             <Typography
@@ -460,7 +457,7 @@ const Notificacao = (props) => {
                           }}
                         />
                       </th>
-                      <th className="text-white">
+                      <th className="text-white w-1/12">
                         <Typography
                           fontSize={FontConfig.big}
                           onClick={() => {
@@ -470,7 +467,7 @@ const Notificacao = (props) => {
                           {texts.notificacao.tipo}
                         </Typography>
                       </th>
-                      <th className="text-white">
+                      <th className="text-white text-start">
                         <Typography
                           fontSize={FontConfig.big}
                           onClick={() => {
@@ -582,6 +579,7 @@ const Notificacao = (props) => {
                       setTamanho={setTamanhoPagina}
                       tamanhoPagina={tamanhoPagina}
                       setPaginaAtual={setPaginaAtual}
+                      lendo={props.lendo}
                     />
                   </Box>
                 )}

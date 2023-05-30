@@ -139,7 +139,7 @@ const FormularioPropostaProposta = (props) => {
         ...response,
         tipoBeneficio: "",
         moeda: "",
-        visible: true
+        visible: true,
       };
 
       try {
@@ -168,17 +168,19 @@ const FormularioPropostaProposta = (props) => {
 
   /** Função para excluir um benefício da lista e do banco de dados, recebendo seu index na lista */
   const deleteBeneficio = (indexBeneficio) => {
-    BeneficioService.delete(props.beneficios[indexBeneficio].id).then((response) => {
-      let listaNova = [];
-      for (let contagem = 0; contagem < props.beneficios.length; contagem++) {
-        if (contagem != indexBeneficio) {
-          listaNova.push({ ...props.beneficios[contagem] });
-        } else {
-          listaNova.push({ ...props.beneficios[contagem], visible: false });
+    BeneficioService.delete(props.beneficios[indexBeneficio].id).then(
+      (response) => {
+        let listaNova = [];
+        for (let contagem = 0; contagem < props.beneficios.length; contagem++) {
+          if (contagem != indexBeneficio) {
+            listaNova.push({ ...props.beneficios[contagem] });
+          } else {
+            listaNova.push({ ...props.beneficios[contagem], visible: false });
+          }
         }
+        props.setBeneficios(listaNova);
       }
-      props.setBeneficios(listaNova);
-    });
+    );
   };
 
   /** Função para converter uma string em base64 para um ArrayBuffer */
@@ -346,8 +348,7 @@ const FormularioPropostaProposta = (props) => {
         status={"erro"}
         mensagem={texts.formularioPropostaProposta.feedbacks.feedback1}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <Box
         className="flex flex-col justify-center relative items-center"
@@ -399,11 +400,19 @@ const FormularioPropostaProposta = (props) => {
                   >
                     {escutar && localClique == "titulo" ? (
                       <MicOutlinedIcon
-                        sx={{ color: "primary.main", fontSize: "2rem" }}
+                        sx={{
+                          cursor: "pointer",
+                          color: "primary.main",
+                          fontSize: "2rem",
+                        }}
                       />
                     ) : (
                       <MicNoneOutlinedIcon
-                        sx={{ color: "text.secondary", fontSize: "2rem" }}
+                        sx={{
+                          cursor: "pointer",
+                          color: "text.secondary",
+                          fontSize: "2rem",
+                        }}
                       />
                     )}
                   </Tooltip>
@@ -507,8 +516,7 @@ const FormularioPropostaProposta = (props) => {
                           setBeneficio={alterarTextoBeneficio}
                           carregamento={props.carregamento}
                           lendo={props.lendo}
-                          texto={props.texto}
-                          setTexto={props.setTexto}
+                           
                         />
                       );
                     }
@@ -573,11 +581,19 @@ const FormularioPropostaProposta = (props) => {
                   >
                     {escutar && localClique == "frequencia" ? (
                       <MicOutlinedIcon
-                        sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                        sx={{
+                          cursor: "pointer",
+                          color: "primary.main",
+                          fontSize: "1.3rem",
+                        }}
                       />
                     ) : (
                       <MicNoneOutlinedIcon
-                        sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                        sx={{
+                          cursor: "pointer",
+                          color: "text.secondary",
+                          fontSize: "1.3rem",
+                        }}
                       />
                     )}
                   </Tooltip>

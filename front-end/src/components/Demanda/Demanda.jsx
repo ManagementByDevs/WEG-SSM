@@ -85,7 +85,7 @@ const Demanda = (props) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -127,8 +127,6 @@ const Demanda = (props) => {
           setOpen={setModalMotivoRecusa}
           motivoRecusa={props.demanda?.motivoRecusa}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
         />
       )}
       <Paper
@@ -151,7 +149,12 @@ const Demanda = (props) => {
             sx={{ fontWeight: "600", maxWidth: "77%" }}
             color="text.primary"
             title={props.demanda.titulo}
-            onClick={() => lerTexto(props.demanda.titulo)}
+            onClick={(e) => {
+              if (props.lendo) {
+                e.stopPropagation();
+                lerTexto(props.demanda.titulo);
+              }
+            }}
           >
             {props.demanda.titulo}
           </Typography>
@@ -164,7 +167,12 @@ const Demanda = (props) => {
               <Typography
                 fontSize={FontConfig?.default}
                 sx={{ fontWeight: "600" }}
-                onClick={() => lerTexto(formatarNomeStatus())}
+                onClick={(e) => {
+                  if (props.lendo) {
+                    e.stopPropagation();
+                    lerTexto(formatarNomeStatus());
+                  }
+                }}
               >
                 {formatarNomeStatus()}
               </Typography>
@@ -194,7 +202,12 @@ const Demanda = (props) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}
-          onClick={() => lerTexto(getPropostaFomartted(props.demanda.proposta))}
+          onClick={(e) => {
+            if (props.lendo) {
+              e.stopPropagation();
+              lerTexto(getPropostaFomartted(props.demanda.proposta));
+            }
+          }}
         >
           {/* Chamando a função de formatação html, passando como parâmetro o texto em html */}
           {getPropostaFomartted(props.demanda.proposta)}
@@ -207,7 +220,12 @@ const Demanda = (props) => {
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
               color="text.primary"
-              onClick={() => lerTexto(props.demanda.solicitante?.nome)}
+              onClick={(e) => {
+                if (props.lendo) {
+                  e.stopPropagation();
+                  lerTexto(props.demanda.solicitante?.nome);
+                }
+              }}
             >
               {props.demanda.solicitante?.nome}
             </Typography>
@@ -218,8 +236,8 @@ const Demanda = (props) => {
             <Button
               id="setimo"
               onClick={(e) => {
+                e.stopPropagation();
                 if (!props.lendo) {
-                  e.stopPropagation();
                   setModalMotivoRecusa(true);
                 } else {
                   lerTexto(texts.demanda.motivo);

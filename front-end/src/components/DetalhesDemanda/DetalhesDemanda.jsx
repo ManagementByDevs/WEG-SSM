@@ -94,6 +94,9 @@ const DetalhesDemanda = (props) => {
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
 
+  /** Feedback ativado quando a demanda é editada */
+  const [feedbackDemandaEditada, setFeedbackDemandaEditada] = useState(false);
+
   // UseEffect para atualizar a variável "corFundoTextArea" quando o tema da página for modificado
   useEffect(() => {
     temaPagina === "dark"
@@ -155,13 +158,13 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || texts.DetalhesDemanda.real,
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true
+        visible: true,
       };
     });
     return aux;
@@ -226,7 +229,7 @@ const DetalhesDemanda = (props) => {
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { });
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -258,7 +261,7 @@ const DetalhesDemanda = (props) => {
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true
+        visible: true,
       };
     });
     aux[index] = beneficio;
@@ -282,7 +285,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -290,7 +293,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosNovos([]);
   };
@@ -298,7 +301,7 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => { });
+      AnexoService.deleteById(anexo.id).then(() => {});
     }
     setNovosAnexos([]);
   };
@@ -322,7 +325,7 @@ const DetalhesDemanda = (props) => {
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of listaBeneficiosFinal) {
         BeneficioService.put(beneficio, beneficio.memoriaCalculo).then(
-          (response) => { }
+          (response) => {}
         );
         contagem++;
 
@@ -344,12 +347,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-        props.dados.beneficios[index].moeda.toLowerCase() &&
+          props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -392,7 +395,9 @@ const DetalhesDemanda = (props) => {
         excluirBeneficiosRemovidos();
         setDemandaEmEdicao(false);
         props.updateDemandaProps(response);
+        
         salvarHistorico("Demanda Editada");
+        setFeedbackDemandaEditada(true);
       });
 
       if (anexosRemovidos.length > 0) {
@@ -458,6 +463,14 @@ const DetalhesDemanda = (props) => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
     });
+
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        NotificacaoService.aprovadoGerente,
+        props.dados,
+        CookieService.getUser().id
+      )
+    );
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -484,10 +497,12 @@ const DetalhesDemanda = (props) => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
     });
+
     NotificacaoService.post(
       NotificacaoService.createNotificationObject(
         NotificacaoService.aprovado,
-        props.dados
+        props.dados,
+        CookieService.getUser().id
       )
     );
   };
@@ -554,7 +569,8 @@ const DetalhesDemanda = (props) => {
       NotificacaoService.post(
         NotificacaoService.createNotificationObject(
           tipoNotificacao,
-          props.dados
+          props.dados,
+          CookieService.getUser().id
         )
       );
       salvarHistorico(
@@ -751,7 +767,7 @@ const DetalhesDemanda = (props) => {
 
   // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -795,8 +811,15 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
+      />
+      {/* Feedback demanda Editada */}
+      <Feedback
+        open={feedbackDemandaEditada}
+        handleClose={() => setFeedbackDemandaEditada(false)}
+        status={"sucesso"}
+        mensagem={texts.DetalhesDemanda.feedbackDemandaEditada}
+        lendo={props.lendo}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -807,8 +830,7 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <Feedback
         open={feedbackFacaAlteracao}
@@ -816,8 +838,7 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
@@ -825,8 +846,7 @@ const DetalhesDemanda = (props) => {
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
@@ -834,8 +854,7 @@ const DetalhesDemanda = (props) => {
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <ModalRecusarDemanda
         open={openModalRecusa}
@@ -849,8 +868,7 @@ const DetalhesDemanda = (props) => {
         }
         setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <ModalConfirmacao
         open={openModal}
@@ -861,8 +879,7 @@ const DetalhesDemanda = (props) => {
         textoBotao="sim"
         atualizarTexto={true}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <ModalConfirmacao
         open={modalAprovarDemanda}
@@ -871,8 +888,7 @@ const DetalhesDemanda = (props) => {
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
+         
       />
       <Box
         id="primeiro"
@@ -885,8 +901,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -895,8 +911,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -1257,11 +1273,19 @@ const DetalhesDemanda = (props) => {
                 >
                   {escutar && localClique == "tituloDemanda" ? (
                     <MicOutlinedIcon
-                      sx={{ color: "primary.main", fontSize: "2rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "primary.main",
+                        fontSize: "2rem",
+                      }}
                     />
                   ) : (
                     <MicNoneOutlinedIcon
-                      sx={{ color: "text.secondary", fontSize: "2rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "text.secondary",
+                        fontSize: "2rem",
+                      }}
                     />
                   )}
                 </Tooltip>
@@ -1396,11 +1420,19 @@ const DetalhesDemanda = (props) => {
                 >
                   {escutar && localClique == "frequenciaUso" ? (
                     <MicOutlinedIcon
-                      sx={{ color: "primary.main", fontSize: "1.8rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "primary.main",
+                        fontSize: "1.8rem",
+                      }}
                     />
                   ) : (
                     <MicNoneOutlinedIcon
-                      sx={{ color: "text.secondary", fontSize: "1.8rem" }}
+                      sx={{
+                        cursor: "pointer",
+                        color: "text.secondary",
+                        fontSize: "1.8rem",
+                      }}
                     />
                   )}
                 </Tooltip>

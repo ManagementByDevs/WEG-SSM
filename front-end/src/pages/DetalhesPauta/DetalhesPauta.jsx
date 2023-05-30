@@ -483,11 +483,7 @@ const DetalhesPauta = (props) => {
   }, [textoLeitura]);
 
   return (
-    <FundoComHeader
-      lendo={props.lendo}
-      texto={props.texto}
-      setTexto={props.setTexto}
-    >
+    <FundoComHeader lendo={props.lendo}>
       <VLibras forceOnload />
       <ModalCriarAta
         open={openModalCriarAta}
@@ -500,8 +496,6 @@ const DetalhesPauta = (props) => {
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
         setFeedbackSemPropostas={setFeedbackSemPropostas}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
         listaPropostas={pauta.propostas}
       />
       {/* Feedback Erro reconhecimento de voz */}
@@ -513,8 +507,6 @@ const DetalhesPauta = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -525,8 +517,6 @@ const DetalhesPauta = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
       {/* Feedback campos faltantes */}
       <Feedback
@@ -537,8 +527,6 @@ const DetalhesPauta = (props) => {
         status={"erro"}
         mensagem={texts.modalCriarAta.feedback}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
       {/* Feedback proposta deletada da pauta */}
       <Feedback
@@ -549,8 +537,6 @@ const DetalhesPauta = (props) => {
         status={"sucesso"}
         mensagem={texts.detalhesPauta.feedbacks.feedback1}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
       {/* Feedback pauta sem propostas */}
       <Feedback
@@ -560,6 +546,7 @@ const DetalhesPauta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.detalhesPauta.feedbacks.feedback3}
+        lendo={props.lendo}
       />
       <ModalConfirmacao
         open={modal}
@@ -569,16 +556,10 @@ const DetalhesPauta = (props) => {
         onConfirmClick={deletePropostaFromPauta}
         onCancelClick={() => { }}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
       <Box className="p-2" sx={{ minWidth: "60rem" }}>
         <Box className="flex w-full relative">
-          <Caminho
-            lendo={props.lendo}
-            texto={props.texto}
-            setTexto={props.setTexto}
-          />
+          <Caminho lendo={props.lendo} />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -621,7 +602,11 @@ const DetalhesPauta = (props) => {
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
                 onClick={() => {
-                  lerTexto(texts.detalhesProposta.numeroSequencial);
+                  lerTexto(
+                    texts.detalhesPauta.numeroSequencial +
+                      ": " +
+                      pauta.numeroSequencial
+                  );
                 }}
               >
                 {texts.detalhesPauta.numeroSequencial}: {pauta.numeroSequencial}
@@ -630,7 +615,11 @@ const DetalhesPauta = (props) => {
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
                 onClick={() => {
-                  lerTexto(texts.detalhesPauta.comissao);
+                  lerTexto(
+                    texts.detalhesPauta.comissao +
+                      ": " +
+                      pauta.comissao.nomeForum
+                  );
                 }}
               >
                 {texts.detalhesPauta.comissao}: {pauta.comissao.siglaForum} -{" "}
@@ -640,7 +629,13 @@ const DetalhesPauta = (props) => {
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
                 onClick={() => {
-                  lerTexto(texts.detalhesPauta.reuniaoDoForum);
+                  lerTexto(
+                    texts.detalhesPauta.reuniaoDoForum +
+                      ": " +
+                      DateService.getFullDateUSFormat(
+                        DateService.getDateByMySQLFormat(pauta?.dataReuniao)
+                      )
+                  );
                 }}
               >
                 {texts.detalhesPauta.reuniaoDoForum}:{" "}
@@ -652,7 +647,7 @@ const DetalhesPauta = (props) => {
               <Typography
                 sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", }}
                 onClick={() => {
-                  lerTexto(texts.detalhesPauta.analistaResponsavel);
+                  lerTexto(texts.detalhesPauta.analistaResponsavel + ": " + pauta.analistaResponsavel.nome);
                 }}
               >
                 {texts.detalhesPauta.analistaResponsavel}:{" "}
@@ -697,7 +692,13 @@ const DetalhesPauta = (props) => {
                             cursor: "pointer",
                             "&:hover": { backgroundColor: "component.main" },
                           }}
-                          onClick={() => onClickProposta(index)}
+                          onClick={() => {
+                            if (props.lendo) {
+                              lerTexto(proposta.titulo);
+                            } else {
+                              onClickProposta(index);
+                            }
+                          }}
                         >
                           <Typography
                             fontSize={FontConfig.medium}
@@ -768,6 +769,7 @@ const DetalhesPauta = (props) => {
                   parecerInformacao={dadosProposta.parecerInformacao || ""}
                   emAprovacao={true}
                   propostaId={dadosProposta.id}
+                  lendo={props.lendo}
                 />
               </Box>
             )}
@@ -796,9 +798,9 @@ const DetalhesPauta = (props) => {
                     variant="contained"
                     onClick={() => {
                       if (props.lendo) {
-                        voltar();
-                      } else {
                         lerTexto(texts.detalhesPauta.voltar);
+                      } else {
+                        voltar();
                       }
                     }}
                   >

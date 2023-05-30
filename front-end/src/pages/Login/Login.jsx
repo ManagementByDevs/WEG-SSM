@@ -128,8 +128,7 @@ const Login = (props) => {
   return (
     <FundoComHeader
       lendo={props.lendo}
-      texto={props.texto}
-      setTexto={props.setTexto}
+        
     >
       <Paper
         sx={{ height: "100%", minWidth: "89rem", minHeight: "48rem" }}

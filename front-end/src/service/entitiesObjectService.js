@@ -187,6 +187,7 @@ class EntitiesObjectService {
       data: "",
       tipoNotificacao: "",
       usuario: this.usuario(),
+      remetente: this.usuario(),
     };
   }
 }

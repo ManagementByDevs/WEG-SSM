@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Box, Tooltip, Typography, IconButton, Menu } from "@mui/material";
@@ -17,53 +17,56 @@ import NotificacaoService from "../../service/notificacaoService";
 import UsuarioService from "../../service/usuarioService";
 import DateService from "../../service/dateService";
 import { WebSocketContext } from "../../service/WebSocketService";
+// import {  } from "react";
 
 // Modal de notificações do sistema
 const NotificacaoModal = (props) => {
-  // Variável para pegar informações da URL
+  /** Variável para pegar informações da URL */
   const location = useLocation();
 
-  // Context para alterar a linguagem do sistema
+  /** Navigate utilizado para navegar para outras páginas */
+  const navigate = useNavigate();
+
+  /** Context para alterar a linguagem do sistema */
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   /**  Context do WebSocket */
   const { inscrever, stompClient } = useContext(WebSocketContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // Navigate utilizado para navegar para outras páginas
-  const navigate = useNavigate();
+  const elementoAncora = useRef(null);
 
   /** Usuário logado */
   const [user, setUser] = useState(UsuarioService.getUserCookies().usuario);
 
-  // UseState para poder visualizar e alterar a visibilidade das notificacoes
+  /** UseState para poder visualizar e alterar a visibilidade das notificacoes */
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // UseState para poder visualizar e alterar a visibilidade do feedback de notificação lida
+  /** UseState para poder visualizar e alterar a visibilidade do feedback de notificação lida */
   const [feedback, setFeedback] = useState(false);
 
   /** Lista de notificações não lidas do usuário */
   const [notificacoes, setNotificacoes] = useState([]);
 
-  // UseState para poder visualizar e alterar rota (pathname)
+  /** UseState para poder visualizar e alterar rota (pathname) */
   const [rota, setRota] = useState(location.pathname);
 
-  // Variável que é usada para saber se o menu está aberto ou não
-  const open = Boolean(anchorEl);
+  /** Variável que é usada para saber se o menu está aberto ou não */
+  const [open, setOpen] = useState(false);
 
-  // Função para abrir o menu
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  /** Função para abrir o menu */
+  const handleClick = () => {
+    setOpen(true);
   };
 
-  // Função para fechar o menu
-  const handleClose = (src) => {
-    setAnchorEl(null);
+  /** Função para fechar o menu */
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  // Função para buscar as notificações não lidas do usuário
+  /** Função para buscar as notificações não lidas do usuário */
   const buscarNotificacoes = () => {
     if (!CookieService.getCookie("jwt")) return;
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
@@ -77,7 +80,7 @@ const NotificacaoModal = (props) => {
     );
   };
 
-  // Função para quando clicar em uma notificação
+  /** Função para quando clicar em uma notificação */
   const onNotificationItemClick = () => {
     setFeedback(true);
     buscarNotificacoes();
@@ -98,12 +101,16 @@ const NotificacaoModal = (props) => {
     });
   };
 
-  // UseEffect para buscar as informações assim que entra na página
+  /** UseEffect para buscar as informações assim que entra na página */
   useEffect(() => {
     buscarNotificacoes();
+
+    if (elementoAncora.current) {
+      setAnchorEl(elementoAncora.current);
+    }
   }, []);
 
-  // UseEffect para se inscrever no tópico de chats para receber notificações em tempo real
+  /** UseEffect para se inscrever no tópico de chats para receber notificações em tempo real */
   useEffect(() => {
     const receivedAnyMessage = (mensagem) => {
       let mensagemRecebida = EntitiesObjectService.mensagem();
@@ -130,7 +137,8 @@ const NotificacaoModal = (props) => {
       };
     }
   }, [stompClient]);
-  const [textoLeitura,setTextoLeitura] = useState("");
+
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -173,11 +181,9 @@ const NotificacaoModal = (props) => {
         status={"info"}
         mensagem={texts.notificacaoModal.notificacaoLidaComSucesso}
         lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
       />
       {/* Title  */}
-      <Tooltip title={texts.notificacaoModal.notificacoes}>
+      <Tooltip title={texts.notificacaoModal.notificacoes} ref={elementoAncora}>
         <IconButton size="small" aria-haspopup="true" onClick={handleClick}>
           {/* Manter a bolinha e o icon de notificacao juntos */}
           <Box className="relative">
@@ -203,7 +209,6 @@ const NotificacaoModal = (props) => {
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-        {...props}
       >
         <Box className="w-72 px-3 py-2 max-h-60 overflow-hidden">
           <Box
@@ -218,6 +223,7 @@ const NotificacaoModal = (props) => {
                   notificacao={notificacao}
                   onNotificacaoClick={onNotificationItemClick}
                   index={index}
+                  lendo={props.lendo}
                 />
               );
             })}

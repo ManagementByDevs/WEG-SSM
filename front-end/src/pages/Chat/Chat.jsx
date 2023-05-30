@@ -614,7 +614,7 @@ const Chat = (props) => {
   }, [escutar]);
 
   // // ********************************************** Fim Gravar audio **********************************************
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -668,8 +668,7 @@ const Chat = (props) => {
           onCancelClick={fecharModalCancelarChat}
           textoBotao={"sim"}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
       )}
       {abrirModalReabrirChat && (
@@ -681,15 +680,10 @@ const Chat = (props) => {
           onCancelClick={fecharModalAbrirChat}
           textoBotao={"sim"}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
       )}
-      <FundoComHeader
-        lendo={props.lendo}
-        texto={props.texto}
-        setTexto={props.setTexto}
-      >
+      <FundoComHeader lendo={props.lendo}>
         {/* Feedback Erro reconhecimento de voz */}
         <Feedback
           open={feedbackErroReconhecimentoVoz}
@@ -699,8 +693,7 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback Não navegador incompativel */}
         <Feedback
@@ -711,8 +704,7 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback Chat encerrado com sucesso */}
         <Feedback
@@ -723,8 +715,7 @@ const Chat = (props) => {
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback Anexo pesado */}
         <Feedback
@@ -735,8 +726,7 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.chat.anexoMuitoPesado}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         {/* Feedback Chat reaberto com sucesso */}
         <Feedback
@@ -747,8 +737,7 @@ const Chat = (props) => {
           status={"sucesso"}
           mensagem={texts.chat.chatReaberto}
           lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
+           
         />
         <Box className="p-2">
           <Caminho
@@ -799,11 +788,19 @@ const Chat = (props) => {
                   >
                     {escutar && localClicado == "titulo" ? (
                       <MicOutlinedIcon
-                        sx={{ color: "primary.main", fontSize: "1.45rem" }}
+                        sx={{
+                          cursor: "pointer",
+                          color: "primary.main",
+                          fontSize: "1.45rem",
+                        }}
                       />
                     ) : (
                       <MicNoneOutlinedIcon
-                        sx={{ color: "text.secondary", fontSize: "1.45rem" }}
+                        sx={{
+                          cursor: "pointer",
+                          color: "text.secondary",
+                          fontSize: "1.45rem",
+                        }}
                       />
                     )}
                   </Tooltip>
@@ -1027,11 +1024,19 @@ const Chat = (props) => {
                     >
                       {escutar && localClicado == "titulo" ? (
                         <MicOutlinedIcon
-                          sx={{ color: "primary.main", fontSize: "1.7rem" }}
+                          sx={{
+                            cursor: "pointer",
+                            color: "primary.main",
+                            fontSize: "1.7rem",
+                          }}
                         />
                       ) : (
                         <MicNoneOutlinedIcon
-                          sx={{ color: "text.secondary", fontSize: "1.7rem" }}
+                          sx={{
+                            cursor: "pointer",
+                            color: "text.secondary",
+                            fontSize: "1.7rem",
+                          }}
                         />
                       )}
                     </Tooltip>
@@ -1324,7 +1329,11 @@ const Chat = (props) => {
                         >
                           {escutar && localClicado == "mensagem" ? (
                             <MicOutlinedIcon
-                              sx={{ color: "primary.main", fontSize: "1.7rem" }}
+                              sx={{
+                                cursor: "pointer",
+                                color: "primary.main",
+                                fontSize: "1.7rem",
+                              }}
                             />
                           ) : (
                             <MicNoneOutlinedIcon

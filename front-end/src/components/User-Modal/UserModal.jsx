@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { Menu, MenuItem, Tooltip, IconButton, Avatar, Typography, Box, FormControlLabel, Switch, Slider } from "@mui/material/";
+import {
+  Menu,
+  MenuItem,
+  Tooltip,
+  IconButton,
+  Avatar,
+  Typography,
+  Box,
+  FormControlLabel,
+  Switch,
+  Slider,
+} from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
@@ -64,7 +75,6 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const UserModal = (props) => {
-
   //useContext para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -81,12 +91,12 @@ const UserModal = (props) => {
 
   // UseEffect para pegar o usuário e arrumar as preferências dele ao carregar a tela
   useEffect(() => {
-    UsuarioService.getUsuarioByEmail(
-      CookieService.getCookie("jwt").sub
-    ).then((e) => {
-      setUsuario(e);
-      arrangePreferences();
-    });
+    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
+      (e) => {
+        setUsuario(e);
+        arrangePreferences();
+      }
+    );
   }, []);
 
   // useContext que contém os textos do sistema
@@ -107,21 +117,22 @@ const UserModal = (props) => {
    */
   const arrangePreferences = () => {
     if (!CookieService.getCookie("jwt")) return;
-    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
+      (preferencias) => {
+        if (preferencias.themeMode != mode) {
+          setTemaDark(!temaDark);
+        }
 
-      if (preferencias.themeMode != mode) {
-        setTemaDark(!temaDark);
+        if (preferencias.fontSizeDefault != FontConfig.default) {
+          setFontConfig(getUserFontSizePreference(preferencias));
+        }
+        alterarValorSlider(preferencias);
       }
-
-      if (preferencias.fontSizeDefault != FontConfig.default) {
-        setFontConfig(getUserFontSizePreference(preferencias));
-      }
-      alterarValorSlider(preferencias);
-    })
+    );
   };
 
   const alterarValorSlider = (preferencias) => {
-    switch(preferencias.fontSizeDefault) {
+    switch (preferencias.fontSizeDefault) {
       case "18px":
         setValueSlider(2);
         break;
@@ -138,7 +149,7 @@ const UserModal = (props) => {
         setValueSlider(-2);
         break;
     }
-  }
+  };
 
   /**
    * Salva as novas preferências do usuário no banco de dados
@@ -147,22 +158,24 @@ const UserModal = (props) => {
    */
   const saveNewPreference = (preference, newPreference) => {
     if (!CookieService.getCookie("jwt")) return;
-    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then((preferencias) => {
-      switch (preference) {
-        case "themeMode":
-          preferencias.themeMode = newPreference;
-          break;
-        case "fontSizeDefault":
-          preferencias.fontSizeDefault = newPreference;
-          break;
-      }
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
+      (preferencias) => {
+        switch (preference) {
+          case "themeMode":
+            preferencias.themeMode = newPreference;
+            break;
+          case "fontSizeDefault":
+            preferencias.fontSizeDefault = newPreference;
+            break;
+        }
 
-      usuario.preferencias = JSON.stringify(preferencias);
+        usuario.preferencias = JSON.stringify(preferencias);
 
-      if (usuario.id) {
-        UsuarioService.updateUser(usuario.id, usuario).then((e) => { });
+        if (usuario.id) {
+          UsuarioService.updateUser(usuario.id, usuario).then((e) => {});
+        }
       }
-    })
+    );
   };
 
   /**
@@ -278,13 +291,9 @@ const UserModal = (props) => {
 
   // Função para sair da conta do usuário
   const sair = () => {
-    if(!props.lendo) {
-      CookieService.limparCookie('jwt');
-      CookieService.limparCookie('user');
-      navigate("/");
-    } else {
-      lerTexto(texts.userModal.sair);
-    }
+    CookieService.limparCookie("jwt");
+    CookieService.limparCookie("user");
+    navigate("/");
   };
 
   // Personalizar o slider da fonte
@@ -467,7 +476,7 @@ const UserModal = (props) => {
         });
     }
   }, [valueSlider]);
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -562,8 +571,12 @@ const UserModal = (props) => {
           <MenuItem
             className="gap-2"
             onClick={() => {
-              handleClose();
-              navigate("/escopos");
+              if (props.lendo) {
+                lerTexto(texts.userModal.escopos);
+              } else {
+                handleClose();
+                navigate("/escopos");
+              }
             }}
           >
             <BorderColorOutlinedIcon />
@@ -584,8 +597,12 @@ const UserModal = (props) => {
           <MenuItem
             className="gap-2"
             onClick={() => {
-              handleClose();
-              navigate("/chat", { state: { userChat: true } });
+              if (props.lendo) {
+                lerTexto(texts.userModal.chats);
+              } else {
+                handleClose();
+                navigate("/chat", { state: { userChat: true } });
+              }
             }}
           >
             {chatIcon == ChatBubbleOutlineOutlinedIcon ? (
@@ -597,9 +614,6 @@ const UserModal = (props) => {
               color={"text.primary"}
               fontSize={FontConfig?.medium}
               sx={{ fontWeight: 500 }}
-              onClick={() => {
-                lerTexto(texts.userModal.chats);
-              }}
             >
               {texts.userModal.chats}
             </Typography>
@@ -673,16 +687,26 @@ const UserModal = (props) => {
 
           {/* Link para deslogar do sistema */}
           <Typography
-            className="px-4 pt-1.5"
+            className="px-4 pt-1.5 cursor-pointer"
             color={"icon.main"}
             variant="body2"
             fontSize={FontConfig?.medium}
             align="right"
             sx={{ fontWeight: 600, mt: "-16px" }}
+            onClick={() => {
+              lerTexto(texts.userModal.sair);
+            }}
           >
-            <Link to={"/login"} onClick={sair}>
-              {texts.userModal.sair}
-            </Link>
+            {
+              // Se estiver lendo, o texto é o padrão, se não, é o texto de sair
+              props.lendo ? (
+                texts.userModal.sair
+              ) : (
+                <Link to={"/login"} onClick={sair}>
+                  {texts.userModal.sair}
+                </Link>
+              )
+            }
           </Typography>
         </Box>
       </Menu>

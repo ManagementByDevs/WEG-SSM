@@ -82,13 +82,6 @@ const PropostaDeAta = (props) => {
 
   // // ********************************************** Gravar audio **********************************************
 
-  // const [
-  //   feedbackErroNavegadorIncompativel,
-  //   setFeedbackErroNavegadorIncompativel,
-  // ] = useState(false);
-  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-  //   useState(false);
-
   const recognitionRef = useRef(null);
 
   const [escutar, setEscutar] = useState(false);
@@ -158,33 +151,6 @@ const PropostaDeAta = (props) => {
       stopRecognition();
     }
   }, [escutar]);
-
-  {
-    /* Feedback Erro reconhecimento de voz */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroReconhecimentoVoz}
-  handleClose={() => {
-    setFeedbackErroReconhecimentoVoz(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback12}
-/> */
-  }
-  {
-    /* Feedback Não navegador incompativel */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroNavegadorIncompativel}
-  handleClose={() => {
-    setFeedbackErroNavegadorIncompativel(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback13}
-/> */
-  }
 
   // // ********************************************** Fim Gravar audio **********************************************
 
@@ -440,11 +406,19 @@ const PropostaDeAta = (props) => {
               >
                 {escutar ? (
                   <MicOutlinedIcon
-                    sx={{ color: "primary.main", fontSize: "1.3rem" }}
+                    sx={{
+                      cursor: "pointer",
+                      color: "primary.main",
+                      fontSize: "1.3rem",
+                    }}
                   />
                 ) : (
                   <MicNoneOutlinedIcon
-                    sx={{ color: "text.secondary", fontSize: "1.3rem" }}
+                    sx={{
+                      cursor: "pointer",
+                      color: "text.secondary",
+                      fontSize: "1.3rem",
+                    }}
                   />
                 )}
               </Tooltip>
