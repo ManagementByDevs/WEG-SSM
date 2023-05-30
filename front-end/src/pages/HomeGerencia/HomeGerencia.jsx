@@ -477,13 +477,12 @@ const HomeGerencia = (props) => {
     }
 
     setParams({
+      ...params,
       titulo: valorPesquisa,
-      solicitante: JSON.parse(params.solicitante) || null,
       gerente: paramsTemp.gerente,
       analista: paramsTemp.analista,
       forum: paramsTemp.forum,
       tamanho: paramsTemp.tamanho,
-      status: params.status,
       departamento: paramsTemp.departamento,
       presenteEm: paramsTemp.presenteEm,
     });

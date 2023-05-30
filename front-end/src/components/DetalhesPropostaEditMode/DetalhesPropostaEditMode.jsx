@@ -47,6 +47,7 @@ const DetalhesPropostaEditMode = ({
   emAprovacao = false,
   lendo = false,
 }) => {
+  
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -2116,6 +2117,7 @@ const TabelaCustos = ({
                 tipoDespesa={dados.tipoDespesa}
                 handleOnCustoChange={handleOnCustoChange}
                 lendo={lendo}
+                index={index}
               />
             );
           })}
@@ -2461,6 +2463,7 @@ const CustosRow = ({
   setTexto,
   tipoDespesa,
   lendo = false,
+  index = 0,
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2677,7 +2680,7 @@ const CustosRow = ({
   return (
     <TableRow>
       <td className="p-2 text-center">
-        {true ?
+        {index == 0 ?
           <FormControl sx={{ width: "7rem" }}>
             <Select
               labelId="demo-simple-select-label"
@@ -2699,7 +2702,7 @@ const CustosRow = ({
           </FormControl>
           :
           <Box>
-
+            
           </Box>
         }
       </td>
