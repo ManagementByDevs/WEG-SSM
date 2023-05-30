@@ -1,22 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import {
-  Autocomplete,
-  Box,
-  Checkbox,
-  Divider,
-  IconButton,
-  Input,
-  MenuItem,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Box, Checkbox, Divider, FormControl, IconButton, Input, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
 
 import ClipLoader from "react-spinners/ClipLoader";
 import ReactQuill from "react-quill";
@@ -59,8 +42,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
-  setPropostaData = () => {},
-  setIsEditing = () => {},
+  setPropostaData = () => { },
+  setIsEditing = () => { },
   emAprovacao = false,
   lendo = false,
 }) => {
@@ -92,8 +75,7 @@ const DetalhesPropostaEditMode = ({
   ]);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
-    useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
 
   // Modal de confirmação para quando o usuário clicar em cancelar ou salvar edição
   const [modalConfirmacao, setModalConfirmacao] = useState(false);
@@ -336,11 +318,11 @@ const DetalhesPropostaEditMode = ({
       }
 
     for (let tabelaCusto of propostaAux.tabelaCustos) {
+      if (!tabelaCusto.tipoDespesa) {
+        setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.tipoDespesa}`);
+        return false;
+      }
       for (let custo of tabelaCusto.custos) {
-        if (!custo.tipoDespesa) {
-          setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.tipoDespesa}`);
-          return false;
-        }
         if (!custo.perfilDespesa) {
           setTextoDadosInvalidos(`${msgs.dadoInvalido} ${msgs.perfilDespesa}`);
           return false;
@@ -467,7 +449,7 @@ const DetalhesPropostaEditMode = ({
           "Proposta Editada",
           arquivo,
           CookieService.getUser().id
-        ).then(() => {});
+        ).then(() => { });
       });
     });
   };
@@ -862,6 +844,8 @@ const DetalhesPropostaEditMode = ({
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -892,27 +876,7 @@ const DetalhesPropostaEditMode = ({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "titulo":
-            setProposta({
-              ...proposta,
-              titulo: transcript,
-            });
-            break;
-          case "frequencia":
-            setProposta({
-              ...proposta,
-              frequencia: transcript,
-            });
-            break;
-          case "linkJira":
-            setProposta({
-              ...proposta,
-              linkJira: transcript,
-            });
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -927,6 +891,30 @@ const DetalhesPropostaEditMode = ({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "titulo":
+        setProposta({
+          ...proposta,
+          titulo: palavrasJuntas,
+        });
+        break;
+      case "frequencia":
+        setProposta({
+          ...proposta,
+          frequencia: palavrasJuntas,
+        });
+        break;
+      case "linkJira":
+        setProposta({
+          ...proposta,
+          linkJira: palavrasJuntas,
+        });
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -998,7 +986,7 @@ const DetalhesPropostaEditMode = ({
         textoModal={textoModalConfirmacao}
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         lendo={lendo}
       />
       {/* Feedback Erro reconhecimento de voz */}
@@ -1198,8 +1186,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.solicitante.nome +
-                    " - " +
-                    proposta.solicitante.departamento.nome
+                  " - " +
+                  proposta.solicitante.departamento.nome
                 );
               }}
             >
@@ -1256,8 +1244,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.gerente.nome +
-                    " - " +
-                    proposta.gerente.departamento.nome
+                  " - " +
+                  proposta.gerente.departamento.nome
                 );
               }}
             >
@@ -1505,16 +1493,16 @@ const DetalhesPropostaEditMode = ({
             <Box className="mx-4">
               {proposta.tabelaCustos.length > 0 && isTabelaCustosVisile
                 ? proposta.tabelaCustos?.map((tabela, index) => {
-                    return (
-                      <TabelaCustos
-                        key={index}
-                        dados={tabela}
-                        handleOnTabelaCustosChange={handleOnTabelaCustosChange}
-                        handleDeleteTabelaCusto={handleDeleteTabelaCusto}
-                        lendo={lendo}
-                      />
-                    );
-                  })
+                  return (
+                    <TabelaCustos
+                      key={index}
+                      dados={tabela}
+                      handleOnTabelaCustosChange={handleOnTabelaCustosChange}
+                      handleDeleteTabelaCusto={handleDeleteTabelaCusto}
+                      lendo={lendo}
+                    />
+                  );
+                })
                 : null}
             </Box>
           </Box>
@@ -1531,6 +1519,7 @@ const DetalhesPropostaEditMode = ({
               >
                 {texts.detalhesProposta.beneficios}:&nbsp;
               </Typography>
+
               <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
                 <IconButton onClick={handleOnBeneficiosAddClick}>
                   <AddCircleIcon color="primary" />
@@ -1777,6 +1766,7 @@ const DetalhesPropostaEditMode = ({
               >
                 {texts.detalhesProposta.anexos}:&nbsp;
               </Typography>
+
               <Tooltip title={texts.formularioGeralProposta.adicionarNovoAnexo}>
                 <IconButton onClick={handleAnexosAddOnClick}>
                   <AddCircleIcon color="primary" />
@@ -1910,10 +1900,13 @@ const DetalhesPropostaEditMode = ({
 // Mostrar a tabela de custos
 const TabelaCustos = ({
   dados = EntitiesObjectService.tabelaCustos(),
+  tipoBeneficio = dados.tipoBeneficio,
   handleOnTabelaCustosChange = (
     newTabela = EntitiesObjectService.tabelaCustos()
-  ) => {},
-  handleDeleteTabelaCusto = () => {},
+  ) => { },
+  handleDeleteTabelaCusto = () => { },
+  texto,
+  setTexto,
   lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
@@ -1978,6 +1971,8 @@ const TabelaCustos = ({
     } else {
       newCusto.id = dados.custos.length * -1 - 1;
     }
+
+    console.log(newCusto.id)
 
     handleOnTabelaCustosChange({
       ...dados,
@@ -2117,6 +2112,8 @@ const TabelaCustos = ({
               <CustosRow
                 key={index}
                 custo={custo}
+                dados={dados}
+                tipoDespesa={dados.tipoDespesa}
                 handleOnCustoChange={handleOnCustoChange}
                 lendo={lendo}
               />
@@ -2135,6 +2132,7 @@ const TabelaCustos = ({
             <RemoveIcon />
           </IconButton>
         </Tooltip>
+
         <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
           <IconButton
             onClick={handleOnAddCustoClick}
@@ -2173,7 +2171,12 @@ const TabelaCustos = ({
         <TableBody>
           {dados.ccs.map((cc, index) => {
             return (
-              <CC key={index} cc={cc} handleOnCCChange={handleOnCCChange} lendo={lendo} />
+              <CC
+                key={index}
+                cc={cc}
+                handleOnCCChange={handleOnCCChange}
+                lendo={lendo}
+              />
             );
           })}
         </TableBody>
@@ -2188,6 +2191,7 @@ const TabelaCustos = ({
             <RemoveIcon />
           </IconButton>
         </Tooltip>
+
         <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
           <IconButton onClick={handleOnAddCCClick} size="small" color="primary">
             <AddIcon />
@@ -2209,7 +2213,7 @@ const TabelaCustos = ({
 
 const CC = ({
   cc = EntitiesObjectService.cc(),
-  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
+  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => { },
   lendo = false,
 }) => {
   // Context para obter os textos do sistema
@@ -2245,6 +2249,8 @@ const CC = ({
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -2275,17 +2281,7 @@ const CC = ({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "codigo":
-            handleOnCCChange({ ...cc, codigo: transcript });
-            break;
-          case "porcentagem":
-            handleOnCCChange({ ...cc, porcentagem: transcript });
-            break;
-          case "linkJira":
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -2300,6 +2296,20 @@ const CC = ({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "codigo":
+        handleOnCCChange({ ...cc, codigo: palavrasJuntas });
+        break;
+      case "porcentagem":
+        handleOnCCChange({ ...cc, porcentagem: palavrasJuntas });
+        break;
+      case "linkJira":
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -2445,7 +2455,11 @@ const CC = ({
 // Mostrar os custos na proposta
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
-  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
+  dados = EntitiesObjectService.tabelaCustos(),
+  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => { },
+  texto,
+  setTexto,
+  tipoDespesa,
   lendo = false,
 }) => {
   // Context para obter as configurações de fonte do sistema
@@ -2480,17 +2494,20 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
   // ***************************************** Handlers ***************************************** //
 
+  const [tipoDespesaValue, setTipoDespesaValue] = useState(dados.tipoDespesa);
+
   // Handler para quando o tipo de despesa for alterado
   const handleOnTipoDespesaChange = (event) => {
-    handleOnCustoChange({ ...custo, tipoDespesa: event.target.value });
+    dados.tipoDespesa = event.target.value;
+    setTipoDespesaValue(event.target.value);
   };
 
   // Handler para quando o tipo de despesa for alterado
@@ -2513,6 +2530,7 @@ const CustosRow = ({
     handleOnCustoChange({ ...custo, valorHora: event.target.value });
   };
 
+
   // ***************************************** Fim Handlers ***************************************** //
 
   // // ********************************************** Gravar audio **********************************************
@@ -2529,6 +2547,8 @@ const CustosRow = ({
   const [escutar, setEscutar] = useState(false);
 
   const [localClique, setLocalClique] = useState("");
+
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
@@ -2560,26 +2580,7 @@ const CustosRow = ({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "tipoDespesa":
-            handleOnCustoChange({ ...custo, tipoDespesa: transcript });
-            break;
-          case "porcentagem":
-            break;
-          case "perfilDespesa":
-            handleOnCustoChange({ ...custo, perfilDespesa: transcript });
-            break;
-          case "periodoExecucao":
-            handleOnCustoChange({ ...custo, periodoExecucao: transcript });
-            break;
-          case "horas":
-            handleOnCustoChange({ ...custo, horas: transcript });
-            break;
-          case "valorHora":
-            handleOnCustoChange({ ...custo, valorHora: transcript });
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -2594,6 +2595,29 @@ const CustosRow = ({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "tipoDespesa":
+        handleOnCustoChange({ ...custo, tipoDespesa: palavrasJuntas });
+        break;
+      case "porcentagem":
+        break;
+      case "perfilDespesa":
+        handleOnCustoChange({ ...custo, perfilDespesa: palavrasJuntas });
+        break;
+      case "periodoExecucao":
+        handleOnCustoChange({ ...custo, periodoExecucao: palavrasJuntas });
+        break;
+      case "horas":
+        handleOnCustoChange({ ...custo, horas: palavrasJuntas });
+        break;
+      case "valorHora":
+        handleOnCustoChange({ ...custo, valorHora: palavrasJuntas });
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -2653,45 +2677,31 @@ const CustosRow = ({
   return (
     <TableRow>
       <td className="p-2 text-center">
-        {/* Tipo de Despesa */}
-        <Input
-          value={custo.tipoDespesa}
-          onChange={handleOnTipoDespesaChange}
-          fullWidth
-          size="small"
-          type="text"
-          multiline={true}
-          sx={{ fontConfig: FontConfig.default }}
-        />
-        <Tooltip
-          className="flex items-center cursor-pointer"
-          title={texts.homeGerencia.gravarAudio}
-          onClick={() => {
-            startRecognition("tipoDespesa");
-          }}
-        >
-          {escutar && localClique == "tipoDespesa" ? (
-            <MicOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "primary.main",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "7rem",
-              }}
-            />
-          ) : (
-            <MicNoneOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "text.secondary",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "7rem",
-              }}
-            />
-          )}
-        </Tooltip>
+        {true ?
+          <FormControl sx={{ width: "7rem" }}>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={tipoDespesaValue}
+              onChange={handleOnTipoDespesaChange}
+            >
+              <MenuItem value={"Interna"}>
+                <Typography fontSize={FontConfig.medium}>
+                  Interna
+                </Typography>
+              </MenuItem>
+              <MenuItem value={"Externa"}>
+                <Typography fontSize={FontConfig.medium}>
+                  Externa
+                </Typography>
+              </MenuItem>
+            </Select>
+          </FormControl>
+          :
+          <Box>
+
+          </Box>
+        }
       </td>
       <td className="p-2 text-center">
         {/* Perfil da Despesa */}
@@ -2875,8 +2885,8 @@ const CustosRow = ({
 // Mostrar os benefícios da proposta
 const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
-  handleOnBeneficioChange = () => {},
-  handleDeleteBeneficio = () => {},
+  handleOnBeneficioChange = () => { },
+  handleDeleteBeneficio = () => { },
   lendo,
 }) => {
   // Context para obter as configurações de fonte do sistema
@@ -2980,6 +2990,8 @@ const Beneficio = ({
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -3010,16 +3022,7 @@ const Beneficio = ({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "valorMensal":
-            handleOnBeneficioChange({
-              ...beneficio,
-              valor_mensal: event.target.value,
-            });
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -3034,6 +3037,19 @@ const Beneficio = ({
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "valorMensal":
+        handleOnBeneficioChange({
+          ...beneficio,
+          valor_mensal: palavrasJuntas,
+        });
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -3275,7 +3291,9 @@ const Beneficio = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
+  texto,
+  setTexto,
   lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
@@ -3418,7 +3436,9 @@ const ParecerComissaoInsertText = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
+  texto,
+  setTexto,
   lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema

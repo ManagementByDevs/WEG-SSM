@@ -690,6 +690,8 @@ const DetalhesDemanda = (props) => {
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -720,16 +722,7 @@ const DetalhesDemanda = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "tituloDemanda":
-            setTituloDemanda(transcript);
-            break;
-          case "frequenciaUso":
-            setFrequencia(transcript);
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -744,6 +737,19 @@ const DetalhesDemanda = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "tituloDemanda":
+        setTituloDemanda(palavrasJuntas);
+        break;
+      case "frequenciaUso":
+        setFrequencia(palavrasJuntas);
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -1007,6 +1013,7 @@ const DetalhesDemanda = (props) => {
                       key={index}
                       index={index}
                       beneficio={beneficio}
+                      setBeneficio={alterarTextoBeneficio}
                       setFeedbackErroNavegadorIncompativel={
                         setFeedbackErroNavegadorIncompativel
                       }
@@ -1014,8 +1021,6 @@ const DetalhesDemanda = (props) => {
                         setFeedbackErroReconhecimentoVoz
                       }
                       lendo={props.lendo}
-                      texto={props.texto}
-                      setTexto={props.setTexto}
                     />
                   );
                 })}
@@ -1365,8 +1370,6 @@ const DetalhesDemanda = (props) => {
                           setFeedbackErroReconhecimentoVoz
                         }
                         lendo={props.lendo}
-                        texto={props.texto}
-                        setTexto={props.setTexto}
                       />
                     );
                   }

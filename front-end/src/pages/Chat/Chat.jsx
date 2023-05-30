@@ -54,7 +54,7 @@ const Chat = (props) => {
   /** Context para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
-  const { setVisibilidade, setIdChat } = useContext(ChatContext);
+  const { visibilidade, setVisibilidade, setIdChat } = useContext(ChatContext);
 
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
@@ -124,10 +124,13 @@ const Chat = (props) => {
   /** UseState para controlar o loading de mensagens */
   const [buscandoMensagens, setBuscandoMensagens] = useState(true);
 
+  /** UseState para feedback de chat encerrado */
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
 
+  /** UseState para feedback de chat aberto */
   const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
 
+  /** UseState para feedback de que anexo é muito grande */
   const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
 
   /** useState para abrir e fechar o tour */
@@ -174,18 +177,22 @@ const Chat = (props) => {
     setPesquisaContato(evt.target.value);
   };
 
+  // Função para abrir o modal de confirmação para encerrar o chat
   const abrirModalCancelarChat = () => {
     setOpenModalEncerrarChat(true);
   };
 
+  // Função para fechar o modal de confirmação para encerrar o chat
   const fecharModalCancelarChat = () => {
     setOpenModalEncerrarChat(false);
   };
 
+  // Função para abrir o modal de confirmação para reabrir o chat
   const abrirModalAbrirChat = () => {
     setOpenModalReabrirChat(true);
   };
 
+  // Função para fechar o modal de confirmação para reabrir o chat
   const fecharModalAbrirChat = () => {
     setOpenModalReabrirChat(false);
   };
@@ -537,6 +544,8 @@ const Chat = (props) => {
 
   const [localClicado, setLocalClicado] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -567,16 +576,7 @@ const Chat = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClicado) {
-          case "titulo":
-            setPesquisaContato(transcript);
-            break;
-          case "mensagem":
-            setMensagem({ ...mensagem, texto: transcript });
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
         // setValorPesquisa(transcript);
       };
 
@@ -592,6 +592,19 @@ const Chat = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClicado) {
+      case "titulo":
+        setPesquisaContato(palavrasJuntas);
+        break;
+      case "mensagem":
+        setMensagem({ ...mensagem, texto: palavrasJuntas });
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -668,7 +681,6 @@ const Chat = (props) => {
           onCancelClick={fecharModalCancelarChat}
           textoBotao={"sim"}
           lendo={props.lendo}
-           
         />
       )}
       {abrirModalReabrirChat && (
@@ -680,7 +692,6 @@ const Chat = (props) => {
           onCancelClick={fecharModalAbrirChat}
           textoBotao={"sim"}
           lendo={props.lendo}
-           
         />
       )}
       <FundoComHeader lendo={props.lendo}>
@@ -693,7 +704,6 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback12}
           lendo={props.lendo}
-           
         />
         {/* Feedback Não navegador incompativel */}
         <Feedback
@@ -704,7 +714,6 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.homeGerencia.feedback.feedback13}
           lendo={props.lendo}
-           
         />
         {/* Feedback Chat encerrado com sucesso */}
         <Feedback
@@ -715,7 +724,6 @@ const Chat = (props) => {
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
           lendo={props.lendo}
-           
         />
         {/* Feedback Anexo pesado */}
         <Feedback
@@ -726,7 +734,6 @@ const Chat = (props) => {
           status={"erro"}
           mensagem={texts.chat.anexoMuitoPesado}
           lendo={props.lendo}
-           
         />
         {/* Feedback Chat reaberto com sucesso */}
         <Feedback
@@ -737,7 +744,6 @@ const Chat = (props) => {
           status={"sucesso"}
           mensagem={texts.chat.chatReaberto}
           lendo={props.lendo}
-           
         />
         <Box className="p-2">
           <Caminho
@@ -856,7 +862,7 @@ const Chat = (props) => {
                   })
                 ) : null}
               </Box>
-              {!idChat ? (
+              {!idChat && !visibilidade ? (
                 <Box
                   className="flex flex-col items-center justify-center rounded border"
                   sx={{ width: "75%", height: "95%", cursor: "default" }}
@@ -1070,6 +1076,23 @@ const Chat = (props) => {
                       </Tooltip>
                     </Box>
                   </Box>
+                </Box>
+              ) : visibilidade ? (
+                <Box
+                  className="flex flex-col items-center justify-center rounded border"
+                  sx={{ width: "75%", height: "95%", cursor: "default" }}
+                >
+                  <img src={logoWeg} alt="chat" />
+                  <Typography
+                    fontSize={FontConfig.title}
+                    color={"text.secondary"}
+                    sx={{ fontWeight: "600" }}
+                    onClick={() => {
+                      lerTexto(texts.chat.miniChatAberto);
+                    }}
+                  >
+                    {texts.chat.miniChatAberto}
+                  </Typography>
                 </Box>
               ) : (
                 <Box

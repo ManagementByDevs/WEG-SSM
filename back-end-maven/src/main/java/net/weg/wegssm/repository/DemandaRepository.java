@@ -4,24 +4,17 @@ import net.weg.wegssm.model.entities.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Classe repository para as demandas
  */
 @Repository
 public interface DemandaRepository extends JpaRepository<Demanda, Long> {
-
-    /**
-     * Método para listar as demandas pelo status
-     *
-     * @param status
-     * @return
-     */
-    List<Demanda> findByStatus(Status status);
 
     /**
      * Método para listar a demanda pelo status, com paginação
@@ -42,48 +35,32 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
     Page<Demanda> findById(Long id, Pageable pageable);
 
     /**
-     * Método para listar as demandas a partir de um forum ( id )
-     *
-     * @param forum
-     * @return
-     */
-    List<Demanda> findByForum(Forum forum);
-
-    /**
      * Método para listar as demandas pelo fórum, com paginação
      *
-     * @param forum
-     * @param pageable
-     * @return
+     * @param forum Fórum para a filtragem da demanda
+     * @param pageable Pageable para ordenação das demandas
+     * @return Página ordenada com as demandas filtradas
      */
     Page<Demanda> findByForum(Forum forum, Pageable pageable);
-
-    List<Demanda> findByStatusNotAndStatusNot(Status status, Status statusSecundario);
-
-    /**
-     * Método para listar as demandas a partir de um usuário ( id )
-     *
-     * @param usuario
-     * @return
-     */
-//    List<Demanda> findByUsuario(Usuario usuario);
-
-    /**
-     * Método para listar as demandas a partir de um departamento ( id )
-     *
-     * @param departamento
-     * @return
-     */
-    List<Demanda> findByDepartamento(Departamento departamento);
 
     /**
      * Método para listar as demandas pelo departamento, com paginação
      *
-     * @param departamento
-     * @param pageable
-     * @return
+     * @param departamento Departamento para filtragem das demandas
+     * @param pageable Pageable para ordenação das demandas
+     * @return Página com as demandas filtradas e ordenadas
      */
     Page<Demanda> findByDepartamento(Departamento departamento, Pageable pageable);
+
+    /**
+     * Função para buscar todas as demandas excluindo dois status recebidos como parâmetros, assim como recebendo as demandas contendo
+     * seus respectivos benefícios por conta do "LEFT JOIN"
+     * @param status Primeiro status para filtragem da demanda
+     * @param statusSecundario Segundo status para filtragem da demanda
+     * @return Lista com as demandas filtradas
+     */
+    @Query("SELECT d FROM Demanda d LEFT JOIN FETCH d.beneficios WHERE d.status != :status and d.status != :status_secundario")
+    List<Demanda> findByStatusNotAndStatusNot(@Param("status") Status status, @Param("status_secundario") Status statusSecundario);
 
     /**
      * Métodos utilizados no filtro

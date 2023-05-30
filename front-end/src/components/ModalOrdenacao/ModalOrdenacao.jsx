@@ -96,8 +96,8 @@ const ModalOrdenacao = (props) => {
         <Box
           className="absolute flex flex-col items-center justify-evenly"
           sx={{
-            top: "34%",
-            left: "34%",
+            top: "29%",
+            right: "-3%",
             transform: "translate(-50%, -50%)",
             width: 310,
             bgcolor: "background.paper",

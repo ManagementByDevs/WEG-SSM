@@ -149,7 +149,12 @@ const Demanda = (props) => {
             sx={{ fontWeight: "600", maxWidth: "77%" }}
             color="text.primary"
             title={props.demanda.titulo}
-            onClick={() => lerTexto(props.demanda.titulo)}
+            onClick={(e) => {
+              if (props.lendo) {
+                e.stopPropagation();
+                lerTexto(props.demanda.titulo);
+              }
+            }}
           >
             {props.demanda.titulo}
           </Typography>
@@ -164,6 +169,12 @@ const Demanda = (props) => {
                 fontWeight={600}
                 color="primary"
                 className="text-end"
+                onClick={(e) => {
+                  if (props.lendo) {
+                    e.stopPropagation();
+                    lerTexto(props.demanda.id);
+                  }
+                }}
               >
                 #{props.demanda.id}
               </Typography>
@@ -172,7 +183,12 @@ const Demanda = (props) => {
                 <Typography
                   fontSize={FontConfig?.default}
                   sx={{ fontWeight: "600" }}
-                  onClick={() => lerTexto(formatarNomeStatus())}
+                  onClick={(e) => {
+                    if (props.lendo) {
+                      e.stopPropagation();
+                      lerTexto(formatarNomeStatus());
+                    }
+                  }}
                 >
                   {formatarNomeStatus()}
                 </Typography>
@@ -203,7 +219,12 @@ const Demanda = (props) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}
-          onClick={() => lerTexto(getPropostaFomartted(props.demanda.proposta))}
+          onClick={(e) => {
+            if (props.lendo) {
+              e.stopPropagation();
+              lerTexto(getPropostaFomartted(props.demanda.proposta));
+            }
+          }}
         >
           {/* Chamando a função de formatação html, passando como parâmetro o texto em html */}
           {getPropostaFomartted(props.demanda.proposta)}
@@ -216,7 +237,12 @@ const Demanda = (props) => {
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
               color="text.primary"
-              onClick={() => lerTexto(props.demanda.solicitante?.nome)}
+              onClick={(e) => {
+                if (props.lendo) {
+                  e.stopPropagation();
+                  lerTexto(props.demanda.solicitante?.nome);
+                }
+              }}
             >
               {props.demanda.solicitante?.nome}
             </Typography>
@@ -227,8 +253,8 @@ const Demanda = (props) => {
             <Button
               id="setimo"
               onClick={(e) => {
+                e.stopPropagation();
                 if (!props.lendo) {
-                  e.stopPropagation();
                   setModalMotivoRecusa(true);
                 } else {
                   lerTexto(texts.demanda.motivo);

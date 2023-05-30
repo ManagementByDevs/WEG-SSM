@@ -24,6 +24,8 @@ const ResponsavelNegocio = (props) => {
 
   const [localClicado, setLocalClicado] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -54,12 +56,14 @@ const ResponsavelNegocio = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+
         switch (localClicado) {
           case "nome":
-            props.setDados({ ...props.dados, nome: transcript });
+            props.setDados({ ...props.dados, nome: palavrasJuntas });
             break;
           case "area":
-            props.setDados({ ...props.dados, area: transcript });
+            props.setDados({ ...props.dados, area: palavrasJuntas });
             break;
           default:
             break;

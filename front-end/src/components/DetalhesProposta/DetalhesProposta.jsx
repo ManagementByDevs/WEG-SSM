@@ -841,49 +841,40 @@ const DetalhesProposta = ({
               </Typography>
             </Box>
 
-            {!(proposta.status == "ASSESSMENT_APROVACAO") && (
-              <>
-                <Divider />
-                {/* Pareceres */}
-                <Box className="mt-3">
-                  <Typography
-                    fontSize={FontConfig.big}
-                    fontWeight="bold"
-                    onClick={() => lerTexto(texts.detalhesProposta.pareceres)}
-                  >
-                    {texts.detalhesProposta.pareceres}:&nbsp;
-                  </Typography>
-                  <Box className="mx-4">
-                    {/* Parecer da Comissão */}
-                    <ParecerComissao
-                      proposta={proposta}
-                      setProposta={setProposta}
-                      setDadosProposta={setDadosProposta}
-                      parecerComissao={parecerComissao}
-                      parecerInformacao={parecerInformacao}
-                      lendo={lendo}
-                    />
+            <Divider />
+            {/* Pareceres */}
+            <Box className="mt-3">
+              <Typography
+                fontSize={FontConfig.big}
+                fontWeight="bold"
+                onClick={() => lerTexto(texts.detalhesProposta.pareceres)}
+              >
+                {texts.detalhesProposta.pareceres}:&nbsp;
+              </Typography>
+              <Box className="mx-4">
+                {/* Parecer da Comissão */}
+                <ParecerComissao
+                  proposta={proposta}
+                  setProposta={setProposta}
+                  setDadosProposta={setDadosProposta}
+                  parecerComissao={parecerComissao}
+                  parecerInformacao={parecerInformacao}
+                  lendo={lendo}
+                  emAprovacao={emAprovacao}
+                />
 
-                    {/* Parecer da Diretoria */}
-                    {[
-                      "ASSESSMENT_DG",
-                      "DONE",
-                      "ASSESSMENT_EDICAO",
-                      "CANCELLED",
-                    ].includes(proposta.status) && (
-                      <ParecerDG
-                        proposta={proposta}
-                        setProposta={setProposta}
-                        setDadosProposta={setDadosProposta}
-                        parecerDG={parecerDG}
-                        parecerInformacaoDG={parecerInformacaoDG}
-                        lendo={lendo}
-                      />
-                    )}
-                  </Box>
-                </Box>
-              </>
-            )}
+                {/* Parecer da Diretoria */}
+                <ParecerDG
+                  proposta={proposta}
+                  setProposta={setProposta}
+                  setDadosProposta={setDadosProposta}
+                  parecerDG={parecerDG}
+                  parecerInformacaoDG={parecerInformacaoDG}
+                  lendo={lendo}
+                  emAprovacao={emAprovacao}
+                />
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -895,10 +886,10 @@ const DetalhesProposta = ({
 const TabelaCustos = ({
   dados = {
     id: 0,
+    tipoDespesa: "",
     custos: [
       {
         id: 0,
-        tipoDespesa: "",
         perfilDespesa: "",
         periodoExecucao: 0,
         horas: 0,
@@ -1013,7 +1004,14 @@ const TabelaCustos = ({
         </TableHead>
         <TableBody>
           {dados.custos.map((custo, index) => {
-            return <CustosRow key={index} custo={custo} lendo={lendo} />;
+            return (
+              <CustosRow
+                key={index}
+                custo={custo}
+                lendo={lendo}
+                despesa={dados}
+              />
+            );
           })}
         </TableBody>
       </Table>
@@ -1071,6 +1069,7 @@ const TabelaCustos = ({
 
 // Mostrar os custos na proposta
 const CustosRow = ({
+  despesa = { tipoDespesa: "" },
   custo = {
     id: 0,
     tipoDespesa: "",
@@ -1155,6 +1154,9 @@ const CustosRow = ({
   return (
     <TableRow>
       <td className="p-2 text-center">
+        <Typography fontSize={FontConfig.default}>
+          {despesa.tipoDespesa}
+        </Typography>
         <Typography
           fontSize={FontConfig.default}
           onClick={() => lerTexto(custo.tipoDespesa)}
@@ -1385,8 +1387,9 @@ const ParecerComissao = ({
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
+  emAprovacao = false,
 }) => {
-  if (proposta.status == "ASSESSMENT_COMISSAO")
+  if (proposta.status == "ASSESSMENT_COMISSAO" && emAprovacao)
     return (
       <ParecerComissaoInsertText
         proposta={proposta}
@@ -1408,8 +1411,9 @@ const ParecerDG = ({
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
+  emAprovacao = false,
 }) => {
-  if (proposta.status == "ASSESSMENT_DG")
+  if (proposta.status == "ASSESSMENT_DG" && emAprovacao)
     return (
       <ParecerDGInsertText
         proposta={proposta}

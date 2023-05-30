@@ -100,6 +100,8 @@ const BeneficiosDetalheDemanda = (props) => {
 
   const [escutar, setEscutar] = useState(false);
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -130,13 +132,7 @@ const BeneficiosDetalheDemanda = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        props.setBeneficio(
-          {
-            ...props.beneficio,
-            valor_mensal: transcript,
-          },
-          props.index
-        );
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -151,6 +147,16 @@ const BeneficiosDetalheDemanda = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    props.setBeneficio(
+      {
+        ...props.beneficio,
+        valor_mensal: palavrasJuntas,
+      },
+      props.index
+    );
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -173,7 +179,7 @@ const BeneficiosDetalheDemanda = (props) => {
 
   // ********************************************** Fim Gravar audio **********************************************
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {

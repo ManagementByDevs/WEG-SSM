@@ -54,6 +54,8 @@ const LinhaTabelaCustos = (props) => {
 
   const [localClicou, setLocalClicou] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -84,33 +86,8 @@ const LinhaTabelaCustos = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        let aux = [...props.custos];
-        switch (localClicou) {
-          case "tipoDespesa":
-            aux[props.indexCusto].custos[props.index].tipoDespesa = transcript;
-            props.setCustos(aux);
-            break;
-          case "perfilDespesa":
-            aux[props.indexCusto].custos[props.index].perfilDespesa =
-              transcript;
-            props.setCustos(aux);
-            break;
-          case "periodoExecucao":
-            aux[props.indexCusto].custos[props.index].periodoExecucao =
-              transcript;
-            props.setCustos(aux);
-            break;
-          case "horas":
-            aux[props.indexCusto].custos[props.index].horas = transcript;
-            props.setCustos(aux);
-            break;
-          case "valorHora":
-            aux[props.indexCusto].custos[props.index].valorHora = transcript;
-            props.setCustos(aux);
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+        
       };
 
       recognition.onerror = (event) => {
@@ -125,6 +102,38 @@ const LinhaTabelaCustos = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    let aux = [...props.custos];
+        switch (localClicou) {
+          case "tipoDespesa":
+            aux[props.indexCusto].custos[props.index].tipoDespesa =
+              palavrasJuntas;
+            props.setCustos(aux);
+            break;
+          case "perfilDespesa":
+            aux[props.indexCusto].custos[props.index].perfilDespesa =
+              palavrasJuntas;
+            props.setCustos(aux);
+            break;
+          case "periodoExecucao":
+            aux[props.indexCusto].custos[props.index].periodoExecucao =
+              palavrasJuntas;
+            props.setCustos(aux);
+            break;
+          case "horas":
+            aux[props.indexCusto].custos[props.index].horas = palavrasJuntas;
+            props.setCustos(aux);
+            break;
+          case "valorHora":
+            aux[props.indexCusto].custos[props.index].valorHora =
+              palavrasJuntas;
+            props.setCustos(aux);
+            break;
+          default:
+            break;
+        }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {

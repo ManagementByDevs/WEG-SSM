@@ -55,7 +55,7 @@ public class ScorePautaThread extends Thread implements Runnable {
      */
     public void processar() {
         try {
-            List<Pauta> listaPautas = pautaRepository.findAll();
+            List<Pauta> listaPautas = pautaRepository.findAllScore();
             for (Pauta pauta : listaPautas) {
                 pauta.setScore(calcularScore(pauta));
                 pautaRepository.save(pauta);

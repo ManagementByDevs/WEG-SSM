@@ -92,6 +92,8 @@ const FormularioGeralProposta = (props) => {
 
   const [localClique, setLocalClique] = useState("");
 
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -122,28 +124,7 @@ const FormularioGeralProposta = (props) => {
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-        switch (localClique) {
-          case "qtdPaybackSimples":
-            props.setGerais({
-              ...props.gerais,
-              qtdPaybackSimples: transcript,
-            });
-            break;
-          case "ppm":
-            props.setGerais({
-              ...props.gerais,
-              ppm: transcript,
-            });
-            break;
-          case "linkJira":
-            props.setGerais({
-              ...props.gerais,
-              linkJira: transcript,
-            });
-            break;
-          default:
-            break;
-        }
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
       };
 
       recognition.onerror = (event) => {
@@ -158,6 +139,31 @@ const FormularioGeralProposta = (props) => {
       setEscutar(false);
     }
   };
+
+  useEffect(() => {
+    switch (localClique) {
+      case "qtdPaybackSimples":
+        props.setGerais({
+          ...props.gerais,
+          qtdPaybackSimples: palavrasJuntas,
+        });
+        break;
+      case "ppm":
+        props.setGerais({
+          ...props.gerais,
+          ppm: palavrasJuntas,
+        });
+        break;
+      case "linkJira":
+        props.setGerais({
+          ...props.gerais,
+          linkJira: palavrasJuntas,
+        });
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {

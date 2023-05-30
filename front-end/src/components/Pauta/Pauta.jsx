@@ -92,7 +92,10 @@ const Pautas = (props) => {
 
   return (
     <Paper
-      onClick={() => props.onItemClick(props.dados)}
+      onClick={(e) => {
+        props.onItemClick(props.dados)
+      }
+    }
       className="flex flex-col border-t-4 pt-2 pb-3 pl-6 pr-4"
       sx={{
         "&:hover": {
@@ -108,7 +111,12 @@ const Pautas = (props) => {
           fontSize={FontConfig.big}
           fontWeight="600"
           sx={{ color: "primary.main" }}
-          onClick={() => lerTexto(props.dados.numeroSequencial)}
+          onClick={(e) => {
+            if (props.lendo) {
+              e.stopPropagation();
+              lerTexto(props.dados.numeroSequencial);
+            }
+          }}
         >
           #{props.dados.numeroSequencial}
         </Typography>
@@ -117,7 +125,12 @@ const Pautas = (props) => {
             fontSize={FontConfig.medium}
             fontWeight="600"
             sx={{ color: "text.secondary" }}
-            onClick={() => lerTexto(getDataFormatada(props.dados.dataReuniao))}
+            onClick={(e) => {
+              if (props.lendo) {
+                e.stopPropagation();
+                lerTexto(getDataFormatada(props.dados.dataReuniao));
+              }
+            }}
           >
             {getDataFormatada(props.dados.dataReuniao)}
           </Typography>
@@ -160,7 +173,12 @@ const Pautas = (props) => {
         <Typography
           fontSize={FontConfig.medium}
           fontWeight="600"
-          onClick={() => lerTexto(props.dados.titulo)}
+          onClick={(e) => {
+            if (props.lendo) {
+              e.stopPropagation();
+              lerTexto(texts.pauta.comissao);
+            }
+          }}
         >
           {texts.pauta.comissao}:
         </Typography>
@@ -169,7 +187,12 @@ const Pautas = (props) => {
           fontSize={FontConfig.default}
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px" }}
-          onClick={() => lerTexto(props.dados.comissao?.nomeForum)}
+          onClick={(e) => {
+            if (props.lendo) {
+              e.stopPropagation();
+              lerTexto(props.dados.comissao?.nomeForum);
+            }
+          }}
         >
           {props.dados.comissao?.siglaForum} - {props.dados.comissao?.nomeForum}
         </Typography>
@@ -178,7 +201,12 @@ const Pautas = (props) => {
         <Typography
           fontSize={FontConfig.medium}
           fontWeight="600"
-          onClick={() => lerTexto(texts.pauta.analistaResponsavel)}
+          onClick={(e) => {
+            if (props.lendo) {
+              e.stopPropagation();
+              lerTexto(texts.pauta.analistaResponsavel);
+            }
+          }}
         >
           {texts.pauta.analistaResponsavel}:
         </Typography>
@@ -187,7 +215,12 @@ const Pautas = (props) => {
           fontSize={FontConfig.default}
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
-          onClick={() => lerTexto(props.dados.analistaResponsavel?.nome)}
+          onClick={(e) => {
+            if (props.lendo) {
+              e.stopPropagation();
+              lerTexto(props.dados.analistaResponsavel?.nome);
+            }
+          }}
         >
           {props.dados.analistaResponsavel?.nome}
         </Typography>

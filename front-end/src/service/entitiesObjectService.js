@@ -101,13 +101,13 @@ class EntitiesObjectService {
       id: 0,
       custos: [this.custo()],
       ccs: [this.cc()],
+      tipoDespesa: "",
     };
   }
 
   custo() {
     return {
       id: 0,
-      tipoDespesa: "",
       perfilDespesa: "",
       periodoExecucao: 0,
       horas: 0,
