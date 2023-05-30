@@ -20,6 +20,11 @@ class NotificacaoService {
   aprovadoDG = "APROVADO_DG";
   reprovadoDG = "REPROVADO_DG";
 
+  assessmentAnalista = "ASSESSMENT_ANALISTA";
+  businessCaseAnalista = "BUSINESS_CASE_ANALISTA";
+  cancelledAnalista = "CANCELLED_ANALISTA";
+  doneAnalista = "DONE_ANALISTA";
+
   async getByUserId(userId, page) {
     return (
       await axios.get(`${notificacaoPath}/user/${userId}?${page}`, {

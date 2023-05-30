@@ -158,24 +158,35 @@ const Demanda = (props) => {
           {(props.demanda?.solicitante?.email ==
             CookieService.getCookie("jwt").sub ||
             props.demanda?.solicitante?.tour) && (
-            <Box id="oitavo" className={`items-center text-justify flex`}>
+            <Box>
               <Typography
-                fontSize={FontConfig?.default}
-                sx={{ fontWeight: "600" }}
-                onClick={() => lerTexto(formatarNomeStatus())}
+                fontSize={FontConfig.default}
+                fontWeight={600}
+                color="primary"
+                className="text-end"
               >
-                {formatarNomeStatus()}
+                #{props.demanda.id}
               </Typography>
-              <Box
-                sx={{
-                  backgroundColor: getStatusColor(),
-                  width: "12px",
-                  height: "12px",
-                  borderRadius: "10px",
-                  marginLeft: "10px",
-                }}
-                className={`items-center h-30 text-justify`}
-              />
+
+              <Box id="oitavo" className={`items-center text-justify flex`}>
+                <Typography
+                  fontSize={FontConfig?.default}
+                  sx={{ fontWeight: "600" }}
+                  onClick={() => lerTexto(formatarNomeStatus())}
+                >
+                  {formatarNomeStatus()}
+                </Typography>
+                <Box
+                  sx={{
+                    backgroundColor: getStatusColor(),
+                    width: "12px",
+                    height: "12px",
+                    borderRadius: "10px",
+                    marginLeft: "10px",
+                  }}
+                  className={`items-center h-30 text-justify`}
+                />
+              </Box>
             </Box>
           )}
         </Box>

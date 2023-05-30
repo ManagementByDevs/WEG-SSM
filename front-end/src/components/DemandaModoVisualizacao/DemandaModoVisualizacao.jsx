@@ -324,11 +324,7 @@ const DemandaTable = ({
 };
 
 // Componente para exibir as demanda em forma de grid
-const DemandaGrid = ({
-  listaDemandas,
-  onDemandaClick,
-  lendo = false,
-}) => {
+const DemandaGrid = ({ listaDemandas, onDemandaClick, lendo = false }) => {
   return (
     <Box
       sx={{
@@ -357,7 +353,7 @@ const NadaEncontrado = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Função que irá setar o texto que será "lido" pela a API
   const [textoLeitura, setTextoLeitura] = useState("");

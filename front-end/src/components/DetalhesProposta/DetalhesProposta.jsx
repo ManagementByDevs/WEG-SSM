@@ -1,5 +1,19 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import {Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography,} from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Menu,
+  MenuItem,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -17,12 +31,12 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import PropostaService from "../../service/propostaService";
 import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
+import ExportPdfService from "../../service/exportPdfService";
+import NotificacaoService from "../../service/notificacaoService";
 
 import ClipLoader from "react-spinners/ClipLoader";
 import Feedback from "../Feedback/Feedback";
-
-import CookieService from "../../service/cookieService";
-import ExportPdfService from "../../service/exportPdfService";
 
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
@@ -35,8 +49,8 @@ const DetalhesProposta = ({
   parecerInformacao = "",
   parecerDG = "",
   parecerInformacaoDG = "",
-  setDadosProposta = () => { },
-  setFeedbackEditSuccess = () => { },
+  setDadosProposta = () => {},
+  setFeedbackEditSuccess = () => {},
   lendo,
 }) => {
   // Context para alterar o tamanho da fonte
@@ -375,8 +389,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.solicitante?.nome +
-                    " - " +
-                    proposta.solicitante?.departamento?.nome
+                      " - " +
+                      proposta.solicitante?.departamento?.nome
                   )
                 }
               >
@@ -399,8 +413,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.buSolicitante?.siglaBu +
-                    " - " +
-                    proposta.buSolicitante?.nomeBu
+                      " - " +
+                      proposta.buSolicitante?.nomeBu
                   )
                 }
               >
@@ -423,8 +437,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.gerente?.nome +
-                    " - " +
-                    proposta.gerente?.departamento?.nome
+                      " - " +
+                      proposta.gerente?.departamento?.nome
                   )
                 }
               >
@@ -450,8 +464,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.forum?.siglaForum +
-                      " - " +
-                      proposta.forum?.nomeForum
+                        " - " +
+                        proposta.forum?.nomeForum
                     )
                   }
                 >
@@ -491,8 +505,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.secaoTI.siglaSecao +
-                    " - " +
-                    proposta.secaoTI.nomeSecao
+                      " - " +
+                      proposta.secaoTI.nomeSecao
                   )
                 }
               >
@@ -590,7 +604,9 @@ const DetalhesProposta = ({
               </Typography>
               <Box className="mx-4">
                 {proposta.tabelaCustos?.map((tabela, index) => {
-                  return <TabelaCustos key={index} dados={tabela} lendo={lendo} />;
+                  return (
+                    <TabelaCustos key={index} dados={tabela} lendo={lendo} />
+                  );
                 })}
               </Box>
             </Box>
@@ -706,12 +722,12 @@ const DetalhesProposta = ({
                     DateService.getTodaysDateUSFormat(
                       DateService.getDateByMySQLFormat(proposta.inicioExecucao)
                     ) +
-                    " " +
-                    texts.detalhesProposta.ate +
-                    " " +
-                    DateService.getTodaysDateUSFormat(
-                      DateService.getDateByMySQLFormat(proposta.fimExecucao)
-                    )
+                      " " +
+                      texts.detalhesProposta.ate +
+                      " " +
+                      DateService.getTodaysDateUSFormat(
+                        DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                      )
                   )
                 }
               >
@@ -740,8 +756,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.paybackValor +
-                      " " +
-                      proposta.paybackTipo.toLowerCase()
+                        " " +
+                        proposta.paybackTipo.toLowerCase()
                     )
                   }
                 >
@@ -855,15 +871,15 @@ const DetalhesProposta = ({
                       "ASSESSMENT_EDICAO",
                       "CANCELLED",
                     ].includes(proposta.status) && (
-                        <ParecerDG
-                          proposta={proposta}
-                          setProposta={setProposta}
-                          setDadosProposta={setDadosProposta}
-                          parecerDG={parecerDG}
-                          parecerInformacaoDG={parecerInformacaoDG}
-                          lendo={lendo}
-                        />
-                      )}
+                      <ParecerDG
+                        proposta={proposta}
+                        setProposta={setProposta}
+                        setDadosProposta={setDadosProposta}
+                        parecerDG={parecerDG}
+                        parecerInformacaoDG={parecerInformacaoDG}
+                        lendo={lendo}
+                      />
+                    )}
                   </Box>
                 </Box>
               </>
@@ -1097,9 +1113,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-        style: "currency",
-        currency: tipoMoeda,
-      })
+          style: "currency",
+          currency: tipoMoeda,
+        })
       : 0.0;
   };
 
@@ -1317,7 +1333,7 @@ const Beneficio = ({
                 onClick={() =>
                   lerTexto(
                     beneficio.tipoBeneficio[0].toUpperCase() +
-                    beneficio.tipoBeneficio.substring(1).toLowerCase()
+                      beneficio.tipoBeneficio.substring(1).toLowerCase()
                   )
                 }
               >
@@ -1364,8 +1380,8 @@ const Beneficio = ({
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
@@ -1387,8 +1403,8 @@ const ParecerComissao = ({
 // Chamar o parecer da DG
 const ParecerDG = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
@@ -1410,8 +1426,8 @@ const ParecerDG = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
@@ -1627,8 +1643,8 @@ const ParecerComissaoOnlyRead = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  setDadosProposta = () => { },
+  setProposta = () => {},
+  setDadosProposta = () => {},
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
@@ -1773,8 +1789,8 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => { },
-  getCorStatus = () => { },
+  setProposta = () => {},
+  getCorStatus = () => {},
   lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
@@ -1841,12 +1857,47 @@ const StatusProposta = ({
     return false;
   };
 
+  /** Verifica se o usuário logado pode alterar o status da proposta */
   const userHasAuthority = () => {
     let userCookie = UsuarioService.getUserCookies();
     let user = userCookie.usuario;
     if (proposta.analista.id == user.id) return true;
 
     return false;
+  };
+
+  /** Cria a notificacao da demanda */
+  const sendNotification = (propostaAux) => {
+    let tipoNotificacao;
+
+    switch (propostaAux.status) {
+      case "ASSESSMENT_APROVACAO":
+        tipoNotificacao = NotificacaoService.assessmentAnalista;
+        break;
+      case "BUSINESS_CASE":
+        tipoNotificacao = NotificacaoService.businessCaseAnalista;
+        break;
+      case "CANCELLED":
+        tipoNotificacao = NotificacaoService.cancelledAnalista;
+        break;
+      case "DONE":
+        tipoNotificacao = NotificacaoService.doneAnalista;
+        break;
+      default:
+        tipoNotificacao = NotificacaoService.assessmentAnalista;
+        break;
+    }
+
+    // Criar notificação
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        tipoNotificacao,
+        JSON.parse(JSON.stringify(propostaAux.demanda)),
+        CookieService.getUser().id
+      )
+    ).catch((error) =>
+      console.log("Um erro ocorreu na criação de uma notificação: ", error)
+    );
   };
 
   // Função para editar o status da proposta
@@ -1868,10 +1919,20 @@ const StatusProposta = ({
     PropostaService.atualizarStatus(proposta.id, newStatus).then((response) => {
       setProposta({ ...proposta, status: response.status });
 
+      // Criar notificação
+      sendNotification(
+        JSON.parse(JSON.stringify({ ...proposta, status: response.status }))
+      );
+
       // Salvamento de histórico
       ExportPdfService.exportProposta(response.id).then((file) => {
         let arquivo = new Blob([file], { type: "application/pdf" });
-        PropostaService.addHistorico(response.id, "Status Editado para " + getStatusFormatted(newStatus), arquivo, CookieService.getUser().id).then(() => { });
+        PropostaService.addHistorico(
+          response.id,
+          "Status Editado para " + getStatusFormatted(newStatus),
+          arquivo,
+          CookieService.getUser().id
+        ).then(() => {});
       });
     });
   };
@@ -1927,7 +1988,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         lendo={lendo}
       />
       <Menu

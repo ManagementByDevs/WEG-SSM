@@ -198,7 +198,7 @@ const DetalhesAta = (props) => {
   const sendNotification = (propostaAux) => {
     let tipoNotificacao;
 
-    switch (proposta.parecerDG) {
+    switch (propostaAux.parecerDG) {
       case "APROVADO":
         tipoNotificacao = NotificacaoService.aprovadoDG;
         break;
@@ -210,18 +210,16 @@ const DetalhesAta = (props) => {
         break;
     }
 
-    try {
-      // Criar notificação
-      NotificacaoService.post(
-        NotificacaoService.createNotificationObject(
-          tipoNotificacao,
-          JSON.parse(JSON.stringify(propostaAux.demanda)),
-          CookieService.getUser().id
-        )
-      );
-    } catch (error) {
-      console.log("Um erro ocorreu na criação de uma notificação: ", error);
-    }
+    // Criar notificação
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        tipoNotificacao,
+        JSON.parse(JSON.stringify(propostaAux.demanda)),
+        CookieService.getUser().id
+      )
+    ).catch((error) =>
+      console.log("Um erro ocorreu na criação de uma notificação: ", error)
+    );
   };
 
   // Atualiza a lista de propostas passada por parâmetro

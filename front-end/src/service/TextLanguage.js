@@ -425,6 +425,12 @@ const TextLanguage = (linguagem) => {
           naDG: "na DG",
           entrouEm: "entrou em",
           businessCase: "Business Case",
+          oAnalistaResposnavel: "O Analista Responsável",
+          mudouStatusDemanda: "mudou o status da demanda de número sequencial",
+          para: "para",
+          assessment: "Assessment",
+          cancelled: "Cancelled",
+          done: "Done",
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notificação lida com sucesso!",
@@ -1324,6 +1330,13 @@ const TextLanguage = (linguagem) => {
           naDG: "at the DG",
           entrouEm: "got in",
           businessCase: "Business Case",
+          oAnalistaResposnavel: "The Responsible Analyst",
+          mudouStatusDemanda:
+            "changed the status of demand with sequential number",
+          para: "to",
+          assessment: "Assessment",
+          cancelled: "Cancelled",
+          done: "Done",
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notification read successfully!",
@@ -2212,6 +2225,12 @@ const TextLanguage = (linguagem) => {
           naDG: "在总干事",
           entrouEm: "进去了",
           businessCase: "商业案例",
+          oAnalistaResposnavel: "负责任的分析师",
+          mudouStatusDemanda: "用序列号更改需求状态",
+          para: "到",
+          assessment: "评估",
+          cancelled: "取消",
+          done: "完毕",
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "通知成功阅读！",
@@ -3088,6 +3107,13 @@ const TextLanguage = (linguagem) => {
           naDG: "en el DG",
           entrouEm: "entró",
           businessCase: "Business Case",
+          oAnalistaResposnavel: "El analista responsable",
+          mudouStatusDemanda:
+            "cambió el estado de la demanda con número secuencial",
+          para: "para",
+          assessment: "Assessment",
+          cancelled: "Cancelled",
+          done: "Done",
         },
         notificacaoModal: {
           notificacaoLidaComSucesso: "Notificación leída con éxito!",

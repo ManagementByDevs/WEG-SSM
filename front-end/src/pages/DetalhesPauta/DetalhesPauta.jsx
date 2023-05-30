@@ -335,7 +335,7 @@ const DetalhesPauta = (props) => {
   const sendNotification = (propostaAux) => {
     let tipoNotificacao;
 
-    switch (proposta.parecerComissao) {
+    switch (propostaAux.parecerComissao) {
       case "APROVADO":
         tipoNotificacao = NotificacaoService.aprovadoComissao;
         break;
@@ -353,18 +353,16 @@ const DetalhesPauta = (props) => {
         break;
     }
 
-    try {
-      // Criar notificação
-      NotificacaoService.post(
-        NotificacaoService.createNotificationObject(
-          tipoNotificacao,
-          JSON.parse(JSON.stringify(propostaAux.demanda)),
-          CookieService.getUser().id
-        )
-      );
-    } catch (error) {
-      console.log("Um erro ocorreu na criação de uma notificação: ", error);
-    }
+    // Criar notificação
+    NotificacaoService.post(
+      NotificacaoService.createNotificationObject(
+        tipoNotificacao,
+        JSON.parse(JSON.stringify(propostaAux.demanda)),
+        CookieService.getUser().id
+      )
+    ).catch((error) =>
+      console.log("Um erro ocorreu na criação de uma notificação: ", error)
+    );
   };
 
   const handlePautaWithNoApprovedProposals = () => {

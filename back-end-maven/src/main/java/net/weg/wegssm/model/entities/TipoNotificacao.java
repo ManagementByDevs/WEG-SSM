@@ -17,7 +17,11 @@ public enum TipoNotificacao {
     BUSINESS_CASE_COMISSAO("Business Case Comissão"),
     MAIS_INFORMACOES_COMISSAO("Mais Informações Comissão"),
     APROVADO_DG("Aprovado DG"),
-    REPROVADO_DG("Reprovado DG");
+    REPROVADO_DG("Reprovado DG"),
+    ASSESSMENT_ANALISTA("Assessment Analista"),
+    BUSINESS_CASE_ANALISTA("Business Case Analista"),
+    CANCELLED_ANALISTA("Cancelled Analista"),
+    DONE_ANALISTA("Done Analista");
 
     String tipo;
 }
