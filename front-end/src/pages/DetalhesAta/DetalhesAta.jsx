@@ -221,8 +221,7 @@ const DetalhesAta = (props) => {
         JSON.parse(JSON.stringify(propostaAux.demanda)),
         CookieService.getUser().id
       )
-    ).catch((error) =>
-      console.log("Um erro ocorreu na criação de uma notificação: ", error)
+    ).catch((error) => {}
     );
   };
 

@@ -91,7 +91,6 @@ const DemandaGerencia = (props) => {
                 },
                 chat[0].id
               ).then((response) => {
-                console.log("EDITOU", response);
                 chat = response;
               });
             }

@@ -109,10 +109,6 @@ const FormularioBeneficiosDemanda = (props) => {
     }
   };
 
-  useEffect(() => {
-    console.log(beneficios);
-  }, [beneficios]);
-
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
       <Box

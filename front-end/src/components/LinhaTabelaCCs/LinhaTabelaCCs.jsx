@@ -74,7 +74,6 @@ const LinhaTabelaCCs = (props) => {
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -116,7 +115,7 @@ const LinhaTabelaCCs = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 

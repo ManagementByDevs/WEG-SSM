@@ -117,7 +117,6 @@ const NotificacaoModal = (props) => {
       mensagemRecebida = JSON.parse(mensagem.body);
       // Se a mensagem recebida for do usuário logado, ignore
       if (mensagemRecebida.usuario.id == user.id) {
-        console.log("a");
         return;
       }
 

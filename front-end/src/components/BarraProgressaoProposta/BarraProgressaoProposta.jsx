@@ -141,8 +141,6 @@ const BarraProgressaoProposta = (props) => {
   const retornarTotalBeneficios = () => {
     let valorBeneficio = 0;
 
-    console.log("Valor dolar: " + valorDolar);
-
     for (const object in listaBeneficios) {
       if (listaBeneficios[object].tipoBeneficio == "Real") {
         if (listaBeneficios[object].moeda == "Dolar") {
@@ -712,10 +710,7 @@ const BarraProgressaoProposta = (props) => {
                             CookieService.getUser().id
                           )
                           .then((propostaResponse) => {
-                            console.log(
-                              "Proposta response: ",
-                              propostaResponse
-                            );
+                            
 
                             try {
                               // Criar notificação
@@ -727,10 +722,7 @@ const BarraProgressaoProposta = (props) => {
                                 )
                               );
                             } catch (error) {
-                              console.log(
-                                "Um erro ocorreu na criação de uma notificação: ",
-                                error
-                              );
+                              
                             }
                             localStorage.setItem("tipoFeedback", "5");
                             navigate("/");

@@ -870,7 +870,6 @@ const DetalhesPropostaEditMode = ({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -919,7 +918,7 @@ const DetalhesPropostaEditMode = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -1965,7 +1964,6 @@ const TabelaCustos = ({
       newCusto.id = dados.custos.length * -1 - 1;
     }
 
-    console.log(newCusto.id)
 
     handleOnTabelaCustosChange({
       ...dados,
@@ -2261,7 +2259,6 @@ const CC = ({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -2300,7 +2297,7 @@ const CC = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -2553,7 +2550,6 @@ const CustosRow = ({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -2601,7 +2597,7 @@ const CustosRow = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -2988,7 +2984,6 @@ const Beneficio = ({
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -3026,7 +3021,7 @@ const Beneficio = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 

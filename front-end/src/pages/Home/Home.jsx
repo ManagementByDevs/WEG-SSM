@@ -482,8 +482,7 @@ const Home = (props) => {
           break;
       }
 
-      recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+       recognition.onstart = () => {
       };
 
       recognition.onresult = (event) => {
@@ -512,7 +511,7 @@ const Home = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 

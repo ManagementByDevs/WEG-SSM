@@ -49,7 +49,6 @@ const InputComLabel = (props) => {
       }
 
       recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
       };
 
       recognition.onresult = (event) => {
@@ -79,7 +78,7 @@ const InputComLabel = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 
@@ -132,7 +131,6 @@ const InputComLabel = (props) => {
           sx={{ fontWeight: "600", cursor: "default" }}
           gutterBottom
           onClick={() => {
-            console.log("input");
             lerTexto(props.label);
           }}
         >

@@ -22,7 +22,6 @@ const Contato = ({
 
   // UseEffect para alterar a cor do contato quando ele for selecionado
   useEffect(() => {
-    console.log("chat: ", chat);
     if (idChat == 0) {
       setCorSelecionado("transparent");
     } else {

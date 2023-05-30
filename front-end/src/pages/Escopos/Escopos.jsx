@@ -252,8 +252,7 @@ const Escopos = ({ lendo = false }) => {
           break;
       }
 
-      recognition.onstart = () => {
-        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+       recognition.onstart = () => {
       };
 
       recognition.onresult = (event) => {
@@ -284,7 +283,7 @@ const Escopos = ({ lendo = false }) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-      // console.log("Reconhecimento de fala interrompido.");
+       
     }
   };
 

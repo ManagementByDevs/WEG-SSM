@@ -324,7 +324,6 @@ const Notificacao = (props) => {
 
   // Atualiza a notificação no banco de dados
   const updateNotificacao = (notificacao) => {
-    console.log("Notificação: ", notificacao);
     NotificacaoService.put({
       id: notificacao.id,
       numeroSequencial: notificacao.numeroSequencial,
