@@ -922,7 +922,7 @@ const DetalhesDemanda = (props) => {
           <>
             <Box>
               <Typography fontSize={FontConfig.medium} fontWeight={600}>
-                # {props.dados.id}
+                #{props.dados.id}
               </Typography>
               <Typography
                 fontSize={FontConfig.title}
