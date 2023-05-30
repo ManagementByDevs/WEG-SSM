@@ -20,6 +20,8 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
+import DateService from "../../service/dateService";
+import AnexoService from "../../service/anexoService";
 import { MensagemService } from "../../service/MensagemService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import dateService from "../../service/dateService";
@@ -38,6 +40,8 @@ const ChatMinimizado = (props) => {
   // Contexto para controlar a visibilidade do chat
   const { visibilidade, setVisibilidade, idChat } = useContext(ChatContext);
 
+  console.log("idChat: ", idChat);
+
   // Contexto para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
@@ -47,28 +51,11 @@ const ChatMinimizado = (props) => {
   // UseState para setar o tamanho do chat minimizado
   const [tamanhoChatMinimizado, setTamanhoChatMinimizado] = useState("24rem");
 
-  // UseState para receber todos os chats do user
-  const [listaChats, setListaChats] = useState([]);
-
-  // UseState para receber o id do usuário
-  const [user, setUser] = useState(UsuarioService.getUserCookies());
-
   // UseState para receber o chat selecionado
   const [chat, setChat] = useState({});
 
-  // UseState para receber true se estiver buscando mensagens
-  const [buscandoMensagens, setBuscandoMensagens] = useState(true);
-
   // UseContext para o chat
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
-
-  // UseState para receber todas as mensagens do chat
-  const [mensagens, setMensagens] = useState([
-    EntitiesObjectService.mensagem(),
-  ]);
-
-  // UseState para setar a mensagem
-  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
 
   // UseRef para setar o scroll do chat
   const boxRef = useRef(null);
@@ -76,7 +63,317 @@ const ChatMinimizado = (props) => {
   // UseRef para setar o input de mensagem
   const inputRef = useRef(null);
 
-  // UseEffect para carregar as mensagens do chat
+  /** UseState para pesquisar um contato da lista */
+  const [pesquisaContato, setPesquisaContato] = useState("");
+
+  /** UseState para armazenar os resultados da pesquisa */
+  const [resultadosContato, setResultadosContato] = useState([
+    EntitiesObjectService.chat(),
+  ]);
+
+  /** UseState para controlar o loading de mensagens */
+  const [buscandoMensagens, setBuscandoMensagens] = useState(true);
+
+  /** UseState para feedback de chat encerrado */
+  const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
+
+  /** UseState para feedback de chat aberto */
+  const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
+
+  /** UseState para feedback de que anexo é muito grande */
+  const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  /** Modal de confiramação para encerrar o chat */
+  const [abrirModalEncerrarChat, setOpenModalEncerrarChat] = useState(false);
+
+  /** Modal de confirmação para reabrir o chat */
+  const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
+
+  /** Lista de chats do usuário */
+  const [listaChats, setListaChats] = useState([EntitiesObjectService.chat()]);
+
+  /** Mensagem que está sendo digitada */
+  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+
+  /** Todas as mensagens do chat selecionado */
+  const [mensagens, setMensagens] = useState([
+    EntitiesObjectService.mensagem(),
+  ]);
+
+  /** Usuário logado */
+  const [user, setUser] = useState(UsuarioService.getUserCookies());
+
+  /** UseState para poder visualizar e alterar a visibilidade do menu */
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  /** Variável que é usada para saber se o menu está aberto ou não */
+  const open = Boolean(anchorEl);
+
+  /** Função para abrir o menu */
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  /** Função para fechar o menu */
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  /** Hanlder para armazenar o contato selecionado */
+  const onChange = (evt) => {
+    setPesquisaContato(evt.target.value);
+  };
+
+  // Função para abrir o modal de confirmação para encerrar o chat
+  const abrirModalCancelarChat = () => {
+    setOpenModalEncerrarChat(true);
+  };
+
+  // Função para fechar o modal de confirmação para encerrar o chat
+  const fecharModalCancelarChat = () => {
+    setOpenModalEncerrarChat(false);
+  };
+
+  // Função para abrir o modal de confirmação para reabrir o chat
+  const abrirModalAbrirChat = () => {
+    setOpenModalReabrirChat(true);
+  };
+
+  // Função para fechar o modal de confirmação para reabrir o chat
+  const fecharModalAbrirChat = () => {
+    setOpenModalReabrirChat(false);
+  };
+
+  const retornaConversaEncerrada = () => {
+    for (let chatInput of listaChats) {
+      if (chatInput.id == idChat) {
+        if (chatInput.conversaEncerrada) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  const getIdDestinatario = () => {
+    if (!idChat) return 0;
+
+    let chatAux = listaChats.find((chat) => chat.id == idChat);
+
+    if (!chatAux) return 0;
+
+    let userAux = chatAux.usuariosChat.find((e) => e.id != user.usuario.id);
+    return userAux.id;
+  };
+
+  /** Seta a mensagem padrão */
+  const setDefaultMensagem = () => {
+    setMensagem({
+      data: DateService.getTodaysDate(),
+      visto: false,
+      texto: "",
+      status: "MESSAGE",
+      usuario: { id: user.usuario.id },
+      idChat: { id: idChat },
+      idDestinatario: getIdDestinatario(),
+    });
+  };
+
+  /** Atualiza a mensagem a cada tecla digitada */
+  const atualizaMensagem = (event) => {
+    const { value } = event.target;
+    setMensagem({ ...mensagem, texto: value });
+  };
+
+  /** Envia uma mensagem para o tópico */
+  const submit = (event) => {
+    if (mensagem.texto !== "") {
+      event.preventDefault();
+      enviar(
+        `/app/weg_ssm/mensagem/${idChat}`,
+        JSON.stringify({
+          ...mensagem,
+          texto: mensagem.texto.replace(/\n/g, "%BREAK%"),
+        })
+      );
+      setDefaultMensagem();
+    }
+  };
+
+  /** Atualiza o chat para encerrado */
+  const deletarChat = () => {
+    fecharModalCancelarChat();
+    ChatService.getByIdChat(idChat).then((e) => {
+      ChatService.put(
+        {
+          ...e,
+          conversaEncerrada: true,
+        },
+        idChat
+      ).then((e) => {
+        setFeedbackChatEncerrado(true);
+        listaChats.map((chat) => {
+          if (chat.id == idChat) {
+            let aux = [...listaChats];
+            aux.splice(listaChats.indexOf(chat), 1, {
+              ...chat,
+              conversaEncerrada: true,
+            });
+            setListaChats(aux);
+          }
+        });
+      });
+    });
+  };
+
+  /** Atualiza o chat para não encerrado */
+  const abrirChat = () => {
+    fecharModalAbrirChat();
+    ChatService.getByIdChat(idChat).then((e) => {
+      ChatService.put(
+        {
+          ...e,
+          conversaEncerrada: false,
+        },
+        idChat
+      ).then((e) => {
+        setFeedbackChatAberto(true);
+        for (let chat of listaChats) {
+          if (chat.id == idChat) {
+            let aux = [...listaChats];
+            aux.splice(listaChats.indexOf(chat), 1, {
+              ...chat,
+              conversaEncerrada: false,
+            });
+            setListaChats(aux);
+            return;
+          }
+        }
+      });
+    });
+  };
+
+  /** Verifica se o chat está encerrado */
+  const isConversaEncerrada = () => {
+    for (let chatInput of listaChats) {
+      if (chatInput.id == idChat) {
+        if (chatInput.conversaEncerrada) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  /** Envia um anexo para o tópico caso ele seja menor que 64KB */
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    event.preventDefault();
+
+    if (file.size <= 65535) {
+      AnexoService.save(file)
+        .then((response) => {
+          enviar(
+            `/app/weg_ssm/mensagem/${idChat}`,
+            JSON.stringify({
+              ...mensagem,
+              anexo: response,
+            })
+          );
+          inputRef.current.value = "";
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setFeedbackAnexoGrande(true);
+    }
+    setDefaultMensagem();
+  };
+
+  /** Busca os chats do usuário */
+  const buscarChats = () => {
+    ChatService.getByRemetente(user.usuario.id).then((chatResponse) => {
+      setListaChats([...chatResponse]);
+    });
+  };
+
+  /** Busca as mensagens do usuário */
+  const carregar = () => {
+    MensagemService.getMensagensChat(idChat).then((response) => {
+      setMensagens(response);
+
+      enviar(`/app/weg_ssm/enter/chat/${idChat}`, user.usuario.id);
+    });
+    setDefaultMensagem();
+  };
+
+  const clearNewMessages = () => {
+    setListaChats((oldListaChats) => {
+      if (oldListaChats.length == 0) return;
+
+      let listaChatsAux = JSON.parse(JSON.stringify(oldListaChats));
+      let chatAux = listaChatsAux.find((chat) => chat.id == idChat);
+      chatAux.msgNaoLidas = 0;
+
+      return [...listaChatsAux];
+    });
+  };
+
+  // ***************************************** UseEffects ***************************************** //
+
+  useEffect(() => {
+    if (idChat) carregar();
+    buscarChats();
+  }, [idChat]);
+
+  useEffect(() => {
+    const receivedAnyMessage = (mensagem) => {
+      let mensagemRecebida = EntitiesObjectService.mensagem();
+      mensagemRecebida = JSON.parse(mensagem.body);
+      let idChatAux = idChat;
+
+      // Se a mensagem recebida for do usuário logado, ignore
+      if (mensagemRecebida.usuario.id == user.usuario.id) {
+        console.log("a");
+        return;
+      }
+
+      // Se a mensagem recebida for do chat atual, ignore
+      if (mensagemRecebida.idChat.id == idChatAux) {
+        console.log("b");
+        return;
+      }
+
+      setListaChats((oldListaChats) => {
+        let listaAux = JSON.parse(JSON.stringify(oldListaChats));
+
+        let chatAux = listaAux.find(
+          (chat) => chat.id == mensagemRecebida.idChat.id
+        );
+
+        chatAux.msgNaoLidas = chatAux.msgNaoLidas + 1;
+        return [...listaAux];
+      });
+    };
+
+    let inscricaoAllMensagens = inscrever(
+      `/weg_ssm/mensagem/all/user/${user.usuario.id}`,
+      receivedAnyMessage
+    );
+
+    return () => {
+      if (inscricaoAllMensagens) {
+        inscricaoAllMensagens.unsubscribe();
+      }
+    };
+  }, [stompClient]);
+
   useEffect(() => {
     const acaoNovaMensagem = (response) => {
       const mensagemRecebida = JSON.parse(response.body);
@@ -84,7 +381,42 @@ const ChatMinimizado = (props) => {
         ...mensagemRecebida.body,
         texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
       };
+
+      // Se o remetente não for o usuário, tenho que notificar a visualização
+      if (mensagemNova.usuario.id != user.usuario.id) {
+        mensagemNova.visto = true;
+        console.log("Mensagem nova visto: ", mensagemNova);
+        enviar(
+          `/app/weg_ssm/mensagem/chat/${idChat}/visto`,
+          JSON.stringify({
+            ...mensagemNova,
+            texto: mensagemNova.texto.replace(/\n/g, "%BREAK%"),
+          })
+        );
+      } else {
+        clearNewMessages();
+      }
+
       setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
+    };
+
+    const readMessage = (mensagem) => {
+      console.log("Mensagem vista: ", mensagem);
+
+      if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
+        clearNewMessages();
+        return;
+      }
+
+      setMensagens((oldMensagens) => {
+        for (let oldMensagem of oldMensagens) {
+          if (!oldMensagem.visto) {
+            oldMensagem.visto = true;
+          }
+        }
+
+        return [...oldMensagens];
+      });
     };
 
     if (idChat) {
@@ -93,92 +425,201 @@ const ChatMinimizado = (props) => {
         acaoNovaMensagem
       );
 
+      let inscricaoVerMensagem = inscrever(
+        `/weg_ssm/mensagem/chat/${idChat}/visto`,
+        readMessage
+      );
+
       return () => {
         if (inscricaoId) {
           inscricaoId.unsubscribe();
+          inscricaoVerMensagem.unsubscribe();
         }
       };
     }
   }, [stompClient, idChat]);
 
-  // UseEffect para carregar as mensagens do chat
+  const containsUser = (
+    usuarios = [EntitiesObjectService.usuario()],
+    idUserLogado = 0,
+    nome = ""
+  ) => {
+    return usuarios.some(
+      (usuario) =>
+        usuario.id != idUserLogado && usuario.nome.toLowerCase().includes(nome)
+    );
+  };
+
+  /** UseState para armazenar o contato selecionado */
+  useEffect(() => {
+    let listaChatsAux = listaChats.filter((chat) => {
+      // Pesquisa por código PPM
+      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
+        return true;
+      }
+
+      // Pesquisa pelo título da proposta
+      if (
+        chat.idProposta.titulo
+          .toLowerCase()
+          .includes(pesquisaContato.toLowerCase())
+      ) {
+        return true;
+      }
+
+      // Pesquisa pelo nome do contato
+      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
+        return true;
+      }
+    });
+    setResultadosContato([...listaChatsAux]);
+    console.log("Lista de chats: ", listaChatsAux);
+  }, [pesquisaContato, listaChats, idChat]);
+
   useEffect(() => {
     setBuscandoMensagens(false);
     const boxElement = boxRef.current;
+    // Colocando o scroll para a última mensagem recebida
     if (boxElement) {
       boxElement.scrollTop = boxElement.scrollHeight;
     }
   }, [mensagens]);
 
-  // UseEffect para buscar todos os chats do usuário
-  useEffect(() => {
-    buscarChats();
-  }, []);
+  // ***************************************** Fim UseEffects ***************************************** //
 
-  // UseEffect para retornar o chat selecionado
-  useEffect(() => {
-    retornaChat();
-  }, [listaChats]);
+  // // ********************************************** Gravar audio **********************************************
 
-  // Função para carregar as mensagens do chat
-  async function carregar() {
-    await MensagemService.getMensagensChat(idChat)
-      .then((response) => {
-        setMensagens(response);
-      })
-      .catch((error) => { });
-    setDefaultMensagem();
-  }
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
-  // Função para setar uma mensagem default
-  const setDefaultMensagem = () => {
-    setMensagem({
-      data: dateService.getTodaysDate(),
-      visto: false,
-      texto: "",
-      status: "MESSAGE",
-      usuario: { id: user.usuario.id },
-      idChat: { id: idChat },
-      anexo: [],
-    });
-  };
+  const recognitionRef = useRef(null);
 
-  // Função para enviar um anexo
-  function handleFileUpload(event) {
-    const file = event.target.files[0];
-    event.preventDefault();
-    anexoService
-      .save(file)
-      .then((response) => {
-        enviar(`/app/weg_ssm/mensagem/${idChat}`, {
-          ...mensagem,
-          anexo: response,
-        });
-        inputRef.current.value = "";
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    setDefaultMensagem();
-  }
+  const [escutar, setEscutar] = useState(false);
 
-  // Função para atualizar a mensagem
-  const atualizaMensagem = (event) => {
-    const { value } = event.target;
-    setMensagem({ ...mensagem, texto: value });
-  };
+  const [localClicado, setLocalClicado] = useState("");
 
-  // Função para enviar a mensagem
-  const submit = async (event) => {
-    if (mensagem.texto !== "") {
-      event.preventDefault();
-      enviar(`/app/weg_ssm/mensagem/${idChat}`, mensagem);
-      setDefaultMensagem();
+  const [palavrasJuntas, setPalavrasJuntas] = useState("");
+
+  const ouvirAudio = () => {
+    // Verifica se a API é suportada pelo navegador
+    if ("webkitSpeechRecognition" in window) {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.continuous = true;
+      switch (texts.linguagem) {
+        case "pt":
+          recognition.lang = "pt-BR";
+          break;
+        case "en":
+          recognition.lang = "en-US";
+          break;
+        case "es":
+          recognition.lang = "es-ES";
+          break;
+        case "ch":
+          recognition.lang = "cmn-Hans-CN";
+          break;
+        default:
+          recognition.lang = "pt-BR";
+          break;
+      }
+
+      recognition.onstart = () => {
+        // console.log("Reconhecimento de fala iniciado. Fale algo...");
+      };
+
+      recognition.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript;
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+        // setValorPesquisa(transcript);
+      };
+
+      recognition.onerror = (event) => {
+        setFeedbackErroReconhecimentoVoz(true);
+        setEscutar(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      setFeedbackErroNavegadorIncompativel(true);
+      setEscutar(false);
     }
   };
 
-  // Função para minimizar o chat
-  const sumir = keyframes({
+  useEffect(() => {
+    switch (localClicado) {
+      case "titulo":
+        setPesquisaContato(palavrasJuntas);
+        break;
+      case "mensagem":
+        setMensagem({ ...mensagem, texto: palavrasJuntas });
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
+
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      // console.log("Reconhecimento de fala interrompido.");
+    }
+  };
+
+  const startRecognition = (ondeClicou) => {
+    setEscutar(!escutar);
+    setLocalClicado(ondeClicou);
+  };
+
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  // // ********************************************** Fim Gravar audio **********************************************
+  const [textoLeitura, setTextoLeitura] = useState("");
+
+  // Função que irá setar o texto que será "lido" pela a API
+  const lerTexto = (escrita) => {
+    if (props.lendo) {
+      setTextoLeitura(escrita);
+    }
+  };
+
+  // Função que irá "ouvir" o texto que será "lido" pela a API
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (props.lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
+
+   // Função para minimizar o chat
+   const sumir = keyframes({
     from: { height: "24rem" },
     to: { height: "2.88rem" },
   });
@@ -188,35 +629,6 @@ const ChatMinimizado = (props) => {
     from: { height: "2.88rem" },
     to: { height: "24rem" },
   });
-
-  // Função para buscar todos os chats do usuário e setar na listaChats
-  async function buscarChats() {
-    await ChatService.getByRemetente(user.usuario.id).then((e) => {
-      setListaChats(e);
-    });
-  }
-
-  // Função para retornar o chat selecionado
-  const retornaChat = () => {
-    listaChats.map((chat) => {
-      if (chat.id == idChat) {
-        setChat(chat);
-      }
-    });
-  };
-
-  // Função para retornar true se a conversa estiver encerrada
-  const retornaConversaEncerrada = () => {
-    let valor = false;
-    listaChats.map((chatInput) => {
-      if (chatInput.id == idChat) {
-        if (chatInput.conversaEncerrada == true) {
-          valor = true;
-        }
-      }
-    });
-    return valor;
-  };
 
   return (
     <Box

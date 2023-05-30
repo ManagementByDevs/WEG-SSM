@@ -1010,6 +1010,7 @@ const DetalhesDemanda = (props) => {
                       key={index}
                       index={index}
                       beneficio={beneficio}
+                      setBeneficio={alterarTextoBeneficio}
                       setFeedbackErroNavegadorIncompativel={
                         setFeedbackErroNavegadorIncompativel
                       }
@@ -1017,8 +1018,6 @@ const DetalhesDemanda = (props) => {
                         setFeedbackErroReconhecimentoVoz
                       }
                       lendo={props.lendo}
-                      texto={props.texto}
-                      setTexto={props.setTexto}
                     />
                   );
                 })}
@@ -1368,8 +1367,6 @@ const DetalhesDemanda = (props) => {
                           setFeedbackErroReconhecimentoVoz
                         }
                         lendo={props.lendo}
-                        texto={props.texto}
-                        setTexto={props.setTexto}
                       />
                     );
                   }
