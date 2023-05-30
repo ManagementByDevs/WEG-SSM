@@ -1,20 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 
-import {
-  Box,
-  Divider,
-  IconButton,
-  Menu,
-  MenuItem,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -43,12 +29,13 @@ const propostaExample = EntitiesObjectService.proposta();
 const DetalhesProposta = ({
   propostaId = 0,
   emAprovacao = false,
-  setDadosProposta = () => {},
-  setFeedbackEditSuccess = () => {},
+  setDadosProposta = () => { },
+  setFeedbackEditSuccess = () => { },
   lendo,
   setTexto,
   texto,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -216,7 +203,7 @@ const DetalhesProposta = ({
     });
   }, []);
 
-  const [textoLeitura,setTextoLeitura] = useState("");
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -388,8 +375,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.solicitante?.nome +
-                      " - " +
-                      proposta.solicitante?.departamento?.nome
+                    " - " +
+                    proposta.solicitante?.departamento?.nome
                   )
                 }
               >
@@ -412,8 +399,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.buSolicitante?.siglaBu +
-                      " - " +
-                      proposta.buSolicitante?.nomeBu
+                    " - " +
+                    proposta.buSolicitante?.nomeBu
                   )
                 }
               >
@@ -436,8 +423,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.gerente?.nome +
-                      " - " +
-                      proposta.gerente?.departamento?.nome
+                    " - " +
+                    proposta.gerente?.departamento?.nome
                   )
                 }
               >
@@ -463,8 +450,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.forum?.siglaForum +
-                        " - " +
-                        proposta.forum?.nomeForum
+                      " - " +
+                      proposta.forum?.nomeForum
                     )
                   }
                 >
@@ -504,8 +491,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.secaoTI.siglaSecao +
-                      " - " +
-                      proposta.secaoTI.nomeSecao
+                    " - " +
+                    proposta.secaoTI.nomeSecao
                   )
                 }
               >
@@ -713,12 +700,12 @@ const DetalhesProposta = ({
                     DateService.getTodaysDateUSFormat(
                       DateService.getDateByMySQLFormat(proposta.inicioExecucao)
                     ) +
-                      " " +
-                      texts.detalhesProposta.ate +
-                      " " +
-                      DateService.getTodaysDateUSFormat(
-                        DateService.getDateByMySQLFormat(proposta.fimExecucao)
-                      )
+                    " " +
+                    texts.detalhesProposta.ate +
+                    " " +
+                    DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                    )
                   )
                 }
               >
@@ -747,8 +734,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.paybackValor +
-                        " " +
-                        proposta.paybackTipo.toLowerCase()
+                      " " +
+                      proposta.paybackTipo.toLowerCase()
                     )
                   }
                 >
@@ -861,14 +848,14 @@ const DetalhesProposta = ({
                       "ASSESSMENT_EDICAO",
                       "CANCELLED",
                     ].includes(proposta.status) && (
-                      <ParecerDG
-                        proposta={proposta}
-                        setProposta={setProposta}
-                        setDadosProposta={setDadosProposta}
-                        parecerDG={proposta.parecerDG}
-                        parecerInformacaoDG={proposta.parecerInformacaoDG}
-                      />
-                    )}
+                        <ParecerDG
+                          proposta={proposta}
+                          setProposta={setProposta}
+                          setDadosProposta={setDadosProposta}
+                          parecerDG={proposta.parecerDG}
+                          parecerInformacaoDG={proposta.parecerInformacaoDG}
+                        />
+                      )}
                   </Box>
                 </Box>
               </>
@@ -884,10 +871,10 @@ const DetalhesProposta = ({
 const TabelaCustos = ({
   dados = {
     id: 0,
+    tipoDespesa: "",
     custos: [
       {
         id: 0,
-        tipoDespesa: "",
         perfilDespesa: "",
         periodoExecucao: 0,
         horas: 0,
@@ -897,6 +884,7 @@ const TabelaCustos = ({
     ccs: [{ id: 0, codigo: 0, porcentagem: 0.0 }],
   },
 }) => {
+
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -942,7 +930,7 @@ const TabelaCustos = ({
         </TableHead>
         <TableBody>
           {dados.custos.map((custo, index) => {
-            return <CustosRow key={index} custo={custo} />;
+            return <CustosRow key={index} custo={custo} despesa={dados} />;
           })}
         </TableBody>
       </Table>
@@ -988,6 +976,7 @@ const TabelaCustos = ({
 
 // Mostrar os custos na proposta
 const CustosRow = ({
+  despesa = { tipoDespesa: "" },
   custo = {
     id: 0,
     tipoDespesa: "",
@@ -997,6 +986,7 @@ const CustosRow = ({
     valorHora: 0,
   },
 }) => {
+
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1029,9 +1019,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -1039,7 +1029,7 @@ const CustosRow = ({
     <TableRow>
       <td className="p-2 text-center">
         <Typography fontSize={FontConfig.default}>
-          {custo.tipoDespesa}
+          {despesa.tipoDespesa}
         </Typography>
       </td>
       <td className="p-2 text-center">
@@ -1071,6 +1061,7 @@ const CustosRow = ({
 
 // Mostrar os benefícios da proposta
 const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
+
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1186,8 +1177,8 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
 }) => {
@@ -1207,8 +1198,8 @@ const ParecerComissao = ({
 // Chamar o parecer da DG
 const ParecerDG = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
 }) => {
@@ -1228,8 +1219,8 @@ const ParecerDG = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
 }) => {
@@ -1360,8 +1351,8 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
 }) => {
@@ -1464,9 +1455,9 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  getCorStatus = () => {},
-  getStatusFormatted = () => {},
+  setProposta = () => { },
+  getCorStatus = () => { },
+  getStatusFormatted = () => { },
   lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
@@ -1591,7 +1582,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         lendo={lendo}
       />
       <Menu
