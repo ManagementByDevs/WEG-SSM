@@ -220,7 +220,7 @@ const DetalhesProposta = ({
         : texts.detalhesProposta.escopoVazio;
     }
 
-    console.log(proposta);
+    console.log("Proposta: ", proposta);
   }, [proposta, isEditing]);
 
   useEffect(() => {
@@ -547,7 +547,7 @@ const DetalhesProposta = ({
                 fontWeight="bold"
                 onClick={() => lerTexto(texts.detalhesProposta.problema)}
               >
-                {texts.detalhesProposta.problema}:&nbsp;
+                {texts.detalhesProposta.problema}:
               </Typography>
               <Box className="mx-4">
                 <Typography
@@ -609,11 +609,24 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.tabelaDeCustos}:&nbsp;
               </Typography>
               <Box className="mx-4">
-                {proposta.tabelaCustos?.map((tabela, index) => {
-                  return (
-                    <TabelaCustos key={index} dados={tabela} lendo={lendo} />
-                  );
-                })}
+                {proposta.tabelaCustos.length > 0 ? (
+                  proposta.tabelaCustos?.map((tabela, index) => {
+                    return (
+                      <TabelaCustos key={index} dados={tabela} lendo={lendo} />
+                    );
+                  })
+                ) : (
+                  <Typography
+                    className="text-center"
+                    fontSize={FontConfig.medium}
+                    color="text.secondary"
+                    onClick={() =>
+                      lerTexto(texts.detalhesProposta.semBeneficios)
+                    }
+                  >
+                    {texts.detalhesProposta.semTabelasDeCusto}
+                  </Typography>
+                )}
               </Box>
             </Box>
 

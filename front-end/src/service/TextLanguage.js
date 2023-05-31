@@ -836,6 +836,7 @@ const TextLanguage = (linguagem) => {
             done: "Done",
           },
           escopoVazio: "Escopo vazio",
+          semTabelasDeCusto: "Proposta sem tabelas de custo",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Dado inválido!",
@@ -1743,6 +1744,7 @@ const TextLanguage = (linguagem) => {
             done: "Done",
           },
           escopoVazio: "Empty scope",
+          semTabelasDeCusto: "Proposal without cost tables",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "Invalid data!",
@@ -2618,6 +2620,7 @@ const TextLanguage = (linguagem) => {
             done: "完毕",
           },
           escopoVazio: "空范围",
+          semTabelasDeCusto: "没有成本表的提案",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "无效数据",
@@ -3537,6 +3540,7 @@ const TextLanguage = (linguagem) => {
             done: "Done",
           },
           escopoVazio: "Alcance vacío",
+          semTabelasDeCusto: "Propuesta sin tablas de costos",
         },
         detalhesPropostaEditMode: {
           dadoInvalido: "¡Datos inválidos!",

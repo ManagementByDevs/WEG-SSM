@@ -31,7 +31,7 @@ const FormularioGeralProposta = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Variável para alterar o tema
   const { mode } = useContext(ColorModeContext);
@@ -56,7 +56,7 @@ const FormularioGeralProposta = (props) => {
     });
   };
 
-  // Função para remover um responsável
+  /** Função para remover um responsável */
   const deleteResponsavel = (indexResponsavel) => {
     ResponsavelNegocioService.delete(
       props.gerais.responsaveisNegocio[indexResponsavel].id
@@ -67,21 +67,21 @@ const FormularioGeralProposta = (props) => {
     });
   };
 
-  // Aciona o input de anexos ao clicar no add anexos
+  /** Aciona o input de anexos ao clicar no add anexos */
   const onAddAnexoButtonClick = () => {
     inputFile.current.click();
   };
 
-  // Coloca o arquivo selecionado no input no state de anexos
-  const onFilesSelect = () => {
-    for (let file of inputFile.current.files) {
-      AnexoService.save(file).then((response) => {
-        props.setDados({
-          ...props.dados,
-          anexo: [...props.dados.anexo, response],
-        });
-      });
-    }
+  /** Coloca o arquivo selecionado no input no state de anexos */
+  const onFilesSelect = async () => {
+    const responses = await Promise.all(
+      Array.from(inputFile.current.files).map((file) => AnexoService.save(file))
+    );
+
+    props.setDados({
+      ...props.dados,
+      anexo: [...props.dados.anexo, ...responses],
+    });
   };
 
   // // ********************************************** Gravar audio **********************************************
@@ -117,8 +117,7 @@ const FormularioGeralProposta = (props) => {
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
@@ -167,7 +166,6 @@ const FormularioGeralProposta = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -186,18 +184,18 @@ const FormularioGeralProposta = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -205,7 +203,7 @@ const FormularioGeralProposta = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
