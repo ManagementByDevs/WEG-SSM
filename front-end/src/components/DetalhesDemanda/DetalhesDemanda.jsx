@@ -119,10 +119,6 @@ const DetalhesDemanda = (props) => {
     setAnexosDemanda(props.dados.anexo);
   }, []);
 
-  useEffect(() => {
-    console.log(problema);
-  }, [problema]);
-
   // ----------------------------------------------------------------------------------------------------------------------------
   // Funções de edição da demanda
 

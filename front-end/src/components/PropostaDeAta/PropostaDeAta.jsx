@@ -135,10 +135,6 @@ const PropostaDeAta = (props) => {
     }
   };
 
-  useEffect(() => {
-    console.log("Não está salvando em nada");
-  }, [palavrasJuntas]);
-
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
