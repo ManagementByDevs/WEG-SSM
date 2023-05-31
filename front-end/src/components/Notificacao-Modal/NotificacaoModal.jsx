@@ -18,8 +18,9 @@ import UsuarioService from "../../service/usuarioService";
 import DateService from "../../service/dateService";
 import { WebSocketContext } from "../../service/WebSocketService";
 
-// Modal de notificações do sistema
+/** Ícone e modal de notificações presente no Header */
 const NotificacaoModal = (props) => {
+
   /** Variável para pegar informações da URL */
   const location = useLocation();
 
@@ -29,12 +30,13 @@ const NotificacaoModal = (props) => {
   /** Context para alterar a linguagem do sistema */
   const { texts, setTexts } = useContext(TextLanguageContext);
 
-  /**  Context do WebSocket */
-  const { inscrever, stompClient } = useContext(WebSocketContext);
-
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
+  /**  Context do WebSocket */
+  const { inscrever, stompClient } = useContext(WebSocketContext);
+
+  /** Referência usada para determinar a posição do modal na tela */
   const elementoAncora = useRef(null);
 
   /** Usuário logado */
@@ -55,14 +57,59 @@ const NotificacaoModal = (props) => {
   /** Variável que é usada para saber se o menu está aberto ou não */
   const [open, setOpen] = useState(false);
 
-  /** Função para abrir o menu */
-  const handleClick = () => {
-    setOpen(true);
-  };
+  /** UseEffect para buscar as informações assim que entra na página */
+  useEffect(() => {
+    buscarNotificacoes();
 
-  /** Função para fechar o menu */
-  const handleClose = () => {
-    setOpen(false);
+    if (elementoAncora.current) {
+      setAnchorEl(elementoAncora.current);
+    }
+  }, []);
+
+  /** UseEffect para se inscrever no tópico de chats para receber notificações em tempo real */
+  useEffect(() => {
+
+    /** Função para chamar a função "saveNotificacao" quando receber uma mensagem nova */
+    const receivedAnyMessage = (mensagem) => {
+      let mensagemRecebida = EntitiesObjectService.mensagem();
+      mensagemRecebida = JSON.parse(mensagem.body);
+      saveNotificacao(mensagemRecebida);
+    };
+
+    /** Inscrição para o servidor WebSocket, redirecionando para a função "receivedAnyMessage" quando receber uma nova mensagem */
+    if (!rota.includes("/chat")) {
+      let inscricaoAllMensagens = inscrever(
+        `/weg_ssm/mensagem/all/user/${user.id}`,
+        receivedAnyMessage
+      );
+
+      return () => {
+        if (inscricaoAllMensagens) {
+          inscricaoAllMensagens.unsubscribe();
+        }
+      };
+    }
+  }, [stompClient]);
+
+  /** UseEffect para se inscrever no servidor WebSocket para receber novas notificações */
+  useEffect(() => {
+
+    /** Função para adicionar uma nova notificação recebida na lista de notificações */
+    const acaoNovaNotificacao = (response) => {
+      const notificacao = JSON.parse(response.body);
+      setNotificacoes([...notificacoes, notificacao]);
+    };
+
+    /** Inscrição ao WebSocket, que redirecionará para a função "acaoNovaNotificacao" quando receber uma nova notificação */
+    if (stompClient) {
+      let userId = CookieService.getUser().id;
+      inscrever(`/weg_ssm/${userId}/notificacao`, acaoNovaNotificacao);
+    }
+  }, [stompClient, notificacoes]);
+
+  /** Função para abrir/fechar o modal */
+  const handleClick = () => {
+    setOpen(!open);
   };
 
   /** Função para buscar as notificações não lidas do usuário */
@@ -74,17 +121,18 @@ const NotificacaoModal = (props) => {
           .then((response) => {
             setNotificacoes([...response.content]);
           })
-          .catch((error) => {});
+          .catch((error) => { });
       }
     );
   };
 
-  /** Função para quando clicar em uma notificação */
+  /** Função para ativar o feedback e recarregar as notificações quando uma for lida */
   const onNotificationItemClick = () => {
     setFeedback(true);
     buscarNotificacoes();
   };
 
+  /** Função para salvar uma notificação de "Nova Mensagem" recebida pelo servidor WebSocket */
   const saveNotificacao = (mensagem = EntitiesObjectService.mensagem()) => {
     let newNotificacao = EntitiesObjectService.notificacao();
     newNotificacao.numeroSequencial = mensagem.idChat.id;
@@ -100,50 +148,6 @@ const NotificacaoModal = (props) => {
       });
     });
   };
-
-  /** UseEffect para buscar as informações assim que entra na página */
-  useEffect(() => {
-    buscarNotificacoes();
-
-    if (elementoAncora.current) {
-      setAnchorEl(elementoAncora.current);
-    }
-  }, []);
-
-  /** UseEffect para se inscrever no tópico de chats para receber notificações em tempo real */
-  useEffect(() => {
-    const receivedAnyMessage = (mensagem) => {
-      let mensagemRecebida = EntitiesObjectService.mensagem();
-      mensagemRecebida = JSON.parse(mensagem.body);
-      saveNotificacao(mensagemRecebida);
-    };
-
-    if (!rota.includes("/chat")) {
-      let inscricaoAllMensagens = inscrever(
-        `/weg_ssm/mensagem/all/user/${user.id}`,
-        receivedAnyMessage
-      );
-
-      return () => {
-        if (inscricaoAllMensagens) {
-          inscricaoAllMensagens.unsubscribe();
-        }
-      };
-    }
-  }, [stompClient]);
-
-  useEffect(() => {
-    const acaoNovaNotificacao = (response) => {
-      const notificacao = JSON.parse(response.body);
-      setNotificacoes([...notificacoes, notificacao]);
-    };
-    if (stompClient) {
-      let userId = CookieService.getUser().id;
-      inscrever(`/weg_ssm/${userId}/notificacao`, acaoNovaNotificacao);
-    }
-  }, [stompClient, notificacoes]);
-
-  const [textoLeitura, setTextoLeitura] = useState("");
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -206,7 +210,7 @@ const NotificacaoModal = (props) => {
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={handleClick}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
@@ -270,9 +274,9 @@ const NotificacaoModal = (props) => {
             >
               {notificacoes.length > 0
                 ? texts.notificacaoModal.verTudo +
-                  "(" +
-                  notificacoes.length +
-                  ")"
+                "(" +
+                notificacoes.length +
+                ")"
                 : texts.notificacaoModal.verNotificacoes}
             </Typography>
           </Box>
