@@ -467,10 +467,10 @@ const DetalhesDemanda = (props) => {
     DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(() => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
+    
+      const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.aprovadoGerente, props.dados, CookieService.getUser().id);
+      enviar(`/app/weg_ssm/notificacao/${props.dados.solicitante.id}`, JSON.stringify(notificacao));
     });
-
-    const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.aprovadoGerente, props.dados, CookieService.getUser().id);
-    enviar(`/app/weg_ssm/notificacao/${props.dados.solicitante.id}`, JSON.stringify(notificacao));
   };
 
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
@@ -496,10 +496,10 @@ const DetalhesDemanda = (props) => {
     DemandaService.put(demandaAtualizada).then(() => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
-    });
 
-    const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.aprovado, props.dados, CookieService.getUser().id);
-    enviar(`/app/weg_ssm/notificacao/${props.dados.solicitante.id}`, JSON.stringify(notificacao));
+      const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.aprovado, props.dados, CookieService.getUser().id);
+      enviar(`/app/weg_ssm/notificacao/${props.dados.solicitante.id}`, JSON.stringify(notificacao));
+    });
   };
 
   /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
@@ -759,18 +759,18 @@ const DetalhesDemanda = (props) => {
 
   // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -778,7 +778,7 @@ const DetalhesDemanda = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };

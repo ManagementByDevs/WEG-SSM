@@ -38,6 +38,8 @@ import NotificacaoService from "../../service/notificacaoService";
 import ClipLoader from "react-spinners/ClipLoader";
 import Feedback from "../Feedback/Feedback";
 
+import { WebSocketContext } from "../../service/WebSocketService";
+
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -1760,6 +1762,10 @@ const StatusProposta = ({
   getCorStatus = () => { },
   lendo = false,
 }) => {
+
+  /**  Context do WebSocket */
+  const { enviar } = useContext(WebSocketContext);
+
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1855,14 +1861,9 @@ const StatusProposta = ({
         break;
     }
 
-    // Criar notificação
-    NotificacaoService.post(
-      NotificacaoService.createNotificationObject(
-        tipoNotificacao,
-        JSON.parse(JSON.stringify(propostaAux.demanda)),
-        CookieService.getUser().id
-      )
-    ).catch((error) => { });
+    const demandaNotificacao = JSON.parse(JSON.stringify(propostaAux.demanda));
+    const notificacao = NotificacaoService.createNotificationObject(tipoNotificacao, demandaNotificacao, CookieService.getUser().id);
+    enviar(`/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`, JSON.stringify(notificacao));
   };
 
   // Função para editar o status da proposta
