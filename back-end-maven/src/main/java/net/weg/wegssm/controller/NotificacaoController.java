@@ -181,6 +181,7 @@ public class NotificacaoController {
                                          @Payload NotificacaoDTO notificacaoDTO) {
         Notificacao notificacao = new Notificacao();
         BeanUtils.copyProperties(notificacaoDTO, notificacao);
+        notificacao.setRemetente(usuarioService.findById(notificacao.getRemetente().getId()).get());
 
         if (notificacao.getTipoNotificacao().equals(TipoNotificacao.MENSAGENS)) {
             Chat chat = chatService.findById(Long.parseLong(notificacao.getNumeroSequencial())).get();

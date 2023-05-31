@@ -120,8 +120,8 @@ public class ExcelGeneratorService {
                 row.createCell(2).setCellValue(Jsoup.parse(new String(demanda.getProblema(), StandardCharsets.UTF_8)).text());
                 row.createCell(3).setCellValue(Jsoup.parse(new String(demanda.getProposta(), StandardCharsets.UTF_8)).text());
 
+                // Adicionando informações dos benefícios
                 int contadorBeneficios = 0;
-
                 for (Beneficio beneficio : demanda.getBeneficios()) {
                     if (contadorBeneficios == 0) {
                         row.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
@@ -135,13 +135,20 @@ public class ExcelGeneratorService {
 
                 row.createCell(5).setCellValue(demanda.getFrequencia());
 
+                // Adicionando anexos
+                StringBuilder anexos = new StringBuilder();
+
                 for (Anexo anexo : demanda.getAnexo()) {
-                    row.createCell(6).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                    row.getCell(6).setCellStyle(alignLeft);
+                    anexos.append("  -  ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
                 }
 
-                // Setando os estilos para as colunas
+                row.createCell(6).setCellValue(anexos.toString());
 
+                // Aplicando estilo nas células
+                row.getCell(0).setCellStyle(style);
+                row.getCell(6).setCellStyle(alignLeft);
+
+                // Setando os estilos para as colunas
                 int[] colunasStyle = {1, 2, 3, 4, 5, 6};
 
                 for (int colunaStyle : colunasStyle) {
@@ -150,10 +157,7 @@ public class ExcelGeneratorService {
                     }
                 }
 
-                row.getCell(0).setCellStyle(style);
-
                 // Auto ajustando o tamanho das colunas de acordo com as informações
-
                 int[] colunasAutoSize = {1, 2, 3, 4, 5, 6};
 
                 for (int coluna : colunasAutoSize) {
@@ -254,8 +258,8 @@ public class ExcelGeneratorService {
                 row.createCell(2).setCellValue(Jsoup.parse(new String(demanda.getProblema(), StandardCharsets.UTF_8)).text());
                 row.createCell(3).setCellValue(Jsoup.parse(new String(demanda.getProposta(), StandardCharsets.UTF_8)).text());
 
+                // Adicionando as informações dos benefícios
                 int contadorBeneficios = 0;
-
                 for (Beneficio beneficio : demanda.getBeneficios()) {
                     if (contadorBeneficios == 0) {
                         row.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
@@ -272,20 +276,28 @@ public class ExcelGeneratorService {
                 row.createCell(7).setCellValue(demanda.getSecaoTI().getSiglaSecao() + " - " + demanda.getSecaoTI().getNomeSecao());
                 row.createCell(8).setCellValue(demanda.getBuSolicitante().getSiglaBu() + " - " + demanda.getBuSolicitante().getNomeBu());
 
+                // Adicionando as bus
                 for (Bu bu : demanda.getBusBeneficiadas()) {
                     row.createCell(9).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                    row.getCell(9).setCellStyle(alignLeft);
                 }
 
                 row.createCell(10).setCellValue(demanda.getForum().getSiglaForum() + " - " + demanda.getForum().getNomeForum());
 
+                // Adicionando anexos
+                StringBuilder anexos = new StringBuilder();
+
                 for (Anexo anexo : demanda.getAnexo()) {
-                    row.createCell(11).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                    row.getCell(11).setCellStyle(alignLeft);
+                    anexos.append("  -  ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
                 }
 
-                // Setando os estilos para as colunas
+                row.createCell(11).setCellValue(anexos.toString());
 
+                // Aplicando estilo nas células
+                row.getCell(0).setCellStyle(style);
+                row.getCell(9).setCellStyle(alignLeft);
+                row.getCell(11).setCellStyle(alignLeft);
+
+                // Setando os estilos para as colunas
                 int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
                 for (int colunaStyle : colunasStyle) {
@@ -411,15 +423,15 @@ public class ExcelGeneratorService {
                 row.createCell(6).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
                 row.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
 
+                // Adicionando as informações dos custos
                 int contadorCusto = 0;
-
                 for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                     for (Custo custo : tbCusto.getCustos()) {
                         if (contadorCusto == 0) {
-                            row.createCell(9).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */  "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            row.createCell(9).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                         } else {
                             Row rowCusto = sheet.createRow(rowIndex);
-                            rowCusto.createCell(9).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                            rowCusto.createCell(9).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                             rowIndex++;
                         }
 
@@ -427,8 +439,8 @@ public class ExcelGeneratorService {
                     }
                 }
 
+                // Adicionando as informações dos benefícios
                 int contadorBeneficios = 0;
-
                 for (Beneficio beneficio : proposta.getBeneficios()) {
                     if (contadorBeneficios == 0) {
                         row.createCell(10).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + beneficio.getMemoriaCalculo());
@@ -448,22 +460,32 @@ public class ExcelGeneratorService {
                 row.createCell(16).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
                 row.createCell(17).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
 
+                // Adicionando bus
                 for (Bu bu : proposta.getBusBeneficiadas()) {
                     row.createCell(18).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                    row.getCell(18).setCellStyle(alignLeft);
                 }
 
                 row.createCell(19).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
 
+                // Adicionando responsáveis negócio
                 for (ResponsavelNegocio rn : proposta.getResponsavelNegocio()) {
                     row.createCell(20).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
-                    row.getCell(20).setCellStyle(alignLeft);
                 }
 
+                // Adicioanndo anexos
+                StringBuilder anexos = new StringBuilder();
+
                 for (Anexo anexo : proposta.getAnexo()) {
-                    row.createCell(21).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                    row.getCell(21).setCellStyle(alignLeft);
+                    anexos.append(" - ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
                 }
+
+                row.createCell(21).setCellValue(anexos.toString());
+
+                // Aplicando estilo nas células
+                row.getCell(0).setCellStyle(style);
+                row.getCell(18).setCellStyle(alignLeft);
+                row.getCell(20).setCellStyle(alignLeft);
+                row.getCell(21).setCellStyle(alignLeft);
 
                 // Setando os estilos para as colunas
                 int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
@@ -473,8 +495,6 @@ public class ExcelGeneratorService {
                         row.getCell(colunaStyle).setCellStyle(alignLeft);
                     }
                 }
-
-                row.getCell(0).setCellStyle(style);
 
                 // Auto ajustando o tamanho das colunas de acordo com as informações
                 int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
@@ -578,6 +598,7 @@ public class ExcelGeneratorService {
             XSSFRow row = sheet.createRow(rowNum++);
 
             if (pautaOp.isPresent()) {
+                // Adicionando informações da pauta
                 Pauta pauta = pautaOp.get();
 
                 row.createCell(0).setCellValue(contadorPauta);
@@ -585,19 +606,19 @@ public class ExcelGeneratorService {
 
                 int rowIndexProposta = rowNum;
 
+                // Adicionando as propostas que fazem parte da pauta
                 int contadorProposta = 0;
                 for (Proposta proposta : pauta.getPropostas()) {
 
                     if (contadorProposta == 0) {
+                        // Aplicando as informações nas colunas
                         row.createCell(2).setCellValue(proposta.getTitulo());
                         row.createCell(3).setCellValue(proposta.getCodigoPPM());
-
                         row.createCell(4).setCellValue(proposta.getData());
                         row.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         row.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
                         row.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
                         row.createCell(8).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
-
                         row.createCell(12).setCellValue(proposta.getFrequencia());
                         row.createCell(13).setCellValue(proposta.getLinkJira());
                         row.createCell(14).setCellValue(proposta.getInicioExecucao() + " à " + proposta.getFimExecucao());
@@ -606,39 +627,43 @@ public class ExcelGeneratorService {
                         row.createCell(17).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
                         row.createCell(18).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
 
+                        // Adicionando as bus
                         for (Bu bu : proposta.getBusBeneficiadas()) {
                             row.createCell(19).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                            row.getCell(19).setCellStyle(alignLeft);
                         }
 
                         row.createCell(20).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
 
+                        // Adicionando os responsáveis negócio
                         for (ResponsavelNegocio rn : proposta.getResponsavelNegocio()) {
                             row.createCell(21).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
-                            row.getCell(21).setCellStyle(alignLeft);
                         }
+
+                        // Adicionando os anexos
+                        StringBuilder anexos = new StringBuilder();
 
                         for (Anexo anexo : proposta.getAnexo()) {
-                            row.createCell(22).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                            row.getCell(22).setCellStyle(alignLeft);
+                            anexos.append(" - ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
                         }
 
-                        int contadorCusto = 0;
+                        row.createCell(22).setCellValue(anexos.toString());
 
+                        // Adicionando a tabela de custos
+                        int contadorCusto = 0;
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
                                 if (contadorCusto == 0) {
-                                    row.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    row.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 } else {
                                     Row rowCusto = sheet.createRow(rowIndexProposta++);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */  "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 }
                                 contadorCusto++;
                             }
                         }
 
+                        // Adicionando os benefícios
                         int contadorBeneficio = 0;
-
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             if (contadorBeneficio == 0) {
                                 row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
@@ -651,17 +676,16 @@ public class ExcelGeneratorService {
                         }
 
                     } else {
+                        // Fazendo o mesmo processo anterior, porém quando for a partir da segunda proposta
                         XSSFRow rowProposta = sheet.createRow(rowIndexProposta++);
 
                         rowProposta.createCell(2).setCellValue(proposta.getTitulo());
                         rowProposta.createCell(3).setCellValue(proposta.getCodigoPPM());
-
                         rowProposta.createCell(4).setCellValue(proposta.getData());
                         rowProposta.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         rowProposta.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
                         rowProposta.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
                         rowProposta.createCell(8).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
-
                         rowProposta.createCell(12).setCellValue(proposta.getFrequencia());
                         rowProposta.createCell(13).setCellValue(proposta.getLinkJira());
                         rowProposta.createCell(14).setCellValue(proposta.getInicioExecucao() + " à " + proposta.getFimExecucao());
@@ -670,39 +694,47 @@ public class ExcelGeneratorService {
                         rowProposta.createCell(17).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
                         rowProposta.createCell(18).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
 
+                        // Adicionando as bus
                         for (Bu bu : proposta.getBusBeneficiadas()) {
                             rowProposta.createCell(19).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                            rowProposta.getCell(19).setCellStyle(alignLeft);
                         }
 
                         rowProposta.createCell(20).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
 
+                        // Adicionando os responsáveis negócio
                         for (ResponsavelNegocio rn : proposta.getResponsavelNegocio()) {
                             rowProposta.createCell(21).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
-                            rowProposta.getCell(21).setCellStyle(alignLeft);
                         }
+
+                        // Adicionando os anexos
+                        StringBuilder anexos = new StringBuilder();
 
                         for (Anexo anexo : proposta.getAnexo()) {
-                            rowProposta.createCell(22).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                            rowProposta.getCell(22).setCellStyle(alignLeft);
+                            anexos.append(" - ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
                         }
 
-                        int contadorCusto = 0;
+                        row.createCell(22).setCellValue(anexos.toString());
 
+                        // Aplicando estilo para as células
+                        rowProposta.getCell(19).setCellStyle(alignLeft);
+                        rowProposta.getCell(21).setCellStyle(alignLeft);
+
+                        // Adicionando os custos
+                        int contadorCusto = 0;
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
                                 if (contadorCusto == 0) {
-                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 } else {
                                     Row rowCusto = sheet.createRow(rowIndexProposta++);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 }
                                 contadorCusto++;
                             }
                         }
 
+                        // Adicionando os benefícios
                         int contadorBeneficio = 0;
-
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             if (contadorBeneficio == 0) {
                                 rowProposta.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
@@ -713,6 +745,7 @@ public class ExcelGeneratorService {
                             contadorBeneficio++;
                         }
 
+                        // Aplicando estilo para as colunas da rowProposta
                         int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
                         for (int colunaStyle : colunasStyle) {
@@ -726,7 +759,7 @@ public class ExcelGeneratorService {
                 rowNum = rowIndexProposta;
             }
 
-            // Setando os estilos para as colunas
+            // Setando os estilos para as colunas da row
             int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
             for (int colunaStyle : colunasStyle) {
@@ -734,6 +767,12 @@ public class ExcelGeneratorService {
                     row.getCell(colunaStyle).setCellStyle(alignLeft);
                 }
             }
+
+            // Aplicando o estilo para as células
+            row.getCell(0).setCellStyle(style);
+            row.getCell(19).setCellStyle(alignLeft);
+            row.getCell(21).setCellStyle(alignLeft);
+            row.getCell(22).setCellStyle(alignLeft);
 
             // Auto ajustando o tamanho das colunas de acordo com as informações
             int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
@@ -834,6 +873,7 @@ public class ExcelGeneratorService {
             XSSFRow row = sheet.createRow(rowNum++);
 
             if (ataOp.isPresent()) {
+                // Adicionando as informações da ata
                 Ata ata = ataOp.get();
 
                 row.createCell(0).setCellValue(contadorAta);
@@ -844,24 +884,25 @@ public class ExcelGeneratorService {
                 int contadorProposta = 0;
                 for (Proposta proposta : ata.getPropostas()) {
 
+                    // Adicionando as informações das propostas da ata
                     if (contadorProposta == 0) {
                         row.createCell(2).setCellValue(proposta.getTitulo());
                         row.createCell(3).setCellValue(proposta.getCodigoPPM());
-
                         row.createCell(4).setCellValue(proposta.getData());
                         row.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         row.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
                         row.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
                         row.createCell(8).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
-                        int contadorCusto = 0;
 
+                        // Adicionando os custos
+                        int contadorCusto = 0;
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
                                 if (contadorCusto == 0) {
-                                    row.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    row.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 } else {
                                     Row rowCusto = sheet.createRow(rowIndexProposta);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                     rowIndexProposta++;
                                 }
 
@@ -869,8 +910,8 @@ public class ExcelGeneratorService {
                             }
                         }
 
+                        // Adicionando os benefícios
                         int contadorBeneficio = 0;
-
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             if (contadorBeneficio == 0) {
                                 row.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
@@ -891,51 +932,56 @@ public class ExcelGeneratorService {
                         row.createCell(17).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
                         row.createCell(18).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
 
+                        // Adicionando as bus
                         for (Bu bu : proposta.getBusBeneficiadas()) {
                             row.createCell(19).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                            row.getCell(19).setCellStyle(alignLeft);
                         }
 
                         row.createCell(20).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
 
+                        // Adicionando os responsáveis negócio
                         for (ResponsavelNegocio rn : proposta.getResponsavelNegocio()) {
                             row.createCell(21).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
-                            row.getCell(21).setCellStyle(alignLeft);
                         }
 
+                        // Adicionando os anexos
+                        StringBuilder anexos = new StringBuilder();
+
                         for (Anexo anexo : proposta.getAnexo()) {
-                            row.createCell(22).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                            row.getCell(22).setCellStyle(alignLeft);
+                            anexos.append(" - ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
                         }
+
+                        row.createCell(22).setCellValue(anexos.toString());
+
                     } else {
+                        // Adicionando as informações da proposta a partir da segunda
                         XSSFRow rowProposta = sheet.createRow(rowIndexProposta++);
 
                         rowProposta.createCell(2).setCellValue(proposta.getTitulo());
                         rowProposta.createCell(3).setCellValue(proposta.getCodigoPPM());
-
                         rowProposta.createCell(4).setCellValue(proposta.getData());
                         rowProposta.createCell(5).setCellValue(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome());
                         rowProposta.createCell(6).setCellValue(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome());
                         rowProposta.createCell(7).setCellValue(Jsoup.parse(new String(proposta.getProblema(), StandardCharsets.UTF_8)).text());
                         rowProposta.createCell(8).setCellValue(Jsoup.parse(new String(proposta.getProposta(), StandardCharsets.UTF_8)).text());
 
+                        // Adicionando os custos
                         int contadorCusto = 0;
-
                         for (TabelaCusto tbCusto : proposta.getTabelaCustos()) {
                             for (Custo custo : tbCusto.getCustos()) {
                                 if (contadorCusto == 0) {
-                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowProposta.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 } else {
                                     Row rowCusto = sheet.createRow(rowIndexProposta++);
-                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + /** custo.getTipoDespesa() */ "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
+                                    rowCusto.createCell(10).setCellValue("Tipo Despesa: " + tbCusto.getTipoDespesa() + "  " + "Perfil Despesa: " + custo.getPerfilDespesa() + "  " + "Período de Execução (meses): " + custo.getPeriodoExecucao() + "  " + "Horas: " + custo.getHoras() + "  " + "Valor Hora: " + custo.getValorHora() + "  " + "Total: 100");
                                 }
 
                                 contadorCusto++;
                             }
                         }
 
+                        // Adicionando os benefícios
                         int contadorBeneficio = 0;
-
                         for (Beneficio beneficio : proposta.getBeneficios()) {
                             if (contadorBeneficio == 0) {
                                 rowProposta.createCell(11).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "  " + " Valor Mensal: " + beneficio.getValor_mensal() + "  " + " Moeda: " + beneficio.getMoeda() + "  " + " Memória de Cálculo: " + Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
@@ -955,24 +1001,32 @@ public class ExcelGeneratorService {
                         rowProposta.createCell(17).setCellValue(proposta.getSecaoTI().getSiglaSecao() + " - " + proposta.getSecaoTI().getNomeSecao());
                         rowProposta.createCell(18).setCellValue(proposta.getBuSolicitante().getSiglaBu() + "  " + proposta.getBuSolicitante().getNomeBu());
 
+                        // Adicionando as bus
                         for (Bu bu : proposta.getBusBeneficiadas()) {
                             rowProposta.createCell(19).setCellValue(" - " + bu.getSiglaBu() + " - " + bu.getNomeBu() + "  ");
-                            rowProposta.getCell(19).setCellStyle(alignLeft);
                         }
 
                         rowProposta.createCell(20).setCellValue(proposta.getForum().getSiglaForum() + " - " + proposta.getForum().getNomeForum());
 
+                        // Adicionando os responsáveis negócio
                         for (ResponsavelNegocio rn : proposta.getResponsavelNegocio()) {
                             rowProposta.createCell(21).setCellValue(" - " + rn.getNome() + " - " + rn.getArea() + "  ");
-                            rowProposta.getCell(21).setCellStyle(alignLeft);
                         }
+
+                        // Adicionando os anexos
+                        StringBuilder anexos = new StringBuilder();
 
                         for (Anexo anexo : proposta.getAnexo()) {
-                            rowProposta.createCell(22).setCellValue(" - " + anexo.getNome() + ". " + anexo.getTipo());
-                            rowProposta.getCell(22).setCellStyle(alignLeft);
+                            anexos.append(" - ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
                         }
 
-                        // Setando os estilos para as colunas
+                        row.createCell(22).setCellValue(anexos.toString());
+
+                        // Aplicando estilo para as células
+                        rowProposta.getCell(21).setCellStyle(alignLeft);
+                        rowProposta.getCell(19).setCellStyle(alignLeft);
+
+                        // Setando os estilos para as colunas rowProposta
                         int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
                         for (int colunaStyle : colunasStyle) {
@@ -981,12 +1035,13 @@ public class ExcelGeneratorService {
                             }
                         }
                     }
+
                     contadorProposta++;
                 }
                 rowNum = rowIndexProposta;
             }
 
-            // Setando os estilos para as colunas
+            // Setando os estilos para as colunas row
             int[] colunasStyle = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
 
             for (int colunaStyle : colunasStyle) {
@@ -994,6 +1049,12 @@ public class ExcelGeneratorService {
                     row.getCell(colunaStyle).setCellStyle(alignLeft);
                 }
             }
+
+            // Aplicando estilos para as células
+            row.getCell(0).setCellStyle(style);
+            row.getCell(19).setCellStyle(alignLeft);
+            row.getCell(21).setCellStyle(alignLeft);
+            row.getCell(22).setCellStyle(alignLeft);
 
             // Auto ajustando o tamanho das colunas de acordo com as informações
             int[] colunasAutoSize = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};

@@ -25,12 +25,13 @@ import MoedasService from "../../service/moedasService";
 import NotificacaoService from "../../service/notificacaoService";
 
 import { WebSocketContext } from "../../service/WebSocketService";
+import { ClipLoader } from "react-spinners";
 
 // Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
 const BarraProgressaoProposta = (props) => {
 
-   /**  Context do WebSocket */
-   const { enviar } = useContext(WebSocketContext);
+  /**  Context do WebSocket */
+  const { enviar } = useContext(WebSocketContext);
 
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
@@ -54,6 +55,9 @@ const BarraProgressaoProposta = (props) => {
 
   // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
   const [carregamento, setCarregamento] = useState(true);
+
+  // Variável para mostrar o carregamento ao criar proposta
+  const [carregamentoProposta, setCarregamentoProposta] = useState(false);
 
   // Variáveis utilizadas para salvar um escopo de uma demanda
   var idEscopo = null;
@@ -695,6 +699,7 @@ const BarraProgressaoProposta = (props) => {
             }
           });
           if (feedbackFaltante != true) {
+            setCarregamentoProposta(true);
             propostaService.post(retornaObjetoProposta()).then((response) => {
 
               DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
@@ -706,6 +711,7 @@ const BarraProgressaoProposta = (props) => {
                       type: "application/pdf",
                     });
                     propostaService.addHistorico(response.id, "Proposta Criada", arquivo, CookieService.getUser().id).then((propostaResponse) => {
+                      setCarregamentoProposta(false);
 
                       // Envio de Notificação ao Solicitante
                       const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.criadoProposta, dadosDemanda, CookieService.getUser().id);
@@ -765,103 +771,114 @@ const BarraProgressaoProposta = (props) => {
 
   return (
     <>
-      <Stepper activeStep={activeStep} sx={{ minWidth: "60rem" }}>
-        {etapasProposta.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          return (
-            <Step
-              key={label}
-              {...stepProps}
-              onClick={() => {
-                lerTexto(label);
-              }}
-            >
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {activeStep == 0 && (
-        <FormularioPropostaProposta
-          carregamento={carregamento}
-          dados={dadosDemanda}
-          setDadosDemanda={setDadosDemanda}
-          beneficios={listaBeneficios}
-          setBeneficios={setListaBeneficios}
-          listaForuns={listaForuns}
-          listaBU={listaBU}
-          listaSecoesTI={listaSecoesTI}
-          setFeedbackErroNavegadorIncompativel={
-            setFeedbackErroNavegadorIncompativel
-          }
-          setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
-          lendo={props.lendo}
-        />
-      )}
-      {activeStep == 1 && (
-        <FormularioEscopoProposta
-          escopoTemp={escopoTemp}
-          escopo={escopo}
-          setEscopo={setEscopo}
-        />
-      )}
-      {activeStep == 2 && (
-        <FormularioCustosProposta
-          custos={custos}
-          setCustos={setCustos}
-          setFeedbackErroNavegadorIncompativel={
-            setFeedbackErroNavegadorIncompativel
-          }
-          setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
-          lendo={props.lendo}
-        />
-      )}
-      {activeStep == 3 && (
-        <FormularioGeralProposta
-          gerais={gerais}
-          setGerais={setGerais}
-          dados={dadosDemanda}
-          setDados={setDadosDemanda}
-          setFeedbackErroNavegadorIncompativel={
-            setFeedbackErroNavegadorIncompativel
-          }
-          setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
-          lendo={props.lendo}
-        />
-      )}
-      <Button
-        variant="outlined"
-        color="tertiary"
-        disabled={activeStep === 0}
-        onClick={voltarEtapa}
-        sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
-        disableElevation
-      >
-        {texts.barraProgressaoProposta.botaoVoltar}
-      </Button>
-      <Box sx={{ flex: "1 1 auto" }} />
-      {activeStep === etapasProposta.length - 1 ? (
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={criarProposta}
-          sx={{ position: "fixed", bottom: 50, right: 160 }}
-          disableElevation
-        >
-          {texts.barraProgressaoProposta.botaoCriar}
-        </Button>
+      {carregamentoProposta ? (
+        <Box className="mt-6 w-full h-full flex justify-center items-center">
+          <ClipLoader color="#00579D" size={110} />
+        </Box>
       ) : (
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={proximaEtapa}
-          sx={{ position: "fixed", bottom: 50, right: 160 }}
-          disableElevation
-        >
-          {texts.barraProgressaoProposta.botaoProximo}
-        </Button>
-      )}
+        <>
+          <Stepper activeStep={activeStep} sx={{ minWidth: "60rem" }}>
+            {etapasProposta.map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
+              return (
+                <Step
+                  key={label}
+                  {...stepProps}
+                  onClick={() => {
+                    lerTexto(label);
+                  }}
+                >
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+          {activeStep == 0 && (
+            <FormularioPropostaProposta
+              carregamento={carregamento}
+              dados={dadosDemanda}
+              setDadosDemanda={setDadosDemanda}
+              beneficios={listaBeneficios}
+              setBeneficios={setListaBeneficios}
+              listaForuns={listaForuns}
+              listaBU={listaBU}
+              listaSecoesTI={listaSecoesTI}
+              setFeedbackErroNavegadorIncompativel={
+                setFeedbackErroNavegadorIncompativel
+              }
+              setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+              lendo={props.lendo}
+            />
+          )}
+          {activeStep == 1 && (
+            <FormularioEscopoProposta
+              escopoTemp={escopoTemp}
+              escopo={escopo}
+              setEscopo={setEscopo}
+            />
+          )}
+          {activeStep == 2 && (
+            <FormularioCustosProposta
+              custos={custos}
+              setCustos={setCustos}
+              setFeedbackErroNavegadorIncompativel={
+                setFeedbackErroNavegadorIncompativel
+              }
+              setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+              lendo={props.lendo}
+            />
+          )}
+          {activeStep == 3 && (
+            <FormularioGeralProposta
+              gerais={gerais}
+              setGerais={setGerais}
+              dados={dadosDemanda}
+              setDados={setDadosDemanda}
+              setFeedbackErroNavegadorIncompativel={
+                setFeedbackErroNavegadorIncompativel
+              }
+              setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+              lendo={props.lendo}
+            />
+          )}
+          <Button
+            variant="outlined"
+            color="tertiary"
+            disabled={activeStep === 0}
+            onClick={voltarEtapa}
+            sx={{ mr: 1, position: "fixed", bottom: 50, left: 160 }}
+            disableElevation
+          >
+            {texts.barraProgressaoProposta.botaoVoltar}
+          </Button>
+          <Box sx={{ flex: "1 1 auto" }} />
+          {activeStep === etapasProposta.length - 1 ? (
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={criarProposta}
+              sx={{ position: "fixed", bottom: 50, right: 160 }}
+              disableElevation
+            >
+              {texts.barraProgressaoProposta.botaoCriar}
+            </Button>
+          ) : (
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={proximaEtapa}
+              sx={{ position: "fixed", bottom: 50, right: 160 }}
+              disableElevation
+            >
+              {texts.barraProgressaoProposta.botaoProximo}
+            </Button>
+          )}
+        </>
+      )
+      }
+
+
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}

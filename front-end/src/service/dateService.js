@@ -28,24 +28,48 @@ class DateService {
    * Retona data passada por parâmetro formatada no padrão americano, não importando se é um Objeto Date ou String MySQL Date, se não passado nada, retorna a data de hoje no mesmo formato
    * @returns Data no padrão americano
    */
-  getTodaysDateUSFormat() {
+  getTodaysDateUSFormat(linguagem) {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const yyyy = today.getFullYear();
-    return yyyy + "-" + mm + "-" + dd;
+
+    switch (linguagem) {
+      case "pt":
+        return dd + "/" + mm + "/" + yyyy;
+      case "en":
+        return mm + "/" + dd + "/" + yyyy;
+      case "es":
+        return dd + "/" + mm + "/" + yyyy;
+      case "ch":
+        return yyyy + "/" + mm + "/" + dd;
+      default:
+        return yyyy + "-" + mm + "-" + dd;
+    }
   }
 
   /**
    * Retona data passada por parâmetro formatada no padrão americano
    * @returns Data no padrão americano
    */
-  getTodaysDateUSFormat(date) {
+  getTodaysDateUSFormat(date, linguagem) {
     const newDate = new Date(date);
     const dd = String(newDate.getDate()).padStart(2, "0");
     const mm = String(newDate.getMonth() + 1).padStart(2, "0");
     const yyyy = newDate.getFullYear();
-    return yyyy + "-" + mm + "-" + dd;
+
+    switch (linguagem) {
+      case "pt":
+        return dd + "/" + mm + "/" + yyyy;
+      case "en":
+        return mm + "/" + dd + "/" + yyyy;
+      case "es":
+        return dd + "/" + mm + "/" + yyyy;
+      case "ch":
+        return yyyy + "/" + mm + "/" + dd;
+      default:
+        return yyyy + "-" + mm + "-" + dd;
+    }
   }
 
   /**
@@ -53,7 +77,7 @@ class DateService {
    * @param {DateMySQL} date
    * @returns Data no padrão americano com hora
    */
-  getFullDateUSFormat(date) {
+  getFullDateUSFormat(date, linguagem) {
     const newDate = new Date(date);
     const dd = String(newDate.getDate()).padStart(2, "0");
     const mm = String(newDate.getMonth() + 1).padStart(2, "0");
@@ -61,7 +85,18 @@ class DateService {
     const hh = String(newDate.getHours()).padStart(2, "0");
     const min = String(newDate.getMinutes()).padStart(2, "0");
 
-    return yyyy + "-" + mm + "-" + dd + " " + hh + ":" + min;
+    switch (linguagem) {
+      case "pt":
+        return dd + "/" + mm + "/" + yyyy + " " + hh + ":" + min;
+      case "en":
+        return mm + "/" + dd + "/" + yyyy + " " + hh + ":" + min;
+      case "es":
+        return dd + "/" + mm + "/" + yyyy + " " + hh + ":" + min;
+      case "ch":
+        return yyyy + "/" + mm + "/" + dd + " " + hh + ":" + min;
+      default:
+        return yyyy + "-" + mm + "-" + dd + " " + hh + ":" + min;
+    }
   }
 
   /**

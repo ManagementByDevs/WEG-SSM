@@ -38,6 +38,8 @@ import NotificacaoService from "../../service/notificacaoService";
 import ClipLoader from "react-spinners/ClipLoader";
 import Feedback from "../Feedback/Feedback";
 
+import { WebSocketContext } from "../../service/WebSocketService";
+
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -324,7 +326,8 @@ const DetalhesProposta = ({
             >
               {texts.detalhesProposta.data}{" "}
               {DateService.getTodaysDateUSFormat(
-                DateService.getDateByMySQLFormat(proposta.data)
+                DateService.getDateByMySQLFormat(proposta.data),
+                texts.linguagem
               )}
             </Typography>
             <Typography
@@ -739,23 +742,27 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     DateService.getTodaysDateUSFormat(
-                      DateService.getDateByMySQLFormat(proposta.inicioExecucao)
+                      DateService.getDateByMySQLFormat(proposta.inicioExecucao),
+                      texts.linguagem
                     ) +
                       " " +
                       texts.detalhesProposta.ate +
                       " " +
                       DateService.getTodaysDateUSFormat(
-                        DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                        DateService.getDateByMySQLFormat(proposta.fimExecucao),
+                        texts.linguagem
                       )
                   )
                 }
               >
                 {DateService.getTodaysDateUSFormat(
-                  DateService.getDateByMySQLFormat(proposta.inicioExecucao)
+                  DateService.getDateByMySQLFormat(proposta.inicioExecucao),
+                  texts.linguagem
                 )}{" "}
                 {texts.detalhesProposta.ate}{" "}
                 {DateService.getTodaysDateUSFormat(
-                  DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                  DateService.getDateByMySQLFormat(proposta.fimExecucao),
+                  texts.linguagem
                 )}
               </Typography>
             </Box>
@@ -1774,6 +1781,9 @@ const StatusProposta = ({
   getCorStatus = () => {},
   lendo = false,
 }) => {
+  /**  Context do WebSocket */
+  const { enviar } = useContext(WebSocketContext);
+
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1869,21 +1879,21 @@ const StatusProposta = ({
         break;
     }
 
-    // Criar notificação
-    NotificacaoService.post(
-      NotificacaoService.createNotificationObject(
-        tipoNotificacao,
-        JSON.parse(JSON.stringify(propostaAux.demanda)),
-        CookieService.getUser().id
-      )
-    ).catch((error) => {});
+    const demandaNotificacao = JSON.parse(JSON.stringify(propostaAux.demanda));
+    const notificacao = NotificacaoService.createNotificationObject(
+      tipoNotificacao,
+      demandaNotificacao,
+      CookieService.getUser().id
+    );
+    enviar(
+      `/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`,
+      JSON.stringify(notificacao)
+    );
   };
 
   // Função para editar o status da proposta
   const editarStatus = () => {
     if (newStatus == "") {
-      // Em teoria isso nunca vai acontecer já que o status é um select box
-      console.log("Status não pode ser vazio!");
       return;
     }
 

@@ -38,6 +38,8 @@ import DemandaService from "../../service/demandaService";
 import NotificacaoService from "../../service/notificacaoService";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
+import { WebSocketContext } from "../../service/WebSocketService";
+
 // Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
 const DetalhesAta = (props) => {
   // Context para trocar a liguagem
@@ -82,8 +84,10 @@ const DetalhesAta = (props) => {
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   /** Modal de confirmação para a publicação de uma ata */
-  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] =
-    useState(false);
+  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] = useState(false);
+
+  /**  Context do WebSocket */
+  const { enviar } = useContext(WebSocketContext);
 
   // useEffect usado para feedback
   useEffect(() => {
@@ -224,15 +228,9 @@ const DetalhesAta = (props) => {
         break;
     }
 
-    // Criar notificação
-    NotificacaoService.post(
-      NotificacaoService.createNotificationObject(
-        tipoNotificacao,
-        JSON.parse(JSON.stringify(propostaAux.demanda)),
-        CookieService.getUser().id
-      )
-    ).catch((error) => {}
-    );
+    const demandaNotificacao = JSON.parse(JSON.stringify(propostaAux.demanda));
+    const notificacao = NotificacaoService.createNotificationObject(tipoNotificacao, demandaNotificacao, CookieService.getUser().id);
+    enviar(`/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`, JSON.stringify(notificacao));
   };
 
   // Atualiza a lista de propostas passada por parâmetro
@@ -255,11 +253,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -267,9 +265,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => {}
+                () => { }
               );
               break;
           }
@@ -307,7 +305,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
+    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
 
     navigate("/", { state: { feedback: true } });
   };
@@ -338,18 +336,18 @@ const DetalhesAta = (props) => {
 
     return hora + ":" + minuto;
   };
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -357,7 +355,7 @@ const DetalhesAta = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -448,8 +446,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                      ": " +
-                      ata.numeroSequencial
+                    ": " +
+                    ata.numeroSequencial
                   );
                 }}
               >
@@ -462,13 +460,13 @@ const DetalhesAta = (props) => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
                       ": " +
-                      DateService.getTodaysDateUSFormat(ata.dataReuniao)
+                      DateService.getTodaysDateUSFormat(ata.dataReuniao, texts.linguagem)
                   );
                 }}
               >
                 {/* {data reunião} */}
                 {texts.detalhesAta.dataReuniao}:{" "}
-                {DateService.getTodaysDateUSFormat(ata.dataReuniao)}
+                {DateService.getTodaysDateUSFormat(ata.dataReuniao, texts.linguagem)}
               </Typography>
               <Typography
                 className="cursor-default mt-2"
@@ -476,8 +474,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                      ": " +
-                      trazerHoraData(ata.dataReuniao)
+                    ": " +
+                    trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -491,8 +489,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                      ": " +
-                      ata.analistaResponsavel.nome
+                    ": " +
+                    ata.analistaResponsavel.nome
                   );
                 }}
               >

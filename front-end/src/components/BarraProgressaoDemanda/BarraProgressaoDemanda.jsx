@@ -2,14 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 
-import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography, Button, } from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -30,6 +23,8 @@ import beneficioService from "../../service/beneficioService";
  * salvando a demanda e escopos no banco de dados
  */
 const BarraProgressaoDemanda = (props) => {
+
+  /** UseState utilizado para armazenar o usuário */
   const [usuario, setUsuario] = useState(null);
 
   /** Contexto para alterar o idioma */
@@ -51,16 +46,12 @@ const BarraProgressaoDemanda = (props) => {
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
 
   /** Variável utilizada para abrir o modal de feedback de navegador incompativel */
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
 
   /** Variável utilizada para abrir o modal de feedback de erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
-  // Variáveis utilizadas para salvar um escopo de uma demanda
+  /** Variáveis utilizadas para salvar um escopo de uma demanda */
   var idEscopo = null;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
 
@@ -84,6 +75,9 @@ const BarraProgressaoDemanda = (props) => {
   /** Variável utilizada para abrir o modal de confirmação de criação de demanda */
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
 
+  /** Variável utilizada para mostrar o carregamento ao criar demanda */
+  const [carregamentoDemanda, setCarregamentoDemanda] = useState(false);
+
   /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamento, setCarregamento] = useState(true);
 
@@ -97,6 +91,7 @@ const BarraProgressaoDemanda = (props) => {
     `${texts.barraProgressaoDemanda.steps.anexos}`,
   ];
 
+  /** UseEffect utilizado para buscar o usuário assim que entrar na página */
   useEffect(() => {
     buscarUsuario();
   }, []);
@@ -274,6 +269,7 @@ const BarraProgressaoDemanda = (props) => {
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
   const criarDemanda = () => {
+    setCarregamentoDemanda(true);
     criandoDemanda = true;
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
@@ -287,6 +283,7 @@ const BarraProgressaoDemanda = (props) => {
           retornaObjetoHistorico(),
           arquivo
         ).then((response) => {
+          setCarregamentoDemanda(false);
           direcionarHome();
           excluirEscopo();
         });
@@ -381,13 +378,13 @@ const BarraProgressaoDemanda = (props) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -395,7 +392,7 @@ const BarraProgressaoDemanda = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -413,7 +410,7 @@ const BarraProgressaoDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
-         
+
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -424,7 +421,7 @@ const BarraProgressaoDemanda = (props) => {
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
-         
+
       />
       {/* Feedback de dados faltantes */}
       <Feedback
@@ -435,10 +432,10 @@ const BarraProgressaoDemanda = (props) => {
         status={"erro"}
         mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
         lendo={props.lendo}
-         
+
       />
 
-      {carregamento ? (
+      {carregamentoDemanda ? (
         <Box className="mt-6 w-full h-full flex justify-center items-center">
           <ClipLoader color="#00579D" size={110} />
         </Box>
