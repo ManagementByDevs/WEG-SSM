@@ -274,16 +274,8 @@ const DemandaTable = ({
                 </Typography>
               </th>
               <th className="text-white p-3 width-75/1000">
-                <Typography
-                  fontSize={FontConfig.big}
-                  onClick={(e) => {
-                    if (lendo) {
-                      e.preventDefault();
-                      lerTexto(texts.demandaGerenciaModoVisualizacao.data);
-                    }
-                  }}
-                >
-                  {texts.demandaGerenciaModoVisualizacao.data}
+                <Typography>
+                  
                 </Typography>
               </th>
             </TableRow>
@@ -464,30 +456,10 @@ const DemandaTable = ({
                 </td>
                 <td
                   className="p-3 width-1/10 "
-                  title={DateService.getTodaysDateUSFormat(row.data)}
                 >
                   <Box className="w-full gap-3 flex justify-center items-center">
-                    <Typography
-                      className="visualizacao-tabela-gerencia-data truncate"
-                      fontSize={FontConfig.default}
-                      onClick={(e) => {
-                        if (lendo) {
-                          e.preventDefault();
-                          lerTexto(
-                            DateService.getTodaysDateUSFormat(
-                              DateService.getDateByMySQLFormat(row.data)
-                            )
-                          );
-                        }
-                      }}
-                    >
-                      {DateService.getTodaysDateUSFormat(
-                        DateService.getDateByMySQLFormat(row.data)
-                      )}
-                    </Typography>
                     <Tooltip
                       title={texts.demandaGerenciaModoVisualizacao.historico}
-                      className="visualizacao-tabela-gerencia-icon"
                     >
                       <HistoryOutlinedIcon
                         size="small"
@@ -505,7 +477,6 @@ const DemandaTable = ({
                     {isProposta && (
                       <Tooltip
                         title={texts.demandaGerenciaModoVisualizacao.chat}
-                        className="visualizacao-tabela-gerencia-icon"
                       >
                         <ChatOutlinedIcon
                           onClick={(e) => {
