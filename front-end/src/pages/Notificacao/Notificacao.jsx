@@ -377,7 +377,6 @@ const Notificacao = (props) => {
 
   return (
     <FundoComHeader lendo={props.lendo}>
-      <VLibras forceOnload />
       <Feedback
         open={feedback.visibilidade}
         handleClose={() => {

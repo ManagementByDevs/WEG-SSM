@@ -119,6 +119,10 @@ const DetalhesDemanda = (props) => {
     setAnexosDemanda(props.dados.anexo);
   }, []);
 
+  useEffect(() => {
+    console.log(problema);
+  }, [problema]);
+
   // ----------------------------------------------------------------------------------------------------------------------------
   // Funções de edição da demanda
 
@@ -1284,7 +1288,6 @@ const DetalhesDemanda = (props) => {
               </Typography>
               <CaixaTextoQuill
                 texto={problema}
-                setTexto={setProblema}
                 onChange={(value) => {
                   alterarTexto(value, "problema");
                 }}

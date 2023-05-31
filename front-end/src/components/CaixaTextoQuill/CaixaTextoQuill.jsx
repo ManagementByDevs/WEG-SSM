@@ -86,8 +86,8 @@ function CaixaTextoQuill({
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
-          setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-        
+        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
+
       };
 
       recognition.onerror = (event) => {
@@ -104,7 +104,9 @@ function CaixaTextoQuill({
   };
 
   useEffect(() => {
-    onChange(palavrasJuntas);
+    if (palavrasJuntas) {
+      onChange(palavrasJuntas);
+    }
   }, [palavrasJuntas]);
 
   const stopRecognition = () => {
