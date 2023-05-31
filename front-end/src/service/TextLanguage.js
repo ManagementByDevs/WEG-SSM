@@ -29,7 +29,7 @@ const TextLanguage = (linguagem) => {
           mensagemFeedbackCamposObrigatorios:
             "Preencha todos os campos obrigatórios!",
           mensagemFeedbackCcsFaltando:
-            "A porcentagem deve fechar 100% em cada CCs!",
+            "A porcentagem das CCs deve ser 100% para cada tabela de custos!",
         },
         beneficios: {
           beneficios: "Benefícios",
@@ -54,7 +54,7 @@ const TextLanguage = (linguagem) => {
           digiteMemoriaCalculo: "Digite a memória de cálculo...",
         },
         caminho: {
-          home: "Home",
+          home: "Página Inicial",
         },
         chatMinimizado: {
           minimizar: "Minimizar",
@@ -512,9 +512,9 @@ const TextLanguage = (linguagem) => {
             tour1:
               "Neste input você pode pesquisar pelos chats por nome do usuário e pelo número sequêncial da demanda.",
             tour2:
-              "Aqui fica os chats abertos, tendo o nome do usuário, o número sequêncial da demanda e de qual demanda pertence.",
+              "Aqui ficam os chats abertos, tendo o nome do usuário, o número sequêncial da demanda e de qual demanda pertence.",
             tour3:
-              "Neste botão pode escolher entre minimizar o chat ou encerrar a conversa (fechando o chat).",
+              "Neste botão você pode escolher entre minimizar o chat ou encerrar a conversa (fechando o chat).",
             tour4:
               "Aqui pode escrever o que deseja enviar, podendo também anexar algum arquivo.",
           },
@@ -608,7 +608,7 @@ const TextLanguage = (linguagem) => {
             tour1:
               "Aqui fica a barra de pesquisa, onde você pode pesquisar por um título.",
             tour2:
-              "Aqui fica os escopos criados automaticamente, em cada escopo é possível abrir novamente para edição. É criado um escopo para cada projeto que você abre e não finaliza.",
+              "Aqui ficam os escopos criados automaticamente, em cada escopo é possível abrir novamente para edição. É criado um escopo para cada projeto que você abre e não finaliza.",
             tour3:
               "Nesta área você consegue visualizar qual a porcentagem preenchida do formulário.",
             tour4: "Clicando na lixeira você exclui o escopo.",
@@ -922,24 +922,24 @@ const TextLanguage = (linguagem) => {
             anexos: "Attachments",
           },
           erroPularPasso: "You cannot skip a step that is not optional!",
-          botaoVoltar: "Back",
+          botaoVoltar: "Previous",
           botaoPular: "Skip",
           botaoCriar: "Create",
           botaoProximo: "Next",
-          mensagemFeedback: "You must fill in all the fields!",
+          mensagemFeedback: "You must fill in all the required fields!",
         },
         barraProgressaoProposta: {
           proposta: "Proposal",
           escopo: "Scope",
           custo: "Costs",
           gerais: "General",
-          botaoVoltar: "Back",
+          botaoVoltar: "Previous",
           botaoCriar: "Create",
           botaoProximo: "Next",
           mensagemFeedbackCamposObrigatorios:
-            "You must fill in all the fields!",
+            "You must fill in all the required fields!",
           mensagemFeedbackCcsFaltando:
-            "The percentage must close 100% in each CCs!",
+            "The CCs' percentage must be 100% for each costs table!",
         },
         beneficios: {
           beneficios: "Benefits",
@@ -991,6 +991,7 @@ const TextLanguage = (linguagem) => {
           horas: "Hours",
           valorHora: "Hour Value",
           total: "Total",
+          h: "h",
           moeda: "R$",
           adicionarNovaLinha: "Add new line",
           ccs: "CCs",
@@ -1005,7 +1006,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "In Progress",
             emDesenvolvimento: "In Development",
           },
-          motivo: "Reason",
+          motivo: "Motive",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -1014,7 +1015,7 @@ const TextLanguage = (linguagem) => {
           done: "Done",
           cancelled: "Cancelled",
           ppm: "PPM",
-          solicitante: "Requester",
+          solicitante: "Requestor",
           departamento: "Department",
           naoAtribuido: "Not assigned",
           analistaResponsavel: "Responsible Analyst",
@@ -1032,7 +1033,7 @@ const TextLanguage = (linguagem) => {
           cancelled: "Cancelled",
           codigo: "Code",
           titulo: "Title",
-          solicitante: "Requester",
+          solicitante: "Requestor",
           departamento: "Department",
           gerenteResponsavel: "Manager",
           status: "Status",
@@ -1057,7 +1058,7 @@ const TextLanguage = (linguagem) => {
           titulo: "Title",
           statusString: "Status",
           data: "Date",
-          motivo: "Reason",
+          motivo: "Motive",
           nadaEncontrado: "Nothing found",
           tenteNovamenteMaisTarde: "Try again later",
         },
@@ -1068,7 +1069,7 @@ const TextLanguage = (linguagem) => {
         },
         DetalhesDemanda: {
           facaAlgumaAlteracaoParaPoderSalvar:
-            "Make some changes to be able to save!",
+            "Do some changes to be able to save!",
           jaHaUmAnexoComEsseNome:
             "There is already an attachment with that name!",
           problema: "Problem",
@@ -1228,7 +1229,7 @@ const TextLanguage = (linguagem) => {
             fecharChat: "Do you really want to close this chat?",
             abrirChat: "Do you really want to reopen this chat?",
             tirarPropostaDePauta:
-              "Do you really want to remove the proposal from the minute?",
+              "Do you really want to remove the proposal from the agenda?",
             alterarStatusProposta:
               "This action may delete some proposal data! Do you really want to change its status?",
             confirmEditar:
@@ -1255,7 +1256,7 @@ const TextLanguage = (linguagem) => {
           status: "Status",
           labels: {
             aprovada: "Approved",
-            reprovada: "Disapproved",
+            reprovada: "Rejected",
             aguardandoEdicao: "Waiting for Edition",
             aguardandoRevisao: "Waiting for Review",
             emAprovacao: "In Approval",
@@ -1265,7 +1266,7 @@ const TextLanguage = (linguagem) => {
         modalFiltroGerencia: {
           filtros: "Filters",
           semResultados: "No results found",
-          labelSolicitante: "Requester",
+          labelSolicitante: "Requestor",
           forum: "Forum",
           selecionar: "Select",
           tamanho: "Size",
@@ -1285,12 +1286,12 @@ const TextLanguage = (linguagem) => {
           historico: "History",
         },
         modalInformarMotivo: {
-          informarMotivo: "Inform Reason",
-          informeMotivo: "Enter the reason...",
+          informarMotivo: "Inform Motive",
+          informeMotivo: "Enter the motive...",
           confirmar: "Confirm",
         },
         modalMotivoRecusa: {
-          motivoDaRecusa: "Reason for refusal",
+          motivoDaRecusa: "Refusal Motive",
         },
         modalOrdenacao: {
           score: "Score",
@@ -1308,12 +1309,12 @@ const TextLanguage = (linguagem) => {
           dataReuniao: "Meeting Date",
         },
         modalRecusarDemanda: {
-          motivoDaRecusa: "Reason for refusal",
+          motivoDaRecusa: "Refusal Motive",
           informeMotivo: "Enter the reason...",
           enviar: "Send",
         },
         notificacaoComponente: {
-          demandaDeNumero: "The demand number",
+          demandaDeNumero: "The demand of number",
           foi: "was",
           aprovada: "approved",
           reprovada: "disapproved",
@@ -1324,7 +1325,7 @@ const TextLanguage = (linguagem) => {
           duasSemanasAtras: "2 weeks ago",
           tresSemanasAtras: "3 weeks ago",
           quatroSemanasAtras: "4 weeks ago",
-          umMesAtras: "1 month ago",
+          maisDeUmMesAtras: "more than 1 month ago",
           vcRecebeuMensagem:
             "You have received a message from a demand with PPM",
           por: "by",
@@ -1418,7 +1419,7 @@ const TextLanguage = (linguagem) => {
         chat: {
           tour: {
             tour1:
-              "In this input you can search for chats by user name and by the sequential number of the demand.",
+              "In this input you can search for chats by username and by the sequential number of the demand.",
             tour2:
               "Here are the open chats, having the user name, the sequential number of the demand and from which demand it belongs.",
             tour3:
@@ -1432,12 +1433,12 @@ const TextLanguage = (linguagem) => {
             gerente: "Manager",
             mostrarNoTour: "Show in tour",
             olaTudoBem: "Hello, how are you?",
-            tudoSimVoce: "Fine, and you?",
+            tudoSimVoce: "Fine, and you? I'm here to show you how the chat works.",
             eu: "Me",
             bemTambemObrigado: "Fine, thank you!",
           },
           usuario: "User",
-          selecioneAlgumaConversa: "Select some conversation",
+          selecioneAlgumaConversa: "Select a conversation",
           miniChatAberto: "Mini chat opened",
           opcoes: "Options",
           abrirPopUp: "Open pop-up",
@@ -1447,11 +1448,11 @@ const TextLanguage = (linguagem) => {
           enviarAnexo: "Send attachment",
           enviarMensagem: "Send message",
           analista: "Analyst",
-          solicitante: "Requester",
-          cargo: "Office",
+          solicitante: "Requestor",
+          cargo: "Position",
           chatEncerrado: "Chat closed successfully!",
           chatReaberto: "Chat reopened successfully!",
-          chatEncerradoErro: "It is not possible to enter a closed chat!",
+          chatEncerradoErro: "It is not possible to enter in a closed chat!",
           inputChatEncerrado:
             "It is not possible to send messages, because the chat has been closed.",
           anexoMuitoPesado: "The attachment is too heavy!",
@@ -1468,7 +1469,7 @@ const TextLanguage = (linguagem) => {
           fim: "End",
           sumario: "Summary",
           proposta: "Proposal",
-          voltar: "Back",
+          voltar: "Previous",
           navegacao: "Navigation",
           publicarAta: "Publish Minutes",
           proximo: "Next",
@@ -1489,15 +1490,15 @@ const TextLanguage = (linguagem) => {
           feedbacks: {
             feedback1: "Proposal removed from the agenda successfully!",
             feedback2: "Fill in all fields!",
-            feedback3: "The schedule has no proposals!",
+            feedback3: "The agenda has no proposals!",
           },
           baixarPDF: "PDF Download",
-          pauta: "Minutes",
+          pauta: "Agenda",
           numeroSequencial: "Seq. Num.",
           ano: "Year",
           sumario: "Summary",
           proposta: "Proposal",
-          voltar: "Back",
+          voltar: "Previous",
           proximo: "Next",
           navegacao: "Navigation",
           criarAta: "Create Minutes",
@@ -1508,7 +1509,7 @@ const TextLanguage = (linguagem) => {
           nenhumaPropostaAdicionada: "No proposal added",
         },
         detalhesPropostaPagina: {
-          adicionarAPauta: "Add to Minute",
+          adicionarAPauta: "Add to Agenda",
         },
         escopos: {
           tour: {
@@ -1517,7 +1518,7 @@ const TextLanguage = (linguagem) => {
               "Here are the automatically created scopes, in each scope it is possible to open again for editing. A scope is created for each project you open and do not finish.",
             tour3:
               "In this area you can see what percentage of the form is filled in.",
-            tour4: "By clicking on the trash can you delete the scope.",
+            tour4: "By clicking on the trash you can delete the scope.",
           },
           pesquisarPorTitulo: "Search by title...",
           pesquisar: "Search",
@@ -1552,8 +1553,7 @@ const TextLanguage = (linguagem) => {
           criarDemanda: "Create Demand",
           demandaTour: "Demand Tour",
           esseUmExemploDeDemanda: "This is an example of a demand.",
-          esseUmExemploDeDemanda: "This is an example of a demand",
-          nomeDoSolicitante: "Requester Name",
+          nomeDoSolicitante: "Requestor Name",
         },
         homeGerencia: {
           toursMinhasDemandas: {
@@ -1566,7 +1566,7 @@ const TextLanguage = (linguagem) => {
             tour2:
               "This is the sorting icon, where you can order the items alphabetically, by score or by creation date.",
             tour3:
-              "Here is the filter, where you can filter by: Requester, Responsible Manager, Forum, Department, Size and number.",
+              "Here is the filter, where you can filter by: Requestor, Responsible Manager, Forum, Department, Size and number.",
             tour4:
               "Here is the place to export the demands in spreadsheet format.",
             tour5: "Here you can start the process of creating a new demand.",
@@ -1589,14 +1589,14 @@ const TextLanguage = (linguagem) => {
             tour1:
               "In this area are the proposals, where you can click on a proposal to see more details.",
             tour2:
-              "By clicking here you can open the chat with the demand requester.",
+              "By clicking here you can open the chat with the demand requestor.",
             tour3:
               "By clicking here you can see the proposal's history of changes.",
           },
           toursPautas: {
             tour1:
-              "In this part are the minutes, where you can click on a minute to see more details.",
-            tour2: "By clicking here you can delete the minute.",
+              "In this part are the agendas, where you can click on an agenda to see more details.",
+            tour2: "By clicking here you can delete the agenda.",
           },
           toursAtas: {
             tour1:
@@ -1608,9 +1608,9 @@ const TextLanguage = (linguagem) => {
             feedback3: "Demand rejected successfully!",
             feedback4: "Demand returned successfully!",
             feedback5: "Proposal created successfully!",
-            feedback6: "Minutes deleted successfully!",
+            feedback6: "Agenda deleted successfully!",
             feedback7: "Proposal updated successfully!",
-            feedback8: "Guideline created successfully!",
+            feedback8: "Minutes created successfully!",
             feedback9: "Proposals successfully updated!",
             feedback10: "Demand created successfully!",
             feedback11: "You cannot open a chat with yourself!",
@@ -1622,7 +1622,7 @@ const TextLanguage = (linguagem) => {
           criarPropostas: "Create Proposals",
           propostas: "Proposals",
           pautas: "Agendas",
-          atas: "Guidelines",
+          atas: "Minutes",
           visualizacaoEmTabela: "Table View",
           visualizacaoEmBloco: "Block View",
           pesquisarPorTitulo: "Search by title...",
@@ -1672,7 +1672,7 @@ const TextLanguage = (linguagem) => {
         },
         detalhesProposta: {
           ppm: "PPM",
-          solicitante: "Requester",
+          solicitante: "Requestor",
           objetivo: "Objective",
           proposta: "Proposal",
           problema: "Problem",
@@ -1681,7 +1681,7 @@ const TextLanguage = (linguagem) => {
           payback: "Payback",
           reponsaveisPeloNegocio: "Business Responsible",
           ate: "to",
-          tabelaDeCustos: "Cost Table",
+          tabelaDeCustos: "Costs Table",
           tipoDaDespesa: "Expense Type",
           perfilDaDespesa: "Expense Profile",
           periodoDeExecucaoTabela: "Execution Period (months)",
@@ -1716,14 +1716,14 @@ const TextLanguage = (linguagem) => {
           parecer: "Opinion",
           publicada: "Published",
           naoPublicada: "Not published",
-          secaoTi: "TI Section",
+          secaoTi: "IT Section",
           comissao: "Comission",
           direcaoGeral: "General Direction",
           semInformacoesAdicionais: "No additional information",
           semParecer: "No opinion",
           publicada: "Published",
           naoPublicada: "Not published",
-          secaoTi: "TI Section",
+          secaoTi: "IT Section",
           cancelarEdicao: "Cancel Edit",
           salvarEdicao: "Save Edit",
           nenhum: "None",
@@ -1783,20 +1783,20 @@ const TextLanguage = (linguagem) => {
         modalAddPropostaPauta: {
           feedbacks: {
             feedback1: "Fill in all fields!",
-            feedback2: "Minute updated successfully!",
+            feedback2: "Agenda updated successfully!",
           },
-          selecioneAPauta: "Select a minute",
+          selecioneAPauta: "Select an agenda",
           propostas: "Proposals",
           comissao: "Commission",
           adicionarComoProposta: "Add as proposal",
           publicada: "Published",
           naoPublicada: "Not published",
-          novaPauta: "New Minute",
+          novaPauta: "New Agenda",
           adicionar: "Add",
           numSequencial: "Seq. Number",
           essaPropostaJaSeEncontraEmUmaPauta:
-            "This proposal is already in a minute!",
-          nenhumaPautaEncontrada: "No minutes found!",
+            "This proposal is already in an agenda!",
+          nenhumaPautaEncontrada: "No agendas found!",
           pfvCrieUmaNova: "Please, create a new",
         },
         CaixaTextoQuill: {
@@ -1812,8 +1812,8 @@ const TextLanguage = (linguagem) => {
           "Scopes",
           "Create proposal",
           "Proposal details",
-          "Guideline details",
-          "Minute details",
+          "Minutes details",
+          "Agenda details",
         ],
       }
     : linguagem == "ch"

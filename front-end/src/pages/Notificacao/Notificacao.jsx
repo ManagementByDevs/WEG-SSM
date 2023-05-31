@@ -355,10 +355,10 @@ const Notificacao = (props) => {
     buscarNotificacoes();
   };
 
-  // Busca as notificações do usuário ao carregar a página
+  /** UseEffect para recarregar as notificações ao mudar a página */
   useEffect(() => {
     buscarNotificacoes();
-  }, []);
+  }, [paginaAtual])
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
