@@ -75,6 +75,9 @@ const BarraProgressaoDemanda = (props) => {
   /** Variável utilizada para abrir o modal de confirmação de criação de demanda */
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
 
+  /** Variável utilizada para mostrar o carregamento ao criar demanda */
+  const [carregamentoDemanda, setCarregamentoDemanda] = useState(false);
+
   /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamento, setCarregamento] = useState(true);
 
@@ -266,6 +269,7 @@ const BarraProgressaoDemanda = (props) => {
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
   const criarDemanda = () => {
+    setCarregamentoDemanda(true);
     criandoDemanda = true;
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
@@ -279,6 +283,7 @@ const BarraProgressaoDemanda = (props) => {
           retornaObjetoHistorico(),
           arquivo
         ).then((response) => {
+          setCarregamentoDemanda(false);
           direcionarHome();
           excluirEscopo();
         });
@@ -430,7 +435,7 @@ const BarraProgressaoDemanda = (props) => {
 
       />
 
-      {carregamento ? (
+      {carregamentoDemanda ? (
         <Box className="mt-6 w-full h-full flex justify-center items-center">
           <ClipLoader color="#00579D" size={110} />
         </Box>
