@@ -40,6 +40,7 @@ import chatService from "../../service/chatService";
 
 /** Página principal do solicitante */
 const Home = (props) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -132,6 +133,9 @@ const Home = (props) => {
 
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
+
+  /** useState para abrir e fechar o tour da aba de departamento */
+  const [isTourOpenDepartamento, setIsTourOpenDepartamento] = useState(false);
 
   // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
   const [isFirstTime, setIsFirstTime] = useState(false);
@@ -391,6 +395,49 @@ const Home = (props) => {
     },
   ];
 
+  const stepsTourDepartamento = [
+    {
+      selector: "#primeiro",
+      content: texts.home.tourAjuda.barraDePesquisa,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.home.tourAjuda.iconeOredenar,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#sexto",
+      content: texts.home.tourAjuda.modoVisualizacao,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.home.tourAjuda.criarNovaDemanda,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quinto",
+      content: texts.home.tourAjuda.areaDemanda,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
   // ********************************************** Preferências **********************************************
   /**
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
@@ -429,7 +476,7 @@ const Home = (props) => {
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => {});
+        UsuarioService.updateUser(user.id, user).then((e) => { });
       }
     );
   };
@@ -482,7 +529,7 @@ const Home = (props) => {
           break;
       }
 
-       recognition.onstart = () => {
+      recognition.onstart = () => {
       };
 
       recognition.onresult = (event) => {
@@ -511,7 +558,7 @@ const Home = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
+
     }
   };
 
@@ -528,18 +575,18 @@ const Home = (props) => {
   }, [escutar]);
 
   // ********************************************** Fim Gravar audio **********************************************
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -547,7 +594,7 @@ const Home = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -562,6 +609,15 @@ const Home = (props) => {
         steps={stepsTour}
         isOpen={isTourOpen}
         onRequestClose={() => setIsTourOpen(false)}
+        accentColor="#00579D"
+        rounded={10}
+        showCloseButton={false}
+      />
+
+      <Tour
+        steps={stepsTourDepartamento}
+        isOpen={isTourOpenDepartamento}
+        onRequestClose={() => setIsTourOpenDepartamento(false)}
         accentColor="#00579D"
         rounded={10}
         showCloseButton={false}
@@ -880,13 +936,34 @@ const Home = (props) => {
                       </Box>
                     </TabPanel>
                     <TabPanel sx={{ padding: 0 }} value="2">
-                      <DemandaModoVisualizacao
-                        listaDemandas={listaDemandas}
-                        onDemandaClick={verDemanda}
-                        myDemandas={false}
-                        nextModoVisualizacao={nextModoVisualizacao}
-                        lendo={props.lendo}
-                      />
+                      <Ajuda onClick={() => setIsTourOpenDepartamento(true)} />
+                      <Box>
+                        {isTourOpenDepartamento ? (
+                          <Demanda
+                            demanda={{
+                              id: 0,
+                              titulo: texts.home.demandaTour,
+                              problema: texts.home.esseUmExemploDeDemanda,
+                              proposta: texts.home.esseUmExemploDeDemanda,
+                              solicitante: {
+                                id: 1,
+                                nome: texts.home.nomeDoSolicitante,
+                                tour: true,
+                              },
+                            }}
+                            lendo={props.lendo}
+                          />
+                        ) :
+                          <DemandaModoVisualizacao
+                            listaDemandas={listaDemandas}
+                            onDemandaClick={verDemanda}
+                            myDemandas={false}
+                            nextModoVisualizacao={nextModoVisualizacao}
+                            lendo={props.lendo}
+                          />
+                        }
+                      </Box>
+
                     </TabPanel>
                   </>
                 )}
