@@ -16,6 +16,7 @@ import UsuarioService from "../../service/usuarioService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
+
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -35,6 +36,7 @@ const DemandaGerencia = (props) => {
   // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
 
+  // Variável para obter o usuário logado
   const [user, setUser] = useState(UsuarioService.getUserCookies());
 
   // Função para mudar a cor do status da demanda
