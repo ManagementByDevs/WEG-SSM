@@ -97,6 +97,7 @@ const Notificacao = (props) => {
   }, [usuario]);
 
   useEffect(() => {
+    console.log("roudou");
     setRows(createRows(dadosNotificacao));
   }, [texts]);
 
@@ -270,6 +271,7 @@ const Notificacao = (props) => {
         "size=" + tamanhoPagina + "&page=" + paginaAtual
       ).then((data) => {
         setRows(createRows(data.content));
+        setDadosNotificacao(data.content);
         setTotalPaginas(data.totalPages);
         setCarregamento(false);
       });
@@ -347,18 +349,18 @@ const Notificacao = (props) => {
     buscarNotificacoes();
   }, []);
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -366,7 +368,7 @@ const Notificacao = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
