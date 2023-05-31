@@ -20,7 +20,6 @@ import { WebSocketContext } from "../../service/WebSocketService";
 
 // Modal de notificações do sistema
 const NotificacaoModal = (props) => {
-
   /** Variável para pegar informações da URL */
   const location = useLocation();
 
@@ -75,7 +74,7 @@ const NotificacaoModal = (props) => {
           .then((response) => {
             setNotificacoes([...response.content]);
           })
-          .catch((error) => { });
+          .catch((error) => {});
       }
     );
   };
@@ -92,6 +91,7 @@ const NotificacaoModal = (props) => {
     newNotificacao.data = DateService.getTodaysDateMySQL();
     newNotificacao.tipoNotificacao = "MENSAGENS";
     newNotificacao.usuario.id = user.id;
+    newNotificacao.remetente.id = user.id;
 
     NotificacaoService.post(newNotificacao).then((notificacaoResponse) => {
       setNotificacoes((oldNotificacoes) => {
@@ -125,7 +125,7 @@ const NotificacaoModal = (props) => {
 
     if (!rota.includes("/chat")) {
       let inscricaoAllMensagens = inscrever(
-        "/weg_ssm/mensagem/all",
+        `/weg_ssm/mensagem/all/user/${user.id}`,
         receivedAnyMessage
       );
 
@@ -141,12 +141,12 @@ const NotificacaoModal = (props) => {
     const acaoNovaNotificacao = (response) => {
       const notificacao = JSON.parse(response.body);
       setNotificacoes([...notificacoes, notificacao]);
-    }
+    };
     if (stompClient) {
       let userId = CookieService.getUser().id;
       inscrever(`/weg_ssm/${userId}/notificacao`, acaoNovaNotificacao);
     }
-  }, [stompClient, notificacoes])
+  }, [stompClient, notificacoes]);
 
   const [textoLeitura, setTextoLeitura] = useState("");
 
@@ -155,13 +155,13 @@ const NotificacaoModal = (props) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -169,7 +169,7 @@ const NotificacaoModal = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -275,9 +275,9 @@ const NotificacaoModal = (props) => {
             >
               {notificacoes.length > 0
                 ? texts.notificacaoModal.verTudo +
-                "(" +
-                notificacoes.length +
-                ")"
+                  "(" +
+                  notificacoes.length +
+                  ")"
                 : texts.notificacaoModal.verNotificacoes}
             </Typography>
           </Box>
