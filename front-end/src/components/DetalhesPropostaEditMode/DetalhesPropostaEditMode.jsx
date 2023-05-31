@@ -1,5 +1,24 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { Autocomplete, Box, Checkbox, Divider, FormControl, IconButton, Input, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Checkbox,
+  Divider,
+  FormControl,
+  IconButton,
+  Input,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import ClipLoader from "react-spinners/ClipLoader";
 import ReactQuill from "react-quill";
@@ -42,12 +61,11 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
-  setPropostaData = () => { },
-  setIsEditing = () => { },
+  setPropostaData = () => {},
+  setIsEditing = () => {},
   emAprovacao = false,
   lendo = false,
 }) => {
-  
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -76,7 +94,8 @@ const DetalhesPropostaEditMode = ({
   ]);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
+    useState(false);
 
   // Modal de confirmação para quando o usuário clicar em cancelar ou salvar edição
   const [modalConfirmacao, setModalConfirmacao] = useState(false);
@@ -450,7 +469,7 @@ const DetalhesPropostaEditMode = ({
           "Proposta Editada",
           arquivo,
           CookieService.getUser().id
-        ).then(() => { });
+        ).then(() => {});
       });
     });
   };
@@ -870,8 +889,7 @@ const DetalhesPropostaEditMode = ({
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
@@ -919,7 +937,6 @@ const DetalhesPropostaEditMode = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -938,18 +955,18 @@ const DetalhesPropostaEditMode = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -957,7 +974,7 @@ const DetalhesPropostaEditMode = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -979,7 +996,7 @@ const DetalhesPropostaEditMode = ({
         textoModal={textoModalConfirmacao}
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         lendo={lendo}
       />
       {/* Feedback Erro reconhecimento de voz */}
@@ -1054,7 +1071,9 @@ const DetalhesPropostaEditMode = ({
             <TextField
               variant="standard"
               size="small"
-              value={DateService.getTodaysDateUSFormat(proposta.data)}
+              value={DateService.getTodaysDateUSFormat(
+                proposta.data
+              )}
               onChange={handleOnDataChange}
               type="date"
               sx={{ width: "8rem" }}
@@ -1179,8 +1198,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.solicitante.nome +
-                  " - " +
-                  proposta.solicitante.departamento.nome
+                    " - " +
+                    proposta.solicitante.departamento.nome
                 );
               }}
             >
@@ -1237,8 +1256,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.gerente.nome +
-                  " - " +
-                  proposta.gerente.departamento.nome
+                    " - " +
+                    proposta.gerente.departamento.nome
                 );
               }}
             >
@@ -1486,16 +1505,16 @@ const DetalhesPropostaEditMode = ({
             <Box className="mx-4">
               {proposta.tabelaCustos.length > 0 && isTabelaCustosVisile
                 ? proposta.tabelaCustos?.map((tabela, index) => {
-                  return (
-                    <TabelaCustos
-                      key={index}
-                      dados={tabela}
-                      handleOnTabelaCustosChange={handleOnTabelaCustosChange}
-                      handleDeleteTabelaCusto={handleDeleteTabelaCusto}
-                      lendo={lendo}
-                    />
-                  );
-                })
+                    return (
+                      <TabelaCustos
+                        key={index}
+                        dados={tabela}
+                        handleOnTabelaCustosChange={handleOnTabelaCustosChange}
+                        handleDeleteTabelaCusto={handleDeleteTabelaCusto}
+                        lendo={lendo}
+                      />
+                    );
+                  })
                 : null}
             </Box>
           </Box>
@@ -1700,7 +1719,9 @@ const DetalhesPropostaEditMode = ({
               <TextField
                 variant="standard"
                 size="small"
-                value={DateService.getTodaysDateUSFormat(proposta.fimExecucao)}
+                value={DateService.getTodaysDateUSFormat(
+                  proposta.fimExecucao
+                )}
                 onChange={handleOnFimExecucaoChange}
                 type="date"
               />
@@ -1896,8 +1917,8 @@ const TabelaCustos = ({
   tipoBeneficio = dados.tipoBeneficio,
   handleOnTabelaCustosChange = (
     newTabela = EntitiesObjectService.tabelaCustos()
-  ) => { },
-  handleDeleteTabelaCusto = () => { },
+  ) => {},
+  handleDeleteTabelaCusto = () => {},
   texto,
   setTexto,
   lendo = false,
@@ -1965,7 +1986,6 @@ const TabelaCustos = ({
       newCusto.id = dados.custos.length * -1 - 1;
     }
 
-
     handleOnTabelaCustosChange({
       ...dados,
       custos: [...dados.custos, { ...newCusto }],
@@ -1992,18 +2012,18 @@ const TabelaCustos = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -2011,7 +2031,7 @@ const TabelaCustos = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -2199,7 +2219,7 @@ const TabelaCustos = ({
 
 const CC = ({
   cc = EntitiesObjectService.cc(),
-  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => { },
+  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
   lendo = false,
 }) => {
   // Context para obter os textos do sistema
@@ -2260,8 +2280,7 @@ const CC = ({
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
@@ -2299,7 +2318,6 @@ const CC = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -2318,18 +2336,18 @@ const CC = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -2337,7 +2355,7 @@ const CC = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -2434,7 +2452,7 @@ const CC = ({
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
   dados = EntitiesObjectService.tabelaCustos(),
-  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => { },
+  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
   texto,
   setTexto,
   tipoDespesa,
@@ -2473,9 +2491,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-        style: "currency",
-        currency: tipoMoeda,
-      })
+          style: "currency",
+          currency: tipoMoeda,
+        })
       : 0.0;
   };
 
@@ -2508,7 +2526,6 @@ const CustosRow = ({
   const handleOnValorHoraChange = (event) => {
     handleOnCustoChange({ ...custo, valorHora: event.target.value });
   };
-
 
   // ***************************************** Fim Handlers ***************************************** //
 
@@ -2552,8 +2569,7 @@ const CustosRow = ({
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
@@ -2600,7 +2616,6 @@ const CustosRow = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -2619,18 +2634,18 @@ const CustosRow = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -2638,7 +2653,7 @@ const CustosRow = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -2648,7 +2663,7 @@ const CustosRow = ({
   return (
     <TableRow>
       <td className="p-2 text-center">
-        {index == 0 ?
+        {index == 0 ? (
           <FormControl sx={{ width: "7rem" }}>
             <Select
               labelId="demo-simple-select-label"
@@ -2657,22 +2672,16 @@ const CustosRow = ({
               onChange={handleOnTipoDespesaChange}
             >
               <MenuItem value={"Interna"}>
-                <Typography fontSize={FontConfig.medium}>
-                  Interna
-                </Typography>
+                <Typography fontSize={FontConfig.medium}>Interna</Typography>
               </MenuItem>
               <MenuItem value={"Externa"}>
-                <Typography fontSize={FontConfig.medium}>
-                  Externa
-                </Typography>
+                <Typography fontSize={FontConfig.medium}>Externa</Typography>
               </MenuItem>
             </Select>
           </FormControl>
-          :
-          <Box>
-            
-          </Box>
-        }
+        ) : (
+          <Box></Box>
+        )}
       </td>
       <td className="p-2 text-center">
         {/* Perfil da Despesa */}
@@ -2856,8 +2865,8 @@ const CustosRow = ({
 // Mostrar os benefícios da proposta
 const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
-  handleOnBeneficioChange = () => { },
-  handleDeleteBeneficio = () => { },
+  handleOnBeneficioChange = () => {},
+  handleDeleteBeneficio = () => {},
   lendo,
 }) => {
   // Context para obter as configurações de fonte do sistema
@@ -2986,8 +2995,7 @@ const Beneficio = ({
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
@@ -3024,7 +3032,6 @@ const Beneficio = ({
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -3043,18 +3050,18 @@ const Beneficio = ({
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -3062,7 +3069,7 @@ const Beneficio = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -3254,7 +3261,7 @@ const Beneficio = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
+  setProposta = () => {},
   texto,
   setTexto,
   lendo = false,
@@ -3300,18 +3307,18 @@ const ParecerComissaoInsertText = ({
     }
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -3319,7 +3326,7 @@ const ParecerComissaoInsertText = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -3392,7 +3399,7 @@ const ParecerComissaoInsertText = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => { },
+  setProposta = () => {},
   texto,
   setTexto,
   lendo = false,
@@ -3438,18 +3445,18 @@ const ParecerDGInsertText = ({
     }
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -3457,7 +3464,7 @@ const ParecerDGInsertText = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };

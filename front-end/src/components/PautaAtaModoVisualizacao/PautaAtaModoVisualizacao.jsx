@@ -81,7 +81,7 @@ const PautaTable = ({
   const getDataFormatada = (dataInicio) => {
     let dateInicio = new Date(DateService.getDateByMySQLFormat(dataInicio));
 
-    return `${DateService.getTodaysDateUSFormat(dataInicio)} ${
+    return `${DateService.getTodaysDateUSFormat(dataInicio, texts.linguagem)} ${
       texts.pautaAtaModoVisualizacao.as
     } ${dateInicio.getHours()}:${
       dateInicio.getMinutes() < 10

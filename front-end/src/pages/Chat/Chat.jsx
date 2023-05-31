@@ -325,8 +325,7 @@ const Chat = (props) => {
           );
           inputRef.current.value = "";
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     } else {
       setFeedbackAnexoGrande(true);
     }
@@ -424,7 +423,6 @@ const Chat = (props) => {
       // Se o remetente não for o usuário, tenho que notificar a visualização
       if (mensagemNova.usuario.id != user.usuario.id) {
         mensagemNova.visto = true;
-        console.log("Mensagem nova visto: ", mensagemNova);
         enviar(
           `/app/weg_ssm/mensagem/chat/${idChat}/visto`,
           JSON.stringify({
@@ -440,8 +438,6 @@ const Chat = (props) => {
     };
 
     const readMessage = (mensagem) => {
-      console.log("Mensagem vista: ", mensagem);
-
       if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
         clearNewMessages();
         return;
@@ -512,7 +508,6 @@ const Chat = (props) => {
       }
     });
     setResultadosContato([...listaChatsAux]);
-    console.log("Lista de chats: ", listaChatsAux);
   }, [pesquisaContato, listaChats, idChat]);
 
   useEffect(() => {
@@ -566,8 +561,7 @@ const Chat = (props) => {
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
@@ -605,7 +599,6 @@ const Chat = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -840,23 +833,24 @@ const Chat = (props) => {
                     index={0}
                   />
                 ) : resultadosContato[0]?.id != 0 ? (
-                  resultadosContato.map((resultado, index) => {
-                    return (
-                      <Contato
-                        key={index}
-                        onClick={() => {
-                          setIdChatState(resultado.id);
-                          navigate(`/chat/${resultado.id}`);
-                        }}
-                        idChat={idChat}
-                        chat={resultado}
-                        index={index}
-                        lendo={props.lendo}
-                        texto={props.texto}
-                        setTexto={props.setTexto}
-                      />
-                    );
-                  })
+                  resultadosContato
+                    .map((resultado, index) => {
+                      return (
+                        <Contato
+                          key={index}
+                          onClick={() => {
+                            setIdChatState(resultado.id);
+                            navigate(`/chat/${resultado.id}`);
+                          }}
+                          idChat={idChat}
+                          chat={resultado}
+                          index={index}
+                          lendo={props.lendo}
+                          texto={props.texto}
+                          setTexto={props.setTexto}
+                        />
+                      );
+                    })
                 ) : null}
               </Box>
               {!idChat && !visibilidade ? (

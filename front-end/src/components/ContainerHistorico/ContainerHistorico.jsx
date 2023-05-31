@@ -117,10 +117,10 @@ const ContainerHistorico = (props) => {
         <Typography
           fontSize={FontConfig.small}
           onClick={() => {
-            lerTexto(DateService.getFullDateUSFormat(props.historico?.data));
+            lerTexto(DateService.getFullDateUSFormat(props.historico?.data, texts.linguagem));
           }}
         >
-          {DateService.getFullDateUSFormat(props.historico?.data)}
+          {DateService.getFullDateUSFormat(props.historico?.data, texts.linguagem)}
         </Typography>
 
         {/* Texto da ação feita */}

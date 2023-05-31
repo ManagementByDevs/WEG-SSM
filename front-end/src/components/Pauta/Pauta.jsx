@@ -38,10 +38,12 @@ const Pautas = (props) => {
   const getDataFormatada = (dataReuniao) => {
     return props.tipo == "pauta"
       ? DateService.getTodaysDateUSFormat(
-          DateService.getDateByMySQLFormat(dataReuniao)
+          DateService.getDateByMySQLFormat(dataReuniao),
+          texts.linguagem
         )
       : DateService.getFullDateUSFormat(
-          DateService.getDateByMySQLFormat(dataReuniao)
+          DateService.getDateByMySQLFormat(dataReuniao),
+          texts.linguagem
         );
   };
 
@@ -57,18 +59,18 @@ const Pautas = (props) => {
       setIsApreciada(props.dados.propostas[0].parecerDG != null);
     }
   }, []);
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -76,7 +78,7 @@ const Pautas = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -86,9 +88,8 @@ const Pautas = (props) => {
   return (
     <Paper
       onClick={(e) => {
-        props.onItemClick(props.dados)
-      }
-    }
+        props.onItemClick(props.dados);
+      }}
       className="flex flex-col border-t-4 pt-2 pb-3 pl-6 pr-4"
       sx={{
         "&:hover": {

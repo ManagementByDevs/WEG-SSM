@@ -23,7 +23,11 @@ const Contato = ({
   // UseEffect para alterar a cor do contato quando ele for selecionado
   useEffect(() => {
     if (idChat == 0) {
-      setCorSelecionado("transparent");
+      if(chat.conversaEncerrada) {
+        setCorSelecionado("divider.claro");
+      } else {
+        setCorSelecionado("transparent");
+      }
     } else {
       if (idChat == chat.id) {
         setCorSelecionado("chat.eu");
@@ -57,20 +61,14 @@ const Contato = ({
             },
           }}
         >
-          <Conteudo
-            chat={chat}
-            lendo={lendo}
-          />
+          <Conteudo chat={chat} lendo={lendo} />
         </Box>
       </Tooltip>
     </>
   );
 };
 
-const Conteudo = ({
-  chat = EntitiesObjectService.chat(),
-  lendo = false,
-}) => {
+const Conteudo = ({ chat = EntitiesObjectService.chat(), lendo = false }) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -97,13 +95,13 @@ const Conteudo = ({
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -111,7 +109,7 @@ const Conteudo = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };

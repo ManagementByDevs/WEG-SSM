@@ -43,9 +43,28 @@ const ContainerPauta = (props) => {
   const getFormattedDate = (dateInMySQL) => {
     let date = DateService.getDateByMySQLFormat(dateInMySQL);
 
+    switch (texts.linguagem) {
+      case "pt":    
     return (
       date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
     );
+      case "en":
+        return (
+          date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
+        );
+      case "es":
+        return (
+          date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+        );
+        case "ch":
+          return (
+            date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
+          );
+      default:
+        return (
+          date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+        );
+    }
   };
 
   // Função para retornar a cor do background do componente de pauta corretamente

@@ -324,7 +324,8 @@ const DetalhesProposta = ({
             >
               {texts.detalhesProposta.data}{" "}
               {DateService.getTodaysDateUSFormat(
-                DateService.getDateByMySQLFormat(proposta.data)
+                DateService.getDateByMySQLFormat(proposta.data),
+                texts.linguagem
               )}
             </Typography>
             <Typography
@@ -726,23 +727,27 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     DateService.getTodaysDateUSFormat(
-                      DateService.getDateByMySQLFormat(proposta.inicioExecucao)
+                      DateService.getDateByMySQLFormat(proposta.inicioExecucao),
+                      texts.linguagem
                     ) +
                       " " +
                       texts.detalhesProposta.ate +
                       " " +
                       DateService.getTodaysDateUSFormat(
-                        DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                        DateService.getDateByMySQLFormat(proposta.fimExecucao),
+                        texts.linguagem
                       )
                   )
                 }
               >
                 {DateService.getTodaysDateUSFormat(
-                  DateService.getDateByMySQLFormat(proposta.inicioExecucao)
+                  DateService.getDateByMySQLFormat(proposta.inicioExecucao),
+                  texts.linguagem
                 )}{" "}
                 {texts.detalhesProposta.ate}{" "}
                 {DateService.getTodaysDateUSFormat(
-                  DateService.getDateByMySQLFormat(proposta.fimExecucao)
+                  DateService.getDateByMySQLFormat(proposta.fimExecucao),
+                  texts.linguagem
                 )}
               </Typography>
             </Box>

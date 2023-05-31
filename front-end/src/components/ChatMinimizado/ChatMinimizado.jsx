@@ -24,7 +24,6 @@ import DateService from "../../service/dateService";
 import AnexoService from "../../service/anexoService";
 import { MensagemService } from "../../service/MensagemService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
-import dateService from "../../service/dateService";
 import { WebSocketContext } from "../../service/WebSocketService";
 import anexoService from "../../service/anexoService";
 
@@ -171,7 +170,7 @@ const ChatMinimizado = (props) => {
   /** Seta a mensagem padrão */
   const setDefaultMensagem = () => {
     setMensagem({
-      data: DateService.getTodaysDate(),
+      data: DateService.getTodaysDate(texts.linguagem),
       visto: false,
       texto: "",
       status: "MESSAGE",

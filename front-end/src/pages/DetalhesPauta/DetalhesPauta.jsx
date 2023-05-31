@@ -360,8 +360,7 @@ const DetalhesPauta = (props) => {
         JSON.parse(JSON.stringify(propostaAux.demanda)),
         CookieService.getUser().id
       )
-    ).catch((error) => {}
-    );
+    ).catch((error) => {});
   };
 
   const handlePautaWithNoApprovedProposals = () => {
@@ -492,18 +491,18 @@ const DetalhesPauta = (props) => {
 
   // useState utilizado para abrir e fechar o modal de adicionar a pauta
   const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -511,7 +510,7 @@ const DetalhesPauta = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -669,14 +668,16 @@ const DetalhesPauta = (props) => {
                     texts.detalhesPauta.reuniaoDoForum +
                       ": " +
                       DateService.getFullDateUSFormat(
-                        DateService.getDateByMySQLFormat(pauta?.dataReuniao)
+                        DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                        texts.linguagem
                       )
                   );
                 }}
               >
                 {texts.detalhesPauta.reuniaoDoForum}:{" "}
                 {DateService.getFullDateUSFormat(
-                  DateService.getDateByMySQLFormat(pauta?.dataReuniao)
+                  DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                  texts.linguagem
                 )}
               </Typography>
               {/* Data da reunião da DG */}

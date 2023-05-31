@@ -462,13 +462,13 @@ const DetalhesAta = (props) => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
                       ": " +
-                      DateService.getTodaysDateUSFormat(ata.dataReuniao)
+                      DateService.getTodaysDateUSFormat(ata.dataReuniao, texts.linguagem)
                   );
                 }}
               >
                 {/* {data reunião} */}
                 {texts.detalhesAta.dataReuniao}:{" "}
-                {DateService.getTodaysDateUSFormat(ata.dataReuniao)}
+                {DateService.getTodaysDateUSFormat(ata.dataReuniao, texts.linguagem)}
               </Typography>
               <Typography
                 className="cursor-default mt-2"

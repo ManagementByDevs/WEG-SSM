@@ -318,7 +318,7 @@ const DemandaTable = ({
               )}
               <td
                 className="text-center p-3"
-                title={DateService.getTodaysDateUSFormat(row.data)}
+                title={DateService.getTodaysDateUSFormat(row.data, texts.linguagem)}
               >
                 <Typography
                   className="truncate"
@@ -326,11 +326,11 @@ const DemandaTable = ({
                   onClick={(e) => {
                     if (lendo) {
                       e.preventDefault();
-                      lerTexto(DateService.getTodaysDateUSFormat(row.data));
+                      lerTexto(DateService.getTodaysDateUSFormat(row.data, texts.linguagem));
                     }
                   }}
                 >
-                  {DateService.getTodaysDateUSFormat(row.data)}
+                  {DateService.getTodaysDateUSFormat(row.data, texts.linguagem)}
                 </Typography>
               </td>
             </TableRow>
