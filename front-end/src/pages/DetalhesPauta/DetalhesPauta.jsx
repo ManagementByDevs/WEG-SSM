@@ -39,6 +39,8 @@ import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
 import NotificacaoService from "../../service/notificacaoService";
 
+import { WebSocketContext } from "../../service/WebSocketService";
+
 // Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
 const DetalhesPauta = (props) => {
   // Context para alterar a linguagem do sistema
@@ -81,6 +83,9 @@ const DetalhesPauta = (props) => {
 
   // Estado para mostrar o sumário ou não, usado também para atualizar a página com as novas propostas
   const [isSummaryVisible, setIsSummaryVisible] = useState(true);
+
+  /**  Context do WebSocket */
+  const { enviar } = useContext(WebSocketContext);
 
   // Função para selecionar uma proposta do sumário
   const onClickProposta = (index) => {
@@ -236,7 +241,7 @@ const DetalhesPauta = (props) => {
               "Removida da Pauta #" + newPauta.numeroSequencial,
               arquivo,
               CookieService.getUser().id
-            ).then(() => {});
+            ).then(() => { });
           });
         }
       );
@@ -353,14 +358,9 @@ const DetalhesPauta = (props) => {
         break;
     }
 
-    // Criar notificação
-    NotificacaoService.post(
-      NotificacaoService.createNotificationObject(
-        tipoNotificacao,
-        JSON.parse(JSON.stringify(propostaAux.demanda)),
-        CookieService.getUser().id
-      )
-    ).catch((error) => {});
+    const demandaNotificacao = JSON.parse(JSON.stringify(propostaAux.demanda));
+    const notificacao = NotificacaoService.createNotificationObject(tipoNotificacao, demandaNotificacao, CookieService.getUser().id);
+    enviar(`/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`, JSON.stringify(notificacao));
   };
 
   const handlePautaWithNoApprovedProposals = () => {
@@ -381,11 +381,11 @@ const DetalhesPauta = (props) => {
                 "Proposta Reprovada",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 response.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "MAIS_INFORMACOES":
               PropostaService.addHistorico(
@@ -393,7 +393,7 @@ const DetalhesPauta = (props) => {
                 "Enviada para Edição",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "BUSINESS_CASE":
               PropostaService.addHistorico(
@@ -401,7 +401,7 @@ const DetalhesPauta = (props) => {
                 "Enviada para Business Case",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               break;
           }
         });
@@ -428,9 +428,9 @@ const DetalhesPauta = (props) => {
             "Proposta Reprovada",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(
-            () => {}
+            () => { }
           );
           break;
         case "MAIS_INFORMACOES":
@@ -439,7 +439,7 @@ const DetalhesPauta = (props) => {
             "Enviada para Edição",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           break;
         case "BUSINESS_CASE":
           PropostaService.addHistorico(
@@ -447,7 +447,7 @@ const DetalhesPauta = (props) => {
             "Entrada em Business Case",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           break;
         case "APROVADO":
           PropostaService.addHistorico(
@@ -455,7 +455,7 @@ const DetalhesPauta = (props) => {
             "Adicionada na Ata #" + idAta,
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           break;
       }
     });
@@ -589,7 +589,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         lendo={props.lendo}
       />
       <Box className="p-2" sx={{ minWidth: "60rem" }}>
@@ -639,8 +639,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.numeroSequencial +
-                      ": " +
-                      pauta.numeroSequencial
+                    ": " +
+                    pauta.numeroSequencial
                   );
                 }}
               >
@@ -652,8 +652,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.comissao +
-                      ": " +
-                      pauta.comissao.nomeForum
+                    ": " +
+                    pauta.comissao.nomeForum
                   );
                 }}
               >
@@ -686,8 +686,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.analistaResponsavel +
-                      ": " +
-                      pauta.analistaResponsavel.nome
+                    ": " +
+                    pauta.analistaResponsavel.nome
                   );
                 }}
               >

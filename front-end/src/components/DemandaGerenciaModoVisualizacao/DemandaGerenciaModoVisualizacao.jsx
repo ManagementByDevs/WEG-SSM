@@ -1,15 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography, } from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -25,6 +17,8 @@ import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import ChatService from "../../service/chatService";
+import UsuarioService from "../../service/usuarioService";
 
 // Componente para mudar o modo de visualização das demandas (Grid, tabela ou nenhuma demanda encontrada) - Gerência
 const DemandaGerenciaModoVisualizacao = ({
@@ -89,7 +83,13 @@ const DemandaTable = ({
   onDemandaClick,
   isProposta = false,
   lendo = false,
+  dados,
+  setFeedbackAbrirChat,
 }) => {
+
+  // Variável utilizada para navegação no sistema
+  const navigate = useNavigate();
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -101,6 +101,9 @@ const DemandaTable = ({
 
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
+
+  // UseState utilizado para obter o usuário logado
+  const [user, setUser] = useState(UsuarioService.getUserCookies());
 
   // Função para receber a cor do status da demanda
   const getStatusColor = (status) => {
@@ -160,6 +163,46 @@ const DemandaTable = ({
       return () => {
         finalizarLeitura();
       };
+    }
+  };
+
+  const entrarChat = (e, dados) => {
+    e.stopPropagation();
+    if (dados.solicitante.id !== user.usuario.id) {
+      let chat;
+      ChatService.getByPropostaAndUser(dados.id, user.usuario.id).then(
+        (response) => {
+          chat = response;
+          if (chat.length > 0) {
+            if (chat[0].conversaEncerrada == true) {
+              ChatService.put(
+                {
+                  ...chat[0],
+                  conversaEncerrada: false,
+                },
+                chat[0].id
+              ).then((response) => {
+                chat = response;
+              });
+            }
+            navigate(`/chat/${chat[0].id}`);
+          } else {
+            let newChat = {
+              idProposta: { id: dados.id },
+              usuariosChat: [
+                { id: user.usuario.id },
+                { id: dados.solicitante.id },
+              ],
+            };
+            ChatService.post(newChat).then((response) => {
+              chat = response;
+              navigate(`/chat/${chat.id}`);
+            });
+          }
+        }
+      );
+    } else {
+      setFeedbackAbrirChat(true);
     }
   };
 
@@ -275,7 +318,7 @@ const DemandaTable = ({
               </th>
               <th className="text-white p-3 width-75/1000">
                 <Typography>
-                  
+
                 </Typography>
               </th>
             </TableRow>
@@ -484,7 +527,7 @@ const DemandaTable = ({
                             setHistoricoSelecionado(
                               row.historicoDemanda || row.historicoProposta
                             );
-                            abrirModalHistorico();
+                            entrarChat(e, row);
                           }}
                           className="delay-120 hover:scale-110 duration-300"
                           sx={{ color: "icon.main", cursor: "pointer" }}

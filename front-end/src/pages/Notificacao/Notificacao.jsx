@@ -97,7 +97,6 @@ const Notificacao = (props) => {
   }, [usuario]);
 
   useEffect(() => {
-    console.log("roudou");
     setRows(createRows(dadosNotificacao));
   }, [texts]);
 

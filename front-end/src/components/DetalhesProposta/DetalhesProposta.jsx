@@ -38,6 +38,8 @@ import NotificacaoService from "../../service/notificacaoService";
 import ClipLoader from "react-spinners/ClipLoader";
 import Feedback from "../Feedback/Feedback";
 
+import { WebSocketContext } from "../../service/WebSocketService";
+
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -49,8 +51,8 @@ const DetalhesProposta = ({
   parecerInformacao = "",
   parecerDG = "",
   parecerInformacaoDG = "",
-  setDadosProposta = () => {},
-  setFeedbackEditSuccess = () => {},
+  setDadosProposta = () => { },
+  setFeedbackEditSuccess = () => { },
   lendo,
 }) => {
   // Context para alterar o tamanho da fonte
@@ -220,7 +222,6 @@ const DetalhesProposta = ({
         : texts.detalhesProposta.escopoVazio;
     }
 
-    console.log(proposta);
   }, [proposta, isEditing]);
 
   useEffect(() => {
@@ -396,8 +397,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.solicitante?.nome +
-                      " - " +
-                      proposta.solicitante?.departamento?.nome
+                    " - " +
+                    proposta.solicitante?.departamento?.nome
                   )
                 }
               >
@@ -420,8 +421,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.buSolicitante?.siglaBu +
-                      " - " +
-                      proposta.buSolicitante?.nomeBu
+                    " - " +
+                    proposta.buSolicitante?.nomeBu
                   )
                 }
               >
@@ -444,8 +445,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.gerente?.nome +
-                      " - " +
-                      proposta.gerente?.departamento?.nome
+                    " - " +
+                    proposta.gerente?.departamento?.nome
                   )
                 }
               >
@@ -471,8 +472,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.forum?.siglaForum +
-                        " - " +
-                        proposta.forum?.nomeForum
+                      " - " +
+                      proposta.forum?.nomeForum
                     )
                   }
                 >
@@ -512,8 +513,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.secaoTI.siglaSecao +
-                      " - " +
-                      proposta.secaoTI.nomeSecao
+                    " - " +
+                    proposta.secaoTI.nomeSecao
                   )
                 }
               >
@@ -767,8 +768,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.paybackValor +
-                        " " +
-                        proposta.paybackTipo.toLowerCase()
+                      " " +
+                      proposta.paybackTipo.toLowerCase()
                     )
                   }
                 >
@@ -1116,9 +1117,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -1325,7 +1326,7 @@ const Beneficio = ({
                 onClick={() =>
                   lerTexto(
                     beneficio.tipoBeneficio[0].toUpperCase() +
-                      beneficio.tipoBeneficio.substring(1).toLowerCase()
+                    beneficio.tipoBeneficio.substring(1).toLowerCase()
                   )
                 }
               >
@@ -1372,8 +1373,8 @@ const Beneficio = ({
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
@@ -1396,8 +1397,8 @@ const ParecerComissao = ({
 // Chamar o parecer da DG
 const ParecerDG = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
@@ -1420,8 +1421,8 @@ const ParecerDG = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
   lendo = false,
@@ -1623,8 +1624,8 @@ const ParecerComissaoOnlyRead = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
   lendo = false,
@@ -1762,10 +1763,14 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
 
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  getCorStatus = () => {},
+  setProposta = () => { },
+  getCorStatus = () => { },
   lendo = false,
 }) => {
+
+  /**  Context do WebSocket */
+  const { enviar } = useContext(WebSocketContext);
+
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
@@ -1861,21 +1866,14 @@ const StatusProposta = ({
         break;
     }
 
-    // Criar notificação
-    NotificacaoService.post(
-      NotificacaoService.createNotificationObject(
-        tipoNotificacao,
-        JSON.parse(JSON.stringify(propostaAux.demanda)),
-        CookieService.getUser().id
-      )
-    ).catch((error) => {});
+    const demandaNotificacao = JSON.parse(JSON.stringify(propostaAux.demanda));
+    const notificacao = NotificacaoService.createNotificationObject(tipoNotificacao, demandaNotificacao, CookieService.getUser().id);
+    enviar(`/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`, JSON.stringify(notificacao));
   };
 
   // Função para editar o status da proposta
   const editarStatus = () => {
     if (newStatus == "") {
-      // Em teoria isso nunca vai acontecer já que o status é um select box
-      console.log("Status não pode ser vazio!");
       return;
     }
 
@@ -1903,7 +1901,7 @@ const StatusProposta = ({
           "Status Editado para " + getStatusFormatted(newStatus),
           arquivo,
           CookieService.getUser().id
-        ).then(() => {});
+        ).then(() => { });
       });
     });
   };
@@ -1959,7 +1957,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         lendo={lendo}
       />
       <Menu

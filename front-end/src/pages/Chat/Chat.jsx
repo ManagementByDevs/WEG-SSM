@@ -355,7 +355,10 @@ const Chat = (props) => {
 
       let listaChatsAux = JSON.parse(JSON.stringify(oldListaChats));
       let chatAux = listaChatsAux.find((chat) => chat.id == idChat);
-      chatAux.msgNaoLidas = 0;
+
+      if (chatAux) {
+        chatAux.msgNaoLidas = 0;
+      }
 
       return [...listaChatsAux];
     });
@@ -883,7 +886,7 @@ const Chat = (props) => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                        // src={usuarios[indexUsuario].foto}
+                      // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -1098,7 +1101,7 @@ const Chat = (props) => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                        // src={usuarios[indexUsuario].foto}
+                      // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -1191,66 +1194,66 @@ const Chat = (props) => {
                               chat.id == idChat &&
                               chat.idProposta.solicitante.id != user.usuario.id
                           ) && (
-                            <>
-                              <div className="w-full flex justify-center">
-                                <hr className="w-10/12 my-1.5" />
-                              </div>
+                              <>
+                                <div className="w-full flex justify-center">
+                                  <hr className="w-10/12 my-1.5" />
+                                </div>
 
-                              {isConversaEncerrada() ? (
-                                <MenuItem
-                                  className="gap-2"
-                                  onClick={() => {
-                                    handleClose();
-                                    abrirModalAbrirChat();
-                                  }}
-                                >
-                                  <CommentOutlinedIcon
-                                    sx={{
-                                      fontSize: "25px",
-                                      color: "tertiary.main",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                  <Typography
-                                    color={"text.primary"}
-                                    fontSize={FontConfig.medium}
-                                    sx={{ fontWeight: 500 }}
+                                {isConversaEncerrada() ? (
+                                  <MenuItem
+                                    className="gap-2"
                                     onClick={() => {
-                                      lerTexto(texts.chat.reabrirChat);
+                                      handleClose();
+                                      abrirModalAbrirChat();
                                     }}
                                   >
-                                    {texts.chat.reabrirChat}
-                                  </Typography>
-                                </MenuItem>
-                              ) : (
-                                <MenuItem
-                                  className="gap-2"
-                                  onClick={() => {
-                                    handleClose();
-                                    abrirModalCancelarChat();
-                                  }}
-                                >
-                                  <CommentsDisabledOutlinedIcon
-                                    sx={{
-                                      fontSize: "25px",
-                                      color: "tertiary.main",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                  <Typography
-                                    color={"text.primary"}
-                                    fontSize={FontConfig.medium}
-                                    sx={{ fontWeight: 500 }}
+                                    <CommentOutlinedIcon
+                                      sx={{
+                                        fontSize: "25px",
+                                        color: "tertiary.main",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                    <Typography
+                                      color={"text.primary"}
+                                      fontSize={FontConfig.medium}
+                                      sx={{ fontWeight: 500 }}
+                                      onClick={() => {
+                                        lerTexto(texts.chat.reabrirChat);
+                                      }}
+                                    >
+                                      {texts.chat.reabrirChat}
+                                    </Typography>
+                                  </MenuItem>
+                                ) : (
+                                  <MenuItem
+                                    className="gap-2"
                                     onClick={() => {
-                                      lerTexto(texts.chat.encerrarChat);
+                                      handleClose();
+                                      abrirModalCancelarChat();
                                     }}
                                   >
-                                    {texts.chat.encerrarChat}
-                                  </Typography>
-                                </MenuItem>
-                              )}
-                            </>
-                          )}
+                                    <CommentsDisabledOutlinedIcon
+                                      sx={{
+                                        fontSize: "25px",
+                                        color: "tertiary.main",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                    <Typography
+                                      color={"text.primary"}
+                                      fontSize={FontConfig.medium}
+                                      sx={{ fontWeight: 500 }}
+                                      onClick={() => {
+                                        lerTexto(texts.chat.encerrarChat);
+                                      }}
+                                    >
+                                      {texts.chat.encerrarChat}
+                                    </Typography>
+                                  </MenuItem>
+                                )}
+                              </>
+                            )}
                         </Box>
                       </Menu>
                     </Box>

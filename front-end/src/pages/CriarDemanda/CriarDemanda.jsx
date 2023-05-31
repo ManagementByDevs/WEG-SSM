@@ -23,7 +23,6 @@ const CriarDemanda = ({ lendo = false}) => {
             {/* Chamada do componente principal para criação da demanda */}
             <BarraProgressaoDemanda
               lendo={lendo}
-              
             />
           </Box>
         </Box>

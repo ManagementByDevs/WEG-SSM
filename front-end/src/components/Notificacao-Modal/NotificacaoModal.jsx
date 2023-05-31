@@ -115,11 +115,6 @@ const NotificacaoModal = (props) => {
     const receivedAnyMessage = (mensagem) => {
       let mensagemRecebida = EntitiesObjectService.mensagem();
       mensagemRecebida = JSON.parse(mensagem.body);
-      // Se a mensagem recebida for do usuário logado, ignore
-      if (mensagemRecebida.usuario.id == user.id) {
-        return;
-      }
-
       saveNotificacao(mensagemRecebida);
     };
 
