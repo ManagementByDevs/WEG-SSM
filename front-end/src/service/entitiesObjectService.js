@@ -101,7 +101,7 @@ class EntitiesObjectService {
       id: 0,
       custos: [this.custo()],
       ccs: [this.cc()],
-      tipoDespesa: "",
+      tipoDespesa: "Interna",
     };
   }
 
