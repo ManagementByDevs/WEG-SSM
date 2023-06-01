@@ -116,7 +116,7 @@ const Home = (props) => {
   const [valorAba, setValorAba] = useState("1");
 
   /** Valor do input de pesquisa por título da demanda */
-  const [valorPesquisa, setValorPesquisa] = useState("");
+  let valorPesquisa = "";
 
   /** Variável para determinar se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
@@ -319,7 +319,7 @@ const Home = (props) => {
 
   /** Função para salvar o valor do input de pesquisa quando houver alteração */
   const salvarPesquisa = (e) => {
-    setValorPesquisa(e.target?.value);
+    valorPesquisa = e.target?.value;
   };
 
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto, consequentemente buscando as demandas */
@@ -552,7 +552,7 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    setValorPesquisa(palavrasJuntas);
+    valorPesquisa = palavrasJuntas;
   }, [palavrasJuntas]);
 
   const stopRecognition = () => {
@@ -789,7 +789,6 @@ const Home = (props) => {
                       onChange={(e) => {
                         salvarPesquisa(e);
                       }}
-                      value={valorPesquisa}
                     />
 
                     {/* Container para os ícones */}

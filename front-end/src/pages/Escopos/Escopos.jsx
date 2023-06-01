@@ -51,7 +51,7 @@ const Escopos = ({ lendo = false }) => {
   const [escopoSelecionado, setEscopoSelecionado] = useState(null);
 
   // useState para armazenar o valor do input na barra de pesquisa
-  const [inputPesquisa, setInputPesquisa] = useState("");
+  let inputPesquisa = "";
 
   // useState para aparecer o feedback de escopo deletado
   const [feedbackDeletar, setFeedbackDeletar] = useState(false);
@@ -128,7 +128,7 @@ const Escopos = ({ lendo = false }) => {
 
   // Função para salvar o valor do input de pesquisa no estado
   const salvarPesquisa = (e) => {
-    setInputPesquisa(e.target.value);
+    inputPesquisa = e.target.value;
   };
 
   // Função para calcular a porcentagem de preenchimento do escopo
@@ -277,7 +277,7 @@ const Escopos = ({ lendo = false }) => {
   };
 
   useEffect(() => {
-    setInputPesquisa(palavrasJuntas);
+    inputPesquisa = palavrasJuntas;
   }, [palavrasJuntas]);
 
   const stopRecognition = () => {
