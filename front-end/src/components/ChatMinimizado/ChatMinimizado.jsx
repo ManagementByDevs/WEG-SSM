@@ -574,18 +574,18 @@ const ChatMinimizado = (props) => {
   }, [escutar]);
 
   // // ********************************************** Fim Gravar audio **********************************************
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -593,15 +593,15 @@ const ChatMinimizado = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
     }
   };
 
-   // Função para minimizar o chat
-   const sumir = keyframes({
+  // Função para minimizar o chat
+  const sumir = keyframes({
     from: { height: "24rem" },
     to: { height: "2.88rem" },
   });

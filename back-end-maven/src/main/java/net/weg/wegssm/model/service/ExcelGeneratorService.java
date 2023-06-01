@@ -44,139 +44,6 @@ public class ExcelGeneratorService {
     }
 
     /**
-     * Função para exportar demandas back_log para excel
-     *
-     * @param response
-     * @param listaDemandas
-     * @throws IOException
-     */
-    public void exportDemandasBackLogToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
-        ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
-
-        // Convertendo para demanda e adicionando na lista das demandas
-        for (int i = 0; i < listaDemandas.size(); i++) {
-            Long idDemanda = listaDemandas.get(i);
-            Optional<Demanda> demanda = demandaService.findById(idDemanda);
-            listDemandas.add(demanda);
-        }
-
-        // Cria um workbook do Excel e uma planilha
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Demandas BackLog");
-
-        // Informações para o documento
-        response.setHeader("Content-Disposition", "attachment; filename=demandas.xlsx");
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-        // Criando estilos e fontes para o arquivo
-        CellStyle style = workbook.createCellStyle();
-
-        Font font = workbook.createFont();
-        font.setBold(true);
-
-        style.setFont(font);
-        style.setAlignment(HorizontalAlignment.CENTER);
-
-        CellStyle alignLeft = workbook.createCellStyle();
-        alignLeft.setIndention((short) 2);
-
-        // Cria uma linha de cabeçalho para a planilha
-        XSSFRow headerRow = sheet.createRow(0);
-
-        // Criando os títulos das colunas
-        headerRow.createCell(0).setCellValue("ID");
-        headerRow.createCell(1).setCellValue("Título");
-        headerRow.createCell(2).setCellValue("Problema");
-        headerRow.createCell(3).setCellValue("Proposta");
-        headerRow.createCell(4).setCellValue("Benefícios");
-        headerRow.createCell(5).setCellValue("Frequência de Uso");
-        headerRow.createCell(6).setCellValue("Anexos");
-
-        // Setando o estilo para as colunas
-        int startColIndex = 0;
-        int endColIndex = 6;
-        int rowColIndex = 0;
-
-        for (int colIndex = startColIndex; colIndex <= endColIndex; colIndex++) {
-            Cell cell = sheet.getRow(rowColIndex).getCell(colIndex);
-            cell.setCellStyle(style);
-        }
-
-        // Preenchendo informações das demandas
-        int rowNum = 1;
-        int contadorDemanda = 1;
-
-        for (Optional<Demanda> demandaOp : listDemandas) {
-            XSSFRow row = sheet.createRow(rowNum++);
-
-            int rowIndex = rowNum;
-
-            if (demandaOp.isPresent()) {
-                Demanda demanda = demandaOp.get();
-
-                // Adicionando informações nas respectivas colunas
-                row.createCell(0).setCellValue(contadorDemanda);
-                row.createCell(1).setCellValue(demanda.getTitulo());
-                row.createCell(2).setCellValue(Jsoup.parse(new String(demanda.getProblema(), StandardCharsets.UTF_8)).text());
-                row.createCell(3).setCellValue(Jsoup.parse(new String(demanda.getProposta(), StandardCharsets.UTF_8)).text());
-
-                // Adicionando informações dos benefícios
-                int contadorBeneficios = 0;
-                for (Beneficio beneficio : demanda.getBeneficios()) {
-                    if (contadorBeneficios == 0) {
-                        row.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
-                    } else {
-                        Row roww = sheet.createRow(rowIndex);
-                        roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
-                        rowIndex++;
-                    }
-                    contadorBeneficios++;
-                }
-
-                row.createCell(5).setCellValue(demanda.getFrequencia());
-
-                // Adicionando anexos
-                StringBuilder anexos = new StringBuilder();
-
-                for (Anexo anexo : demanda.getAnexo()) {
-                    anexos.append("  -  ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
-                }
-
-                row.createCell(6).setCellValue(anexos.toString());
-
-                // Aplicando estilo nas células
-                row.getCell(0).setCellStyle(style);
-                row.getCell(6).setCellStyle(alignLeft);
-
-                // Setando os estilos para as colunas
-                int[] colunasStyle = {1, 2, 3, 4, 5, 6};
-
-                for (int colunaStyle : colunasStyle) {
-                    if (row.getCell(colunaStyle) != null) {
-                        row.getCell(colunaStyle).setCellStyle(alignLeft);
-                    }
-                }
-
-                // Auto ajustando o tamanho das colunas de acordo com as informações
-                int[] colunasAutoSize = {1, 2, 3, 4, 5, 6};
-
-                for (int coluna : colunasAutoSize) {
-                    sheet.autoSizeColumn(coluna);
-                }
-
-                rowNum = rowIndex;
-                contadorDemanda++;
-            }
-        }
-
-        // Escreve o workbook no response
-        OutputStream outputStream = response.getOutputStream();
-        workbook.write(outputStream);
-        workbook.close();
-        outputStream.close();
-    }
-
-    /**
      * Função para exportar as demandas assessment para excel
      *
      * @param response
@@ -318,6 +185,139 @@ public class ExcelGeneratorService {
 
             }
 
+        }
+
+        // Escreve o workbook no response
+        OutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        workbook.close();
+        outputStream.close();
+    }
+
+    /**
+     * Função para exportar demandas back_log para excel
+     *
+     * @param response
+     * @param listaDemandas
+     * @throws IOException
+     */
+    public void exportDemandasBackLogToExcel(HttpServletResponse response, List<Long> listaDemandas) throws IOException {
+        ArrayList<Optional<Demanda>> listDemandas = new ArrayList<>();
+
+        // Convertendo para demanda e adicionando na lista das demandas
+        for (int i = 0; i < listaDemandas.size(); i++) {
+            Long idDemanda = listaDemandas.get(i);
+            Optional<Demanda> demanda = demandaService.findById(idDemanda);
+            listDemandas.add(demanda);
+        }
+
+        // Cria um workbook do Excel e uma planilha
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Demandas BackLog");
+
+        // Informações para o documento
+        response.setHeader("Content-Disposition", "attachment; filename=demandas.xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        // Criando estilos e fontes para o arquivo
+        CellStyle style = workbook.createCellStyle();
+
+        Font font = workbook.createFont();
+        font.setBold(true);
+
+        style.setFont(font);
+        style.setAlignment(HorizontalAlignment.CENTER);
+
+        CellStyle alignLeft = workbook.createCellStyle();
+        alignLeft.setIndention((short) 2);
+
+        // Cria uma linha de cabeçalho para a planilha
+        XSSFRow headerRow = sheet.createRow(0);
+
+        // Criando os títulos das colunas
+        headerRow.createCell(0).setCellValue("ID");
+        headerRow.createCell(1).setCellValue("Título");
+        headerRow.createCell(2).setCellValue("Problema");
+        headerRow.createCell(3).setCellValue("Proposta");
+        headerRow.createCell(4).setCellValue("Benefícios");
+        headerRow.createCell(5).setCellValue("Frequência de Uso");
+        headerRow.createCell(6).setCellValue("Anexos");
+
+        // Setando o estilo para as colunas
+        int startColIndex = 0;
+        int endColIndex = 6;
+        int rowColIndex = 0;
+
+        for (int colIndex = startColIndex; colIndex <= endColIndex; colIndex++) {
+            Cell cell = sheet.getRow(rowColIndex).getCell(colIndex);
+            cell.setCellStyle(style);
+        }
+
+        // Preenchendo informações das demandas
+        int rowNum = 1;
+        int contadorDemanda = 1;
+
+        for (Optional<Demanda> demandaOp : listDemandas) {
+            XSSFRow row = sheet.createRow(rowNum++);
+
+            int rowIndex = rowNum;
+
+            if (demandaOp.isPresent()) {
+                Demanda demanda = demandaOp.get();
+
+                // Adicionando informações nas respectivas colunas
+                row.createCell(0).setCellValue(contadorDemanda);
+                row.createCell(1).setCellValue(demanda.getTitulo());
+                row.createCell(2).setCellValue(Jsoup.parse(new String(demanda.getProblema(), StandardCharsets.UTF_8)).text());
+                row.createCell(3).setCellValue(Jsoup.parse(new String(demanda.getProposta(), StandardCharsets.UTF_8)).text());
+
+                // Adicionando informações dos benefícios
+                int contadorBeneficios = 0;
+                for (Beneficio beneficio : demanda.getBeneficios()) {
+                    if (contadorBeneficios == 0) {
+                        row.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                    } else {
+                        Row roww = sheet.createRow(rowIndex);
+                        roww.createCell(4).setCellValue("Tipo: " + String.valueOf(beneficio.getTipoBeneficio()) + "    Valor Mensal: " + beneficio.getValor_mensal() + "    Moeda: " + beneficio.getMoeda() + "    Memória de Cálculo: " + beneficio.getMemoriaCalculo());
+                        rowIndex++;
+                    }
+                    contadorBeneficios++;
+                }
+
+                row.createCell(5).setCellValue(demanda.getFrequencia());
+
+                // Adicionando anexos
+                StringBuilder anexos = new StringBuilder();
+
+                for (Anexo anexo : demanda.getAnexo()) {
+                    anexos.append("  -  ").append(anexo.getNome()).append(". ").append(anexo.getTipo());
+                }
+
+                row.createCell(6).setCellValue(anexos.toString());
+
+                // Aplicando estilo nas células
+                row.getCell(0).setCellStyle(style);
+                row.getCell(6).setCellStyle(alignLeft);
+
+                // Setando os estilos para as colunas
+                int[] colunasStyle = {1, 2, 3, 4, 5, 6};
+
+                for (int colunaStyle : colunasStyle) {
+                    if (row.getCell(colunaStyle) != null) {
+                        row.getCell(colunaStyle).setCellStyle(alignLeft);
+                    }
+                }
+
+                // Auto ajustando o tamanho das colunas de acordo com as informações
+                int[] colunasAutoSize = {1, 2, 3, 4, 5, 6};
+
+                for (int coluna : colunasAutoSize) {
+                    sheet.autoSizeColumn(coluna);
+                }
+
+                rowNum = rowIndex;
+                contadorDemanda++;
+            }
         }
 
         // Escreve o workbook no response
