@@ -210,6 +210,26 @@ const FormularioGeralProposta = (props) => {
     }
   };
 
+  const valorDataInicio = () => {
+    if(props.gerais.periodoExecucacaoInicio) {
+      console.log("Inicio: ",props.gerais.periodoExecucacaoInicio);
+      return null;
+    } else {
+      console.log("Nao Inicio: ",props.gerais.periodoExecucacaoInicio);
+      return props.gerais.periodoExecucacaoInicio;
+    }
+  };
+
+  const valorDataFim = () => {
+    if(props.gerais.periodoExecucacaoFim) {
+      console.log("Fim: ",props.gerais.periodoExecucacaoFim);
+      return null;
+    } else {
+      console.log("Nao Fim: ",props.gerais.periodoExecucacaoFim);
+      return props.gerais.periodoExecucacaoFim;
+    }
+  };
+
   return (
     <Box className="flex flex-col">
       <Box className="mt-12" sx={{ minWidth: "55rem" }}>
@@ -258,13 +278,14 @@ const FormularioGeralProposta = (props) => {
                   component="input"
                   type="date"
                   placeholder={texts.formularioGeralProposta.digiteCodigo}
-                  value={props.gerais.periodoExecucacaoInicio || ""}
-                  onChange={(e) =>
+                  value={valorDataInicio()}
+                  onChange={(e) => {
+                    
                     props.setGerais({
                       ...props.gerais,
                       periodoExecucacaoInicio: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                 />
               </Box>
               <Box>
@@ -292,7 +313,7 @@ const FormularioGeralProposta = (props) => {
                   component="input"
                   type="date"
                   placeholder={texts.formularioGeralProposta.digiteCodigo}
-                  value={props.gerais.periodoExecucacaoFim || ""}
+                  value={valorDataFim()}
                   onChange={(e) =>
                     props.setGerais({
                       ...props.gerais,
