@@ -882,42 +882,12 @@ const DetalhesPropostaEditMode = ({
 
   // ***************************************** Fim UseEffects ***************************************** //
 
-  // // Função que irá setar o texto que será "lido" pela a API
-  // const lerTexto = (escrita) => {
-  //   if (lendo) {
-  //     const synthesis = window.speechSynthesis;
-  //     const utterance = new SpeechSynthesisUtterance(escrita);
-
-  //     const finalizarLeitura = () => {
-  //       if ("speechSynthesis" in window) {
-  //         synthesis.cancel();
-  //       }
-  //     };
-
-  //     if (lendo && escrita !== "") {
-  //       if ("speechSynthesis" in window) {
-  //         synthesis.speak(utterance);
-  //       }
-  //     } else {
-  //       finalizarLeitura();
-  //     }
-
-  //     return () => {
-  //       finalizarLeitura();
-  //     };
-  //   }
-  // };
-
   if (isLoading)
     return (
       <Box className="flex justify-center">
         <ClipLoader className="mt-2 border-t-6" color="#00579D" size={110} />
       </Box>
     );
-
-  // if (!propostaVisible) {
-  //   return null;
-  // }
 
   return (
     <>
@@ -1032,7 +1002,7 @@ const DetalhesPropostaEditMode = ({
       <Box className="w-full">
         {/* Titulo */}
         <Box className="flex items-center">
-          <Input
+          {/* <Input
             size="small"
             value={proposta.titulo}
             onChange={handleOnTituloChange}
@@ -1057,28 +1027,14 @@ const DetalhesPropostaEditMode = ({
                 </Tooltip>
               </InputAdornment>
             }
-          />
-          {/* <InputCustom
-            defaultText={proposta.titulo}
-            saveProposal={handleOnTituloChange}
-            microfone={
-              <InputAdornment position="end">
-                <Tooltip
-                  className="flex items-center hover:cursor-pointer"
-                  title={texts.homeGerencia.gravarAudio}
-                  onClick={() => {
-                    startRecognition("titulo");
-                  }}
-                >
-                  {escutar && localClique == "titulo" ? (
-                    <MicOutlinedIcon color="primary" />
-                  ) : (
-                    <MicNoneOutlinedIcon />
-                  )}
-                </Tooltip>
-              </InputAdornment>
-            }
           /> */}
+          <InputCustom
+            label="titulo"
+            defaultText={proposta.titulo}
+            saveProposal={(text) =>
+              handleOnTituloChange({ target: { value: text } })
+            }
+          />
         </Box>
 
         {/* Box Informações gerais */}
