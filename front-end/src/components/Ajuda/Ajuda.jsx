@@ -1,26 +1,21 @@
 import { React, useContext } from "react";
+import { keyframes } from "@emotion/react";
 
 import { Box, IconButton, Tooltip } from "@mui/material";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 
-import { keyframes } from "@emotion/react";
-
 // Função utilizada para aparecer o ícone de ajuda ao passar o mouse
-const aparecer = keyframes({
-  from: { width: "1.3rem" },
-  to: { width: "3.2rem" },
-});
+const aparecer = keyframes({ from: { width: "1.3rem" }, to: { width: "3.2rem" } });
 
 // Função utilizada para desaparecer o ícone de ajuda ao tirar o mouse
 const sumir = keyframes({ from: { width: "3.2rem" }, to: { width: "1.3rem" } });
 
 // Componente de ajuda utilizado para demonstrar o usuário as principais funções do sistema
 const Ajuda = (props) => {
-  const { texts } = useContext(TextLanguageContext);
 
-  // <Ajuda onClick={() => setIsTourOpen(true)} /> PARA CHAMAR O BOTÃO DE AJUDA
+  const { texts } = useContext(TextLanguageContext);
 
   return (
     // Box com verificação das funções de aparecer e desaparecer do ícone
