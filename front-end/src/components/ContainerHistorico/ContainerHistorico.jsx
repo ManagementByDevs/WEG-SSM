@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Typography, Box, Tooltip, IconButton } from "@mui/material";
 
 import DownloadIcon from "@mui/icons-material/Download";
@@ -12,16 +12,18 @@ import DateService from "../../service/dateService";
  * Objeto de histórico recebido pelo props (props.historico)
  */
 const ContainerHistorico = (props) => {
-  // Contexto para trocar a linguagem
+
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   /** Função para transformar uma string em base64 para um ArrayBuffer, usada para baixar anexos */
   function converterBase64(base64) {
     const textoBinario = window.atob(base64);
     const bytes = new Uint8Array(textoBinario.length);
+
     return bytes.map((byte, i) => textoBinario.charCodeAt(i));
   }
 
@@ -32,8 +34,8 @@ const ContainerHistorico = (props) => {
       arquivo instanceof File
         ? arquivo
         : new Blob([converterBase64(arquivo.dados)], {
-            type: "application/pdf",
-          });
+          type: "application/pdf",
+        });
     let nomeArquivo =
       arquivo instanceof File ? arquivo.name : `${arquivo.nome}`;
 
@@ -54,18 +56,18 @@ const ContainerHistorico = (props) => {
     }
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -73,7 +75,7 @@ const ContainerHistorico = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -98,9 +100,7 @@ const ContainerHistorico = (props) => {
         sx={{ width: "40%" }}
         fontWeight={650}
         fontSize={FontConfig.veryBig}
-        onClick={() => {
-          lerTexto(props.historico?.autor.nome);
-        }}
+        onClick={() => { lerTexto(props.historico?.autor.nome); }}
       >
         {props.historico?.autor.nome}
       </Typography>

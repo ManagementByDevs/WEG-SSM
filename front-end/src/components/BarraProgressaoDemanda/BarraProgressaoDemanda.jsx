@@ -24,8 +24,11 @@ import beneficioService from "../../service/beneficioService";
  */
 const BarraProgressaoDemanda = (props) => {
 
-  /** UseState utilizado para armazenar o usuário */
-  const [usuario, setUsuario] = useState(null);
+  /** Location utilizado para setar o state utilizado para verificação de lógica */
+  const location = useLocation();
+
+  /** Navigate utilizado para navegar para outras páginas */
+  const navigate = useNavigate();
 
   /** Contexto para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
@@ -33,11 +36,8 @@ const BarraProgressaoDemanda = (props) => {
   /** Contexto para alterar o tamanho da fonte */
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  /** Location utilizado para setar o state utilizado para verificação de lógica */
-  const location = useLocation();
-
-  /** Navigate utilizado para navegar para outras páginas */
-  const navigate = useNavigate();
+  /** UseState utilizado para armazenar o usuário */
+  const [usuario, setUsuario] = useState(null);
 
   /** Variável utilizada para controlar a barra de progessão na criação da demanda */
   const [etapaAtiva, setEtapaAtiva] = useState(0);
@@ -93,7 +93,7 @@ const BarraProgressaoDemanda = (props) => {
     buscarUsuario();
   }, []);
 
-  // UseEffect utilizado para criar um escopo ou receber um escopo do banco ao entrar na página
+  /** UseEffect utilizado para criar um escopo ou receber um escopo do banco ao entrar na página */
   useEffect(() => {
     if (!idEscopo) {
       if (!location.state) {
@@ -108,7 +108,7 @@ const BarraProgressaoDemanda = (props) => {
     }
   }, [mudancasFeitas]);
 
-  // UseEffect utilizado para atualizar a variável mudancasFeitas caso algum input seja preenchido
+  /** UseEffect utilizado para atualizar a variável mudancasFeitas caso algum input seja preenchido */
   useEffect(() => {
     if (
       paginaDados.frequencia !== "" ||
@@ -120,7 +120,7 @@ const BarraProgressaoDemanda = (props) => {
     }
   }, [paginaDados]);
 
-  // UseEffect utilizado para salvar o escopo a cada 5 segundos
+  /** UseEffect utilizado para salvar o escopo a cada 5 segundos */
   useEffect(() => {
     if (ultimoEscopo) {
       setTimeout(() => {
@@ -363,13 +363,7 @@ const BarraProgressaoDemanda = (props) => {
     }
   };
 
-  /** Função para direcionar o usuário para a tela de home após terminar a criação de demanda, ativando o feedback de criação de demanda */
-  const direcionarHome = () => {
-    localStorage.setItem("tipoFeedback", "1");
-    navigate("/");
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
@@ -393,6 +387,12 @@ const BarraProgressaoDemanda = (props) => {
         finalizarLeitura();
       };
     }
+  };
+
+  /** Função para direcionar o usuário para a tela de home após terminar a criação de demanda, ativando o feedback de criação de demanda */
+  const direcionarHome = () => {
+    localStorage.setItem("tipoFeedback", "1");
+    navigate("/");
   };
 
   return (

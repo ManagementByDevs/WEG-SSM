@@ -10,23 +10,25 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 
-// Componente utilizado para mostrar o caminho atual do usuário no sistema
+/** Componente utilizado para mostrar o caminho atual do usuário no sistema */
 const Caminho = (props) => {
-  // Contexto para trocar a linguagem
+
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Navigate utilizado para nevegar para uma outra página
+  /** Navigate utilizado para nevegar para uma outra página */
   const navigate = useNavigate();
 
-  // Variável que armazena o caminho atual
+  /** Variável que armazena o caminho atual */
   const caminhoURL = useLocation().pathname;
 
-  // Variável que armazena o caminho url sem a "/"
+  /** Variável que armazena o caminho url sem a "/" */
   const listaCaminho = caminhoURL.split("/");
 
+  /** Lista para armazenar as rotas utilizadas pelo caminho */
   const listaRotasPT = [
     "login",
     "criar-demanda",
@@ -41,7 +43,7 @@ const Caminho = (props) => {
     "detalhes-pauta",
   ];
 
-  // Função responsável por retornar para o caminho desejado
+  /** Função responsável por retornar para o caminho desejado */
   const getPathName = (item) => {
     item = item.charAt(0).toUpperCase() + item.slice(1);
     let indexCaminho = listaRotasPT.findIndex((e) => e == item.toLowerCase());
@@ -49,7 +51,7 @@ const Caminho = (props) => {
     return texts.rotas[indexCaminho];
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
@@ -81,6 +83,7 @@ const Caminho = (props) => {
       color="link.main"
       sx={{ minWidth: "20rem" }}
     >
+      {/* Ícone de home */}
       <Tooltip title={texts.caminho.home}>
         <HomeOutlinedIcon
           className="cursor-pointer"

@@ -8,30 +8,22 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import DateService from "../../service/dateService";
 import TemaContext from "../../service/TemaContext";
 
-// Componente para representar uma pauta no sistema, contendo suas informações e ações
+/** Componente para representar uma pauta no sistema, contendo suas informações e ações */
 const ContainerPauta = (props) => {
-  // Contexto para trocar a linguagem
+
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // Contexet para verificar o tema atual
+  /** Contexet para verificar o tema atual  */
   const { mode } = useContext(TemaContext);
 
-  // Variável de estado para verificar se a pauta foi selecionada ou não
+  /** Variável de estado para verificar se a pauta foi selecionada ou não */
   const [pautaSelecionada, setPautaSelecionada] = useState(false);
 
-  // Função para selecionar a pauta clicada
-  const selecionarPauta = () => {
-    if (props.indexPautaSelecionada == props.index) {
-      props.setIndexPautaSelecionada(null);
-    } else {
-      props.setIndexPautaSelecionada(props.index);
-    }
-  };
-
-  // UseEffect para verificar se a pauta foi selecionada ou não
+  /** UseEffect para verificar se a pauta foi selecionada ou não */
   useEffect(() => {
     if (props.indexPautaSelecionada == props.index) {
       setPautaSelecionada(!pautaSelecionada);
@@ -40,14 +32,24 @@ const ContainerPauta = (props) => {
     }
   }, [props.indexPautaSelecionada]);
 
+  /** Função para selecionar a pauta clicada */
+  const selecionarPauta = () => {
+    if (props.indexPautaSelecionada == props.index) {
+      props.setIndexPautaSelecionada(null);
+    } else {
+      props.setIndexPautaSelecionada(props.index);
+    }
+  };
+
+  /** Função para formatar a data de acordo com a linguagem do sistema */
   const getFormattedDate = (dateInMySQL) => {
     let date = DateService.getDateByMySQLFormat(dateInMySQL);
 
     switch (texts.linguagem) {
-      case "pt":    
-    return (
-      date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
-    );
+      case "pt":
+        return (
+          date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+        );
       case "en":
         return (
           date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
@@ -56,10 +58,10 @@ const ContainerPauta = (props) => {
         return (
           date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
         );
-        case "ch":
-          return (
-            date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
-          );
+      case "ch":
+        return (
+          date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
+        );
       default:
         return (
           date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
@@ -67,7 +69,7 @@ const ContainerPauta = (props) => {
     }
   };
 
-  // Função para retornar a cor do background do componente de pauta corretamente
+  /** Função para retornar a cor do background do componente de pauta corretamente */
   const getBackgroundColor = () => {
     if (!pautaSelecionada) {
       return mode == "dark" ? "#22252C" : "#FFFFFF";
@@ -76,18 +78,18 @@ const ContainerPauta = (props) => {
     }
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -95,7 +97,7 @@ const ContainerPauta = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };

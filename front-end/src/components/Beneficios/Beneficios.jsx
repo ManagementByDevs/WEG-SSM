@@ -1,13 +1,6 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useContext } from "react";
 
-import {
-  Box,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Box, Select, FormControl, InputLabel, MenuItem, Typography, } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
@@ -21,10 +14,10 @@ import "./Beneficios.css";
 /** Componente de benefício editável utilizado na segunda etapa da criação da demanda */
 const Beneficios = (props) => {
 
-  // Contexto para trocar a linguagem
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   /** Função para salvar o tipo do benefício */
@@ -37,15 +30,6 @@ const Beneficios = (props) => {
     props.save({ ...props.dados, moeda: event.target.value });
   };
 
-  /** Função para salvar o valor mensal do benefício */
-  function salvarValorMensal(texto) {
-    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
-
-    if (regexp.test(texto)) {
-      props.save({ ...props.dados, valor_mensal: texto });
-    }
-  }
-
   /** Função para salvar a memória de cálculo do benefício */
   function salvarMemoriaCalculo(texto) {
     props.save({ ...props.dados, memoriaCalculo: texto });
@@ -56,18 +40,27 @@ const Beneficios = (props) => {
     props.removerBeneficio(props.index);
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
+  /** Função para salvar o valor mensal do benefício */
+  function salvarValorMensal(texto) {
+    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
+
+    if (regexp.test(texto)) {
+      props.save({ ...props.dados, valor_mensal: texto });
+    }
+  }
+
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -75,7 +68,7 @@ const Beneficios = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -136,8 +129,10 @@ const Beneficios = (props) => {
             </Select>
           </FormControl>
         </Box>
+
+        {/* Verificação para mostar o input de valor mensal */}
         {props.dados?.tipoBeneficio === "Real" ||
-        props.dados?.tipoBeneficio === "Potencial" ? (
+          props.dados?.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -203,9 +198,11 @@ const Beneficios = (props) => {
           </Box>
         ) : null}
       </Box>
+
+      {/* Verificação para mostar o input de memória de cálculo */}
       {props.dados?.tipoBeneficio === "Real" ||
-      props.dados?.tipoBeneficio === "Potencial" ||
-      props.dados?.tipoBeneficio === "Qualitativo" ? (
+        props.dados?.tipoBeneficio === "Potencial" ||
+        props.dados?.tipoBeneficio === "Qualitativo" ? (
         <Box className="flex items-center" sx={{ width: "65%" }}>
           {/* Input que permite estilização para a memória de cálculo do benefício */}
           <Box className="flex flex-col overflow-auto w-full h-full">

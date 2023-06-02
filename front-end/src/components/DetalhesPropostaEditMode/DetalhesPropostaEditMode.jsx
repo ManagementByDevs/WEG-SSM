@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef, memo } from "react";
 import {
   Autocomplete,
   Box,
@@ -19,6 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import * as _ from "lodash";
 import ClipLoader from "react-spinners/ClipLoader";
 import ReactQuill from "react-quill";
 
@@ -51,8 +52,9 @@ import SecaoTIService from "../../service/secaoTIService";
 import PropostaService from "../../service/propostaService";
 import ExportPdfService from "../../service/exportPdfService";
 import CookieService from "../../service/cookieService";
-
-const _ = require("lodash");
+import InputCustom from "./Inputs/InputCustom";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
+import { SpeechSynthesisContext } from "../../service/SpeechSynthesisService";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -72,6 +74,13 @@ const DetalhesPropostaEditMode = ({
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Context para obter a função de leitura de texto
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
+
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Estado da proposta editável
   const [proposta, setProposta] = useState(
@@ -516,14 +525,14 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, publicada: !proposta.publicada });
   };
 
-  // useEffect(() => {
-  //   console.log("proposta", proposta);
-  // }, [proposta]);
-
   /** Handler do título da proposta */
   const handleOnTituloChange = (event) => {
-    debounceState(setProposta, { ...proposta, titulo: event.target.value });
+    setProposta({ ...proposta, titulo: event.target.value });
   };
+
+  useEffect(() => {
+    console.log("Proposta: ", proposta);
+  }, [proposta]);
 
   /** Handler para quando for selecionado uma nova BU */
   const handleOnBuSolicitanteSelect = (event) => {
@@ -847,69 +856,6 @@ const DetalhesPropostaEditMode = ({
     if (textoDadosInvalidos) setFeedbackDadosInvalidos(true);
   }, [textoDadosInvalidos]);
 
-  // ***************************************** Fim UseEffects ***************************************** //
-
-  // // ********************************************** Gravar audio **********************************************
-
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClique, setLocalClique] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {};
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     switch (localClique) {
       case "titulo":
@@ -934,52 +880,7 @@ const DetalhesPropostaEditMode = ({
     }
   }, [palavrasJuntas]);
 
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setLocalClique(ondeClicou);
-    setEscutar(!escutar);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  // ***************************************** Fim UseEffects ***************************************** //
 
   if (isLoading)
     return (
@@ -999,26 +900,7 @@ const DetalhesPropostaEditMode = ({
         onCancelClick={() => {}}
         lendo={lendo}
       />
-      {/* Feedback Erro reconhecimento de voz */}
-      <Feedback
-        open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback12}
-        lendo={lendo}
-      />
-      {/* Feedback Não navegador incompativel */}
-      <Feedback
-        open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback13}
-        lendo={lendo}
-      />
+
       <Feedback
         open={feedbackDadosInvalidos}
         handleClose={() => setFeedbackDadosInvalidos(false)}
@@ -1120,9 +1002,9 @@ const DetalhesPropostaEditMode = ({
       <Box className="w-full">
         {/* Titulo */}
         <Box className="flex items-center">
-          <Input
+          {/* <Input
             size="small"
-            defaultValue={proposta.titulo}
+            value={proposta.titulo}
             onChange={handleOnTituloChange}
             type="text"
             fullWidth
@@ -1144,6 +1026,13 @@ const DetalhesPropostaEditMode = ({
                   )}
                 </Tooltip>
               </InputAdornment>
+            }
+          /> */}
+          <InputCustom
+            label="titulo"
+            defaultText={proposta.titulo}
+            saveProposal={(text) =>
+              handleOnTituloChange({ target: { value: text } })
             }
           />
         </Box>
@@ -2238,6 +2127,11 @@ const CC = ({
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
+  // Context para obter a função de leitura de texto
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
+
   /** Debounce o setState passado por parâmetro */
   const debounceState = _.debounce((setState, value) => {
     setState(value);
@@ -2258,67 +2152,6 @@ const CC = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
-  // // ********************************************** Gravar audio **********************************************
-
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClique, setLocalClique] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {};
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     switch (localClique) {
       case "codigo":
@@ -2332,27 +2165,6 @@ const CC = ({
         break;
     }
   }, [palavrasJuntas]);
-
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setLocalClique(ondeClicou);
-    setEscutar(!escutar);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -2456,6 +2268,11 @@ const CustosRow = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Context para obter a função de leitura de texto
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
+
   /** Debounce o setState passado por parâmetro */
   const debounceState = _.debounce((setState, value) => {
     setState(value);
@@ -2535,67 +2352,6 @@ const CustosRow = ({
 
   // ***************************************** Fim Handlers ***************************************** //
 
-  // // ********************************************** Gravar audio **********************************************
-
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClique, setLocalClique] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {};
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     switch (localClique) {
       case "tipoDespesa":
@@ -2618,27 +2374,6 @@ const CustosRow = ({
         break;
     }
   }, [palavrasJuntas]);
-
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setLocalClique(ondeClicou);
-    setEscutar(!escutar);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -2812,6 +2547,11 @@ const Beneficio = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Context para obter a função de leitura de texto
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
+
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
 
@@ -2901,69 +2641,6 @@ const Beneficio = ({
     verifyIsQualitativo();
   }, [beneficio]);
 
-  // ***************************************** Fim UseEffects ***************************************** //
-
-  // // ********************************************** Gravar audio **********************************************
-
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClique, setLocalClique] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {};
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     switch (localClique) {
       case "valorMensal":
@@ -2977,26 +2654,7 @@ const Beneficio = ({
     }
   }, [palavrasJuntas]);
 
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setLocalClique(ondeClicou);
-    setEscutar(!escutar);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
+  // ***************************************** Fim UseEffects ***************************************** //
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
