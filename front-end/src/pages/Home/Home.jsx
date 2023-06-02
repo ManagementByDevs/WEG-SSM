@@ -144,6 +144,7 @@ const Home = (props) => {
   useEffect(() => {
     ativarFeedback();
     buscarUsuario();
+    arrangePreferences();
   }, []);
 
   useEffect(() => {

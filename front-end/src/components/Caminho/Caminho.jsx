@@ -89,16 +89,7 @@ const Caminho = (props) => {
           className="cursor-pointer"
           sx={{ fontSize: "32px" }}
           onClick={() => {
-            if (!CookieService.getCookie()) navigate("/");
-            UsuarioService.getUsuarioByEmail(
-              CookieService.getCookie().sub
-            ).then((usuario) => {
-              if (usuario.tipoUsuario == "SOLICITANTE") {
-                navigate("/home");
-              } else {
-                navigate("/home-gerencia");
-              }
-            });
+            navigate("/");
           }}
         />
       </Tooltip>
