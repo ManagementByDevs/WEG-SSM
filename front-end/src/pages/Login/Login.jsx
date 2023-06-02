@@ -124,7 +124,7 @@ const Login = (props) => {
         
     >
       <Paper
-        sx={{ height: "100%", minWidth: "89rem", minHeight: "48rem" }}
+        sx={{ height: "100%", minHeight: "48rem" }}
         className="flex justify-center items-center"
       >
         {/* Div Principal com as opções do login */}
@@ -133,6 +133,7 @@ const Login = (props) => {
             backgroundColor: "background.default",
             width: "28%",
             height: "63%",
+            minWidth: "26rem",
           }}
         >
           <Box className="w-full h-full border-t-12 border-[#00579D] rounded shadow-2xl flex flex-col items-center justify-center space-y-10">
