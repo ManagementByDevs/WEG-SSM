@@ -32,6 +32,7 @@ const TextLanguageContext = createContext({
         "Preencha todos os campos obrigatórios!",
       mensagemFeedbackCcsFaltando:
         "A porcentagem deve fechar 100% em cada CCs!",
+      mensagemFeedbackPPM: "PPM inválido!",
     },
     beneficios: {
       beneficios: "Benefícios",
@@ -817,7 +818,7 @@ const TextLanguageContext = createContext({
       gravarAudio: "Gravar áudio",
     },
   },
-  setTexts: () => {},
+  setTexts: () => { },
 });
 
 export default TextLanguageContext;

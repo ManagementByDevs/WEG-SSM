@@ -12,14 +12,25 @@ import CookieService from "../../service/cookieService";
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
-  // Contexto para trocar a linguagem
+
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // UseState determinando o estado do modal de motivo recusa
+  /** UseState determinando o estado do modal de motivo recusa */
   const [modalMotivoRecusa, setModalMotivoRecusa] = useState(false);
+
+  /** Variável utilizada para armazenar o valor em html do campo */
+  const descricaoDemanda = useRef(null);
+
+  /** useEffect utilizado para declarar o campo html na variável */
+  useEffect(() => {
+    if (descricaoDemanda.current) {
+      descricaoDemanda.current.innerHTML = props.demanda.proposta;
+    }
+  }, []);
 
   /** Função para receber a altura da div principal da demanda (é maior caso o solicitante seja o usuário logado) */
   const retornaAlturaDemanda = () => {
@@ -70,33 +81,23 @@ const Demanda = (props) => {
     }
   };
 
-  /** Variável utilizada para armazenar o valor em html do campo */
-  const descricaoDemanda = useRef(null);
-
-  /** useEffect utilizado para declarar o campo html na variável */
-  useEffect(() => {
-    if (descricaoDemanda.current) {
-      descricaoDemanda.current.innerHTML = props.demanda.proposta;
-    }
-  }, []);
-
   /** Função para formatar o html em texto */
   const getPropostaFomartted = (proposta) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -104,7 +105,7 @@ const Demanda = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -156,48 +157,48 @@ const Demanda = (props) => {
           {(props.demanda?.solicitante?.email ==
             CookieService.getCookie("jwt").sub ||
             props.demanda?.solicitante?.tour) && (
-            <Box>
-              <Typography
-                fontSize={FontConfig.default}
-                fontWeight={600}
-                color="primary"
-                className="text-end"
-                onClick={(e) => {
-                  if (props.lendo) {
-                    e.stopPropagation();
-                    lerTexto(props.demanda.id);
-                  }
-                }}
-              >
-                #{props.demanda.id}
-              </Typography>
-
-              <Box id="oitavo" className={`items-center text-justify flex`}>
+              <Box>
                 <Typography
-                  fontSize={FontConfig?.default}
-                  sx={{ fontWeight: "600" }}
+                  fontSize={FontConfig.default}
+                  fontWeight={600}
+                  color="primary"
+                  className="text-end"
                   onClick={(e) => {
                     if (props.lendo) {
                       e.stopPropagation();
-                      lerTexto(formatarNomeStatus());
+                      lerTexto(props.demanda.id);
                     }
                   }}
                 >
-                  {formatarNomeStatus()}
+                  #{props.demanda.id}
                 </Typography>
-                <Box
-                  sx={{
-                    backgroundColor: getStatusColor(),
-                    width: "12px",
-                    height: "12px",
-                    borderRadius: "10px",
-                    marginLeft: "10px",
-                  }}
-                  className={`items-center h-30 text-justify`}
-                />
+
+                <Box id="oitavo" className={`items-center text-justify flex`}>
+                  <Typography
+                    fontSize={FontConfig?.default}
+                    sx={{ fontWeight: "600" }}
+                    onClick={(e) => {
+                      if (props.lendo) {
+                        e.stopPropagation();
+                        lerTexto(formatarNomeStatus());
+                      }
+                    }}
+                  >
+                    {formatarNomeStatus()}
+                  </Typography>
+                  <Box
+                    sx={{
+                      backgroundColor: getStatusColor(),
+                      width: "12px",
+                      height: "12px",
+                      borderRadius: "10px",
+                      marginLeft: "10px",
+                    }}
+                    className={`items-center h-30 text-justify`}
+                  />
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
         </Box>
 
         {/* Proposta da demanda */}
@@ -225,7 +226,7 @@ const Demanda = (props) => {
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {props.demanda?.solicitante?.email !=
-          CookieService.getCookie("jwt").sub ? (
+            CookieService.getCookie("jwt").sub ? (
             <Typography
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
@@ -240,9 +241,9 @@ const Demanda = (props) => {
               {props.demanda.solicitante?.nome}
             </Typography>
           ) : (props.demanda?.status == "CANCELLED" ||
-              props.demanda?.status == "BACKLOG_EDICAO") &&
+            props.demanda?.status == "BACKLOG_EDICAO") &&
             props.demanda?.solicitante?.email ==
-              CookieService.getCookie("jwt").sub ? (
+            CookieService.getCookie("jwt").sub ? (
             <Button
               id="setimo"
               onClick={(e) => {

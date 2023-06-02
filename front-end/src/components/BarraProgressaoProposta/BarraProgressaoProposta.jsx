@@ -126,17 +126,20 @@ const BarraProgressaoProposta = (props) => {
   /** Variável para armazenar o valor mais atualizado da cotação do euro */
   const [valorEuro, setValorEuro] = useState(null);
 
-  /** Variável utilizada para abrir o modal de feedback de dados faltantes */
+  /** Variável utilizada para abrir o feedback de dados faltantes */
   const [feedbackFaltante, setFeedbackFaltante] = useState(false);
 
-  /** Variável utilizada para abrir o modal de feedback que precisa de uma porcentagem de 100% nos CCS */
+  /** Variável utilizada para abrir o feedback que precisa de uma porcentagem de 100% nos CCS */
   const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
 
-  /** Variável utilizada para abrir o modal de navegador incompatível */
+  /** Variável utilizada para abrir o feedback de navegador incompatível */
   const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
 
-  /** Variável utilizada para abrir o modal de erro no reconhecimento de voz */
+  /** Variável utilizada para abrir o feedback de erro no reconhecimento de voz */
   const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+
+  /** Variável utilizada para abrir o feedback de ppm já em uso */
+  const [feedbackPPM, setFeedbackPPM] = useState(false);
 
   /** Variável usada para interromper o salvamento de escopos enquanto a proposta estiver sendo criada */
   let criandoProposta = false;
@@ -704,8 +707,27 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
+  const verificacaoTipoDosDados = async () => {
+    let ppmVerificacao = parseInt(gerais.ppm);
+
+    if (typeof ppmVerificacao === 'number' && !isNaN(ppmVerificacao) && Number.isInteger(ppmVerificacao)) {
+      try {
+        const response = await propostaService.getByPPM(ppmVerificacao);
+        if (response.content.length > 0) {
+          return false;
+        } else {
+          return true;
+        }
+      } catch (e) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
-  const criarProposta = () => {
+  const criarProposta = async () => {
     if (props.lendo) {
       lerTexto(texts.barraProgressaoProposta.botaoCriar);
     } else {
@@ -729,32 +751,38 @@ const BarraProgressaoProposta = (props) => {
               setFeedbackFaltante(true);
             }
           });
-          if (feedbackFaltante != true) {
-            setCarregamentoProposta(true);
-            propostaService.post(retornaObjetoProposta()).then((response) => {
+          const resultado = await verificacaoTipoDosDados();
+          if (resultado) {
+            console.log("Resposta: " + verificacaoTipoDosDados())
+            if (feedbackFaltante != true) {
+              propostaService.post(retornaObjetoProposta()).then((response) => {
+                setCarregamentoProposta(true);
 
-              DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
-                EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
+                DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
+                  EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
 
-                  // Salvamento de histórico
-                  ExportPdfService.exportProposta(response.id).then((file) => {
-                    let arquivo = new Blob([file], {
-                      type: "application/pdf",
-                    });
-                    propostaService.addHistorico(response.id, "Proposta Criada", arquivo, CookieService.getUser().id).then((propostaResponse) => {
-                      setCarregamentoProposta(false);
+                    // Salvamento de histórico
+                    ExportPdfService.exportProposta(response.id).then((file) => {
+                      let arquivo = new Blob([file], {
+                        type: "application/pdf",
+                      });
+                      propostaService.addHistorico(response.id, "Proposta Criada", arquivo, CookieService.getUser().id).then((propostaResponse) => {
+                        setCarregamentoProposta(false);
 
-                      // Envio de Notificação ao Solicitante
-                      const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.criadoProposta, dadosDemanda, CookieService.getUser().id);
-                      enviar(`/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`, JSON.stringify(notificacao));
+                        // Envio de Notificação ao Solicitante
+                        const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.criadoProposta, dadosDemanda, CookieService.getUser().id);
+                        enviar(`/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`, JSON.stringify(notificacao));
 
-                      localStorage.setItem("tipoFeedback", "5");
-                      navigate("/");
+                        localStorage.setItem("tipoFeedback", "5");
+                        navigate("/");
+                      });
                     });
                   });
                 });
-              });
-            });
+              })
+            }
+          } else {
+            setFeedbackPPM(true);
           }
         } else {
           setFeedbackFaltante(true);
@@ -937,6 +965,13 @@ const BarraProgressaoProposta = (props) => {
         handleClose={() => { setFeedback100porcentoCcs(false); }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
+        lendo={props.lendo}
+      />
+      <Feedback
+        open={feedbackPPM}
+        handleClose={() => { setFeedbackPPM(false); }}
+        status={"erro"}
+        mensagem={texts.barraProgressaoProposta.mensagemFeedbackPPM}
         lendo={props.lendo}
       />
     </>
