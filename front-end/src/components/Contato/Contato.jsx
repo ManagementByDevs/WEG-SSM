@@ -10,20 +10,16 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import UsuarioService from "../../service/usuarioService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 
-// Componente contato utilizado para representar os contatos do chat
-const Contato = ({
-  onClick = () => {},
-  idChat = 0,
-  chat = EntitiesObjectService.chat(),
-  lendo = false,
-}) => {
-  // UseState para saber se o contato foi selecionado ou não
+/** Componente contato utilizado para representar os contatos do chat */
+const Contato = ({ onClick = () => { }, idChat = 0, chat = EntitiesObjectService.chat(), lendo = false }) => {
+
+  /** UseState para saber se o contato foi selecionado ou não */
   const [corSelecionado, setCorSelecionado] = useState("transparent");
 
-  // UseEffect para alterar a cor do contato quando ele for selecionado
+  /** UseEffect para alterar a cor do contato quando ele for selecionado */
   useEffect(() => {
     if (idChat == 0) {
-      if(chat.conversaEncerrada) {
+      if (chat.conversaEncerrada) {
         setCorSelecionado("divider.claro");
       } else {
         setCorSelecionado("transparent");
@@ -68,20 +64,27 @@ const Contato = ({
   );
 };
 
+/** Informações do contato */
 const Conteudo = ({ chat = EntitiesObjectService.chat(), lendo = false }) => {
-  // Contexto para trocar a linguagem
+
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
+  /** Variável para pegar o usuário logado */
   const [usuarioLogado, setUsuario] = useState(UsuarioService.getUserCookies());
+
+  /** Variável para buscar o nome do contato */
   const [nomeContato, setNomeContato] = useState("");
 
+  /** useEffect para chamar a função de buscar o nome do contato */
   useEffect(() => {
     retornaNomeContato();
   }, []);
 
+  /** Função para retornar o nome do contato */
   const retornaNomeContato = () => {
     for (let user of chat.usuariosChat) {
       if (usuarioLogado.usuario.id != user.id) {
@@ -90,7 +93,7 @@ const Conteudo = ({ chat = EntitiesObjectService.chat(), lendo = false }) => {
     }
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
@@ -167,9 +170,7 @@ const Conteudo = ({ chat = EntitiesObjectService.chat(), lendo = false }) => {
           fontSize={FontConfig.small}
           fontWeight="600"
           sx={{ color: "primary.main" }}
-          onClick={() => {
-            lerTexto(texts.contato.ppm);
-          }}
+          onClick={() => { lerTexto(texts.contato.ppm); }}
         >
           {texts.contato.ppm}: #{chat.idProposta.codigoPPM}
         </Typography>

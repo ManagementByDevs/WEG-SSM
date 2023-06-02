@@ -2,24 +2,19 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-import TextLanguageContext from "../../service/TextLanguageContext";
-
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
-import { Box, IconButton, Toolbar } from "@mui/material";
+import { Box } from "@mui/material";
 
-// Componente utilizado para formatação em campos de texto durante o sistema
-function CaixaTextoQuill({
-  texto,
-  placeholder = "",
-  useScroll = false,
-  setScroll = false,
-  useScrollEdit = false,
-  onChange,
-}) {
-  // Contexto para trocar a linguagem
+import TextLanguageContext from "../../service/TextLanguageContext";
+
+/** Componente utilizado para formatação em campos de texto durante o sistema */
+function CaixaTextoQuill({ texto, placeholder = "", useScroll = false, setScroll = false, useScrollEdit = false, onChange, }) {
+
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
+  /** Variável para armazenar o valor inicial de um input */
   const quillRef = useRef();
 
   /** useEffect utilizado para setar as informações e permitir as edições caso necessário */
@@ -44,21 +39,18 @@ function CaixaTextoQuill({
 
   // // ********************************************** Gravar audio **********************************************
 
-  // const [
-  //   feedbackErroNavegadorIncompativel,
-  //   setFeedbackErroNavegadorIncompativel,
-  // ] = useState(false);
-  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-  //   useState(false);
-
+  /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
 
+  /** Variável utilizada para ativar o microfone para gravação de audio */
   const [escutar, setEscutar] = useState(false);
 
+  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
   const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
+  /** Função para gravar audio nos inputs */
   const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
+    /**Verifica se a API é suportada pelo navegador */
     if ("webkitSpeechRecognition" in window) {
       const recognition = new window.webkitSpeechRecognition();
       recognition.continuous = true;
@@ -103,22 +95,26 @@ function CaixaTextoQuill({
     }
   };
 
+  /** useEffect utilizado para setar o valor do input com o texto transcrito */
   useEffect(() => {
     if (palavrasJuntas) {
       onChange(palavrasJuntas);
     }
   }, [palavrasJuntas]);
 
+  /** Função para parar a gravação de voz */
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
   };
 
+  /** Função para iniciar a gravação de voz */
   const startRecognition = () => {
     setEscutar(!escutar);
   };
 
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
   useEffect(() => {
     if (escutar) {
       ouvirAudio();
@@ -127,46 +123,14 @@ function CaixaTextoQuill({
     }
   }, [escutar]);
 
-  {
-    /* Feedback Erro reconhecimento de voz */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroReconhecimentoVoz}
-  handleClose={() => {
-    setFeedbackErroReconhecimentoVoz(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback12}
-/> */
-  }
-  {
-    /* Feedback Não navegador incompativel */
-  }
-  {
-    /* <Feedback
-  open={feedbackErroNavegadorIncompativel}
-  handleClose={() => {
-    setFeedbackErroNavegadorIncompativel(false);
-  }}
-  status={"erro"}
-  mensagem={texts.homeGerencia.feedback.feedback13}
-/> */
-  }
-
-  // // ********************************************** Fim Gravar audio **********************************************
-
   return (
-    <Box
-      className="relative w-full h-full"
-    >
+    <Box className="relative w-full h-full" >
+      {/* Utilizado para configuração do input (opções de estilo, posições, valores...) */}
       <ReactQuill
         className="w-full"
         ref={quillRef}
         value={texto}
-        onChange={(value) => {
-          onChange(value);
-        }}
+        onChange={(value) => { onChange(value); }}
         modules={{
           toolbar: [
             [{ size: [] }],
@@ -191,6 +155,7 @@ function CaixaTextoQuill({
               : {}
         }
       />
+      {/* Ícone de gravar audio */}
       <Box className="absolute" sx={{ right: 6, bottom: 8 }}>
         {escutar ? (
           <MicOutlinedIcon

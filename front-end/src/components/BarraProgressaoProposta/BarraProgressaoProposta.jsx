@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 import { Box, Stepper, Step, StepLabel, Button } from "@mui/material";
 
@@ -23,23 +24,24 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import CookieService from "../../service/cookieService";
 import MoedasService from "../../service/moedasService";
 import NotificacaoService from "../../service/notificacaoService";
-
 import { WebSocketContext } from "../../service/WebSocketService";
-import { ClipLoader } from "react-spinners";
 
-// Componente utilizado para criação da proposta, redirecionando para as etapas respectivas
+/** Componente utilizado para criação da proposta, redirecionando para as etapas respectivas  */
 const BarraProgressaoProposta = (props) => {
 
-  /**  Context do WebSocket */
-  const { enviar } = useContext(WebSocketContext);
+  /** Navigate utilizado para navegar para outras páginas */
+  const navigate = useNavigate();
 
-  // Contexto para trocar a linguagem
-  const { texts } = useContext(TextLanguageContext);
-
-  // Location utilizado para pegar informações passadas por parâmetro na URL
+  /** Location utilizado para pegar informações passadas por parâmetro na URL */
   const location = useLocation();
 
-  // Variáveis utilizadas para controlar a barra de progessão na criação da demanda
+  /** Context do WebSocket */
+  const { enviar } = useContext(WebSocketContext);
+
+  /** Contexto para trocar a linguagem */
+  const { texts } = useContext(TextLanguageContext);
+
+  /** Variáveis utilizadas para controlar a barra de progessão na criação da demanda */
   const [activeStep, setActiveStep] = useState(0);
 
   /** Lista de etapas usadas na criação de proposta */
@@ -50,31 +52,35 @@ const BarraProgressaoProposta = (props) => {
     texts.barraProgressaoProposta.gerais,
   ];
 
-  // Navigate utilizado para navegar para outras páginas
-  const navigate = useNavigate();
-
-  // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
+  /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamento, setCarregamento] = useState(true);
 
-  // Variável para mostrar o carregamento ao criar proposta
+  /** Variável para mostrar o carregamento ao criar proposta */
   const [carregamentoProposta, setCarregamentoProposta] = useState(false);
 
-  // Variáveis utilizadas para salvar um escopo de uma demanda
+  /** Variáveis utilizadas para salvar um escopo de uma demanda */
   var idEscopo = null;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
 
+  /** Utilizado para a criação dos dados iniciais da proposta */
   let variaveisIniciais = false;
 
   /** Variável utilizada para armazenar a lista de seções de TI */
   const [listaSecoesTI, setListaSecoesTI] = useState([]);
 
-  // Variável utilizada para armazenar a lista de fóruns
+  /** Variável utilizada para armazenar a lista de fóruns */
   const [listaForuns, setListaForuns] = useState([]);
 
-  // Variável utilizada para armazenar a lista de BUs
+  /** Variável utilizada para armazenar a lista de BUs */
   const [listaBU, setListaBU] = useState([]);
 
-  // Variável para armazenar os dados da demanda
+  /** Variável utilizada para armazenar a lista de benefícios */
+  const [listaBeneficios, setListaBeneficios] = useState([]);
+
+  /** Variável para guardar os custos */
+  const [custos, setCustos] = useState([]);
+
+  /** Variável para armazenar os dados da demanda */
   const [dadosDemanda, setDadosDemanda] = useState({
     id: 0,
     titulo: "",
@@ -96,17 +102,11 @@ const BarraProgressaoProposta = (props) => {
     historicoDemanda: [],
   });
 
-  // Variável utilizada para armazenar a lista de benefícios
-  const [listaBeneficios, setListaBeneficios] = useState([]);
-
-  // Variável para guardar os custos
-  const [custos, setCustos] = useState([]);
-
-  // UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML)
+  /** UseState com o escopo da proposta (texto digitado no editor de texto, vem em formato HTML) */
   const [escopo, setEscopo] = useState("");
   const [escopoTemp, setEscopoTemp] = useState("");
 
-  // Dados gerais definidos na página de dados gerais da criação de demanda
+  /** Dados gerais definidos na página de dados gerais da criação de demanda */
   const [gerais, setGerais] = useState({
     periodoExecucacaoInicio: "",
     periodoExecucacaoFim: "",
@@ -117,12 +117,31 @@ const BarraProgressaoProposta = (props) => {
     responsaveisNegocio: [],
   });
 
+  /** Variável utilizada para lógica de criação de escopo */
   const [mudancasFeitas, setMudancasFeitas] = useState(false);
+
+  /** Variável para armazenar o valor mais atualizado da cotação do dólar */
+  const [valorDolar, setValorDolar] = useState(null);
+
+  /** Variável para armazenar o valor mais atualizado da cotação do euro */
+  const [valorEuro, setValorEuro] = useState(null);
+
+  /** Variável utilizada para abrir o modal de feedback de dados faltantes */
+  const [feedbackFaltante, setFeedbackFaltante] = useState(false);
+
+  /** Variável utilizada para abrir o modal de feedback que precisa de uma porcentagem de 100% nos CCS */
+  const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
+
+  /** Variável utilizada para abrir o modal de navegador incompatível */
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+
+  /** Variável utilizada para abrir o modal de erro no reconhecimento de voz */
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   /** Variável usada para interromper o salvamento de escopos enquanto a proposta estiver sendo criada */
   let criandoProposta = false;
 
-  // UseEffect utilizado para pegar os dados da demanda e pegar os fóruns e BUs
+  /** UseEffect utilizado para pegar os dados da demanda e pegar os fóruns e BUs */
   useEffect(() => {
     setDadosDemanda(props.dados);
     pesquisarBUs();
@@ -130,13 +149,66 @@ const BarraProgressaoProposta = (props) => {
     pesquisarSecoesTI();
   }, []);
 
+  /** UseEffect utilizado para buscar os valores de euro e dólar ao criar um novo benefício */
   useEffect(() => {
     valoresMoedas();
   }, [dadosDemanda.beneficios]);
 
-  const [valorDolar, setValorDolar] = useState(null);
-  const [valorEuro, setValorEuro] = useState(null);
+  /** UseEffect utilizado para criação de um escopo caso ocorra alguma alteração */
+  useEffect(() => {
+    if (!idEscopo) {
+      if (!location.state.tabelaCustos) {
+        if (mudancasFeitas) {
+          idEscopo = 1;
 
+          EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
+            (data) => {
+              if (data.length == 0) {
+                receberBeneficios(dadosDemanda.beneficios);
+                let escopo = retornaObjetoProposta();
+                delete escopo.historicoProposta;
+                delete escopo.status;
+                delete escopo.emPauta;
+                delete escopo.emAta;
+
+                EscopoPropostaService.post(escopo).then((response) => {
+                  idEscopo = response.id;
+                  setUltimoEscopo(response);
+                  criarDadosIniciais();
+                });
+              } else {
+                idEscopo = data[0].id;
+                setUltimoEscopo(data[0]);
+                carregarEscopoSalvo(data[0]);
+              }
+            }
+          );
+        }
+      }
+    }
+  }, [mudancasFeitas]);
+
+  /** UseEffect utilizado para caso haja alteração nos dados, ativar a variável utilizada para a criação do escopo  */
+  useEffect(() => {
+    if (listaBeneficios && dadosDemanda && gerais && custos) {
+      setTimeout(() => {
+        setMudancasFeitas(true);
+      }, 1000);
+    }
+  }, [dadosDemanda, gerais, custos, listaBeneficios]);
+
+  /** UseEffect utilizado para salvar o escopo a cada 5 segundos */
+  useEffect(() => {
+    if (ultimoEscopo) {
+      setTimeout(() => {
+        if (!criandoProposta) {
+          salvarEscopo();
+        }
+      }, 5000);
+    }
+  }, [ultimoEscopo]);
+
+  /** Função para buscar os valores mais atualizados para a cotação do dólar e do euro */
   const valoresMoedas = () => {
     MoedasService.getDolar().then((response) => {
       setValorDolar(response);
@@ -198,7 +270,7 @@ const BarraProgressaoProposta = (props) => {
     return valorTotal;
   };
 
-  /** Cálculo para calcular a quantidade automático */
+  /** Função para calcular a quantidade de dias do payback de forma automática */
   const calculoDiasPayback = () => {
     let valorDia = retornarTotalBeneficios() / 30;
     let valorTotalCustos = retornarCustosTotais();
@@ -245,61 +317,10 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (!idEscopo) {
-      if (!location.state.tabelaCustos) {
-        if (mudancasFeitas) {
-          idEscopo = 1;
-
-          EscopoPropostaService.buscarPorDemanda(dadosDemanda.id).then(
-            (data) => {
-              if (data.length == 0) {
-                receberBeneficios(dadosDemanda.beneficios);
-                let escopo = retornaObjetoProposta();
-                delete escopo.historicoProposta;
-                delete escopo.status;
-                delete escopo.emPauta;
-                delete escopo.emAta;
-
-                EscopoPropostaService.post(escopo).then((response) => {
-                  idEscopo = response.id;
-                  setUltimoEscopo(response);
-                  criarDadosIniciais();
-                });
-              } else {
-                idEscopo = data[0].id;
-                setUltimoEscopo(data[0]);
-                carregarEscopoSalvo(data[0]);
-              }
-            }
-          );
-        }
-      }
-    }
-  }, [mudancasFeitas]);
-
-  useEffect(() => {
-    if (listaBeneficios && dadosDemanda && gerais && custos) {
-      setTimeout(() => {
-        setMudancasFeitas(true);
-      }, 1000);
-    }
-  }, [dadosDemanda, gerais, custos, listaBeneficios]);
-
-  // UseEffect utilizado para salvar o escopo a cada 5 segundos
-  useEffect(() => {
-    if (ultimoEscopo) {
-      setTimeout(() => {
-        if (!criandoProposta) {
-          salvarEscopo();
-        }
-      }, 5000);
-    }
-  }, [ultimoEscopo]);
-
   /** Função para formatar os benefícios recebidos no banco para a lista da página de edição na edição de um escopo existente */
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
+
     for (let beneficio of beneficios) {
       const tipoBeneficioNovo =
         beneficio.tipoBeneficio?.charAt(0) +
@@ -321,9 +342,11 @@ const BarraProgressaoProposta = (props) => {
         visible: true,
       });
     }
+
     setListaBeneficios(listaNova);
   };
 
+  /** Função para buscar um escopo que já foi salvo */
   const carregarEscopoSalvo = (escopo) => {
     setDadosDemanda({
       id: escopo.demanda.id,
@@ -371,6 +394,7 @@ const BarraProgressaoProposta = (props) => {
   function converterBase64(base64) {
     const textoBinario = window.atob(base64);
     const bytes = new Uint8Array(textoBinario.length);
+
     return bytes.map((byte, i) => textoBinario.charCodeAt(i));
   }
 
@@ -457,7 +481,7 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  // Função para passar para próxima página
+  /** Função para passar para próxima página */
   const proximaEtapa = () => {
     if (props.lendo) {
       lerTexto(texts.barraProgressaoProposta.botaoProximo);
@@ -544,7 +568,7 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  // Função para voltar para página anterior
+  /** Função para voltar para página anterior */
   const voltarEtapa = () => {
     if (!props.lendo) {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -553,14 +577,14 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  // Função para pesquisar os fóruns do banco e salvar na lista para o select
+  /** Função para pesquisar os fóruns do banco e salvar na lista para o select */
   const pesquisarForuns = () => {
     ForumService.getAll().then((response) => {
       setListaForuns(response);
     });
   };
 
-  // Função para pesquisar as BUs do banco e salvar na lista para o select
+  /** Função para pesquisar as BUs do banco e salvar na lista para o select */
   const pesquisarBUs = () => {
     BUService.getAll().then((response) => {
       setListaBU(response);
@@ -577,6 +601,7 @@ const BarraProgressaoProposta = (props) => {
   /** Função para formatar a lista de responsáveis do negócio, retirando o atributo "visible" */
   const formatarResponsaveisNegocio = () => {
     let listaNova = [];
+
     for (const responsavelNegocio of gerais.responsaveisNegocio) {
       listaNova.push({
         id: responsavelNegocio.id,
@@ -584,12 +609,14 @@ const BarraProgressaoProposta = (props) => {
         area: responsavelNegocio.area,
       });
     }
+
     return listaNova;
   };
 
   /** Função para formatar os custos dentro de cadas tabela de custos (retirar o atributo "total") */
   const formatarCustos = () => {
     let listaNova = [];
+
     for (const tabelaCustos of custos) {
       let listaCustos = [];
       for (const custo of tabelaCustos.custos) {
@@ -610,12 +637,14 @@ const BarraProgressaoProposta = (props) => {
         tipoDespesa: tabelaCustos.tipoDespesa,
       });
     }
+
     return listaNova;
   };
 
   /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
   const retornarIdsObjetos = (listaObjetos) => {
     let listaNova = [];
+
     for (let objeto of listaObjetos) {
       if (objeto.tipoBeneficio) {
         if (objeto.visible) {
@@ -625,6 +654,7 @@ const BarraProgressaoProposta = (props) => {
         listaNova.push({ id: objeto.id });
       }
     }
+
     return listaNova;
   };
 
@@ -660,6 +690,7 @@ const BarraProgressaoProposta = (props) => {
       presenteEm: "Nada",
       escopo: btoa(formatarHtml(escopo)),
     };
+
     return objeto;
   };
 
@@ -732,18 +763,7 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  /** Variável utilizada para abrir o modal de feedback de dados faltantes */
-  const [feedbackFaltante, setFeedbackFaltante] = useState(false);
-  const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
-
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
@@ -771,16 +791,19 @@ const BarraProgressaoProposta = (props) => {
 
   return (
     <>
+      {/* Carregamento dos dados para a criação da proposta */}
       {carregamentoProposta ? (
         <Box className="mt-6 w-full h-full flex justify-center items-center">
           <ClipLoader color="#00579D" size={110} />
         </Box>
       ) : (
         <>
+          {/* Passos de criação da proposta */}
           <Stepper activeStep={activeStep} sx={{ minWidth: "60rem" }}>
             {etapasProposta.map((label, index) => {
               const stepProps = {};
               const labelProps = {};
+
               return (
                 <Step
                   key={label}
@@ -811,6 +834,7 @@ const BarraProgressaoProposta = (props) => {
               lendo={props.lendo}
             />
           )}
+
           {activeStep == 1 && (
             <FormularioEscopoProposta
               escopoTemp={escopoTemp}
@@ -818,6 +842,7 @@ const BarraProgressaoProposta = (props) => {
               setEscopo={setEscopo}
             />
           )}
+
           {activeStep == 2 && (
             <FormularioCustosProposta
               custos={custos}
@@ -829,6 +854,7 @@ const BarraProgressaoProposta = (props) => {
               lendo={props.lendo}
             />
           )}
+
           {activeStep == 3 && (
             <FormularioGeralProposta
               gerais={gerais}
@@ -842,6 +868,7 @@ const BarraProgressaoProposta = (props) => {
               lendo={props.lendo}
             />
           )}
+          {/* Botão para voltar um passo na criação */}
           <Button
             variant="outlined"
             color="tertiary"
@@ -852,6 +879,8 @@ const BarraProgressaoProposta = (props) => {
           >
             {texts.barraProgressaoProposta.botaoVoltar}
           </Button>
+
+          {/* Botão para criar a proposta ou seguir para o próximo passo */}
           <Box sx={{ flex: "1 1 auto" }} />
           {activeStep === etapasProposta.length - 1 ? (
             <Button
@@ -878,13 +907,10 @@ const BarraProgressaoProposta = (props) => {
       )
       }
 
-
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
+        handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
         lendo={props.lendo}
@@ -892,9 +918,7 @@ const BarraProgressaoProposta = (props) => {
       {/* Feedback Não navegador incompativel */}
       <Feedback
         open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
+        handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
@@ -902,21 +926,15 @@ const BarraProgressaoProposta = (props) => {
       {/* Feedback de dados faltantes */}
       <Feedback
         open={feedbackFaltante}
-        handleClose={() => {
-          setFeedbackFaltante(false);
-        }}
+        handleClose={() => { setFeedbackFaltante(false); }}
         status={"erro"}
-        mensagem={
-          texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
-        }
+        mensagem={texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios}
         lendo={props.lendo}
       />
       {/* Feedback de que não fechou 100% de CCs */}
       <Feedback
         open={feedback100porcentoCcs}
-        handleClose={() => {
-          setFeedback100porcentoCcs(false);
-        }}
+        handleClose={() => { setFeedback100porcentoCcs(false); }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
         lendo={props.lendo}

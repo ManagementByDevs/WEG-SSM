@@ -1,19 +1,6 @@
 import React, { useState, useContext, useEffect, useRef, memo } from "react";
 
-import {
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Paper,
-  Typography,
-  Box,
-  FormControl,
-  Select,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, FormControl, Select, MenuItem, Tooltip, } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -28,19 +15,23 @@ import FontContext from "../../service/FontContext";
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
-  // Contexto para trocar a linguagem
+
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // UseState utilizado para mudar a cor do textArea
+  /** UseState utilizado para mudar a cor do textArea */
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
 
-  // Variável utilizada para o dark mode ( para mudar a cor do textArea )
+  /** Variável utilizada para o dark mode ( para mudar a cor do textArea ) */
   const { mode } = useContext(ColorModeContext);
 
-  // UseEffect utilizado para mudar a cor do textArea dependendo do modo ( claro ou escuro )
+  /** Variável para armazenar o valor html da memória de cálculo */
+  const memoriaCalculo = useRef(null);
+
+  /** UseEffect utilizado para mudar a cor do textArea dependendo do modo ( claro ou escuro ) */
   useEffect(() => {
     if (mode === "dark") {
       setCorFundoTextArea("#212121");
@@ -48,19 +39,6 @@ const BeneficiosDetalheDemanda = (props) => {
       setCorFundoTextArea("#FFFF");
     }
   }, [mode]);
-
-  /** Função responsável por estilizar as linhas da tabela de benefícios */
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
-
-  /** Variável para armazenar o valor html da memória de cálculo */
-  const memoriaCalculo = useRef(null);
 
   /** UseEffect para setar o valor em html na variável */
   useEffect(() => {
@@ -71,6 +49,23 @@ const BeneficiosDetalheDemanda = (props) => {
       memoriaCalculo.current.innerHTML = props.beneficio.memoriaCalculo;
     }
   });
+
+  /** useEffect para mostrar o texto que poderá ser editado */
+  useEffect(() => {
+    if (!props.carregamento) {
+      setMemoriaEdicao(props.beneficio.memoriaCalculo);
+    }
+  }, [props.carregamento]);
+
+  /** Função responsável por estilizar as linhas da tabela de benefícios */
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
 
   /** Função para formatar o texto html */
   const getMemoriaCalculoFormatted = (memoria) => {
@@ -87,23 +82,20 @@ const BeneficiosDetalheDemanda = (props) => {
     props.beneficio.memoriaCalculo
   );
 
-  /** useEffect para mostrar o texto que poderá ser editado */
-  useEffect(() => {
-    if (!props.carregamento) {
-      setMemoriaEdicao(props.beneficio.memoriaCalculo);
-    }
-  }, [props.carregamento]);
-
   // ********************************************** Gravar audio **********************************************
 
+  /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
 
+  /** Variável utilizada para ativar o microfone para gravação de audio */
   const [escutar, setEscutar] = useState(false);
 
+  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
   const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
+  /** Função para gravar audio nos inputs */
   const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
+    /**Verifica se a API é suportada pelo navegador */
     if ("webkitSpeechRecognition" in window) {
       const recognition = new window.webkitSpeechRecognition();
       recognition.continuous = true;
@@ -147,6 +139,7 @@ const BeneficiosDetalheDemanda = (props) => {
     }
   };
 
+  /** useEffect utilizado para setar o valor do input de valor_mensal de um benefício com o input de voz */
   useEffect(() => {
     // props.setBeneficio(
     //   {
@@ -157,16 +150,19 @@ const BeneficiosDetalheDemanda = (props) => {
     // );
   }, [palavrasJuntas]);
 
+  /** Função para parar a gravação de voz */
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
   };
 
+  /** Função para começar a gravação de audio */
   const startRecognition = () => {
     setEscutar(!escutar);
   };
 
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
   useEffect(() => {
     if (escutar) {
       ouvirAudio();
@@ -177,18 +173,18 @@ const BeneficiosDetalheDemanda = (props) => {
 
   // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -196,7 +192,7 @@ const BeneficiosDetalheDemanda = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -217,8 +213,10 @@ const BeneficiosDetalheDemanda = (props) => {
               props.delete(props.index);
             }}
           />
+          {/* Tabela que contem os beneficios */}
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 750 }} aria-label="customized table">
+              {/* Criação do esqueleto da tabela */}
               <TableHead sx={{ backgroundColor: "primary.main" }}>
                 <TableRow>
                   <th
@@ -288,6 +286,7 @@ const BeneficiosDetalheDemanda = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
+                {/* Colocando as informações na tabela */}
                 <TableRow>
                   <td align="center">
                     <FormControl
