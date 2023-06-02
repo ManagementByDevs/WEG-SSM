@@ -1447,6 +1447,11 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  const handleOnParecerComissaoChange = (texto) => {
+    setProposta({ ...proposta, parecerInformacao: texto });
+    setDadosProposta({ ...proposta, parecerInformacao: texto });
+  };
+
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
@@ -1527,10 +1532,7 @@ const ParecerComissaoInsertText = ({
       <Box className="mt-4">
         <CaixaTextoQuill
           texto={parecerInformacao}
-          onChange={(e) => {
-            setProposta({ ...proposta, parecerInformacao: e });
-            setDadosProposta({ ...proposta, parecerInformacao: e });
-          }}
+          onChange={handleOnParecerComissaoChange}
           lendo={lendo}
         />
       </Box>

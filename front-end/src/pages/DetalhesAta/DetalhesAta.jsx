@@ -84,7 +84,8 @@ const DetalhesAta = (props) => {
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   /** Modal de confirmação para a publicação de uma ata */
-  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] = useState(false);
+  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] =
+    useState(false);
 
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
@@ -229,8 +230,15 @@ const DetalhesAta = (props) => {
     }
 
     const demandaNotificacao = JSON.parse(JSON.stringify(propostaAux.demanda));
-    const notificacao = NotificacaoService.createNotificationObject(tipoNotificacao, demandaNotificacao, CookieService.getUser().id);
-    enviar(`/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`, JSON.stringify(notificacao));
+    const notificacao = NotificacaoService.createNotificationObject(
+      tipoNotificacao,
+      demandaNotificacao,
+      CookieService.getUser().id
+    );
+    enviar(
+      `/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`,
+      JSON.stringify(notificacao)
+    );
   };
 
   // Atualiza a lista de propostas passada por parâmetro
@@ -253,11 +261,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -265,9 +273,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => { }
+                () => {}
               );
               break;
           }
@@ -305,7 +313,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
+    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
 
     navigate("/", { state: { feedback: true } });
   };
@@ -446,8 +454,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                    ": " +
-                    ata.numeroSequencial
+                      ": " +
+                      ata.numeroSequencial
                   );
                 }}
               >
@@ -460,13 +468,19 @@ const DetalhesAta = (props) => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
                       ": " +
-                      DateService.getTodaysDateUSFormat(ata.dataReuniao, texts.linguagem)
+                      DateService.getTodaysDateUSFormat(
+                        ata.dataReuniao,
+                        texts.linguagem
+                      )
                   );
                 }}
               >
                 {/* {data reunião} */}
                 {texts.detalhesAta.dataReuniao}:{" "}
-                {DateService.getTodaysDateUSFormat(ata.dataReuniao, texts.linguagem)}
+                {DateService.getTodaysDateUSFormat(
+                  ata.dataReuniao,
+                  texts.linguagem
+                )}
               </Typography>
               <Typography
                 className="cursor-default mt-2"
@@ -474,8 +488,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                    ": " +
-                    trazerHoraData(ata.dataReuniao)
+                      ": " +
+                      trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -489,8 +503,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                    ": " +
-                    ata.analistaResponsavel.nome
+                      ": " +
+                      ata.analistaResponsavel.nome
                   );
                 }}
               >
@@ -680,11 +694,10 @@ const DetalhesAta = (props) => {
                     >
                       <DensitySmallIcon
                         sx={{
-                          rotate: "90deg",
                           animation: `${girarIcon} 1.2s forwards`,
                           color: "white",
                         }}
-                      ></DensitySmallIcon>
+                      />
                     </ButtonBase>
                   </Tooltip>
                 </Box>

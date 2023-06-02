@@ -6,6 +6,7 @@ import {
   Divider,
   IconButton,
   Input,
+  InputAdornment,
   MenuItem,
   Paper,
   Select,
@@ -114,8 +115,6 @@ const DetalhesPropostaEditMode = ({
 
   // State para ter o texto de feedback de dados inválidos
   const [textoDadosInvalidos, setTextoDadosInvalidos] = useState("");
-
-  const [propostaTitulo, setPropostaTitulo] = useState(propostaData.titulo);
 
   // Referênica para o input de arquivo
   const inputFile = useRef(null);
@@ -517,9 +516,9 @@ const DetalhesPropostaEditMode = ({
     setProposta({ ...proposta, publicada: !proposta.publicada });
   };
 
-  useEffect(() => {
-    console.log("proposta", proposta);
-  }, [propostaTitulo, proposta]);
+  // useEffect(() => {
+  //   console.log("proposta", proposta);
+  // }, [proposta]);
 
   /** Handler do título da proposta */
   const handleOnTituloChange = (event) => {
@@ -632,7 +631,7 @@ const DetalhesPropostaEditMode = ({
 
   /** Handler do link do jira da proposta */
   const handleOnLinkJiraChange = (event) => {
-    setProposta({
+    debounceState(setProposta, {
       ...proposta,
       linkJira: event.target.value,
     });
@@ -656,6 +655,9 @@ const DetalhesPropostaEditMode = ({
 
   /** Handler do payback valor da proposta */
   const handleOnPaybackValorChange = (event) => {
+    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
+    if (!regexp.test(event.target.value)) return;
+
     setProposta({
       ...proposta,
       paybackValor: event.target.value,
@@ -1126,36 +1128,24 @@ const DetalhesPropostaEditMode = ({
             fullWidth
             sx={{ color: "primary.main", fontSize: FontConfig.smallTitle }}
             multiline={true}
+            endAdornment={
+              <InputAdornment position="end">
+                <Tooltip
+                  className="flex items-center hover:cursor-pointer"
+                  title={texts.homeGerencia.gravarAudio}
+                  onClick={() => {
+                    startRecognition("titulo");
+                  }}
+                >
+                  {escutar && localClique == "titulo" ? (
+                    <MicOutlinedIcon color="primary" />
+                  ) : (
+                    <MicNoneOutlinedIcon />
+                  )}
+                </Tooltip>
+              </InputAdornment>
+            }
           />
-          <Tooltip
-            className="flex items-center hover:cursor-pointer"
-            title={texts.homeGerencia.gravarAudio}
-            onClick={() => {
-              startRecognition("titulo");
-            }}
-          >
-            {escutar && localClique == "titulo" ? (
-              <MicOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "primary.main",
-                  fontSize: "2rem",
-                  position: "absolute",
-                  right: "3rem",
-                }}
-              />
-            ) : (
-              <MicNoneOutlinedIcon
-                sx={{
-                  cursor: "pointer",
-                  color: "text.secondary",
-                  fontSize: "2rem",
-                  position: "absolute",
-                  right: "3rem",
-                }}
-              />
-            )}
-          </Tooltip>
         </Box>
 
         {/* Box Informações gerais */}
@@ -1459,36 +1449,24 @@ const DetalhesPropostaEditMode = ({
                 fullWidth
                 sx={{ fontSize: FontConfig.medium }}
                 multiline={true}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <Tooltip
+                      className="flex items-center hover:cursor-pointer mb-2"
+                      title={texts.homeGerencia.gravarAudio}
+                      onClick={() => {
+                        startRecognition("frequencia");
+                      }}
+                    >
+                      {escutar && localClique == "frequencia" ? (
+                        <MicOutlinedIcon color="primary" />
+                      ) : (
+                        <MicNoneOutlinedIcon />
+                      )}
+                    </Tooltip>
+                  </InputAdornment>
+                }
               />
-              <Tooltip
-                className="flex items-center hover:cursor-pointer mb-2"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("frequencia");
-                }}
-              >
-                {escutar && localClique == "frequencia" ? (
-                  <MicOutlinedIcon
-                    sx={{
-                      cursor: "pointer",
-                      color: "primary.main",
-                      fontSize: "1.6rem",
-                      position: "absolute",
-                      right: "1.8rem",
-                    }}
-                  />
-                ) : (
-                  <MicNoneOutlinedIcon
-                    sx={{
-                      cursor: "pointer",
-                      color: "text.secondary",
-                      fontSize: "1.6rem",
-                      position: "absolute",
-                      right: "1.8rem",
-                    }}
-                  />
-                )}
-              </Tooltip>
             </Box>
           </Box>
 
@@ -1676,42 +1654,30 @@ const DetalhesPropostaEditMode = ({
             <Box className="mx-4 flex items-center">
               <Input
                 size="small"
-                value={proposta.linkJira}
+                defaultValue={proposta.linkJira}
                 onChange={handleOnLinkJiraChange}
                 type="text"
                 fullWidth
                 sx={{ fontSize: FontConfig.medium, paddingLeft: "0.6rem" }}
                 multiline={true}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <Tooltip
+                      className="flex items-center hover:cursor-pointer mb-2"
+                      title={texts.homeGerencia.gravarAudio}
+                      onClick={() => {
+                        startRecognition("linkJira");
+                      }}
+                    >
+                      {escutar && localClique == "linkJira" ? (
+                        <MicOutlinedIcon color="primary" />
+                      ) : (
+                        <MicNoneOutlinedIcon />
+                      )}
+                    </Tooltip>
+                  </InputAdornment>
+                }
               />
-              <Tooltip
-                className="flex items-center hover:cursor-pointer mb-2"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("linkJira");
-                }}
-              >
-                {escutar && localClique == "linkJira" ? (
-                  <MicOutlinedIcon
-                    sx={{
-                      cursor: "pointer",
-                      color: "primary.main",
-                      fontSize: "1.6rem",
-                      position: "absolute",
-                      right: "1.8rem",
-                    }}
-                  />
-                ) : (
-                  <MicNoneOutlinedIcon
-                    sx={{
-                      cursor: "pointer",
-                      color: "text.secondary",
-                      fontSize: "1.6rem",
-                      position: "absolute",
-                      right: "1.8rem",
-                    }}
-                  />
-                )}
-              </Tooltip>
             </Box>
           </Box>
 
@@ -1950,11 +1916,6 @@ const TabelaCustos = ({
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
-
-  /** Debounce o setState passado por parâmetro */
-  const debounceState = _.debounce((setState, value) => {
-    setState(value);
-  }, 100);
 
   // ***************************************** Handlers ***************************************** //
 
@@ -2277,13 +2238,21 @@ const CC = ({
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
+  /** Debounce o setState passado por parâmetro */
+  const debounceState = _.debounce((setState, value) => {
+    setState(value);
+  }, 100);
+
   // ***************************************** Handlers ***************************************** //
 
   const handleOnCodigoChange = (event) => {
-    handleOnCCChange({ ...cc, codigo: event.target.value });
+    debounceState(handleOnCCChange, { ...cc, codigo: event.target.value });
   };
 
   const handleOnPorcentagemChange = (event) => {
+    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
+    if (!regexp.test(event.target.value)) return;
+
     handleOnCCChange({ ...cc, porcentagem: event.target.value });
   };
 
@@ -2415,43 +2384,31 @@ const CC = ({
     <TableRow className="w-full border rounded">
       <td className="text-center p-2">
         <Input
-          value={cc.codigo}
+          defaultValue={cc.codigo}
           onChange={handleOnCodigoChange}
           size="small"
           type="text"
           multiline
           fullWidth
           sx={{ fontConfig: FontConfig.default }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip
+                className="flex items-center cursor-pointer"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("codigo");
+                }}
+              >
+                {escutar && localClique == "codigo" ? (
+                  <MicOutlinedIcon color="primary" />
+                ) : (
+                  <MicNoneOutlinedIcon />
+                )}
+              </Tooltip>
+            </InputAdornment>
+          }
         />
-        <Tooltip
-          className="flex items-center cursor-pointer"
-          title={texts.homeGerencia.gravarAudio}
-          onClick={() => {
-            startRecognition("codigo");
-          }}
-        >
-          {escutar && localClique == "codigo" ? (
-            <MicOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "primary.main",
-                fontSize: "1.4rem",
-                position: "absolute",
-                right: "14rem",
-              }}
-            />
-          ) : (
-            <MicNoneOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "text.secondary",
-                fontSize: "1.4rem",
-                position: "absolute",
-                right: "14rem",
-              }}
-            />
-          )}
-        </Tooltip>
       </td>
       <td className="text-center p-2">
         <Input
@@ -2462,36 +2419,24 @@ const CC = ({
           multiline
           fullWidth
           sx={{ fontConfig: FontConfig.default }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip
+                className="flex items-center cursor-pointer"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("porcentagem");
+                }}
+              >
+                {escutar && localClique == "porcentagem" ? (
+                  <MicOutlinedIcon color="primary" />
+                ) : (
+                  <MicNoneOutlinedIcon />
+                )}
+              </Tooltip>
+            </InputAdornment>
+          }
         />
-        <Tooltip
-          className="flex items-center cursor-pointer"
-          title={texts.homeGerencia.gravarAudio}
-          onClick={() => {
-            startRecognition("porcentagem");
-          }}
-        >
-          {escutar && localClique == "porcentagem" ? (
-            <MicOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "primary.main",
-                fontSize: "1.4rem",
-                position: "absolute",
-                right: "1.8rem",
-              }}
-            />
-          ) : (
-            <MicNoneOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "text.secondary",
-                fontSize: "1.4rem",
-                position: "absolute",
-                right: "1.8rem",
-              }}
-            />
-          )}
-        </Tooltip>
       </td>
     </TableRow>
   );
@@ -2560,7 +2505,10 @@ const CustosRow = ({
 
   // Handler para quando o tipo de despesa for alterado
   const handleOnPeriodoExecucaoChange = (event) => {
-    debounceState(handleOnCustoChange, {
+    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
+    if (!regexp.test(event.target.value)) return;
+
+    handleOnCustoChange({
       ...custo,
       periodoExecucao: event.target.value,
     });
@@ -2568,12 +2516,18 @@ const CustosRow = ({
 
   // Handler para quando o tipo de despesa for alterado
   const handleOnHorasChange = (event) => {
-    debounceState(handleOnCustoChange, { ...custo, horas: event.target.value });
+    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
+    if (!regexp.test(event.target.value)) return;
+
+    handleOnCustoChange({ ...custo, horas: event.target.value });
   };
 
   // Handler para quando o tipo de despesa for alterado
   const handleOnValorHoraChange = (event) => {
-    debounceState(handleOnCustoChange, {
+    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
+    if (!regexp.test(event.target.value)) return;
+
+    handleOnCustoChange({
       ...custo,
       valorHora: event.target.value,
     });
@@ -2724,159 +2678,111 @@ const CustosRow = ({
           type="text"
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip
+                className="flex items-center cursor-pointer"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("perfilDespesa");
+                }}
+              >
+                {escutar && localClique == "perfilDespesa" ? (
+                  <MicOutlinedIcon color="primary" />
+                ) : (
+                  <MicNoneOutlinedIcon />
+                )}
+              </Tooltip>
+            </InputAdornment>
+          }
         />
-        <Tooltip
-          className="flex items-center cursor-pointer"
-          title={texts.homeGerencia.gravarAudio}
-          onClick={() => {
-            startRecognition("perfilDespesa");
-          }}
-        >
-          {escutar && localClique == "perfilDespesa" ? (
-            <MicOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "primary.main",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "9rem",
-              }}
-            />
-          ) : (
-            <MicNoneOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "text.secondary",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "9rem",
-              }}
-            />
-          )}
-        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Período de Execução */}
         <Input
-          defaultValue={custo.periodoExecucao}
+          value={custo.periodoExecucao}
           onChange={handleOnPeriodoExecucaoChange}
           fullWidth
           size="small"
           type="text"
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip
+                className="flex items-center cursor-pointer"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("periodoExecucao");
+                }}
+              >
+                {escutar && localClique == "periodoExecucao" ? (
+                  <MicOutlinedIcon color="primary" />
+                ) : (
+                  <MicNoneOutlinedIcon />
+                )}
+              </Tooltip>
+            </InputAdornment>
+          }
         />
-        <Tooltip
-          className="flex items-center cursor-pointer"
-          title={texts.homeGerencia.gravarAudio}
-          onClick={() => {
-            startRecognition("periodoExecucao");
-          }}
-        >
-          {escutar && localClique == "periodoExecucao" ? (
-            <MicOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "primary.main",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "18.5rem",
-              }}
-            />
-          ) : (
-            <MicNoneOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "text.secondary",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "18.5rem",
-              }}
-            />
-          )}
-        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Horas */}
         <Input
-          defaultValue={custo.horas}
+          value={custo.horas}
           onChange={handleOnHorasChange}
           fullWidth
           size="small"
           type="text"
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip
+                className="flex items-center cursor-pointer"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("horas");
+                }}
+              >
+                {escutar && localClique == "horas" ? (
+                  <MicOutlinedIcon color="primary" />
+                ) : (
+                  <MicNoneOutlinedIcon />
+                )}
+              </Tooltip>
+            </InputAdornment>
+          }
         />
-        <Tooltip
-          className="flex items-center cursor-pointer"
-          title={texts.homeGerencia.gravarAudio}
-          onClick={() => {
-            startRecognition("horas");
-          }}
-        >
-          {escutar && localClique == "horas" ? (
-            <MicOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "primary.main",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "28rem",
-              }}
-            />
-          ) : (
-            <MicNoneOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "text.secondary",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "28rem",
-              }}
-            />
-          )}
-        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Valor da Hora */}
         <Input
-          defaultValue={custo.valorHora}
+          value={custo.valorHora}
           onChange={handleOnValorHoraChange}
           fullWidth
           size="small"
           type="text"
           multiline={true}
           sx={{ fontConfig: FontConfig.default }}
+          endAdornment={
+            <InputAdornment position="end">
+              <Tooltip
+                className="flex items-center cursor-pointer"
+                title={texts.homeGerencia.gravarAudio}
+                onClick={() => {
+                  startRecognition("valorHora");
+                }}
+              >
+                {escutar && localClique == "valorHora" ? (
+                  <MicOutlinedIcon color="primary" />
+                ) : (
+                  <MicNoneOutlinedIcon />
+                )}
+              </Tooltip>
+            </InputAdornment>
+          }
         />
-        <Tooltip
-          className="flex items-center cursor-pointer"
-          title={texts.homeGerencia.gravarAudio}
-          onClick={() => {
-            startRecognition("valorHora");
-          }}
-        >
-          {escutar && localClique == "valorHora" ? (
-            <MicOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "primary.main",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "37.5rem",
-              }}
-            />
-          ) : (
-            <MicNoneOutlinedIcon
-              sx={{
-                cursor: "pointer",
-                color: "text.secondary",
-                fontSize: "1.4rem",
-                position: "absolute",
-                left: "37.5rem",
-              }}
-            />
-          )}
-        </Tooltip>
       </td>
       <td className="p-2 text-center">
         {/* Total */}
@@ -2908,6 +2814,11 @@ const Beneficio = ({
 
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
+
+  /** Debounce o setState passado por parâmetro */
+  const debounceState = _.debounce((setState, value) => {
+    setState(value);
+  }, 100);
 
   // Modules usados para o React Quill
   const modulesQuill = {
@@ -2952,7 +2863,13 @@ const Beneficio = ({
 
   // Handler do valor mensal do benefício
   const handleOnValorMensalChange = (event) => {
-    handleOnBeneficioChange({ ...beneficio, valor_mensal: event.target.value });
+    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
+    if (!regexp.test(event.target.value)) return;
+
+    handleOnBeneficioChange({
+      ...beneficio,
+      valor_mensal: event.target.value,
+    });
   };
 
   // Handler da moeda do benefício
@@ -2962,7 +2879,7 @@ const Beneficio = ({
 
   // Handler da memória calculo do benefício
   const handleOnMemoriaCalculoChange = (event) => {
-    handleOnBeneficioChange({
+    debounceState(handleOnBeneficioChange, {
       ...beneficio,
       memoriaCalculo: event,
     });
@@ -3115,10 +3032,10 @@ const Beneficio = ({
       sx={{ borderTopColor: "primary.main" }}
       square
     >
-      <Table>
+      <Table className="table-fixed">
         <TableBody>
           <TableRow>
-            <th className="p-1">
+            <th className="p-1 w-2/12">
               <Typography
                 color="primary"
                 fontWeight="bold"
@@ -3132,7 +3049,7 @@ const Beneficio = ({
             </th>
             {!isQualitativo && (
               <>
-                <th className="p-1">
+                <th className="p-1 w-2/12">
                   <Typography
                     color="primary"
                     fontWeight="bold"
@@ -3144,7 +3061,7 @@ const Beneficio = ({
                     {texts.detalhesProposta.valorMensal}
                   </Typography>
                 </th>
-                <th className="p-1">
+                <th className="p-1 w-1/12">
                   <Typography
                     color="primary"
                     fontWeight="bold"
@@ -3181,6 +3098,7 @@ const Beneficio = ({
                 onChange={handleOnTipoBeneficioSelect}
                 variant="standard"
                 size="small"
+                fullWidth
               >
                 <MenuItem value={"REAL"}>
                   <Typography fontSize={FontConfig.medium}>
@@ -3211,36 +3129,24 @@ const Beneficio = ({
                     fullWidth
                     sx={{ fontSize: FontConfig.default }}
                     multiline={true}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <Tooltip
+                          className="flex items-center cursor-pointer"
+                          title={texts.homeGerencia.gravarAudio}
+                          onClick={() => {
+                            startRecognition("valorMensal");
+                          }}
+                        >
+                          {escutar && localClique == "valorMensal" ? (
+                            <MicOutlinedIcon color="primary" />
+                          ) : (
+                            <MicNoneOutlinedIcon />
+                          )}
+                        </Tooltip>
+                      </InputAdornment>
+                    }
                   />
-                  <Tooltip
-                    className="flex items-center cursor-pointer"
-                    title={texts.homeGerencia.gravarAudio}
-                    onClick={() => {
-                      startRecognition("valorMensal");
-                    }}
-                  >
-                    {escutar && localClique == "valorMensal" ? (
-                      <MicOutlinedIcon
-                        sx={{
-                          cursor: "pointer",
-                          color: "primary.main",
-                          fontSize: "1.4rem",
-                          position: "absolute",
-                          left: "12.5rem",
-                        }}
-                      />
-                    ) : (
-                      <MicNoneOutlinedIcon
-                        sx={{
-                          cursor: "pointer",
-                          color: "text.secondary",
-                          fontSize: "1.4rem",
-                          position: "absolute",
-                          left: "12.5rem",
-                        }}
-                      />
-                    )}
-                  </Tooltip>
                 </td>
                 <td className="text-center p-2">
                   {/* Select da moeda do benefício */}
@@ -3249,6 +3155,7 @@ const Beneficio = ({
                     onChange={handleOnMoedaChange}
                     variant="standard"
                     size="small"
+                    fullWidth
                   >
                     <MenuItem value={"Real"}>
                       <Typography fontSize={FontConfig.medium}>BRL</Typography>
@@ -3266,7 +3173,7 @@ const Beneficio = ({
             <td className="text-center p-2">
               {/* Caixa de texto para memória de cálculo */}
               <ReactQuill
-                value={beneficio.memoriaCalculo}
+                defaultValue={beneficio.memoriaCalculo}
                 onChange={handleOnMemoriaCalculoChange}
                 modules={modulesQuill}
               />
@@ -3303,6 +3210,11 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  /** Debounce o setState passado por parâmetro */
+  const debounceState = _.debounce((setState, value) => {
+    setState(value);
+  }, 100);
+
   // Modules usados para o React Quill
   const modulesQuill = {
     toolbar: [
@@ -3321,7 +3233,7 @@ const ParecerComissaoInsertText = ({
 
   // Handler para quando o texto do parecer da comissão é alterado
   const handleOnParecerComissaoChange = (value) => {
-    setProposta({ ...proposta, parecerInformacao: value });
+    debounceState(setProposta, { ...proposta, parecerInformacao: value });
   };
 
   // Handler para quando o parecer da comissão é selecionado
@@ -3417,7 +3329,9 @@ const ParecerComissaoInsertText = ({
       <Box className="mt-4">
         {proposta.parecerComissao != "NONE" && (
           <ReactQuill
-            value={proposta.parecerInformacao ? proposta.parecerInformacao : ""}
+            defaultValue={
+              proposta.parecerInformacao ? proposta.parecerInformacao : ""
+            }
             onChange={handleOnParecerComissaoChange}
             modules={modulesQuill}
           />
@@ -3441,6 +3355,11 @@ const ParecerDGInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  /** Debounce o setState passado por parâmetro */
+  const debounceState = _.debounce((setState, value) => {
+    setState(value);
+  }, 100);
+
   // Modules usados para o React Quill
   const modulesQuill = {
     toolbar: [
@@ -3459,7 +3378,7 @@ const ParecerDGInsertText = ({
 
   // Handler para quando o texto do parecer da comissão é alterado
   const handleOnParecerDGChange = (value) => {
-    setProposta({ ...proposta, parecerInformacaoDG: value });
+    debounceState(setProposta, { ...proposta, parecerInformacaoDG: value });
   };
 
   // Handler para o select do parecer da DG
@@ -3557,7 +3476,7 @@ const ParecerDGInsertText = ({
       <Box className="mt-4">
         {proposta.parecerDG != "NONE" && (
           <ReactQuill
-            value={
+            defaultValue={
               proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""
             }
             onChange={handleOnParecerDGChange}

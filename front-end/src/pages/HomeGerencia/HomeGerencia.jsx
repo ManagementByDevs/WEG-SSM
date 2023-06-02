@@ -1,14 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import {
-  AvatarGroup,
-  Box,
-  Button,
-  IconButton,
-  Tab,
-  Tooltip,
-} from "@mui/material";
+import { AvatarGroup, Box, Button, IconButton, Tab, Tooltip, } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -17,6 +10,9 @@ import AddIcon from "@mui/icons-material/Add";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import Pauta from "../../components/Pauta/Pauta";
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
@@ -30,10 +26,6 @@ import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-
-import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
-import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -55,6 +47,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = (props) => {
+
   /** Context que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -94,194 +87,6 @@ const HomeGerencia = (props) => {
     status: null,
     presenteEm: null,
   });
-
-  const stepsMinhasDemandas = [
-    {
-      selector: "#primeiroMinhasDemandas",
-      content: texts.homeGerencia.toursDemandas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiroDemandas",
-      content: texts.homeGerencia.toursDemandas.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#nonoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour9,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quintoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour5,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#sextoMinhasDemandas",
-      content: texts.homeGerencia.toursMinhasDemandas.tour6,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#oitavoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour8,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  //JSONs que contém as informações do tour
-  const stepsDemandas = [
-    {
-      selector: "#quartoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour4,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#primeiroDemandas",
-      content: texts.homeGerencia.toursDemandas.tour6,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#setimoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour7,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  const stepsCriarPropostas = [
-    {
-      selector: "#primeiroCriarPropostas",
-      content: texts.homeGerencia.toursCriarPropostas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  const stepsPropostas = [
-    {
-      selector: "#primeiroPropostas",
-      content: texts.homeGerencia.toursPropostas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoPropostas",
-      content: texts.homeGerencia.toursPropostas.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#setimoDemandas",
-      content: texts.homeGerencia.toursPropostas.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  const stepsPautas = [
-    {
-      selector: "#primeiroPautas",
-      content: texts.homeGerencia.toursPautas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoPautas",
-      content: texts.homeGerencia.toursPautas.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  const stepsAtas = [
-    {
-      selector: "#primeiroAtas",
-      content: texts.homeGerencia.toursAtas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  // const [caraLogado, setCaraLogado] = useState(UsuarioService.getUserCookies())
-
-  // const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
-
-  // const [mensagens, setMensagens] = useState([]);
-
-  // const inscreverSocket = () => {
-  //   const acaoNovaMensagem = (response) => {
-  //     const mensagemRecebida = JSON.parse(response.body);
-  //     let mensagemNova = {
-  //       ...mensagemRecebida.body,
-  //       texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
-  //     };
-  //     setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
-  //   };
-
-  //   chatService.getByRemetente(caraLogado.usuario.id).then((response) => {
-  //     const chats = response;
-  //     chats.map((chat) => {
-  //     if (chat.id) {
-  //       let inscricaoId = inscrever(
-  //         `/weg_ssm/mensagem/${chat.id}/chat`,
-  //         acaoNovaMensagem
-  //       );
-  //     }
-  //     });
-  //   });
-  // }
-
-  // useEffect(() => {
-  //   inscreverSocket();
-  // }, [stompClient]);
 
   // Context para ver o tema do sistema
   const { mode } = useContext(ColorModeContext);
@@ -332,7 +137,7 @@ const HomeGerencia = (props) => {
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   /** Valor do input de pesquisa por título */
-  const [valorPesquisa, setValorPesquisa] = useState("");
+  let valorPesquisa = "";
 
   /** Variável booleana que determina se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
@@ -343,8 +148,7 @@ const HomeGerencia = (props) => {
   // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
   const [isFirstTime, setIsFirstTime] = useState(false);
 
-  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] =
-    useState(false);
+  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] = useState(false);
 
   /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
   const [filtrosAtuais, setFiltrosAtuais] = useState({
@@ -372,14 +176,10 @@ const HomeGerencia = (props) => {
   });
 
   // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
-  const [paramsPautas, setParamsPautas] = useState({
-    titulo: null,
-  });
+  const [paramsPautas, setParamsPautas] = useState({ titulo: null });
 
   // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
-  const [paramsAtas, setParamsAtas] = useState({
-    titulo: null,
-  });
+  const [paramsAtas, setParamsAtas] = useState({ titulo: null, });
 
   // UsaState que controla a visibilidade do modal de confirmação para exclusão de uma pauta
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
@@ -393,15 +193,13 @@ const HomeGerencia = (props) => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] =
-    useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
 
   /** Variável para o feedback de demanda aceita */
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
 
   /** Variável para o feedback de demanda devolvida */
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
-    useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
 
   /** Variável para o feedback de demanda recusada */
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
@@ -416,15 +214,13 @@ const HomeGerencia = (props) => {
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   // Feedback propostas atualizadas
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] =
-    useState(false);
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
 
   /** Feedback deletar pauta */
   const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
 
   /** Feedback atualizar proposta */
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
-    useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
 
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
@@ -435,6 +231,39 @@ const HomeGerencia = (props) => {
 
   // useState para fechar o chat minimizado
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
+
+  // const [caraLogado, setCaraLogado] = useState(UsuarioService.getUserCookies())
+
+  // const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
+
+  // const [mensagens, setMensagens] = useState([]);
+
+  // const inscreverSocket = () => {
+  //   const acaoNovaMensagem = (response) => {
+  //     const mensagemRecebida = JSON.parse(response.body);
+  //     let mensagemNova = {
+  //       ...mensagemRecebida.body,
+  //       texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
+  //     };
+  //     setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
+  //   };
+
+  //   chatService.getByRemetente(caraLogado.usuario.id).then((response) => {
+  //     const chats = response;
+  //     chats.map((chat) => {
+  //     if (chat.id) {
+  //       let inscricaoId = inscrever(
+  //         `/weg_ssm/mensagem/${chat.id}/chat`,
+  //         acaoNovaMensagem
+  //       );
+  //     }
+  //     });
+  //   });
+  // }
+
+  // useEffect(() => {
+  //   inscreverSocket();
+  // }, [stompClient]);
 
   // UseEffect para buscar o usuário assim que entrar na página
   useEffect(() => {
@@ -797,7 +626,7 @@ const HomeGerencia = (props) => {
 
   // Função para salvar o input de pesquisa quando houver alteração
   const salvarPesquisa = (e) => {
-    setValorPesquisa(e);
+    valorPesquisa = e;
   };
 
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto */
@@ -990,7 +819,7 @@ const HomeGerencia = (props) => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
         });
       });
     }
@@ -1107,7 +936,7 @@ const HomeGerencia = (props) => {
           break;
       }
 
-      recognition.onstart = () => {};
+      recognition.onstart = () => { };
 
       recognition.onresult = (event) => {
         const transcript =
@@ -1127,7 +956,7 @@ const HomeGerencia = (props) => {
   };
 
   useEffect(() => {
-    setValorPesquisa(palavrasJuntas);
+    valorPesquisa = palavrasJuntas;
   }, [palavrasJuntas]);
 
   const stopRecognition = () => {
@@ -1149,18 +978,178 @@ const HomeGerencia = (props) => {
   }, [escutar]);
 
   // ********************************************** Fim Funções de voz **********************************************
+
+
+  // ** Passos do Tour ** //
+
+  // Tour de ajuda
+  const stepsMinhasDemandas = [
+    {
+      selector: "#primeiroMinhasDemandas",
+      content: texts.homeGerencia.toursDemandas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiroDemandas",
+      content: texts.homeGerencia.toursDemandas.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#nonoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour9,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quintoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour5,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#sextoMinhasDemandas",
+      content: texts.homeGerencia.toursMinhasDemandas.tour6,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#oitavoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour8,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  //JSONs que contém as informações do tour
+  const stepsDemandas = [
+    {
+      selector: "#quartoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#primeiroDemandas",
+      content: texts.homeGerencia.toursDemandas.tour6,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#setimoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour7,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  const stepsCriarPropostas = [
+    {
+      selector: "#primeiroCriarPropostas",
+      content: texts.homeGerencia.toursCriarPropostas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  const stepsPropostas = [
+    {
+      selector: "#primeiroPropostas",
+      content: texts.homeGerencia.toursPropostas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPropostas",
+      content: texts.homeGerencia.toursPropostas.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#setimoDemandas",
+      content: texts.homeGerencia.toursPropostas.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  const stepsPautas = [
+    {
+      selector: "#primeiroPautas",
+      content: texts.homeGerencia.toursPautas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPautas",
+      content: texts.homeGerencia.toursPautas.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  const stepsAtas = [
+    {
+      selector: "#primeiroAtas",
+      content: texts.homeGerencia.toursAtas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -1168,7 +1157,7 @@ const HomeGerencia = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -1553,21 +1542,6 @@ const HomeGerencia = (props) => {
               <Box className="flex justify-between w-full">
                 {/* Container para o input e botão de filtrar */}
                 <Box className="flex gap-2 w-2/4 items-center">
-                  {/* Input de pesquisa */}
-                  {/* <InputPesquisa
-                  eventoTeclado={eventoTeclado}
-                  pesquisaTitulo={pesquisaTitulo}
-                  salvarPesquisa={salvarPesquisa}
-                  valorPesquisa={valorPesquisa}
-                  setValorPesquisa={setValorPesquisa}
-                  params={params}
-                  ordenacao={ordenacao}
-                  tamanhoPagina={tamanhoPagina}
-                  paginaAtual={paginaAtual}
-                  setListaItens={setListaItens}
-                  setTotalPaginas={setTotalPaginas}
-                  listaAutocomplete={listaAutocomplete}
-                /> */}
                   <Box
                     className="flex justify-between items-center border px-3 py-1"
                     sx={{
@@ -1597,7 +1571,6 @@ const HomeGerencia = (props) => {
                       onChange={(e) => {
                         salvarPesquisa(e.target.value);
                       }}
-                      value={valorPesquisa}
                     />
                     {/* Container para os ícones */}
                     <Box className="flex gap-2 items-center">
@@ -1833,7 +1806,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}

@@ -76,10 +76,7 @@ const BarraProgressaoDemanda = (props) => {
   const [modalConfirmacao, setOpenConfirmacao] = useState(false);
 
   /** Variável utilizada para mostrar o carregamento ao criar demanda */
-  const [carregamentoDemanda, setCarregamentoDemanda] = useState(false);
-
-  /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
-  const [carregamento, setCarregamento] = useState(true);
+  const [carregamentoDemanda, setCarregamentoDemanda] = useState(true);
 
   /** Variável para interromper o salvamento de escopos enquanto a demanda estiver sendo criada */
   let criandoDemanda = false;
@@ -129,15 +126,21 @@ const BarraProgressaoDemanda = (props) => {
       setTimeout(() => {
         salvarEscopo();
       }, 5000);
+
+      if (carregamentoDemanda) {
+        setCarregamentoDemanda(false);
+      }
     }
   }, [ultimoEscopo]);
 
-  // UseEffect para desativar o ícone de carregamento após ajustar as preferências do usuário
+  /** UseEffect para carregar a página quando o usuário for buscado */
   useEffect(() => {
-    setTimeout(() => {
-      setCarregamento(false);
-    }, 500);
-  }, [usuario]);
+    if (usuario) {
+      setTimeout(() => {
+        setCarregamentoDemanda(false);
+      }, 500)
+    }
+  }, [usuario])
 
   /** Função para buscar o usuário salvo no cookie de autenticação */
   const buscarUsuario = () => {
@@ -171,14 +174,7 @@ const BarraProgressaoDemanda = (props) => {
       receberBeneficios(response.beneficios);
       setPaginaArquivos(response.anexo);
 
-      setUltimoEscopo({
-        id: response.id,
-        titulo: response.titulo,
-        problema: response.problema,
-        proposta: response.proposta,
-        frequencia: response.frequencia,
-        // beneficios: formatarBeneficios(response.beneficios),
-      });
+      setUltimoEscopo({ ...response });
     });
   };
 

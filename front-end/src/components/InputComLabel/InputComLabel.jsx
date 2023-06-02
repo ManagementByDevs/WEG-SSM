@@ -9,6 +9,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Input padrão usado no sistema, com label acima */
 const InputComLabel = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -55,7 +56,7 @@ const InputComLabel = (props) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
         setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-        
+
       };
 
       recognition.onerror = (event) => {
@@ -72,13 +73,15 @@ const InputComLabel = (props) => {
   };
 
   useEffect(() => {
-    props.saveInputValue(palavrasJuntas);
+    if (palavrasJuntas) {
+      props.saveInputValue(palavrasJuntas);
+    }
   }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
+
     }
   };
 
@@ -96,18 +99,18 @@ const InputComLabel = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -115,7 +118,7 @@ const InputComLabel = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
