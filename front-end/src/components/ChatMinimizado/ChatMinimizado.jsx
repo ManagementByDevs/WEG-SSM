@@ -40,16 +40,13 @@ const ChatMinimizado = (props) => {
   const { visibilidade, setVisibilidade, idChat } = useContext(ChatContext);
 
   // Contexto para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // UseState para controlar o tamanho do chat ( minimizado ou não )
   const [minimizarChatMinimizado, setMinimizarChatMinimizado] = useState(false);
 
   // UseState para setar o tamanho do chat minimizado
   const [tamanhoChatMinimizado, setTamanhoChatMinimizado] = useState("24rem");
-
-  // UseState para receber o chat selecionado
-  const [chat, setChat] = useState({});
 
   // UseContext para o chat
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
@@ -71,23 +68,8 @@ const ChatMinimizado = (props) => {
   /** UseState para controlar o loading de mensagens */
   const [buscandoMensagens, setBuscandoMensagens] = useState(true);
 
-  /** UseState para feedback de chat encerrado */
-  const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
-
-  /** UseState para feedback de chat aberto */
-  const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
-
   /** UseState para feedback de que anexo é muito grande */
   const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
-
-  /** useState para abrir e fechar o tour */
-  const [isTourOpen, setIsTourOpen] = useState(false);
-
-  /** Modal de confiramação para encerrar o chat */
-  const [abrirModalEncerrarChat, setOpenModalEncerrarChat] = useState(false);
-
-  /** Modal de confirmação para reabrir o chat */
-  const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
 
   /** Lista de chats do usuário */
   const [listaChats, setListaChats] = useState([EntitiesObjectService.chat()]);
@@ -102,47 +84,6 @@ const ChatMinimizado = (props) => {
 
   /** Usuário logado */
   const [user, setUser] = useState(UsuarioService.getUserCookies());
-
-  /** UseState para poder visualizar e alterar a visibilidade do menu */
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  /** Variável que é usada para saber se o menu está aberto ou não */
-  const open = Boolean(anchorEl);
-
-  /** Função para abrir o menu */
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  /** Função para fechar o menu */
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  /** Hanlder para armazenar o contato selecionado */
-  const onChange = (evt) => {
-    setPesquisaContato(evt.target.value);
-  };
-
-  // Função para abrir o modal de confirmação para encerrar o chat
-  const abrirModalCancelarChat = () => {
-    setOpenModalEncerrarChat(true);
-  };
-
-  // Função para fechar o modal de confirmação para encerrar o chat
-  const fecharModalCancelarChat = () => {
-    setOpenModalEncerrarChat(false);
-  };
-
-  // Função para abrir o modal de confirmação para reabrir o chat
-  const abrirModalAbrirChat = () => {
-    setOpenModalReabrirChat(true);
-  };
-
-  // Função para fechar o modal de confirmação para reabrir o chat
-  const fecharModalAbrirChat = () => {
-    setOpenModalReabrirChat(false);
-  };
 
   const retornaConversaEncerrada = () => {
     for (let chatInput of listaChats) {
@@ -201,72 +142,6 @@ const ChatMinimizado = (props) => {
     }
   };
 
-  /** Atualiza o chat para encerrado */
-  const deletarChat = () => {
-    fecharModalCancelarChat();
-    ChatService.getByIdChat(idChat).then((e) => {
-      ChatService.put(
-        {
-          ...e,
-          conversaEncerrada: true,
-        },
-        idChat
-      ).then((e) => {
-        setFeedbackChatEncerrado(true);
-        listaChats.map((chat) => {
-          if (chat.id == idChat) {
-            let aux = [...listaChats];
-            aux.splice(listaChats.indexOf(chat), 1, {
-              ...chat,
-              conversaEncerrada: true,
-            });
-            setListaChats(aux);
-          }
-        });
-      });
-    });
-  };
-
-  /** Atualiza o chat para não encerrado */
-  const abrirChat = () => {
-    fecharModalAbrirChat();
-    ChatService.getByIdChat(idChat).then((e) => {
-      ChatService.put(
-        {
-          ...e,
-          conversaEncerrada: false,
-        },
-        idChat
-      ).then((e) => {
-        setFeedbackChatAberto(true);
-        for (let chat of listaChats) {
-          if (chat.id == idChat) {
-            let aux = [...listaChats];
-            aux.splice(listaChats.indexOf(chat), 1, {
-              ...chat,
-              conversaEncerrada: false,
-            });
-            setListaChats(aux);
-            return;
-          }
-        }
-      });
-    });
-  };
-
-  /** Verifica se o chat está encerrado */
-  const isConversaEncerrada = () => {
-    for (let chatInput of listaChats) {
-      if (chatInput.id == idChat) {
-        if (chatInput.conversaEncerrada) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  };
-
   /** Envia um anexo para o tópico caso ele seja menor que 64KB */
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -315,7 +190,9 @@ const ChatMinimizado = (props) => {
 
       let listaChatsAux = JSON.parse(JSON.stringify(oldListaChats));
       let chatAux = listaChatsAux.find((chat) => chat.id == idChat);
-      chatAux.msgNaoLidas = 0;
+      if(chatAux) {
+        chatAux.msgNaoLidas = 0;
+      }
 
       return [...listaChatsAux];
     });
