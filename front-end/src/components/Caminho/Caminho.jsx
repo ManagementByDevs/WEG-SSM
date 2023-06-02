@@ -54,13 +54,13 @@ const Caminho = (props) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -68,7 +68,7 @@ const Caminho = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -86,16 +86,7 @@ const Caminho = (props) => {
           className="cursor-pointer"
           sx={{ fontSize: "32px" }}
           onClick={() => {
-            if (!CookieService.getCookie()) navigate("/");
-            UsuarioService.getUsuarioByEmail(
-              CookieService.getCookie().sub
-            ).then((usuario) => {
-              if (usuario.tipoUsuario == "SOLICITANTE") {
-                navigate("/home");
-              } else {
-                navigate("/home-gerencia");
-              }
-            });
+            navigate("/");
           }}
         />
       </Tooltip>

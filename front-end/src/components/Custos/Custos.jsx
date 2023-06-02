@@ -181,7 +181,7 @@ const Custos = (props) => {
           {/* Criação da tabela e adicionando as informações nela */}
           <Paper className="w-full mr-3 pb-1" sx={{ marginTop: "1%" }}>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: "90%" }} aria-label="customized table">
+              <Table sx={{ minWidth: "90%", alignItems: "center" }} aria-label="customized table">
                 <TableHead sx={{ backgroundColor: "primary.main" }}>
                   <TableRow>
                     <th
