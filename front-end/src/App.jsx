@@ -35,6 +35,8 @@ import TextLanguageContext from "./service/TextLanguageContext";
 import ChatContext from "./service/ChatContext";
 import CookieService from "./service/cookieService";
 import { WebSocketService } from "./service/WebSocketService";
+import { SpeechRecognitionService } from "./service/SpeechRecognitionService";
+import { SpeechSynthesisService } from "./service/SpeechSynthesisService";
 
 const App = () => {
   const [FontConfig, setFontConfig] = useState({
@@ -93,177 +95,136 @@ const App = () => {
         <TextLanguageContext.Provider value={textLanguage}>
           <ChatContext.Provider value={miniChat}>
             <WebSocketService>
-              <Router>
-                <LerTexto
-                  setLendo={setLendoTexto}
-                  lendo={lendoTexto}
-                />
-                <VLibras forceOnload />
-                <Routes>
-                  <Route
-                    path="/login"
-                    element={
-                      <Login
-                        lendo={lendoTexto}
+              <SpeechRecognitionService>
+                <SpeechSynthesisService>
+                  <Router>
+                    <LerTexto setLendo={setLendoTexto} lendo={lendoTexto} />
+                    <VLibras forceOnload />
+                    <Routes>
+                      <Route
+                        path="/login"
+                        element={<Login lendo={lendoTexto} />}
                       />
-                    }
-                  />
-                  <Route element={<ProtectedRoute />}>
-                    <Route
-                      path="/criar-demanda"
-                      element={
-                        <CriarDemanda
-                          lendo={lendoTexto}
+                      <Route element={<ProtectedRoute />}>
+                        <Route
+                          path="/criar-demanda"
+                          element={<CriarDemanda lendo={lendoTexto} />}
                         />
-                      }
-                    />
-                    <Route
-                      path="/notificacao"
-                      element={
-                        <Notificacao
-                          lendo={lendoTexto}
+                        <Route
+                          path="/notificacao"
+                          element={<Notificacao lendo={lendoTexto} />}
                         />
-                      }
-                    />
-                    <Route
-                      path="/chat"
-                      element={
-                        <Chat
-                          lendo={lendoTexto}
+                        <Route
+                          path="/chat"
+                          element={<Chat lendo={lendoTexto} />}
                         />
-                      }
-                    />
-                    <Route
-                      path="/chat/:id"
-                      element={
-                        <Chat
-                          lendo={lendoTexto}
+                        <Route
+                          path="/chat/:id"
+                          element={<Chat lendo={lendoTexto} />}
                         />
-                      }
-                    />
-                    <Route
-                      path="/detalhes-demanda"
-                      element={
-                        <DetalhesDemandaPagina
-                          lendo={lendoTexto}
+                        <Route
+                          path="/detalhes-demanda"
+                          element={<DetalhesDemandaPagina lendo={lendoTexto} />}
                         />
-                      }
-                    />
-                    <Route
-                      path="/editar-escopo"
-                      element={
-                        <EditarEscopo
-                          lendo={lendoTexto}
+                        <Route
+                          path="/editar-escopo"
+                          element={<EditarEscopo lendo={lendoTexto} />}
                         />
-                      }
-                    />
-                    <Route
-                      path="/escopos"
-                      element={
-                        <Escopos
-                          lendo={lendoTexto}
+                        <Route
+                          path="/escopos"
+                          element={<Escopos lendo={lendoTexto} />}
                         />
-                      }
-                    />
-                    <Route
-                      path="*"
-                      element={
-                        <NotFound
-                          lendo={lendoTexto}
+                        <Route
+                          path="*"
+                          element={<NotFound lendo={lendoTexto} />}
                         />
-                      }
-                    />
-                    {/* <Route path="/test" element={<Test />} /> */}
-                  </Route>
-                  <Route
-                    path="/editar-escopo"
-                    element={
-                      <EditarEscopo
-                        lendo={lendoTexto}
+                        {/* <Route path="/test" element={<Test />} /> */}
+                      </Route>
+                      <Route
+                        path="/editar-escopo"
+                        element={<EditarEscopo lendo={lendoTexto} />}
                       />
-                    }
-                  />
-                  <Route
-                    path="/escopos"
-                    element={
-                      <Escopos
-                        lendo={lendoTexto}
+                      <Route
+                        path="/escopos"
+                        element={<Escopos lendo={lendoTexto} />}
                       />
-                    }
-                  />
-                  <Route
-                    path="*"
-                    element={
-                      <NotFound
-                        lendo={lendoTexto}
+                      <Route
+                        path="*"
+                        element={<NotFound lendo={lendoTexto} />}
                       />
-                    }
-                  />
-                  {/* <Route path="/test" element={<Test />} /> */}
-                  <Route
-                    path="/"
-                    element={
-                      <ProtectedRoute>
-                        <DetermineHomeUser
-                          lendo={lendoTexto}
-                        />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/criar-proposta"
-                    element={
-                      <ProtectedRoute
-                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/"
-                      >
-                        <CriarProposta
-                          lendo={lendoTexto}
-                        />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/detalhes-proposta/:id"
-                    element={
-                      <ProtectedRoute
-                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/"
-                      >
-                        <DetalhesPropostaPagina
-                          lendo={lendoTexto}
-                        />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="detalhes-ata"
-                    element={
-                      <ProtectedRoute
-                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/"
-                      >
-                        <DetalhesAta
-                          lendo={lendoTexto}
-                        />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="detalhes-pauta"
-                    element={
-                      <ProtectedRoute
-                        tiposUsuarioAllowed={["ANALISTA", "GERENTE", "GESTOR"]}
-                        redirectPath="/"
-                      >
-                        <DetalhesPauta
-                          lendo={lendoTexto}
-                        />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Routes>
-              </Router>
+                      {/* <Route path="/test" element={<Test />} /> */}
+                      <Route
+                        path="/"
+                        element={
+                          <ProtectedRoute>
+                            <DetermineHomeUser lendo={lendoTexto} />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="/criar-proposta"
+                        element={
+                          <ProtectedRoute
+                            tiposUsuarioAllowed={[
+                              "ANALISTA",
+                              "GERENTE",
+                              "GESTOR",
+                            ]}
+                            redirectPath="/"
+                          >
+                            <CriarProposta lendo={lendoTexto} />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="/detalhes-proposta/:id"
+                        element={
+                          <ProtectedRoute
+                            tiposUsuarioAllowed={[
+                              "ANALISTA",
+                              "GERENTE",
+                              "GESTOR",
+                            ]}
+                            redirectPath="/"
+                          >
+                            <DetalhesPropostaPagina lendo={lendoTexto} />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="detalhes-ata"
+                        element={
+                          <ProtectedRoute
+                            tiposUsuarioAllowed={[
+                              "ANALISTA",
+                              "GERENTE",
+                              "GESTOR",
+                            ]}
+                            redirectPath="/"
+                          >
+                            <DetalhesAta lendo={lendoTexto} />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="detalhes-pauta"
+                        element={
+                          <ProtectedRoute
+                            tiposUsuarioAllowed={[
+                              "ANALISTA",
+                              "GERENTE",
+                              "GESTOR",
+                            ]}
+                            redirectPath="/"
+                          >
+                            <DetalhesPauta lendo={lendoTexto} />
+                          </ProtectedRoute>
+                        }
+                      />
+                    </Routes>
+                  </Router>
+                </SpeechSynthesisService>
+              </SpeechRecognitionService>
             </WebSocketService>
           </ChatContext.Provider>
         </TextLanguageContext.Provider>
@@ -296,15 +257,9 @@ const DetermineHomeUser = (props) => {
   const userJpa = CookieService.getCookie("user");
 
   if (userJpa.authorities[0].authority == "SOLICITANTE") {
-    return (
-      <Home lendo={props.lendo} />
-    );
+    return <Home lendo={props.lendo} />;
   } else {
-    return (
-      <HomeGerencia
-        lendo={props.lendo}
-      />
-    );
+    return <HomeGerencia lendo={props.lendo} />;
   }
 };
 

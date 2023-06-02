@@ -21,10 +21,7 @@ import ExportPdfService from "../../service/exportPdfService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Página que mostra os detalhes da proposta selecionada, com opção de download para pdf
-const DetalhesPropostaPagina = ({
-  lendo = false,
-}) => {
-  
+const DetalhesPropostaPagina = ({ lendo = false }) => {
   // Location utilizado para pegar os dados da demanda
   const location = useLocation();
 
