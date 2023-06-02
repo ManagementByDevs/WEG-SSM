@@ -33,7 +33,7 @@ const IdiomaModal = (props) => {
   const { texts, setTexts } = useContext(TextLanguageContext);
 
   // UseState para poder visualizar e alterar a imagem da linguagem selecionada (Valor padrão é Brasil)
-  const [idioma, setIdioma] = useState(Brasil);
+  const [idioma, setIdioma] = useState();
 
   // UseState para poder visualizar e alterar o menu do idioma
   const [anchorEl, setAnchorEl] = useState(null);
@@ -104,8 +104,6 @@ const IdiomaModal = (props) => {
           case Espanha:
             preferencias.lang = "es";
             break;
-          default:
-            preferencias.lang = "pt";
         }
 
         user.preferencias = JSON.stringify(preferencias);
@@ -119,6 +117,19 @@ const IdiomaModal = (props) => {
   useEffect(() => {
     saveNewPreference();
   }, [idioma]);
+
+  useEffect(() => {
+    if (!CookieService.getCookie("jwt")) return;
+    UsuarioService.getPreferencias(CookieService.getCookie("jwt")?.sub).then(
+      
+      (preferencias) => {
+        if (preferencias.lang == "pt") setIdioma(Brasil);
+        else if (preferencias.lang == "ch") setIdioma(China);
+        else if (preferencias.lang == "en") setIdioma(EstadosUnidos);
+        else if (preferencias.lang == "es") setIdioma(Espanha);
+      }
+    );
+  }, []);
   // ********************************************** Fim Preferências **********************************************
 
   // Função que irá setar o texto que será "lido" pela a API
@@ -126,13 +137,13 @@ const IdiomaModal = (props) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -140,7 +151,7 @@ const IdiomaModal = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };

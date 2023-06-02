@@ -17,6 +17,7 @@ const TextLanguage = (linguagem) => {
           botaoCriar: "Criar",
           botaoProximo: "Próximo",
           mensagemFeedback: "Preencha todos os campos obrigatórios!",
+          demandaCriada: "Demanda Criada"
         },
         barraProgressaoProposta: {
           proposta: "Proposta",
@@ -928,6 +929,7 @@ const TextLanguage = (linguagem) => {
           botaoCriar: "Create",
           botaoProximo: "Next",
           mensagemFeedback: "You must fill in all the required fields!",
+          demandaCriada: "Demand Created",
         },
         barraProgressaoProposta: {
           proposta: "Proposal",
@@ -1836,6 +1838,7 @@ const TextLanguage = (linguagem) => {
           botaoCriar: "创建",
           botaoProximo: "下一个",
           mensagemFeedback: "您必须填写所有字段！",
+          demandaCriada: "需求已创建",
         },
         barraProgressaoProposta: {
           proposta: "提案",
@@ -2711,6 +2714,7 @@ const TextLanguage = (linguagem) => {
           botaoCriar: "Crear",
           botaoProximo: "Siguiente",
           mensagemFeedback: "¡Rellena todos los campos obligatorios!",
+          demandaCriada: "Demanda Creada",
         },
         barraProgressaoProposta: {
           proposta: "Propuesta",

@@ -27,20 +27,20 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import { WebSocketContext } from "../../service/WebSocketService";
 import anexoService from "../../service/anexoService";
 
-// Componente utilizado para representar a versão minimizada do chat
+/** Componente utilizado para representar a versão minimizada do chat */
 const ChatMinimizado = (props) => {
 
-  // Contexto para trocar a linguagem
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Navigate utilizado para nevegar para uma outra página
+  /** Contexto para alterar o tamanho da fonte */
+  const { FontConfig } = useContext(FontContext);
+
+  /** Navigate utilizado para nevegar para uma outra página */
   const navigate = useNavigate();
 
-  // Contexto para controlar a visibilidade do chat
+  /** Contexto para controlar a visibilidade do chat */
   const { visibilidade, setVisibilidade, idChat } = useContext(ChatContext);
-
-  // Contexto para alterar o tamanho da fonte
-  const { FontConfig } = useContext(FontContext);
 
   // UseState para controlar o tamanho do chat ( minimizado ou não )
   const [minimizarChatMinimizado, setMinimizarChatMinimizado] = useState(false);
@@ -61,9 +61,7 @@ const ChatMinimizado = (props) => {
   const [pesquisaContato, setPesquisaContato] = useState("");
 
   /** UseState para armazenar os resultados da pesquisa */
-  const [resultadosContato, setResultadosContato] = useState([
-    EntitiesObjectService.chat(),
-  ]);
+  const [resultadosContato, setResultadosContato] = useState([EntitiesObjectService.chat()]);
 
   /** UseState para controlar o loading de mensagens */
   const [buscandoMensagens, setBuscandoMensagens] = useState(true);
@@ -78,13 +76,159 @@ const ChatMinimizado = (props) => {
   const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
 
   /** Todas as mensagens do chat selecionado */
-  const [mensagens, setMensagens] = useState([
-    EntitiesObjectService.mensagem(),
-  ]);
+  const [mensagens, setMensagens] = useState([EntitiesObjectService.mensagem()]);
 
   /** Usuário logado */
   const [user, setUser] = useState(UsuarioService.getUserCookies());
 
+  /** useEffect utilizado para carregar os chats */
+  useEffect(() => {
+    if (idChat) carregar();
+    buscarChats();
+  }, [idChat]);
+
+  /** useEffect utilizado para receber uma mensagem  */
+  useEffect(() => {
+    const receivedAnyMessage = (mensagem) => {
+      let mensagemRecebida = EntitiesObjectService.mensagem();
+      mensagemRecebida = JSON.parse(mensagem.body);
+      let idChatAux = idChat;
+
+      // Se a mensagem recebida for do usuário logado, ignore
+      if (mensagemRecebida.usuario.id == user.usuario.id) {
+        return;
+      }
+
+      // Se a mensagem recebida for do chat atual, ignore
+      if (mensagemRecebida.idChat.id == idChatAux) {
+        return;
+      }
+
+      setListaChats((oldListaChats) => {
+        let listaAux = JSON.parse(JSON.stringify(oldListaChats));
+
+        let chatAux = listaAux.find(
+          (chat) => chat.id == mensagemRecebida.idChat.id
+        );
+
+        chatAux.msgNaoLidas = chatAux.msgNaoLidas + 1;
+        return [...listaAux];
+      });
+    };
+
+    let inscricaoAllMensagens = inscrever(
+      `/weg_ssm/mensagem/all/user/${user.usuario.id}`,
+      receivedAnyMessage
+    );
+
+    return () => {
+      if (inscricaoAllMensagens) {
+        inscricaoAllMensagens.unsubscribe();
+      }
+    };
+  }, [stompClient]);
+
+  /** useEffect utilizado para mandar uma nova mensagem */
+  useEffect(() => {
+    const acaoNovaMensagem = (response) => {
+      const mensagemRecebida = JSON.parse(response.body);
+      let mensagemNova = {
+        ...mensagemRecebida.body,
+        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
+      };
+
+      // Se o remetente não for o usuário, tenho que notificar a visualização
+      if (mensagemNova.usuario.id != user.usuario.id) {
+        mensagemNova.visto = true;
+        enviar(
+          `/app/weg_ssm/mensagem/chat/${idChat}/visto`,
+          JSON.stringify({
+            ...mensagemNova,
+            texto: mensagemNova.texto.replace(/\n/g, "%BREAK%"),
+          })
+        );
+      } else {
+        clearNewMessages();
+      }
+
+      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
+    };
+
+    const readMessage = (mensagem) => {
+
+      if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
+        clearNewMessages();
+        return;
+      }
+
+      setMensagens((oldMensagens) => {
+        for (let oldMensagem of oldMensagens) {
+          if (!oldMensagem.visto) {
+            oldMensagem.visto = true;
+          }
+        }
+
+        return [...oldMensagens];
+      });
+    };
+
+    if (idChat) {
+      let inscricaoId = inscrever(
+        `/weg_ssm/mensagem/${idChat}/chat`,
+        acaoNovaMensagem
+      );
+
+      let inscricaoVerMensagem = inscrever(
+        `/weg_ssm/mensagem/chat/${idChat}/visto`,
+        readMessage
+      );
+
+      return () => {
+        if (inscricaoId) {
+          inscricaoId.unsubscribe();
+          inscricaoVerMensagem.unsubscribe();
+        }
+      };
+    }
+  }, [stompClient, idChat]);
+
+  /** useEffect utilizado para pesquisa de chats */
+  useEffect(() => {
+    let listaChatsAux = listaChats.filter((chat) => {
+      /** Pesquisa por código PPM */
+      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
+        return true;
+      }
+
+      /** Pesquisa pelo título da proposta */
+      if (
+        chat.idProposta.titulo
+          .toLowerCase()
+          .includes(pesquisaContato.toLowerCase())
+      ) {
+        return true;
+      }
+
+      /** Pesquisa pelo nome do contato */
+      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
+        return true;
+      }
+    });
+    setResultadosContato([...listaChatsAux]);
+  }, [pesquisaContato, listaChats, idChat]);
+
+  /** useEffect utilizado para colocar scroll no chat */
+  useEffect(() => {
+    setBuscandoMensagens(false);
+
+    const boxElement = boxRef.current;
+
+    if (boxElement) {
+      boxElement.scrollTop = boxElement.scrollHeight;
+    }
+  }, [mensagens]);
+
+  /** Função para retornar uma conversa que ja foi encerrada */
   const retornaConversaEncerrada = () => {
     for (let chatInput of listaChats) {
       if (chatInput.id == idChat) {
@@ -97,6 +241,7 @@ const ChatMinimizado = (props) => {
     return false;
   };
 
+  /** Funlão para pegar o id do destinatário do chat */
   const getIdDestinatario = () => {
     if (!idChat) return 0;
 
@@ -184,13 +329,14 @@ const ChatMinimizado = (props) => {
     setDefaultMensagem();
   };
 
+  /** Marca as notificações como vistas */
   const clearNewMessages = () => {
     setListaChats((oldListaChats) => {
       if (oldListaChats.length == 0) return;
 
       let listaChatsAux = JSON.parse(JSON.stringify(oldListaChats));
       let chatAux = listaChatsAux.find((chat) => chat.id == idChat);
-      if(chatAux) {
+      if (chatAux) {
         chatAux.msgNaoLidas = 0;
       }
 
@@ -198,116 +344,7 @@ const ChatMinimizado = (props) => {
     });
   };
 
-  // ***************************************** UseEffects ***************************************** //
-
-  useEffect(() => {
-    if (idChat) carregar();
-    buscarChats();
-  }, [idChat]);
-
-  useEffect(() => {
-    const receivedAnyMessage = (mensagem) => {
-      let mensagemRecebida = EntitiesObjectService.mensagem();
-      mensagemRecebida = JSON.parse(mensagem.body);
-      let idChatAux = idChat;
-
-      // Se a mensagem recebida for do usuário logado, ignore
-      if (mensagemRecebida.usuario.id == user.usuario.id) {
-        return;
-      }
-
-      // Se a mensagem recebida for do chat atual, ignore
-      if (mensagemRecebida.idChat.id == idChatAux) {
-        return;
-      }
-
-      setListaChats((oldListaChats) => {
-        let listaAux = JSON.parse(JSON.stringify(oldListaChats));
-
-        let chatAux = listaAux.find(
-          (chat) => chat.id == mensagemRecebida.idChat.id
-        );
-
-        chatAux.msgNaoLidas = chatAux.msgNaoLidas + 1;
-        return [...listaAux];
-      });
-    };
-
-    let inscricaoAllMensagens = inscrever(
-      `/weg_ssm/mensagem/all/user/${user.usuario.id}`,
-      receivedAnyMessage
-    );
-
-    return () => {
-      if (inscricaoAllMensagens) {
-        inscricaoAllMensagens.unsubscribe();
-      }
-    };
-  }, [stompClient]);
-
-  useEffect(() => {
-    const acaoNovaMensagem = (response) => {
-      const mensagemRecebida = JSON.parse(response.body);
-      let mensagemNova = {
-        ...mensagemRecebida.body,
-        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
-      };
-
-      // Se o remetente não for o usuário, tenho que notificar a visualização
-      if (mensagemNova.usuario.id != user.usuario.id) {
-        mensagemNova.visto = true;
-        enviar(
-          `/app/weg_ssm/mensagem/chat/${idChat}/visto`,
-          JSON.stringify({
-            ...mensagemNova,
-            texto: mensagemNova.texto.replace(/\n/g, "%BREAK%"),
-          })
-        );
-      } else {
-        clearNewMessages();
-      }
-
-      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
-    };
-
-    const readMessage = (mensagem) => {
-
-      if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
-        clearNewMessages();
-        return;
-      }
-
-      setMensagens((oldMensagens) => {
-        for (let oldMensagem of oldMensagens) {
-          if (!oldMensagem.visto) {
-            oldMensagem.visto = true;
-          }
-        }
-
-        return [...oldMensagens];
-      });
-    };
-
-    if (idChat) {
-      let inscricaoId = inscrever(
-        `/weg_ssm/mensagem/${idChat}/chat`,
-        acaoNovaMensagem
-      );
-
-      let inscricaoVerMensagem = inscrever(
-        `/weg_ssm/mensagem/chat/${idChat}/visto`,
-        readMessage
-      );
-
-      return () => {
-        if (inscricaoId) {
-          inscricaoId.unsubscribe();
-          inscricaoVerMensagem.unsubscribe();
-        }
-      };
-    }
-  }, [stompClient, idChat]);
-
+  /** Função para verificar se um usuário está na lista */
   const containsUser = (
     usuarios = [EntitiesObjectService.usuario()],
     idUserLogado = 0,
@@ -319,61 +356,67 @@ const ChatMinimizado = (props) => {
     );
   };
 
-  /** UseState para armazenar o contato selecionado */
-  useEffect(() => {
-    let listaChatsAux = listaChats.filter((chat) => {
-      // Pesquisa por código PPM
-      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
-        return true;
+  /** Função que irá setar o texto que será "lido" pela a API */
+  const lerTexto = (escrita) => {
+    if (props.lendo) {
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (props.lendo && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
       }
 
-      // Pesquisa pelo título da proposta
-      if (
-        chat.idProposta.titulo
-          .toLowerCase()
-          .includes(pesquisaContato.toLowerCase())
-      ) {
-        return true;
-      }
-
-      // Pesquisa pelo nome do contato
-      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
-        return true;
-      }
-    });
-    setResultadosContato([...listaChatsAux]);
-  }, [pesquisaContato, listaChats, idChat]);
-
-  useEffect(() => {
-    setBuscandoMensagens(false);
-    const boxElement = boxRef.current;
-    // Colocando o scroll para a última mensagem recebida
-    if (boxElement) {
-      boxElement.scrollTop = boxElement.scrollHeight;
+      return () => {
+        finalizarLeitura();
+      };
     }
-  }, [mensagens]);
+  };
 
-  // ***************************************** Fim UseEffects ***************************************** //
+  /** Função para minimizar o chat */
+  const sumir = keyframes({
+    from: { height: "24rem" },
+    to: { height: "2.88rem" },
+  });
+
+  /** Função para abrir o chat */
+  const aparecer = keyframes({
+    from: { height: "2.88rem" },
+    to: { height: "24rem" },
+  });
 
   // // ********************************************** Gravar audio **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
+  /** Variável para abrir o feedbcak de navegador incompatível */
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
 
+  /** Variável para abrir o feedback de erro ao reconhecer voz */
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+
+  /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
 
+  /** Variável utilizada para ativar o microfone para gravação de audio */
   const [escutar, setEscutar] = useState(false);
 
+  /** Varíavel utilizada para armazenar o local onde foi clicado */
   const [localClicado, setLocalClicado] = useState("");
 
+  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
   const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
+  /** Função para gravar audio nos inputs */
   const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
+    /** Verifica se a API é suportada pelo navegador */
     if ("webkitSpeechRecognition" in window) {
       const recognition = new window.webkitSpeechRecognition();
       recognition.continuous = true;
@@ -418,6 +461,7 @@ const ChatMinimizado = (props) => {
     }
   };
 
+  /** useEffect utilizado para armazenar as palavras juntas dependendo do local onde foi clicado */
   useEffect(() => {
     switch (localClicado) {
       case "titulo":
@@ -431,17 +475,20 @@ const ChatMinimizado = (props) => {
     }
   }, [palavrasJuntas]);
 
+  /** Função para encerrar a gravação de voz */
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
   };
 
+  /** Função para iniciar a gravação de voz */
   const startRecognition = (ondeClicou) => {
     setEscutar(!escutar);
     setLocalClicado(ondeClicou);
   };
 
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
   useEffect(() => {
     if (escutar) {
       ouvirAudio();
@@ -449,45 +496,6 @@ const ChatMinimizado = (props) => {
       stopRecognition();
     }
   }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
-  // Função para minimizar o chat
-  const sumir = keyframes({
-    from: { height: "24rem" },
-    to: { height: "2.88rem" },
-  });
-
-  // Função para abrir o chat
-  const aparecer = keyframes({
-    from: { height: "2.88rem" },
-    to: { height: "24rem" },
-  });
 
   return (
     <Box

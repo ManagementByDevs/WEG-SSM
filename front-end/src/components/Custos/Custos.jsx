@@ -12,19 +12,28 @@ import FontContext from "../../service/FontContext";
 import CustosService from "../../service/custosService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
-// Componente utilizado para representar a tabela de custos utilizada na proposta
+/** Componente utilizado para representar a tabela de custos utilizada na proposta */
 const Custos = (props) => {
 
-  // Contexto para trocar a linguagem
+  /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // UseState para armazenar as horas totais dos custos
+  /** UseState para armazenar as horas totais dos custos */
   const [horasTotais, setHorasTotais] = useState(0);
 
-  // UseEffect para atualizar as horas totais dos custos
+  /** UseState para armazenar o valor total dos custos */
+  const [valorTotal, setValorTotal] = useState(0);
+
+  /** UseState para armazenar a porcentagem total dos custos */
+  const [porcentagemTotal, setPorcentagemTotal] = useState(0);
+
+  /** UseState para armazenar o valor do tipo da despesa */
+  const [tipoDespesa, setTipoDespesa] = useState("");
+
+  /** UseEffect para atualizar as horas totais dos custos */
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].custos.length; i++) {
@@ -33,10 +42,7 @@ const Custos = (props) => {
     setHorasTotais(aux);
   }, [props.custos]);
 
-  // UseState para armazenar o valor total dos custos
-  const [valorTotal, setValorTotal] = useState(0);
-
-  // UseEffect para atualizar o valor total dos custos
+  /** UseEffect para atualizar o valor total dos custos */
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].custos.length; i++) {
@@ -45,10 +51,7 @@ const Custos = (props) => {
     setValorTotal(aux.toFixed(2));
   }, [props.custos]);
 
-  // UseState para armazenar a porcentagem total dos custos
-  const [porcentagemTotal, setPorcentagemTotal] = useState(0);
-
-  // UseEffect para atualizar a porcentagem total dos custos
+  /** UseEffect para atualizar a porcentagem total dos custos */
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].ccs.length; i++) {
@@ -56,6 +59,11 @@ const Custos = (props) => {
     }
     setPorcentagemTotal(aux);
   }, [props.custos]);
+
+  /** useEffec para alterar o tipo de despesa do select */
+  useEffect(() => {
+    setTipoDespesa(props.custos[props.index].tipoDespesa);
+  }, [props.custos])
 
   /** Função para criar um custo no banco de dados e adicioná-lo como uma linha na tabela */
   const adicionarLinhaCustos = () => {
@@ -81,7 +89,7 @@ const Custos = (props) => {
     });
   };
 
-  // Função para adicionar uma nova linha de CC no centro de custos
+  /** Função para adicionar uma nova linha de CC no centro de custos */
   const adicionarLinhaCC = () => {
     CustosService.postCC({ codigo: 0, porcentagem: 0 }).then((response) => {
       let custosNovos = [...props.custos];
@@ -90,7 +98,7 @@ const Custos = (props) => {
     });
   };
 
-  // Função para tirar uma linha de CC do centro de custos
+  /** Função para tirar uma linha de CC do centro de custos */
   const deletarLinhaCC = (ccId, indexCC) => {
     CustosService.deleteCC(ccId).then((response) => {
       let custosNovos = [...props.custos];
@@ -99,18 +107,18 @@ const Custos = (props) => {
     });
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
-   const lerTexto = (escrita) => {
+  /** Função que irá setar o texto que será "lido" pela a API */
+  const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -118,19 +126,14 @@ const Custos = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
     }
   };
 
-  const [tipoDespesa, setTipoDespesa] = useState("");
-
-  useEffect(() => {
-    setTipoDespesa(props.custos[props.index].tipoDespesa);
-  }, [props.custos])
-
+  /** handleChance para selecionar o tipo de despesa do custo */
   const handleChange = (tipo) => {
     let aux = [...props.custos];
     aux[props.index].tipoDespesa = tipo.target.value;
@@ -181,7 +184,7 @@ const Custos = (props) => {
           {/* Criação da tabela e adicionando as informações nela */}
           <Paper className="w-full mr-3 pb-1" sx={{ marginTop: "1%" }}>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: "90%" }} aria-label="customized table">
+              <Table sx={{ minWidth: "90%", alignItems: "center" }} aria-label="customized table">
                 <TableHead sx={{ backgroundColor: "primary.main" }}>
                   <TableRow>
                     <th

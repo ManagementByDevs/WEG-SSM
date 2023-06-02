@@ -391,7 +391,6 @@ const Escopos = ({ lendo = false }) => {
                     fontSize: FontConfig.medium,
                   }}
                   placeholder={texts.escopos.pesquisarPorTitulo}
-                  value={inputPesquisa}
                   onChange={(e) => salvarPesquisa(e)}
                   onKeyDown={(e) => {
                     eventoTeclado(e);

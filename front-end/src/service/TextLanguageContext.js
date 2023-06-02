@@ -18,6 +18,7 @@ const TextLanguageContext = createContext({
       botaoCriar: "Criar",
       botaoProximo: "Próximo",
       mensagemFeedback: "Preencha todos os campos obrigatórios!",
+      demandaCriada: "Demanda Criada"
     },
     barraProgressaoProposta: {
       proposta: "Proposta",
