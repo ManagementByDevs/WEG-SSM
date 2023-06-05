@@ -73,14 +73,12 @@ const LinhaTabelaCCs = (props) => {
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
         setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-        
       };
 
       recognition.onerror = (event) => {
@@ -98,24 +96,23 @@ const LinhaTabelaCCs = (props) => {
 
   useEffect(() => {
     let aux = [...props.custos];
-        switch (localClicado) {
-          case "codigoCcs":
-            aux[props.indexCusto].ccs[props.index].codigo = palavrasJuntas;
-            props.setCustos(aux);
-            break;
-          case "porcentagemCcs":
-            aux[props.indexCusto].ccs[props.index].porcentagem = palavrasJuntas;
-            props.setCustos(aux);
-            break;
-          default:
-            break;
-        }
+    switch (localClicado) {
+      case "codigoCcs":
+        aux[props.indexCusto].ccs[props.index].codigo = palavrasJuntas;
+        props.setCustos(aux);
+        break;
+      case "porcentagemCcs":
+        aux[props.indexCusto].ccs[props.index].porcentagem = palavrasJuntas;
+        props.setCustos(aux);
+        break;
+      default:
+        break;
+    }
   }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -133,6 +130,21 @@ const LinhaTabelaCCs = (props) => {
   }, [escutar]);
 
   // // ********************************************** Fim Gravar audio **********************************************
+
+  function verificarCaracteres(valorDigitado) {
+    let temLetra = false;
+    for (let i = 0; i < valorDigitado.length; i++) {
+      const caracter = valorDigitado[i];
+
+      if (isNaN(caracter) && caracter !== "," && caracter !== ".") {
+        temLetra = true;
+        break;
+      } else {
+        temLetra = false;
+      }
+    }
+    return temLetra;
+  }
 
   return (
     <TableRow className="border-b">
@@ -234,10 +246,14 @@ const LinhaTabelaCCs = (props) => {
               }}
               value={props.dados.ccs[props.index].porcentagem || ""}
               onChange={(e) => {
-                let aux = [...props.custos];
-                aux[props.indexCusto].ccs[props.index].porcentagem =
-                  e.target.value;
-                props.setCustos(aux);
+                if (!verificarCaracteres(e.target.value)) {
+                  if (e.target.value <= 100) {
+                    let aux = [...props.custos];
+                    aux[props.indexCusto].ccs[props.index].porcentagem =
+                      e.target.value;
+                    props.setCustos(aux);
+                  }
+                }
               }}
             />
             <Tooltip

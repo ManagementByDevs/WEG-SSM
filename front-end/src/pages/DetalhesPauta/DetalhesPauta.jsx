@@ -18,7 +18,7 @@ import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
 import DeleteIcon from "@mui/icons-material/Delete";
-import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
+import AddHomeOutlinedIcon from '@mui/icons-material/AddHomeOutlined';
 
 import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -907,7 +907,8 @@ const DetalhesPauta = (props) => {
                   color: "#FFFF",
                 }}
               >
-                <PostAddOutlinedIcon fontSize="large" />
+
+                <AddHomeOutlinedIcon sx={{transform: 'rotate(180deg) scaleX(-1)', fontSize: "32px"}} />
               </Box>
             </Tooltip>
           </Box>

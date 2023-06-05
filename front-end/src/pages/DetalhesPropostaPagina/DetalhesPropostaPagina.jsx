@@ -8,6 +8,7 @@ import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
+import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -110,7 +111,7 @@ const DetalhesPropostaPagina = ({ lendo = false }) => {
                 sx={{ borderRadius: "9999px" }}
                 onClick={adicionarAPauta}
               >
-                <BookmarkAddIcon
+                <PostAddOutlinedIcon
                   sx={{ fontSize: "28px", color: "text.white" }}
                 />
               </Button>
