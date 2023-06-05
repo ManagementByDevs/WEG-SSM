@@ -33,6 +33,7 @@ const TextLanguageContext = createContext({
       mensagemFeedbackCcsFaltando:
         "A porcentagem deve fechar 100% em cada CCs!",
       mensagemFeedbackPPM: "PPM inválido!",
+      mensagemFeedbackPayback: "Payback inválido!",
     },
     beneficios: {
       beneficios: "Benefícios",

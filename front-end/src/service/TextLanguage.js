@@ -32,6 +32,7 @@ const TextLanguage = (linguagem) => {
         mensagemFeedbackCcsFaltando:
           "A porcentagem das CCs deve ser 100% para cada tabela de custos!",
         mensagemFeedbackPPM: "PPM inválido!",
+        mensagemFeedbackPayback: "Payback inválido!",
       },
       beneficios: {
         beneficios: "Benefícios",
@@ -945,6 +946,7 @@ const TextLanguage = (linguagem) => {
           mensagemFeedbackCcsFaltando:
             "The CCs' percentage must be 100% for each costs table!",
           mensagemFeedbackPPM: "Invalid PPM!",
+          mensagemFeedbackPayback: "Invalid Payback!",
         },
         beneficios: {
           beneficios: "Benefits",
@@ -1853,6 +1855,7 @@ const TextLanguage = (linguagem) => {
             mensagemFeedbackCamposObrigatorios: "您必须填写所有字段!",
             mensagemFeedbackCcsFaltando: "每个CCs的百分比必须为100%!",
             mensagemFeedbackPPM: "PPM 无效!",
+            mensagemFeedbackPayback: "无效回报!"
           },
           beneficios: {
             beneficios: "好处",
@@ -2732,6 +2735,7 @@ const TextLanguage = (linguagem) => {
               mensagemFeedbackCcsFaltando:
                 "¡La porcentaje debe cerrar 100% en cada CCs!",
               mensagemFeedbackPPM: "¡PPM no válido!",
+              mensagemFeedbackPayback: "¡Payback no válido!",
             },
             beneficios: {
               beneficios: "Beneficios",
