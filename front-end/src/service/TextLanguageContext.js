@@ -18,7 +18,12 @@ const TextLanguageContext = createContext({
       botaoCriar: "Criar",
       botaoProximo: "Próximo",
       mensagemFeedback: "Preencha todos os campos obrigatórios!",
-      demandaCriada: "Demanda Criada"
+      demandaCriada: "Demanda Criada",
+      demandaDevolvida: "Demanda Devolvida",
+      demandaReprovada: "Demanda Reprovada",
+      demandaAprovada: "Demanda Aprovada",
+      demandaEditada: "Demanda Editada",
+      demandaEnviadaParaEdicao: "Enviada para Edição",
     },
     barraProgressaoProposta: {
       proposta: "Proposta",
@@ -34,6 +39,16 @@ const TextLanguageContext = createContext({
         "A porcentagem deve fechar 100% em cada CCs!",
       mensagemFeedbackPPM: "PPM inválido!",
       mensagemFeedbackPayback: "Payback inválido!",
+      propostaCriada: "Proposta Criada",
+      propostaEditada: "Proposta Editada",
+      propostaReprovada: "Proposta Reprovada",
+      reprovadaDG: "Reprovada pela DG",
+      aprovadaDG: "Aprovada pela DG",
+      removidaPauta: "Removida da Pauta",
+      statusEditado: "Status Editado",
+      adicionadaPauta: "Adicionada na Pauta",
+      bussinessCase: "Enviada para Bussiness Case",
+      adicionadaAta: "Adicionada na Ata",
     },
     beneficios: {
       beneficios: "Benefícios",
@@ -429,6 +444,7 @@ const TextLanguageContext = createContext({
       deletar: "Deletar",
       comissao: "Comissão",
       analistaResponsavel: "Analista Responsável",
+      pautaExcluida: "Pauta excluída",
     },
     pautaAtaModoVisualizacao: {
       as: "às",
