@@ -1,17 +1,7 @@
 import { React, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Button,
-  Box,
-  Paper,
-  TextField,
-  InputAdornment,
-  FormControlLabel,
-  Checkbox,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { Button, Box, Paper, TextField, InputAdornment, FormControlLabel, Checkbox, Typography, IconButton, } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
@@ -27,27 +17,33 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página de login, para que o usuário tenha acesso ao restante do sistema */
 const Login = (props) => {
-  // useContext que contém os textos do sistema
+
+  /** useContext que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // Context para ler o texto da tela
+  /** Context para ler o texto da tela */
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
-  // Variável para usar função de navegação do react-router-dom
+  /** Variável para usar função de navegação do react-router-dom */
   let navigate = useNavigate();
 
-  // Variável usada para a visibilidade da senha (true - Senha Invisível / false - Senha Visível)
+  /** Variável usada para a visibilidade da senha (true - Senha Invisível / false - Senha Visível) */
   const [senha, setSenha] = useState(true);
 
-  // Variável usada como valor para os inputs de email e senha, para posterior login
+  /** Variável usada como valor para os inputs de email e senha, para posterior login */
   const [dados, setDados] = useState({ email: "", senha: "" });
 
-  // Variáveis usadas para determinar se os feedback de dados inválidos ou faltantes estão visívies, respectivamente
+  /** Variáveis usadas para determinar se os feedback de dados inválidos ou faltantes estão visívies, respectivamente */
   const [dadosInvalidos, setDadosInvalidos] = useState(false);
+
+  /** Variável utilizada para feedback de dados faltantes */
   const [dadosFaltantes, setDadosFaltantes] = useState(false);
+
+  /** Feedback para ver se o navegador é compatível com a API de síntese de fala */
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
 
   /** Função para mudar a visualização da senha (visível ou em formato padrão) */
   const mudarVisualizacaoSenha = () => {
@@ -73,19 +69,13 @@ const Login = (props) => {
         try {
           await AutenticacaoService.login(dados);
           navigate("/");
-        } catch (error) {}
+        } catch (error) { }
       } else {
         // Abrir modal de feedback de dados não preenchidos
         setDadosFaltantes(true);
       }
     }
   };
-
-  // Feedback para ver se o navegador é compatível com a API de síntese de fala
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
 
   /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer o login caso seja a tecla "Enter" */
   const eventoTeclado = (e) => {

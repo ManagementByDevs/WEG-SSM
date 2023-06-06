@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
 
-import {
-  Box,
-  Typography,
-  Divider,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Paper,
-  Checkbox,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Typography, Divider, Table, TableBody, TableHead, TableRow, Paper, Checkbox, IconButton, Tooltip, } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
@@ -20,8 +9,6 @@ import MarkEmailUnreadOutlinedIcon from "@mui/icons-material/MarkEmailUnreadOutl
 import RefreshIcon from "@mui/icons-material/Refresh";
 
 import "./notificacaoStyle.css";
-
-import ClipLoader from "react-spinners/ClipLoader";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
@@ -38,71 +25,80 @@ import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
-// Tela para mostrar as notificações do usuário no sistema
+/** Tela para mostrar as notificações do usuário no sistema */
 const Notificacao = (props) => {
-  // useContext para alterar o idioma do sistema
+
+  /** useContext para alterar o idioma do sistema */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
   /** Context para ler o texto da tela */
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
+  /** Variável utilizada para armazenar o usuário do sistema */
   const [usuario, setUsuario] = useState(null);
 
-  // Modal de confirmação de exclusão individual
+  /**  Modal de confirmação de exclusão individual */
   const [openModalConfirmDelete, setOpenModalConfirmDelete] = useState(false);
 
-  // Modal de confirmação de exclusão múltipla
-  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] =
-    useState(false);
+  /** Modal de confirmação de exclusão múltipla */
+  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] = useState(false);
 
-  // UseState para saber qual notificação deletar ao usar o botão de delete individual
+  /** UseState para saber qual notificação deletar ao usar o botão de delete individual */
   const [indexDelete, setIndexDelete] = useState(null);
 
-  // UseState que têm informações sobre a página atual
+  /** UseState que têm informações sobre a página atual */
   const [page, setPage] = useState("size=20&page=0");
 
-  // Pagina atual do componente de paginação
+  /** Pagina atual do componente de paginação */
   const [paginaAtual, setPaginaAtual] = useState(0);
 
-  // Tamanho da página do componente de paginação
+  /** Tamanho da página do componente de paginação */
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
 
-  // Total de páginas do componente de paginação
+  /** Total de páginas do componente de paginação */
   const [totalPaginas, setTotalPaginas] = useState(1);
 
-  // Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco
+  /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
   const [carregamento, setCarregamento] = useState(false);
 
-  // Linhas da tabela
+  /** Linhas da tabela */
   const [rows, setRows] = useState([]);
 
+  /** Variável para armazenar os dados da notificação */
   const [dadosNotificacao, setDadosNotificacao] = useState([]);
 
-  // UseState para controlar o estado do feedback de lido/não lido
+  /** UseState para controlar o estado do feedback de lido/não lido */
   const [feedback, setFeedback] = useState({
     visibilidade: false,
     tipo: "sucesso",
     mensagem: "sfd",
   });
 
+  /** useEffect utilizado para buscar o usuário */
   useEffect(() => {
     setCarregamento(true);
     buscarUsuario();
   }, []);
 
-  // UseEffect utilizado para buscar as notificações do usuário
+  /** UseEffect utilizado para buscar as notificações do usuário */
   useEffect(() => {
     buscarNotificacoes();
   }, [usuario]);
 
+  /** useEffect utilizado para criar as linhas dependendo do conteúdo da notificação */
   useEffect(() => {
     setRows(createRows(dadosNotificacao));
   }, [texts]);
 
-  // Cria uma linha da tabela retornando um objeto
+  /** UseEffect para recarregar as notificações ao mudar a página */
+  useEffect(() => {
+    buscarNotificacoes();
+  }, [paginaAtual]);
+
+  /** Cria uma linha da tabela retornando um objeto */
   const createRows = (dataset) => {
     let rowsAux = [];
 
@@ -173,6 +169,7 @@ const Notificacao = (props) => {
     return rowsAux;
   };
 
+  /** Função para buscar o usuário que está logado */
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
       (user) => {
@@ -181,7 +178,7 @@ const Notificacao = (props) => {
     );
   };
 
-  // Formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd
+  /** Formata a data do banco de dados de fulldate para date no padrão yyyy-mm-dd */
   const formatDate = (fullDate) => {
     const data = DateService.getDateByPreviousDate(fullDate);
     const dd = String(data.getDate()).padStart(2, "0");
@@ -202,7 +199,7 @@ const Notificacao = (props) => {
     }
   };
 
-  // Atualiza o estado da linha ao clicar no checkbox
+  /** Atualiza o estado da linha ao clicar no checkbox */
   const onSelectRowClick = (event, index) => {
     let aux = [...rows];
     aux[index].checked = event.target.checked;
@@ -210,7 +207,7 @@ const Notificacao = (props) => {
     setRows(aux);
   };
 
-  // Atualiza o estado de todas as linhas ao clicar no checkbox de seleção de todas as linhas da tabela
+  /** Atualiza o estado de todas as linhas ao clicar no checkbox de seleção de todas as linhas da tabela */
   const onSelectAllClick = (isSelect) => {
     let aux = [...rows];
     aux.forEach((row) => {
@@ -219,7 +216,7 @@ const Notificacao = (props) => {
     setRows(aux);
   };
 
-  // Atualiza o estado de visualizado de todas as linhas selecionadas
+  /** Atualiza o estado de visualizado de todas as linhas selecionadas */
   const onMultiReadOrUnreadClick = () => {
     let listWithCheckeds = [...rows.filter((row) => row.checked)];
     let bool = listWithCheckeds.every((row) => row.visualizado);
@@ -240,12 +237,12 @@ const Notificacao = (props) => {
     setRows(newList);
   };
 
-  // Abre o feedback com a mensagem passada por parâmetro
+  /** Abre o feedback com a mensagem passada por parâmetro */
   const openFeedback = (mensagem) => {
     setFeedback({ visibilidade: true, tipo: "info", mensagem });
   };
 
-  // Deleta todas as linhas selecionadas
+  /** Deleta todas as linhas selecionadas */
   const onMultiDeleteRowClick = () => {
     let aux = rows.filter((row) => {
       return row.checked;
@@ -258,7 +255,7 @@ const Notificacao = (props) => {
     openFeedback(texts.notificacao.notificacaoExcluidasComSucesso);
   };
 
-  // Atualiza o estado de visualizado da linha selecionada
+  /** Atualiza o estado de visualizado da linha selecionada */
   const onReadOrUnreadClick = (index) => {
     let aux = [...rows];
     aux[index].visualizado = !aux[index].visualizado;
@@ -270,13 +267,13 @@ const Notificacao = (props) => {
     );
   };
 
-  // Deleta linha selecionada
+  /** Deleta linha selecionada */
   const onDeleteClick = () => {
     deleteNotificacao(rows[indexDelete]);
     openFeedback(texts.notificacao.notificacaoExcluidasComSucesso);
   };
 
-  // Busca as notificações do usuário no banco de dados
+  /** Busca as notificações do usuário no banco de dados */
   const buscarNotificacoes = () => {
     if (usuario) {
       NotificacaoService.getByUserId(
@@ -291,19 +288,19 @@ const Notificacao = (props) => {
     }
   };
 
-  // Delete uma notificação no banco de dados
+  /** Delete uma notificação no banco de dados */
   const deleteNotificacao = (notificacao) => {
     NotificacaoService.delete(notificacao.id).then(() => {
       buscarNotificacoes();
     });
   };
 
-  // Converte a data para o formato yyyy-mm-dd hh:mm:ss (utilizado no banco de dados)
+  /** Converte a data para o formato yyyy-mm-dd hh:mm:ss (utilizado no banco de dados) */
   const convertDateToSQLDate = (date) => {
     return new Date(date).toISOString().slice(0, 19);
   };
 
-  // Converte o tipo do ícone resgatado do banco de dados para um valor que será interpretado pelo front-end
+  /** Converte o tipo do ícone resgatado do banco de dados para um valor que será interpretado pelo front-end */
   const convertTipoIconeToEnum = (tipo) => {
     switch (tipo) {
       case "APROVADO":
@@ -337,7 +334,7 @@ const Notificacao = (props) => {
     }
   };
 
-  // Atualiza a notificação no banco de dados
+  /** Atualiza a notificação no banco de dados */
   const updateNotificacao = (notificacao) => {
     NotificacaoService.put({
       id: notificacao.id,
@@ -352,42 +349,36 @@ const Notificacao = (props) => {
     });
   };
 
+  /** Função para ativar o carregamento e buscar as notificações quando entrar na tela */
   const handleOnRefreshClick = () => {
     setCarregamento(true);
     buscarNotificacoes();
   };
 
-  /** UseEffect para recarregar as notificações ao mudar a página */
-  useEffect(() => {
-    buscarNotificacoes();
-  }, [paginaAtual]);
-
   return (
     <FundoComHeader>
+      {/* Feedbacks do sistema */}
       <Feedback
         open={feedback.visibilidade}
-        handleClose={() => {
-          setFeedback({ ...feedback, visibilidade: false });
-        }}
+        handleClose={() => { setFeedback({ ...feedback, visibilidade: false }); }}
         status={feedback.tipo}
         mensagem={feedback.mensagem}
       />
-
+      {/* Modal de confirmação de exclusão da notificação */}
       <ModalConfirmacao
         open={openModalConfirmDelete}
         setOpen={setOpenModalConfirmDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onDeleteClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         textoBotao={"sim"}
       />
-
       <ModalConfirmacao
         open={openModalConfirmMultiDelete}
         setOpen={setOpenModalConfirmMultiDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onMultiDeleteRowClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
         textoBotao={"sim"}
       />
 
@@ -607,9 +598,7 @@ const Notificacao = (props) => {
             <Box className="flex justify-center items-center h-32">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => {
-                  lerTexto(texts.notificacao.naoHaNotificacoes);
-                }}
+                onClick={() => { lerTexto(texts.notificacao.naoHaNotificacoes) }}
               >
                 {texts.notificacao.naoHaNotificacoes}
               </Typography>

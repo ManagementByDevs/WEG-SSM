@@ -23,8 +23,8 @@ public class CookieUtils {
     /**
      * Função para gerar um cookie armazenando o token de autenticação
      *
-     * @param userJpa
-     * @return
+     * @param userJpa UserJpa usado para a geração do token JWT
+     * @return Cookie com o token JWT
      */
     public Cookie gerarTokenCookie(UserJpa userJpa) {
         String token = tokenUtils.gerarToken(userJpa);
@@ -37,8 +37,8 @@ public class CookieUtils {
     /**
      * Função para pegar o cookie com o token de autenticação
      *
-     * @param request
-     * @return
+     * @param request Request para a busca do cookie
+     * @return String com o valor do cookie buscado
      */
     public String getTokenCookie(HttpServletRequest request) {
         try {
@@ -62,8 +62,8 @@ public class CookieUtils {
     /**
      * Função para gerar um cookie armazenando o usuário autenticado
      *
-     * @param userJpa
-     * @return
+     * @param userJpa UserJpa usado como o usuário presente no cookie
+     * @return Cookie com o usuário recebido
      */
     public Cookie gerarUserCookie(UserJpa userJpa) {
         try {
@@ -83,8 +83,8 @@ public class CookieUtils {
     /**
      * Função para pegar o cookie com o usuário autenticado
      *
-     * @param request
-     * @return
+     * @param request Request para a busca do cookie
+     * @return UserJpa contido no cookie buscado
      */
     public UserJpa getUserCookie(HttpServletRequest request) {
         try {
@@ -101,14 +101,26 @@ public class CookieUtils {
     }
 
     /**
-     * Função para renovar o tempo de um cookie
+     * Função para renovar o tempo de expiração do cookie de usuário
      *
-     * @param request
-     * @param nome
-     * @return
+     * @param request Request recebida
+     * @return Cookie do usuário renovado
      */
-    public Cookie renovarCookie(HttpServletRequest request, String nome) {
-        Cookie cookie = WebUtils.getCookie(request, nome);
+    public Cookie renovarCookieUser(HttpServletRequest request) {
+        Cookie cookie = WebUtils.getCookie(request, "user");
+        cookie.setPath("/");
+        cookie.setMaxAge(3600);
+        return cookie;
+    }
+
+    /**
+     * Função para renovar o tempo de expiração do cookie JWT, criando um novo token
+     *
+     * @param userJpa UserJpa usado para a criação do token
+     * @return Cookie JWT renovado
+     */
+    public Cookie renovarCookieToken(UserJpa userJpa) {
+        Cookie cookie = new Cookie("jwt", tokenUtils.gerarToken(userJpa));
         cookie.setPath("/");
         cookie.setMaxAge(3600);
         return cookie;
