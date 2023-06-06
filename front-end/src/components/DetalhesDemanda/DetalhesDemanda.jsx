@@ -35,9 +35,9 @@ import NotificacaoService from "../../service/notificacaoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
 import CookieService from "../../service/cookieService";
-
 import { WebSocketContext } from "../../service/WebSocketService";
-import { set } from "lodash";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
@@ -46,6 +46,14 @@ const DetalhesDemanda = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
@@ -163,9 +171,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || texts.DetalhesDemanda.real,
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -234,7 +242,7 @@ const DetalhesDemanda = (props) => {
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { });
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -290,7 +298,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -298,7 +306,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosNovos([]);
   };
@@ -306,7 +314,7 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => { });
+      AnexoService.deleteById(anexo.id).then(() => {});
     }
     setNovosAnexos([]);
   };
@@ -330,7 +338,7 @@ const DetalhesDemanda = (props) => {
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of listaBeneficiosFinal) {
         BeneficioService.put(beneficio, beneficio.memoriaCalculo).then(
-          (response) => { }
+          (response) => {}
         );
         contagem++;
 
@@ -352,12 +360,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-        props.dados.beneficios[index].moeda.toLowerCase() &&
+          props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -440,7 +448,7 @@ const DetalhesDemanda = (props) => {
 
   // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       setOpenModalAceitarDemanda(true);
     } else {
       lerTexto(texts.DetalhesDemanda.botaoAceitar);
@@ -449,7 +457,7 @@ const DetalhesDemanda = (props) => {
 
   // Acionado quando o usuário clicar em "Aprovar" na demanda
   const aprovarDemanda = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       setModalAprovarDemanda(true);
     } else {
       lerTexto(texts.DetalhesDemanda.botaoAceitar);
@@ -467,9 +475,16 @@ const DetalhesDemanda = (props) => {
     DemandaService.atualizarStatus(props.dados.id, "ASSESSMENT").then(() => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
-    
-      const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.aprovadoGerente, props.dados, CookieService.getUser().id);
-      enviar(`/app/weg_ssm/notificacao/${props.dados.solicitante.id}`, JSON.stringify(notificacao));
+
+      const notificacao = NotificacaoService.createNotificationObject(
+        NotificacaoService.aprovadoGerente,
+        props.dados,
+        CookieService.getUser().id
+      );
+      enviar(
+        `/app/weg_ssm/notificacao/${props.dados.solicitante.id}`,
+        JSON.stringify(notificacao)
+      );
     });
   };
 
@@ -497,8 +512,15 @@ const DetalhesDemanda = (props) => {
       salvarHistorico("Demanda Aprovada");
       navegarHome(1);
 
-      const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.aprovado, props.dados, CookieService.getUser().id);
-      enviar(`/app/weg_ssm/notificacao/${props.dados.solicitante.id}`, JSON.stringify(notificacao));
+      const notificacao = NotificacaoService.createNotificationObject(
+        NotificacaoService.aprovado,
+        props.dados,
+        CookieService.getUser().id
+      );
+      enviar(
+        `/app/weg_ssm/notificacao/${props.dados.solicitante.id}`,
+        JSON.stringify(notificacao)
+      );
     });
   };
 
@@ -557,9 +579,19 @@ const DetalhesDemanda = (props) => {
       motivoRecusa: motivoRecusaDemanda,
       status: status,
     }).then(() => {
-      const tipoNotificacao = modoModalRecusa === "devolucao" ? NotificacaoService.maisInformacoes : NotificacaoService.reprovado;
-      const notificacao = NotificacaoService.createNotificationObject(tipoNotificacao, props.dados, CookieService.getUser().id);
-      enviar(`/app/weg_ssm/notificacao/${props.dados.solicitante.id}`, JSON.stringify(notificacao));
+      const tipoNotificacao =
+        modoModalRecusa === "devolucao"
+          ? NotificacaoService.maisInformacoes
+          : NotificacaoService.reprovado;
+      const notificacao = NotificacaoService.createNotificationObject(
+        tipoNotificacao,
+        props.dados,
+        CookieService.getUser().id
+      );
+      enviar(
+        `/app/weg_ssm/notificacao/${props.dados.solicitante.id}`,
+        JSON.stringify(notificacao)
+      );
 
       salvarHistorico(
         modoModalRecusa === "devolucao"
@@ -665,66 +697,6 @@ const DetalhesDemanda = (props) => {
 
   // ********************************************** Gravar audio **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClique, setLocalClique] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {
-      };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     switch (localClique) {
       case "tituloDemanda":
@@ -738,103 +710,34 @@ const DetalhesDemanda = (props) => {
     }
   }, [palavrasJuntas]);
 
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setEscutar(!escutar);
-    setLocalClique(ondeClicou);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
   // ********************************************** Fim Gravar audio **********************************************
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
-      {/* Feedback Erro reconhecimento de voz */}
-      <Feedback
-        open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback12}
-        lendo={props.lendo}
-      />
       {/* Feedback demanda Editada */}
       <Feedback
         open={feedbackDemandaEditada}
         handleClose={() => setFeedbackDemandaEditada(false)}
         status={"sucesso"}
         mensagem={texts.DetalhesDemanda.feedbackDemandaEditada}
-        lendo={props.lendo}
-      />
-      {/* Feedback Não navegador incompativel */}
-      <Feedback
-        open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback13}
-        lendo={props.lendo}
       />
       <Feedback
         open={feedbackFacaAlteracao}
         handleClose={() => setFeedbackFacaAlteracao(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
-        lendo={props.lendo}
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
-        lendo={props.lendo}
       />
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
         setOpen={setOpenModalAceitarDemanda}
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
-        lendo={props.lendo}
       />
       <ModalRecusarDemanda
         open={openModalRecusa}
@@ -843,11 +746,6 @@ const DetalhesDemanda = (props) => {
         confirmRecusarDemanda={confirmRecusaDemanda}
         motivo={motivoRecusaDemanda}
         setMotivo={setMotivoRecusaDemanda}
-        setFeedbackErroNavegadorIncompativel={
-          setFeedbackErroNavegadorIncompativel
-        }
-        setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
-        lendo={props.lendo}
       />
       <ModalConfirmacao
         open={openModal}
@@ -857,7 +755,6 @@ const DetalhesDemanda = (props) => {
         textoModal="cancelarEdicao"
         textoBotao="sim"
         atualizarTexto={true}
-        lendo={props.lendo}
       />
       <ModalConfirmacao
         open={modalAprovarDemanda}
@@ -865,7 +762,6 @@ const DetalhesDemanda = (props) => {
         onConfirmClick={aprovarDemandaGerencia}
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
-        lendo={props.lendo}
       />
       <Box
         id="primeiro"
@@ -878,8 +774,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -888,8 +784,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -993,13 +889,6 @@ const DetalhesDemanda = (props) => {
                       index={index}
                       beneficio={beneficio}
                       setBeneficio={alterarTextoBeneficio}
-                      setFeedbackErroNavegadorIncompativel={
-                        setFeedbackErroNavegadorIncompativel
-                      }
-                      setFeedbackErroReconhecimentoVoz={
-                        setFeedbackErroReconhecimentoVoz
-                      }
-                      lendo={props.lendo}
                     />
                   );
                 })}
@@ -1109,7 +998,7 @@ const DetalhesDemanda = (props) => {
                     fontWeight="600"
                     color="text.primary"
                     onClick={() => {
-                      lerTexto(texts.DetalhesDemanda.buBeneficiadas);
+                      lerTexto(texts.DetalhesDemanda.busBeneficiadas);
                     }}
                   >
                     {texts.DetalhesDemanda.busBeneficiadas}:
@@ -1341,13 +1230,6 @@ const DetalhesDemanda = (props) => {
                         delete={deleteBeneficio}
                         beneficio={beneficio}
                         setBeneficio={alterarTextoBeneficio}
-                        setFeedbackErroNavegadorIncompativel={
-                          setFeedbackErroNavegadorIncompativel
-                        }
-                        setFeedbackErroReconhecimentoVoz={
-                          setFeedbackErroReconhecimentoVoz
-                        }
-                        lendo={props.lendo}
                       />
                     );
                   }
@@ -1524,7 +1406,7 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  if (!props.lendo) {
+                  if (!lendoTexto) {
                     abrirRecusaDemanda("recusa");
                   } else {
                     lerTexto(texts.DetalhesDemanda.botaoRecusar);
@@ -1542,7 +1424,7 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  if (!props.lendo) {
+                  if (!lendoTexto) {
                     abrirRecusaDemanda("devolucao");
                   } else {
                     lerTexto(texts.DetalhesDemanda.botaoDevolver);
@@ -1579,7 +1461,7 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  if (!props.lendo) {
+                  if (!lendoTexto) {
                     abrirRecusaDemanda("recusa");
                   } else {
                     lerTexto(texts.DetalhesDemanda.botaoRecusar);
@@ -1611,7 +1493,7 @@ const DetalhesDemanda = (props) => {
             }}
             variant="contained"
             onClick={() => {
-              if (!props.lendo) {
+              if (!lendoTexto) {
                 salvarEdicao();
               } else {
                 lerTexto(texts.DetalhesDemanda.botaoSalvar);

@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import VLibras from "@djpfs/react-vlibras";
-
 import {
   Box,
   Typography,
@@ -38,6 +36,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Tela para mostrar as notificações do usuário no sistema
 const Notificacao = (props) => {
@@ -46,6 +45,9 @@ const Notificacao = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   const [usuario, setUsuario] = useState(null);
 
@@ -358,36 +360,10 @@ const Notificacao = (props) => {
   /** UseEffect para recarregar as notificações ao mudar a página */
   useEffect(() => {
     buscarNotificacoes();
-  }, [paginaAtual])
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  }, [paginaAtual]);
 
   return (
-    <FundoComHeader lendo={props.lendo}>
+    <FundoComHeader>
       <Feedback
         open={feedback.visibilidade}
         handleClose={() => {
@@ -395,7 +371,6 @@ const Notificacao = (props) => {
         }}
         status={feedback.tipo}
         mensagem={feedback.mensagem}
-        lendo={props.lendo}
       />
 
       <ModalConfirmacao
@@ -405,7 +380,6 @@ const Notificacao = (props) => {
         onConfirmClick={onDeleteClick}
         onCancelClick={() => {}}
         textoBotao={"sim"}
-        lendo={props.lendo}
       />
 
       <ModalConfirmacao
@@ -415,11 +389,10 @@ const Notificacao = (props) => {
         onConfirmClick={onMultiDeleteRowClick}
         onCancelClick={() => {}}
         textoBotao={"sim"}
-        lendo={props.lendo}
       />
 
       <Box className="p-2" sx={{ minWidth: "40rem" }}>
-        <Caminho lendo={props.lendo} />
+        <Caminho />
         <Box className="w-full flex flex-col items-center">
           <Box className="w-full flex justify-center m-2">
             <Typography
@@ -625,7 +598,6 @@ const Notificacao = (props) => {
                       setTamanho={setTamanhoPagina}
                       tamanhoPagina={tamanhoPagina}
                       setPaginaAtual={setPaginaAtual}
-                      lendo={props.lendo}
                     />
                   </Box>
                 )}

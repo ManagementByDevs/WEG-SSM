@@ -83,32 +83,6 @@ const FormularioBeneficiosDemanda = (props) => {
     });
   }
 
-   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
       <Box
@@ -156,9 +130,6 @@ const FormularioBeneficiosDemanda = (props) => {
                     setFeedbackErroReconhecimentoVoz={
                       props.setFeedbackErroReconhecimentoVoz
                     }
-                    lendo={props.lendo}
-                    texto={props.texto}
-                    setTexto={props.setTexto}
                   />
                 );
               }

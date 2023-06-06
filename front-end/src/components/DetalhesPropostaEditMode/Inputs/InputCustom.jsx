@@ -13,24 +13,41 @@ import { useEffect } from "react";
 const InputCustom = ({
   defaultText = "",
   saveProposal = () => {},
+  sx = {},
   label = "",
+  multiline = false,
+  regex = new RegExp(),
+  handleOnMicChange = () => {},
 }) => {
-  // Context para alterar o tamanho da fonte
-  const { FontConfig } = useContext(FontContext);
-
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para obter a função de leitura de texto
+  /** Context para obter a função de leitura de texto */
   const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
     SpeechRecognitionContext
   );
 
   const [text, setText] = useState(JSON.parse(JSON.stringify(defaultText)));
 
+  const validateText = (text = "") => {
+    return regex.test(text);
+  };
+
+  const handleOnTextChange = (e) => {
+    if (!validateText(e.target.value)) {
+      return;
+    }
+
+    setText(e.target.value);
+  };
+
   useEffect(() => {
     if (localClique == label) {
-      setText(palavrasJuntas);
+      console.log(palavrasJuntas);
+      if (validateText(palavrasJuntas)) {
+        setText(palavrasJuntas);
+        handleOnMicChange();
+      }
     }
   }, [palavrasJuntas]);
 
@@ -38,12 +55,12 @@ const InputCustom = ({
     <Input
       size="small"
       value={text}
-      onChange={(e) => setText(e.target.value)}
+      onChange={handleOnTextChange}
       onBlur={() => saveProposal(text)}
       type="text"
       fullWidth
-      sx={{ color: "primary.main", fontSize: FontConfig.smallTitle }}
-      multiline
+      sx={sx}
+      multiline={multiline}
       endAdornment={
         <InputAdornment position="end">
           <Tooltip

@@ -48,6 +48,8 @@ import DateService from "../../service/dateService";
 import AnexoService from "../../service/anexoService";
 import { MensagemService } from "../../service/MensagemService";
 import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 /** Chat para conversa entre usuários do sistema */
 const Chat = (props) => {
@@ -61,6 +63,14 @@ const Chat = (props) => {
 
   /**  Context do WebSocket */
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
@@ -542,68 +552,8 @@ const Chat = (props) => {
 
   // // ********************************************** Gravar audio **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClicado, setLocalClicado] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {};
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-        // setValorPesquisa(transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
-    switch (localClicado) {
+    switch (localClique) {
       case "titulo":
         setPesquisaContato(palavrasJuntas);
         break;
@@ -615,59 +565,7 @@ const Chat = (props) => {
     }
   }, [palavrasJuntas]);
 
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setEscutar(!escutar);
-    setLocalClicado(ondeClicou);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
   // // ********************************************** Fim Gravar audio **********************************************
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      setTextoLeitura(escrita);
-    }
-  };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (props.lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-        // setTextoLeitura("");
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
 
   return (
     <>
@@ -689,7 +587,6 @@ const Chat = (props) => {
           onConfirmClick={deletarChat}
           onCancelClick={fecharModalCancelarChat}
           textoBotao={"sim"}
-          lendo={props.lendo}
         />
       )}
       {abrirModalReabrirChat && (
@@ -700,30 +597,9 @@ const Chat = (props) => {
           onConfirmClick={abrirChat}
           onCancelClick={fecharModalAbrirChat}
           textoBotao={"sim"}
-          lendo={props.lendo}
         />
       )}
-      <FundoComHeader lendo={props.lendo}>
-        {/* Feedback Erro reconhecimento de voz */}
-        <Feedback
-          open={feedbackErroReconhecimentoVoz}
-          handleClose={() => {
-            setFeedbackErroReconhecimentoVoz(false);
-          }}
-          status={"erro"}
-          mensagem={texts.homeGerencia.feedback.feedback12}
-          lendo={props.lendo}
-        />
-        {/* Feedback Não navegador incompativel */}
-        <Feedback
-          open={feedbackErroNavegadorIncompativel}
-          handleClose={() => {
-            setFeedbackErroNavegadorIncompativel(false);
-          }}
-          status={"erro"}
-          mensagem={texts.homeGerencia.feedback.feedback13}
-          lendo={props.lendo}
-        />
+      <FundoComHeader>
         {/* Feedback Chat encerrado com sucesso */}
         <Feedback
           open={feedbackChatEncerrado}
@@ -732,7 +608,6 @@ const Chat = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
-          lendo={props.lendo}
         />
         {/* Feedback Anexo pesado */}
         <Feedback
@@ -742,7 +617,6 @@ const Chat = (props) => {
           }}
           status={"erro"}
           mensagem={texts.chat.anexoMuitoPesado}
-          lendo={props.lendo}
         />
         {/* Feedback Chat reaberto com sucesso */}
         <Feedback
@@ -752,14 +626,9 @@ const Chat = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatReaberto}
-          lendo={props.lendo}
         />
         <Box className="p-2">
-          <Caminho
-            lendo={props.lendo}
-            texto={props.texto}
-            setTexto={props.setTexto}
-          />
+          <Caminho />
           <Box className="w-full flex justify-center items-center">
             <Box
               className="flex justify-evenly items-center rounded border mt-4"
@@ -801,7 +670,7 @@ const Chat = (props) => {
                       startRecognition("titulo");
                     }}
                   >
-                    {escutar && localClicado == "titulo" ? (
+                    {escutar && localClique == "titulo" ? (
                       <MicOutlinedIcon
                         sx={{
                           cursor: "pointer",
@@ -846,9 +715,6 @@ const Chat = (props) => {
                       },
                       usuariosChat: [{ id: 0, nome: "Tour", email: "" }],
                     }}
-                    lendo={props.lendo}
-                    texto={props.texto}
-                    setTexto={props.setTexto}
                     index={0}
                   />
                 ) : resultadosContato[0]?.id != 0 ? (
@@ -863,9 +729,6 @@ const Chat = (props) => {
                         idChat={idChat}
                         chat={resultado}
                         index={index}
-                        lendo={props.lendo}
-                        texto={props.texto}
-                        setTexto={props.setTexto}
                       />
                     );
                   })
@@ -1037,7 +900,7 @@ const Chat = (props) => {
                         startRecognition("titulo");
                       }}
                     >
-                      {escutar && localClicado == "titulo" ? (
+                      {escutar && localClique == "titulo" ? (
                         <MicOutlinedIcon
                           sx={{
                             cursor: "pointer",
@@ -1359,7 +1222,7 @@ const Chat = (props) => {
                             startRecognition("mensagem");
                           }}
                         >
-                          {escutar && localClicado == "mensagem" ? (
+                          {escutar && localClique == "mensagem" ? (
                             <MicOutlinedIcon
                               sx={{
                                 cursor: "pointer",

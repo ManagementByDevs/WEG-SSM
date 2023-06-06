@@ -20,11 +20,10 @@ import LogoWeg from "../../assets/logo-weg.png";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-import UsuarioService from "../../service/usuarioService";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import AutenticacaoService from "../../service/autenticacaoService";
-import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página de login, para que o usuário tenha acesso ao restante do sistema */
 const Login = (props) => {
@@ -32,7 +31,10 @@ const Login = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // Variável para usar função de navegação do react-router-dom
   let navigate = useNavigate();
@@ -66,7 +68,7 @@ const Login = (props) => {
    * Caso não encontre ou os inputs não estejam preenchidos, os feedbacks respectivos serão ativados
    */
   const fazerLogin = async () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       if (dados.email && dados.senha) {
         try {
           await AutenticacaoService.login(dados);
@@ -92,37 +94,8 @@ const Login = (props) => {
     }
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
-    <FundoComHeader
-      lendo={props.lendo}
-        
-    >
+    <FundoComHeader lendo={lendoTexto}>
       <Paper
         sx={{ height: "100%", minHeight: "48rem" }}
         className="flex justify-center items-center"
@@ -238,7 +211,7 @@ const Login = (props) => {
                 }}
                 status={"erro"}
                 mensagem={texts.login.feedback.dadosInvalidos}
-                lendo={props.lendo}
+                lendo={lendoTexto}
                 texto={props.texto}
                 setTexto={props.setTexto}
               />
@@ -253,7 +226,7 @@ const Login = (props) => {
                 }}
                 status={"erro"}
                 mensagem={texts.login.feedback.preenchaTodosOsCampos}
-                lendo={props.lendo}
+                lendo={lendoTexto}
                 texto={props.texto}
                 setTexto={props.setTexto}
               />
@@ -266,7 +239,7 @@ const Login = (props) => {
               }}
               status={"erro"}
               mensagem={texts.homeGerencia.feedback.feedback13}
-              lendo={props.lendo}
+              lendo={lendoTexto}
               texto={props.texto}
               setTexto={props.setTexto}
             />

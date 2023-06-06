@@ -1,6 +1,5 @@
 import "./App.css";
-import React, { useEffect, useMemo, useState } from "react";
-import { Box } from "@mui/material";
+import React, { useMemo, useState, useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -34,9 +33,9 @@ import FontContext from "./service/FontContext";
 import TextLanguageContext from "./service/TextLanguageContext";
 import ChatContext from "./service/ChatContext";
 import CookieService from "./service/cookieService";
+import SpeechSynthesisContext from "./service/SpeechSynthesisContext";
 import { WebSocketService } from "./service/WebSocketService";
 import { SpeechRecognitionService } from "./service/SpeechRecognitionService";
-import { SpeechSynthesisService } from "./service/SpeechSynthesisService";
 
 const App = () => {
   const [FontConfig, setFontConfig] = useState({
@@ -51,6 +50,38 @@ const App = () => {
   });
 
   const [Texts, setTexts] = useState(TextLanguage("pt"));
+
+  const [chatMinimizado, setChatMinimizado] = useState(false);
+
+  const [chatId, setChatId] = useState(0);
+
+  const [lendoTexto, setLendoTexto] = useState(false);
+
+  /** Função que irá setar o texto que será "lido" pela a API */
+  const lerTexto = (escrita) => {
+    if (lendoTexto) {
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(escrita);
+
+      const finalizarLeitura = () => {
+        if ("speechSynthesis" in window) {
+          synthesis.cancel();
+        }
+      };
+
+      if (lendoTexto && escrita !== "") {
+        if ("speechSynthesis" in window) {
+          synthesis.speak(utterance);
+        }
+      } else {
+        finalizarLeitura();
+      }
+
+      return () => {
+        finalizarLeitura();
+      };
+    }
+  };
 
   const fontSize = useMemo(
     () => ({
@@ -68,10 +99,6 @@ const App = () => {
     [Texts]
   );
 
-  const [chatMinimizado, setChatMinimizado] = useState(false);
-
-  const [chatId, setChatId] = useState(0);
-
   const miniChat = useMemo(
     () => ({
       usuarioId: 0,
@@ -83,7 +110,10 @@ const App = () => {
     [chatMinimizado]
   );
 
-  const [lendoTexto, setLendoTexto] = useState(false);
+  const speechSynthesis = useMemo(
+    () => ({ lendoTexto, setLendoTexto, lerTexto }),
+    [lendoTexto]
+  );
 
   /*
   Tipos possíveis de usuários:
@@ -96,35 +126,23 @@ const App = () => {
           <ChatContext.Provider value={miniChat}>
             <WebSocketService>
               <SpeechRecognitionService>
-                <SpeechSynthesisService>
+                <SpeechSynthesisContext.Provider value={speechSynthesis}>
                   <Router>
-                    <LerTexto setLendo={setLendoTexto} lendo={lendoTexto} />
+                    <LerTexto />
                     <VLibras forceOnload />
                     <Routes>
-                      <Route
-                        path="/login"
-                        element={<Login lendo={lendoTexto} />}
-                      />
+                      <Route path="/login" element={<Login />} />
                       <Route element={<ProtectedRoute />}>
                         <Route
                           path="/criar-demanda"
-                          element={<CriarDemanda lendo={lendoTexto} />}
+                          element={<CriarDemanda />}
                         />
-                        <Route
-                          path="/notificacao"
-                          element={<Notificacao lendo={lendoTexto} />}
-                        />
-                        <Route
-                          path="/chat"
-                          element={<Chat lendo={lendoTexto} />}
-                        />
-                        <Route
-                          path="/chat/:id"
-                          element={<Chat lendo={lendoTexto} />}
-                        />
+                        <Route path="/notificacao" element={<Notificacao />} />
+                        <Route path="/chat" element={<Chat />} />
+                        <Route path="/chat/:id" element={<Chat />} />
                         <Route
                           path="/detalhes-demanda"
-                          element={<DetalhesDemandaPagina lendo={lendoTexto} />}
+                          element={<DetalhesDemandaPagina />}
                         />
                         <Route
                           path="/editar-escopo"
@@ -223,7 +241,7 @@ const App = () => {
                       />
                     </Routes>
                   </Router>
-                </SpeechSynthesisService>
+                </SpeechSynthesisContext.Provider>
               </SpeechRecognitionService>
             </WebSocketService>
           </ChatContext.Provider>

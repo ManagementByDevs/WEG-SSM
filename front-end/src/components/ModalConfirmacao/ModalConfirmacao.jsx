@@ -7,14 +7,18 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Modal padrão usado para confirmação de ações (ex: criação de demanda, aprovação de demanda) */
 const ModalConfirmacao = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para ler o texto da tela
+  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Função para retornar um tipo de mensagem no modal */
   const mensagemModal = (tipoMensagem) => {
@@ -63,31 +67,6 @@ const ModalConfirmacao = (props) => {
         return texts.modalConfirmacao.mensagensBotao.aceitar;
     }
   };
-   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <Modal
@@ -125,7 +104,7 @@ const ModalConfirmacao = (props) => {
             {/* Botão de cancelar */}
             <Button
               onClick={() => {
-                if (!props.lendo) {
+                if (!lendoTexto) {
                   props.setOpen(false);
                   if (props.onCancelClick) {
                     props.onCancelClick(true);
@@ -151,7 +130,7 @@ const ModalConfirmacao = (props) => {
             {/* Botão de confirmação */}
             <Button
               onClick={() => {
-                if (!props.lendo) {
+                if (!lendoTexto) {
                   props.setOpen(false);
                   props.onConfirmClick(false);
                 } else {

@@ -26,6 +26,7 @@ import BuService from "../../service/buService";
 import ForumService from "../../service/forumService";
 import SecaoTIService from "../../service/secaoTIService";
 import AnexoService from "../../service/anexoService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Variável para armazenar os ícones do checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -34,10 +35,13 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 /** Modal de aceitar demanda na revisão inicial (analista), preenchendo informações adicionais */
 const ModalAceitarDemanda = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** UseState para armazenar a lista de BUs */
   const [listaBus, setListaBus] = useState([]);
@@ -101,31 +105,6 @@ const ModalAceitarDemanda = (props) => {
       AnexoService.save(arquivo).then((response) => {
         setAnexos([...anexos, response]);
       });
-    }
-  };
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 
@@ -362,7 +341,7 @@ const ModalAceitarDemanda = (props) => {
       <DialogActions>
         <Button
           onClick={() => {
-            if (!props.lendo) {
+            if (!lendoTexto) {
               props.handleClose();
             } else {
               lerTexto(texts.modalAceitarDemanda.cancelar);
@@ -375,7 +354,7 @@ const ModalAceitarDemanda = (props) => {
           variant="contained"
           disableElevation
           onClick={() => {
-            if (!props.lendo) {
+            if (!lendoTexto) {
               props.confirmAceitarDemanda({
                 tamanho,
                 buSolicitante,

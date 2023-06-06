@@ -12,6 +12,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import AnexoService from "../../service/anexoService";
 
@@ -20,10 +21,13 @@ const FormularioAnexosDemanda = (props) => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
   // props.dados => Lista de arquivos recebidos
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   /** Variável usada para referência da área de "soltar" arquivos */
   const areaArquivos = useRef(null);
@@ -78,32 +82,6 @@ const FormularioAnexosDemanda = (props) => {
     AnexoService.deleteById(props.dados[desiredIndex].id).then((response) => {
       props.setDados(props.dados.filter((_, index) => index !== desiredIndex));
     });
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (

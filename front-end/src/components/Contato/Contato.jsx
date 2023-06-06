@@ -9,10 +9,14 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 import UsuarioService from "../../service/usuarioService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente contato utilizado para representar os contatos do chat */
-const Contato = ({ onClick = () => { }, idChat = 0, chat = EntitiesObjectService.chat(), lendo = false }) => {
-
+const Contato = ({
+  onClick = () => {},
+  idChat = 0,
+  chat = EntitiesObjectService.chat(),
+}) => {
   /** UseState para saber se o contato foi selecionado ou não */
   const [corSelecionado, setCorSelecionado] = useState("transparent");
 
@@ -57,7 +61,7 @@ const Contato = ({ onClick = () => { }, idChat = 0, chat = EntitiesObjectService
             },
           }}
         >
-          <Conteudo chat={chat} lendo={lendo} />
+          <Conteudo chat={chat} />
         </Box>
       </Tooltip>
     </>
@@ -65,13 +69,15 @@ const Contato = ({ onClick = () => { }, idChat = 0, chat = EntitiesObjectService
 };
 
 /** Informações do contato */
-const Conteudo = ({ chat = EntitiesObjectService.chat(), lendo = false }) => {
-
+const Conteudo = ({ chat = EntitiesObjectService.chat() }) => {
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Variável para pegar o usuário logado */
   const [usuarioLogado, setUsuario] = useState(UsuarioService.getUserCookies());
@@ -90,32 +96,6 @@ const Conteudo = ({ chat = EntitiesObjectService.chat(), lendo = false }) => {
       if (usuarioLogado.usuario.id != user.id) {
         setNomeContato(user.nome);
       }
-    }
-  };
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 
@@ -170,7 +150,9 @@ const Conteudo = ({ chat = EntitiesObjectService.chat(), lendo = false }) => {
           fontSize={FontConfig.small}
           fontWeight="600"
           sx={{ color: "primary.main" }}
-          onClick={() => { lerTexto(texts.contato.ppm); }}
+          onClick={() => {
+            lerTexto(texts.contato.ppm);
+          }}
         >
           {texts.contato.ppm}: #{chat.idProposta.codigoPPM}
         </Typography>

@@ -1,11 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { Box, Tooltip } from "@mui/material";
-import { styled } from "@mui/system";
 
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
-const LerTexto = (props) => {
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+
+const LerTexto = () => {
+  const { lendoTexto, setLendoTexto } = useContext(SpeechSynthesisContext);
+
   // ********************************************** Funções de ler texto **********************************************
 
   const [corButton, setCorButton] = useState(
@@ -13,16 +16,16 @@ const LerTexto = (props) => {
   );
 
   const lerTexto = () => {
-    props.setLendo(!props.lendo);
+    setLendoTexto(!lendoTexto);
   };
 
   useEffect(() => {
-    if (props.lendo) {
+    if (lendoTexto) {
       setCorButton("linear-gradient(to right, #00658a, #002f54)");
     } else {
       setCorButton("linear-gradient(to right, #0083B4, #00579D)");
     }
-  }, [props.lendo]);
+  }, [lendoTexto]);
 
   // ********************************************** Fim Funções de ler texto **********************************************
 
