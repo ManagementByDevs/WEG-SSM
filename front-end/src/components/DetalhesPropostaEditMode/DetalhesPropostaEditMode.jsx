@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef, memo } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import {
   Autocomplete,
   Box,
@@ -392,7 +392,6 @@ const DetalhesPropostaEditMode = ({
     if (!isAllFieldsValid()) return;
 
     // Dando erro ao salvar qualquer campo com editor de texto que contenha acento
-
     let propostaAux = EntitiesObjectService.proposta();
     propostaAux = JSON.parse(JSON.stringify(proposta));
 
@@ -834,6 +833,7 @@ const DetalhesPropostaEditMode = ({
     });
   }, []);
 
+  // Se os beneficios não estiverem visiveis, seta como visiveis
   useEffect(() => {
     if (!isBeneficiosVisible) {
       setIsBeneficiosVisible(true);
@@ -844,6 +844,7 @@ const DetalhesPropostaEditMode = ({
     }
   }, [isBeneficiosVisible, isTabelaCustosVisile]);
 
+  // se os dados estiverem invalidos ele chamar o feedback de dados invalidos
   useEffect(() => {
     if (textoDadosInvalidos) setFeedbackDadosInvalidos(true);
   }, [textoDadosInvalidos]);
@@ -889,6 +890,7 @@ const DetalhesPropostaEditMode = ({
 
   // ***************************************** Fim UseEffects ***************************************** //
 
+  // Enquanto estiver buscando os dados, aparecerá o loader
   if (isLoading)
     return (
       <Box className="flex justify-center">
@@ -898,6 +900,7 @@ const DetalhesPropostaEditMode = ({
 
   return (
     <>
+      {/* Modal para confirmação */}
       <ModalConfirmacao
         open={modalConfirmacao}
         setOpen={setModalConfirmacao}
@@ -906,13 +909,14 @@ const DetalhesPropostaEditMode = ({
         onConfirmClick={handleOnConfirmClick}
         onCancelClick={() => {}}
       />
-
+      {/* Feedback de dados invalidos */}
       <Feedback
         open={feedbackDadosInvalidos}
         handleClose={() => setFeedbackDadosInvalidos(false)}
         status={"erro"}
         mensagem={textoDadosInvalidos}
       />
+      {/* Feedback de anexos com mesmo nome */}
       <Feedback
         open={feedbackComAnexoMesmoNome}
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}
@@ -923,7 +927,7 @@ const DetalhesPropostaEditMode = ({
       <Box className="w-full flex justify-between">
         <Box className="flex gap-4">
           <Box className="flex gap-2">
-            {/* Código PPM */}
+            {/* Palavra PPM */}
             <Typography
               color="primary"
               fontWeight="bold"
@@ -935,6 +939,7 @@ const DetalhesPropostaEditMode = ({
               {texts.detalhesProposta.ppm}:
               <Asterisco />
             </Typography>
+            {/* input do PPM */}
             <InputCustom
               defaultText={proposta.codigoPPM}
               saveProposal={(text) =>
@@ -959,6 +964,7 @@ const DetalhesPropostaEditMode = ({
               {texts.detalhesProposta.data}:
               <Asterisco />
             </Typography>
+            {/* input da data */}
             <TextField
               variant="standard"
               size="small"
@@ -968,7 +974,6 @@ const DetalhesPropostaEditMode = ({
               sx={{ width: "8rem" }}
             />
           </Box>
-
           {/* Publicada */}
           {proposta.publicada != null && (
             <Box className="flex gap items-start">
@@ -1000,6 +1005,7 @@ const DetalhesPropostaEditMode = ({
             </Box>
           )}
         </Box>
+        {/* Logo WEG */}
         <Box className="flex w-16">
           <img src={LogoWEG} className="w-16 h-11" alt="Logo WEG" />
         </Box>
@@ -1864,6 +1870,7 @@ const TabelaCustos = ({
         sx={{ backgroundColor: "primary.main", opacity: 2 }}
         square
       >
+        {/* Tipo da despesa */}
         <Typography
           fontWeight="bold"
           color="text.white"
@@ -1874,6 +1881,7 @@ const TabelaCustos = ({
         >
           {texts.detalhesProposta.tipoDaDespesa}
         </Typography>
+        {/* Select do tipo da despesa */}
         <Select
           value={dados.tipoDespesa}
           onChange={handleOnTipoDespesaChange}
@@ -1888,10 +1896,13 @@ const TabelaCustos = ({
           </MenuItem>
         </Select>
       </Paper>
+      {/* Divisor */}
       <Divider />
+      {/* Tabela de custos */}
       <Table className="table-fixed w-full">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
+            {/* Perfil da despesa */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -1903,6 +1914,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.perfilDaDespesa}
               </Typography>
             </th>
+            {/* Periodo de execução */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -1914,6 +1926,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.periodoDeExecucaoTabela}
               </Typography>
             </th>
+            {/* Quantidade de horas */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -1925,6 +1938,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.horas}
               </Typography>
             </th>
+            {/* Valor por hora */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -1936,6 +1950,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.valorHora}
               </Typography>
             </th>
+            {/* Valor total */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -1949,6 +1964,7 @@ const TabelaCustos = ({
             </th>
           </TableRow>
         </TableHead>
+        {/* Linha de cada custo do beneficio */}
         <TableBody>
           {dados.custos.map((custo, index) => {
             return (
@@ -1962,7 +1978,9 @@ const TabelaCustos = ({
           })}
         </TableBody>
       </Table>
+      {/* Divisor */}
       <Divider />
+      {/* Botões de adicionar linha */}
       <Box className="w-full flex justify-end px-2">
         <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
           <IconButton
@@ -1984,9 +2002,11 @@ const TabelaCustos = ({
           </IconButton>
         </Tooltip>
       </Box>
+      {/* Tabela do CCs */}
       <Table className="table-fixed w-full">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
+            {/* Ccs */}
             <th className="text-white p-1">
               <Typography
                 fontSize={FontConfig.medium}
@@ -1997,6 +2017,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.ccs}
               </Typography>
             </th>
+            {/* Porcentagem */}
             <th className="text-white p-1 w-1/4">
               <Typography
                 fontSize={FontConfig.medium}
@@ -2009,6 +2030,7 @@ const TabelaCustos = ({
             </th>
           </TableRow>
         </TableHead>
+        {/* linha de cada CC */}
         <TableBody>
           {dados.ccs.map((cc, index) => {
             return (
@@ -2017,7 +2039,9 @@ const TabelaCustos = ({
           })}
         </TableBody>
       </Table>
+      {/* Botao de excluir e add */}
       <Box className="w-full flex justify-end px-2">
+        {/* botao de excluir linha */}
         <Tooltip title={texts.linhaTabelaCCs.titleExcluirLinha}>
           <IconButton
             onClick={handleOnDeleteCCClick}
@@ -2027,12 +2051,13 @@ const TabelaCustos = ({
             <RemoveIcon />
           </IconButton>
         </Tooltip>
-
+        {/* botao de adicionar */}
         <Tooltip title={texts.formularioBeneficiosDemanda.adicionar}>
           <IconButton onClick={handleOnAddCCClick} size="small" color="primary">
             <AddIcon />
           </IconButton>
         </Tooltip>
+        {/* botao de remover o beneficio */}
         <Tooltip title={texts.formularioAnexosDemanda.remover}>
           <IconButton
             onClick={handleOnDeleteTabelaClick}
@@ -2056,9 +2081,6 @@ const CC = ({
 
   // Context para obter a função de leitura de texto
   const { localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
-
-  // Context para ler o texto da tela
-  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   const regexOnlyNumber = new RegExp(/^[0-9]*\.?[0-9]*$/);
 
@@ -2092,6 +2114,7 @@ const CC = ({
 
   return (
     <TableRow className="w-full border rounded">
+      {/* Codigo do CC */}
       <td className="text-center p-2">
         <InputCustom
           label="codigo"
@@ -2105,6 +2128,7 @@ const CC = ({
           handleOnMicChange={handleOnMicChange}
         />
       </td>
+      {/* Porcentagem do CC */}
       <td className="text-center p-2">
         <InputCustom
           label="porcentagem"
@@ -2360,10 +2384,12 @@ const Beneficio = ({
     }
   };
 
+  // verifica se é qualitativo
   useEffect(() => {
     verifyIsQualitativo();
   }, []);
 
+  // verifica se o tipo de benefício mudou
   useEffect(() => {
     verifyIsQualitativo();
   }, [beneficio]);
@@ -2407,14 +2433,14 @@ const Beneficio = ({
     });
   };
 
+  // Deleta o beneficio
   const handleOnDeleteBeneficio = () => {
     handleDeleteBeneficio(beneficio.id);
   };
 
   // ***************************************** Fim Handlers ***************************************** //
 
-  // ***************************************** UseEffects ***************************************** //
-
+  // handle para o mic
   const handleOnMicChange = () => {
     switch (localClique) {
       case "valorMensal":
@@ -2434,8 +2460,7 @@ const Beneficio = ({
     }
   };
 
-  // ***************************************** Fim UseEffects ***************************************** //
-
+  // Se o benefício não existir, não renderiza
   if (beneficio.id === 0) return null;
 
   return (
@@ -2447,6 +2472,7 @@ const Beneficio = ({
       <Table className="table-fixed">
         <TableBody>
           <TableRow>
+            {/* Tipo do Beneficio */}
             <th className="p-1 w-2/12">
               <Typography
                 color="primary"
@@ -2459,8 +2485,10 @@ const Beneficio = ({
                 {texts.detalhesProposta.tipoBeneficio}
               </Typography>
             </th>
+            {/* Se não for qualitativo, vair mostrar o valor Mensal e a moeda */}
             {!isQualitativo && (
               <>
+                {/* valor mensal */}
                 <th className="p-1 w-2/12">
                   <Typography
                     color="primary"
@@ -2473,6 +2501,7 @@ const Beneficio = ({
                     {texts.detalhesProposta.valorMensal}
                   </Typography>
                 </th>
+                {/* Moeda */}
                 <th className="p-1 w-1/12">
                   <Typography
                     color="primary"
@@ -2487,6 +2516,7 @@ const Beneficio = ({
                 </th>
               </>
             )}
+            {/* Memória de Cálculo */}
             <th className="p-1">
               <Typography
                 color="primary"
@@ -2529,10 +2559,11 @@ const Beneficio = ({
                 </MenuItem>
               </Select>
             </td>
+            {/* Se não for qualitativo, vair mostrar o valor Mensal e a moeda */}
             {!isQualitativo && (
               <>
+                {/* Input de valor mensal */}
                 <td className="text-center p-2">
-                  {/* Input de valor mensal */}
                   <InputCustom
                     label="valorMensal"
                     defaultText={beneficio.valor_mensal}
@@ -2545,8 +2576,8 @@ const Beneficio = ({
                     handleOnMicChange={handleOnMicChange}
                   />
                 </td>
+                {/* Select da moeda do benefício */}
                 <td className="text-center p-2">
-                  {/* Select da moeda do benefício */}
                   <Select
                     value={beneficio.moeda}
                     onChange={handleOnMoedaChange}
@@ -2580,6 +2611,7 @@ const Beneficio = ({
           </TableRow>
         </TableBody>
       </Table>
+      {/* Botão para remover o beneficio */}
       <Box className="absolute right-0">
         <Tooltip title={texts.formularioAnexosDemanda.remover}>
           <IconButton
@@ -2647,6 +2679,7 @@ const ParecerComissaoInsertText = ({
     }
   };
 
+  // Handle para Mic
   const handleOnMicChange = () => {
     switch (localClique) {
       case "valorMensal":
@@ -2661,6 +2694,7 @@ const ParecerComissaoInsertText = ({
     <Box>
       <Box className="flex">
         <Box className="flex items-center mt-4">
+          {/* Comissao */}
           <Typography
             fontSize={FontConfig.medium}
             onClick={() => {
@@ -2672,6 +2706,7 @@ const ParecerComissaoInsertText = ({
             {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
           </Typography>
         </Box>
+        {/* Select para o parecer da comissão */}
         <TextField
           select
           label={texts.detalhesProposta.parecer}
@@ -2708,6 +2743,7 @@ const ParecerComissaoInsertText = ({
         </TextField>
       </Box>
       <Box className="mt-4">
+        {/* Caixa de texto para o parecer da comissão */}
         {proposta.parecerComissao != "NONE" && (
           <QuillCustom
             defaultText={
@@ -2776,6 +2812,7 @@ const ParecerDGInsertText = ({
     }
   };
 
+  // Handler para Mic
   const handleOnMicChange = () => {
     switch (localClique) {
       case "parecerDG":
@@ -2790,6 +2827,7 @@ const ParecerDGInsertText = ({
     <Box className="mt-4">
       <Box className="flex">
         <Box className="flex items-center mt-4">
+          {/* Direção Geral */}
           <Typography
             onClick={() => {
               lerTexto(texts.detalhesProposta.direcaoGeral);
@@ -2798,6 +2836,7 @@ const ParecerDGInsertText = ({
             {texts.detalhesProposta.direcaoGeral}: &nbsp;
           </Typography>
         </Box>
+        {/* Select para o parecer da DG */}
         <TextField
           select
           label={texts.detalhesProposta.parecer}
@@ -2838,6 +2877,7 @@ const ParecerDGInsertText = ({
           </MenuItem>
         </TextField>
       </Box>
+      {/* Caixa de texto para parecer da DG */}
       <Box className="mt-4">
         {proposta.parecerDG != "NONE" && (
           <QuillCustom
@@ -2855,6 +2895,7 @@ const ParecerDGInsertText = ({
   );
 };
 
+// Asterisco para campos obrigatórios
 const Asterisco = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
