@@ -20,7 +20,6 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EscopoService from "../../service/escopoService";
 
-
 // Componente para mudar o modo de visualização dos escopos (Grid, tabela ou nenhum escopo encontrado)
 const EscopoModoVisualizacao = ({
   listaEscopos,
@@ -31,10 +30,13 @@ const EscopoModoVisualizacao = ({
   buscar,
   lendo = false,
 }) => {
+
+  // Se não encontrar nada, vai aparecer componente de nada encontrado
   if (listaEscopos && listaEscopos.length === 0) {
     return <NadaEncontrado />;
   }
 
+  // Se o modo de visualização for GRID, vai aparecer o componente de grid
   if (nextModoVisualizacao == "TABLE")
     return (
       <EscopoGrid
@@ -45,6 +47,7 @@ const EscopoModoVisualizacao = ({
         lendo={lendo}
       />
     );
+    // Se for table, aparecerá o componente de Table
   return (
     <EscopoTable
       listaEscopos={listaEscopos}
@@ -56,6 +59,7 @@ const EscopoModoVisualizacao = ({
   );
 };
 
+// Componente de escopo em table
 const EscopoTable = ({
   listaEscopos = [
     {
@@ -155,6 +159,7 @@ const EscopoTable = ({
       <Table className="mb-8 table-fixed" sx={{ width: "100%" }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
+            {/* Porcentagem */}
             <th className="text-white p-3 w-1/10">
               <Typography
                 fontSize={FontConfig.big}
@@ -165,6 +170,7 @@ const EscopoTable = ({
                 {texts.escopoModoVisualizacao.porcentagem}
               </Typography>
             </th>
+            {/* Título */}
             <th className="text-left text-white p-3 w-3/6">
               <Typography
                 fontSize={FontConfig.big}
@@ -175,6 +181,7 @@ const EscopoTable = ({
                 {texts.escopoModoVisualizacao.titulo}
               </Typography>
             </th>
+            {/* Excluir */}
             <th className="text-white p-3 w-1/12">
               <Typography
                 fontSize={FontConfig.big}
