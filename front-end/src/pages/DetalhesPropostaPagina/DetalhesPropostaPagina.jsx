@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
 
@@ -26,9 +26,6 @@ const DetalhesPropostaPagina = ({ lendo = false }) => {
 
   /** Params da rota */
   const paramsPath = useParams();
-
-  /** Context para alterar o tamanho da fonte */
-  const { FontConfig } = useContext(FontContext);
 
   /** Context para obter os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
