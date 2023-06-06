@@ -63,6 +63,8 @@ const DetalhesDemanda = (props) => {
 
   // Variável armazenando o tema da página (light / dark)
   const { temaPagina } = useContext(ColorModeContext);
+
+  // Ref do input de arquivo para upload de anexos
   const inputFile = useRef(null);
 
   // UseStates para armazenar os dados de demanda
@@ -721,24 +723,28 @@ const DetalhesDemanda = (props) => {
         status={"sucesso"}
         mensagem={texts.DetalhesDemanda.feedbackDemandaEditada}
       />
+      {/* Feedback Faca alguma alteração para poder salvar */}
       <Feedback
         open={feedbackFacaAlteracao}
         handleClose={() => setFeedbackFacaAlteracao(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
       />
+      {/* Feedback já existe uma anexo com aquele nome */}
       <Feedback
         open={feedbackComAnexoMesmoNome}
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
       />
+      {/* Modal para aceitar a demanda */}
       <ModalAceitarDemanda
         open={openModalAceitarDemanda}
         setOpen={setOpenModalAceitarDemanda}
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
       />
+      {/* Modal para recusar a demanda */}
       <ModalRecusarDemanda
         open={openModalRecusa}
         setOpen={setOpenModalRecusa}
@@ -747,6 +753,7 @@ const DetalhesDemanda = (props) => {
         motivo={motivoRecusaDemanda}
         setMotivo={setMotivoRecusaDemanda}
       />
+      {/* Modal para confirmar o cancelamento da edição */}
       <ModalConfirmacao
         open={openModal}
         setOpen={setOpenModal}
@@ -756,6 +763,8 @@ const DetalhesDemanda = (props) => {
         textoBotao="sim"
         atualizarTexto={true}
       />
+
+      {/* Modal para aceitar a demanda */}
       <ModalConfirmacao
         open={modalAprovarDemanda}
         setOpen={setModalAprovarDemanda}
@@ -768,6 +777,7 @@ const DetalhesDemanda = (props) => {
         className="flex flex-col gap-5 border rounded relative p-10 drop-shadow-lg"
         sx={{ width: "55rem" }}
       >
+        {/* Mostrar o icone de edição caso siga os requisitos */}
         <Box
           className="absolute cursor-pointer"
           sx={{ top: "10px", right: "10px" }}
@@ -793,12 +803,15 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
         </Box>
+        {/* o que irá aparecer caso não esteja editando */}
         {!editar ? (
           <>
             <Box>
+              {/* o id */}
               <Typography fontSize={FontConfig.medium} fontWeight={600}>
                 #{props.dados.id}
               </Typography>
+              {/* o titulo */}
               <Typography
                 fontSize={FontConfig.title}
                 sx={{
@@ -815,8 +828,9 @@ const DetalhesDemanda = (props) => {
                 {props.dados.titulo}
               </Typography>
             </Box>
+            {/* Uma divisão */}
             <Divider />
-
+            {/* o problema */}
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -842,7 +856,7 @@ const DetalhesDemanda = (props) => {
                 {getProblemaFomartted(props.dados.problema)}
               </Typography>
             </Box>
-
+            {/* a proposta */}
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -867,6 +881,7 @@ const DetalhesDemanda = (props) => {
                 {getPropostaFomartted(props.dados.proposta)}
               </Typography>
             </Box>
+            {/* Os beneficios */}
             <Box>
               <Box>
                 <Typography
@@ -894,6 +909,7 @@ const DetalhesDemanda = (props) => {
                 })}
               </Box>
             </Box>
+            {/* A frequencia de uso */}
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -917,8 +933,10 @@ const DetalhesDemanda = (props) => {
                 {props.dados.frequencia}
               </Typography>
             </Box>
+            {/* Caso tenha tamanho e secao de TI*/}
             {props.dados.tamanho && props.dados.secaoTI && (
               <Box className="flex justify-between items-center">
+                {/* Tamanho da demanda */}
                 <Box className="flex items-center">
                   <Typography
                     fontSize={FontConfig.veryBig}
@@ -942,6 +960,7 @@ const DetalhesDemanda = (props) => {
                     {props.dados.tamanho}
                   </Typography>
                 </Box>
+                {/* Seção de TI */}
                 <Box className="flex items-center">
                   <Typography
                     fontSize={FontConfig.veryBig}
@@ -967,7 +986,9 @@ const DetalhesDemanda = (props) => {
                 </Box>
               </Box>
             )}
+            {/* Caso tenha BU solicitante */}
             {props.dados.buSolicitante && (
+              // Mostra as BUs beneficiadas
               <Box className="flex justify-between items-center">
                 <Box className="flex items-center">
                   <Typography
@@ -1017,7 +1038,9 @@ const DetalhesDemanda = (props) => {
                 </Box>
               </Box>
             )}
+            {/* Caso tenha forum */}
             {props.dados.forum && (
+              // Mostra o forum
               <Box className="flex items-center">
                 <Typography
                   fontSize={FontConfig.veryBig}
@@ -1042,6 +1065,7 @@ const DetalhesDemanda = (props) => {
                 </Typography>
               </Box>
             )}
+            {/* Anexos */}
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -1053,6 +1077,7 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.anexos}:
               </Typography>
+              {/* caso tenha um anexo, irá aparecer os anexos aqui */}
               {props.dados.anexo != null && props.dados.anexo.length > 0 ? (
                 <Box className="flex flex-col gap-2">
                   {props.dados.anexo.map((anexo, index) => (
@@ -1096,6 +1121,7 @@ const DetalhesDemanda = (props) => {
                   ))}
                 </Box>
               ) : (
+                // caso nao tenha anexos, mostra que nenhum anexo foi adicionado
                 <Typography
                   textAlign="center"
                   sx={{ color: "text.primary", fontSize: FontConfig.default }}
@@ -1115,6 +1141,7 @@ const DetalhesDemanda = (props) => {
                 className="flex justify-between items-center w-full border-solid border px-1 drop-shadow-sm rounded mt-2"
                 sx={{ backgroundColor: "background.default" }}
               >
+                {/* Titulo da demanda */}
                 <Box
                   value={tituloDemanda}
                   onChange={(e) => {
@@ -1159,7 +1186,9 @@ const DetalhesDemanda = (props) => {
                 </Tooltip>
               </Box>
             </Box>
+            {/* Divisao */}
             <Divider />
+            {/* Problema da demanda */}
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -1179,6 +1208,7 @@ const DetalhesDemanda = (props) => {
                 placeholder={texts.DetalhesDemanda.digiteProblema}
               />
             </Box>
+            {/* Proposta da demanda */}
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -1199,6 +1229,7 @@ const DetalhesDemanda = (props) => {
                 placeholder={texts.DetalhesDemanda.digiteProposta}
               />
             </Box>
+            {/* Beneficios da demanda */}
             <Box>
               <Box className="flex items-center">
                 <Typography
@@ -1236,6 +1267,7 @@ const DetalhesDemanda = (props) => {
                 })}
               </Box>
             </Box>
+            {/* Frequencia de uso */}
             <Box>
               <Typography
                 fontSize={FontConfig.veryBig}
@@ -1296,6 +1328,7 @@ const DetalhesDemanda = (props) => {
                 </Tooltip>
               </Box>
             </Box>
+            {/* Anexos */}
             <Box>
               <Box className="flex items-center">
                 <Typography
@@ -1397,7 +1430,9 @@ const DetalhesDemanda = (props) => {
           props.botao &&
           !editar &&
           props.dados.status == "BACKLOG_REVISAO" && (
+            // Opções para avaliar a demanda
             <Box className="flex justify-around w-full gap-3 mr-2">
+              {/* botao para recusar */}
               <Button
                 sx={{
                   backgroundColor: "primary.main",
@@ -1415,7 +1450,7 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.botaoRecusar}
               </Button>
-
+              {/* botao para devolver */}
               <Button
                 sx={{
                   backgroundColor: "primary.main",
@@ -1433,6 +1468,7 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.botaoDevolver}
               </Button>
+              {/* botao para aceitar */}
               <Button
                 sx={{
                   backgroundColor: "primary.main",
@@ -1452,7 +1488,9 @@ const DetalhesDemanda = (props) => {
           props.botao &&
           !editar &&
           props.dados.status == "BACKLOG_APROVACAO" && (
+            // Opções para avaliar a demanda
             <Box className=" w-full flex justify-around">
+              {/* Botao de recusar demanda */}
               <Button
                 sx={{
                   backgroundColor: "primary.main",
@@ -1470,6 +1508,7 @@ const DetalhesDemanda = (props) => {
               >
                 {texts.DetalhesDemanda.botaoRecusar}
               </Button>
+              {/* Botao para aceitar demanda */}
               <Button
                 sx={{
                   backgroundColor: "primary.main",
@@ -1485,6 +1524,7 @@ const DetalhesDemanda = (props) => {
           )}
 
         {editar && props.salvar && (
+          // Botao para salvar as alterações feitas
           <Button
             sx={{
               backgroundColor: "primary.main",

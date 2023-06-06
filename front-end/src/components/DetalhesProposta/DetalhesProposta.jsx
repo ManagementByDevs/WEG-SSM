@@ -105,28 +105,6 @@ const DetalhesProposta = ({
     }
   };
 
-  /** Retorna o texto do status da proposta */
-  const getStatusFormatted = () => {
-    switch (proposta.status) {
-      case "ASSESSMENT_APROVACAO": //#F7DC6F
-        return texts.detalhesProposta.status.assessmentAprovacao;
-      case "ASSESSMENT_EDICAO": //#F7DC6F
-        return texts.detalhesProposta.status.assessmentAprovacao;
-      case "ASSESSMENT_COMISSAO": //#F7DC6F
-        return texts.detalhesProposta.status.assessmentAprovacao;
-      case "ASSESSMENT_DG": //#F7DC6F
-        return texts.detalhesProposta.status.assessmentAprovacao;
-      case "BUSINESS_CASE": // #C8CA5F
-        return texts.detalhesProposta.statusRejeitada;
-      case "CANCELLED": //#DA0303
-        return texts.detalhesProposta.statusCancelada;
-      case "DONE": //#62A265
-        return texts.detalhesProposta.statusEmAndamento;
-      default:
-        return "";
-    }
-  };
-
   /** Retorna a cor hexadecimal do status da proposta */
   const getCorStatus = (status) => {
     switch (status) {
@@ -224,8 +202,6 @@ const DetalhesProposta = ({
         ? proposta.escopo
         : texts.detalhesProposta.escopoVazio;
     }
-
-    console.log("Proposta: ", proposta);
   }, [proposta, isEditing]);
 
   useEffect(() => {
@@ -241,6 +217,7 @@ const DetalhesProposta = ({
   if (Object.values(proposta).some((value) => value === undefined))
     return <></>;
 
+    // se estiver carregando (buscando os dados), irá retornar o loader
   if (isLoading)
     return (
       <Box className="flex justify-center">
@@ -253,6 +230,7 @@ const DetalhesProposta = ({
       </Box>
     );
 
+  // se estiver no modo edição, irá retornar o componente de edição
   if (isEditing) {
     return (
       <Box className="flex justify-center">
