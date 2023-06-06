@@ -66,7 +66,7 @@ public class PautaController {
         if (numeroSequencial != null && !numeroSequencial.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(pautaService.findByNumeroSequencial(numeroSequencial, pageable));
         } else if (titulo != null && !titulo.isEmpty()) {
-            List<Proposta> propostas = propostaService.findByTituloContaining(titulo);
+            List<Proposta> propostas = propostaService.findByTituloContainingIgnoreCase(titulo);
             List<Pauta> pautas = new ArrayList<>();
             for (Proposta proposta : propostas) {
                 Pauta pauta = pautaService.findByPropostasContaining(proposta);

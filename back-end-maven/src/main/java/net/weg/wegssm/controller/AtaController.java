@@ -62,7 +62,7 @@ public class AtaController {
         if (numeroSequencial != null && !numeroSequencial.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(ataService.findByNumeroSequencial(numeroSequencial, pageable));
         } else if (titulo != null && !titulo.isEmpty()) {
-            List<Proposta> propostas = propostaService.findByTituloContaining(titulo);
+            List<Proposta> propostas = propostaService.findByTituloContainingIgnoreCase(titulo);
             List<Ata> atas = new ArrayList<>();
             for (Proposta proposta : propostas) {
                 Ata ata = ataService.findByPropostasContaining(proposta);

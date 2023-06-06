@@ -145,6 +145,9 @@ const HomeGerencia = (props) => {
   /** Variável de referência ao input de pesquisa */
   const inputPesquisa = useRef(null);
 
+  /** Variável booleana que determina se o input de pesquisa está vazio ou não, usado para a limpagem do input */
+  const [inputPreenchido, setInputPreenchido] = useState(false);
+
   /** Variável booleana que determina se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
 
@@ -651,6 +654,15 @@ const HomeGerencia = (props) => {
   // Função para salvar o input de pesquisa quando houver alteração
   const salvarPesquisa = (e) => {
     valorPesquisa = e;
+    if (valorPesquisa != "") {
+      if (!inputPreenchido) {
+        setInputPreenchido(true);
+      }
+    } else {
+      if (inputPreenchido) {
+        setInputPreenchido(false);
+      }
+    }
   };
 
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto */
@@ -1614,19 +1626,21 @@ const HomeGerencia = (props) => {
                     {/* Container para os ícones */}
                     <Box className="flex gap-2 items-center">
 
-                      {inputPesquisa?.current?.value != "" ? (
+                      {inputPreenchido ? (
                         <Tooltip
                           className="hover:cursor-pointer"
-                          title={texts.homeGerencia.gravarAudio}
+                          title={texts.homeGerencia.limparBusca}
                           onClick={() => {
                             valorPesquisa = "";
-                            console.log(inputPesquisa);
+                            inputPesquisa.current.value = "";
+                            pesquisaTitulo();
+                            setInputPreenchido(false);
                           }}
                         >
                           <CloseIcon
                             sx={{
                               cursor: "pointer",
-                              color: "primary.main",
+                              color: "text.secondary",
                               fontSize: "1.3rem",
                             }}
                           />
