@@ -48,8 +48,8 @@ public class AtaService {
      * @param numeroSequencial
      * @return
      */
-    public Optional<Ata> findByNumeroSequencial(String numeroSequencial) {
-        return ataRepository.findByNumeroSequencial(numeroSequencial);
+    public Page<Ata> findByNumeroSequencial(String numeroSequencial, Pageable pageable) {
+        return ataRepository.findByNumeroSequencial(numeroSequencial, pageable);
     }
 
     /**

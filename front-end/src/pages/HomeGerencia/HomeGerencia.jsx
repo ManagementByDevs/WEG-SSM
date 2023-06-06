@@ -13,6 +13,7 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
+import CloseIcon from '@mui/icons-material/Close';
 
 import Pauta from "../../components/Pauta/Pauta";
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
@@ -77,6 +78,7 @@ const HomeGerencia = (props) => {
 
   /** Parâmetros para pesquisa das demandas e propostas (filtros e pesquisa por título) */
   const [params, setParams] = useState({
+    id: null,
     titulo: null,
     solicitante: null,
     gerente: null,
@@ -86,6 +88,7 @@ const HomeGerencia = (props) => {
     tamanho: null,
     status: null,
     presenteEm: null,
+    codigoPPM: null
   });
 
   // Context para ver o tema do sistema
@@ -139,6 +142,9 @@ const HomeGerencia = (props) => {
   /** Valor do input de pesquisa por título */
   let valorPesquisa = "";
 
+  /** Variável de referência ao input de pesquisa */
+  const inputPesquisa = useRef(null);
+
   /** Variável booleana que determina se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
 
@@ -176,10 +182,10 @@ const HomeGerencia = (props) => {
   });
 
   // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
-  const [paramsPautas, setParamsPautas] = useState({ titulo: null });
+  const [paramsPautas, setParamsPautas] = useState({ titulo: null, numeroSequencial: null });
 
-  // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
-  const [paramsAtas, setParamsAtas] = useState({ titulo: null, });
+  // Parâmetros para pesquisa das atas (barra de pesquisa somente)
+  const [paramsAtas, setParamsAtas] = useState({ titulo: null, numeroSequencial: null });
 
   // UsaState que controla a visibilidade do modal de confirmação para exclusão de uma pauta
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
@@ -319,59 +325,50 @@ const HomeGerencia = (props) => {
 
   // UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada
   useEffect(() => {
+    valorPesquisa = inputPesquisa?.current?.value;
     formatarOrdenacao();
     switch (valorAba) {
       case "1":
         setParams({
-          ...params,
-          gerente: null,
-          status: null,
-          solicitante: usuario,
+          ...params, gerente: null, status: null, solicitante: usuario, titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
+          id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
         });
         setFiltroProposta(false);
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
           setParams({
-            ...params,
-            gerente: usuario,
-            solicitante: null,
-            status: "BACKLOG_APROVACAO",
+            ...params, gerente: usuario, solicitante: null, status: "BACKLOG_APROVACAO", titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
+            id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
           });
         } else {
           setParams({
-            ...params,
-            gerente: null,
-            solicitante: null,
-            status: "BACKLOG_REVISAO",
+            ...params, gerente: null, solicitante: null, status: "BACKLOG_REVISAO", titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
+            id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
           });
         }
         setFiltroProposta(false);
         break;
       case "3":
         setParams({
-          ...params,
-          gerente: null,
-          solicitante: null,
-          status: "ASSESSMENT",
+          ...params, gerente: null, solicitante: null, status: "ASSESSMENT", titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
+          id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
         });
         setFiltroProposta(false);
         break;
       case "4":
         setParams({
-          ...params,
-          gerente: null,
-          solicitante: null,
-          status: null,
+          ...params, gerente: null, solicitante: null, status: null, titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
+          id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
         });
         setFiltroProposta(true);
         break;
       case "5":
-        setParamsPautas({ ...paramsPautas });
+        setParamsPautas({ numeroSequencial: (parseInt(valorPesquisa) ? parseInt(valorPesquisa) : null), titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null) });
         setFiltroProposta(false);
         break;
       case "6":
-        setParamsAtas({ ...paramsAtas });
+        setParamsAtas({ numeroSequencial: (parseInt(valorPesquisa) ? parseInt(valorPesquisa) : null), titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null) });
         setFiltroProposta(false);
         break;
     }
@@ -439,22 +436,6 @@ const HomeGerencia = (props) => {
     }
   };
 
-  /** Função para buscar uma demanda pelo seu número sequencial, possível no campo de pesquisa */
-  const buscarPorNumero = (numero) => {
-    DemandaService.getById(numero).then((response) => {
-      formatarItens(response.content);
-      setTotalPaginas(response.totalPages);
-    });
-  };
-
-  /** Função para buscar uma proposta pelo seu PPM, possível no campo de pesquisa */
-  const buscarPorPPM = (ppm) => {
-    PropostaService.getByPPM(ppm).then((response) => {
-      formatarItens(response.content);
-      setTotalPaginas(response.totalPages);
-    });
-  };
-
   /** Função para formatar o texto de ordenação para envio como pageable à API */
   const formatarOrdenacao = () => {
     let textoNovo = "";
@@ -503,23 +484,66 @@ const HomeGerencia = (props) => {
   const formatarItens = (listaDemandas) => {
     let listaNova = [];
     for (let demanda of listaDemandas) {
-      let listaNovaBeneficios = [];
-      for (let beneficio of demanda.beneficios) {
-        listaNovaBeneficios.push({
-          ...beneficio,
-          memoriaCalculo: atob(beneficio.memoriaCalculo),
+
+      if (verificarFiltragemDemanda(demanda)) {
+        let listaNovaBeneficios = [];
+        for (let beneficio of demanda.beneficios) {
+          listaNovaBeneficios.push({
+            ...beneficio,
+            memoriaCalculo: atob(beneficio.memoriaCalculo),
+          });
+        }
+
+        listaNova.push({
+          ...demanda,
+          problema: atob(demanda.problema),
+          proposta: atob(demanda.proposta),
+          beneficios: listaNovaBeneficios,
         });
       }
-
-      listaNova.push({
-        ...demanda,
-        problema: atob(demanda.problema),
-        proposta: atob(demanda.proposta),
-        beneficios: listaNovaBeneficios,
-      });
     }
     setListaItens(listaNova);
   };
+
+  /** Função booleana que compara os parâmetros de filtragem com os dados da demanda,
+   * para evitar com que as demandas tenham tido problema em sua filtragem
+   */
+  const verificarFiltragemDemanda = (demanda) => {
+    if (params.analista != null && demanda.analista?.id != params.analista.id) {
+      return false;
+    }
+    if (params.departamento != null && demanda.departamento?.id != params.departamento.id) {
+      return false;
+    }
+    if (params.forum != null && demanda.forum?.id != params.forum.id) {
+      return false;
+    }
+    if (params.gerente != null && demanda.gerente?.id != params.gerente.id) {
+      return false;
+    }
+    if (params.codigoPPM != null && demanda.codigoPPM != params.codigoPPM) {
+      return false;
+    }
+    if (params.id != null && demanda.id != params.id) {
+      return false;
+    }
+    if (params.presenteEm && demanda.presenteEm != params.presenteEm) {
+      return false;
+    }
+    if (params.solicitante != null && demanda.solicitante?.id != params.solicitante.id) {
+      return false;
+    }
+    if (params.status && demanda.status != params.status) {
+      return false;
+    }
+    if (params.tamanho && demanda.tamanho != params.tamanho) {
+      return false;
+    }
+    if (params.titulo && !demanda.titulo.includes(params.titulo)) {
+      return false;
+    }
+    return true;
+  }
 
   const buscarItens = () => {
     setCarregamentoItens(true);
@@ -631,19 +655,25 @@ const HomeGerencia = (props) => {
 
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto */
   const pesquisaTitulo = () => {
-    if (!parseInt(valorPesquisa)) {
+    if (valorAba < 5) {
       setParams({
         ...params,
-        titulo: valorPesquisa,
-        codigoPPM: null,
-        id: null,
+        titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
+        id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null),
+        codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
+      });
+    } else if (valorAba == 5) {
+      setParamsPautas({
+        ...paramsPautas,
+        numeroSequencial: (parseInt(valorPesquisa) ? parseInt(valorPesquisa) : null),
+        titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null)
       });
     } else {
-      if (valorAba < 3) {
-        buscarPorNumero(valorPesquisa);
-      } else {
-        buscarPorPPM(valorPesquisa);
-      }
+      setParamsAtas({
+        ...paramsAtas,
+        numeroSequencial: (parseInt(valorPesquisa) ? parseInt(valorPesquisa) : null),
+        titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null)
+      });
     }
   };
 
@@ -775,7 +805,6 @@ const HomeGerencia = (props) => {
             );
           }
         } else {
-          // MUDAR TUDO PARA LISTAITENS, NÃO DEIXAR NA LISTA ATAS
           let listaIdAtas = [];
 
           for (const object in listaItens) {
@@ -853,7 +882,8 @@ const HomeGerencia = (props) => {
         let itemsVisualizationMode =
           preferencias?.itemsVisualizationMode?.toUpperCase();
 
-        // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao é o próximo modo para o qual será trocado a visualização
+        // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao 
+        // é o próximo modo para o qual será trocado a visualização
         if (itemsVisualizationMode == nextModoVisualizacao) {
           setNextModoVisualizacao("GRID");
         }
@@ -1163,6 +1193,17 @@ const HomeGerencia = (props) => {
       };
     }
   };
+
+  /** Função que retorna o texto adequado para a barra de pesquisa dependendo da aba em que o usuário estiver */
+  const formatarTextoPesquisa = () => {
+    if (valorAba < 4) {
+      return texts.homeGerencia.pesquisarPorTituloOuNumero;
+    } else if (valorAba == 4) {
+      return texts.homeGerencia.pesquisarPorTituloOuPPM;
+    } else {
+      return texts.homeGerencia.pesquisarPorNumeroSequencialOuProposta;
+    }
+  }
 
   return (
     <FundoComHeader lendo={props.lendo}>
@@ -1561,12 +1602,10 @@ const HomeGerencia = (props) => {
                         color: "text.primary",
                         fontSize: FontConfig.medium,
                       }}
-                      placeholder={texts.homeGerencia.pesquisarPorTitulo}
+                      ref={inputPesquisa}
+                      placeholder={formatarTextoPesquisa()}
                       onKeyDown={(e) => {
                         eventoTeclado(e);
-                      }}
-                      onBlur={() => {
-                        pesquisaTitulo();
                       }}
                       onChange={(e) => {
                         salvarPesquisa(e.target.value);
@@ -1574,6 +1613,26 @@ const HomeGerencia = (props) => {
                     />
                     {/* Container para os ícones */}
                     <Box className="flex gap-2 items-center">
+
+                      {inputPesquisa?.current?.value != "" ? (
+                        <Tooltip
+                          className="hover:cursor-pointer"
+                          title={texts.homeGerencia.gravarAudio}
+                          onClick={() => {
+                            valorPesquisa = "";
+                            console.log(inputPesquisa);
+                          }}
+                        >
+                          <CloseIcon
+                            sx={{
+                              cursor: "pointer",
+                              color: "primary.main",
+                              fontSize: "1.3rem",
+                            }}
+                          />
+                        </Tooltip>
+                      ) : null}
+
                       {/* Ícone de microfone */}
                       <Tooltip
                         className="hover:cursor-pointer"

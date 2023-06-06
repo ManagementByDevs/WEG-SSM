@@ -294,7 +294,7 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long> {
 
     Page<Proposta> findByVisibilidade(boolean b, Pageable pageable);
 
-    List<Proposta> findByTitulo(String titulo);
+    List<Proposta> findByTituloContaining(String titulo);
 
     Page<Proposta> findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(boolean b, Status status, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable);
 
