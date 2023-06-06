@@ -2,7 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 
-import { Box, Stepper, Step, StepLabel, Typography, Button, } from "@mui/material";
+import {
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+  Button,
+} from "@mui/material";
 
 import FormularioDadosDemanda from "../FormularioDadosDemanda/FormularioDadosDemanda";
 import FormularioBeneficiosDemanda from "../FormularioBeneficiosDemanda/FormularioBeneficiosDemanda";
@@ -18,12 +25,12 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 import beneficioService from "../../service/beneficioService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente principal usado para criação de demanda, redirecionando para as etapas respectivas e
  * salvando a demanda e escopos no banco de dados
  */
-const BarraProgressaoDemanda = (props) => {
-
+const BarraProgressaoDemanda = () => {
   /** Location utilizado para setar o state utilizado para verificação de lógica */
   const location = useLocation();
 
@@ -34,7 +41,10 @@ const BarraProgressaoDemanda = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   /** Contexto para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
 
   /** UseState utilizado para armazenar o usuário */
   const [usuario, setUsuario] = useState(null);
@@ -46,10 +56,14 @@ const BarraProgressaoDemanda = (props) => {
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
 
   /** Variável utilizada para abrir o modal de feedback de navegador incompativel */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
 
   /** Variável utilizada para abrir o modal de feedback de erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
   /** Variáveis utilizadas para salvar um escopo de uma demanda */
   var idEscopo = null;
@@ -138,9 +152,9 @@ const BarraProgressaoDemanda = (props) => {
     if (usuario) {
       setTimeout(() => {
         setCarregamentoDemanda(false);
-      }, 500)
+      }, 500);
     }
-  }, [usuario])
+  }, [usuario]);
 
   /** Função para buscar o usuário salvo no cookie de autenticação */
   const buscarUsuario = () => {
@@ -182,7 +196,6 @@ const BarraProgressaoDemanda = (props) => {
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
     for (let beneficio of beneficios) {
-
       let tipoBeneficioNovo = "";
       if (beneficio.tipoBeneficio) {
         tipoBeneficioNovo =
@@ -198,7 +211,7 @@ const BarraProgressaoDemanda = (props) => {
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: atob(beneficio.memoriaCalculo),
-        visible: true
+        visible: true,
       });
     }
     setPaginaBeneficios(listaNova);
@@ -255,12 +268,12 @@ const BarraProgressaoDemanda = (props) => {
           //Confirmação de salvamento (se sobrar tempo)
         });
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
@@ -289,7 +302,7 @@ const BarraProgressaoDemanda = (props) => {
 
   /** Função para voltar para a etapa anterior na criação da demanda */
   const voltarEtapa = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       setEtapaAtiva((prevActiveStep) => prevActiveStep - 1);
     } else {
       lerTexto(texts.barraProgressaoDemanda.botaoVoltar);
@@ -298,7 +311,7 @@ const BarraProgressaoDemanda = (props) => {
 
   /** Função para ir para a próxima etapa da demanda */
   const proximaEtapa = () => {
-    if (props.lendo) {
+    if (lendoTexto) {
       lerTexto(texts.barraProgressaoDemanda.botaoProximo);
     } else {
       switch (etapaAtiva) {
@@ -358,34 +371,10 @@ const BarraProgressaoDemanda = (props) => {
       if (beneficio.visible) {
         let beneficioFinal = { ...beneficio };
         delete beneficioFinal.visible;
-        beneficioService.put(beneficioFinal, beneficioFinal.memoriaCalculo).then((response) => { });
+        beneficioService
+          .put(beneficioFinal, beneficioFinal.memoriaCalculo)
+          .then((response) => {});
       }
-    }
-  };
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 
@@ -405,8 +394,6 @@ const BarraProgressaoDemanda = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
-        lendo={props.lendo}
-
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
@@ -416,8 +403,6 @@ const BarraProgressaoDemanda = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
-        lendo={props.lendo}
-
       />
       {/* Feedback de dados faltantes */}
       <Feedback
@@ -427,8 +412,6 @@ const BarraProgressaoDemanda = (props) => {
         }}
         status={"erro"}
         mensagem={texts.barraProgressaoDemanda.mensagemFeedback}
-        lendo={props.lendo}
-
       />
 
       {carregamentoDemanda ? (
@@ -445,9 +428,6 @@ const BarraProgressaoDemanda = (props) => {
               textoModal={"enviarDemanda"}
               textoBotao={"enviar"}
               onConfirmClick={criarDemanda}
-              lendo={props.lendo}
-              texto={props.texto}
-              setTexto={props.setTexto}
             />
           )}
 
@@ -482,7 +462,6 @@ const BarraProgressaoDemanda = (props) => {
               setFeedbackErroNavegadorIncompativel={
                 setFeedbackErroNavegadorIncompativel
               }
-              lendo={props.lendo}
             />
           )}
           {etapaAtiva == 1 && (
@@ -497,9 +476,6 @@ const BarraProgressaoDemanda = (props) => {
                 setFeedbackErroReconhecimentoVoz={
                   setFeedbackErroReconhecimentoVoz
                 }
-                lendo={props.lendo}
-                texto={props.texto}
-                setTexto={props.setTexto}
               />
             </Box>
           )}
@@ -507,9 +483,6 @@ const BarraProgressaoDemanda = (props) => {
             <FormularioAnexosDemanda
               dados={paginaArquivos}
               setDados={setPaginaArquivos}
-              lendo={props.lendo}
-              texto={props.texto}
-              setTexto={props.setTexto}
             />
           )}
 
@@ -533,7 +506,7 @@ const BarraProgressaoDemanda = (props) => {
               color="primary"
               variant="contained"
               onClick={() => {
-                if (!props.lendo) {
+                if (!lendoTexto) {
                   setOpenConfirmacao(true);
                 } else {
                   lerTexto(texts.barraProgressaoDemanda.botaoCriar);

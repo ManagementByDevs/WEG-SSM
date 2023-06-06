@@ -60,8 +60,25 @@ public class DemandaController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Page<Demanda>> findById(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-                                                  @PathVariable(value = "id") Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(demandaService.findById(id, pageable));
+                                                  @PathVariable(value = "id") Long id,
+                                                  @RequestParam(value = "usuario", required = false) String usuarioJson,
+                                                  @RequestParam(value = "status", required = false) Status status) {
+        UsuarioUtil usuarioUtil = new UsuarioUtil();
+        Usuario usuario = usuarioUtil.convertJsonToModel(usuarioJson);
+
+        if(usuario != null) {
+            if(status != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(demandaService.findByIdAndSolicitanteAndStatus(id, usuario, status, pageable));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(demandaService.findByIdAndSolicitante(id, usuario, pageable));
+            }
+        } else {
+            if(status != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(demandaService.findByIdAndStatus(id, status, pageable));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(demandaService.findById(id, pageable));
+            }
+        }
     }
 
     /**

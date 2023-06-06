@@ -81,6 +81,14 @@ const Demanda = (props) => {
     }
   };
 
+  /** useEffect utilizado para declarar o campo html na variável */
+  useEffect(() => {
+    if (descricaoDemanda.current) {
+      descricaoDemanda.current.innerHTML = props.demanda.proposta;
+    }
+
+  }, [props.demanda]);
+
   /** Função para formatar o html em texto */
   const getPropostaFomartted = (proposta) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();

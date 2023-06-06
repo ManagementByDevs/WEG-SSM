@@ -8,6 +8,7 @@ import net.weg.wegssm.model.service.PautaService;
 import net.weg.wegssm.model.service.PropostaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -60,17 +61,20 @@ public class PautaController {
      */
     @GetMapping("/page")
     public ResponseEntity<Page<Pauta>> findPage(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-                                                @RequestParam(required = false) String titulo) {
-        if (titulo != null && !titulo.isEmpty()) {
-            List<Proposta> propostas = propostaService.findByTitulo(titulo);
+                                                @RequestParam(required = false) String titulo,
+                                                @RequestParam(required = false) String numeroSequencial) {
+        if (numeroSequencial != null && !numeroSequencial.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(pautaService.findByNumeroSequencial(numeroSequencial, pageable));
+        } else if (titulo != null && !titulo.isEmpty()) {
+            List<Proposta> propostas = propostaService.findByTituloContaining(titulo);
             List<Pauta> pautas = new ArrayList<>();
             for (Proposta proposta : propostas) {
                 Pauta pauta = pautaService.findByPropostasContaining(proposta);
-                if (!pautas.contains(pauta)) {
+                if (!pautas.contains(pauta) && pauta != null) {
                     pautas.add(pauta);
                 }
             }
-            return ResponseEntity.status(HttpStatus.OK).body((Page<Pauta>) pautas);
+            return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<Pauta>(pautas, pageable, pautas.size()));
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(pautaService.findAll(pageable));
         }
@@ -89,21 +93,6 @@ public class PautaController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(pautaService.findById(id).get());
-    }
-
-    /**
-     * Método GET para listar uma pauta específica através do número sequencial
-     *
-     * @param numeroSequencial
-     * @return
-     */
-    @GetMapping("/numerosequencial/{numeroSequencial}")
-    public ResponseEntity<Object> findByNumeroSequencial(@PathVariable(value = "numeroSequencial") Long numeroSequencial) {
-        if (!pautaService.existsByNumeroSequencial(numeroSequencial)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhuma pauta com este numero sequencial.");
-        }
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(pautaService.findByNumeroSequencial(numeroSequencial).get());
     }
 
     /**
@@ -164,6 +153,7 @@ public class PautaController {
 
     /**
      * Função para calcular o score de uma pauta através da soma dos scores das propostas presentes
+     *
      * @param pauta Pauta a se calcular o score
      * @return Score final da pauta
      */

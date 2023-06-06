@@ -1,6 +1,13 @@
 import React, { useContext } from "react";
 
-import { Box, Select, FormControl, InputLabel, MenuItem, Typography, } from "@mui/material";
+import {
+  Box,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import InputComLabel from "../InputComLabel/InputComLabel";
@@ -10,15 +17,18 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 import "./Beneficios.css";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente de benefício editável utilizado na segunda etapa da criação da demanda */
 const Beneficios = (props) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Função para salvar o tipo do benefício */
   const salvarTipoBeneficio = (event) => {
@@ -48,32 +58,6 @@ const Beneficios = (props) => {
       props.save({ ...props.dados, valor_mensal: texto });
     }
   }
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <Box
@@ -132,7 +116,7 @@ const Beneficios = (props) => {
 
         {/* Verificação para mostar o input de valor mensal */}
         {props.dados?.tipoBeneficio === "Real" ||
-          props.dados?.tipoBeneficio === "Potencial" ? (
+        props.dados?.tipoBeneficio === "Potencial" ? (
           <Box className="flex items-end" sx={{ minWidth: "275px" }}>
             <Box
               className="flex items-end"
@@ -154,7 +138,6 @@ const Beneficios = (props) => {
                     setFeedbackErroReconhecimentoVoz={
                       props.setFeedbackErroReconhecimentoVoz
                     }
-                    lendo={props.lendo}
                   />
                 </Box>
                 <FormControl
@@ -201,8 +184,8 @@ const Beneficios = (props) => {
 
       {/* Verificação para mostar o input de memória de cálculo */}
       {props.dados?.tipoBeneficio === "Real" ||
-        props.dados?.tipoBeneficio === "Potencial" ||
-        props.dados?.tipoBeneficio === "Qualitativo" ? (
+      props.dados?.tipoBeneficio === "Potencial" ||
+      props.dados?.tipoBeneficio === "Qualitativo" ? (
         <Box className="flex items-center" sx={{ width: "65%" }}>
           {/* Input que permite estilização para a memória de cálculo do benefício */}
           <Box className="flex flex-col overflow-auto w-full h-full">

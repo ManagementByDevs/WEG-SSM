@@ -19,18 +19,22 @@ import TextLanguage from "../../service/TextLanguage";
 
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal para selecionar o idioma do sistema
-const IdiomaModal = (props) => {
+const IdiomaModal = () => {
   useEffect(() => {
     arrangePreferences();
   }, []);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // UseState para poder visualizar e alterar a imagem da linguagem selecionada (Valor padrão é Brasil)
   const [idioma, setIdioma] = useState();
@@ -121,7 +125,6 @@ const IdiomaModal = (props) => {
   useEffect(() => {
     if (!CookieService.getCookie("jwt")) return;
     UsuarioService.getPreferencias(CookieService.getCookie("jwt")?.sub).then(
-      
       (preferencias) => {
         if (preferencias.lang == "pt") setIdioma(Brasil);
         else if (preferencias.lang == "ch") setIdioma(China);
@@ -131,32 +134,6 @@ const IdiomaModal = (props) => {
     );
   }, []);
   // ********************************************** Fim Preferências **********************************************
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     // Div container do idioma

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 
 import { Modal, Typography, Box, Fade } from "@mui/material";
 
@@ -6,39 +6,18 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Modal para ver o motivo da recusa de demanda para o solicitante */
 const ModalMotivoRecusa = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   return (
     <Modal
@@ -74,7 +53,8 @@ const ModalMotivoRecusa = (props) => {
               cursor: "pointer",
             }}
           />
-          <Typography fontSize={FontConfig.veryBig}
+          <Typography
+            fontSize={FontConfig.veryBig}
             onClick={() => {
               lerTexto(texts.modalMotivoRecusa.motivoDaRecusa);
             }}
@@ -91,7 +71,8 @@ const ModalMotivoRecusa = (props) => {
             }}
           >
             {/* Motivo da recusa */}
-            <Typography fontSize={FontConfig.normal}
+            <Typography
+              fontSize={FontConfig.normal}
               onClick={() => {
                 lerTexto(props.motivoRecusa);
               }}

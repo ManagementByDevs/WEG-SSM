@@ -25,6 +25,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Adiciona estilos personalizados para a aparência do Switch, incluindo tamanho, cores, imagens e animações
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -74,9 +75,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const UserModal = (props) => {
+const UserModal = () => {
   //useContext para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
+
+  // Context para ler o texto da tela
+  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
 
   // UseState com as informações do usuário, recebidas no useEffect ao criar o componente
   const [usuario, setUsuario] = useState({
@@ -476,31 +480,6 @@ const UserModal = (props) => {
         });
     }
   }, [valueSlider]);
-   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <>
@@ -564,7 +543,7 @@ const UserModal = (props) => {
           <MenuItem
             className="gap-2"
             onClick={() => {
-              if (props.lendo) {
+              if (lendoTexto) {
                 lerTexto(texts.userModal.escopos);
               } else {
                 handleClose();
@@ -590,7 +569,7 @@ const UserModal = (props) => {
           <MenuItem
             className="gap-2"
             onClick={() => {
-              if (props.lendo) {
+              if (lendoTexto) {
                 lerTexto(texts.userModal.chats);
               } else {
                 handleClose();
@@ -692,7 +671,7 @@ const UserModal = (props) => {
           >
             {
               // Se estiver lendo, o texto é o padrão, se não, é o texto de sair
-              props.lendo ? (
+              lendoTexto ? (
                 texts.userModal.sair
               ) : (
                 <Link to={"/login"} onClick={sair}>

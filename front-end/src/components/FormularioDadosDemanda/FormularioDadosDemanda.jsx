@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 
 import { Box, Typography } from "@mui/material";
 
@@ -7,6 +7,7 @@ import InputComLabel from "../InputComLabel/InputComLabel";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
@@ -14,7 +15,10 @@ const FormularioDadosDemanda = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Todas as funções de salvamento modificam diretamente as variáveis do componente "BarraProgressãoDemanda" (paginaDados)
   // através do "props"
@@ -37,32 +41,6 @@ const FormularioDadosDemanda = (props) => {
   /** Função para salvar a frequência da demanda */
   const salvarFrequencia = (texto) => {
     props.setDados({ ...props.dados, frequencia: texto });
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (
@@ -90,7 +68,6 @@ const FormularioDadosDemanda = (props) => {
             setFeedbackErroNavegadorIncompativel={
               props.setFeedbackErroNavegadorIncompativel
             }
-            lendo={props.lendo}
           />
 
           <Box>
@@ -188,7 +165,6 @@ const FormularioDadosDemanda = (props) => {
               setFeedbackErroNavegadorIncompativel={
                 props.setFeedbackErroNavegadorIncompativel
               }
-              lendo={props.lendo}
             />
           </Box>
         </Box>

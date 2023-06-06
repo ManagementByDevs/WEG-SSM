@@ -7,8 +7,16 @@ class DemandaService {
         return (await axios.get(demanda, { withCredentials: true })).data;
     }
 
-    async getById(id) {
-        return (await axios.get(demanda + "/" + id, { withCredentials: true })).data;
+    async getById(id, params) {
+
+        let newParams = {};
+        if (params.usuario != null) {
+            newParams.usuario = JSON.stringify(params.usuario);
+        }
+        if (params.status != null) {
+            newParams.status = params.status;
+        }
+        return (await axios.get(demanda + "/" + id, { params: newParams, withCredentials: true })).data;
     }
 
     async getByPPM(ppm) {
@@ -18,6 +26,12 @@ class DemandaService {
     async getPage(params, page) {
 
         let newParams = {};
+        if(params.id != null) {
+            newParams.id = params.id;
+        }
+        if(params.codigoPPM != null) {
+            newParams.codigoPPM = params.codigoPPM;
+        }
         if (params.titulo != "") {
             newParams.titulo = params.titulo;
         }

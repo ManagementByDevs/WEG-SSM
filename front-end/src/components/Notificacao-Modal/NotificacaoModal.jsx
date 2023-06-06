@@ -17,10 +17,10 @@ import NotificacaoService from "../../service/notificacaoService";
 import UsuarioService from "../../service/usuarioService";
 import DateService from "../../service/dateService";
 import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Ícone e modal de notificações presente no Header */
-const NotificacaoModal = (props) => {
-
+const NotificacaoModal = () => {
   /** Variável para pegar informações da URL */
   const location = useLocation();
 
@@ -35,6 +35,9 @@ const NotificacaoModal = (props) => {
 
   /**  Context do WebSocket */
   const { inscrever, stompClient } = useContext(WebSocketContext);
+
+  // Context para ler o texto da tela
+  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Referência usada para determinar a posição do modal na tela */
   const elementoAncora = useRef(null);
@@ -68,7 +71,6 @@ const NotificacaoModal = (props) => {
 
   /** UseEffect para se inscrever no tópico de chats para receber notificações em tempo real */
   useEffect(() => {
-
     /** Função para chamar a função "saveNotificacao" quando receber uma mensagem nova */
     const receivedAnyMessage = (mensagem) => {
       let mensagemRecebida = EntitiesObjectService.mensagem();
@@ -93,7 +95,6 @@ const NotificacaoModal = (props) => {
 
   /** UseEffect para se inscrever no servidor WebSocket para receber novas notificações */
   useEffect(() => {
-
     /** Função para adicionar uma nova notificação recebida na lista de notificações */
     const acaoNovaNotificacao = (response) => {
       const notificacao = JSON.parse(response.body);
@@ -121,7 +122,7 @@ const NotificacaoModal = (props) => {
           .then((response) => {
             setNotificacoes([...response.content]);
           })
-          .catch((error) => { });
+          .catch((error) => {});
       }
     );
   };
@@ -149,32 +150,6 @@ const NotificacaoModal = (props) => {
     });
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <>
       <Feedback
@@ -184,7 +159,6 @@ const NotificacaoModal = (props) => {
         }}
         status={"info"}
         mensagem={texts.notificacaoModal.notificacaoLidaComSucesso}
-        lendo={props.lendo}
       />
       {/* Title  */}
       <Tooltip title={texts.notificacaoModal.notificacoes} ref={elementoAncora}>
@@ -227,7 +201,6 @@ const NotificacaoModal = (props) => {
                   notificacao={notificacao}
                   onNotificacaoClick={onNotificationItemClick}
                   index={index}
-                  lendo={props.lendo}
                 />
               );
             })}
@@ -265,7 +238,7 @@ const NotificacaoModal = (props) => {
               }}
               // Se clicar ir para a pagina de notificacao
               onClick={() => {
-                if (!props.lendo) {
+                if (!lendoTexto) {
                   navigate("/notificacao");
                 } else {
                   lerTexto(texts.notificacaoModal.verTudo);
@@ -274,9 +247,9 @@ const NotificacaoModal = (props) => {
             >
               {notificacoes.length > 0
                 ? texts.notificacaoModal.verTudo +
-                "(" +
-                notificacoes.length +
-                ")"
+                  "(" +
+                  notificacoes.length +
+                  ")"
                 : texts.notificacaoModal.verNotificacoes}
             </Typography>
           </Box>

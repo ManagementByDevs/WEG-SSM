@@ -35,6 +35,8 @@ import DateService from "../../service/dateService";
 import AnexoService from "../../service/anexoService";
 import { MensagemService } from "../../service/MensagemService";
 import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 import logoWeg from "../../assets/logo-weg.png";
 
@@ -51,6 +53,12 @@ const Chat = (props) => {
 
   /**  Context do WebSocket */
   const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
@@ -549,13 +557,6 @@ const Chat = (props) => {
     });
   };
 
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      setTextoLeitura(escrita);
-    }
-  };
-
   /** Função para verificar se um usuário está na lista */
   const containsUser = (
     usuarios = [EntitiesObjectService.usuario()],
@@ -572,15 +573,6 @@ const Chat = (props) => {
 
   /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
-
-  /** Variável utilizada para ativar o microfone para gravação de audio */
-  const [escutar, setEscutar] = useState(false);
-
-  /** Varíavel utilizada para armazenar o local onde foi clicado */
-  const [localClicado, setLocalClicado] = useState("");
-
-  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
   /** Função para gravar audio nos inputs */
   const ouvirAudio = () => {
@@ -629,7 +621,42 @@ const Chat = (props) => {
 
   /** useEffect utilizado para armazenar as palavras juntas dependendo do local onde foi clicado */
   useEffect(() => {
-    switch (localClicado) {
+    let listaChatsAux = listaChats.filter((chat) => {
+      // Pesquisa por código PPM
+      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
+        return true;
+      }
+
+      // Pesquisa pelo título da proposta
+      if (
+        chat.idProposta.titulo
+          .toLowerCase()
+          .includes(pesquisaContato.toLowerCase())
+      ) {
+        return true;
+      }
+
+      // Pesquisa pelo nome do contato
+      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
+        return true;
+      }
+    });
+    setResultadosContato([...listaChatsAux]);
+  }, [pesquisaContato, listaChats, idChat]);
+
+  useEffect(() => {
+    setBuscandoMensagens(false);
+    const boxElement = boxRef.current;
+    // Colocando o scroll para a última mensagem recebida
+    if (boxElement) {
+      boxElement.scrollTop = boxElement.scrollHeight;
+    }
+  }, [mensagens]);
+
+  // // ********************************************** Gravar audio **********************************************
+
+  useEffect(() => {
+    switch (localClique) {
       case "titulo":
         setPesquisaContato(palavrasJuntas);
         break;
@@ -646,12 +673,6 @@ const Chat = (props) => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
-  };
-
-  /** Função para iniciar a gravação de voz */
-  const startRecognition = (ondeClicou) => {
-    setEscutar(!escutar);
-    setLocalClicado(ondeClicou);
   };
 
   /** useEffect utilizado para verificar se a gravação ainda está funcionando */
@@ -686,7 +707,6 @@ const Chat = (props) => {
           onConfirmClick={deletarChat}
           onCancelClick={fecharModalCancelarChat}
           textoBotao={"sim"}
-          lendo={props.lendo}
         />
       )}
       {/* Modal de confirmação reabrir chat */}
@@ -698,30 +718,9 @@ const Chat = (props) => {
           onConfirmClick={abrirChat}
           onCancelClick={fecharModalAbrirChat}
           textoBotao={"sim"}
-          lendo={props.lendo}
         />
       )}
-      <FundoComHeader lendo={props.lendo}>
-        {/* Feedback Erro reconhecimento de voz */}
-        <Feedback
-          open={feedbackErroReconhecimentoVoz}
-          handleClose={() => {
-            setFeedbackErroReconhecimentoVoz(false);
-          }}
-          status={"erro"}
-          mensagem={texts.homeGerencia.feedback.feedback12}
-          lendo={props.lendo}
-        />
-        {/* Feedback Não navegador incompativel */}
-        <Feedback
-          open={feedbackErroNavegadorIncompativel}
-          handleClose={() => {
-            setFeedbackErroNavegadorIncompativel(false);
-          }}
-          status={"erro"}
-          mensagem={texts.homeGerencia.feedback.feedback13}
-          lendo={props.lendo}
-        />
+      <FundoComHeader>
         {/* Feedback Chat encerrado com sucesso */}
         <Feedback
           open={feedbackChatEncerrado}
@@ -730,7 +729,6 @@ const Chat = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
-          lendo={props.lendo}
         />
         {/* Feedback Anexo pesado */}
         <Feedback
@@ -740,7 +738,6 @@ const Chat = (props) => {
           }}
           status={"erro"}
           mensagem={texts.chat.anexoMuitoPesado}
-          lendo={props.lendo}
         />
         {/* Feedback Chat reaberto com sucesso */}
         <Feedback
@@ -750,14 +747,9 @@ const Chat = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatReaberto}
-          lendo={props.lendo}
         />
         <Box className="p-2">
-          <Caminho
-            lendo={props.lendo}
-            texto={props.texto}
-            setTexto={props.setTexto}
-          />
+          <Caminho />
           <Box className="w-full flex justify-center items-center">
             <Box
               className="flex justify-evenly items-center rounded border mt-4"
@@ -797,7 +789,7 @@ const Chat = (props) => {
                     title={texts.homeGerencia.gravarAudio}
                     onClick={() => { startRecognition("titulo") }}
                   >
-                    {escutar && localClicado == "titulo" ? (
+                    {escutar && localClique == "titulo" ? (
                       <MicOutlinedIcon
                         sx={{
                           cursor: "pointer",
@@ -842,9 +834,6 @@ const Chat = (props) => {
                       },
                       usuariosChat: [{ id: 0, nome: "Tour", email: "" }],
                     }}
-                    lendo={props.lendo}
-                    texto={props.texto}
-                    setTexto={props.setTexto}
                     index={0}
                   />
                 ) : resultadosContato[0]?.id != 0 ? (
@@ -859,9 +848,6 @@ const Chat = (props) => {
                         idChat={idChat}
                         chat={resultado}
                         index={index}
-                        lendo={props.lendo}
-                        texto={props.texto}
-                        setTexto={props.setTexto}
                       />
                     );
                   })
@@ -1023,7 +1009,7 @@ const Chat = (props) => {
                         startRecognition("titulo");
                       }}
                     >
-                      {escutar && localClicado == "titulo" ? (
+                      {escutar && localClique == "titulo" ? (
                         <MicOutlinedIcon
                           sx={{
                             cursor: "pointer",
@@ -1345,7 +1331,7 @@ const Chat = (props) => {
                             startRecognition("mensagem");
                           }}
                         >
-                          {escutar && localClicado == "mensagem" ? (
+                          {escutar && localClique == "mensagem" ? (
                             <MicOutlinedIcon
                               sx={{
                                 cursor: "pointer",

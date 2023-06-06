@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Snackbar, Alert } from "@mui/material";
+
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Feedback padrão para avisos do sistema sobre processos concluídos / problemas no sistema */
 const Feedback = (props) => {
   // Variáveis de estilo para o componente (definir a posição)
   const vertical = "top";
   const horizontal = "right";
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   const [textoLeitura, setTextoLeitura] = useState("");
 
@@ -21,32 +26,6 @@ const Feedback = (props) => {
         return "info";
       default:
         return "info";
-    }
-  };
-
-   // Função que irá setar o texto que será "lido" pela a API
-   const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 

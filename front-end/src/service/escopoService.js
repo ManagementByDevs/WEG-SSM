@@ -2,6 +2,16 @@ import axios from "./api";
 
 class EscopoService {
 
+    async buscarPagina(params, page) {
+
+        let newParams = {...params};
+        if(params.usuario) {
+            newParams.usuario = JSON.stringify(params.usuario);
+        }
+
+        return (await axios.get(`/escopo/page?${page}`, { params: newParams, headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+    }
+
     async buscarPorUsuario(usuarioId, ordenacao) {
         return (await axios.get(`/escopo/usuario/${usuarioId}/?${ordenacao}`, { headers: { "Content-Type": "application/json" }, withCredentials: true })).data;
     }

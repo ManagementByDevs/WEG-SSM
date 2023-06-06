@@ -17,6 +17,7 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
+import CloseIcon from '@mui/icons-material/Close';
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
@@ -434,7 +435,11 @@ const Home = (props) => {
 
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto, consequentemente buscando as demandas */
   const pesquisaTitulo = () => {
-    setParams({ ...params, titulo: valorPesquisa });
+    setParams({
+      ...params,
+      titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
+      id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null)
+    });
   };
 
   // ********************************************** Preferências ********************************************** //
@@ -775,14 +780,11 @@ const Home = (props) => {
                         fontSize: FontConfig?.medium,
                       }}
                       contentEditable
-                      placeholder={texts.home.pesquisarPorTitulo}
+                      placeholder={texts.home.pesquisarPorTituloOuNumero}
                       onKeyDown={(e) => {
                         if (e.key == "Enter") {
                           pesquisaTitulo();
                         }
-                      }}
-                      onBlur={() => {
-                        pesquisaTitulo();
                       }}
                       onChange={(e) => {
                         salvarPesquisa(e);
@@ -791,6 +793,7 @@ const Home = (props) => {
 
                     {/* Container para os ícones */}
                     <Box className="flex gap-2">
+
                       {/* Ícone de microfone */}
                       <Tooltip
                         className="hover:cursor-pointer"

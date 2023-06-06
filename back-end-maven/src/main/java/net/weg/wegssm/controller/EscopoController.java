@@ -1,7 +1,6 @@
 package net.weg.wegssm.controller;
 
 import lombok.AllArgsConstructor;
-import net.weg.wegssm.dto.EscopoDTO;
 import net.weg.wegssm.model.entities.Anexo;
 import net.weg.wegssm.model.entities.Beneficio;
 import net.weg.wegssm.model.entities.Escopo;
@@ -10,20 +9,16 @@ import net.weg.wegssm.model.service.AnexoService;
 import net.weg.wegssm.model.service.BeneficioService;
 import net.weg.wegssm.model.service.EscopoService;
 import net.weg.wegssm.model.service.UsuarioService;
-import net.weg.wegssm.util.EscopoUtil;
-import org.springframework.beans.BeanUtils;
+import net.weg.wegssm.util.UsuarioUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,16 +53,6 @@ public class EscopoController {
     private AnexoService anexoService;
 
     /**
-     * Método GET para listar todos os escopos salvos no banco
-     *
-     * @return Lista com todos os escopos do sistema
-     */
-    @GetMapping
-    public ResponseEntity<List<Escopo>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(escopoService.findAll());
-    }
-
-    /**
      * Método GET para listar um escopo específico através de um id
      *
      * @param id ID do escopo a procurar
@@ -81,6 +66,20 @@ public class EscopoController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoOptional.get());
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<Escopo>> findPage(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                 @RequestParam(value = "usuario") String usuarioJson,
+                                                 @RequestParam(value = "titulo", required = false) String titulo) {
+        UsuarioUtil usuarioUtil = new UsuarioUtil();
+        Usuario usuario = usuarioUtil.convertJsonToModel(usuarioJson);
+
+        if(titulo != null && !titulo.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuarioAndTitulo(usuario, titulo, pageable));
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(escopoService.findByUsuario(usuario, pageable));
+        }
     }
 
     /**
@@ -133,27 +132,6 @@ public class EscopoController {
     }
 
     /**
-     * Método POST para criar um escopo, podendo adicionar anexos caso necessário
-     *
-     * @param files
-     * @param escopoJSON
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Object> save(@RequestParam("anexos") List<MultipartFile> files, @RequestParam("escopo") String escopoJSON) {
-        EscopoUtil escopoUtil = new EscopoUtil();
-        Escopo escopo = escopoUtil.convertJsonToModel(escopoJSON);
-
-        if (!usuarioService.existsById(escopo.getUsuario().getId())) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
-        }
-
-        escopo.setAnexos(files);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(escopoService.save(escopo));
-    }
-
-    /**
      * Método PUT para atualizar um escopo
      *
      * @param escopo
@@ -187,25 +165,6 @@ public class EscopoController {
         escopo.setAnexo(listaAnexosNova);
 
         return ResponseEntity.status(HttpStatus.OK).body(escopoService.save(escopo));
-    }
-
-    /**
-     * Método DELETE para deletar um escopo, colocando sua visibilidade como false
-     *
-     * @param id
-     * @return
-     */
-    @Transactional
-    @DeleteMapping("/visibilidade/{id}")
-    public ResponseEntity<Object> deleteByIdVisibilidade(@PathVariable(value = "id") Long id) {
-        if (!escopoService.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrado nenhum escopo com este id.");
-        }
-
-        Escopo escopo = escopoService.findById(id).get();
-        escopoService.save(escopo);
-
-        return ResponseEntity.status(HttpStatus.OK).body(escopo);
     }
 
     /**

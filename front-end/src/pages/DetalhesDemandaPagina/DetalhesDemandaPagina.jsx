@@ -3,9 +3,11 @@ import Tour from "reactour";
 import { ClipLoader } from "react-spinners";
 import { useLocation } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras";
-
 import { Box, IconButton } from "@mui/material";
+
+import VLibras from "@djpfs/react-vlibras";
+import Tour from "reactour";
+import { ClipLoader } from "react-spinners";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 
@@ -20,13 +22,9 @@ import ExportPdfService from "../../service/exportPdfService";
 import CookieService from "../../service/cookieService";
 
 /** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
-const DetalhesDemandaPagina = ({
-  lendo = true,
-  texto = "",
-  setTexto = () => { },
-}) => {
-
-  /** Context para alterar a linguagem do sistema */
+const DetalhesDemandaPagina = () => {
+  
+  // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
   /** Location utilizado para pegar os dados da demanda */
@@ -140,7 +138,7 @@ const DetalhesDemandaPagina = ({
   };
 
   return (
-    <FundoComHeader lendo={lendo} texto={texto} setTexto={setTexto}>
+    <FundoComHeader>
       <VLibras forceOnload />
       {/* Tour ao usuário */}
       <Tour
@@ -160,7 +158,7 @@ const DetalhesDemandaPagina = ({
         ) : (
           <>
             <Box className="flex w-full relative">
-              <Caminho lendo={lendo} texto={texto} setTexto={setTexto} />
+              <Caminho />
               <Box
                 className=" absolute"
                 sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -184,7 +182,6 @@ const DetalhesDemandaPagina = ({
                 botao={true}
                 salvar={true}
                 updateDemandaProps={updateDemandaProps}
-                lendo={lendo}
               />
             </Box>
           </>

@@ -16,7 +16,6 @@ import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalA
 import Feedback from "../../components/Feedback/Feedback";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
-import FontContext from "../../service/FontContext";
 import ExportPdfService from "../../service/exportPdfService";
 
 /** Página que mostra os detalhes da proposta selecionada, com opção de download para pdf */
