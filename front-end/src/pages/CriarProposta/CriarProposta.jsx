@@ -9,15 +9,16 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import BarraProgressaoProposta from "../../components/BarraProgressaoProposta/BarraProgressaoProposta";
 
-// Tela para criação de uma proposta ( chama o componente para criação )
+/** Tela para criação de uma proposta ( chama o componente para criação ) */
 const CriarProposta = ({ lendo = false }) => {
-  // Location utilizado para mandar os dados para a variável "dados"
+
+  /** Location utilizado para mandar os dados para a variável "dados" */
   const location = useLocation();
 
-  // Variável dados utilizada para armazenar os dados da proposta
+  /** Variável dados utilizada para armazenar os dados da proposta */
   const [dados, setDados] = useState(location.state);
 
-  // UseEffect utilizado para setar os dados na variável assim que haja alguma alteração
+  /** UseEffect utilizado para setar os dados na variável assim que haja alguma alteração */
   useEffect(() => {
     setDados(location.state);
   }, []);
@@ -26,14 +27,11 @@ const CriarProposta = ({ lendo = false }) => {
     <FundoComHeader lendo={lendo}>
       <VLibras forceOnload />
       <Box className="p-2">
-        <Caminho lendo={lendo}/>
+        <Caminho lendo={lendo} />
         <Box className="w-full flex justify-center">
           <Box className="w-5/6">
             {/* Chamando componente de criação da proposta mandando os dados */}
-            <BarraProgressaoProposta
-              dados={dados}
-              lendo={lendo}
-            />
+            <BarraProgressaoProposta dados={dados} lendo={lendo} />
           </Box>
         </Box>
       </Box>

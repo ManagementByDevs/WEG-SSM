@@ -36,15 +36,13 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import { WebSocketContext } from "../../service/WebSocketService";
 import chatService from "../../service/chatService";
 
-// import TextLinguage from "../../service/TextLinguage/TextLinguage";
-
 /** Página principal do solicitante */
 const Home = (props) => {
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // useContext para alterar a linguagem do sistema
+  /** useContext para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
 
   /** Variável para navegação entre páginas */
@@ -67,6 +65,12 @@ const Home = (props) => {
 
   /** Abrir modal feedback de demanda criada */
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
+
+  /** Variável utilizada para abrir o feedback de navegador incompatível */
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+
+  /** Variável utilizada para abrir o feedback de erro no reconhecimento de voz */
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   /** Objeto do usuário que está logado no sistema */
   const [usuario, setUsuario] = useState({
@@ -94,14 +98,7 @@ const Home = (props) => {
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
   /** Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado */
-  const [listaFiltros, setListaFiltros] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
 
   /** Valores dos checkboxes de Score no modal de ordenação */
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
@@ -128,8 +125,7 @@ const Home = (props) => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] =
-    useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
 
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
@@ -137,26 +133,139 @@ const Home = (props) => {
   /** useState para abrir e fechar o tour da aba de departamento */
   const [isTourOpenDepartamento, setIsTourOpenDepartamento] = useState(false);
 
-  // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
+  /** Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas */
   const [isFirstTime, setIsFirstTime] = useState(false);
 
-  // UseEffect para buscar o usuário e ativar possíveis filtros assim que entrar na página
+  /** Passos do tour da aba de minhas demandas */
+  const stepsTour = [
+    {
+      selector: "#primeiro",
+      content: texts.home.tourAjuda.barraDePesquisa,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.home.tourAjuda.iconeOredenar,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: texts.home.tourAjuda.botaoFiltrar,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#sexto",
+      content: texts.home.tourAjuda.modoVisualizacao,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.home.tourAjuda.criarNovaDemanda,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quinto",
+      content: texts.home.tourAjuda.areaDemanda,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#oitavo",
+      content: texts.home.tourAjuda.statusDemanda,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#setimo",
+      content: texts.home.tourAjuda.botaoMotivo,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  /** Passos do tour da aba de departamento */
+  const stepsTourDepartamento = [
+    {
+      selector: "#primeiro",
+      content: texts.home.tourAjuda.barraDePesquisa,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundo",
+      content: texts.home.tourAjuda.iconeOredenar,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#sexto",
+      content: texts.home.tourAjuda.modoVisualizacao,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.home.tourAjuda.criarNovaDemanda,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quinto",
+      content: texts.home.tourAjuda.areaDemanda,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  /** UseEffect para buscar o usuário e ativar possíveis filtros assim que entrar na página */
   useEffect(() => {
     ativarFeedback();
     buscarUsuario();
     arrangePreferences();
   }, []);
 
+  /** UseEffect utilizado para buscar as preferências do usuário */
   useEffect(() => {
     arrangePreferences();
   }, [usuario]);
 
-  // UseEffect para buscar as demandas sempre que os parâmetros (filtros, ordenação ou páginas) forem modificados
+  /** UseEffect para buscar as demandas sempre que os parâmetros (filtros, ordenação ou páginas) forem modificados */
   useEffect(() => {
     buscarDemandas();
   }, [params, stringOrdenacao, tamanhoPagina, paginaAtual]);
 
-  // UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal de ordenação
+  /** UseEffect para modificar o texto de ordenação para a pesquisa quando um checkbox for acionado no modal de ordenação */
   useEffect(() => {
     let textoNovo = "";
     if (ordenacaoScore[1]) {
@@ -184,7 +293,7 @@ const Home = (props) => {
     setStringOrdenacao(textoNovo);
   }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
 
-  // UseEffect para atualizar o string de filtro quando algum checkbox for ativado no modal de filtragem
+  /** UseEffect para atualizar o string de filtro quando algum checkbox for ativado no modal de filtragem */
   useEffect(() => {
     if (listaFiltros[0]) {
       atualizarFiltro("ASSESSMENT");
@@ -203,7 +312,7 @@ const Home = (props) => {
     }
   }, [listaFiltros]);
 
-  // UseEffect para retirar o ícone de carregamento quando as demandas forem atualizadas
+  /** UseEffect para retirar o ícone de carregamento quando as demandas forem atualizadas */
   useEffect(() => {
     setCarregamentoItens(false);
   }, [listaDemandas]);
@@ -227,7 +336,7 @@ const Home = (props) => {
     );
   };
 
-  // Função que verifica se os parâmetros estão nulos
+  /** Função que verifica se os parâmetros estão nulos */
   const isParamsNull = () => {
     return Object.values(params).every((e) => e == null);
   };
@@ -328,121 +437,9 @@ const Home = (props) => {
     setParams({ ...params, titulo: valorPesquisa });
   };
 
-  // Passos do tour
-  const stepsTour = [
-    {
-      selector: "#primeiro",
-      content: texts.home.tourAjuda.barraDePesquisa,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundo",
-      content: texts.home.tourAjuda.iconeOredenar,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiro",
-      content: texts.home.tourAjuda.botaoFiltrar,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#sexto",
-      content: texts.home.tourAjuda.modoVisualizacao,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quarto",
-      content: texts.home.tourAjuda.criarNovaDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quinto",
-      content: texts.home.tourAjuda.areaDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#oitavo",
-      content: texts.home.tourAjuda.statusDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#setimo",
-      content: texts.home.tourAjuda.botaoMotivo,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
+  // ********************************************** Preferências ********************************************** //
 
-  const stepsTourDepartamento = [
-    {
-      selector: "#primeiro",
-      content: texts.home.tourAjuda.barraDePesquisa,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundo",
-      content: texts.home.tourAjuda.iconeOredenar,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#sexto",
-      content: texts.home.tourAjuda.modoVisualizacao,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quarto",
-      content: texts.home.tourAjuda.criarNovaDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quinto",
-      content: texts.home.tourAjuda.areaDemanda,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  // ********************************************** Preferências **********************************************
-  /**
-   * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
-   */
+  /** Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último */
   const arrangePreferences = () => {
     UsuarioService.getPreferencias(CookieService.getCookie("jwt").sub).then(
       (preferencias) => {
@@ -463,9 +460,7 @@ const Home = (props) => {
     );
   };
 
-  /**
-   * Função que salva a nova preferência do usuário
-   */
+  /** Função que salva a nova preferência do usuário */
   const saveNewPreference = () => {
     if (!CookieService.getCookie("jwt")) return;
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
@@ -482,33 +477,30 @@ const Home = (props) => {
     );
   };
 
-  // UseEffect para salvar as novas preferências do usuário
+  /** UseEffect para salvar as novas preferências do usuário */
   useEffect(() => {
     saveNewPreference("itemsVisualizationMode");
   }, [nextModoVisualizacao]);
 
+  /** UseEffect utilizado para salvar as preferências caso mude de aba */
   useEffect(() => {
     saveNewPreference("abaPadrao");
   }, [valorAba]);
-  // ********************************************** Fim Preferências **********************************************
 
-  // ********************************************** Gravar audio **********************************************
+  // ********************************************** Gravar audio ********************************************** //
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
+  /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
 
+  /** Variável utilizada para ativar o microfone para gravação de audio */
   const [escutar, setEscutar] = useState(false);
 
+  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
   const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
+  /** Função para gravar audio nos inputs */
   const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
+    /** Verifica se a API é suportada pelo navegador */
     if ("webkitSpeechRecognition" in window) {
       const recognition = new window.webkitSpeechRecognition();
       recognition.continuous = true;
@@ -552,21 +544,24 @@ const Home = (props) => {
     }
   };
 
+  /** useEffect utilizado para atualizar o input de pesquisa com o texto reconhecido */
   useEffect(() => {
     valorPesquisa = palavrasJuntas;
   }, [palavrasJuntas]);
 
+  /** Função para encerrar a gravação de voz */
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-
     }
   };
 
+  /** Função para iniciar a gravação de voz */
   const startRecognition = () => {
     setEscutar(!escutar);
   };
 
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
   useEffect(() => {
     if (escutar) {
       ouvirAudio();
@@ -575,8 +570,8 @@ const Home = (props) => {
     }
   }, [escutar]);
 
-  // ********************************************** Fim Gravar audio **********************************************
-  // Função que irá setar o texto que será "lido" pela a API
+
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
@@ -604,8 +599,10 @@ const Home = (props) => {
 
   return (
     <FundoComHeader lendo={props.lendo}>
+      {/* Tradução para libras */}
       <VLibras forceOnload />
       {/* Div container */}
+      {/* Tour de ajuda para as minhas demandas*/}
       <Tour
         steps={stepsTour}
         isOpen={isTourOpen}
@@ -614,7 +611,7 @@ const Home = (props) => {
         rounded={10}
         showCloseButton={false}
       />
-
+      {/* Tour de ajuda para o departamento */}
       <Tour
         steps={stepsTourDepartamento}
         isOpen={isTourOpenDepartamento}

@@ -1,18 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import { keyframes } from "@emotion/react";
 import VLibras from "@djpfs/react-vlibras";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
-
-import { keyframes } from "@emotion/react";
+import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -38,63 +30,119 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
 import NotificacaoService from "../../service/notificacaoService";
-
 import { WebSocketContext } from "../../service/WebSocketService";
 
-// Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf
+/** Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf */
 const DetalhesPauta = (props) => {
-  // Context para alterar a linguagem do sistema
+
+  /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // Navigate utilizado para navegar para uma determianda página
+  /** Navigate utilizado para navegar para uma determianda página */
   const navigate = useNavigate();
 
-  // Variável do react-router-dom que guarda as informações da rota atual
+  /** Variável do react-router-dom que guarda as informações da rota atual */
   const location = useLocation();
 
-  // UseState para guardar a pauta atual
+  /** UseState para guardar a pauta atual */
   const [pauta, setPauta] = useState(EntitiesObjectService.pauta());
 
-  // Lista provisória de propostas para preencher a tela
-  const [listaProposta, setListaProposta] = useState([
-    EntitiesObjectService.proposta(),
-  ]);
+  /** Lista provisória de propostas para preencher a tela */
+  const [listaProposta, setListaProposta] = useState([EntitiesObjectService.proposta()]);
 
-  // Variável de verificação utilizada para mostrar o sumário ou uma proposta
+  /** Variável de verificação utilizada para mostrar o sumário ou uma proposta */
   const [proposta, setProposta] = useState(false);
 
-  // Variável utilizada para passar para a próxima proposta
+  /** Variável utilizada para passar para a próxima proposta */
   const [botaoProximo, setBotaoProximo] = useState(true);
 
-  // Variável utilizada para mostrar os dados de uma proposta
+  /** Variável utilizada para mostrar os dados de uma proposta */
   const [dadosProposta, setDadosProposta] = useState(listaProposta[0]);
 
-  // Index de uma proposta, utilizado para mostrar os dados de uma porposta específica
+  /** Index de uma proposta, utilizado para mostrar os dados de uma porposta específica */
   const [indexProposta, setIndexProposta] = useState(-1);
 
-  // Variável utilizada para minimizar os botões da página
+  /** Variável utilizada para minimizar os botões da página */
   const [minimizar, setMinimizar] = useState(true);
 
-  // Estado para mostrar o modal de confirmação
+  /** Estado para mostrar o modal de confirmação */
   const [modal, setModal] = useState(false);
 
-  // Estado para mostrar o sumário ou não, usado também para atualizar a página com as novas propostas
+  /** Estado para mostrar o sumário ou não, usado também para atualizar a página com as novas propostas */
   const [isSummaryVisible, setIsSummaryVisible] = useState(true);
 
-  /**  Context do WebSocket */
+  /** useState utilizado para abrir ou fechar o menu de ícones */
+  const [fecharMenu, setFecharMenu] = useState(true);
+
+  // useState utilizado para colocar efeito no ícone
+  const [girarIcon, setGirarIcon] = useState(false);
+
+  // useState utilizado para tirar os ícones de navegação
+  const [aparecerSumir, setAparecerSumir] = useState(false);
+
+  // useState de estilo para desaparecer os botões de navegação
+  const [display, setDisplay] = useState("hidden");
+
+  /** Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
 
-  // Função para selecionar uma proposta do sumário
+  /** Feedback para quando a pauta não possuir propostas */
+  const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
+
+  /** Feedback para quando o usuário deletar uma proposta da pauta */
+  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] = useState(false);
+
+  /** Feedback para quando o usuário não preencher todos os campos obrigatórios */
+  const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
+
+  /** Feedback para quando da erro de incompatibilidade com o navegador */
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+
+  /** Feedback para quando da erro no reconhecimento de voz */
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+
+  /** useState utilizado para abrir e fechar o modal de adicionar a pauta */
+  const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
+
+  /** useEffect utilizado para mostrar uma proposta */
+  useEffect(() => {
+    if (indexProposta != -1) {
+      setProposta(true);
+    }
+  }, [indexProposta]);
+
+  /** useEffect utilizado para setar a pauta que está sendo visualizada */
+  useEffect(() => {
+    setPauta(location.state.pauta);
+    setListaProposta(location.state.pauta.propostas);
+  }, []);
+
+  /** Função que atualiza as propostas da pauta sempre que uma proposta é atualizada */
+  useEffect(() => {
+    if (indexProposta > -1 && dadosProposta != null) {
+      let aux = [...listaProposta];
+      aux[indexProposta] = { ...dadosProposta };
+      setListaProposta(aux);
+      setPauta({ ...pauta, propostas: aux });
+    }
+  }, [dadosProposta]);
+
+  /** useEffect utilizado para ver o sumário da pauta */
+  useEffect(() => {
+    setIsSummaryVisible(true);
+  }, [dadosProposta]);
+
+  /** Função para selecionar uma proposta do sumário */
   const onClickProposta = (index) => {
     setIndexProposta(index);
     setDadosProposta(pauta.propostas[index]);
     setProposta(true);
   };
 
-  // Função para passar para a próxima proposta
+  /** Função para passar para a próxima proposta */
   const proximo = () => {
     if (!props.lendo) {
       if (indexProposta == listaProposta.length - 1) {
@@ -109,13 +157,7 @@ const DetalhesPauta = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (indexProposta != -1) {
-      setProposta(true);
-    }
-  }, [indexProposta]);
-
-  // Função para voltar para uma proposta
+  /** Função para voltar para uma proposta */
   const voltar = () => {
     if (indexProposta <= 0) {
       setProposta(false);
@@ -128,59 +170,50 @@ const DetalhesPauta = (props) => {
     }
   };
 
-  // Função para voltar ao sumário da pauta
+  /** Função para voltar ao sumário da pauta */
   const voltarSumario = () => {
     setBotaoProximo(true);
     setIndexProposta(-1);
     setProposta(false);
   };
 
-  // useState utilizado para abrir ou fechar o menu de ícones
-  const [fecharMenu, setFecharMenu] = useState(true);
-
-  // Função para fechar os botões da página
+  /** Função para fechar os botões da página */
   const funcaoFecharMenu = () => {
     setFecharMenu(!fecharMenu);
   };
 
-  // Feedback de ata criada com sucesso
+  /** Feedback de ata criada com sucesso */
   const feedbackAta = () => {
     navigate("/", { state: { feedback: "ata-criada" } });
   };
 
-  // Feedback de propostas atualizadas caso não tenha proposta aprovada
+  /** Feedback de propostas atualizadas caso não tenha proposta aprovada */
   const feedbackPropostasAtualizadas = () => {
     navigate("/", { state: { feedback: "propostas-atualizadas" } });
   };
 
-  // Fazer uma animação para os notões de navegação
+  /** Funções utilizadas para animação para os notões de navegação */
   const girar = keyframes({
     from: { rotate: "90deg" },
     to: { rotate: "0deg" },
   });
+
   const girar2 = keyframes({
     from: { rotate: "0deg" },
     to: { rotate: "90deg" },
   });
+
   const aparecer = keyframes({
     "0%": { width: "10rem", opacity: "0" },
     "100%": { width: "15.5rem", opacity: "1" },
   });
+
   const sumir = keyframes({
     "0%": { width: "15.5rem", opacity: "1" },
     "100%": { width: "8rem", opacity: "0" },
   });
 
-  // useState utilizado para colocar efeito no ícone
-  const [girarIcon, setGirarIcon] = useState(false);
-
-  // useState utilizado para tirar os ícones de navegação
-  const [aparecerSumir, setAparecerSumir] = useState(false);
-
-  // useState de estilo para desaparecer os botões de navegação
-  const [display, setDisplay] = useState("hidden");
-
-  // Função para animação dos botões de navegação
+  /** Função para animação dos botões de navegação */
   const animarBotoes = () => {
     if (minimizar) {
       setGirarIcon(girar);
@@ -195,32 +228,12 @@ const DetalhesPauta = (props) => {
     }
   };
 
-  // Função acionada quando é clicado no botão de delete de alguma proposta
+  /** Função acionada quando é clicado no botão de delete de alguma proposta */
   const onDeletePropostaClick = () => {
     setModal(true);
   };
 
-  // Feedback para quando a pauta não possuir propostas
-  const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
-
-  // Feedback para quando o usuário deletar uma proposta da pauta
-  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
-    useState(false);
-
-  // Feedback para quando o usuário não preencher todos os campos obrigatórios
-  const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
-
-  // Feedback para quando da erro de incompatibilidade com o navegador
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-
-  // Feedback para quando da erro no reconhecimento de voz
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  // Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida
+  /** Função para deletar uma proposta da pauta, atualizando a pauta logo em seguida */
   const deletePropostaFromPauta = () => {
     pauta.propostas = retornarIdsObjetos(pauta.propostas);
     const indexProposta = pauta.propostas.findIndex(
@@ -254,12 +267,7 @@ const DetalhesPauta = (props) => {
     });
   };
 
-  useEffect(() => {
-    setPauta(location.state.pauta);
-    setListaProposta(location.state.pauta.propostas);
-  }, []);
-
-  // Função para baixar o arquivo pdf da respectiva pauta
+  /** Função para baixar o arquivo pdf da respectiva pauta */
   const baixarPDF = () => {
     ExportPdfService.exportPauta(pauta.id).then((response) => {
       let blob = new Blob([response], { type: "application/pdf" });
@@ -271,7 +279,7 @@ const DetalhesPauta = (props) => {
     });
   };
 
-  // Verifica se todos os campos necessários para criação de uma ata foram preenchidos
+  /** Verifica se todos os campos necessários para criação de uma ata foram preenchidos */
   const isAllFieldsFilled = () => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = pauta.propostas.every((proposta) => {
@@ -285,6 +293,7 @@ const DetalhesPauta = (props) => {
     return isFilled;
   };
 
+  /** Função para abrir o modal de criação de ata */
   const abrirModalCriarAta = () => {
     if (!isAllFieldsFilled()) {
       setFeedbackCamposFaltantes(true);
@@ -303,7 +312,7 @@ const DetalhesPauta = (props) => {
     return listaNova;
   };
 
-  // Função que cria uma ata
+  /** Função que cria uma ata */
   const criarAta = (numeroSequencial, dataReuniao) => {
     // Criação do obj ata
     let ata = {
@@ -363,6 +372,7 @@ const DetalhesPauta = (props) => {
     enviar(`/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`, JSON.stringify(notificacao));
   };
 
+  /** Função para  */
   const handlePautaWithNoApprovedProposals = () => {
     for (let proposta of pauta.propostas) {
       PropostaService.atualizacaoAta(
@@ -461,7 +471,7 @@ const DetalhesPauta = (props) => {
     });
   };
 
-  // Atualiza a lista de propostas passada por parâmetro
+  /** Atualiza a lista de propostas passada por parâmetro */
   const updatePropostas = (listaPropostasToUpdate = [], idAta) => {
     for (let proposta of listaPropostasToUpdate) {
       PropostaService.atualizacaoAta(
@@ -475,23 +485,7 @@ const DetalhesPauta = (props) => {
     }
   };
 
-  // Função que atualiza as propostas da pauta sempre que uma proposta é atualizada
-  useEffect(() => {
-    if (indexProposta > -1 && dadosProposta != null) {
-      let aux = [...listaProposta];
-      aux[indexProposta] = { ...dadosProposta };
-      setListaProposta(aux);
-      setPauta({ ...pauta, propostas: aux });
-    }
-  }, [dadosProposta]);
-
-  useEffect(() => {
-    setIsSummaryVisible(true);
-  }, [dadosProposta]);
-
-  // useState utilizado para abrir e fechar o modal de adicionar a pauta
-  const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
@@ -519,7 +513,10 @@ const DetalhesPauta = (props) => {
 
   return (
     <FundoComHeader lendo={props.lendo}>
+      {/* Tradução para libras */}
       <VLibras forceOnload />
+
+      {/* Modal de criar ata */}
       <ModalCriarAta
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}
@@ -583,6 +580,7 @@ const DetalhesPauta = (props) => {
         mensagem={texts.detalhesPauta.feedbacks.feedback3}
         lendo={props.lendo}
       />
+      {/* Modal de confirmação para tirar proposta de pauta */}
       <ModalConfirmacao
         open={modal}
         setOpen={setModal}
@@ -666,11 +664,11 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.reuniaoDoForum +
-                      ": " +
-                      DateService.getFullDateUSFormat(
-                        DateService.getDateByMySQLFormat(pauta?.dataReuniao),
-                        texts.linguagem
-                      )
+                    ": " +
+                    DateService.getFullDateUSFormat(
+                      DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                      texts.linguagem
+                    )
                   );
                 }}
               >
@@ -908,7 +906,7 @@ const DetalhesPauta = (props) => {
                 }}
               >
 
-                <AddHomeOutlinedIcon sx={{transform: 'rotate(180deg) scaleX(-1)', fontSize: "32px"}} />
+                <AddHomeOutlinedIcon sx={{ transform: 'rotate(180deg) scaleX(-1)', fontSize: "32px" }} />
               </Box>
             </Tooltip>
           </Box>

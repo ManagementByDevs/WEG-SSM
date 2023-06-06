@@ -7,7 +7,6 @@ import VLibras from "@djpfs/react-vlibras";
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -19,34 +18,35 @@ import Feedback from "../../components/Feedback/Feedback";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ExportPdfService from "../../service/exportPdfService";
-import EntitiesObjectService from "../../service/entitiesObjectService";
 
-// Página que mostra os detalhes da proposta selecionada, com opção de download para pdf
+/** Página que mostra os detalhes da proposta selecionada, com opção de download para pdf */
 const DetalhesPropostaPagina = ({ lendo = false }) => {
-  // Location utilizado para pegar os dados da demanda
+
+  /** Location utilizado para pegar os dados da demanda */
   const location = useLocation();
 
+  /** Params da rota */
   const paramsPath = useParams();
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // Context para obter os textos do sistema
+  /** Context para obter os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
 
-  // useState utilizado para abrir e fechar o modal de adicionar a pauta
+  /** useState utilizado para abrir e fechar o modal de adicionar a pauta */
   const [openModalAddPropostaPauta, setOpenModalAddPropostaPauta] =
     useState(false);
 
-  // Estado para feedback de edição feita com sucesso
+  /** useState para feedback de edição feita com sucesso */
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
-  // função para abrir o modal de adicionar a pauta
+  /** Função para abrir o modal de adicionar a pauta */
   const adicionarAPauta = () => {
     setOpenModalAddPropostaPauta(true);
   };
 
-  // função utilizada para baixar a proposta em formatado pdf
+  /** Função utilizada para baixar a proposta em formatado pdf */
   const baixarProposta = () => {
     ExportPdfService.exportProposta(location.state.id).then((response) => {
       let blob = new Blob([response], { type: "application/pdf" });
@@ -69,6 +69,7 @@ const DetalhesPropostaPagina = ({ lendo = false }) => {
         mensagem={texts.detalhesProposta.editadoComSucesso}
         lendo={lendo}
       />
+      {/* Modal para adicionar a proposta em pauta */}
       <ModalAddPropostaPauta
         open={openModalAddPropostaPauta}
         setOpen={setOpenModalAddPropostaPauta}

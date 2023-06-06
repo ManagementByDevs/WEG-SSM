@@ -1,23 +1,11 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras";
-
-import {
-  Box,
-  Avatar,
-  Typography,
-  Divider,
-  Tooltip,
-  IconButton,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
+import VLibras from "@djpfs/react-vlibras";
 
-import logoWeg from "../../assets/logo-weg.png";
+import { Box, Avatar, Typography, Divider, Tooltip, IconButton, Menu, MenuItem, } from "@mui/material";
 
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
@@ -40,7 +28,6 @@ import Feedback from "../../components/Feedback/Feedback";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ChatContext from "../../service/ChatContext";
-
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
@@ -49,8 +36,11 @@ import AnexoService from "../../service/anexoService";
 import { MensagemService } from "../../service/MensagemService";
 import { WebSocketContext } from "../../service/WebSocketService";
 
+import logoWeg from "../../assets/logo-weg.png";
+
 /** Chat para conversa entre usuários do sistema */
 const Chat = (props) => {
+
   /** Context para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
@@ -73,6 +63,63 @@ const Chat = (props) => {
 
   /** Input de arquivo */
   const inputRef = useRef(null);
+
+  /** UseState para armazenar o ID do chat */
+  const [idChat, setIdChatState] = useState(idChatParam);
+
+  /** UseState para pesquisar um contato da lista */
+  const [pesquisaContato, setPesquisaContato] = useState("");
+
+  /** UseState para armazenar os resultados da pesquisa */
+  const [resultadosContato, setResultadosContato] = useState([EntitiesObjectService.chat()]);
+
+  /** UseState para controlar o loading de mensagens */
+  const [buscandoMensagens, setBuscandoMensagens] = useState(true);
+
+  /** UseState para feedback de chat encerrado */
+  const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
+
+  /** UseState para feedback de chat aberto */
+  const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
+
+  /** UseState para feedback de que anexo é muito grande */
+  const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
+
+  /** UseState para feedback de navegador incompatível */
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+
+  /** UseState para feedback de erro ao reconhecimento de voz */
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  /** Modal de confiramação para encerrar o chat */
+  const [abrirModalEncerrarChat, setOpenModalEncerrarChat] = useState(false);
+
+  /** Modal de confirmação para reabrir o chat */
+  const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
+
+  /** Lista de chats do usuário */
+  const [listaChats, setListaChats] = useState([EntitiesObjectService.chat()]);
+
+  /** Mensagem que está sendo digitada */
+  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+
+  /** Todas as mensagens do chat selecionado */
+  const [mensagens, setMensagens] = useState([EntitiesObjectService.mensagem()]);
+
+  /** Usuário logado */
+  const [user, setUser] = useState(UsuarioService.getUserCookies());
+
+  /** UseState para poder visualizar e alterar a visibilidade do menu */
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  /** Variável que é usada para saber se o menu está aberto ou não */
+  const open = Boolean(anchorEl);
+
+  /** Variável para armazenar o texto que será lido pela API */
+  const [textoLeitura, setTextoLeitura] = useState("");
 
   /** Passos do tour */
   const stepsTour = [
@@ -110,57 +157,182 @@ const Chat = (props) => {
     },
   ];
 
-  /** UseState para armazenar o ID do chat */
-  const [idChat, setIdChatState] = useState(idChatParam);
+  /** useEffect utilizado para buscar os chats do usuário */
+  useEffect(() => {
+    if (idChat) carregar();
+    buscarChats();
+  }, [idChat]);
 
-  /** UseState para pesquisar um contato da lista */
-  const [pesquisaContato, setPesquisaContato] = useState("");
+  /** useEffect utilizado para receber uma mensagem  */
+  useEffect(() => {
+    const receivedAnyMessage = (mensagem) => {
+      let mensagemRecebida = EntitiesObjectService.mensagem();
+      mensagemRecebida = JSON.parse(mensagem.body);
+      let idChatAux = idChat;
+      setIdChatState((oldIdChat) => {
+        idChatAux = oldIdChat;
+        return oldIdChat;
+      });
 
-  /** UseState para armazenar os resultados da pesquisa */
-  const [resultadosContato, setResultadosContato] = useState([
-    EntitiesObjectService.chat(),
-  ]);
+      // Se a mensagem recebida for do usuário logado, ignore
+      if (mensagemRecebida.usuario.id == user.usuario.id) {
+        return;
+      }
 
-  /** UseState para controlar o loading de mensagens */
-  const [buscandoMensagens, setBuscandoMensagens] = useState(true);
+      // Se a mensagem recebida for do chat atual, ignore
+      if (mensagemRecebida.idChat.id == idChatAux) {
+        return;
+      }
 
-  /** UseState para feedback de chat encerrado */
-  const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
+      setListaChats((oldListaChats) => {
+        let listaAux = JSON.parse(JSON.stringify(oldListaChats));
 
-  /** UseState para feedback de chat aberto */
-  const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
+        let chatAux = listaAux.find(
+          (chat) => chat.id == mensagemRecebida.idChat.id
+        );
 
-  /** UseState para feedback de que anexo é muito grande */
-  const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
+        chatAux.msgNaoLidas = chatAux.msgNaoLidas + 1;
+        // setMsgNaoLidas(chatAux.msgNaoLidas);
+        return [...listaAux];
+      });
+    };
 
-  /** useState para abrir e fechar o tour */
-  const [isTourOpen, setIsTourOpen] = useState(false);
+    let inscricaoAllMensagens = inscrever(
+      `/weg_ssm/mensagem/all/user/${user.usuario.id}`,
+      receivedAnyMessage
+    );
 
-  /** Modal de confiramação para encerrar o chat */
-  const [abrirModalEncerrarChat, setOpenModalEncerrarChat] = useState(false);
+    return () => {
+      if (inscricaoAllMensagens) {
+        inscricaoAllMensagens.unsubscribe();
+      }
+    };
+  }, [stompClient]);
 
-  /** Modal de confirmação para reabrir o chat */
-  const [abrirModalReabrirChat, setOpenModalReabrirChat] = useState(false);
+  /** useEffect utilizado para enviar uma nova mensagem */
+  useEffect(() => {
+    const acaoNovaMensagem = (response) => {
+      const mensagemRecebida = JSON.parse(response.body);
+      let mensagemNova = {
+        ...mensagemRecebida.body,
+        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
+      };
 
-  /** Lista de chats do usuário */
-  const [listaChats, setListaChats] = useState([EntitiesObjectService.chat()]);
+      // Se o remetente não for o usuário, tenho que notificar a visualização
+      if (mensagemNova.usuario.id != user.usuario.id) {
+        mensagemNova.visto = true;
+        enviar(
+          `/app/weg_ssm/mensagem/chat/${idChat}/visto`,
+          JSON.stringify({
+            ...mensagemNova,
+            texto: mensagemNova.texto.replace(/\n/g, "%BREAK%"),
+          })
+        );
+      } else {
+        clearNewMessages();
+      }
 
-  /** Mensagem que está sendo digitada */
-  const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
+      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
+    };
 
-  /** Todas as mensagens do chat selecionado */
-  const [mensagens, setMensagens] = useState([
-    EntitiesObjectService.mensagem(),
-  ]);
+    const readMessage = (mensagem) => {
+      if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
+        clearNewMessages();
+        return;
+      }
 
-  /** Usuário logado */
-  const [user, setUser] = useState(UsuarioService.getUserCookies());
+      setMensagens((oldMensagens) => {
+        for (let oldMensagem of oldMensagens) {
+          if (!oldMensagem.visto) {
+            oldMensagem.visto = true;
+          }
+        }
 
-  /** UseState para poder visualizar e alterar a visibilidade do menu */
-  const [anchorEl, setAnchorEl] = useState(null);
+        return [...oldMensagens];
+      });
+    };
 
-  /** Variável que é usada para saber se o menu está aberto ou não */
-  const open = Boolean(anchorEl);
+    if (idChat) {
+      let inscricaoId = inscrever(
+        `/weg_ssm/mensagem/${idChat}/chat`,
+        acaoNovaMensagem
+      );
+
+      let inscricaoVerMensagem = inscrever(
+        `/weg_ssm/mensagem/chat/${idChat}/visto`,
+        readMessage
+      );
+
+      return () => {
+        if (inscricaoId) {
+          inscricaoId.unsubscribe();
+          inscricaoVerMensagem.unsubscribe();
+        }
+      };
+    }
+  }, [stompClient, idChat]);
+
+  /** useEffect para armazenar o contato selecionado */
+  useEffect(() => {
+    let listaChatsAux = listaChats.filter((chat) => {
+      // Pesquisa por código PPM
+      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
+        return true;
+      }
+
+      // Pesquisa pelo título da proposta
+      if (
+        chat.idProposta.titulo
+          .toLowerCase()
+          .includes(pesquisaContato.toLowerCase())
+      ) {
+        return true;
+      }
+
+      // Pesquisa pelo nome do contato
+      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
+        return true;
+      }
+    });
+    setResultadosContato([...listaChatsAux]);
+  }, [pesquisaContato, listaChats, idChat]);
+
+  /** useEffect utilizado para colocar scroll na tela de mensagens */
+  useEffect(() => {
+    setBuscandoMensagens(false);
+
+    const boxElement = boxRef.current;
+
+    // Colocando o scroll para a última mensagem recebida
+    if (boxElement) {
+      boxElement.scrollTop = boxElement.scrollHeight;
+    }
+  }, [mensagens]);
+
+  /** Função que irá "ouvir" o texto que será "lido" pela a API */
+  useEffect(() => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(textoLeitura);
+
+    const finalizarLeitura = () => {
+      if ("speechSynthesis" in window) {
+        synthesis.cancel();
+      }
+    };
+
+    if (props.lendo && textoLeitura !== "") {
+      if ("speechSynthesis" in window) {
+        synthesis.speak(utterance);
+        // setTextoLeitura("");
+      }
+    } else {
+      finalizarLeitura();
+    }
+
+    return () => {
+      finalizarLeitura();
+    };
+  }, [textoLeitura]);
 
   /** Função para abrir o menu */
   const handleClick = (event) => {
@@ -177,26 +349,27 @@ const Chat = (props) => {
     setPesquisaContato(evt.target.value);
   };
 
-  // Função para abrir o modal de confirmação para encerrar o chat
+  /** Função para abrir o modal de confirmação para encerrar o chat */
   const abrirModalCancelarChat = () => {
     setOpenModalEncerrarChat(true);
   };
 
-  // Função para fechar o modal de confirmação para encerrar o chat
+  /** Função para fechar o modal de confirmação para encerrar o chat */
   const fecharModalCancelarChat = () => {
     setOpenModalEncerrarChat(false);
   };
 
-  // Função para abrir o modal de confirmação para reabrir o chat
+  /** Função para abrir o modal de confirmação para reabrir o chat */
   const abrirModalAbrirChat = () => {
     setOpenModalReabrirChat(true);
   };
 
-  // Função para fechar o modal de confirmação para reabrir o chat
+  /** Função para fechar o modal de confirmação para reabrir o chat */
   const fecharModalAbrirChat = () => {
     setOpenModalReabrirChat(false);
   };
 
+  /** Função para buscar o id do destinatário no chat */
   const getIdDestinatario = () => {
     if (!idChat) return 0;
 
@@ -205,6 +378,7 @@ const Chat = (props) => {
     if (!chatAux) return 0;
 
     let userAux = chatAux.usuariosChat.find((e) => e.id != user.usuario.id);
+
     return userAux.id;
   };
 
@@ -325,10 +499,11 @@ const Chat = (props) => {
           );
           inputRef.current.value = "";
         })
-        .catch((error) => {});
+        .catch((error) => { });
     } else {
       setFeedbackAnexoGrande(true);
     }
+
     setDefaultMensagem();
   };
 
@@ -358,6 +533,7 @@ const Chat = (props) => {
     }
   };
 
+  /** Função para visualizar as mensagens não lidas */
   const clearNewMessages = () => {
     setListaChats((oldListaChats) => {
       if (oldListaChats.length == 0) return;
@@ -367,132 +543,20 @@ const Chat = (props) => {
 
       if (chatAux) {
         chatAux.msgNaoLidas = 0;
-        // setMsgNaoLidas(0);
       }
 
       return [...listaChatsAux];
     });
   };
 
-  // ***************************************** UseEffects ***************************************** //
-
-  useEffect(() => {
-    if (idChat) {
+  /** Função que irá setar o texto que será "lido" pela a API */
+  const lerTexto = (escrita) => {
+    if (props.lendo) {
+      setTextoLeitura(escrita);
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    if (idChat) carregar();
-    buscarChats();
-  }, [idChat]);
-
-  useEffect(() => {
-    const receivedAnyMessage = (mensagem) => {
-      let mensagemRecebida = EntitiesObjectService.mensagem();
-      mensagemRecebida = JSON.parse(mensagem.body);
-      let idChatAux = idChat;
-      setIdChatState((oldIdChat) => {
-        idChatAux = oldIdChat;
-        return oldIdChat;
-      });
-
-      // Se a mensagem recebida for do usuário logado, ignore
-      if (mensagemRecebida.usuario.id == user.usuario.id) {
-        return;
-      }
-
-      // Se a mensagem recebida for do chat atual, ignore
-      if (mensagemRecebida.idChat.id == idChatAux) {
-        return;
-      }
-
-      setListaChats((oldListaChats) => {
-        let listaAux = JSON.parse(JSON.stringify(oldListaChats));
-
-        let chatAux = listaAux.find(
-          (chat) => chat.id == mensagemRecebida.idChat.id
-        );
-
-        chatAux.msgNaoLidas = chatAux.msgNaoLidas + 1;
-        // setMsgNaoLidas(chatAux.msgNaoLidas);
-        return [...listaAux];
-      });
-    };
-
-    let inscricaoAllMensagens = inscrever(
-      `/weg_ssm/mensagem/all/user/${user.usuario.id}`,
-      receivedAnyMessage
-    );
-
-    return () => {
-      if (inscricaoAllMensagens) {
-        inscricaoAllMensagens.unsubscribe();
-      }
-    };
-  }, [stompClient]);
-
-  useEffect(() => {
-    const acaoNovaMensagem = (response) => {
-      const mensagemRecebida = JSON.parse(response.body);
-      let mensagemNova = {
-        ...mensagemRecebida.body,
-        texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
-      };
-
-      // Se o remetente não for o usuário, tenho que notificar a visualização
-      if (mensagemNova.usuario.id != user.usuario.id) {
-        mensagemNova.visto = true;
-        enviar(
-          `/app/weg_ssm/mensagem/chat/${idChat}/visto`,
-          JSON.stringify({
-            ...mensagemNova,
-            texto: mensagemNova.texto.replace(/\n/g, "%BREAK%"),
-          })
-        );
-      } else {
-        clearNewMessages();
-      }
-
-      setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
-    };
-
-    const readMessage = (mensagem) => {
-      if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
-        clearNewMessages();
-        return;
-      }
-
-      setMensagens((oldMensagens) => {
-        for (let oldMensagem of oldMensagens) {
-          if (!oldMensagem.visto) {
-            oldMensagem.visto = true;
-          }
-        }
-
-        return [...oldMensagens];
-      });
-    };
-
-    if (idChat) {
-      let inscricaoId = inscrever(
-        `/weg_ssm/mensagem/${idChat}/chat`,
-        acaoNovaMensagem
-      );
-
-      let inscricaoVerMensagem = inscrever(
-        `/weg_ssm/mensagem/chat/${idChat}/visto`,
-        readMessage
-      );
-
-      return () => {
-        if (inscricaoId) {
-          inscricaoId.unsubscribe();
-          inscricaoVerMensagem.unsubscribe();
-        }
-      };
-    }
-  }, [stompClient, idChat]);
-
+  /** Função para verificar se um usuário está na lista */
   const containsUser = (
     usuarios = [EntitiesObjectService.usuario()],
     idUserLogado = 0,
@@ -504,61 +568,23 @@ const Chat = (props) => {
     );
   };
 
-  /** UseState para armazenar o contato selecionado */
-  useEffect(() => {
-    let listaChatsAux = listaChats.filter((chat) => {
-      // Pesquisa por código PPM
-      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
-        return true;
-      }
+  // ********************************************** Gravar audio ********************************************** //
 
-      // Pesquisa pelo título da proposta
-      if (
-        chat.idProposta.titulo
-          .toLowerCase()
-          .includes(pesquisaContato.toLowerCase())
-      ) {
-        return true;
-      }
-
-      // Pesquisa pelo nome do contato
-      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
-        return true;
-      }
-    });
-    setResultadosContato([...listaChatsAux]);
-  }, [pesquisaContato, listaChats, idChat]);
-
-  useEffect(() => {
-    setBuscandoMensagens(false);
-    const boxElement = boxRef.current;
-    // Colocando o scroll para a última mensagem recebida
-    if (boxElement) {
-      boxElement.scrollTop = boxElement.scrollHeight;
-    }
-  }, [mensagens]);
-
-  // ***************************************** Fim UseEffects ***************************************** //
-
-  // // ********************************************** Gravar audio **********************************************
-
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
+  /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
 
+  /** Variável utilizada para ativar o microfone para gravação de audio */
   const [escutar, setEscutar] = useState(false);
 
+  /** Varíavel utilizada para armazenar o local onde foi clicado */
   const [localClicado, setLocalClicado] = useState("");
 
+  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
   const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
+  /** Função para gravar audio nos inputs */
   const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
+    /** Verifica se a API é suportada pelo navegador */
     if ("webkitSpeechRecognition" in window) {
       const recognition = new window.webkitSpeechRecognition();
       recognition.continuous = true;
@@ -580,13 +606,12 @@ const Chat = (props) => {
           break;
       }
 
-      recognition.onstart = () => {};
+      recognition.onstart = () => { };
 
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
         setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-        // setValorPesquisa(transcript);
       };
 
       recognition.onerror = (event) => {
@@ -602,6 +627,7 @@ const Chat = (props) => {
     }
   };
 
+  /** useEffect utilizado para armazenar as palavras juntas dependendo do local onde foi clicado */
   useEffect(() => {
     switch (localClicado) {
       case "titulo":
@@ -615,17 +641,20 @@ const Chat = (props) => {
     }
   }, [palavrasJuntas]);
 
+  /** Função para encerrar a gravação de voz */
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
   };
 
+  /** Função para iniciar a gravação de voz */
   const startRecognition = (ondeClicou) => {
     setEscutar(!escutar);
     setLocalClicado(ondeClicou);
   };
 
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
   useEffect(() => {
     if (escutar) {
       ouvirAudio();
@@ -634,44 +663,11 @@ const Chat = (props) => {
     }
   }, [escutar]);
 
-  // // ********************************************** Fim Gravar audio **********************************************
-  const [textoLeitura, setTextoLeitura] = useState("");
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      setTextoLeitura(escrita);
-    }
-  };
-
-  // Função que irá "ouvir" o texto que será "lido" pela a API
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (props.lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-        // setTextoLeitura("");
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);
-
   return (
     <>
+      {/* API para tradução em libras */}
       <VLibras forceOnload />
+      {/* Botão de ajuda/tour */}
       <Ajuda onClick={() => setIsTourOpen(true)} />
       <Tour
         steps={stepsTour}
@@ -681,6 +677,7 @@ const Chat = (props) => {
         rounded={10}
         showCloseButton={false}
       />
+      {/* Modal de confirmação encerrar chat */}
       {abrirModalEncerrarChat && (
         <ModalConfirmacao
           open={abrirModalEncerrarChat}
@@ -692,6 +689,7 @@ const Chat = (props) => {
           lendo={props.lendo}
         />
       )}
+      {/* Modal de confirmação reabrir chat */}
       {abrirModalReabrirChat && (
         <ModalConfirmacao
           open={abrirModalReabrirChat}
@@ -797,9 +795,7 @@ const Chat = (props) => {
                   <Tooltip
                     className="hover:cursor-pointer"
                     title={texts.homeGerencia.gravarAudio}
-                    onClick={() => {
-                      startRecognition("titulo");
-                    }}
+                    onClick={() => { startRecognition("titulo") }}
                   >
                     {escutar && localClicado == "titulo" ? (
                       <MicOutlinedIcon
@@ -881,9 +877,7 @@ const Chat = (props) => {
                     fontSize={FontConfig.title}
                     color={"text.secondary"}
                     sx={{ fontWeight: "600" }}
-                    onClick={() => {
-                      lerTexto(texts.chat.selecioneAlgumaConversa);
-                    }}
+                    onClick={() => { lerTexto(texts.chat.selecioneAlgumaConversa) }}
                   >
                     {texts.chat.selecioneAlgumaConversa}
                   </Typography>
@@ -901,7 +895,7 @@ const Chat = (props) => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                        // src={usuarios[indexUsuario].foto}
+                      // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -911,17 +905,13 @@ const Chat = (props) => {
                           className="ml-2"
                           fontSize={FontConfig.veryBig}
                           fontWeight="600"
-                          onClick={() => {
-                            lerTexto(texts.chat.usuarioTour.tour);
-                          }}
+                          onClick={() => { lerTexto(texts.chat.usuarioTour.tour) }}
                         >
                           {texts.chat.usuarioTour.tour}
                         </Typography>
                         <Typography
                           fontSize={FontConfig.small}
-                          onClick={() => {
-                            lerTexto(texts.chat.cargo);
-                          }}
+                          onClick={() => { lerTexto(texts.chat.cargo) }}
                         >
                           {texts.chat.cargo}
                         </Typography>
@@ -948,17 +938,13 @@ const Chat = (props) => {
                         anchorEl={anchorEl}
                         open={open}
                         onClose={handleClose}
-                        MenuListProps={{
-                          "aria-labelledby": "basic-button",
-                        }}
+                        MenuListProps={{ "aria-labelledby": "basic-button" }}
                       >
                         <Box className="w-52">
                           {/* Itens do menu */}
                           <MenuItem
                             className="gap-2"
-                            onClick={() => {
-                              handleClose();
-                            }}
+                            onClick={() => { handleClose() }}
                           >
                             <OpenInNewOutlinedIcon />
                             <Typography
@@ -1116,7 +1102,7 @@ const Chat = (props) => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                        // src={usuarios[indexUsuario].foto}
+                      // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -1209,66 +1195,66 @@ const Chat = (props) => {
                               chat.id == idChat &&
                               chat.idProposta.solicitante.id != user.usuario.id
                           ) && (
-                            <>
-                              <div className="w-full flex justify-center">
-                                <hr className="w-10/12 my-1.5" />
-                              </div>
+                              <>
+                                <div className="w-full flex justify-center">
+                                  <hr className="w-10/12 my-1.5" />
+                                </div>
 
-                              {isConversaEncerrada() ? (
-                                <MenuItem
-                                  className="gap-2"
-                                  onClick={() => {
-                                    handleClose();
-                                    abrirModalAbrirChat();
-                                  }}
-                                >
-                                  <CommentOutlinedIcon
-                                    sx={{
-                                      fontSize: "25px",
-                                      color: "tertiary.main",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                  <Typography
-                                    color={"text.primary"}
-                                    fontSize={FontConfig.medium}
-                                    sx={{ fontWeight: 500 }}
+                                {isConversaEncerrada() ? (
+                                  <MenuItem
+                                    className="gap-2"
                                     onClick={() => {
-                                      lerTexto(texts.chat.reabrirChat);
+                                      handleClose();
+                                      abrirModalAbrirChat();
                                     }}
                                   >
-                                    {texts.chat.reabrirChat}
-                                  </Typography>
-                                </MenuItem>
-                              ) : (
-                                <MenuItem
-                                  className="gap-2"
-                                  onClick={() => {
-                                    handleClose();
-                                    abrirModalCancelarChat();
-                                  }}
-                                >
-                                  <CommentsDisabledOutlinedIcon
-                                    sx={{
-                                      fontSize: "25px",
-                                      color: "tertiary.main",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                  <Typography
-                                    color={"text.primary"}
-                                    fontSize={FontConfig.medium}
-                                    sx={{ fontWeight: 500 }}
+                                    <CommentOutlinedIcon
+                                      sx={{
+                                        fontSize: "25px",
+                                        color: "tertiary.main",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                    <Typography
+                                      color={"text.primary"}
+                                      fontSize={FontConfig.medium}
+                                      sx={{ fontWeight: 500 }}
+                                      onClick={() => {
+                                        lerTexto(texts.chat.reabrirChat);
+                                      }}
+                                    >
+                                      {texts.chat.reabrirChat}
+                                    </Typography>
+                                  </MenuItem>
+                                ) : (
+                                  <MenuItem
+                                    className="gap-2"
                                     onClick={() => {
-                                      lerTexto(texts.chat.encerrarChat);
+                                      handleClose();
+                                      abrirModalCancelarChat();
                                     }}
                                   >
-                                    {texts.chat.encerrarChat}
-                                  </Typography>
-                                </MenuItem>
-                              )}
-                            </>
-                          )}
+                                    <CommentsDisabledOutlinedIcon
+                                      sx={{
+                                        fontSize: "25px",
+                                        color: "tertiary.main",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                    <Typography
+                                      color={"text.primary"}
+                                      fontSize={FontConfig.medium}
+                                      sx={{ fontWeight: 500 }}
+                                      onClick={() => {
+                                        lerTexto(texts.chat.encerrarChat);
+                                      }}
+                                    >
+                                      {texts.chat.encerrarChat}
+                                    </Typography>
+                                  </MenuItem>
+                                )}
+                              </>
+                            )}
                         </Box>
                       </Menu>
                     </Box>

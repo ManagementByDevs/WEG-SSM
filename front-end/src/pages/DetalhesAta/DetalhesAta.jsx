@@ -4,15 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import VLibras from "@djpfs/react-vlibras";
 
 import { keyframes } from "@emotion/react";
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-  ButtonBase,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip, IconButton, ButtonBase, } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -37,87 +29,120 @@ import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
 import NotificacaoService from "../../service/notificacaoService";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
-
 import { WebSocketContext } from "../../service/WebSocketService";
 
-// Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf
+/** Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf */
 const DetalhesAta = (props) => {
-  // Context para trocar a liguagem
+
+  /** Context para trocar a liguagem */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // Navigate e location utilizados para verificar state passado por parametro para determinada verificação
+  /** Navigate e location utilizados para verificar state passado por parametro para determinada verificação */
   const navigate = useNavigate();
+
+  /** Location utilizado para saber a localização atual do usuário */
   const location = useLocation();
 
-  // Lista de propostas provisória apenas para visualização na tela
+  /** Lista de propostas provisória apenas para visualização na tela */
   const listaProposta = [EntitiesObjectService.proposta()];
 
-  // Variável de verificação utilizada para mostrar o sumário ou uma proposta
+  /** Variável de verificação utilizada para mostrar o sumário ou uma proposta */
   const [proposta, setProposta] = useState(false);
 
-  // Variável utilizada para mostrar os dados de uma proposta
+  /** Variável utilizada para mostrar os dados de uma proposta */
   const [dadosProposta, setDadosProposta] = useState(null);
 
-  // Index de uma proposta, utilizado para mostrar os dados de uma porposta específica
+  /** Index de uma proposta, utilizado para mostrar os dados de uma porposta específica */
   const [indexProposta, setIndexProposta] = useState(-1);
 
-  // Variável utilizada para passar para a próxima proposta
+  /** Variável utilizada para passar para a próxima proposta */
   const [botaoProximo, setBotaoProximo] = useState(true);
 
-  // Variável utilizada para minimizar os botões da página
+  /** Variável utilizada para minimizar os botões da página */
   const [minimizar, setMinimizar] = useState(false);
 
-  // feedback para ata criada com sucesso
-  const [feedbackAta, setFeedbackAta] = useState(false);
-
+  /** Variável para armazenar o objeto da ata */
   const [ata, setAta] = useState(EntitiesObjectService.ata());
 
+  /** Variável para ativar os botões de visualização */
   const [actionButtons, setActionButtons] = useState(true);
 
-  // Feedback para quando o usuário não preencher todos os campos obrigatórios
+  /** feedback para ata criada com sucesso */
+  const [feedbackAta, setFeedbackAta] = useState(false);
+
+  /** Feedback para quando o usuário não preencher todos os campos obrigatórios */
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
-  // Estado para feedback de edição feita com sucesso
+  /** Estado para feedback de edição feita com sucesso */
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   /** Modal de confirmação para a publicação de uma ata */
-  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] =
-    useState(false);
+  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] = useState(false);
 
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
 
-  // useEffect usado para feedback
+  /** useStates utilizados para animar os botões de navegação na ata */
+  const [girarIcon, setGirarIcon] = useState(true);
+
+  /** useState para aparecer/desapareceber o botão de navegação da ata */
+  const [aparecerSumir, setAparecerSumir] = useState(true);
+
+  /** useState utilizado para setar o display de visualização */
+  const [display, setDisplay] = useState("flex");
+
+  /** useEffect usado para feedback de ata criada */
   useEffect(() => {
     if (location.state?.feedback) {
       setFeedbackAta(true);
     }
   }, [location.state?.feedback]);
 
-  // Função para voltar ao sumário da ata
-  const voltarSumario = () => {
-    setBotaoProximo(true);
-    setIndexProposta(-1);
-    setProposta(false);
-  };
-
-  // Função para selecionar uma proposta do sumário
-  const onClickProposta = (index) => {
-    setIndexProposta(index);
-    setDadosProposta(ata.propostas[index]);
-    setProposta(true);
-  };
-
+  /** useEffect utilizado para mostrar uma proposta pelo seu index */
   useEffect(() => {
     if (indexProposta != -1) {
       setProposta(true);
     }
   }, [indexProposta]);
 
-  // Função para voltar para uma proposta
+  /** Função que atualiza as propostas da pauta sempre que uma proposta é atualizada */
+  useEffect(() => {
+    if (indexProposta > -1 && dadosProposta != null) {
+      let aux = [...ata.propostas];
+      aux[indexProposta] = { ...dadosProposta };
+      setAta({ ...ata, propostas: aux });
+    }
+  }, [dadosProposta]);
+
+  /** useEffect utilizado para desaparecer os botões de navegação */
+  useEffect(() => {
+    if (location.state?.ata) {
+      let aux = location.state.ata;
+      setAta(aux);
+      if (aux.propostas[0].parecerDG != null) {
+        setActionButtons(false);
+      }
+    }
+  }, []);
+
+  /** Função para voltar ao sumário da ata */
+  const voltarSumario = () => {
+    setBotaoProximo(true);
+    setIndexProposta(-1);
+    setProposta(false);
+  };
+
+  /** Função para selecionar uma proposta do sumário */
+  const onClickProposta = (index) => {
+    setIndexProposta(index);
+    setDadosProposta(ata.propostas[index]);
+    setProposta(true);
+  };
+
+  /** Função para voltar para uma proposta */
   const voltar = () => {
     if (!props.lendo) {
       if (indexProposta <= 0) {
@@ -134,7 +159,7 @@ const DetalhesAta = (props) => {
     }
   };
 
-  // Função para passar para a próxima proposta
+  /** Função para passar para a próxima proposta */
   const proximo = () => {
     if (!props.lendo) {
       if (indexProposta == ata.propostas.length - 1) {
@@ -149,30 +174,28 @@ const DetalhesAta = (props) => {
     }
   };
 
-  //   Fazer uma animação para os notões de navegação
+  /** Funções para animação dos botões de navegação */
   const girar = keyframes({
     from: { rotate: "90deg" },
     to: { rotate: "0deg" },
   });
+
   const girar2 = keyframes({
     from: { rotate: "0deg" },
     to: { rotate: "90deg" },
   });
+
   const aparecer = keyframes({
     "0%": { width: "10rem", opacity: "0" },
     "100%": { width: "15.5rem", opacity: "1" },
   });
+
   const sumir = keyframes({
     "0%": { width: "15.5rem", opacity: "1" },
     "100%": { width: "8rem", opacity: "0" },
   });
 
-  // useStates utilizados para animar os botões de navegação na ata
-  const [girarIcon, setGirarIcon] = useState(true);
-  const [aparecerSumir, setAparecerSumir] = useState(true);
-  const [display, setDisplay] = useState("flex");
-
-  // Função para animar os botões de acordo com o click
+  /** Função para animar os botões de acordo com o click */
   const animarBotoes = () => {
     if (minimizar) {
       setGirarIcon(girar);
@@ -187,7 +210,7 @@ const DetalhesAta = (props) => {
     }
   };
 
-  // Função para baixar o arquivo pdf da respectiva ata
+  /** Função para baixar o arquivo pdf da respectiva ata */
   const baixarPDF = () => {
     ExportPdfService.exportAta(ata.id).then((response) => {
       let blob = new Blob([response], { type: "application/pdf" });
@@ -199,7 +222,7 @@ const DetalhesAta = (props) => {
     });
   };
 
-  // Função para verificar se todos os campos estão preenchidos
+  /** Função para verificar se todos os campos estão preenchidos */
   const isAllFieldsFilled = () => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = ata.propostas.every((proposta) => {
@@ -241,7 +264,7 @@ const DetalhesAta = (props) => {
     );
   };
 
-  // Atualiza a lista de propostas passada por parâmetro
+  /** Atualiza a lista de propostas passada por parâmetro */
   const updatePropostas = (
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
   ) => {
@@ -261,11 +284,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -273,9 +296,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => {}
+                () => { }
               );
               break;
           }
@@ -305,7 +328,7 @@ const DetalhesAta = (props) => {
     setModalConfirmacaoPublicacao(true);
   };
 
-  // Função de criar ata e enviar feedback
+  /** Função de criar ata e enviar feedback */
   const publicarAta = () => {
     // Criação do objeto da ata publicada
     let ataPublished = { ...ata };
@@ -313,30 +336,12 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
+    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
 
     navigate("/", { state: { feedback: true } });
   };
 
-  // Função que atualiza as propostas da pauta sempre que uma proposta é atualizada
-  useEffect(() => {
-    if (indexProposta > -1 && dadosProposta != null) {
-      let aux = [...ata.propostas];
-      aux[indexProposta] = { ...dadosProposta };
-      setAta({ ...ata, propostas: aux });
-    }
-  }, [dadosProposta]);
-
-  useEffect(() => {
-    if (location.state?.ata) {
-      let aux = location.state.ata;
-      setAta(aux);
-      if (aux.propostas[0].parecerDG != null) {
-        setActionButtons(false);
-      }
-    }
-  }, []);
-
+  /** Função para buscar a hora */
   const trazerHoraData = (data) => {
     let dataHora = new Date(data);
     let hora = dataHora.getHours();
@@ -344,7 +349,8 @@ const DetalhesAta = (props) => {
 
     return hora + ":" + minuto;
   };
-  // Função que irá setar o texto que será "lido" pela a API
+
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
@@ -454,8 +460,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                      ": " +
-                      ata.numeroSequencial
+                    ": " +
+                    ata.numeroSequencial
                   );
                 }}
               >
@@ -467,11 +473,11 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
-                      ": " +
-                      DateService.getTodaysDateUSFormat(
-                        ata.dataReuniao,
-                        texts.linguagem
-                      )
+                    ": " +
+                    DateService.getTodaysDateUSFormat(
+                      ata.dataReuniao,
+                      texts.linguagem
+                    )
                   );
                 }}
               >
@@ -488,8 +494,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                      ": " +
-                      trazerHoraData(ata.dataReuniao)
+                    ": " +
+                    trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -503,8 +509,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                      ": " +
-                      ata.analistaResponsavel.nome
+                    ": " +
+                    ata.analistaResponsavel.nome
                   );
                 }}
               >

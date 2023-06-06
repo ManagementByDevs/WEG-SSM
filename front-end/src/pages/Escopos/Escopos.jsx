@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import Tour from "reactour";
 
 import VLibras from "@djpfs/react-vlibras";
 
@@ -18,59 +19,105 @@ import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import EscopoModoVisualizacao from "../../components/EscopoModoVisualizacao/EscopoModoVisualizacao";
 
-import FontConfig from "../../service/FontConfig";
 import EscopoService from "../../service/escopoService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 
-import Tour from "reactour";
-
-// Tela para mostrar os escopos de demandas/propostas não finalizadas
+/** Tela para mostrar os escopos de demandas/propostas não finalizadas */
 const Escopos = ({ lendo = false }) => {
-  // useContext para alterar a linguagem do sistema
+
+  /** useContext para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
 
-  // Context para alterar o tamanho da fonte
+  /** Context para alterar o tamanho da fonte */
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
-  // navigate utilizado para navegar entre as páginas
+  /** Navigate utilizado para navegar entre as páginas */
   const navigate = useNavigate();
 
-  // useState utilizado para armazenar o usuário logado no sistema
+  /** useState utilizado para armazenar o usuário logado no sistema */
   const [usuario, setUsuario] = useState(null);
 
-  // useState utilizado para armazenar os escopos
+  /** useState utilizado para armazenar os escopos */
   const [escopos, setEscopos] = useState(null);
 
-  // useState utilizado para abrir e fechar o modal de confirmação
+  /** useState utilizado para abrir e fechar o modal de confirmação */
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
 
-  // useState para armazenar o escopo selecionado
+  /** useState para armazenar o escopo selecionado */
   const [escopoSelecionado, setEscopoSelecionado] = useState(null);
 
-  // useState para armazenar o valor do input na barra de pesquisa
-  let inputPesquisa = "";
-
-  // useState para aparecer o feedback de escopo deletado
+  /** useState para aparecer o feedback de escopo deletado */
   const [feedbackDeletar, setFeedbackDeletar] = useState(false);
 
-  // useEffect utilizado para buscar o usuário ao entrar na página
+  /** useState utilizado para ativar o feedbakc de navegador incompatível */
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+
+  /** useState utilizado para ativar o feedback de erro ao reconhecimento de voz */
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+
+  /** useState utilizado para setar o modo de visualização dos escopos ( Tabela ou grid ) */
+  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
+
+  /** useState para armazenar o valor do input na barra de pesquisa */
+  let inputPesquisa = "";
+
+  /** useState para abrir e fechar o tour */
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
+  /** Passos do tour */
+  const stepsTour = [
+    {
+      selector: "#segundo",
+      content: texts.escopos.tour.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#primeiro",
+      content: texts.escopos.tour.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quarto",
+      content: texts.escopos.tour.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiro",
+      content: texts.escopos.tour.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  /** useEffect utilizado para buscar o usuário ao entrar na página */
   useEffect(() => {
     if (!usuario) {
       buscarUsuario();
     }
   }, []);
 
-  // useEffect utilizado para buscar os escopos ao entrar na página se tiver um usuário logado
+  /** useEffect utilizado para buscar os escopos ao entrar na página se tiver um usuário logado */
   useEffect(() => {
     if (!escopos && usuario) {
       buscarEscopos();
     }
   }, [usuario]);
 
-  // Função para buscar o usuário logado no sistema pelo cookie salvo no navegador
+  /** Função para buscar o usuário logado no sistema pelo cookie salvo no navegador */
   const buscarUsuario = () => {
     UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt").sub).then(
       (user) => {
@@ -79,7 +126,7 @@ const Escopos = ({ lendo = false }) => {
     );
   };
 
-  // Função integrada com a barra de pesquisa para buscar os escopos
+  /** Função integrada com a barra de pesquisa para buscar os escopos */
   const buscarEscopos = () => {
     if (inputPesquisa == "") {
       EscopoService.buscarPorUsuario(usuario.id, "sort=id,asc&").then(
@@ -126,12 +173,7 @@ const Escopos = ({ lendo = false }) => {
     }
   };
 
-  // Função para salvar o valor do input de pesquisa no estado
-  const salvarPesquisa = (e) => {
-    inputPesquisa = e.target.value;
-  };
-
-  // Função para calcular a porcentagem de preenchimento do escopo
+  /** Função para calcular a porcentagem de preenchimento do escopo */
   const calculaPorcentagem = (escopo) => {
     let porcentagem = 0;
     if (escopo.titulo != "" && escopo.titulo != null) {
@@ -149,12 +191,17 @@ const Escopos = ({ lendo = false }) => {
     return porcentagem + "%";
   };
 
-  // Função para abrir o escopo para continuar a edição
+  /** Função para salvar o valor do input de pesquisa no estado */
+  const salvarPesquisa = (e) => {
+    inputPesquisa = e.target.value;
+  };
+
+  /** Função para abrir o escopo para continuar a edição */
   const openEscopo = (escopo) => {
     navigate("/editar-escopo", { state: escopo.id });
   };
 
-  // Função para deletar um escopo
+  /** Função para deletar um escopo */
   const onDeleteClickEscopo = () => {
     EscopoService.excluirEscopo(escopoSelecionado.id).then((response) => {
       buscarEscopos();
@@ -162,75 +209,33 @@ const Escopos = ({ lendo = false }) => {
     setFeedbackDeletar(true);
   };
 
-  // Função que captura o click no ícone e abre o modal de confirmação de remoção do escopo
+  /** Função que captura o click no ícone e abre o modal de confirmação de remoção do escopo */
   const onTrashCanClick = (index) => {
     setOpenModalConfirmacao(true);
     setEscopoSelecionado(escopos[index]);
   };
 
-  // Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter"
+  /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter" */
   const eventoTeclado = (e) => {
     if (e.key == "Enter") {
       buscarEscopos();
     }
   };
 
-  // useState para abrir e fechar o tour
-  const [isTourOpen, setIsTourOpen] = useState(false);
+  // ********************************************** Gravar audio ********************************************** //
 
-  // Passos do tour
-  const stepsTour = [
-    {
-      selector: "#segundo",
-      content: texts.escopos.tour.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#primeiro",
-      content: texts.escopos.tour.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quarto",
-      content: texts.escopos.tour.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiro",
-      content: texts.escopos.tour.tour4,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  // // ********************************************** Gravar audio **********************************************
-
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
+  /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
 
+  /** Variável utilizada para ativar o microfone para gravação de audio */
   const [escutar, setEscutar] = useState(false);
 
+  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
   const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
+  /** Função para gravar audio nos inputs */
   const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
+    /** Verifica se a API é suportada pelo navegador */
     if ("webkitSpeechRecognition" in window) {
       const recognition = new window.webkitSpeechRecognition();
       recognition.continuous = true;
@@ -252,7 +257,7 @@ const Escopos = ({ lendo = false }) => {
           break;
       }
 
-       recognition.onstart = () => {
+      recognition.onstart = () => {
       };
 
       recognition.onresult = (event) => {
@@ -260,7 +265,7 @@ const Escopos = ({ lendo = false }) => {
           event.results[event.results.length - 1][0].transcript;
         setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
 
-        
+
       };
 
       recognition.onerror = (event) => {
@@ -276,21 +281,24 @@ const Escopos = ({ lendo = false }) => {
     }
   };
 
+  /** useEffect utilizado para atualizar o input de pesquisa com o texto reconhecido */
   useEffect(() => {
     inputPesquisa = palavrasJuntas;
   }, [palavrasJuntas]);
 
+  /** Função para encerrar a gravação de voz */
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
+  /** Função para iniciar a gravação de voz */
   const startRecognition = () => {
     setEscutar(!escutar);
   };
 
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
   useEffect(() => {
     if (escutar) {
       ouvirAudio();
@@ -298,10 +306,6 @@ const Escopos = ({ lendo = false }) => {
       stopRecognition();
     }
   }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
-
-  const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
   /** Função para trocar o modo de visualização dos itens (bloco / lista) */
   const trocarModoVisualizacao = () => {
@@ -345,14 +349,13 @@ const Escopos = ({ lendo = false }) => {
       <ModalConfirmacao
         textoModal={"descartarRascunho"}
         onConfirmClick={onDeleteClickEscopo}
-        onCancelClick={() => {
-          setOpenModalConfirmacao(false);
-        }}
+        onCancelClick={() => { setOpenModalConfirmacao(false) }}
         textoBotao={"sim"}
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
         lendo={lendo}
       />
+      {/* Tour de ajuda */}
       <Tour
         steps={stepsTour}
         isOpen={isTourOpen}
