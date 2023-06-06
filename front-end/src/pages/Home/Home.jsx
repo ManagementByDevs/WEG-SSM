@@ -116,6 +116,12 @@ const Home = (props) => {
   /** Valor do input de pesquisa por título da demanda */
   let valorPesquisa = "";
 
+  /** Variável de referência ao input de pesquisa */
+  const inputPesquisa = useRef(null);
+
+  /** Variável booleana que determina se o input de pesquisa está vazio ou não, usado para a limpagem do input */
+  const [inputPreenchido, setInputPreenchido] = useState(false);
+
   /** Variável para determinar se o modal de ordenação está aberto */
   const [abrirOrdenacao, setOpenOrdenacao] = useState(false);
 
@@ -431,6 +437,15 @@ const Home = (props) => {
   /** Função para salvar o valor do input de pesquisa quando houver alteração */
   const salvarPesquisa = (e) => {
     valorPesquisa = e.target?.value;
+    if (valorPesquisa != "") {
+      if (!inputPreenchido) {
+        setInputPreenchido(true);
+      }
+    } else {
+      if (inputPreenchido) {
+        setInputPreenchido(false);
+      }
+    }
   };
 
   /** Função para modificar os parâmetros da demanda ao pesquisar no campo de texto, consequentemente buscando as demandas */
@@ -779,6 +794,7 @@ const Home = (props) => {
                         color: "text.primary",
                         fontSize: FontConfig?.medium,
                       }}
+                      ref={inputPesquisa}
                       contentEditable
                       placeholder={texts.home.pesquisarPorTituloOuNumero}
                       onKeyDown={(e) => {
@@ -793,6 +809,27 @@ const Home = (props) => {
 
                     {/* Container para os ícones */}
                     <Box className="flex gap-2">
+
+                      {inputPreenchido ? (
+                        <Tooltip
+                          className="hover:cursor-pointer"
+                          title={texts.homeGerencia.limparBusca}
+                          onClick={() => {
+                            valorPesquisa = "";
+                            inputPesquisa.current.value = "";
+                            pesquisaTitulo();
+                            setInputPreenchido(false);
+                          }}
+                        >
+                          <CloseIcon
+                            sx={{
+                              cursor: "pointer",
+                              color: "text.secondary",
+                              fontSize: "1.3rem",
+                            }}
+                          />
+                        </Tooltip>
+                      ) : null}
 
                       {/* Ícone de microfone */}
                       <Tooltip

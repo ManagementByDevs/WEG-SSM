@@ -140,13 +140,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, status, analista, titulo, gerente, forum, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -154,13 +154,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, forum, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndPresenteEm(
                                                             true, status, analista, titulo, gerente, forum, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -170,13 +170,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, forum, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndPresenteEm(
                                                             true, status, analista, titulo, gerente, forum, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -184,13 +184,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, forum, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndPresenteEm(
                                                             true, status, analista, titulo, gerente, forum, presenteEm, pageable
                                                     )
                                             );
@@ -202,13 +202,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, status, analista, titulo, gerente, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -216,13 +216,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndPresenteEm(
                                                             true, status, analista, titulo, gerente, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -232,13 +232,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndPresenteEm(
                                                             true, status, analista, titulo, gerente, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -246,13 +246,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndPresenteEm(
                                                             true, status, analista, titulo, gerente, presenteEm, pageable
                                                     )
                                             );
@@ -266,13 +266,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, forum, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, status, analista, titulo, forum, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -280,13 +280,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, forum, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndPresenteEm(
                                                             true, status, analista, titulo, forum, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -296,13 +296,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, forum, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndPresenteEm(
                                                             true, status, analista, titulo, forum, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -310,13 +310,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, forum, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndPresenteEm(
                                                             true, status, analista, titulo, forum, presenteEm, pageable
                                                     )
                                             );
@@ -328,13 +328,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, status, analista, titulo, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -342,13 +342,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndPresenteEm(
                                                             true, status, analista, titulo, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -358,13 +358,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndPresenteEm(
                                                             true, status, analista, titulo, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -372,13 +372,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndPresenteEm(
                                                             true, status, analista, titulo, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndPresenteEm(
                                                             true, status, analista, titulo, presenteEm, pageable
                                                     )
                                             );
@@ -650,13 +650,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, analista, titulo, gerente, forum, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -664,13 +664,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, gerente, forum, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndPresenteEm(
                                                             true, analista, titulo, gerente, forum, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -680,13 +680,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, gerente, forum, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndPresenteEm(
                                                             true, analista, titulo, gerente, forum, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -694,13 +694,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, gerente, forum, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndPresenteEm(
                                                             true, analista, titulo, gerente, forum, presenteEm, pageable
                                                     )
                                             );
@@ -712,13 +712,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, gerente, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, analista, titulo, gerente, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -726,13 +726,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, gerente, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndPresenteEm(
                                                             true, analista, titulo, gerente, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -742,13 +742,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, gerente, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndPresenteEm(
                                                             true, analista, titulo, gerente, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -756,13 +756,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, gerente, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndPresenteEm(
                                                             true, analista, titulo, gerente, presenteEm, pageable
                                                     )
                                             );
@@ -776,13 +776,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, forum, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, analista, titulo, forum, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -790,13 +790,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, forum, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndPresenteEm(
                                                             true, analista, titulo, forum, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -806,13 +806,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, forum, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndPresenteEm(
                                                             true, analista, titulo, forum, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -820,13 +820,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, forum, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndPresenteEm(
                                                             true, analista, titulo, forum, presenteEm, pageable
                                                     )
                                             );
@@ -838,13 +838,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, analista, titulo, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -852,13 +852,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndPresenteEm(
                                                             true, analista, titulo, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -868,13 +868,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndPresenteEm(
                                                             true, analista, titulo, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -882,13 +882,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndPresenteEm(
                                                             true, analista, titulo, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndPresenteEm(
                                                             true, analista, titulo, presenteEm, pageable
                                                     )
                                             );
@@ -1162,13 +1162,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, status, titulo, gerente, forum, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1176,13 +1176,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, gerente, forum, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndPresenteEm(
                                                             true, status, titulo, gerente, forum, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -1192,13 +1192,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, gerente, forum, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndPresenteEm(
                                                             true, status, titulo, gerente, forum, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1206,13 +1206,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, gerente, forum, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndPresenteEm(
                                                             true, status, titulo, gerente, forum, presenteEm, pageable
                                                     )
                                             );
@@ -1224,13 +1224,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, gerente, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, status, titulo, gerente, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1238,13 +1238,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, gerente, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndPresenteEm(
                                                             true, status, titulo, gerente, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -1254,13 +1254,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, gerente, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndPresenteEm(
                                                             true, status, titulo, gerente, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1268,13 +1268,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, gerente, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndPresenteEm(
                                                             true, status, titulo, gerente, presenteEm, pageable
                                                     )
                                             );
@@ -1288,13 +1288,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, forum, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, status, titulo, forum, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1302,13 +1302,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, forum, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndPresenteEm(
                                                             true, status, titulo, forum, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -1318,13 +1318,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, forum, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndTamanhoAndPresenteEm(
                                                             true, status, titulo, forum, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1332,13 +1332,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, forum, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndPresenteEm(
                                                             true, status, titulo, forum, presenteEm, pageable
                                                     )
                                             );
@@ -1350,13 +1350,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, status, titulo, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1364,13 +1364,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndDepartamentoAndPresenteEm(
                                                             true, status, titulo, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -1380,13 +1380,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndTamanhoAndPresenteEm(
                                                             true, status, titulo, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1394,13 +1394,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndSolicitanteAndPresenteEm(
                                                             true, status, titulo, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndPresenteEm(
                                                             true, status, titulo, presenteEm, pageable
                                                     )
                                             );
@@ -1672,13 +1672,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, titulo, gerente, forum, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, titulo, gerente, forum, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1686,13 +1686,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, titulo, gerente, forum, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndPresenteEm(
                                                             true, titulo, gerente, forum, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -1702,13 +1702,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, titulo, gerente, forum, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndPresenteEm(
                                                             true, titulo, gerente, forum, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1716,13 +1716,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitanteAndPresenteEm(
                                                             true, titulo, gerente, forum, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndPresenteEm(
                                                             true, titulo, gerente, forum, presenteEm, pageable
                                                     )
                                             );
@@ -1734,13 +1734,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, titulo, gerente, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, titulo, gerente, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1748,13 +1748,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, titulo, gerente, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndPresenteEm(
                                                             true, titulo, gerente, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -1764,13 +1764,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, titulo, gerente, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndPresenteEm(
                                                             true, titulo, gerente, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1778,13 +1778,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndSolicitanteAndPresenteEm(
                                                             true, titulo, gerente, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndPresenteEm(
                                                             true, titulo, gerente, presenteEm, pageable
                                                     )
                                             );
@@ -1798,13 +1798,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, titulo, forum, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, titulo, forum, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1812,13 +1812,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, titulo, forum, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndPresenteEm(
                                                             true, titulo, forum, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -1828,13 +1828,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, titulo, forum, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndTamanhoAndPresenteEm(
                                                             true, titulo, forum, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1842,13 +1842,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndSolicitanteAndPresenteEm(
                                                             true, titulo, forum, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndPresenteEm(
                                                             true, titulo, forum, presenteEm, pageable
                                                     )
                                             );
@@ -1860,13 +1860,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, titulo, departamento, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndPresenteEm(
                                                             true, titulo, departamento, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1874,13 +1874,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndDepartamentoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitanteAndPresenteEm(
                                                             true, titulo, departamento, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndDepartamentoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndDepartamentoAndPresenteEm(
                                                             true, titulo, departamento, presenteEm, pageable
                                                     )
                                             );
@@ -1890,13 +1890,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndTamanhoAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndTamanhoAndSolicitanteAndPresenteEm(
                                                             true, titulo, tamanho, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndTamanhoAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndTamanhoAndPresenteEm(
                                                             true, titulo, tamanho, presenteEm, pageable
                                                     )
                                             );
@@ -1904,13 +1904,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndSolicitanteAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndSolicitanteAndPresenteEm(
                                                             true, titulo, solicitante, presenteEm, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndPresenteEm(
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndPresenteEm(
                                                             true, titulo, presenteEm, pageable
                                                     )
                                             );
@@ -2186,13 +2186,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(
                                                             true, status, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(
                                                             true, status, analista, titulo, gerente, forum, departamento, tamanho, pageable
                                                     )
                                             );
@@ -2200,13 +2200,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(
                                                             true, status, analista, titulo, gerente, forum, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamento(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(
                                                             true, status, analista, titulo, gerente, forum, departamento, pageable
                                                     )
                                             );
@@ -2216,13 +2216,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(
                                                             true, status, analista, titulo, gerente, forum, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanho(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(
                                                             true, status, analista, titulo, gerente, forum, tamanho, pageable
                                                     )
                                             );
@@ -2230,13 +2230,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(
                                                             true, status, analista, titulo, gerente, forum, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndForum(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForum(
                                                             true, status, analista, titulo, gerente, forum, pageable
                                                     )
                                             );
@@ -2248,13 +2248,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(
                                                             true, status, analista, titulo, gerente, departamento, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanho(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(
                                                             true, status, analista, titulo, gerente, departamento, tamanho, pageable
                                                     )
                                             );
@@ -2262,13 +2262,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(
                                                             true, status, analista, titulo, gerente, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndDepartamento(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(
                                                             true, status, analista, titulo, gerente, departamento, pageable
                                                     )
                                             );
@@ -2278,13 +2278,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(
                                                             true, status, analista, titulo, gerente, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndTamanho(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanho(
                                                             true, status, analista, titulo, gerente, tamanho, pageable
                                                     )
                                             );
@@ -2292,13 +2292,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerenteAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(
                                                             true, status, analista, titulo, gerente, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndGerente(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndGerente(
                                                             true, status, analista, titulo, gerente, pageable
                                                     )
                                             );
@@ -2312,13 +2312,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(
                                                             true, status, analista, titulo, forum, departamento, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanho(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(
                                                             true, status, analista, titulo, forum, departamento, tamanho, pageable
                                                     )
                                             );
@@ -2326,13 +2326,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(
                                                             true, status, analista, titulo, forum, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndDepartamento(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamento(
                                                             true, status, analista, titulo, forum, departamento, pageable
                                                     )
                                             );
@@ -2342,13 +2342,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(
                                                             true, status, analista, titulo, forum, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndTamanho(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanho(
                                                             true, status, analista, titulo, forum, tamanho, pageable
                                                     )
                                             );
@@ -2356,13 +2356,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForumAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForumAndSolicitante(
                                                             true, status, analista, titulo, forum, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndForum(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndForum(
                                                             true, status, analista, titulo, forum, pageable
                                                     )
                                             );
@@ -2374,13 +2374,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(
                                                             true, status, analista, titulo, departamento, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndTamanho(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(
                                                             true, status, analista, titulo, departamento, tamanho, pageable
                                                     )
                                             );
@@ -2388,13 +2388,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamentoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(
                                                             true, status, analista, titulo, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndDepartamento(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndDepartamento(
                                                             true, status, analista, titulo, departamento, pageable
                                                     )
                                             );
@@ -2404,13 +2404,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(
                                                             true, status, analista, titulo, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndTamanho(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndTamanho(
                                                             true, status, analista, titulo, tamanho, pageable
                                                     )
                                             );
@@ -2418,13 +2418,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCaseAndSolicitante(
                                                             true, status, analista, titulo, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContaining(
+                                                    propostaService.findByVisibilidadeAndStatusAndAnalistaAndTituloContainingIgnoreCase(
                                                             true, status, analista, titulo, pageable
                                                     )
                                             );
@@ -2696,13 +2696,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(
                                                             true, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(
                                                             true, analista, titulo, gerente, forum, departamento, tamanho, pageable
                                                     )
                                             );
@@ -2710,13 +2710,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(
                                                             true, analista, titulo, gerente, forum, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamento(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(
                                                             true, analista, titulo, gerente, forum, departamento, pageable
                                                     )
                                             );
@@ -2726,13 +2726,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(
                                                             true, analista, titulo, gerente, forum, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanho(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(
                                                             true, analista, titulo, gerente, forum, tamanho, pageable
                                                     )
                                             );
@@ -2740,13 +2740,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(
                                                             true, analista, titulo, gerente, forum, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndForum(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForum(
                                                             true, analista, titulo, gerente, forum, pageable
                                                     )
                                             );
@@ -2758,13 +2758,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(
                                                             true, analista, titulo, gerente, departamento, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanho(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(
                                                             true, analista, titulo, gerente, departamento, tamanho, pageable
                                                     )
                                             );
@@ -2772,13 +2772,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(
                                                             true, analista, titulo, gerente, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndDepartamento(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(
                                                             true, analista, titulo, gerente, departamento, pageable
                                                     )
                                             );
@@ -2788,13 +2788,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(
                                                             true, analista, titulo, gerente, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndTamanho(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanho(
                                                             true, analista, titulo, gerente, tamanho, pageable
                                                     )
                                             );
@@ -2802,13 +2802,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerenteAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(
                                                             true, analista, titulo, gerente, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndGerente(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndGerente(
                                                             true, analista, titulo, gerente, pageable
                                                     )
                                             );
@@ -2822,13 +2822,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(
                                                             true, analista, titulo, forum, departamento, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanho(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(
                                                             true, analista, titulo, forum, departamento, tamanho, pageable
                                                     )
                                             );
@@ -2836,13 +2836,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(
                                                             true, analista, titulo, forum, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndDepartamento(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamento(
                                                             true, analista, titulo, forum, departamento, pageable
                                                     )
                                             );
@@ -2852,13 +2852,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(
                                                             true, analista, titulo, forum, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndTamanho(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanho(
                                                             true, analista, titulo, forum, tamanho, pageable
                                                     )
                                             );
@@ -2866,13 +2866,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForumAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForumAndSolicitante(
                                                             true, analista, titulo, forum, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndForum(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndForum(
                                                             true, analista, titulo, forum, pageable
                                                     )
                                             );
@@ -2884,13 +2884,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(
                                                             true, analista, titulo, departamento, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndTamanho(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(
                                                             true, analista, titulo, departamento, tamanho, pageable
                                                     )
                                             );
@@ -2898,13 +2898,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamentoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(
                                                             true, analista, titulo, departamento, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndDepartamento(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndDepartamento(
                                                             true, analista, titulo, departamento, pageable
                                                     )
                                             );
@@ -2914,13 +2914,13 @@ public class PropostaController {
                                     if (tamanho != null) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanhoAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(
                                                             true, analista, titulo, tamanho, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndTamanho(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndTamanho(
                                                             true, analista, titulo, tamanho, pageable
                                                     )
                                             );
@@ -2928,13 +2928,13 @@ public class PropostaController {
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingAndSolicitante(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCaseAndSolicitante(
                                                             true, analista, titulo, solicitante, pageable
                                                     )
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContaining(
+                                                    propostaService.findByVisibilidadeAndAnalistaAndTituloContainingIgnoreCase(
                                                             true, analista, titulo, pageable
                                                     )
                                             );
@@ -3209,21 +3209,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(true, status, titulo, gerente, forum, departamento, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(true, status, titulo, gerente, forum, departamento, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(true, status, titulo, gerente, forum, departamento, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(true, status, titulo, gerente, forum, departamento, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(true, status, titulo, gerente, forum, departamento, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(true, status, titulo, gerente, forum, departamento, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndDepartamento(true, status, titulo, gerente, forum, departamento, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(true, status, titulo, gerente, forum, departamento, pageable)
                                             );
                                         }
                                     }
@@ -3231,21 +3231,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(true, status, titulo, gerente, forum, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(true, status, titulo, gerente, forum, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndTamanho(true, status, titulo, gerente, forum, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(true, status, titulo, gerente, forum, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForumAndSolicitante(true, status, titulo, gerente, forum, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(true, status, titulo, gerente, forum, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndForum(true, status, titulo, gerente, forum, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndForum(true, status, titulo, gerente, forum, pageable)
                                             );
                                         }
                                     }
@@ -3255,21 +3255,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(true, status, titulo, gerente, departamento, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(true, status, titulo, gerente, departamento, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanho(true, status, titulo, gerente, departamento, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(true, status, titulo, gerente, departamento, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(true, status, titulo, gerente, departamento, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(true, status, titulo, gerente, departamento, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndDepartamento(true, status, titulo, gerente, departamento, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(true, status, titulo, gerente, departamento, pageable)
                                             );
                                         }
                                     }
@@ -3277,21 +3277,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitante(true, status, titulo, gerente, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(true, status, titulo, gerente, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndTamanho(true, status, titulo, gerente, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndTamanho(true, status, titulo, gerente, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerenteAndSolicitante(true, status, titulo, gerente, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(true, status, titulo, gerente, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndGerente(true, status, titulo, gerente, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndGerente(true, status, titulo, gerente, pageable)
                                             );
                                         }
                                     }
@@ -3303,21 +3303,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(true, status, titulo, forum, departamento, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(true, status, titulo, forum, departamento, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndTamanho(true, status, titulo, forum, departamento, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(true, status, titulo, forum, departamento, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamentoAndSolicitante(true, status, titulo, forum, departamento, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(true, status, titulo, forum, departamento, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndDepartamento(true, status, titulo, forum, departamento, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndDepartamento(true, status, titulo, forum, departamento, pageable)
                                             );
                                         }
                                     }
@@ -3325,21 +3325,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanhoAndSolicitante(true, status, titulo, forum, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(true, status, titulo, forum, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndTamanho(true, status, titulo, forum, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndTamanho(true, status, titulo, forum, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForumAndSolicitante(true, status, titulo, forum, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForumAndSolicitante(true, status, titulo, forum, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndForum(true, status, titulo, forum, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndForum(true, status, titulo, forum, pageable)
                                             );
                                         }
                                     }
@@ -3349,21 +3349,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(true, status, titulo, departamento, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(true, status, titulo, departamento, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndTamanho(true, status, titulo, departamento, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(true, status, titulo, departamento, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndDepartamentoAndSolicitante(true, status, titulo, departamento, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(true, status, titulo, departamento, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndDepartamento(true, status, titulo, departamento, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndDepartamento(true, status, titulo, departamento, pageable)
                                             );
                                         }
                                     }
@@ -3371,21 +3371,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndTamanhoAndSolicitante(true, status, titulo, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(true, status, titulo, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndTamanho(true, status, titulo, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndTamanho(true, status, titulo, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingAndSolicitante(true, status, titulo, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCaseAndSolicitante(true, status, titulo, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndStatusAndTituloContaining(true, status, titulo, pageable)
+                                                    propostaService.findByVisibilidadeAndStatusAndTituloContainingIgnoreCase(true, status, titulo, pageable)
                                             );
                                         }
 
@@ -3592,21 +3592,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(true, titulo, gerente, forum, departamento, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(true, titulo, gerente, forum, departamento, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(true, titulo, gerente, forum, departamento, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(true, titulo, gerente, forum, departamento, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(true, titulo, gerente, forum, departamento, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(true, titulo, gerente, forum, departamento, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndDepartamento(true, titulo, gerente, forum, departamento, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(true, titulo, gerente, forum, departamento, pageable)
                                             );
                                         }
                                     }
@@ -3614,21 +3614,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(true, titulo, gerente, forum, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(true, titulo, gerente, forum, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndTamanho(true, titulo, gerente, forum, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(true, titulo, gerente, forum, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForumAndSolicitante(true, titulo, gerente, forum, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(true, titulo, gerente, forum, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndForum(true, titulo, gerente, forum, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndForum(true, titulo, gerente, forum, pageable)
                                             );
                                         }
                                     }
@@ -3638,21 +3638,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(true, titulo, gerente, departamento, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(true, titulo, gerente, departamento, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndTamanho(true, titulo, gerente, departamento, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(true, titulo, gerente, departamento, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(true, titulo, gerente, departamento, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(true, titulo, gerente, departamento, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndDepartamento(true, titulo, gerente, departamento, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(true, titulo, gerente, departamento, pageable)
                                             );
                                         }
                                     }
@@ -3660,21 +3660,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndTamanhoAndSolicitante(true, titulo, gerente, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(true, titulo, gerente, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndTamanho(true, titulo, gerente, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndTamanho(true, titulo, gerente, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerenteAndSolicitante(true, titulo, gerente, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(true, titulo, gerente, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndGerente(true, titulo, gerente, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndGerente(true, titulo, gerente, pageable)
                                             );
                                         }
                                     }
@@ -3686,21 +3686,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(true, titulo, forum, departamento, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(true, titulo, forum, departamento, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndTamanho(true, titulo, forum, departamento, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(true, titulo, forum, departamento, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndDepartamentoAndSolicitante(true, titulo, forum, departamento, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(true, titulo, forum, departamento, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndDepartamento(true, titulo, forum, departamento, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndDepartamento(true, titulo, forum, departamento, pageable)
                                             );
                                         }
                                     }
@@ -3708,21 +3708,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndTamanhoAndSolicitante(true, titulo, forum, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(true, titulo, forum, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndTamanho(true, titulo, forum, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndTamanho(true, titulo, forum, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForumAndSolicitante(true, titulo, forum, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForumAndSolicitante(true, titulo, forum, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndForum(true, titulo, forum, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndForum(true, titulo, forum, pageable)
                                             );
                                         }
                                     }
@@ -3732,21 +3732,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(true, titulo, departamento, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(true, titulo, departamento, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndDepartamentoAndTamanho(true, titulo, departamento, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(true, titulo, departamento, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndDepartamentoAndSolicitante(true, titulo, departamento, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(true, titulo, departamento, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndDepartamento(true, titulo, departamento, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndDepartamento(true, titulo, departamento, pageable)
                                             );
                                         }
                                     }
@@ -3754,21 +3754,21 @@ public class PropostaController {
                                     if (tamanho != null && !tamanho.isEmpty()) {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndTamanhoAndSolicitante(true, titulo, tamanho, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(true, titulo, tamanho, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndTamanho(true, titulo, tamanho, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndTamanho(true, titulo, tamanho, pageable)
                                             );
                                         }
                                     } else {
                                         if (solicitante != null) {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContainingAndSolicitante(true, titulo, solicitante, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCaseAndSolicitante(true, titulo, solicitante, pageable)
                                             );
                                         } else {
                                             return ResponseEntity.status(HttpStatus.OK).body(
-                                                    propostaService.findByVisibilidadeAndTituloContaining(true, titulo, pageable)
+                                                    propostaService.findByVisibilidadeAndTituloContainingIgnoreCase(true, titulo, pageable)
                                             );
                                         }
                                     }

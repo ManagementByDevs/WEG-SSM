@@ -129,132 +129,132 @@ public class DemandaService {
      * Funções utilizadas pelo filtro
      */
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamento(status, titulo, gerente, forum, departamento, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(status, titulo, gerente, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(status, titulo, gerente, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndDepartamento(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForumAndDepartamento(status, titulo, gerente, forum, departamento, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(Status status, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(status, titulo, gerente, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForumAndSolicitante(status, titulo, gerente, forum, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(status, titulo, gerente, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndTamanho(Status status, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForum(status, titulo, gerente, forum, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(Status status, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForum(status, titulo, gerente, forum, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForumAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForumAndSolicitante(status, titulo, gerente, forum, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(Status status, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(status, titulo, gerente, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndForum(Status status, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndForum(status, titulo, gerente, forum, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForum(Status status, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndForum(status, titulo, gerente, forum, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(status, titulo, gerente, departamento, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(status, titulo, gerente, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndDepartamentoAndTamanho(Status status, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndDepartamento(status, titulo, gerente, departamento, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(Status status, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(status, titulo, gerente, departamento, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(status, titulo, gerente, departamento, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(Status status, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(status, titulo, gerente, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndDepartamento(Status status, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndDepartamento(status, titulo, gerente, departamento, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(Status status, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(status, titulo, gerente, departamento, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndTamanhoAndSolicitante(status, titulo, gerente, tamanho, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(Status status, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(status, titulo, gerente, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndTamanho(Status status, String titulo, Usuario gerente, String tamanho, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndTamanho(status, titulo, gerente, tamanho, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndTamanho(Status status, String titulo, Usuario gerente, String tamanho, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndTamanho(status, titulo, gerente, tamanho, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerenteAndSolicitante(Status status, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerenteAndSolicitante(status, titulo, gerente, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(Status status, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(status, titulo, gerente, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndGerente(Status status, String titulo, Usuario gerente, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndGerente(status, titulo, gerente, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndGerente(Status status, String titulo, Usuario gerente, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndGerente(status, titulo, gerente, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(status, titulo, forum, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(status, titulo, forum, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanho(Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndForumAndDepartamentoAndTamanho(status, titulo, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(Status status, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(status, titulo, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndForumAndDepartamentoAndSolicitante(status, titulo, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(Status status, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(status, titulo, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndForumAndDepartamento(Status status, String titulo, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndForumAndDepartamento(status, titulo, forum, departamento, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndForumAndDepartamento(Status status, String titulo, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndForumAndDepartamento(status, titulo, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndForumAndTamanhoAndSolicitante(Status status, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndForumAndTamanhoAndSolicitante(status, titulo, forum, tamanho, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(Status status, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(status, titulo, forum, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndForumAndTamanho(Status status, String titulo, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndForumAndTamanho(status, titulo, forum, tamanho, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndForumAndTamanho(Status status, String titulo, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndForumAndTamanho(status, titulo, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndForumAndSolicitante(Status status, String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndForumAndSolicitante(status, titulo, forum, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndForumAndSolicitante(Status status, String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndForumAndSolicitante(status, titulo, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndForum(Status status, String titulo, Forum forum, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndForum(status, titulo, forum, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndForum(Status status, String titulo, Forum forum, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndForum(status, titulo, forum, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(status, titulo, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(Status status, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(status, titulo, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndDepartamentoAndTamanho(Status status, String titulo, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndDepartamentoAndTamanho(status, titulo, departamento, tamanho, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(Status status, String titulo, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(status, titulo, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndDepartamentoAndSolicitante(Status status, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndDepartamentoAndSolicitante(status, titulo, departamento, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(Status status, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(status, titulo, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndDepartamento(Status status, String titulo, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndDepartamento(status, titulo, departamento, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndDepartamento(Status status, String titulo, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndDepartamento(status, titulo, departamento, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndTamanhoAndSolicitante(Status status, String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndTamanhoAndSolicitante(status, titulo, tamanho, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(Status status, String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(status, titulo, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndTamanho(Status status, String titulo, String tamanho, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndTamanho(status, titulo, tamanho, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndTamanho(Status status, String titulo, String tamanho, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndTamanho(status, titulo, tamanho, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContainingAndSolicitante(Status status, String titulo, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContainingAndSolicitante(status, titulo, solicitante, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCaseAndSolicitante(Status status, String titulo, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCaseAndSolicitante(status, titulo, solicitante, pageable);
     }
 
-    public Page<Demanda> findByStatusAndTituloContaining(Status status, String titulo, Pageable pageable) {
-        return demandaRepository.findByStatusAndTituloContaining(status, titulo, pageable);
+    public Page<Demanda> findByStatusAndTituloContainingIgnoreCase(Status status, String titulo, Pageable pageable) {
+        return demandaRepository.findByStatusAndTituloContainingIgnoreCase(status, titulo, pageable);
     }
 
     public Page<Demanda> findByStatusAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Status status, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
@@ -381,132 +381,132 @@ public class DemandaService {
         return demandaRepository.findByStatusAndSolicitante(status, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(titulo, gerente, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(titulo, gerente, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(titulo, gerente, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(titulo, gerente, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndDepartamento(String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndForumAndDepartamento(titulo, gerente, forum, departamento, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(titulo, gerente, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(titulo, gerente, forum, tamanho, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(titulo, gerente, forum, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndTamanho(String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndForumAndTamanho(titulo, gerente, forum, tamanho, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(titulo, gerente, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndForumAndSolicitante(String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndForumAndSolicitante(titulo, gerente, forum, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(titulo, gerente, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndForum(String titulo, Usuario gerente, Forum forum, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndForum(titulo, gerente, forum, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndForum(String titulo, Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndForum(titulo, gerente, forum, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(titulo, gerente, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(titulo, gerente, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndDepartamentoAndTamanho(String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndDepartamentoAndTamanho(titulo, gerente, departamento, tamanho, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(titulo, gerente, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndDepartamentoAndSolicitante(String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndDepartamentoAndSolicitante(titulo, gerente, departamento, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(titulo, gerente, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndDepartamento(String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndDepartamento(titulo, gerente, departamento, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndDepartamento(String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndDepartamento(titulo, gerente, departamento, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndTamanhoAndSolicitante(String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndTamanhoAndSolicitante(titulo, gerente, tamanho, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(titulo, gerente, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndTamanho(String titulo, Usuario gerente, String tamanho, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndTamanho(titulo, gerente, tamanho, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndTamanho(String titulo, Usuario gerente, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndTamanho(titulo, gerente, tamanho, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerenteAndSolicitante(String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerenteAndSolicitante(titulo, gerente, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerenteAndSolicitante(String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerenteAndSolicitante(titulo, gerente, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndGerente(String titulo, Usuario gerente, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndGerente(titulo, gerente, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndGerente(String titulo, Usuario gerente, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndGerente(titulo, gerente, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(titulo, forum, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(titulo, forum, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndForumAndDepartamentoAndTamanho(String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndForumAndDepartamentoAndTamanho(titulo, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(titulo, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndForumAndDepartamentoAndSolicitante(String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndForumAndDepartamentoAndSolicitante(titulo, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(titulo, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndForumAndDepartamento(String titulo, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndForumAndDepartamento(titulo, forum, departamento, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndForumAndDepartamento(String titulo, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndForumAndDepartamento(titulo, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndForumAndTamanhoAndSolicitante(String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndForumAndTamanhoAndSolicitante(titulo, forum, tamanho, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(titulo, forum, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndForumAndTamanho(String titulo, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndForumAndTamanho(titulo, forum, tamanho, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndForumAndTamanho(String titulo, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndForumAndTamanho(titulo, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndForumAndSolicitante(String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndForumAndSolicitante(titulo, forum, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndForumAndSolicitante(String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndForumAndSolicitante(titulo, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndForum(String titulo, Forum forum, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndForum(titulo, forum, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndForum(String titulo, Forum forum, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndForum(titulo, forum, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndDepartamentoAndTamanhoAndSolicitante(String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndDepartamentoAndTamanhoAndSolicitante(titulo, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(titulo, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndDepartamentoAndTamanho(String titulo, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndDepartamentoAndTamanho(titulo, departamento, tamanho, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndDepartamentoAndTamanho(String titulo, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndDepartamentoAndTamanho(titulo, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndDepartamentoAndSolicitante(String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndDepartamentoAndSolicitante(titulo, departamento, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(titulo, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndDepartamento(String titulo, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndDepartamento(titulo, departamento, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndDepartamento(String titulo, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndDepartamento(titulo, departamento, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndTamanhoAndSolicitante(String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndTamanhoAndSolicitante(titulo, tamanho, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndTamanhoAndSolicitante(String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndTamanhoAndSolicitante(titulo, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndTamanho(String titulo, String tamanho, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndTamanho(titulo, tamanho, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndTamanho(String titulo, String tamanho, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndTamanho(titulo, tamanho, pageable);
     }
 
-    public Page<Demanda> findByTituloContainingAndSolicitante(String titulo, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByTituloContainingAndSolicitante(titulo, solicitante, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCaseAndSolicitante(String titulo, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCaseAndSolicitante(titulo, solicitante, pageable);
     }
 
-    public Page<Demanda> findByTituloContaining(String titulo, Pageable pageable) {
-        return demandaRepository.findByTituloContaining(titulo, pageable);
+    public Page<Demanda> findByTituloContainingIgnoreCase(String titulo, Pageable pageable) {
+        return demandaRepository.findByTituloContainingIgnoreCase(titulo, pageable);
     }
 
     public Page<Demanda> findByGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
@@ -625,260 +625,260 @@ public class DemandaService {
         return demandaRepository.findBySolicitante(solicitante, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, gerente, forum, departamento, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, gerente, forum, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanho(analista, titulo, solicitante, gerente, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndDepartamentoAndTamanho(analista, titulo, solicitante, gerente, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(analista, titulo, gerente, forum, departamento, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(analista, titulo, gerente, forum, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(analista, titulo, gerente, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(analista, titulo, gerente, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamentoAndStatus(analista, titulo, solicitante, gerente, forum, departamento, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndDepartamentoAndStatus(analista, titulo, solicitante, gerente, forum, departamento, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndDepartamento(analista, titulo, solicitante, gerente, forum, departamento, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndDepartamento(analista, titulo, solicitante, gerente, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndStatus(analista, titulo, gerente, forum, departamento, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndStatus(analista, titulo, gerente, forum, departamento, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamento(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForumAndDepartamento(analista, titulo, gerente, forum, departamento, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(analista, titulo, gerente, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndTamanhoAndStatus(analista, titulo, solicitante, gerente, forum, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndTamanhoAndStatus(analista, titulo, solicitante, gerente, forum, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndTamanho(analista, titulo, solicitante, gerente, forum, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndTamanho(analista, titulo, solicitante, gerente, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndStatus(analista, titulo, gerente, forum, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndStatus(analista, titulo, gerente, forum, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndTamanho(Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForumAndTamanho(analista, titulo, gerente, forum, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(analista, titulo, gerente, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForumAndStatus(analista, titulo, solicitante, gerente, forum, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForumAndStatus(analista, titulo, solicitante, gerente, forum, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForum(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndForum(analista, titulo, solicitante, gerente, forum, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForum(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndForum(analista, titulo, solicitante, gerente, forum, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForumAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForumAndStatus(analista, titulo, gerente, forum, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndStatus(Usuario analista, String titulo, Usuario gerente, Forum forum, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndStatus(analista, titulo, gerente, forum, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndForum(Usuario analista, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndForum(analista, titulo, gerente, forum, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForum(Usuario analista, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForum(analista, titulo, gerente, forum, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, gerente, departamento, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, gerente, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndTamanho(analista, titulo, solicitante, gerente, departamento, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndDepartamentoAndTamanho(analista, titulo, solicitante, gerente, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndStatus(analista, titulo, gerente, departamento, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndStatus(analista, titulo, gerente, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanho(analista, titulo, gerente, departamento, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(analista, titulo, gerente, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamentoAndStatus(analista, titulo, solicitante, gerente, departamento, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndDepartamentoAndStatus(analista, titulo, solicitante, gerente, departamento, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndDepartamento(analista, titulo, solicitante, gerente, departamento, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndDepartamento(analista, titulo, solicitante, gerente, departamento, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario gerente, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndDepartamentoAndStatus(analista, titulo, gerente, departamento, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario gerente, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndStatus(analista, titulo, gerente, departamento, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndDepartamento(Usuario analista, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndDepartamento(analista, titulo, gerente, departamento, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(Usuario analista, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(analista, titulo, gerente, departamento, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndTamanhoAndStatus(analista, titulo, solicitante, gerente, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndTamanhoAndStatus(analista, titulo, solicitante, gerente, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndTamanho(analista, titulo, solicitante, gerente, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndTamanho(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndTamanho(analista, titulo, solicitante, gerente, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndTamanhoAndStatus(analista, titulo, gerente, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario gerente, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndStatus(analista, titulo, gerente, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndTamanho(Usuario analista, String titulo, Usuario gerente, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndTamanho(analista, titulo, gerente, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanho(Usuario analista, String titulo, Usuario gerente, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanho(analista, titulo, gerente, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerenteAndStatus(analista, titulo, solicitante, gerente, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndStatus(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerenteAndStatus(analista, titulo, solicitante, gerente, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndGerente(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndGerente(analista, titulo, solicitante, gerente, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerente(Usuario analista, String titulo, Usuario solicitante, Usuario gerente, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndGerente(analista, titulo, solicitante, gerente, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerenteAndStatus(Usuario analista, String titulo, Usuario gerente, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerenteAndStatus(analista, titulo, gerente, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndStatus(Usuario analista, String titulo, Usuario gerente, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerenteAndStatus(analista, titulo, gerente, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndGerente(Usuario analista, String titulo, Usuario gerente, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndGerente(analista, titulo, gerente, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndGerente(Usuario analista, String titulo, Usuario gerente, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndGerente(analista, titulo, gerente, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, forum, departamento, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, forum, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndTamanho(analista, titulo, solicitante, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndDepartamentoAndTamanho(analista, titulo, solicitante, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndStatus(analista, titulo, forum, departamento, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndStatus(analista, titulo, forum, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanho(analista, titulo, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(analista, titulo, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamentoAndStatus(analista, titulo, solicitante, forum, departamento, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndDepartamentoAndStatus(analista, titulo, solicitante, forum, departamento, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndDepartamento(analista, titulo, solicitante, forum, departamento, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndDepartamento(analista, titulo, solicitante, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Forum forum, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndForumAndDepartamentoAndStatus(analista, titulo, forum, departamento, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndStatus(Usuario analista, String titulo, Forum forum, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndStatus(analista, titulo, forum, departamento, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndDepartamento(Usuario analista, String titulo, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndForumAndDepartamento(analista, titulo, forum, departamento, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamento(Usuario analista, String titulo, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamento(analista, titulo, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndTamanhoAndStatus(analista, titulo, solicitante, forum, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndTamanhoAndStatus(analista, titulo, solicitante, forum, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndTamanho(Usuario analista, String titulo, Usuario solicitante, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndTamanho(analista, titulo, solicitante, forum, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndTamanho(Usuario analista, String titulo, Usuario solicitante, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndTamanho(analista, titulo, solicitante, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Forum forum, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndForumAndTamanhoAndStatus(analista, titulo, forum, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndStatus(Usuario analista, String titulo, Forum forum, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndStatus(analista, titulo, forum, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndTamanho(Usuario analista, String titulo, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndForumAndTamanho(analista, titulo, forum, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanho(Usuario analista, String titulo, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanho(analista, titulo, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndForumAndStatus(analista, titulo, solicitante, forum, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndStatus(Usuario analista, String titulo, Usuario solicitante, Forum forum, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForumAndStatus(analista, titulo, solicitante, forum, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndForum(Usuario analista, String titulo, Usuario solicitante, Forum forum, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndForum(analista, titulo, solicitante, forum, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForum(Usuario analista, String titulo, Usuario solicitante, Forum forum, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndForum(analista, titulo, solicitante, forum, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndForumAndStatus(Usuario analista, String titulo, Forum forum, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndForumAndStatus(analista, titulo, forum, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndStatus(Usuario analista, String titulo, Forum forum, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndForumAndStatus(analista, titulo, forum, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndForum(Usuario analista, String titulo, Forum forum, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndForum(analista, titulo, forum, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndForum(Usuario analista, String titulo, Forum forum, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndForum(analista, titulo, forum, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, departamento, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndDepartamentoAndTamanhoAndStatus(analista, titulo, solicitante, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndTamanho(analista, titulo, solicitante, departamento, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndDepartamentoAndTamanho(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndDepartamentoAndTamanho(analista, titulo, solicitante, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndStatus(analista, titulo, departamento, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndStatus(Usuario analista, String titulo, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndStatus(analista, titulo, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndDepartamentoAndTamanho(Usuario analista, String titulo, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndDepartamentoAndTamanho(analista, titulo, departamento, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(Usuario analista, String titulo, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(analista, titulo, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamentoAndStatus(analista, titulo, solicitante, departamento, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndDepartamentoAndStatus(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndDepartamentoAndStatus(analista, titulo, solicitante, departamento, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndDepartamento(analista, titulo, solicitante, departamento, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndDepartamento(Usuario analista, String titulo, Usuario solicitante, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndDepartamento(analista, titulo, solicitante, departamento, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndDepartamentoAndStatus(Usuario analista, String titulo, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndDepartamentoAndStatus(analista, titulo, departamento, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndStatus(Usuario analista, String titulo, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndStatus(analista, titulo, departamento, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndDepartamento(Usuario analista, String titulo, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndDepartamento(analista, titulo, departamento, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndDepartamento(Usuario analista, String titulo, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndDepartamento(analista, titulo, departamento, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndTamanhoAndStatus(analista, titulo, solicitante, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndTamanhoAndStatus(Usuario analista, String titulo, Usuario solicitante, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndTamanhoAndStatus(analista, titulo, solicitante, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndTamanho(Usuario analista, String titulo, Usuario solicitante, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndTamanho(analista, titulo, solicitante, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndTamanho(Usuario analista, String titulo, Usuario solicitante, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndTamanho(analista, titulo, solicitante, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndTamanhoAndStatus(Usuario analista, String titulo, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndTamanhoAndStatus(analista, titulo, tamanho, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndStatus(Usuario analista, String titulo, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndStatus(analista, titulo, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndTamanho(Usuario analista, String titulo, String tamanho, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndTamanho(analista, titulo, tamanho, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndTamanho(Usuario analista, String titulo, String tamanho, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndTamanho(analista, titulo, tamanho, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitanteAndStatus(Usuario analista, String titulo, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitanteAndStatus(analista, titulo, solicitante, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndStatus(Usuario analista, String titulo, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndStatus(analista, titulo, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndSolicitante(Usuario analista, String titulo, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndSolicitante(analista, titulo, solicitante, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitante(Usuario analista, String titulo, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndSolicitante(analista, titulo, solicitante, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContainingAndStatus(Usuario analista, String titulo, Status status, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContainingAndStatus(analista, titulo, status, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCaseAndStatus(Usuario analista, String titulo, Status status, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCaseAndStatus(analista, titulo, status, pageable);
     }
 
-    public Page<Demanda> findPageByAnalistaAndTituloContaining(Usuario analista, String titulo, Pageable pageable) {
-        return demandaRepository.findPageByAnalistaAndTituloContaining(analista, titulo, pageable);
+    public Page<Demanda> findPageByAnalistaAndTituloContainingIgnoreCase(Usuario analista, String titulo, Pageable pageable) {
+        return demandaRepository.findPageByAnalistaAndTituloContainingIgnoreCase(analista, titulo, pageable);
     }
 
     public Page<Demanda> findPageByAnalistaAndGerenteAndForumAndDepartamentoAndSolicitanteAndTamanhoAndStatus(Usuario analista, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, String tamanho, Status status, Pageable pageable) {
@@ -1137,260 +1137,260 @@ public class DemandaService {
         return demandaRepository.findPageByAnalista(analista, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, gerente, forum, departamento, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, gerente, forum, departamento, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(id, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(id, analista, titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(id, analista, titulo, gerente, forum, departamento, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(id, analista, titulo, gerente, forum, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(id, analista, titulo, gerente, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(id, analista, titulo, gerente, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(id, analista, titulo, gerente, forum, departamento, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(id, analista, titulo, gerente, forum, departamento, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(id, analista, titulo, gerente, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(id, analista, titulo, gerente, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamentoAndStatus(id, analista, titulo, gerente, forum, departamento, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndStatus(id, analista, titulo, gerente, forum, departamento, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamento(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndDepartamento(id, analista, titulo, gerente, forum, departamento, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(id, analista, titulo, gerente, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, gerente, forum, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, gerente, forum, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(id, analista, titulo, gerente, forum, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(id, analista, titulo, gerente, forum, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanhoAndStatus(id, analista, titulo, gerente, forum, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndStatus(id, analista, titulo, gerente, forum, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanho(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndTamanho(id, analista, titulo, gerente, forum, tamanho, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(id, analista, titulo, gerente, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitanteAndStatus(id, analista, titulo, gerente, forum, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitanteAndStatus(id, analista, titulo, gerente, forum, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndSolicitante(id, analista, titulo, gerente, forum, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(id, analista, titulo, gerente, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForumAndStatus(id, analista, titulo, gerente, forum, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForumAndStatus(id, analista, titulo, gerente, forum, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndForum(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndForum(id, analista, titulo, gerente, forum, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForum(Long id, Usuario analista, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndForum(id, analista, titulo, gerente, forum, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, gerente, departamento, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, gerente, departamento, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(id, analista, titulo, gerente, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(id, analista, titulo, gerente, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndStatus(id, analista, titulo, gerente, departamento, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndStatus(id, analista, titulo, gerente, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanho(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndTamanho(id, analista, titulo, gerente, departamento, tamanho, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(id, analista, titulo, gerente, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndStatus(id, analista, titulo, gerente, departamento, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitanteAndStatus(id, analista, titulo, gerente, departamento, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(id, analista, titulo, gerente, departamento, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(id, analista, titulo, gerente, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamentoAndStatus(id, analista, titulo, gerente, departamento, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndStatus(id, analista, titulo, gerente, departamento, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamento(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndDepartamento(id, analista, titulo, gerente, departamento, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(Long id, Usuario analista, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(id, analista, titulo, gerente, departamento, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, gerente, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, gerente, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndSolicitante(id, analista, titulo, gerente, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(id, analista, titulo, gerente, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndTamanhoAndStatus(id, analista, titulo, gerente, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndStatus(id, analista, titulo, gerente, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndTamanho(Long id, Usuario analista, String titulo, Usuario gerente, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndTamanho(id, analista, titulo, gerente, tamanho, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanho(Long id, Usuario analista, String titulo, Usuario gerente, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndTamanho(id, analista, titulo, gerente, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndSolicitanteAndStatus(id, analista, titulo, gerente, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndSolicitanteAndStatus(id, analista, titulo, gerente, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndSolicitante(id, analista, titulo, gerente, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(Long id, Usuario analista, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(id, analista, titulo, gerente, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerenteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerenteAndStatus(id, analista, titulo, gerente, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndStatus(Long id, Usuario analista, String titulo, Usuario gerente, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerenteAndStatus(id, analista, titulo, gerente, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndGerente(Long id, Usuario analista, String titulo, Usuario gerente, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndGerente(id, analista, titulo, gerente, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerente(Long id, Usuario analista, String titulo, Usuario gerente, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndGerente(id, analista, titulo, gerente, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, forum, departamento, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, forum, departamento, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(id, analista, titulo, forum, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(id, analista, titulo, forum, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanhoAndStatus(id, analista, titulo, forum, departamento, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndStatus(id, analista, titulo, forum, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanho(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndTamanho(id, analista, titulo, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(id, analista, titulo, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndStatus(id, analista, titulo, forum, departamento, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitanteAndStatus(id, analista, titulo, forum, departamento, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitante(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndSolicitante(id, analista, titulo, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(id, analista, titulo, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndStatus(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndDepartamentoAndStatus(id, analista, titulo, forum, departamento, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndStatus(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndStatus(id, analista, titulo, forum, departamento, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndDepartamento(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndDepartamento(id, analista, titulo, forum, departamento, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamento(Long id, Usuario analista, String titulo, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndDepartamento(id, analista, titulo, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, forum, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, forum, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndTamanhoAndSolicitante(id, analista, titulo, forum, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(id, analista, titulo, forum, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Forum forum, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndTamanhoAndStatus(id, analista, titulo, forum, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Forum forum, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanhoAndStatus(id, analista, titulo, forum, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndTamanho(Long id, Usuario analista, String titulo, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndTamanho(id, analista, titulo, forum, tamanho, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanho(Long id, Usuario analista, String titulo, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndTamanho(id, analista, titulo, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Forum forum, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndSolicitanteAndStatus(id, analista, titulo, forum, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Forum forum, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndSolicitanteAndStatus(id, analista, titulo, forum, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndSolicitante(Long id, Usuario analista, String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndSolicitante(id, analista, titulo, forum, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndSolicitante(Long id, Usuario analista, String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndSolicitante(id, analista, titulo, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForumAndStatus(Long id, Usuario analista, String titulo, Forum forum, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForumAndStatus(id, analista, titulo, forum, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndStatus(Long id, Usuario analista, String titulo, Forum forum, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForumAndStatus(id, analista, titulo, forum, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndForum(Long id, Usuario analista, String titulo, Forum forum, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndForum(id, analista, titulo, forum, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForum(Long id, Usuario analista, String titulo, Forum forum, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndForum(id, analista, titulo, forum, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, departamento, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, departamento, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(id, analista, titulo, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(id, analista, titulo, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndDepartamentoAndTamanhoAndStatus(id, analista, titulo, departamento, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndStatus(Long id, Usuario analista, String titulo, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndStatus(id, analista, titulo, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndDepartamentoAndTamanho(Long id, Usuario analista, String titulo, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndDepartamentoAndTamanho(id, analista, titulo, departamento, tamanho, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(Long id, Usuario analista, String titulo, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(id, analista, titulo, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndDepartamentoAndSolicitanteAndStatus(id, analista, titulo, departamento, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitanteAndStatus(id, analista, titulo, departamento, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndDepartamentoAndSolicitante(Long id, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndDepartamentoAndSolicitante(id, analista, titulo, departamento, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(Long id, Usuario analista, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(id, analista, titulo, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndDepartamentoAndStatus(Long id, Usuario analista, String titulo, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndDepartamentoAndStatus(id, analista, titulo, departamento, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndStatus(Long id, Usuario analista, String titulo, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamentoAndStatus(id, analista, titulo, departamento, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndDepartamento(Long id, Usuario analista, String titulo, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndDepartamento(id, analista, titulo, departamento, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamento(Long id, Usuario analista, String titulo, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndDepartamento(id, analista, titulo, departamento, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndSolicitanteAndStatus(id, analista, titulo, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndTamanhoAndSolicitante(id, analista, titulo, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(Long id, Usuario analista, String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(id, analista, titulo, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndTamanhoAndStatus(Long id, Usuario analista, String titulo, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndTamanhoAndStatus(id, analista, titulo, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndStatus(Long id, Usuario analista, String titulo, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndTamanhoAndStatus(id, analista, titulo, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndTamanho(Long id, Usuario analista, String titulo, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndTamanho(id, analista, titulo, tamanho, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndTamanho(Long id, Usuario analista, String titulo, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndTamanho(id, analista, titulo, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndSolicitanteAndStatus(id, analista, titulo, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndStatus(Long id, Usuario analista, String titulo, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndSolicitanteAndStatus(id, analista, titulo, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndSolicitante(Long id, Usuario analista, String titulo, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndSolicitante(id, analista, titulo, solicitante, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndSolicitante(Long id, Usuario analista, String titulo, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndSolicitante(id, analista, titulo, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContainingAndStatus(Long id, Usuario analista, String titulo, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContainingAndStatus(id, analista, titulo, status, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCaseAndStatus(Long id, Usuario analista, String titulo, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCaseAndStatus(id, analista, titulo, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndAnalistaAndTituloContaining(Long id, Usuario analista, String titulo, Pageable pageable) {
-        return demandaRepository.findByIdAndAnalistaAndTituloContaining(id, analista, titulo, pageable);
+    public Page<Demanda> findByIdAndAnalistaAndTituloContainingIgnoreCase(Long id, Usuario analista, String titulo, Pageable pageable) {
+        return demandaRepository.findByIdAndAnalistaAndTituloContainingIgnoreCase(id, analista, titulo, pageable);
     }
 
     public Page<Demanda> findByIdAndAnalistaAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario analista, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
@@ -1649,260 +1649,260 @@ public class DemandaService {
         return demandaRepository.findByIdAndAnalista(id, analista, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, titulo, gerente, forum, departamento, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, titulo, gerente, forum, departamento, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(id, titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitante(id, titulo, gerente, forum, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(id, titulo, gerente, forum, departamento, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanhoAndStatus(id, titulo, gerente, forum, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndTamanho(id, titulo, gerente, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndTamanho(id, titulo, gerente, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(id, titulo, gerente, forum, departamento, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitanteAndStatus(id, titulo, gerente, forum, departamento, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndSolicitante(id, titulo, gerente, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndSolicitante(id, titulo, gerente, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndDepartamentoAndStatus(id, titulo, gerente, forum, departamento, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamentoAndStatus(id, titulo, gerente, forum, departamento, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndDepartamento(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndDepartamento(id, titulo, gerente, forum, departamento, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(Long id, String titulo, Usuario gerente, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndDepartamento(id, titulo, gerente, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitanteAndStatus(id, titulo, gerente, forum, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitanteAndStatus(id, titulo, gerente, forum, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(Long id, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndTamanhoAndSolicitante(id, titulo, gerente, forum, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(Long id, String titulo, Usuario gerente, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndSolicitante(id, titulo, gerente, forum, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndTamanhoAndStatus(Long id, String titulo, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndTamanhoAndStatus(id, titulo, gerente, forum, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndStatus(Long id, String titulo, Usuario gerente, Forum forum, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanhoAndStatus(id, titulo, gerente, forum, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndTamanho(Long id, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndTamanho(id, titulo, gerente, forum, tamanho, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(Long id, String titulo, Usuario gerente, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndTamanho(id, titulo, gerente, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndSolicitanteAndStatus(id, titulo, gerente, forum, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitanteAndStatus(id, titulo, gerente, forum, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndSolicitante(Long id, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndSolicitante(id, titulo, gerente, forum, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(Long id, String titulo, Usuario gerente, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndSolicitante(id, titulo, gerente, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForumAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForumAndStatus(id, titulo, gerente, forum, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndStatus(Long id, String titulo, Usuario gerente, Forum forum, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForumAndStatus(id, titulo, gerente, forum, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndForum(Long id, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndForum(id, titulo, gerente, forum, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndForum(Long id, String titulo, Usuario gerente, Forum forum, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndForum(id, titulo, gerente, forum, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, titulo, gerente, departamento, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, titulo, gerente, departamento, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(Long id, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndSolicitante(id, titulo, gerente, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(Long id, String titulo, Usuario gerente, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndSolicitante(id, titulo, gerente, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndStatus(Long id, String titulo, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndDepartamentoAndTamanhoAndStatus(id, titulo, gerente, departamento, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndStatus(Long id, String titulo, Usuario gerente, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanhoAndStatus(id, titulo, gerente, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndDepartamentoAndTamanho(Long id, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndDepartamentoAndTamanho(id, titulo, gerente, departamento, tamanho, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(Long id, String titulo, Usuario gerente, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndTamanho(id, titulo, gerente, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndDepartamentoAndSolicitanteAndStatus(id, titulo, gerente, departamento, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitanteAndStatus(id, titulo, gerente, departamento, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(Long id, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndDepartamentoAndSolicitante(id, titulo, gerente, departamento, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(Long id, String titulo, Usuario gerente, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndSolicitante(id, titulo, gerente, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndDepartamentoAndStatus(Long id, String titulo, Usuario gerente, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndDepartamentoAndStatus(id, titulo, gerente, departamento, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndStatus(Long id, String titulo, Usuario gerente, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamentoAndStatus(id, titulo, gerente, departamento, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndDepartamento(Long id, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndDepartamento(id, titulo, gerente, departamento, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(Long id, String titulo, Usuario gerente, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndDepartamento(id, titulo, gerente, departamento, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndTamanhoAndSolicitanteAndStatus(id, titulo, gerente, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitanteAndStatus(id, titulo, gerente, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndTamanhoAndSolicitante(Long id, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndTamanhoAndSolicitante(id, titulo, gerente, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(Long id, String titulo, Usuario gerente, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndSolicitante(id, titulo, gerente, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndTamanhoAndStatus(Long id, String titulo, Usuario gerente, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndTamanhoAndStatus(id, titulo, gerente, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndStatus(Long id, String titulo, Usuario gerente, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndTamanhoAndStatus(id, titulo, gerente, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndTamanho(Long id, String titulo, Usuario gerente, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndTamanho(id, titulo, gerente, tamanho, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndTamanho(Long id, String titulo, Usuario gerente, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndTamanho(id, titulo, gerente, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndSolicitanteAndStatus(id, titulo, gerente, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndSolicitanteAndStatus(Long id, String titulo, Usuario gerente, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndSolicitanteAndStatus(id, titulo, gerente, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndSolicitante(Long id, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndSolicitante(id, titulo, gerente, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(Long id, String titulo, Usuario gerente, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndSolicitante(id, titulo, gerente, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerenteAndStatus(Long id, String titulo, Usuario gerente, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerenteAndStatus(id, titulo, gerente, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerenteAndStatus(Long id, String titulo, Usuario gerente, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerenteAndStatus(id, titulo, gerente, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndGerente(Long id, String titulo, Usuario gerente, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndGerente(id, titulo, gerente, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndGerente(Long id, String titulo, Usuario gerente, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndGerente(id, titulo, gerente, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, titulo, forum, departamento, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, titulo, forum, departamento, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(Long id, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndDepartamentoAndTamanhoAndSolicitante(id, titulo, forum, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(Long id, String titulo, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndSolicitante(id, titulo, forum, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndDepartamentoAndTamanhoAndStatus(Long id, String titulo, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndDepartamentoAndTamanhoAndStatus(id, titulo, forum, departamento, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndStatus(Long id, String titulo, Forum forum, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanhoAndStatus(id, titulo, forum, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndDepartamentoAndTamanho(Long id, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndDepartamentoAndTamanho(id, titulo, forum, departamento, tamanho, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(Long id, String titulo, Forum forum, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndTamanho(id, titulo, forum, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndStatus(Long id, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndDepartamentoAndSolicitanteAndStatus(id, titulo, forum, departamento, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitanteAndStatus(Long id, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitanteAndStatus(id, titulo, forum, departamento, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndDepartamentoAndSolicitante(Long id, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndDepartamentoAndSolicitante(id, titulo, forum, departamento, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(Long id, String titulo, Forum forum, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndSolicitante(id, titulo, forum, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndDepartamentoAndStatus(Long id, String titulo, Forum forum, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndDepartamentoAndStatus(id, titulo, forum, departamento, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndStatus(Long id, String titulo, Forum forum, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamentoAndStatus(id, titulo, forum, departamento, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndDepartamento(Long id, String titulo, Forum forum, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndDepartamento(id, titulo, forum, departamento, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamento(Long id, String titulo, Forum forum, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndDepartamento(id, titulo, forum, departamento, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Forum forum, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndTamanhoAndSolicitanteAndStatus(id, titulo, forum, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Forum forum, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitanteAndStatus(id, titulo, forum, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndTamanhoAndSolicitante(Long id, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndTamanhoAndSolicitante(id, titulo, forum, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(Long id, String titulo, Forum forum, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndTamanhoAndSolicitante(id, titulo, forum, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndTamanhoAndStatus(Long id, String titulo, Forum forum, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndTamanhoAndStatus(id, titulo, forum, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndTamanhoAndStatus(Long id, String titulo, Forum forum, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndTamanhoAndStatus(id, titulo, forum, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndTamanho(Long id, String titulo, Forum forum, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndTamanho(id, titulo, forum, tamanho, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndTamanho(Long id, String titulo, Forum forum, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndTamanho(id, titulo, forum, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndSolicitanteAndStatus(Long id, String titulo, Forum forum, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndSolicitanteAndStatus(id, titulo, forum, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndSolicitanteAndStatus(Long id, String titulo, Forum forum, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndSolicitanteAndStatus(id, titulo, forum, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndSolicitante(Long id, String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndSolicitante(id, titulo, forum, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndSolicitante(Long id, String titulo, Forum forum, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndSolicitante(id, titulo, forum, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForumAndStatus(Long id, String titulo, Forum forum, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForumAndStatus(id, titulo, forum, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForumAndStatus(Long id, String titulo, Forum forum, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForumAndStatus(id, titulo, forum, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndForum(Long id, String titulo, Forum forum, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndForum(id, titulo, forum, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndForum(Long id, String titulo, Forum forum, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndForum(id, titulo, forum, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, titulo, departamento, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitanteAndStatus(id, titulo, departamento, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(Long id, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndDepartamentoAndTamanhoAndSolicitante(id, titulo, departamento, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(Long id, String titulo, Departamento departamento, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndSolicitante(id, titulo, departamento, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndDepartamentoAndTamanhoAndStatus(Long id, String titulo, Departamento departamento, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndDepartamentoAndTamanhoAndStatus(id, titulo, departamento, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndStatus(Long id, String titulo, Departamento departamento, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndTamanhoAndStatus(id, titulo, departamento, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndDepartamentoAndTamanho(Long id, String titulo, Departamento departamento, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndDepartamentoAndTamanho(id, titulo, departamento, tamanho, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(Long id, String titulo, Departamento departamento, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndTamanho(id, titulo, departamento, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndDepartamentoAndSolicitanteAndStatus(Long id, String titulo, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndDepartamentoAndSolicitanteAndStatus(id, titulo, departamento, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitanteAndStatus(Long id, String titulo, Departamento departamento, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitanteAndStatus(id, titulo, departamento, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndDepartamentoAndSolicitante(Long id, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndDepartamentoAndSolicitante(id, titulo, departamento, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(Long id, String titulo, Departamento departamento, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndSolicitante(id, titulo, departamento, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndDepartamentoAndStatus(Long id, String titulo, Departamento departamento, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndDepartamentoAndStatus(id, titulo, departamento, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndStatus(Long id, String titulo, Departamento departamento, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndDepartamentoAndStatus(id, titulo, departamento, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndDepartamento(Long id, String titulo, Departamento departamento, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndDepartamento(id, titulo, departamento, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndDepartamento(Long id, String titulo, Departamento departamento, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndDepartamento(id, titulo, departamento, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndTamanhoAndSolicitanteAndStatus(id, titulo, tamanho, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndTamanhoAndSolicitanteAndStatus(Long id, String titulo, String tamanho, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndTamanhoAndSolicitanteAndStatus(id, titulo, tamanho, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndTamanhoAndSolicitante(Long id, String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndTamanhoAndSolicitante(id, titulo, tamanho, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(Long id, String titulo, String tamanho, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndTamanhoAndSolicitante(id, titulo, tamanho, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndTamanhoAndStatus(Long id, String titulo, String tamanho, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndTamanhoAndStatus(id, titulo, tamanho, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndTamanhoAndStatus(Long id, String titulo, String tamanho, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndTamanhoAndStatus(id, titulo, tamanho, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndTamanho(Long id, String titulo, String tamanho, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndTamanho(id, titulo, tamanho, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndTamanho(Long id, String titulo, String tamanho, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndTamanho(id, titulo, tamanho, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndSolicitanteAndStatus(Long id, String titulo, Usuario solicitante, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndSolicitanteAndStatus(id, titulo, solicitante, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndSolicitanteAndStatus(Long id, String titulo, Usuario solicitante, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndSolicitanteAndStatus(id, titulo, solicitante, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndSolicitante(Long id, String titulo, Usuario solicitante, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndSolicitante(id, titulo, solicitante, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndSolicitante(Long id, String titulo, Usuario solicitante, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndSolicitante(id, titulo, solicitante, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContainingAndStatus(Long id, String titulo, Status status, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContainingAndStatus(id, titulo, status, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCaseAndStatus(Long id, String titulo, Status status, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCaseAndStatus(id, titulo, status, pageable);
     }
 
-    public Page<Demanda> findByIdAndTituloContaining(Long id, String titulo, Pageable pageable) {
-        return demandaRepository.findByIdAndTituloContaining(id, titulo, pageable);
+    public Page<Demanda> findByIdAndTituloContainingIgnoreCase(Long id, String titulo, Pageable pageable) {
+        return demandaRepository.findByIdAndTituloContainingIgnoreCase(id, titulo, pageable);
     }
 
     public Page<Demanda> findByIdAndGerenteAndForumAndDepartamentoAndTamanhoAndSolicitanteAndStatus(Long id, Usuario gerente, Forum forum, Departamento departamento, String tamanho, Usuario solicitante, Status status, Pageable pageable) {

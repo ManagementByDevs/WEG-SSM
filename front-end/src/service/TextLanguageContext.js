@@ -716,6 +716,7 @@ const TextLanguageContext = createContext({
       pesquisarPorNumeroSequencialOuProposta: "Pesquisar por nº sequencial ou proposta...",
       pesquisar: "Pesquisar",
       gravarAudio: "Gravar Audio",
+      limparBusca: "Limpar Busca",
       ordenacao: "Ordenação",
       filtrar: "Filtrar",
       exportar: "Exportar",
