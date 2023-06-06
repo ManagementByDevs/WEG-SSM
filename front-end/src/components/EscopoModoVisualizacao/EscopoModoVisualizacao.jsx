@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 
 import {
   Box,
@@ -20,7 +20,6 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EscopoService from "../../service/escopoService";
 
-import Tour from "reactour";
 
 // Componente para mudar o modo de visualização dos escopos (Grid, tabela ou nenhum escopo encontrado)
 const EscopoModoVisualizacao = ({
@@ -73,11 +72,9 @@ const EscopoTable = ({
   onEscopoClick,
   buscar,
   lendo,
-  texto,
-  setTexto,
 }) => {
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
@@ -126,45 +123,6 @@ const EscopoTable = ({
 
     return porcentagem + "%";
   };
-
-  // useState para abrir e fechar o tour
-  const [isTourOpen, setIsTourOpen] = useState(false);
-
-  // Passos do tour
-  const stepsTour = [
-    {
-      selector: "#segundo",
-      content: texts.escopos.tour.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#primeiro",
-      content: texts.escopos.tour.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiro",
-      content: texts.escopos.tour.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quarto",
-      content: texts.escopos.tour.tour4,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -348,7 +306,7 @@ const NadaEncontrado = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 
 import { Box, Paper, Tooltip, Typography } from "@mui/material";
 
@@ -13,7 +13,7 @@ const Escopo = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   /** Variável utilizada para armazenar o valor em html do campo */
   const propostaEscopo = useRef(null);

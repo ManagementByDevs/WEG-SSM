@@ -25,14 +25,18 @@ const QuillCustom = ({
     SpeechRecognitionContext
   );
 
+  // Referencia do quill
   const quillRef = useRef(null);
 
+  // Texto do input
   const [text, setText] = useState(JSON.parse(JSON.stringify(defaultText)));
 
+  // Atualiza o texto do input
   const handleOnTextChange = (e) => {
     setText(e);
   };
 
+  // UseEffect para quando É juntado palavras no mic
   useEffect(() => {
     if (localClique == label) {
       handleOnTextChange(palavrasJuntas);
@@ -40,6 +44,7 @@ const QuillCustom = ({
     }
   }, [palavrasJuntas]);
 
+  // Input do componente
   return (
     <Box className="relative">
       <ReactQuill

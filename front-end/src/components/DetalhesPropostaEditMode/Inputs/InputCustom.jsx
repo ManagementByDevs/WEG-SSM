@@ -5,7 +5,6 @@ import { Input, InputAdornment, Tooltip } from "@mui/material";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
-import FontContext from "../../../service/FontContext";
 import TextLanguageContext from "../../../service/TextLanguageContext";
 import { SpeechRecognitionContext } from "../../../service/SpeechRecognitionService";
 import { useEffect } from "react";
@@ -27,12 +26,15 @@ const InputCustom = ({
     SpeechRecognitionContext
   );
 
+  // Texto do input
   const [text, setText] = useState(JSON.parse(JSON.stringify(defaultText)));
 
+  // Valida o texto de acordo com a regex
   const validateText = (text = "") => {
     return regex.test(text);
   };
 
+  // Atualiza o texto do input validando o texto
   const handleOnTextChange = (e) => {
     if (!validateText(e.target.value)) {
       return;
@@ -41,9 +43,9 @@ const InputCustom = ({
     setText(e.target.value);
   };
 
+  // UseEffect para quando É juntado palavras no mic
   useEffect(() => {
     if (localClique == label) {
-      console.log(palavrasJuntas);
       if (validateText(palavrasJuntas)) {
         setText(palavrasJuntas);
         handleOnMicChange();
@@ -51,6 +53,7 @@ const InputCustom = ({
     }
   }, [palavrasJuntas]);
 
+  // Input do componente
   return (
     <Input
       size="small"
