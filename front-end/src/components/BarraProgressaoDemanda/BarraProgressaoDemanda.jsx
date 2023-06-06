@@ -231,7 +231,7 @@ const BarraProgressaoDemanda = (props) => {
   const retornaObjetoHistorico = () => {
     const historico = {
       data: new Date(),
-      acaoRealizada: texts.barraProgressaoDemanda.demandaCriada,
+      acaoRealizada: "Demanda Criada",
       autor: { id: usuario.id },
     };
     return historico;

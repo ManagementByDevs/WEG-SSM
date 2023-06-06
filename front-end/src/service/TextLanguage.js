@@ -17,7 +17,12 @@ const TextLanguage = (linguagem) => {
         botaoCriar: "Criar",
         botaoProximo: "Próximo",
         mensagemFeedback: "Preencha todos os campos obrigatórios!",
-        demandaCriada: "Demanda Criada"
+        demandaCriada: "Demanda Criada",
+        demandaDevolvida: "Demanda Devolvida",
+        demandaReprovada: "Demanda Reprovada",
+        demandaAprovada: "Demanda Aprovada",
+        demandaEditada: "Demanda Editada",
+        demandaEnviadaParaEdicao: "Enviada para Edição",
       },
       barraProgressaoProposta: {
         proposta: "Proposta",
@@ -33,6 +38,16 @@ const TextLanguage = (linguagem) => {
           "A porcentagem das CCs deve ser 100% para cada tabela de custos!",
         mensagemFeedbackPPM: "PPM inválido!",
         mensagemFeedbackPayback: "Payback inválido!",
+        propostaCriada: "Proposta Criada",
+        propostaEditada: "Proposta Editada",
+        propostaReprovada: "Proposta Reprovada",
+        reprovadaDG: "Reprovada pela DG",
+        aprovadaDG: "Aprovada pela DG",
+        removidaPauta: "Removida da Pauta",
+        statusEditado: "Status Editado",
+        adicionadaPauta: "Adicionada na Pauta",
+        bussinessCase: "Enviada para Bussiness Case",
+        adicionadaAta: "Adicionada na Ata",
       },
       beneficios: {
         beneficios: "Benefícios",
@@ -452,6 +467,7 @@ const TextLanguage = (linguagem) => {
         analistaResponsavel: "Analista Responsável",
         jaApreciada: "Já Apreciada",
         naoApreciada: "Não Apreciada",
+        pautaExcluida: "Pauta excluída"
       },
       pautaAtaModoVisualizacao: {
         as: "às",
@@ -936,6 +952,11 @@ const TextLanguage = (linguagem) => {
           botaoProximo: "Next",
           mensagemFeedback: "You must fill in all the required fields!",
           demandaCriada: "Demand Created",
+          demandaDevolvida: "Demand Returned",
+          demandaReprovada: "Demand Rejected",
+          demandaAprovada: "Approved Demand",
+          demandaEditada: "Edited Demand",
+          demandaEnviadaParaEdicao: "Submitted for Editing",
         },
         barraProgressaoProposta: {
           proposta: "Proposal",
@@ -951,6 +972,16 @@ const TextLanguage = (linguagem) => {
             "The CCs' percentage must be 100% for each costs table!",
           mensagemFeedbackPPM: "Invalid PPM!",
           mensagemFeedbackPayback: "Invalid Payback!",
+          propostaCriada: "Proposal Created",
+          propostaEditada: "Edited Proposal",
+          propostaReprovada: "Rejected Proposal",
+          reprovadaDG: "Rejected by DG",
+          aprovadaDG: "Approved by DG",
+          removidaPauta: "Removed from the Agenda",
+          statusEditado: "Edited Status",
+          adicionadaPauta: "Added to Agenda",
+          bussinessCase: "Sent to Bussiness Case",
+          adicionadaAta: "Added to the Minutes",
         },
         beneficios: {
           beneficios: "Benefits",
@@ -1370,6 +1401,7 @@ const TextLanguage = (linguagem) => {
           analistaResponsavel: "Responsible Analyst",
           jaApreciada: "Already Appreciated",
           naoApreciada: "Not Appreciated",
+          pautaExcluida: "Deleted agenda"
         },
         pautaAtaModoVisualizacao: {
           as: "to",
@@ -1850,7 +1882,12 @@ const TextLanguage = (linguagem) => {
             botaoCriar: "创建",
             botaoProximo: "下一个",
             mensagemFeedback: "您必须填写所有字段！",
-            demandaCriada: "需求已创建",
+            demandaCriada: "创造需求",
+            demandaDevolvida: "需求返回",
+            demandaReprovada: "失败的需求",
+            demandaAprovada: "批准需求",
+            demandaEditada: "编辑需求",
+            demandaEnviadaParaEdicao: "提交编辑",
           },
           barraProgressaoProposta: {
             proposta: "提案",
@@ -1863,7 +1900,17 @@ const TextLanguage = (linguagem) => {
             mensagemFeedbackCamposObrigatorios: "您必须填写所有字段!",
             mensagemFeedbackCcsFaltando: "每个CCs的百分比必须为100%!",
             mensagemFeedbackPPM: "PPM 无效!",
-            mensagemFeedbackPayback: "无效回报!"
+            mensagemFeedbackPayback: "无效回报!",
+            propostaCriada: "提案已创建",
+            propostaEditada: "编辑提案",
+            propostaReprovada: "被拒绝的提议",
+            reprovadaDG: "被总干事拒绝",
+            aprovadaDG: "经总干事批准",
+            removidaPauta: "从议程中删除",
+            statusEditado: "编辑状态",
+            adicionadaPauta: "添加到议程",
+            bussinessCase: "发送到业务案例",
+            adicionadaAta: "在会议记录中添加",
           },
           beneficios: {
             beneficios: "好处",
@@ -2274,6 +2321,7 @@ const TextLanguage = (linguagem) => {
             analistaResponsavel: "负责分析师",
             jaApreciada: "已经欣赏",
             naoApreciada: "不被赏识",
+            pautaExcluida: "删除议程"
           },
           pautaAtaModoVisualizacao: {
             as: "到",
@@ -2733,6 +2781,11 @@ const TextLanguage = (linguagem) => {
               botaoProximo: "Siguiente",
               mensagemFeedback: "¡Rellena todos los campos obligatorios!",
               demandaCriada: "Demanda Creada",
+              demandaDevolvida: "Demanda Eevuelta",
+              demandaReprovada: "Demanda Rechazada",
+              demandaAprovada: "Demanda Aprobada",
+              demandaEditada: "Demanda Editada",
+              demandaEnviadaParaEdicao: "Enviado para Editar",
             },
             barraProgressaoProposta: {
               proposta: "Propuesta",
@@ -2748,6 +2801,16 @@ const TextLanguage = (linguagem) => {
                 "¡La porcentaje debe cerrar 100% en cada CCs!",
               mensagemFeedbackPPM: "¡PPM no válido!",
               mensagemFeedbackPayback: "¡Payback no válido!",
+              propostaCriada: "Propuesta Creada",
+              propostaEditada: "Propuesta Editada",
+              propostaReprovada: "Propuesta Rechazada",
+              reprovadaDG: "Rechazado por el DG",
+              aprovadaDG: "Aprobado por el DG",
+              removidaPauta: "Eliminado de la Agenda",
+              statusEditado: "Estado Editado",
+              adicionadaPauta: "Agregado a la Agenda",
+              bussinessCase: "Enviado a BussinessCase",
+              adicionadaAta: "Añadido en el Acta",
             },
             beneficios: {
               beneficios: "Beneficios",
@@ -3168,6 +3231,7 @@ const TextLanguage = (linguagem) => {
               analistaResponsavel: "Analista responsable",
               jaApreciada: "Ya apreciada",
               naoApreciada: "No apreciada",
+              pautaExcluida: "Agenda eliminada"
             },
             pautaAtaModoVisualizacao: {
               as: "a las",
