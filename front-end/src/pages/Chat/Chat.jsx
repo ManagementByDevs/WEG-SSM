@@ -571,54 +571,6 @@ const Chat = (props) => {
 
   // ********************************************** Gravar audio ********************************************** //
 
-  /** Varíavel utilizada para lógica de gravação de audio */
-  const recognitionRef = useRef(null);
-
-  /** Função para gravar audio nos inputs */
-  const ouvirAudio = () => {
-    /** Verifica se a API é suportada pelo navegador */
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => { };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   /** useEffect utilizado para armazenar as palavras juntas dependendo do local onde foi clicado */
   useEffect(() => {
     let listaChatsAux = listaChats.filter((chat) => {
@@ -668,21 +620,6 @@ const Chat = (props) => {
     }
   }, [palavrasJuntas]);
 
-  /** Função para encerrar a gravação de voz */
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
 
   return (
     <>
