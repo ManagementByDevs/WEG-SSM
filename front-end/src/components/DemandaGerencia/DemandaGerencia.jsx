@@ -1,4 +1,4 @@
-import { React, useState, useContext, useEffect } from "react";
+import { React, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Box, Paper, Tooltip, Typography, IconButton } from "@mui/material";
@@ -16,7 +16,6 @@ import UsuarioService from "../../service/usuarioService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -24,20 +23,13 @@ const DemandaGerencia = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
-
-  // Como usar:
-  // Ao chamar o componente, passar duas props:
-  // - dados: um objeto com os dados da demanda ou proposta
-  // - tipo: "demanda" ou "proposta"
-  // Exemplo:
-  // <DemandaGerencia dados={demanda} tipo="demanda" />
+  const { FontConfig } = useContext(FontContext);
 
   // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
 
   // Variável para obter o usuário logado
-  const [user, setUser] = useState(UsuarioService.getUserCookies());
+  const [user] = useState(UsuarioService.getUserCookies());
 
   // Função para mudar a cor do status da demanda
   function getCorStatus() {
@@ -77,6 +69,7 @@ const DemandaGerencia = (props) => {
     }
   };
 
+  // Função para abrir o chat caso o solicitante da demanda/proposta não seja o usuario
   const entrarChat = (e) => {
     e.stopPropagation();
     if (props.dados.solicitante.id !== user.usuario.id) {
@@ -117,18 +110,18 @@ const DemandaGerencia = (props) => {
     }
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -136,7 +129,7 @@ const DemandaGerencia = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -145,6 +138,7 @@ const DemandaGerencia = (props) => {
 
   return (
     <>
+      {/* Verifica se existe foi solicitado que abrisse o modal, caso seja solicitado, será exibido o modal de historico*/}
       {modalHistorico && (
         <ModalHistoricoDemanda
           open={modalHistorico}
@@ -155,6 +149,7 @@ const DemandaGerencia = (props) => {
           lendo={props.lendo}
         />
       )}
+      {/* Container da demanda/proposta */}
       <Paper
         onClick={props.onClick}
         className="flex flex-col border-t-4 pt-2 pb-3 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200"
@@ -167,9 +162,9 @@ const DemandaGerencia = (props) => {
           cursor: "pointer",
         }}
       >
-        {/* Container titulo e status */}
+        {/* Container titulo, ppm e status */}
         <Box className="flex w-full justify-between">
-          {/* Título */}
+          {/* Container titulo/ppm */}
           <Box className="flex w-4/5 mt-1">
             <Typography
               variant="h1"
@@ -184,6 +179,7 @@ const DemandaGerencia = (props) => {
                 }
               }}
             >
+              {/* verifica se o tipo do componente é proposta, caso seja, exibe o PPM da proposta */}
               {tipo === "proposta" && (
                 <Typography
                   fontSize={FontConfig.default}
@@ -201,6 +197,7 @@ const DemandaGerencia = (props) => {
                   {texts.demandaGerencia.ppm} {props.dados.codigoPPM}
                 </Typography>
               )}
+              {/* Título */}
               {props.dados.titulo}
             </Typography>
           </Box>
@@ -210,6 +207,7 @@ const DemandaGerencia = (props) => {
             <Box className="flex items-end flex-col">
               <Box id="segundoCriarPropostas">
                 <Box id="oitavoDemandas" className="flex items-center gap-2">
+                  {/* Nome do status */}
                   <Typography
                     fontSize={FontConfig.medium}
                     fontWeight="600"
@@ -222,6 +220,7 @@ const DemandaGerencia = (props) => {
                   >
                     {formatarStatus(props.dados.status)}
                   </Typography>
+                  {/* cor do status */}
                   <Box
                     className="rounded-full"
                     sx={{
@@ -236,6 +235,7 @@ const DemandaGerencia = (props) => {
               {/* Verificando se está em ata, em pauta ou em edição */}
               {props.dados.presenteEm && props.dados.presenteEm != "Nada" && (
                 <Box>
+                  {/* Texto para dizer se está em ata ou em pauta */}
                   <Typography
                     fontSize={FontConfig.small}
                     fontWeight="600"
@@ -285,6 +285,7 @@ const DemandaGerencia = (props) => {
                 >
                   {texts.demandaGerencia.solicitante}:
                 </Typography>
+                {/* Nome do solicitante */}
                 <Typography
                   className="w-11/12 overflow-hidden text-ellipsis whitespace-nowrap"
                   fontSize={FontConfig.default}
@@ -315,6 +316,7 @@ const DemandaGerencia = (props) => {
                 >
                   {texts.demandaGerencia.departamento}:
                 </Typography>
+                {/* Nome do departamento */}
                 <Typography
                   className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap"
                   fontSize={FontConfig.default}
@@ -336,12 +338,13 @@ const DemandaGerencia = (props) => {
                 </Typography>
               </Box>
             </Box>
-            {/* Infos gerente responsável e icons */}
+            {/* Infos gerente responsável, analista responsavel e icons */}
             <Box className="flex items-end justify-end w-full">
               <Box
                 className="flex flex-col"
                 sx={{ width: "24rem", height: "100%" }}
               >
+                {/* Container analista responsavel */}
                 <Box className="flex" sx={{ width: "80%" }}>
                   <Typography
                     className="overflow-hidden truncate"
@@ -356,6 +359,7 @@ const DemandaGerencia = (props) => {
                   >
                     {texts.demandaGerencia.analistaResponsavel}:
                   </Typography>
+                  {/* nome analista responsavel */}
                   <Typography
                     className="overflow-hidden truncate"
                     fontSize={FontConfig.default}
@@ -380,6 +384,7 @@ const DemandaGerencia = (props) => {
                       texts.demandaGerencia.naoAtribuido}
                   </Typography>
                 </Box>
+                {/* container gerente responsavel */}
                 <Box className="flex" sx={{ width: "24rem" }}>
                   <Typography
                     className="overflow-hidden truncate"
@@ -394,6 +399,7 @@ const DemandaGerencia = (props) => {
                   >
                     {texts.demandaGerencia.gerenteResponsavel}:
                   </Typography>
+                  {/* nome gerente responsavel */}
                   <Typography
                     className="overflow-hidden truncate"
                     fontSize={FontConfig.default}
@@ -442,6 +448,7 @@ const DemandaGerencia = (props) => {
                   }
                   {props.semHistorico == false ||
                     (props.semHistorico == null && (
+                      // se for um adm, mostra o icone de historico
                       <Tooltip title={texts.demandaGerencia.historico}>
                         <IconButton
                           onClick={(e) => {

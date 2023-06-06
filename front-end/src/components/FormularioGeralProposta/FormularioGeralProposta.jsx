@@ -211,24 +211,28 @@ const FormularioGeralProposta = (props) => {
   };
 
   const valorDataInicio = () => {
-    if(props.gerais.periodoExecucacaoInicio) {
-      console.log("Inicio: \n",props.gerais.periodoExecucacaoInicio);
+    if (props.gerais.periodoExecucacaoInicio == "1970-01-01") {
       return null;
     } else {
-      console.log("Nao Inicio: \n",props.gerais.periodoExecucacaoInicio);
       return props.gerais.periodoExecucacaoInicio;
     }
   };
 
   const valorDataFim = () => {
-    if(props.gerais.periodoExecucacaoFim) {
-      console.log("Fim: \n",props.gerais.periodoExecucacaoFim);
+    if (props.gerais.periodoExecucacaoFim == "1970-01-01") {
       return null;
     } else {
-      console.log("Nao Fim: \n",props.gerais.periodoExecucacaoFim);
       return props.gerais.periodoExecucacaoFim;
     }
   };
+
+  useEffect(() => {
+    if (
+      props.gerais.periodoExecucacaoInicio > props.gerais.periodoExecucacaoFim
+    ) {
+      props.setFeedbackErroDataInicioMaior(true);
+    }
+  }, [props.gerais.periodoExecucacaoInicio, props.gerais.periodoExecucacaoFim]);
 
   return (
     <Box className="flex flex-col">
@@ -280,7 +284,6 @@ const FormularioGeralProposta = (props) => {
                   placeholder={texts.formularioGeralProposta.digiteCodigo}
                   value={valorDataInicio()}
                   onChange={(e) => {
-                    
                     props.setGerais({
                       ...props.gerais,
                       periodoExecucacaoInicio: e.target.value,

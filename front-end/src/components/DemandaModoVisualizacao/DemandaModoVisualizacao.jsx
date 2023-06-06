@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 
 import {
   Box,
@@ -28,10 +28,12 @@ const DemandaModoVisualizacao = ({
   myDemandas,
   lendo = false,
 }) => {
+  // Verificacao para ver se retornou alignProperty, caso não tenha nada, mostra o componente "NadaEncontrado"
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
   }
 
+  // Verificacao para ver se o próximo modo de visualização é "TABLE", caso seja, mostra o componente "DemandaGrid" se não retorna "DemandaTable"
   if (nextModoVisualizacao == "TABLE")
     return (
       <DemandaGrid
@@ -41,6 +43,7 @@ const DemandaModoVisualizacao = ({
         lendo={lendo}
       />
     );
+
   return (
     <DemandaTable
       listaDemandas={listaDemandas}
@@ -51,6 +54,7 @@ const DemandaModoVisualizacao = ({
   );
 };
 
+// Componente da DemandaTable
 const DemandaTable = ({
   listaDemandas = [
     {
@@ -69,7 +73,7 @@ const DemandaTable = ({
   lendo = false,
 }) => {
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // useState para abrir o modal de motivo recusa
   const [abrirModal, setOpenModal] = useState(false);
@@ -124,18 +128,18 @@ const DemandaTable = ({
     setOpenModal(true);
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -143,7 +147,7 @@ const DemandaTable = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -161,12 +165,14 @@ const DemandaTable = ({
           lendo={lendo}
         />
       )}
+      {/* Cabeçário da tabela */}
       <Table
         className="mb-8 table-fixed"
         sx={{ width: "100%", minWidth: "74rem" }}
       >
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
+            {/* Texto codigo */}
             <th className="text-white p-3 w-1/10">
               <Typography
                 fontSize={FontConfig.big}
@@ -180,6 +186,7 @@ const DemandaTable = ({
                 {texts.demandaModoVisualizacao.codigo}
               </Typography>
             </th>
+            {/* Texto titulo */}
             <th className="text-left text-white p-3 w-3/6">
               <Typography
                 fontSize={FontConfig.big}
@@ -193,6 +200,7 @@ const DemandaTable = ({
                 {texts.demandaModoVisualizacao.titulo}
               </Typography>
             </th>
+            {/* Texto status */}
             {myDemandas && (
               <th className="text-left text-white p-3 w-1/6">
                 <Typography
@@ -208,6 +216,7 @@ const DemandaTable = ({
                 </Typography>
               </th>
             )}
+            {/* Texto data */}
             <th className="text-white p-3 w-1/12">
               <Typography
                 fontSize={FontConfig.big}
@@ -224,6 +233,7 @@ const DemandaTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
+          {/* Mapeando as demandas, mostra cada linha de preenchimento de demanda */}
           {listaDemandas.map((row, index) => (
             <TableRow
               className="cursor-pointer tabela-linha-demanda"
@@ -238,6 +248,7 @@ const DemandaTable = ({
                 }
               }}
             >
+              {/* codigo da demanda */}
               <td className="text-center p-3" title={row.id}>
                 <Typography
                   className="truncate"
@@ -252,6 +263,7 @@ const DemandaTable = ({
                   {row.id}
                 </Typography>
               </td>
+              {/* titulo da demanda */}
               <td className="text-left p-3" title={row.titulo}>
                 <Typography
                   className="truncate"
@@ -266,12 +278,14 @@ const DemandaTable = ({
                   {row.titulo}
                 </Typography>
               </td>
+              {/* status das minhas demandas e botão de motivo da recusa */}
               {myDemandas && (
                 <td
                   className="text-left p-3"
                   title={formatarNomeStatus(row.status)}
                 >
                   <Box className="flex items-center gap-2 text-center">
+                    {/* cor do status */}
                     <Box
                       sx={{
                         backgroundColor: getStatusColor(row.status),
@@ -281,6 +295,7 @@ const DemandaTable = ({
                       }}
                     />
                     <Box className="w-full flex justify-between items-center">
+                      {/* nome do status */}
                       <Typography
                         className="truncate"
                         fontSize={FontConfig.medium}
@@ -293,6 +308,7 @@ const DemandaTable = ({
                       >
                         {formatarNomeStatus(row.status)}
                       </Typography>
+                      {/* Botao do motivo da recusa caso foi cancelado ou esperando edição */}
                       {row.status == "CANCELLED" ||
                       row.status == "BACKLOG_EDICAO" ? (
                         <Button
@@ -316,9 +332,13 @@ const DemandaTable = ({
                   </Box>
                 </td>
               )}
+              {/* data da demanda */}
               <td
                 className="text-center p-3"
-                title={DateService.getTodaysDateUSFormat(row.data, texts.linguagem)}
+                title={DateService.getTodaysDateUSFormat(
+                  row.data,
+                  texts.linguagem
+                )}
               >
                 <Typography
                   className="truncate"
@@ -326,7 +346,12 @@ const DemandaTable = ({
                   onClick={(e) => {
                     if (lendo) {
                       e.preventDefault();
-                      lerTexto(DateService.getTodaysDateUSFormat(row.data, texts.linguagem));
+                      lerTexto(
+                        DateService.getTodaysDateUSFormat(
+                          row.data,
+                          texts.linguagem
+                        )
+                      );
                     }
                   }}
                 >
@@ -352,6 +377,7 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, lendo = false }) => {
       }}
     >
       {listaDemandas?.map((e, index) => (
+        // mostra o Componente de demanda em relação a quantidade de demandas que tem
         <Demanda
           key={index}
           demanda={e}
@@ -374,18 +400,17 @@ const NadaEncontrado = (props) => {
   const { FontConfig } = useContext(FontContext);
 
   // Função que irá setar o texto que será "lido" pela a API
-   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -393,7 +418,7 @@ const NadaEncontrado = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -411,6 +436,7 @@ const NadaEncontrado = (props) => {
         marginTop: "2rem",
       }}
     >
+      {/* texto nada encontrado */}
       <Typography
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
@@ -420,6 +446,7 @@ const NadaEncontrado = (props) => {
       >
         {texts.demandaModoVisualizacao.nadaEncontrado}
       </Typography>
+      {/* texto tente novamente mais tarde */}
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}

@@ -1,7 +1,16 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography, } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -14,11 +23,11 @@ import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 
 import FontContext from "../../service/FontContext";
-import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
+import { alignProperty } from "@mui/material/styles/cssUtils";
 
 // Componente para mudar o modo de visualização das demandas (Grid, tabela ou nenhuma demanda encontrada) - Gerência
 const DemandaGerenciaModoVisualizacao = ({
@@ -29,10 +38,13 @@ const DemandaGerenciaModoVisualizacao = ({
   setFeedbackAbrirChat,
   lendo = false,
 }) => {
+  // verificação para ver se retorna algo, caso não retorne nada, mostre o componente "NadaEncontrado"
   if (listaDemandas.length == 0) {
     return <NadaEncontrado lendo={lendo} />;
   }
 
+  // verificação para ver se o próximo modo de visualização é "TABLE", caso seja, mostre o componente "DemandaGrid"
+  // caso não seja, mostre o componente "DemandaTable"
   if (nextModoVisualizacao == "TABLE")
     return (
       <DemandaGrid
@@ -55,6 +67,7 @@ const DemandaGerenciaModoVisualizacao = ({
   );
 };
 
+// Componente do modo de visualização "TABLE"
 const DemandaTable = ({
   listaDemandas = [
     {
@@ -83,10 +96,8 @@ const DemandaTable = ({
   onDemandaClick,
   isProposta = false,
   lendo = false,
-  dados,
   setFeedbackAbrirChat,
 }) => {
-
   // Variável utilizada para navegação no sistema
   const navigate = useNavigate();
 
@@ -166,6 +177,7 @@ const DemandaTable = ({
     }
   };
 
+  // Função para entrar em um chat se o usuario atual não seja o usuario solicitante da demanda/proposta
   const entrarChat = (e, dados) => {
     e.stopPropagation();
     if (dados.solicitante.id !== user.usuario.id) {
@@ -208,6 +220,7 @@ const DemandaTable = ({
 
   return (
     <>
+      {/* Modal de historico */}
       {modalHistorico && (
         <ModalHistoricoDemanda
           open={modalHistorico}
@@ -216,7 +229,9 @@ const DemandaTable = ({
           lendo={lendo}
         />
       )}
+      {/* Container geral do componente */}
       <Paper sx={{ width: "100%", minWidth: "74rem" }} square>
+        {/* inicia a criação da tabela */}
         <Table sx={{ width: "100%" }} className="table-fixed">
           <TableHead sx={{ width: "100%" }}>
             <TableRow
@@ -226,6 +241,7 @@ const DemandaTable = ({
                 width: "100%",
               }}
             >
+              {/* Titulo PPM */}
               <th className="text-white p-2 width-75/1000">
                 <Typography
                   fontSize={FontConfig.big}
@@ -245,6 +261,7 @@ const DemandaTable = ({
                     : "PPM"}
                 </Typography>
               </th>
+              {/* Palavra titulo */}
               <th className="text-left text-white p-3 width-4/10">
                 <Typography
                   fontSize={FontConfig.big}
@@ -258,6 +275,7 @@ const DemandaTable = ({
                   {texts.demandaGerenciaModoVisualizacao.titulo}
                 </Typography>
               </th>
+              {/* Palavra Solicitante */}
               <th className="text-left text-white p-3">
                 <Typography
                   fontSize={FontConfig.big}
@@ -273,6 +291,7 @@ const DemandaTable = ({
                   {texts.demandaGerenciaModoVisualizacao.solicitante}
                 </Typography>
               </th>
+              {/* Palavra departamento */}
               <th className="text-left text-white p-3">
                 <Typography
                   fontSize={FontConfig.big}
@@ -288,6 +307,7 @@ const DemandaTable = ({
                   {texts.demandaGerenciaModoVisualizacao.departamento}
                 </Typography>
               </th>
+              {/* Palavra gerente responsavel */}
               <th className="text-left text-white p-3">
                 <Typography
                   fontSize={FontConfig.big}
@@ -303,6 +323,7 @@ const DemandaTable = ({
                   {texts.demandaGerenciaModoVisualizacao.gerenteResponsavel}
                 </Typography>
               </th>
+              {/* Palavra status */}
               <th className="text-left text-white p-3 ">
                 <Typography
                   fontSize={FontConfig.big}
@@ -317,14 +338,14 @@ const DemandaTable = ({
                 </Typography>
               </th>
               <th className="text-white p-3 width-75/1000">
-                <Typography>
-
-                </Typography>
+                <Typography></Typography>
               </th>
             </TableRow>
           </TableHead>
+          {/* Corpo da tabela, ou seja, os "dados" */}
           <TableBody sx={{ minWidth: "75rem", width: "100%" }}>
             {listaDemandas.map((row, index) => (
+              // dependendo de quantas demandas terá, haverá uma quantidade específica de linhas das tabelas
               <TableRow
                 className="cursor-pointer tabela-linha-demanda"
                 hover
@@ -340,6 +361,7 @@ const DemandaTable = ({
                   }
                 }}
               >
+                {/* Codigo PPM */}
                 <td
                   className="text-center p-3 width-1/10"
                   title={row.codigoPPM}
@@ -361,6 +383,7 @@ const DemandaTable = ({
                     {!isProposta ? row.id : row.codigoPPM}
                   </Typography>
                 </td>
+                {/* Titulo */}
                 <td
                   className="text-left p-3 width-4/12 flex"
                   title={row.titulo}
@@ -378,6 +401,7 @@ const DemandaTable = ({
                     {row.titulo}
                   </Typography>
                 </td>
+                {/* Solicitante */}
                 <td
                   className="text-left p-3 width-1/10"
                   title={row.solicitante.nome}
@@ -395,6 +419,7 @@ const DemandaTable = ({
                     {row.solicitante.nome}
                   </Typography>
                 </td>
+                {/* Departamento */}
                 <td
                   className="text-left p-3 width-1/10"
                   title={
@@ -424,6 +449,7 @@ const DemandaTable = ({
                       : texts.demandaGerenciaModoVisualizacao.naoAtribuido}
                   </Typography>
                 </td>
+                {/* Gerente responsavel */}
                 <td
                   className="text-left p-3 width-1/10"
                   title={
@@ -453,6 +479,7 @@ const DemandaTable = ({
                       : texts.demandaGerenciaModoVisualizacao.naoAtribuido}
                   </Typography>
                 </td>
+                {/* Status e ve se está em auta ou em pauta */}
                 <td
                   className="text-left p-3 width-1/10"
                   title={formatarNomeStatus(row.status)}
@@ -466,6 +493,7 @@ const DemandaTable = ({
                         borderRadius: "3px",
                       }}
                     />
+                    {/* Status */}
                     <Box className="w-full flex justify-between items-center">
                       <Typography
                         className="truncate"
@@ -480,6 +508,7 @@ const DemandaTable = ({
                         {formatarNomeStatus(row.status)}
                       </Typography>
                     </Box>
+                    {/* Em pauta ou em ata */}
                     {(row.presenteEm == "Pauta" || row.presenteEm == "Ata") && (
                       <Box className="flex items-center">
                         {row.presenteEm == "Pauta" ? (
@@ -497,10 +526,10 @@ const DemandaTable = ({
                     )}
                   </Box>
                 </td>
-                <td
-                  className="p-3 width-1/10 "
-                >
+                <td className="p-3 width-1/10 ">
+                  {/*Icone de Historico e chat da proposta/demanda */}
                   <Box className="w-full gap-3 flex justify-center items-center">
+                    {/*Icone de Historico */}
                     <Tooltip
                       title={texts.demandaGerenciaModoVisualizacao.historico}
                     >
@@ -517,6 +546,7 @@ const DemandaTable = ({
                         sx={{ color: "icon.main", cursor: "pointer" }}
                       />
                     </Tooltip>
+                    {/*Icone de Chat caso seja uma proposta */}
                     {isProposta && (
                       <Tooltip
                         title={texts.demandaGerenciaModoVisualizacao.chat}
@@ -563,6 +593,7 @@ const DemandaGrid = ({
     >
       {listaDemandas?.map((demanda, index) => {
         return (
+          // Mostra o componente de "DemandaGerencia" conforme a quantidade de demandas da lista
           <DemandaGerencia
             key={index}
             dados={demanda}
@@ -614,6 +645,7 @@ const NadaEncontrado = (props) => {
   };
 
   return (
+    // Container de textos
     <Box
       sx={{
         display: "flex",
@@ -624,6 +656,7 @@ const NadaEncontrado = (props) => {
         marginTop: "2rem",
       }}
     >
+      {/* Texto de nada encontrado */}
       <Typography
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
@@ -633,6 +666,7 @@ const NadaEncontrado = (props) => {
       >
         {texts.demandaGerenciaModoVisualizacao.nadaEncontrado}
       </Typography>
+      {/* Texto de tente novamente mais tarde */}
       <Typography
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}

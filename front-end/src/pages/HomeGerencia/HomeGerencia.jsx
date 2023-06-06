@@ -1482,7 +1482,7 @@ const HomeGerencia = (props) => {
                     />
                   )}
                 </TabList>
-                <Box id="nonoDemandas" className="absolute right-0 top-2">
+                <Box className="absolute right-0 top-2">
                   {/* Ícone de ordenação */}
                   <Tooltip title={texts.homeGerencia.ordenacao}>
                     <IconButton
@@ -1504,7 +1504,7 @@ const HomeGerencia = (props) => {
                           trocarModoVisualizacao();
                         }}
                       >
-                        <ViewListIcon color="primary" />
+                        <ViewListIcon id="nonoDemandas" color="primary" />
                       </IconButton>
                     </Tooltip>
                   ) : (

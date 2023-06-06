@@ -28,7 +28,6 @@ import { WebSocketContext } from "../../service/WebSocketService";
 
 /** Componente utilizado para criação da proposta, redirecionando para as etapas respectivas  */
 const BarraProgressaoProposta = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -133,10 +132,18 @@ const BarraProgressaoProposta = (props) => {
   const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
 
   /** Variável utilizada para abrir o feedback de navegador incompatível */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
 
   /** Variável utilizada para abrir o feedback de erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
+
+  /** Variável utilizada para abrir o feedback de data inicio maior que data fim */
+  const [feedbackErroDataInicioMaior, setFeedbackErroDataInicioMaior] =
+    useState(false);
 
   /** Variável utilizada para abrir o feedback de ppm inválido */
   const [feedbackPPM, setFeedbackPPM] = useState(false);
@@ -337,7 +344,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) { }
+      } catch (error) {}
 
       listaNova.push({
         id: beneficio.id,
@@ -430,7 +437,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -482,7 +489,7 @@ const BarraProgressaoProposta = (props) => {
         delete beneficioFinal.visible;
         beneficioService
           .put(beneficioFinal, beneficioFinal.memoriaCalculo)
-          .then((response) => { });
+          .then((response) => {});
       }
     }
   };
@@ -714,7 +721,11 @@ const BarraProgressaoProposta = (props) => {
   const verificacaoPPM = async () => {
     let ppmVerificacao = parseInt(gerais.ppm);
 
-    if (typeof ppmVerificacao === 'number' && !isNaN(ppmVerificacao) && Number.isInteger(ppmVerificacao)) {
+    if (
+      typeof ppmVerificacao === "number" &&
+      !isNaN(ppmVerificacao) &&
+      Number.isInteger(ppmVerificacao)
+    ) {
       try {
         const response = await propostaService.getByPPM(ppmVerificacao);
         if (response.content.length > 0) {
@@ -728,18 +739,22 @@ const BarraProgressaoProposta = (props) => {
     } else {
       return false;
     }
-  }
+  };
 
   /** Verificação para o payback */
   const verificacaoPaybak = () => {
     let paybackVerificacao = parseInt(gerais.qtdPaybackSimples);
 
-    if (typeof paybackVerificacao === 'number' && !isNaN(paybackVerificacao) && Number.isInteger(paybackVerificacao)) {
+    if (
+      typeof paybackVerificacao === "number" &&
+      !isNaN(paybackVerificacao) &&
+      Number.isInteger(paybackVerificacao)
+    ) {
       return true;
     } else {
       return false;
     }
-  }
+  };
 
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = async () => {
@@ -759,50 +774,77 @@ const BarraProgressaoProposta = (props) => {
       ) {
         setFeedbackFaltante(true);
       } else {
-        if (gerais.responsaveisNegocio.length != 0) {
-          gerais.responsaveisNegocio.map((responsavel) => {
-            if (responsavel.nome == "" || responsavel.area == "") {
-              feedbackFaltante = true;
-              setFeedbackFaltante(true);
-            }
-          });
-          const ppmVerificacao = await verificacaoPPM();
-          const paybackVerificacao = verificacaoPaybak();
-          if (ppmVerificacao) {
-            if (feedbackFaltante != true && paybackVerificacao) {
-              propostaService.post(retornaObjetoProposta()).then((response) => {
-                setCarregamentoProposta(true);
+        if (gerais.periodoExecucacaoInicio < gerais.periodoExecucacaoFim) {
+          if (gerais.responsaveisNegocio.length != 0) {
+            gerais.responsaveisNegocio.map((responsavel) => {
+              if (responsavel.nome == "" || responsavel.area == "") {
+                feedbackFaltante = true;
+                setFeedbackFaltante(true);
+              }
+            });
+            const ppmVerificacao = await verificacaoPPM();
+            const paybackVerificacao = verificacaoPaybak();
+            if (ppmVerificacao) {
+              if (feedbackFaltante != true && paybackVerificacao) {
+                propostaService
+                  .post(retornaObjetoProposta())
+                  .then((response) => {
+                    setCarregamentoProposta(true);
 
-                DemandaService.atualizarStatus(dadosDemanda.id, "ASSESSMENT_APROVACAO").then(() => {
-                  EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(() => {
+                    DemandaService.atualizarStatus(
+                      dadosDemanda.id,
+                      "ASSESSMENT_APROVACAO"
+                    ).then(() => {
+                      EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
+                        () => {
+                          // Salvamento de histórico
+                          ExportPdfService.exportProposta(response.id).then(
+                            (file) => {
+                              let arquivo = new Blob([file], {
+                                type: "application/pdf",
+                              });
+                              propostaService
+                                .addHistorico(
+                                  response.id,
+                                  "Proposta Criada",
+                                  arquivo,
+                                  CookieService.getUser().id
+                                )
+                                .then((propostaResponse) => {
+                                  setCarregamentoProposta(false);
 
-                    // Salvamento de histórico
-                    ExportPdfService.exportProposta(response.id).then((file) => {
-                      let arquivo = new Blob([file], {
-                        type: "application/pdf",
-                      });
-                      propostaService.addHistorico(response.id, "Proposta Criada", arquivo, CookieService.getUser().id).then((propostaResponse) => {
-                        setCarregamentoProposta(false);
+                                  // Envio de Notificação ao Solicitante
+                                  const notificacao =
+                                    NotificacaoService.createNotificationObject(
+                                      NotificacaoService.criadoProposta,
+                                      dadosDemanda,
+                                      CookieService.getUser().id
+                                    );
+                                  enviar(
+                                    `/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`,
+                                    JSON.stringify(notificacao)
+                                  );
 
-                        // Envio de Notificação ao Solicitante
-                        const notificacao = NotificacaoService.createNotificationObject(NotificacaoService.criadoProposta, dadosDemanda, CookieService.getUser().id);
-                        enviar(`/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`, JSON.stringify(notificacao));
-
-                        localStorage.setItem("tipoFeedback", "5");
-                        navigate("/");
-                      });
+                                  localStorage.setItem("tipoFeedback", "5");
+                                  navigate("/");
+                                });
+                            }
+                          );
+                        }
+                      );
                     });
                   });
-                });
-              })
+              } else {
+                setFeedbackPayback(true);
+              }
             } else {
-              setFeedbackPayback(true);
+              setFeedbackPPM(true);
             }
           } else {
-            setFeedbackPPM(true);
+            setFeedbackFaltante(true);
           }
         } else {
-          setFeedbackFaltante(true);
+          setFeedbackErroDataInicioMaior(true);
         }
       }
     }
@@ -875,7 +917,9 @@ const BarraProgressaoProposta = (props) => {
               setFeedbackErroNavegadorIncompativel={
                 setFeedbackErroNavegadorIncompativel
               }
-              setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+              setFeedbackErroReconhecimentoVoz={
+                setFeedbackErroReconhecimentoVoz
+              }
               lendo={props.lendo}
             />
           )}
@@ -895,7 +939,9 @@ const BarraProgressaoProposta = (props) => {
               setFeedbackErroNavegadorIncompativel={
                 setFeedbackErroNavegadorIncompativel
               }
-              setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+              setFeedbackErroReconhecimentoVoz={
+                setFeedbackErroReconhecimentoVoz
+              }
               lendo={props.lendo}
             />
           )}
@@ -909,7 +955,10 @@ const BarraProgressaoProposta = (props) => {
               setFeedbackErroNavegadorIncompativel={
                 setFeedbackErroNavegadorIncompativel
               }
-              setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
+              setFeedbackErroReconhecimentoVoz={
+                setFeedbackErroReconhecimentoVoz
+              }
+              setFeedbackErroDataInicioMaior={setFeedbackErroDataInicioMaior}
               lendo={props.lendo}
             />
           )}
@@ -949,21 +998,34 @@ const BarraProgressaoProposta = (props) => {
             </Button>
           )}
         </>
-      )
-      }
+      )}
 
       {/* Feedback Erro reconhecimento de voz */}
       <Feedback
         open={feedbackErroReconhecimentoVoz}
-        handleClose={() => { setFeedbackErroReconhecimentoVoz(false); }}
+        handleClose={() => {
+          setFeedbackErroReconhecimentoVoz(false);
+        }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback12}
+        lendo={props.lendo}
+      />
+      {/* Feedback Data inicio Maior que data fim */}
+      <Feedback
+        open={feedbackErroDataInicioMaior}
+        handleClose={() => {
+          setFeedbackErroDataInicioMaior(false);
+        }}
+        status={"erro"}
+        mensagem={texts.homeGerencia.feedback.feedback15}
         lendo={props.lendo}
       />
       {/* Feedback Não navegador incompativel */}
       <Feedback
         open={feedbackErroNavegadorIncompativel}
-        handleClose={() => { setFeedbackErroNavegadorIncompativel(false); }}
+        handleClose={() => {
+          setFeedbackErroNavegadorIncompativel(false);
+        }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback13}
         lendo={props.lendo}
@@ -971,15 +1033,21 @@ const BarraProgressaoProposta = (props) => {
       {/* Feedback de dados faltantes */}
       <Feedback
         open={feedbackFaltante}
-        handleClose={() => { setFeedbackFaltante(false); }}
+        handleClose={() => {
+          setFeedbackFaltante(false);
+        }}
         status={"erro"}
-        mensagem={texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios}
+        mensagem={
+          texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
+        }
         lendo={props.lendo}
       />
       {/* Feedback de que não fechou 100% de CCs */}
       <Feedback
         open={feedback100porcentoCcs}
-        handleClose={() => { setFeedback100porcentoCcs(false); }}
+        handleClose={() => {
+          setFeedback100porcentoCcs(false);
+        }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
         lendo={props.lendo}
@@ -987,7 +1055,9 @@ const BarraProgressaoProposta = (props) => {
       {/* Feedback de ppm inválido */}
       <Feedback
         open={feedbackPPM}
-        handleClose={() => { setFeedbackPPM(false); }}
+        handleClose={() => {
+          setFeedbackPPM(false);
+        }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackPPM}
         lendo={props.lendo}
@@ -995,7 +1065,9 @@ const BarraProgressaoProposta = (props) => {
       {/* Feedback de payback inválido */}
       <Feedback
         open={feedbackPayback}
-        handleClose={() => { setFeedbackPayback(false); }}
+        handleClose={() => {
+          setFeedbackPayback(false);
+        }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackPayback}
         lendo={props.lendo}
