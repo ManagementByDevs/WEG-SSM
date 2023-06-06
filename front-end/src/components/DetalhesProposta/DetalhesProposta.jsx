@@ -180,6 +180,7 @@ const DetalhesProposta = ({
     setProposta(proposal);
   };
 
+  // Verificação para ver se o escopo está vazio
   const isEscopoVazio = () => {
     return (
       proposta.escopo == "" ||
@@ -188,6 +189,7 @@ const DetalhesProposta = ({
     );
   };
 
+  // useEffect para ver se a proposta está sendo alterada ou foi alterada
   useEffect(() => {
     if (problemaText.current) {
       problemaText.current.innerHTML = proposta.problema;
@@ -214,10 +216,11 @@ const DetalhesProposta = ({
     });
   }, []);
 
+  // se a proposta estiver vazia, irá retornar um componente vazio
   if (Object.values(proposta).some((value) => value === undefined))
     return <></>;
 
-    // se estiver carregando (buscando os dados), irá retornar o loader
+  // se estiver carregando (buscando os dados), irá retornar o loader
   if (isLoading)
     return (
       <Box className="flex justify-center">
@@ -255,6 +258,7 @@ const DetalhesProposta = ({
         className="border rounded px-10 py-4 border-t-6 relative"
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
       >
+        {/* Componente da bandeirinha do status da proposta */}
         <StatusProposta
           proposta={proposta}
           setProposta={editProposta}
@@ -263,6 +267,7 @@ const DetalhesProposta = ({
         {/* Box header */}
         <Box className="w-full flex justify-between">
           <Box className="flex gap-4">
+            {/* Codigo PPM */}
             <Typography
               color="primary"
               fontWeight="bold"
@@ -273,6 +278,7 @@ const DetalhesProposta = ({
             >
               {texts.detalhesProposta.ppm} {proposta.codigoPPM}{" "}
             </Typography>
+            {/* Data */}
             <Typography
               color="primary"
               fontWeight="bold"
@@ -294,6 +300,7 @@ const DetalhesProposta = ({
                 texts.linguagem
               )}
             </Typography>
+            {/* Proposta publicada ou não publicada */}
             <Typography
               color="primary"
               fontWeight="bold"
@@ -313,6 +320,7 @@ const DetalhesProposta = ({
                 : ""}
             </Typography>
           </Box>
+          {/* Logo WEG */}
           <Box className="flex w-16">
             <img src={LogoWEG} className="w-16 h-11" alt="Logo WEG" />
           </Box>
@@ -633,6 +641,7 @@ const DetalhesProposta = ({
               >
                 {texts.detalhesProposta.busBeneficiadas}:&nbsp;
               </Typography>
+              {/* Se não tiver nenhuma BU beneficiada irá aparecer "Sem BU Beneficiada" */}
               <Box className="mx-8">
                 {proposta.busBeneficiadas.length > 0 ? (
                   <ol className="list-disc">
@@ -822,7 +831,7 @@ const DetalhesProposta = ({
                 {texts.detalhesProposta.reponsaveisPeloNegocio}
               </Typography>
             </Box>
-
+            {/* Divisor */}
             <Divider />
             {/* Pareceres */}
             <Box className="mt-3">
@@ -893,6 +902,7 @@ const TabelaCustos = ({
       <Table className="table-fixed w-full">
         <TableHead>
           <TableRow sx={{ backgroundColor: "primary.main" }}>
+            {/* Tipo da despesa */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -902,6 +912,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.tipoDaDespesa}
               </Typography>
             </th>
+            {/* perfil da despesa */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -911,6 +922,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.perfilDaDespesa}
               </Typography>
             </th>
+            {/* Período de execução */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -922,6 +934,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.periodoDeExecucaoTabela}
               </Typography>
             </th>
+            {/* Horas */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -931,6 +944,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.horas}
               </Typography>
             </th>
+            {/* Valor da hora */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -940,6 +954,7 @@ const TabelaCustos = ({
                 {texts.detalhesProposta.valorHora}
               </Typography>
             </th>
+            {/* Total */}
             <th className="text-white p-1">
               <Typography
                 fontWeight="bold"
@@ -951,6 +966,7 @@ const TabelaCustos = ({
             </th>
           </TableRow>
         </TableHead>
+        {/* Linha de cada custo */}
         <TableBody>
           {dados.custos.map((custo, index) => {
             return <CustosRow key={index} custo={custo} despesa={dados} />;
@@ -961,6 +977,7 @@ const TabelaCustos = ({
         <Table className="table-fixed w-full">
           <TableHead>
             <TableRow sx={{ backgroundColor: "primary.main" }}>
+              {/* CCs */}
               <th className="text-white p-1">
                 <Typography
                   fontSize={FontConfig.medium}
@@ -969,6 +986,7 @@ const TabelaCustos = ({
                   {texts.detalhesProposta.ccs}
                 </Typography>
               </th>
+              {/* Porcentagem */}
               <th className="text-white p-1">
                 <Typography
                   fontSize={FontConfig.medium}
@@ -980,9 +998,11 @@ const TabelaCustos = ({
             </TableRow>
           </TableHead>
           <TableBody>
+            {/* O que irá aparecer para cada cc */}
             {dados.ccs.map((cc, index) => {
               return (
                 <TableRow key={index} className="w-full border rounded">
+                  {/* Codigo do CC */}
                   <td className="text-center p-1">
                     <Typography
                       fontSize={FontConfig.medium}
@@ -991,6 +1011,7 @@ const TabelaCustos = ({
                       {cc.codigo}
                     </Typography>
                   </td>
+                  {/* Porcentagem do CC */}
                   <td className="text-center p-1">
                     <Typography
                       fontSize={FontConfig.medium}
@@ -1064,6 +1085,7 @@ const CustosRow = ({
 
   return (
     <TableRow>
+      {/* Tipo de despesa */}
       <td className="p-2 text-center">
         <Typography fontSize={FontConfig.default}>
           {despesa.tipoDespesa}
@@ -1075,6 +1097,7 @@ const CustosRow = ({
           {custo.tipoDespesa}
         </Typography>
       </td>
+      {/* Perfil de despesa */}
       <td className="p-2 text-center">
         <Typography
           fontSize={FontConfig.default}
@@ -1083,6 +1106,7 @@ const CustosRow = ({
           {custo.perfilDespesa}
         </Typography>
       </td>
+      {/* Período de execução */}
       <td className="p-2 text-center">
         <Typography
           fontSize={FontConfig.default}
@@ -1091,6 +1115,7 @@ const CustosRow = ({
           {custo.periodoExecucao}
         </Typography>
       </td>
+      {/* Horas */}
       <td className="p-2 text-center">
         <Typography
           fontSize={FontConfig.default}
@@ -1099,6 +1124,7 @@ const CustosRow = ({
           {custo.horas}
         </Typography>
       </td>
+      {/* Valor da hora */}
       <td className="p-2 text-center">
         <Typography
           fontSize={FontConfig.default}
@@ -1107,6 +1133,7 @@ const CustosRow = ({
           {getValorFormatted(custo.valorHora)}
         </Typography>
       </td>
+      {/* Valor total */}
       <td className="p-2 text-center">
         <Typography
           fontSize={FontConfig.default}
@@ -1148,6 +1175,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
     }
   }, []);
 
+  // Verifica se o benefício tem id, se não retorna null
   if (beneficio.id === 0) return null;
 
   return (
@@ -1159,6 +1187,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
       <Table>
         <TableBody>
           <TableRow>
+            {/* Tipo do beneficio */}
             <th className="p-1">
               <Typography
                 color="primary"
@@ -1169,8 +1198,10 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 {texts.detalhesProposta.tipoBeneficio}
               </Typography>
             </th>
+            {/* Se o benefício for qualitativo, não mostrar os campos de valor mensal e moeda */}
             {!isQualitativo && (
               <>
+                {/* Valor mensal */}
                 <th className="p-1">
                   <Typography
                     color="primary"
@@ -1181,6 +1212,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                     {texts.detalhesProposta.valorMensal}
                   </Typography>
                 </th>
+                {/* Moeda */}
                 <th className="p-1">
                   <Typography
                     color="primary"
@@ -1193,6 +1225,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 </th>
               </>
             )}
+            {/* Memoria de calculo */}
             <th className="p-1">
               <Typography
                 color="primary"
@@ -1207,6 +1240,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
         </TableBody>
         <TableBody className="border-t">
           <TableRow>
+            {/* Tipo do beneficio */}
             <td className="text-center p-1">
               <Typography
                 fontSize={FontConfig.default}
@@ -1221,8 +1255,10 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                   beneficio.tipoBeneficio.substring(1).toLowerCase()}
               </Typography>
             </td>
+            {/* Se o benefício for qualitativo, não mostrar os campos de valor mensal e moeda */}
             {!isQualitativo && (
               <>
+                {/* valor mensal */}
                 <td className="text-center p-1">
                   <Typography
                     fontSize={FontConfig.default}
@@ -1231,6 +1267,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                     {beneficio.valor_mensal}
                   </Typography>
                 </td>
+                {/* Moeda */}
                 <td className="text-center p-1">
                   <Typography
                     fontSize={FontConfig.default}
@@ -1241,6 +1278,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 </td>
               </>
             )}
+            {/* Memoria de calculo */}
             <td className="text-center p-1">
               <Typography
                 ref={memoriaCalculoText}
@@ -1318,6 +1356,7 @@ const ParecerComissaoInsertText = ({
   // Context para ler o texto da tela
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
+  // Assim que é dado o parecer da comissao é setado na proposta
   const handleOnParecerComissaoChange = (texto) => {
     setProposta({ ...proposta, parecerInformacao: texto });
     setDadosProposta({ ...proposta, parecerInformacao: texto });
@@ -1327,6 +1366,7 @@ const ParecerComissaoInsertText = ({
     <Box>
       <Box className="flex">
         <Box className="flex items-center mt-4">
+          {/* Nome do forum */}
           <Typography
             fontSize={FontConfig.medium}
             onClick={() =>
@@ -1338,6 +1378,7 @@ const ParecerComissaoInsertText = ({
             {texts.detalhesProposta.comissao} {proposta.forum.nomeForum}:&nbsp;
           </Typography>
         </Box>
+        {/* Parecer da comissão */}
         <TextField
           select
           label={texts.detalhesProposta.parecer}
@@ -1430,6 +1471,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
     <Box>
       <Box className="flex">
         <Box className="flex items-center mt-4">
+          {/* nome do forum */}
           <Typography
             fontSize={FontConfig.medium}
             onClick={() =>
@@ -1440,6 +1482,7 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
           >
             {texts.detalhesProposta.comissao} {proposta.forum.nomeForum}:&nbsp;
           </Typography>
+          {/* Parecer da comissao */}
           <Typography
             fontSize={FontConfig.medium}
             fontWeight="bold"
@@ -1481,9 +1524,11 @@ const ParecerDGInsertText = ({
   return (
     <Box className="mt-4">
       <Box className="flex">
+        {/* DG */}
         <Box className="flex items-center mt-4">
           <Typography>{texts.detalhesProposta.direcaoGeral}: &nbsp;</Typography>
         </Box>
+        {/* Parecer da DG */}
         <TextField
           select
           label={texts.detalhesProposta.parecer}
@@ -1554,12 +1599,14 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
     <Box>
       <Box className="flex">
         <Box className="flex items-center mt-4">
+          {/* DG */}
           <Typography
             fontSize={FontConfig.medium}
             onClick={() => lerTexto(texts.detalhesProposta.direcaoGeral)}
           >
             {texts.detalhesProposta.direcaoGeral}:&nbsp;
           </Typography>
+          {/* Parecer da DG */}
           <Typography
             fontSize={FontConfig.medium}
             fontWeight="bold"
@@ -1580,6 +1627,7 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
   );
 };
 
+// Status da Proposta
 const StatusProposta = ({
   proposta = propostaExample,
   setProposta = () => {},
@@ -1625,6 +1673,7 @@ const StatusProposta = ({
     setModalStatus(false);
   };
 
+  // Abre o menu de alterar status
   const confirmSelectStatus = (status) => {
     if (isSameStatus(status)) {
       setFeedbackStatusError(true);
@@ -1761,18 +1810,21 @@ const StatusProposta = ({
 
   return (
     <>
+    {/* Feedback de erro Authority */}
       <Feedback
         open={feedbackErrorAuthority}
         handleClose={() => setFeedbackErrorAuthority(false)}
         status={"erro"}
         mensagem={texts.detalhesProposta.feedbackErrorAuthority}
       />
+      {/* Feedback de erro mesmo status */}
       <Feedback
         open={feedbackStatusError}
         handleClose={() => setFeedbackStatusError(false)}
         status={"erro"}
         mensagem={texts.detalhesProposta.mesmoStatus}
       />
+      {/* Modal de confirmação de alteração de status */}
       <ModalConfirmacao
         open={confirmEditStatus}
         setOpen={setConfirmEditStatus}
@@ -1781,6 +1833,7 @@ const StatusProposta = ({
         onConfirmClick={editarStatus}
         onCancelClick={() => {}}
       />
+      {/* Menu para a alteração de status */}
       <Menu
         id="basic-menu"
         anchorEl={anchorElModalStatus}
@@ -1790,6 +1843,7 @@ const StatusProposta = ({
           "aria-labelledby": "basic-button",
         }}
       >
+        {/* Status de ASSESSMENT */}
         <MenuItem
           className="gap-2"
           onClick={() => confirmSelectStatus("ASSESSMENT_APROVACAO")}
@@ -1802,6 +1856,7 @@ const StatusProposta = ({
             {texts.detalhesProposta.statusText.assessment}
           </Typography>
         </MenuItem>
+        {/* Status de BUSINESS CASE */}
         <MenuItem
           className="gap-2"
           onClick={() => confirmSelectStatus("BUSINESS_CASE")}
@@ -1814,6 +1869,7 @@ const StatusProposta = ({
             {texts.detalhesProposta.statusText.bussinessCase}
           </Typography>
         </MenuItem>
+        {/* Status de CANCELLED */}
         <MenuItem
           className="gap-2"
           onClick={() => confirmSelectStatus("CANCELLED")}
@@ -1826,6 +1882,7 @@ const StatusProposta = ({
             {texts.detalhesProposta.statusText.cancelled}
           </Typography>
         </MenuItem>
+        {/* Status de DONE */}
         <MenuItem className="gap-2" onClick={() => confirmSelectStatus("DONE")}>
           <Box
             className="w-4 h-4 rounded"
@@ -1836,7 +1893,6 @@ const StatusProposta = ({
           </Typography>
         </MenuItem>
       </Menu>
-
       <Tooltip title={getStatusFormatted(proposta.status)}>
         <Box
           className="flex absolute right-2 top-0 cursor-pointer"
