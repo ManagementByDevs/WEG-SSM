@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Tour from "reactour";
 
 import VLibras from "@djpfs/react-vlibras";
 

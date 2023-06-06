@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import Tour from "reactour";
 import { ClipLoader } from "react-spinners";
 import { useLocation } from "react-router-dom";
 
@@ -7,7 +6,6 @@ import { Box, IconButton } from "@mui/material";
 
 import VLibras from "@djpfs/react-vlibras";
 import Tour from "reactour";
-import { ClipLoader } from "react-spinners";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 
@@ -23,7 +21,7 @@ import CookieService from "../../service/cookieService";
 
 /** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
 const DetalhesDemandaPagina = () => {
-  
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
