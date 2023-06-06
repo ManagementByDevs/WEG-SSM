@@ -138,8 +138,11 @@ const BarraProgressaoProposta = (props) => {
   /** Variável utilizada para abrir o feedback de erro no reconhecimento de voz */
   const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
-  /** Variável utilizada para abrir o feedback de ppm já em uso */
+  /** Variável utilizada para abrir o feedback de ppm inválido */
   const [feedbackPPM, setFeedbackPPM] = useState(false);
+
+  /** Variável utilizada para abrir o feedback de payback inválido */
+  const [feedbackPayback, setFeedbackPayback] = useState(false);
 
   /** Variável usada para interromper o salvamento de escopos enquanto a proposta estiver sendo criada */
   let criandoProposta = false;
@@ -707,7 +710,8 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  const verificacaoTipoDosDados = async () => {
+  /** Verificação para o ppm */
+  const verificacaoPPM = async () => {
     let ppmVerificacao = parseInt(gerais.ppm);
 
     if (typeof ppmVerificacao === 'number' && !isNaN(ppmVerificacao) && Number.isInteger(ppmVerificacao)) {
@@ -721,6 +725,17 @@ const BarraProgressaoProposta = (props) => {
       } catch (e) {
         return false;
       }
+    } else {
+      return false;
+    }
+  }
+
+  /** Verificação para o payback */
+  const verificacaoPaybak = () => {
+    let paybackVerificacao = parseInt(gerais.qtdPaybackSimples);
+
+    if (typeof paybackVerificacao === 'number' && !isNaN(paybackVerificacao) && Number.isInteger(paybackVerificacao)) {
+      return true;
     } else {
       return false;
     }
@@ -751,10 +766,10 @@ const BarraProgressaoProposta = (props) => {
               setFeedbackFaltante(true);
             }
           });
-          const resultado = await verificacaoTipoDosDados();
-          if (resultado) {
-            console.log("Resposta: " + verificacaoTipoDosDados())
-            if (feedbackFaltante != true) {
+          const ppmVerificacao = await verificacaoPPM();
+          const paybackVerificacao = verificacaoPaybak();
+          if (ppmVerificacao) {
+            if (feedbackFaltante != true && paybackVerificacao) {
               propostaService.post(retornaObjetoProposta()).then((response) => {
                 setCarregamentoProposta(true);
 
@@ -780,6 +795,8 @@ const BarraProgressaoProposta = (props) => {
                   });
                 });
               })
+            } else {
+              setFeedbackPayback(true);
             }
           } else {
             setFeedbackPPM(true);
@@ -967,11 +984,20 @@ const BarraProgressaoProposta = (props) => {
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
         lendo={props.lendo}
       />
+      {/* Feedback de ppm inválido */}
       <Feedback
         open={feedbackPPM}
         handleClose={() => { setFeedbackPPM(false); }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackPPM}
+        lendo={props.lendo}
+      />
+      {/* Feedback de payback inválido */}
+      <Feedback
+        open={feedbackPayback}
+        handleClose={() => { setFeedbackPayback(false); }}
+        status={"erro"}
+        mensagem={texts.barraProgressaoProposta.mensagemFeedbackPayback}
         lendo={props.lendo}
       />
     </>

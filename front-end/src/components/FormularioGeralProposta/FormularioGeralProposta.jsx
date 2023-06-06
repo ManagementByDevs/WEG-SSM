@@ -212,20 +212,20 @@ const FormularioGeralProposta = (props) => {
 
   const valorDataInicio = () => {
     if(props.gerais.periodoExecucacaoInicio) {
-      console.log("Inicio: ",props.gerais.periodoExecucacaoInicio);
+      console.log("Inicio: \n",props.gerais.periodoExecucacaoInicio);
       return null;
     } else {
-      console.log("Nao Inicio: ",props.gerais.periodoExecucacaoInicio);
+      console.log("Nao Inicio: \n",props.gerais.periodoExecucacaoInicio);
       return props.gerais.periodoExecucacaoInicio;
     }
   };
 
   const valorDataFim = () => {
     if(props.gerais.periodoExecucacaoFim) {
-      console.log("Fim: ",props.gerais.periodoExecucacaoFim);
+      console.log("Fim: \n",props.gerais.periodoExecucacaoFim);
       return null;
     } else {
-      console.log("Nao Fim: ",props.gerais.periodoExecucacaoFim);
+      console.log("Nao Fim: \n",props.gerais.periodoExecucacaoFim);
       return props.gerais.periodoExecucacaoFim;
     }
   };

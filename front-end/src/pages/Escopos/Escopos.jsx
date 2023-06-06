@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import VLibras from "@djpfs/react-vlibras";
 
 import { Box, IconButton, Tooltip } from "@mui/material";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
@@ -26,9 +27,11 @@ import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 
 import Tour from "reactour";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 // Tela para mostrar os escopos de demandas/propostas não finalizadas
 const Escopos = ({ lendo = false }) => {
+
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -56,6 +59,19 @@ const Escopos = ({ lendo = false }) => {
   // useState para aparecer o feedback de escopo deletado
   const [feedbackDeletar, setFeedbackDeletar] = useState(false);
 
+  /** Variável usada para esconder a lista de escopos durante sua busca */
+  const [carregamentoItens, setCarregamentoItens] = useState(true);
+
+  /** Variável usada na paginação para determinar o número total de páginas */
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
+  /** Variável usada na paginação para determinar o número da página de escopos que o usuário está */
+  const [paginaAtual, setPaginaAtual] = useState(0);
+
+  /** Variável usada na paginação para determinar o número máximo de escopos numa página */
+  const [tamanhoPagina, setTamanhoPagina] = useState(20);
+
+
   // useEffect utilizado para buscar o usuário ao entrar na página
   useEffect(() => {
     if (!usuario) {
@@ -79,51 +95,30 @@ const Escopos = ({ lendo = false }) => {
     );
   };
 
+  /** Função para formatar e retornar uma lista de escopos para o modelo de visualização */
+  const formatarEscopos = (listaEscopos) => {
+    let listaNova = [];
+    for (let escopo of listaEscopos) {
+      const escopoFormatado = {
+        ...escopo,
+        proposta: atob(escopo.proposta),
+        porcentagem: calculaPorcentagem(escopo)
+      }
+      listaNova.push(escopoFormatado);
+    }
+
+    return listaNova;
+  }
+
   // Função integrada com a barra de pesquisa para buscar os escopos
   const buscarEscopos = () => {
-    if (inputPesquisa == "") {
-      EscopoService.buscarPorUsuario(usuario.id, "sort=id,asc&").then(
-        (response) => {
-          let listaEscopos = [];
-          for (let escopo of response.content) {
-            listaEscopos.push({
-              id: escopo.id,
-              titulo: escopo.titulo,
-              problema: escopo.problema,
-              proposta: atob(escopo.proposta),
-              frequencia: escopo.frequencia,
-              beneficios: escopo.beneficios,
-              anexos: escopo.anexo,
-              ultimaModificacao: escopo.ultimaModificacao,
-              porcentagem: calculaPorcentagem(escopo),
-            });
-          }
-          setEscopos([...listaEscopos]);
-        }
-      );
-    } else {
-      EscopoService.buscarPorTitulo(
-        usuario.id,
-        inputPesquisa,
-        "sort=id,asc&"
-      ).then((response) => {
-        let listaEscopos = [];
-        for (let escopo of response.content) {
-          listaEscopos.push({
-            id: escopo.id,
-            titulo: escopo.titulo,
-            problema: escopo.problema,
-            proposta: escopo.proposta,
-            frequencia: escopo.frequencia,
-            beneficios: escopo.beneficios,
-            anexos: escopo.anexo,
-            ultimaModificacao: escopo.ultimaModificacao,
-            porcentagem: calculaPorcentagem(escopo),
-          });
-        }
-        setEscopos([...listaEscopos]);
-      });
-    }
+    setCarregamentoItens(true);
+
+    let params = { usuario: usuario, titulo: inputPesquisa };
+    EscopoService.buscarPagina(params, "sort=id,asc&").then((response) => {
+      setEscopos(formatarEscopos(response.content));
+      setCarregamentoItens(false);
+    })
   };
 
   // Função para salvar o valor do input de pesquisa no estado
@@ -252,7 +247,7 @@ const Escopos = ({ lendo = false }) => {
           break;
       }
 
-       recognition.onstart = () => {
+      recognition.onstart = () => {
       };
 
       recognition.onresult = (event) => {
@@ -260,7 +255,7 @@ const Escopos = ({ lendo = false }) => {
           event.results[event.results.length - 1][0].transcript;
         setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
 
-        
+
       };
 
       recognition.onerror = (event) => {
@@ -283,7 +278,7 @@ const Escopos = ({ lendo = false }) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
+
     }
   };
 
@@ -464,16 +459,22 @@ const Escopos = ({ lendo = false }) => {
 
             {/* Mostrando os escopos de acordo com a forma de visualização */}
             <Box sx={{ marginTop: "2%" }}>
-              <EscopoModoVisualizacao
-                listaEscopos={escopos}
-                onEscopoClick={openEscopo}
-                nextModoVisualizacao={nextModoVisualizacao}
-                myEscopos={true}
-                handleDelete={onTrashCanClick}
-                buscar={buscarEscopos}
-                isTourOpen={isTourOpen}
-                lendo={lendo}
-              />
+              {carregamentoItens ? (
+                <Box className="mt-6 w-full h-full flex justify-center items-center">
+                  <ClipLoader color="#00579D" size={110} />
+                </Box>
+              ) : (
+                <EscopoModoVisualizacao
+                  listaEscopos={escopos}
+                  onEscopoClick={openEscopo}
+                  nextModoVisualizacao={nextModoVisualizacao}
+                  myEscopos={true}
+                  handleDelete={onTrashCanClick}
+                  buscar={buscarEscopos}
+                  isTourOpen={isTourOpen}
+                  lendo={lendo}
+                />
+              )}
             </Box>
 
             {/* Feedback Erro reconhecimento de voz */}
@@ -509,6 +510,17 @@ const Escopos = ({ lendo = false }) => {
             />
           </Box>
         </Box>
+      </Box>
+      <Box className="flex justify-end mt-10" sx={{ width: "95%" }}>
+        {totalPaginas > 1 || escopos?.length > 20 ? (
+          <Paginacao
+            totalPaginas={totalPaginas}
+            setTamanho={setTamanhoPagina}
+            tamanhoPagina={tamanhoPagina}
+            setPaginaAtual={setPaginaAtual}
+            lendo={lendo}
+          />
+        ) : null}
       </Box>
     </FundoComHeader>
   );

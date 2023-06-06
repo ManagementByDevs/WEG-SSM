@@ -36,10 +36,46 @@ const LinhaTabelaCustos = (props) => {
   // UseEffect para calcular o total de custo
   useEffect(() => {
     let aux = [...props.custos];
+    let horas = 0;
+    let valorHora = 0;
+
+    for (let i = 0; i < aux[props.indexCusto].custos.length; i++) {
+      horas = 0;
+      valorHora = 0;
+      const horasString = aux[props.indexCusto].custos[props.index].horas;
+
+      if (horasString) {
+        if (typeof horasString !== "number") {
+          const horasNumber = parseFloat(horasString.replace(",", "."));
+          if (!isNaN(horasNumber)) {
+            horas += horasNumber;
+          }
+        } else {
+          horas += horasString;
+        }
+      } else {
+        horas += 0;
+      }
+      const valorHoraString =
+        aux[props.indexCusto].custos[props.index].valorHora;
+
+      if (valorHoraString) {
+        if (typeof valorHoraString !== "number") {
+          const valorHoraNumber = parseFloat(valorHoraString.replace(",", "."));
+
+          if (!isNaN(valorHoraNumber)) {
+            valorHora += valorHoraNumber;
+          }
+        } else {
+          valorHora += valorHoraString;
+        }
+      } else {
+        valorHora += 0;
+      }
+    }
+
     aux[props.indexCusto].custos[props.index].total = (
-      aux[props.indexCusto].custos[props.index].horas *
-      1 *
-      (aux[props.indexCusto].custos[props.index].valorHora * 1)
+      horas * valorHora
     ).toFixed(2);
     props.setCustos(aux);
   }, [
@@ -79,15 +115,12 @@ const LinhaTabelaCustos = (props) => {
           break;
       }
 
-      recognition.onstart = () => {
-          
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
         setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-        
       };
 
       recognition.onerror = (event) => {
@@ -105,40 +138,37 @@ const LinhaTabelaCustos = (props) => {
 
   useEffect(() => {
     let aux = [...props.custos];
-        switch (localClicou) {
-          case "tipoDespesa":
-            aux[props.indexCusto].custos[props.index].tipoDespesa =
-              palavrasJuntas;
-            props.setCustos(aux);
-            break;
-          case "perfilDespesa":
-            aux[props.indexCusto].custos[props.index].perfilDespesa =
-              palavrasJuntas;
-            props.setCustos(aux);
-            break;
-          case "periodoExecucao":
-            aux[props.indexCusto].custos[props.index].periodoExecucao =
-              palavrasJuntas;
-            props.setCustos(aux);
-            break;
-          case "horas":
-            aux[props.indexCusto].custos[props.index].horas = palavrasJuntas;
-            props.setCustos(aux);
-            break;
-          case "valorHora":
-            aux[props.indexCusto].custos[props.index].valorHora =
-              palavrasJuntas;
-            props.setCustos(aux);
-            break;
-          default:
-            break;
-        }
+    switch (localClicou) {
+      case "tipoDespesa":
+        aux[props.indexCusto].custos[props.index].tipoDespesa = palavrasJuntas;
+        props.setCustos(aux);
+        break;
+      case "perfilDespesa":
+        aux[props.indexCusto].custos[props.index].perfilDespesa =
+          palavrasJuntas;
+        props.setCustos(aux);
+        break;
+      case "periodoExecucao":
+        aux[props.indexCusto].custos[props.index].periodoExecucao =
+          palavrasJuntas;
+        props.setCustos(aux);
+        break;
+      case "horas":
+        aux[props.indexCusto].custos[props.index].horas = palavrasJuntas;
+        props.setCustos(aux);
+        break;
+      case "valorHora":
+        aux[props.indexCusto].custos[props.index].valorHora = palavrasJuntas;
+        props.setCustos(aux);
+        break;
+      default:
+        break;
+    }
   }, [palavrasJuntas]);
 
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
     }
   };
 
@@ -157,9 +187,23 @@ const LinhaTabelaCustos = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  function verificarCaracteres(valorDigitado) {
+    let temLetra = false;
+    for (let i = 0; i < valorDigitado.length; i++) {
+      const caracter = valorDigitado[i];
+
+      if (isNaN(caracter) && caracter !== "," && caracter !== ".") {
+        temLetra = true;
+        break;
+      } else {
+        temLetra = false;
+      }
+    }
+    return temLetra;
+  }
+
   return (
     <TableRow className="border-b">
-      
       <td align="center" className="pt-5 pb-5">
         <Box
           className="flex items-center justify-between border-solid border px-1 py-1.5 drop-shadow-sm rounded"
@@ -236,10 +280,12 @@ const LinhaTabelaCustos = (props) => {
             placeholder={texts.linhaTabelaCustos.digitePeriodo}
             value={props.dados.custos[props.index].periodoExecucao || ""}
             onChange={(e) => {
-              let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].periodoExecucao =
-                e.target.value;
-              props.setCustos(aux);
+              if (!verificarCaracteres(e.target.value)) {
+                let aux = [...props.custos];
+                aux[props.indexCusto].custos[props.index].periodoExecucao =
+                  e.target.value;
+                props.setCustos(aux);
+              }
             }}
           />
           <Tooltip
@@ -290,9 +336,12 @@ const LinhaTabelaCustos = (props) => {
             placeholder={texts.linhaTabelaCustos.digiteHoras}
             value={props.dados.custos[props.index].horas || ""}
             onChange={(e) => {
-              let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].horas = e.target.value;
-              props.setCustos(aux);
+              if (!verificarCaracteres(e.target.value)) {
+                let aux = [...props.custos];
+                aux[props.indexCusto].custos[props.index].horas =
+                  e.target.value;
+                props.setCustos(aux);
+              }
             }}
           />
           <Tooltip
@@ -343,10 +392,12 @@ const LinhaTabelaCustos = (props) => {
             placeholder={texts.linhaTabelaCustos.digiteValor}
             value={props.dados.custos[props.index].valorHora || ""}
             onChange={(e) => {
-              let aux = [...props.custos];
-              aux[props.indexCusto].custos[props.index].valorHora =
-                e.target.value;
-              props.setCustos(aux);
+              if (!verificarCaracteres(e.target.value)) {
+                let aux = [...props.custos];
+                aux[props.indexCusto].custos[props.index].valorHora =
+                  e.target.value;
+                props.setCustos(aux);
+              }
             }}
           />
           <Tooltip

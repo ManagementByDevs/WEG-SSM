@@ -82,6 +82,47 @@ const ContainerHistorico = (props) => {
     }
   };
 
+  /** Função para traduzir as ações feitas no histórico */
+  const traduzirLinguagem = (texto) => {
+    let numPPM = texto.split("#")[1];
+
+    if (texto === "Demanda Criada") {
+      return texts.barraProgressaoDemanda.demandaCriada;
+    } else if (texto === "Demanda Devolvida") {
+      return texts.barraProgressaoDemanda.demandaDevolvida;
+    } else if (texto === "Demanda Reprovada") {
+      return texts.barraProgressaoDemanda.demandaReprovada;
+    } else if (texto === "Demanda Aprovada") {
+      return texts.barraProgressaoDemanda.demandaAprovada;
+    } else if (texto === "Demanda Editada") {
+      return texts.barraProgressaoDemanda.demandaEditada;
+    } else if (texto === "Enviada para Edição") {
+      return texts.barraProgressaoDemanda.demandaEnviadaParaEdicao;
+    } else if (texto === "Proposta Criada") {
+      return texts.barraProgressaoProposta.propostaCriada;
+    } else if (texto === "Proposta Editada") {
+      return texts.barraProgressaoProposta.propostaEditada;
+    } else if (texto === "Proposta Reprovada") {
+      return texts.barraProgressaoProposta.propostaReprovada;
+    } else if (texto === "Reprovada pela DG") {
+      return texts.barraProgressaoProposta.reprovadaDG;
+    } else if (texto === "Aprovada pela DG") {
+      return texts.barraProgressaoProposta.aprovadaDG;
+    } else if (texto === "Enviada para Business Case") {
+      return texts.barraProgressaoProposta.bussinessCase;
+    } else if (texto.includes("Removida da Pauta")) {
+      return texts.barraProgressaoProposta.removidaPauta + " #" + numPPM;
+    } else if (texto.includes("Status Editado")) {
+      return texts.barraProgressaoProposta.statusEditado;
+    } else if (texto.includes("Adicionada na Pauta")) {
+      return texts.barraProgressaoProposta.adicionadaPauta + " #" + numPPM;;
+    } else if (texto.includes("Adicionada na Ata")) {
+      return texts.barraProgressaoProposta.adicionadaAta + " #" + numPPM;;
+    } else if (texto.includes("Pauta Excluída")) {
+      return texts.pauta.pautaExcluida + " #" + numPPM;
+    }
+  }
+
   return (
     <Box
       className="flex justify-between items-center border border-solid"
@@ -130,7 +171,7 @@ const ContainerHistorico = (props) => {
             lerTexto(props.historico?.acaoRealizada);
           }}
         >
-          {props.historico?.acaoRealizada}
+          {traduzirLinguagem(props.historico?.acaoRealizada)}
         </Typography>
       </Box>
 

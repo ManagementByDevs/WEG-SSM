@@ -9,6 +9,7 @@ import net.weg.wegssm.model.service.AtaService;
 import net.weg.wegssm.model.service.PropostaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -56,17 +57,20 @@ public class AtaController {
      */
     @GetMapping("/page")
     public ResponseEntity<Page<Ata>> findPage(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-                                              @RequestParam(required = false) String titulo) {
-        if (titulo != null && !titulo.isEmpty()) {
-            List<Proposta> propostas = propostaService.findByTitulo(titulo);
+                                              @RequestParam(required = false) String titulo,
+                                              @RequestParam(required = false) String numeroSequencial) {
+        if (numeroSequencial != null && !numeroSequencial.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(ataService.findByNumeroSequencial(numeroSequencial, pageable));
+        } else if (titulo != null && !titulo.isEmpty()) {
+            List<Proposta> propostas = propostaService.findByTituloContaining(titulo);
             List<Ata> atas = new ArrayList<>();
             for (Proposta proposta : propostas) {
                 Ata ata = ataService.findByPropostasContaining(proposta);
-                if (!atas.contains(ata)) {
+                if (!atas.contains(ata) && ata != null) {
                     atas.add(ata);
                 }
             }
-            return ResponseEntity.status(HttpStatus.OK).body((Page<Ata>) atas);
+            return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<Ata>(atas, pageable, atas.size()));
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(ataService.findAll(pageable));
         }
@@ -85,22 +89,6 @@ public class AtaController {
         }
 
         return ResponseEntity.status(HttpStatus.FOUND).body(ataService.findById(id).get());
-    }
-
-    /**
-     * Método GET para listar uma ata através de seu número sequencial
-     *
-     * @param numeroSequencial
-     * @return
-     */
-    @GetMapping("numeroSequencial/{numeroSequencial}")
-    public ResponseEntity<Object> findByNumeroSequencial(@PathVariable(value = "numeroSequencial") String numeroSequencial) {
-        Optional<Ata> ataOptional = ataService.findByNumeroSequencial(numeroSequencial);
-        if (ataOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma ata com este número sequencial.");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(ataOptional.get());
     }
 
     /**

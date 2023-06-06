@@ -62,7 +62,20 @@ const FormularioCustosProposta = (props) => {
     let aux = 0;
     for (let i = 0; i < props.custos.length; i++) {
       for (let j = 0; j < props.custos[i].custos.length; j++) {
-        aux += props.custos[i].custos[j].horas * 1;
+        const horasString = props.custos[i].custos[j].horas;
+
+        if (horasString) {
+          if (typeof horasString !== "number") {
+            const horasNumber = parseFloat(horasString.replace(",", "."));
+            if (!isNaN(horasNumber)) {
+              aux += horasNumber;
+            }
+          } else {
+            aux += horasString;
+          }
+        } else {
+          aux += 0;
+        }
       }
     }
     setHorasTotais(aux);
@@ -84,13 +97,13 @@ const FormularioCustosProposta = (props) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -98,7 +111,7 @@ const FormularioCustosProposta = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -120,7 +133,7 @@ const FormularioCustosProposta = (props) => {
             fontSize={FontConfig.medium}
             sx={{ marginRight: "15px" }}
             onClick={() =>
-              lerTexto(horasTotais, " " , texts.formularioCustosProposta.horas)
+              lerTexto(horasTotais, " ", texts.formularioCustosProposta.horas)
             }
           >
             {horasTotais}
@@ -133,7 +146,7 @@ const FormularioCustosProposta = (props) => {
             fontSize={FontConfig.medium}
             sx={{ marginRight: "8px" }}
             onClick={() =>
-              lerTexto(texts.formularioCustosProposta.moeda , " " , valorTotal)
+              lerTexto(texts.formularioCustosProposta.moeda, " ", valorTotal)
             }
           >
             {texts.formularioCustosProposta.moeda}

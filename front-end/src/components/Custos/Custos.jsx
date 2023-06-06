@@ -1,6 +1,20 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, Tooltip, FormControl, Select, MenuItem, InputLabel, } from "@mui/material";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  Typography,
+  Box,
+  Tooltip,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+} from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -14,7 +28,6 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Componente utilizado para representar a tabela de custos utilizada na proposta */
 const Custos = (props) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -37,16 +50,39 @@ const Custos = (props) => {
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].custos.length; i++) {
-      aux += props.custos[props.index].custos[i].horas * 1;
+      const horasString = props.custos[props.index].custos[i].horas;
+      if(horasString) {
+        if (typeof horasString !== "number") {
+          const horasNumber = parseFloat(horasString.replace(",", "."));
+  
+          if (!isNaN(horasNumber)) {
+            aux += horasNumber;
+          }
+        } else {
+          aux += horasString;
+        }
+      } else {
+        aux += 0;
+      }
     }
     setHorasTotais(aux);
-  }, [props.custos]);
+  }, [props.custos, props.index]);
 
   /** UseEffect para atualizar o valor total dos custos */
   useEffect(() => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].custos.length; i++) {
-      aux += props.custos[props.index].custos[i].total * 1;
+      const totalString = props.custos[props.index].custos[i].total;
+
+      if (totalString) {
+        const totalNumber = parseFloat(totalString.replace(",", "."));
+
+        if (!isNaN(totalNumber)) {
+          aux += totalNumber;
+        }
+      } else {
+        aux += 0;
+      }
     }
     setValorTotal(aux.toFixed(2));
   }, [props.custos]);
@@ -63,7 +99,7 @@ const Custos = (props) => {
   /** useEffec para alterar o tipo de despesa do select */
   useEffect(() => {
     setTipoDespesa(props.custos[props.index].tipoDespesa);
-  }, [props.custos])
+  }, [props.custos]);
 
   /** Função para criar um custo no banco de dados e adicioná-lo como uma linha na tabela */
   const adicionarLinhaCustos = () => {
@@ -138,7 +174,7 @@ const Custos = (props) => {
     let aux = [...props.custos];
     aux[props.index].tipoDespesa = tipo.target.value;
     props.setCustos(aux);
-  }
+  };
 
   return (
     <Box className="flex w-full mt-5">
@@ -160,7 +196,9 @@ const Custos = (props) => {
           {/* Dropdown tipo despesa */}
           <Box>
             <FormControl sx={{ width: "15rem" }}>
-              <InputLabel id="demo-simple-select-helper-label">Tipo Despesa</InputLabel>
+              <InputLabel id="demo-simple-select-helper-label">
+                Tipo Despesa
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -169,14 +207,10 @@ const Custos = (props) => {
                 onChange={handleChange}
               >
                 <MenuItem value={"Interna"}>
-                  <Typography fontSize={FontConfig.medium}>
-                    Interna
-                  </Typography>
+                  <Typography fontSize={FontConfig.medium}>Interna</Typography>
                 </MenuItem>
                 <MenuItem value={"Externa"}>
-                  <Typography fontSize={FontConfig.medium}>
-                    Externa
-                  </Typography>
+                  <Typography fontSize={FontConfig.medium}>Externa</Typography>
                 </MenuItem>
               </Select>
             </FormControl>
@@ -184,7 +218,10 @@ const Custos = (props) => {
           {/* Criação da tabela e adicionando as informações nela */}
           <Paper className="w-full mr-3 pb-1" sx={{ marginTop: "1%" }}>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: "90%", alignItems: "center" }} aria-label="customized table">
+              <Table
+                sx={{ minWidth: "90%", alignItems: "center" }}
+                aria-label="customized table"
+              >
                 <TableHead sx={{ backgroundColor: "primary.main" }}>
                   <TableRow>
                     <th
@@ -346,7 +383,10 @@ const Custos = (props) => {
           </Paper>
         </Box>
       </Box>
-      <Paper className="h-full pb-1" sx={{ width: "25%", minWidth: "263px", marginTop: "3.8%" }}>
+      <Paper
+        className="h-full pb-1"
+        sx={{ width: "25%", minWidth: "263px", marginTop: "3.8%" }}
+      >
         {/* Outra tabela para os CCs */}
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: "100%" }} aria-label="customized table">
