@@ -10,14 +10,18 @@ import {
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente de paginação dos resultados na página principal
 const Paginacao = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Função ativada quando o tamanho da página é mudada, atualizando a variável recebida no props */
   const mudarTamanho = (event) => {
@@ -27,32 +31,6 @@ const Paginacao = (props) => {
   /** Função ativada quando a página é mudada, atualizando a variável recebida no props */
   const mudarPagina = (event, page) => {
     props.setPaginaAtual(page - 1);
-  };
-
-   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (

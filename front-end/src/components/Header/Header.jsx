@@ -15,7 +15,7 @@ import ChatContext from "../../service/ChatContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Header padrão usado no topo de todas as páginas do sistema */
-const Header = ({ lendo = false }) => {
+const Header = () => {
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -61,13 +61,13 @@ const Header = ({ lendo = false }) => {
       {/* Parte direita do header */}
       <div className="flex items-center gap-4">
         {/* Caso não esteja no /login, aparecerá o Icon de notificações */}
-        {rota != "/login" ? <NotificacaoModal lendo={false} /> : null}
+        {rota != "/login" ? <NotificacaoModal /> : null}
 
         {/* Componente da parte do idioma da página */}
-        <IdiomaModal lendo={lendo} />
+        <IdiomaModal />
 
         {/* Caso a rota não seja a do login, irá aparecer o componente do usuário */}
-        {rota != "/login" ? <UserModal lendo={lendo} /> : null}
+        {rota != "/login" ? <UserModal /> : null}
       </div>
     </Paper>
   );

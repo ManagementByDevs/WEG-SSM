@@ -617,8 +617,8 @@ public class PropostaService {
         return propostaRepository.findByVisibilidade(b, pageable);
     }
 
-    public List<Proposta> findByTitulo(String titulo) {
-        return propostaRepository.findByTitulo(titulo);
+    public List<Proposta> findByTituloContaining(String titulo) {
+        return propostaRepository.findByTituloContaining(titulo);
     }
 
     public Boolean existsByPPM(Long ppm) {

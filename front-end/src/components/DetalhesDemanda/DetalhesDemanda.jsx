@@ -35,8 +35,9 @@ import NotificacaoService from "../../service/notificacaoService";
 import ExportPdfService from "../../service/exportPdfService";
 import FontContext from "../../service/FontContext";
 import CookieService from "../../service/cookieService";
-
 import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
@@ -45,6 +46,14 @@ const DetalhesDemanda = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
@@ -441,7 +450,7 @@ const DetalhesDemanda = (props) => {
 
   // Acionado quando o usuário clicar em "Aceitar" na demanda
   const aceitarDemanda = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       setOpenModalAceitarDemanda(true);
     } else {
       lerTexto(texts.DetalhesDemanda.botaoAceitar);
@@ -450,7 +459,7 @@ const DetalhesDemanda = (props) => {
 
   // Acionado quando o usuário clicar em "Aprovar" na demanda
   const aprovarDemanda = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       setModalAprovarDemanda(true);
     } else {
       lerTexto(texts.DetalhesDemanda.botaoAceitar);
@@ -690,66 +699,6 @@ const DetalhesDemanda = (props) => {
 
   // ********************************************** Gravar audio **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClique, setLocalClique] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {};
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
-  // useEffect para quando o texto alterar
   useEffect(() => {
     switch (localClique) {
       case "tituloDemanda":
@@ -763,85 +712,16 @@ const DetalhesDemanda = (props) => {
     }
   }, [palavrasJuntas]);
 
-  // Para de pegar o audio
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  // Inicia o reconhecimento de voz e pega onde clicou
-  const startRecognition = (ondeClicou) => {
-    setEscutar(!escutar);
-    setLocalClique(ondeClicou);
-  };
-
-  // useEffect para quando o estado de escutar alterar e então parar ou ativar
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
   // ********************************************** Fim Gravar audio **********************************************
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <Box className="flex flex-col justify-center relative items-center mt-10 mb-16">
-      {/* Feedback Erro reconhecimento de voz */}
-      <Feedback
-        open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback12}
-        lendo={props.lendo}
-      />
       {/* Feedback demanda Editada */}
       <Feedback
         open={feedbackDemandaEditada}
         handleClose={() => setFeedbackDemandaEditada(false)}
         status={"sucesso"}
         mensagem={texts.DetalhesDemanda.feedbackDemandaEditada}
-        lendo={props.lendo}
-      />
-      {/* Feedback Não navegador incompativel */}
-      <Feedback
-        open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback13}
-        lendo={props.lendo}
       />
       {/* Feedback Faca alguma alteração para poder salvar */}
       <Feedback
@@ -849,7 +729,6 @@ const DetalhesDemanda = (props) => {
         handleClose={() => setFeedbackFacaAlteracao(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.facaAlgumaAlteracaoParaPoderSalvar}
-        lendo={props.lendo}
       />
       {/* Feedback já existe uma anexo com aquele nome */}
       <Feedback
@@ -857,7 +736,6 @@ const DetalhesDemanda = (props) => {
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
-        lendo={props.lendo}
       />
       {/* Modal para aceitar a demanda */}
       <ModalAceitarDemanda
@@ -865,7 +743,6 @@ const DetalhesDemanda = (props) => {
         setOpen={setOpenModalAceitarDemanda}
         handleClose={handleCloseModalAceitarDemanda}
         confirmAceitarDemanda={confirmAceitarDemanda}
-        lendo={props.lendo}
       />
       {/* Modal para recusar a demanda */}
       <ModalRecusarDemanda
@@ -875,11 +752,6 @@ const DetalhesDemanda = (props) => {
         confirmRecusarDemanda={confirmRecusaDemanda}
         motivo={motivoRecusaDemanda}
         setMotivo={setMotivoRecusaDemanda}
-        setFeedbackErroNavegadorIncompativel={
-          setFeedbackErroNavegadorIncompativel
-        }
-        setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
-        lendo={props.lendo}
       />
       {/* Modal para confirmar o cancelamento da edição */}
       <ModalConfirmacao
@@ -890,7 +762,6 @@ const DetalhesDemanda = (props) => {
         textoModal="cancelarEdicao"
         textoBotao="sim"
         atualizarTexto={true}
-        lendo={props.lendo}
       />
 
       {/* Modal para aceitar a demanda */}
@@ -900,7 +771,6 @@ const DetalhesDemanda = (props) => {
         onConfirmClick={aprovarDemandaGerencia}
         textoModal="aceitarDemanda"
         textoBotao="aceitar"
-        lendo={props.lendo}
       />
       <Box
         id="primeiro"
@@ -1034,13 +904,6 @@ const DetalhesDemanda = (props) => {
                       index={index}
                       beneficio={beneficio}
                       setBeneficio={alterarTextoBeneficio}
-                      setFeedbackErroNavegadorIncompativel={
-                        setFeedbackErroNavegadorIncompativel
-                      }
-                      setFeedbackErroReconhecimentoVoz={
-                        setFeedbackErroReconhecimentoVoz
-                      }
-                      lendo={props.lendo}
                     />
                   );
                 })}
@@ -1156,7 +1019,7 @@ const DetalhesDemanda = (props) => {
                     fontWeight="600"
                     color="text.primary"
                     onClick={() => {
-                      lerTexto(texts.DetalhesDemanda.buBeneficiadas);
+                      lerTexto(texts.DetalhesDemanda.busBeneficiadas);
                     }}
                   >
                     {texts.DetalhesDemanda.busBeneficiadas}:
@@ -1398,13 +1261,6 @@ const DetalhesDemanda = (props) => {
                         delete={deleteBeneficio}
                         beneficio={beneficio}
                         setBeneficio={alterarTextoBeneficio}
-                        setFeedbackErroNavegadorIncompativel={
-                          setFeedbackErroNavegadorIncompativel
-                        }
-                        setFeedbackErroReconhecimentoVoz={
-                          setFeedbackErroReconhecimentoVoz
-                        }
-                        lendo={props.lendo}
                       />
                     );
                   }
@@ -1585,7 +1441,7 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  if (!props.lendo) {
+                  if (!lendoTexto) {
                     abrirRecusaDemanda("recusa");
                   } else {
                     lerTexto(texts.DetalhesDemanda.botaoRecusar);
@@ -1603,7 +1459,7 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  if (!props.lendo) {
+                  if (!lendoTexto) {
                     abrirRecusaDemanda("devolucao");
                   } else {
                     lerTexto(texts.DetalhesDemanda.botaoDevolver);
@@ -1643,7 +1499,7 @@ const DetalhesDemanda = (props) => {
                 }}
                 variant="contained"
                 onClick={() => {
-                  if (!props.lendo) {
+                  if (!lendoTexto) {
                     abrirRecusaDemanda("recusa");
                   } else {
                     lerTexto(texts.DetalhesDemanda.botaoRecusar);
@@ -1677,7 +1533,7 @@ const DetalhesDemanda = (props) => {
             }}
             variant="contained"
             onClick={() => {
-              if (!props.lendo) {
+              if (!lendoTexto) {
                 salvarEdicao();
               } else {
                 lerTexto(texts.DetalhesDemanda.botaoSalvar);

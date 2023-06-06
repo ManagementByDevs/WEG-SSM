@@ -2,6 +2,8 @@ package net.weg.wegssm.repository;
 
 import net.weg.wegssm.model.entities.Ata;
 import net.weg.wegssm.model.entities.Proposta;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,7 +24,7 @@ public interface AtaRepository extends JpaRepository<Ata, Long> {
      * @param numeroSequencial Número Sequencial da Ata buscada
      * @return Optional contendo a ata com o número sequencial enviado
      */
-    Optional<Ata> findByNumeroSequencial(String numeroSequencial);
+    Page<Ata> findByNumeroSequencial(String numeroSequencial, Pageable pageable);
 
     /**
      * Método que verifica se existe uma ata com o número sequencial passado por parâmetro

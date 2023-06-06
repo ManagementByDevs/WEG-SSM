@@ -6,12 +6,15 @@ import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Input padrão usado no sistema, com label acima */
 const InputComLabel = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Função para salvar o valor do props recebido para o input (mudando também o valor do próprio input) */
   const save = (e) => {
@@ -49,14 +52,12 @@ const InputComLabel = (props) => {
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
           event.results[event.results.length - 1][0].transcript;
         setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-
       };
 
       recognition.onerror = (event) => {
@@ -81,7 +82,6 @@ const InputComLabel = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-
     }
   };
 
@@ -98,32 +98,6 @@ const InputComLabel = (props) => {
   }, [escutar]);
 
   // // ********************************************** Fim Gravar audio **********************************************
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <Box sx={{ width: "100%" }}>

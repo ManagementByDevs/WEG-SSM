@@ -58,8 +58,8 @@ public class PautaService {
      * @param numeroSequencial
      * @return
      */
-    public Optional<Pauta> findByNumeroSequencial(Long numeroSequencial) {
-        return pautaRepository.findByNumeroSequencial(numeroSequencial);
+    public Page<Pauta> findByNumeroSequencial(String numeroSequencial, Pageable pageable) {
+        return pautaRepository.findByNumeroSequencial(numeroSequencial, pageable);
     }
 
     /**

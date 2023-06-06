@@ -1,6 +1,19 @@
 import React, { useState, useContext, useEffect, useRef, memo } from "react";
 
-import { TableContainer, Table, TableHead, TableRow, TableBody, Paper, Typography, Box, FormControl, Select, MenuItem, Tooltip, } from "@mui/material";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Paper,
+  Typography,
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -12,15 +25,24 @@ import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import ColorModeContext from "../../service/TemaContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 /** Componente de um benefício dentro da lista de benefícios na página de detalhes da demanda, podendo ser editável ou não (props.editavel) */
 const BeneficiosDetalheDemanda = (props) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** UseState utilizado para mudar a cor do textArea */
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -84,61 +106,6 @@ const BeneficiosDetalheDemanda = (props) => {
 
   // ********************************************** Gravar audio **********************************************
 
-  /** Varíavel utilizada para lógica de gravação de audio */
-  const recognitionRef = useRef(null);
-
-  /** Variável utilizada para ativar o microfone para gravação de audio */
-  const [escutar, setEscutar] = useState(false);
-
-  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  /** Função para gravar audio nos inputs */
-  const ouvirAudio = () => {
-    /**Verifica se a API é suportada pelo navegador */
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {
-      };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        props.setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      props.setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   /** useEffect utilizado para setar o valor do input de valor_mensal de um benefício com o input de voz */
   useEffect(() => {
     // props.setBeneficio(
@@ -150,54 +117,7 @@ const BeneficiosDetalheDemanda = (props) => {
     // );
   }, [palavrasJuntas]);
 
-  /** Função para parar a gravação de voz */
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  /** Função para começar a gravação de audio */
-  const startRecognition = () => {
-    setEscutar(!escutar);
-  };
-
-  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
   // ********************************************** Fim Gravar audio **********************************************
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <Box className="flex items-center">

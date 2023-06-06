@@ -4,6 +4,8 @@ import net.weg.wegssm.model.entities.Demanda;
 import net.weg.wegssm.model.entities.Pauta;
 import net.weg.wegssm.model.entities.Proposta;
 import net.weg.wegssm.model.entities.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,7 +32,7 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
      * @param numeroSequencial
      * @return
      */
-    Optional<Pauta> findByNumeroSequencial(Long numeroSequencial);
+    Page<Pauta> findByNumeroSequencial(String numeroSequencial, Pageable pageable);
 
     /**
      * Método para buscar uma pauta através de uma proposta

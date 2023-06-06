@@ -89,9 +89,7 @@ public class PropostaController {
      * @param ppm Código PPM da proposta a ser buscada
      * @return ResponseEntity com a proposta buscada pelo código PPM
      */
-    @GetMapping("/ppm/{ppm}")
-    public ResponseEntity<Page<Proposta>> findByPpm(@PageableDefault(size = 20, sort = "score", direction = Sort.Direction.DESC) Pageable pageable,
-                                                    @PathVariable(value = "ppm") Long ppm) {
+    public ResponseEntity<Page<Proposta>> findByPpm(Pageable pageable, Long ppm) {
         return ResponseEntity.status(200).body(propostaService.findByPpm(ppm, pageable));
     }
 
@@ -119,13 +117,18 @@ public class PropostaController {
             @RequestParam(required = false) String tamanho,
             @RequestParam(value = "analista", required = false) String analistaJson,
             @RequestParam(required = false, value = "status") Status status,
-            @RequestParam(required = false, value = "presenteEm") String presenteEm
+            @RequestParam(required = false, value = "presenteEm") String presenteEm,
+            @RequestParam(required = false, value = "codigoPPM") Long codigoPPM
     ) {
         Usuario solicitante = new UsuarioUtil().convertJsonToModel(solicitanteJson);
         Usuario gerente = new UsuarioUtil().convertJsonToModel(gerenteJson);
         Usuario analista = new UsuarioUtil().convertJsonToModel(analistaJson);
         Forum forum = new ForumUtil().convertJsonToModel(forumJson);
         Departamento departamento = new DepartamentoUtil().convertJsonToModel(departamentoJson);
+
+        if(codigoPPM != null) {
+            return findByPpm(pageable, codigoPPM);
+        }
 
         if (presenteEm != null && !presenteEm.isEmpty()) {
             if (analista != null) {
@@ -4094,7 +4097,6 @@ public class PropostaController {
      * @param propostaJSON     - Proposta com os novos dados
      * @param novaPropostaJSON - Proposta com Benefícios e Tabelas de Custos a serem salvas no banco de dados
      * @param listaIdsAnexos   - Lista de IDs de anexos que já pertenciam à proposta
-     * @param escopoProposta   - Escopo da proposta
      * @return ResponseEntity<Object> - Proposta atualizada ou mensagem de erro
      */
     @PutMapping("/update-novos-dados/{id}")

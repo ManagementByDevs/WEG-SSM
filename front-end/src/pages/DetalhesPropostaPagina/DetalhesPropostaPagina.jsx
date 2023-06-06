@@ -17,9 +17,7 @@ import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalA
 import Feedback from "../../components/Feedback/Feedback";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
-import FontContext from "../../service/FontContext";
 import ExportPdfService from "../../service/exportPdfService";
-import EntitiesObjectService from "../../service/entitiesObjectService";
 
 // Página que mostra os detalhes da proposta selecionada, com opção de download para pdf
 const DetalhesPropostaPagina = ({ lendo = false }) => {
@@ -27,9 +25,6 @@ const DetalhesPropostaPagina = ({ lendo = false }) => {
   const location = useLocation();
 
   const paramsPath = useParams();
-
-  // Context para alterar o tamanho da fonte
-  const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);

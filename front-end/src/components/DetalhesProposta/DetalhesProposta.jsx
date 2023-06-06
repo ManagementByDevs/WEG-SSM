@@ -39,6 +39,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Feedback from "../Feedback/Feedback";
 
 import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Exemplo de proposta a ser seguido
 const propostaExample = EntitiesObjectService.proposta();
@@ -53,13 +54,15 @@ const DetalhesProposta = ({
   parecerInformacaoDG = "",
   setDadosProposta = () => {},
   setFeedbackEditSuccess = () => {},
-  lendo,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Estado da proposta
   const [proposta, setProposta] = useState(propostaExample);
@@ -211,32 +214,6 @@ const DetalhesProposta = ({
     });
   }, []);
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   if (Object.values(proposta).some((value) => value === undefined))
     return <></>;
 
@@ -266,7 +243,6 @@ const DetalhesProposta = ({
             setPropostaData={setPropostaNewData}
             setIsEditing={setIsEditing}
             emAprovacao={emAprovacao}
-            lendo={lendo}
           />
         </Box>
       </Box>
@@ -283,7 +259,6 @@ const DetalhesProposta = ({
           proposta={proposta}
           setProposta={editProposta}
           getCorStatus={getCorStatus}
-          lendo={lendo}
         />
         {/* Box header */}
         <Box className="w-full flex justify-between">
@@ -292,7 +267,9 @@ const DetalhesProposta = ({
               color="primary"
               fontWeight="bold"
               fontSize={FontConfig.big}
-              onClick={() => lerTexto(texts.detalhesProposta.ppm)}
+              onClick={() =>
+                lerTexto(texts.detalhesProposta.ppm + " " + proposta.codigoPPM)
+              }
             >
               {texts.detalhesProposta.ppm} {proposta.codigoPPM}{" "}
             </Typography>
@@ -300,7 +277,16 @@ const DetalhesProposta = ({
               color="primary"
               fontWeight="bold"
               fontSize={FontConfig.big}
-              onClick={() => lerTexto(texts.detalhesProposta.data)}
+              onClick={() =>
+                lerTexto(
+                  texts.detalhesProposta.data +
+                    " " +
+                    DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.data),
+                      texts.linguagem
+                    )
+                )
+              }
             >
               {texts.detalhesProposta.data}{" "}
               {DateService.getTodaysDateUSFormat(
@@ -515,7 +501,7 @@ const DetalhesProposta = ({
                   fontSize={FontConfig.medium}
                   ref={propostaText}
                   onClick={() => {
-                    lerTexto(propostaText);
+                    lerTexto(propostaText.current.innerHTML);
                   }}
                 />
               </Box>
@@ -535,7 +521,7 @@ const DetalhesProposta = ({
                   fontSize={FontConfig.medium}
                   ref={problemaText}
                   onClick={() => {
-                    lerTexto(problemaText);
+                    lerTexto(problemaText.current.innerHTML);
                   }}
                 />
               </Box>
@@ -557,7 +543,7 @@ const DetalhesProposta = ({
                   fontSize={FontConfig.medium}
                   ref={textoEscopo}
                   onClick={() => {
-                    lerTexto(textoEscopo);
+                    lerTexto(textoEscopo.current.innerHTML);
                   }}
                 />
               </Box>
@@ -592,9 +578,7 @@ const DetalhesProposta = ({
               <Box className="mx-4">
                 {proposta.tabelaCustos.length > 0 ? (
                   proposta.tabelaCustos?.map((tabela, index) => {
-                    return (
-                      <TabelaCustos key={index} dados={tabela} lendo={lendo} />
-                    );
+                    return <TabelaCustos key={index} dados={tabela} />;
                   })
                 ) : (
                   <Typography
@@ -623,13 +607,7 @@ const DetalhesProposta = ({
               <Box className="mx-4">
                 {proposta.beneficios.length > 0 ? (
                   proposta.beneficios.map((beneficio, index) => {
-                    return (
-                      <Beneficio
-                        key={index}
-                        beneficio={beneficio}
-                        lendo={lendo}
-                      />
-                    );
+                    return <Beneficio key={index} beneficio={beneficio} />;
                   })
                 ) : (
                   <Typography
@@ -863,7 +841,6 @@ const DetalhesProposta = ({
                   setDadosProposta={setDadosProposta}
                   parecerComissao={parecerComissao}
                   parecerInformacao={parecerInformacao}
-                  lendo={lendo}
                   emAprovacao={emAprovacao}
                 />
 
@@ -874,7 +851,6 @@ const DetalhesProposta = ({
                   setDadosProposta={setDadosProposta}
                   parecerDG={parecerDG}
                   parecerInformacaoDG={parecerInformacaoDG}
-                  lendo={lendo}
                   emAprovacao={emAprovacao}
                 />
               </Box>
@@ -902,7 +878,6 @@ const TabelaCustos = ({
     ],
     ccs: [{ id: 0, codigo: 0, porcentagem: 0.0 }],
   },
-  lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -910,31 +885,8 @@ const TabelaCustos = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   return (
     <Paper className="w-full mt-2 mb-6" square>
@@ -1001,14 +953,7 @@ const TabelaCustos = ({
         </TableHead>
         <TableBody>
           {dados.custos.map((custo, index) => {
-            return (
-              <CustosRow
-                key={index}
-                custo={custo}
-                lendo={lendo}
-                despesa={dados}
-              />
-            );
+            return <CustosRow key={index} custo={custo} despesa={dados} />;
           })}
         </TableBody>
       </Table>
@@ -1075,13 +1020,15 @@ const CustosRow = ({
     horas: 0,
     valorHora: 0,
   },
-  lendo = false,
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Formatando o tipo da moeda de acordo com o local do usuário
   const getValorFormatted = (valor) => {
@@ -1113,32 +1060,6 @@ const CustosRow = ({
           currency: tipoMoeda,
         })
       : 0.0;
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (
@@ -1201,46 +1122,20 @@ const CustosRow = ({
 };
 
 // Mostrar os benefícios da proposta
-const Beneficio = ({
-  beneficio = EntitiesObjectService.beneficio(),
-  lendo = false,
-}) => {
+const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
 
   const memoriaCalculoText = useRef(null);
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   // Verifica se o benefício é do tipo qualitativo
   useEffect(() => {
@@ -1369,7 +1264,6 @@ const ParecerComissao = ({
   setDadosProposta = () => {},
   parecerComissao = "",
   parecerInformacao = "",
-  lendo = false,
   emAprovacao = false,
 }) => {
   if (proposta.status == "ASSESSMENT_COMISSAO" && emAprovacao)
@@ -1380,10 +1274,9 @@ const ParecerComissao = ({
         setDadosProposta={setDadosProposta}
         parecerComissao={parecerComissao}
         parecerInformacao={parecerInformacao}
-        lendo={lendo}
       />
     );
-  return <ParecerComissaoOnlyRead proposta={proposta} lendo={lendo} />;
+  return <ParecerComissaoOnlyRead proposta={proposta} />;
 };
 
 // Chamar o parecer da DG
@@ -1393,7 +1286,6 @@ const ParecerDG = ({
   setDadosProposta = () => {},
   parecerDG = "",
   parecerInformacaoDG = "",
-  lendo = false,
   emAprovacao = false,
 }) => {
   if (proposta.status == "ASSESSMENT_DG" && emAprovacao)
@@ -1404,10 +1296,9 @@ const ParecerDG = ({
         setDadosProposta={setDadosProposta}
         parecerDG={parecerDG}
         parecerInformacaoDG={parecerInformacaoDG}
-        lendo={lendo}
       />
     );
-  return <ParecerDGOnlyRead proposta={proposta} lendo={lendo} />;
+  return <ParecerDGOnlyRead proposta={proposta} />;
 };
 
 // Escrever o parecer da comissão
@@ -1417,7 +1308,6 @@ const ParecerComissaoInsertText = ({
   setDadosProposta = () => {},
   parecerComissao = "",
   parecerInformacao = "",
-  lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1425,35 +1315,12 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
   const handleOnParecerComissaoChange = (texto) => {
     setProposta({ ...proposta, parecerInformacao: texto });
     setDadosProposta({ ...proposta, parecerInformacao: texto });
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (
@@ -1464,11 +1331,11 @@ const ParecerComissaoInsertText = ({
             fontSize={FontConfig.medium}
             onClick={() =>
               lerTexto(
-                texts.detalhesProposta.comissao + " " + proposta.forum.nome
+                texts.detalhesProposta.comissao + " " + proposta.forum.nomeForum
               )
             }
           >
-            {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
+            {texts.detalhesProposta.comissao} {proposta.forum.nomeForum}:&nbsp;
           </Typography>
         </Box>
         <TextField
@@ -1511,7 +1378,6 @@ const ParecerComissaoInsertText = ({
         <CaixaTextoQuill
           texto={parecerInformacao}
           onChange={handleOnParecerComissaoChange}
-          lendo={lendo}
         />
       </Box>
     </Box>
@@ -1519,15 +1385,15 @@ const ParecerComissaoInsertText = ({
 };
 
 // Visualizar o parecer da comissão
-const ParecerComissaoOnlyRead = ({
-  proposta = propostaExample,
-  lendo = false,
-}) => {
+const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Variável para armazenar as informações do parecer da comissão
   const parecerComissaoInformacoesBox = useRef(null);
@@ -1560,32 +1426,6 @@ const ParecerComissaoOnlyRead = ({
     }
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <Box>
       <Box className="flex">
@@ -1594,13 +1434,19 @@ const ParecerComissaoOnlyRead = ({
             fontSize={FontConfig.medium}
             onClick={() =>
               lerTexto(
-                texts.detalhesProposta.comissao + " " + proposta.forum.nome
+                texts.detalhesProposta.comissao + " " + proposta.forum.nomeForum
               )
             }
           >
-            {texts.detalhesProposta.comissao} {proposta.forum.nome}:&nbsp;
+            {texts.detalhesProposta.comissao} {proposta.forum.nomeForum}:&nbsp;
           </Typography>
-          <Typography fontSize={FontConfig.medium} fontWeight="bold">
+          <Typography
+            fontSize={FontConfig.medium}
+            fontWeight="bold"
+            onClick={() =>
+              lerTexto(getParecerComissaoFomartted(proposta.parecerComissao))
+            }
+          >
             {getParecerComissaoFomartted(proposta.parecerComissao)}
           </Typography>
         </Box>
@@ -1610,6 +1456,9 @@ const ParecerComissaoOnlyRead = ({
         ref={parecerComissaoInformacoesBox}
         className="mt-2 mx-4 border-l-2 px-2"
         sx={{ borderColor: "primary.main" }}
+        onClick={() =>
+          lerTexto(parecerComissaoInformacoesBox.current.innerText)
+        }
       />
     </Box>
   );
@@ -1622,7 +1471,6 @@ const ParecerDGInsertText = ({
   setDadosProposta = () => {},
   parecerDG = "",
   parecerInformacaoDG = "",
-  lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -1666,7 +1514,6 @@ const ParecerDGInsertText = ({
             setProposta({ ...proposta, parecerInformacaoDG: e });
             setDadosProposta({ ...proposta, parecerInformacaoDG: e });
           }}
-          lendo={lendo}
         />
       </Box>
     </Box>
@@ -1674,12 +1521,15 @@ const ParecerDGInsertText = ({
 };
 
 // Visualizar o parecer da DG
-const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
+const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Variável para armazenar o parecer da DG
   const parecerDGInformacoesBox = useRef(null);
@@ -1698,32 +1548,6 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
     return parecer
       ? parecer[0].toUpperCase() + parecer.substring(1).toLowerCase()
       : texts.detalhesProposta.semParecer;
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (
@@ -1750,6 +1574,7 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample, lendo = false }) => {
         ref={parecerDGInformacoesBox}
         className="mt-2 mx-4 border-l-2 px-2"
         sx={{ borderColor: "primary.main" }}
+        onClick={() => lerTexto(parecerDGInformacoesBox.current.innerText)}
       />
     </Box>
   );
@@ -1759,7 +1584,6 @@ const StatusProposta = ({
   proposta = propostaExample,
   setProposta = () => {},
   getCorStatus = () => {},
-  lendo = false,
 }) => {
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
@@ -1942,14 +1766,12 @@ const StatusProposta = ({
         handleClose={() => setFeedbackErrorAuthority(false)}
         status={"erro"}
         mensagem={texts.detalhesProposta.feedbackErrorAuthority}
-        lendo={lendo}
       />
       <Feedback
         open={feedbackStatusError}
         handleClose={() => setFeedbackStatusError(false)}
         status={"erro"}
         mensagem={texts.detalhesProposta.mesmoStatus}
-        lendo={lendo}
       />
       <ModalConfirmacao
         open={confirmEditStatus}
@@ -1958,7 +1780,6 @@ const StatusProposta = ({
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
         onCancelClick={() => {}}
-        lendo={lendo}
       />
       <Menu
         id="basic-menu"

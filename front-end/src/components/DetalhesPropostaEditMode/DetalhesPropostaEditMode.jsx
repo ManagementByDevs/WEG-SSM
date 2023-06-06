@@ -5,8 +5,6 @@ import {
   Checkbox,
   Divider,
   IconButton,
-  Input,
-  InputAdornment,
   MenuItem,
   Paper,
   Select,
@@ -21,7 +19,6 @@ import {
 
 import * as _ from "lodash";
 import ClipLoader from "react-spinners/ClipLoader";
-import ReactQuill from "react-quill";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -36,11 +33,10 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
-import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
-import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import Feedback from "../Feedback/Feedback";
 import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
+import QuillCustom from "./Inputs/QuillCustom";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -53,8 +49,8 @@ import PropostaService from "../../service/propostaService";
 import ExportPdfService from "../../service/exportPdfService";
 import CookieService from "../../service/cookieService";
 import InputCustom from "./Inputs/InputCustom";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
-import { SpeechSynthesisContext } from "../../service/SpeechSynthesisService";
 
 const propostaExample = EntitiesObjectService.proposta();
 
@@ -67,7 +63,6 @@ const DetalhesPropostaEditMode = ({
   setPropostaData = () => {},
   setIsEditing = () => {},
   emAprovacao = false,
-  lendo = false,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -76,10 +71,9 @@ const DetalhesPropostaEditMode = ({
   const { texts } = useContext(TextLanguageContext);
 
   // Context para obter a função de leitura de texto
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
+  // Context para ler o texto da tela
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Estado da proposta editável
@@ -144,10 +138,8 @@ const DetalhesPropostaEditMode = ({
     ],
   };
 
-  /** Debounce o setState passado por parâmetro */
-  const debounceState = _.debounce((setState, value) => {
-    setState(value);
-  }, 100);
+  /** Padrão de números que aceita um ponto */
+  const regexOnlyNumber = new RegExp(/^[0-9]*\.?[0-9]*$/);
 
   /** Função para transformar uma string em base64 para um ArrayBuffer */
   const base64ToArrayBuffer = (base64) => {
@@ -512,7 +504,8 @@ const DetalhesPropostaEditMode = ({
 
   /** Handler do códigoPPM */
   const handleOnPPMChange = (event) => {
-    debounceState(setProposta, { ...proposta, codigoPPM: event.target.value });
+    if (!regexOnlyNumber.test(event.target.value)) return;
+    setProposta({ ...proposta, codigoPPM: event.target.value });
   };
 
   /** Handler da data da proposta */
@@ -570,22 +563,22 @@ const DetalhesPropostaEditMode = ({
 
   /** Handler da proposta da proposta */
   const handleOnPropostaChange = (event) => {
-    debounceState(setProposta, { ...proposta, proposta: event });
+    setProposta({ ...proposta, proposta: event });
   };
 
   /** Handler do problema da proposta */
   const handleOnProblemaChange = (event) => {
-    debounceState(setProposta, { ...proposta, problema: event });
+    setProposta({ ...proposta, problema: event });
   };
 
   /** Handler do escopo da proposta */
   const handleOnEscopoChange = (event) => {
-    debounceState(setProposta, { ...proposta, escopo: event });
+    setProposta({ ...proposta, escopo: event });
   };
 
   /** Handler da frequência da proposta */
   const handleOnFrequenciaChange = (event) => {
-    debounceState(setProposta, { ...proposta, frequencia: event.target.value });
+    setProposta({ ...proposta, frequencia: event.target.value });
   };
 
   const handleOnBeneficiosAddClick = () => {
@@ -640,7 +633,7 @@ const DetalhesPropostaEditMode = ({
 
   /** Handler do link do jira da proposta */
   const handleOnLinkJiraChange = (event) => {
-    debounceState(setProposta, {
+    setProposta({
       ...proposta,
       linkJira: event.target.value,
     });
@@ -664,8 +657,7 @@ const DetalhesPropostaEditMode = ({
 
   /** Handler do payback valor da proposta */
   const handleOnPaybackValorChange = (event) => {
-    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
-    if (!regexp.test(event.target.value)) return;
+    if (!regexOnlyNumber.test(event.target.value)) return;
 
     setProposta({
       ...proposta,
@@ -856,7 +848,7 @@ const DetalhesPropostaEditMode = ({
     if (textoDadosInvalidos) setFeedbackDadosInvalidos(true);
   }, [textoDadosInvalidos]);
 
-  useEffect(() => {
+  const handleOnMicChange = () => {
     switch (localClique) {
       case "titulo":
         setProposta({
@@ -875,10 +867,25 @@ const DetalhesPropostaEditMode = ({
           ...proposta,
           linkJira: palavrasJuntas,
         });
+      case "ppm":
+        setProposta({ ...proposta, codigoPPM: palavrasJuntas });
+        break;
+      case "proposta":
+        setProposta({ ...proposta, proposta: palavrasJuntas });
+        break;
+      case "problema":
+        setProposta({ ...proposta, problema: palavrasJuntas });
+        break;
+      case "escopo":
+        setProposta({ ...proposta, escopo: palavrasJuntas });
+        break;
+      case "paybackValor":
+        setProposta({ ...proposta, paybackValor: palavrasJuntas });
+        break;
       default:
         break;
     }
-  }, [palavrasJuntas]);
+  };
 
   // ***************************************** Fim UseEffects ***************************************** //
 
@@ -898,7 +905,6 @@ const DetalhesPropostaEditMode = ({
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
         onCancelClick={() => {}}
-        lendo={lendo}
       />
 
       <Feedback
@@ -906,14 +912,12 @@ const DetalhesPropostaEditMode = ({
         handleClose={() => setFeedbackDadosInvalidos(false)}
         status={"erro"}
         mensagem={textoDadosInvalidos}
-        lendo={lendo}
       />
       <Feedback
         open={feedbackComAnexoMesmoNome}
         handleClose={() => setFeedbackComAnexoMesmoNome(false)}
         status={"erro"}
         mensagem={texts.DetalhesDemanda.jaHaUmAnexoComEsseNome}
-        lendo={lendo}
       />
       {/* Box header */}
       <Box className="w-full flex justify-between">
@@ -931,12 +935,15 @@ const DetalhesPropostaEditMode = ({
               {texts.detalhesProposta.ppm}:
               <Asterisco />
             </Typography>
-            <TextField
-              variant="standard"
-              size="small"
-              defaultValue={proposta.codigoPPM}
-              onChange={handleOnPPMChange}
-              sx={{ width: "7rem" }}
+            <InputCustom
+              defaultText={proposta.codigoPPM}
+              saveProposal={(text) =>
+                handleOnPPMChange({ target: { value: text } })
+              }
+              label="ppm"
+              sx={{ width: "7rem", height: "2rem" }}
+              handleOnMicChange={handleOnMicChange}
+              regex={regexOnlyNumber}
             />
           </Box>
           <Box className="flex gap-2">
@@ -1002,38 +1009,15 @@ const DetalhesPropostaEditMode = ({
       <Box className="w-full">
         {/* Titulo */}
         <Box className="flex items-center">
-          {/* <Input
-            size="small"
-            value={proposta.titulo}
-            onChange={handleOnTituloChange}
-            type="text"
-            fullWidth
-            sx={{ color: "primary.main", fontSize: FontConfig.smallTitle }}
-            multiline={true}
-            endAdornment={
-              <InputAdornment position="end">
-                <Tooltip
-                  className="flex items-center hover:cursor-pointer"
-                  title={texts.homeGerencia.gravarAudio}
-                  onClick={() => {
-                    startRecognition("titulo");
-                  }}
-                >
-                  {escutar && localClique == "titulo" ? (
-                    <MicOutlinedIcon color="primary" />
-                  ) : (
-                    <MicNoneOutlinedIcon />
-                  )}
-                </Tooltip>
-              </InputAdornment>
-            }
-          /> */}
           <InputCustom
             label="titulo"
             defaultText={proposta.titulo}
             saveProposal={(text) =>
               handleOnTituloChange({ target: { value: text } })
             }
+            sx={{ color: "primary.main", fontSize: FontConfig.smallTitle }}
+            multiline={true}
+            handleOnMicChange={handleOnMicChange}
           />
         </Box>
 
@@ -1266,10 +1250,12 @@ const DetalhesPropostaEditMode = ({
               &nbsp;
             </Typography>
             <Box className="mx-4">
-              <ReactQuill
-                defaultValue={proposta.proposta}
-                onChange={handleOnPropostaChange}
+              <QuillCustom
+                label="proposta"
+                defaultText={proposta.proposta}
+                saveProposal={(value) => handleOnPropostaChange(value)}
                 modules={modulesQuill}
+                handleOnMicChange={handleOnMicChange}
               />
             </Box>
           </Box>
@@ -1288,10 +1274,12 @@ const DetalhesPropostaEditMode = ({
               &nbsp;
             </Typography>
             <Box className="mx-4">
-              <ReactQuill
-                defaultValue={proposta.problema}
-                onChange={handleOnProblemaChange}
+              <QuillCustom
+                label="problema"
+                defaultText={proposta.problema}
+                saveProposal={(value) => handleOnProblemaChange(value)}
                 modules={modulesQuill}
+                handleOnMicChange={handleOnMicChange}
               />
             </Box>
           </Box>
@@ -1308,10 +1296,12 @@ const DetalhesPropostaEditMode = ({
               {texts.detalhesProposta.escopoDaProposta}:&nbsp;
             </Typography>
             <Box className="mx-4">
-              <ReactQuill
-                defaultValue={proposta.escopo}
-                onChange={handleOnEscopoChange}
+              <QuillCustom
+                label="escopo"
+                defaultText={proposta.escopo}
+                saveProposal={(value) => handleOnEscopoChange(value)}
                 modules={modulesQuill}
+                handleOnMicChange={handleOnMicChange}
               />
             </Box>
           </Box>
@@ -1330,31 +1320,15 @@ const DetalhesPropostaEditMode = ({
               &nbsp;
             </Typography>
             <Box className="mx-4 flex items-center">
-              <Input
-                size="small"
-                defaultValue={proposta.frequencia}
-                onChange={handleOnFrequenciaChange}
-                type="text"
-                fullWidth
+              <InputCustom
+                label="frequencia"
+                defaultText={proposta.frequencia}
+                saveProposal={(text) =>
+                  handleOnFrequenciaChange({ target: { value: text } })
+                }
                 sx={{ fontSize: FontConfig.medium }}
                 multiline={true}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <Tooltip
-                      className="flex items-center hover:cursor-pointer mb-2"
-                      title={texts.homeGerencia.gravarAudio}
-                      onClick={() => {
-                        startRecognition("frequencia");
-                      }}
-                    >
-                      {escutar && localClique == "frequencia" ? (
-                        <MicOutlinedIcon color="primary" />
-                      ) : (
-                        <MicNoneOutlinedIcon />
-                      )}
-                    </Tooltip>
-                  </InputAdornment>
-                }
+                handleOnMicChange={handleOnMicChange}
               />
             </Box>
           </Box>
@@ -1386,7 +1360,6 @@ const DetalhesPropostaEditMode = ({
                       dados={tabela}
                       handleOnTabelaCustosChange={handleOnTabelaCustosChange}
                       handleDeleteTabelaCusto={handleDeleteTabelaCusto}
-                      lendo={lendo}
                     />
                   );
                 })
@@ -1506,7 +1479,10 @@ const DetalhesPropostaEditMode = ({
                 <ol className="list-disc">
                   {proposta.busBeneficiadas.map((bu, index) => {
                     return (
-                      <li key={index}>
+                      <li
+                        onClick={() => lerTexto(bu.sigla + "-" + bu.nomeBu)}
+                        key={index}
+                      >
                         {bu.siglaBu} - {bu.nomeBu}
                       </li>
                     );
@@ -1541,31 +1517,15 @@ const DetalhesPropostaEditMode = ({
               &nbsp;
             </Typography>
             <Box className="mx-4 flex items-center">
-              <Input
-                size="small"
-                defaultValue={proposta.linkJira}
-                onChange={handleOnLinkJiraChange}
-                type="text"
-                fullWidth
+              <InputCustom
+                label="linkJira"
+                defaultText={proposta.linkJira}
+                saveProposal={(text) =>
+                  handleOnLinkJiraChange({ target: { value: text } })
+                }
                 sx={{ fontSize: FontConfig.medium, paddingLeft: "0.6rem" }}
                 multiline={true}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <Tooltip
-                      className="flex items-center hover:cursor-pointer mb-2"
-                      title={texts.homeGerencia.gravarAudio}
-                      onClick={() => {
-                        startRecognition("linkJira");
-                      }}
-                    >
-                      {escutar && localClique == "linkJira" ? (
-                        <MicOutlinedIcon color="primary" />
-                      ) : (
-                        <MicNoneOutlinedIcon />
-                      )}
-                    </Tooltip>
-                  </InputAdornment>
-                }
+                handleOnMicChange={handleOnMicChange}
               />
             </Box>
           </Box>
@@ -1619,12 +1579,15 @@ const DetalhesPropostaEditMode = ({
             </Typography>
 
             {/* Payback Valor */}
-            <TextField
-              size="small"
-              variant="standard"
-              value={proposta.paybackValor}
-              onChange={handleOnPaybackValorChange}
-              sx={{ fontSize: FontConfig.medium, width: "3rem" }}
+            <InputCustom
+              label="paybackValor"
+              defaultText={proposta.paybackValor}
+              saveProposal={(text) =>
+                handleOnPaybackValorChange({ target: { value: text } })
+              }
+              sx={{ fontSize: FontConfig.medium, width: "4rem" }}
+              regex={regexOnlyNumber}
+              handleOnMicChange={handleOnMicChange}
             />
 
             {/* Select de payback tipo */}
@@ -1796,15 +1759,15 @@ const TabelaCustos = ({
     newTabela = EntitiesObjectService.tabelaCustos()
   ) => {},
   handleDeleteTabelaCusto = () => {},
-  texto,
-  setTexto,
-  lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // ***************************************** Handlers ***************************************** //
 
@@ -1893,32 +1856,6 @@ const TabelaCustos = ({
   };
 
   // ***************************************** Fim Handlers ***************************************** //
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <Paper className="w-full mt-2 mb-6" square>
@@ -2020,7 +1957,6 @@ const TabelaCustos = ({
                 custo={custo}
                 dados={dados}
                 handleOnCustoChange={handleOnCustoChange}
-                lendo={lendo}
               />
             );
           })}
@@ -2076,12 +2012,7 @@ const TabelaCustos = ({
         <TableBody>
           {dados.ccs.map((cc, index) => {
             return (
-              <CC
-                key={index}
-                cc={cc}
-                handleOnCCChange={handleOnCCChange}
-                lendo={lendo}
-              />
+              <CC key={index} cc={cc} handleOnCCChange={handleOnCCChange} />
             );
           })}
         </TableBody>
@@ -2119,40 +2050,31 @@ const TabelaCustos = ({
 const CC = ({
   cc = EntitiesObjectService.cc(),
   handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
-  lendo = false,
 }) => {
-  // Context para obter os textos do sistema
-  const { texts } = useContext(TextLanguageContext);
-
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter a função de leitura de texto
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
-  /** Debounce o setState passado por parâmetro */
-  const debounceState = _.debounce((setState, value) => {
-    setState(value);
-  }, 100);
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  const regexOnlyNumber = new RegExp(/^[0-9]*\.?[0-9]*$/);
 
   // ***************************************** Handlers ***************************************** //
 
   const handleOnCodigoChange = (event) => {
-    debounceState(handleOnCCChange, { ...cc, codigo: event.target.value });
+    handleOnCCChange({ ...cc, codigo: event.target.value });
   };
 
   const handleOnPorcentagemChange = (event) => {
-    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
-    if (!regexp.test(event.target.value)) return;
+    if (!regexOnlyNumber.test(event.target.value)) return;
 
     handleOnCCChange({ ...cc, porcentagem: event.target.value });
   };
 
-  // ***************************************** Fim Handlers ***************************************** //
-
-  useEffect(() => {
+  const handleOnMicChange = () => {
     switch (localClique) {
       case "codigo":
         handleOnCCChange({ ...cc, codigo: palavrasJuntas });
@@ -2164,90 +2086,36 @@ const CC = ({
       default:
         break;
     }
-  }, [palavrasJuntas]);
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
+
+  // ***************************************** Fim Handlers ***************************************** //
 
   return (
     <TableRow className="w-full border rounded">
       <td className="text-center p-2">
-        <Input
-          defaultValue={cc.codigo}
-          onChange={handleOnCodigoChange}
-          size="small"
-          type="text"
-          multiline
-          fullWidth
-          sx={{ fontConfig: FontConfig.default }}
-          endAdornment={
-            <InputAdornment position="end">
-              <Tooltip
-                className="flex items-center cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("codigo");
-                }}
-              >
-                {escutar && localClique == "codigo" ? (
-                  <MicOutlinedIcon color="primary" />
-                ) : (
-                  <MicNoneOutlinedIcon />
-                )}
-              </Tooltip>
-            </InputAdornment>
+        <InputCustom
+          label="codigo"
+          defaultText={cc.codigo}
+          saveProposal={(text) =>
+            handleOnCodigoChange({ target: { value: text } })
           }
+          sx={{ fontConfig: FontConfig.default }}
+          regex={regexOnlyNumber}
+          multiline={true}
+          handleOnMicChange={handleOnMicChange}
         />
       </td>
       <td className="text-center p-2">
-        <Input
-          value={cc.porcentagem}
-          onChange={handleOnPorcentagemChange}
-          size="small"
-          type="text"
-          multiline
-          fullWidth
-          sx={{ fontConfig: FontConfig.default }}
-          endAdornment={
-            <InputAdornment position="end">
-              <Tooltip
-                className="flex items-center cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("porcentagem");
-                }}
-              >
-                {escutar && localClique == "porcentagem" ? (
-                  <MicOutlinedIcon color="primary" />
-                ) : (
-                  <MicNoneOutlinedIcon />
-                )}
-              </Tooltip>
-            </InputAdornment>
+        <InputCustom
+          label="porcentagem"
+          defaultText={cc.porcentagem}
+          saveProposal={(text) =>
+            handleOnPorcentagemChange({ target: { value: text } })
           }
+          sx={{ fontConfig: FontConfig.default }}
+          regex={regexOnlyNumber}
+          multiline={true}
+          handleOnMicChange={handleOnMicChange}
         />
       </td>
     </TableRow>
@@ -2258,9 +2126,6 @@ const CC = ({
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
   handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
-  texto,
-  setTexto,
-  lendo = false,
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2269,14 +2134,12 @@ const CustosRow = ({
   const { texts } = useContext(TextLanguageContext);
 
   // Context para obter a função de leitura de texto
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
 
-  /** Debounce o setState passado por parâmetro */
-  const debounceState = _.debounce((setState, value) => {
-    setState(value);
-  }, 100);
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  const regexOnlyNumber = new RegExp(/^[0-9]*\.?[0-9]*$/);
 
   // Formatando o tipo da moeda de acordo com o local do usuário
   const getValorFormatted = (valor) => {
@@ -2314,7 +2177,7 @@ const CustosRow = ({
 
   // Handler para quando o tipo de despesa for alterado
   const handleOnPerfilDespesaChange = (event) => {
-    debounceState(handleOnCustoChange, {
+    handleOnCustoChange({
       ...custo,
       perfilDespesa: event.target.value,
     });
@@ -2322,8 +2185,7 @@ const CustosRow = ({
 
   // Handler para quando o tipo de despesa for alterado
   const handleOnPeriodoExecucaoChange = (event) => {
-    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
-    if (!regexp.test(event.target.value)) return;
+    if (!regexOnlyNumber.test(event.target.value)) return;
 
     handleOnCustoChange({
       ...custo,
@@ -2333,16 +2195,14 @@ const CustosRow = ({
 
   // Handler para quando o tipo de despesa for alterado
   const handleOnHorasChange = (event) => {
-    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
-    if (!regexp.test(event.target.value)) return;
+    if (!regexOnlyNumber.test(event.target.value)) return;
 
     handleOnCustoChange({ ...custo, horas: event.target.value });
   };
 
   // Handler para quando o tipo de despesa for alterado
   const handleOnValorHoraChange = (event) => {
-    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
-    if (!regexp.test(event.target.value)) return;
+    if (!regexOnlyNumber.test(event.target.value)) return;
 
     handleOnCustoChange({
       ...custo,
@@ -2350,9 +2210,7 @@ const CustosRow = ({
     });
   };
 
-  // ***************************************** Fim Handlers ***************************************** //
-
-  useEffect(() => {
+  const handleOnMicChange = () => {
     switch (localClique) {
       case "tipoDespesa":
         handleOnCustoChange({ ...custo, tipoDespesa: palavrasJuntas });
@@ -2373,150 +2231,65 @@ const CustosRow = ({
       default:
         break;
     }
-  }, [palavrasJuntas]);
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
+
+  // ***************************************** Fim Handlers ***************************************** //
 
   return (
     <TableRow>
       <td className="p-2 text-center">
         {/* Perfil da Despesa */}
-        <Input
-          defaultValue={custo.perfilDespesa}
-          onChange={handleOnPerfilDespesaChange}
-          fullWidth
-          size="small"
-          type="text"
-          multiline={true}
-          sx={{ fontConfig: FontConfig.default }}
-          endAdornment={
-            <InputAdornment position="end">
-              <Tooltip
-                className="flex items-center cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("perfilDespesa");
-                }}
-              >
-                {escutar && localClique == "perfilDespesa" ? (
-                  <MicOutlinedIcon color="primary" />
-                ) : (
-                  <MicNoneOutlinedIcon />
-                )}
-              </Tooltip>
-            </InputAdornment>
+        <InputCustom
+          label="perfilDespesa"
+          defaultText={custo.perfilDespesa}
+          saveProposal={(text) =>
+            handleOnPerfilDespesaChange({ target: { value: text } })
           }
+          sx={{ fontConfig: FontConfig.default }}
+          multiline={true}
+          handleOnMicChange={handleOnMicChange}
         />
       </td>
       <td className="p-2 text-center">
         {/* Período de Execução */}
-        <Input
-          value={custo.periodoExecucao}
-          onChange={handleOnPeriodoExecucaoChange}
-          fullWidth
-          size="small"
-          type="text"
-          multiline={true}
-          sx={{ fontConfig: FontConfig.default }}
-          endAdornment={
-            <InputAdornment position="end">
-              <Tooltip
-                className="flex items-center cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("periodoExecucao");
-                }}
-              >
-                {escutar && localClique == "periodoExecucao" ? (
-                  <MicOutlinedIcon color="primary" />
-                ) : (
-                  <MicNoneOutlinedIcon />
-                )}
-              </Tooltip>
-            </InputAdornment>
+        <InputCustom
+          label="periodoExecucao"
+          defaultText={custo.periodoExecucao}
+          saveProposal={(text) =>
+            handleOnPeriodoExecucaoChange({ target: { value: text } })
           }
+          sx={{ fontConfig: FontConfig.default }}
+          regex={regexOnlyNumber}
+          multiline={true}
+          handleOnMicChange={handleOnMicChange}
         />
       </td>
       <td className="p-2 text-center">
         {/* Horas */}
-        <Input
-          value={custo.horas}
-          onChange={handleOnHorasChange}
-          fullWidth
-          size="small"
-          type="text"
-          multiline={true}
-          sx={{ fontConfig: FontConfig.default }}
-          endAdornment={
-            <InputAdornment position="end">
-              <Tooltip
-                className="flex items-center cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("horas");
-                }}
-              >
-                {escutar && localClique == "horas" ? (
-                  <MicOutlinedIcon color="primary" />
-                ) : (
-                  <MicNoneOutlinedIcon />
-                )}
-              </Tooltip>
-            </InputAdornment>
+        <InputCustom
+          label="horas"
+          defaultText={custo.horas}
+          saveProposal={(text) =>
+            handleOnHorasChange({ target: { value: text } })
           }
+          sx={{ fontConfig: FontConfig.default }}
+          regex={regexOnlyNumber}
+          multiline={true}
+          handleOnMicChange={handleOnMicChange}
         />
       </td>
       <td className="p-2 text-center">
         {/* Valor da Hora */}
-        <Input
-          value={custo.valorHora}
-          onChange={handleOnValorHoraChange}
-          fullWidth
-          size="small"
-          type="text"
-          multiline={true}
-          sx={{ fontConfig: FontConfig.default }}
-          endAdornment={
-            <InputAdornment position="end">
-              <Tooltip
-                className="flex items-center cursor-pointer"
-                title={texts.homeGerencia.gravarAudio}
-                onClick={() => {
-                  startRecognition("valorHora");
-                }}
-              >
-                {escutar && localClique == "valorHora" ? (
-                  <MicOutlinedIcon color="primary" />
-                ) : (
-                  <MicNoneOutlinedIcon />
-                )}
-              </Tooltip>
-            </InputAdornment>
+        <InputCustom
+          label="valorHora"
+          defaultText={custo.valorHora}
+          saveProposal={(text) =>
+            handleOnValorHoraChange({ target: { value: text } })
           }
+          sx={{ fontConfig: FontConfig.default }}
+          regex={regexOnlyNumber}
+          multiline={true}
+          handleOnMicChange={handleOnMicChange}
         />
       </td>
       <td className="p-2 text-center">
@@ -2539,7 +2312,6 @@ const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
   handleOnBeneficioChange = () => {},
   handleDeleteBeneficio = () => {},
-  lendo,
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2548,9 +2320,10 @@ const Beneficio = ({
   const { texts } = useContext(TextLanguageContext);
 
   // Context para obter a função de leitura de texto
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
-    SpeechRecognitionContext
-  );
+  const { localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Estado se é um beneficio com tipo qualitativo
   const [isQualitativo, setIsQualitativo] = useState(false);
@@ -2559,6 +2332,8 @@ const Beneficio = ({
   const debounceState = _.debounce((setState, value) => {
     setState(value);
   }, 100);
+
+  const regexOnlyNumber = new RegExp(/^[0-9]*\.?[0-9]*$/);
 
   // Modules usados para o React Quill
   const modulesQuill = {
@@ -2585,6 +2360,14 @@ const Beneficio = ({
     }
   };
 
+  useEffect(() => {
+    verifyIsQualitativo();
+  }, []);
+
+  useEffect(() => {
+    verifyIsQualitativo();
+  }, [beneficio]);
+
   // ***************************************** Handlers ***************************************** //
 
   // Handler do tipo de benefício
@@ -2603,8 +2386,7 @@ const Beneficio = ({
 
   // Handler do valor mensal do benefício
   const handleOnValorMensalChange = (event) => {
-    let regexp = new RegExp(/^[0-9]*\.?[0-9]*$/);
-    if (!regexp.test(event.target.value)) return;
+    if (!regexOnlyNumber.test(event.target.value)) return;
 
     handleOnBeneficioChange({
       ...beneficio,
@@ -2619,7 +2401,7 @@ const Beneficio = ({
 
   // Handler da memória calculo do benefício
   const handleOnMemoriaCalculoChange = (event) => {
-    debounceState(handleOnBeneficioChange, {
+    handleOnBeneficioChange({
       ...beneficio,
       memoriaCalculo: event,
     });
@@ -2633,15 +2415,7 @@ const Beneficio = ({
 
   // ***************************************** UseEffects ***************************************** //
 
-  useEffect(() => {
-    verifyIsQualitativo();
-  }, []);
-
-  useEffect(() => {
-    verifyIsQualitativo();
-  }, [beneficio]);
-
-  useEffect(() => {
+  const handleOnMicChange = () => {
     switch (localClique) {
       case "valorMensal":
         handleOnBeneficioChange({
@@ -2649,38 +2423,18 @@ const Beneficio = ({
           valor_mensal: palavrasJuntas,
         });
         break;
+      case "memoriaCalculo":
+        handleOnBeneficioChange({
+          ...beneficio,
+          memoriaCalculo: palavrasJuntas,
+        });
+        break;
       default:
         break;
     }
-  }, [palavrasJuntas]);
+  };
 
   // ***************************************** Fim UseEffects ***************************************** //
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   if (beneficio.id === 0) return null;
 
@@ -2779,31 +2533,16 @@ const Beneficio = ({
               <>
                 <td className="text-center p-2">
                   {/* Input de valor mensal */}
-                  <Input
-                    size="small"
-                    value={beneficio.valor_mensal}
-                    onChange={handleOnValorMensalChange}
-                    type="text"
-                    fullWidth
-                    sx={{ fontSize: FontConfig.default }}
-                    multiline={true}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <Tooltip
-                          className="flex items-center cursor-pointer"
-                          title={texts.homeGerencia.gravarAudio}
-                          onClick={() => {
-                            startRecognition("valorMensal");
-                          }}
-                        >
-                          {escutar && localClique == "valorMensal" ? (
-                            <MicOutlinedIcon color="primary" />
-                          ) : (
-                            <MicNoneOutlinedIcon />
-                          )}
-                        </Tooltip>
-                      </InputAdornment>
+                  <InputCustom
+                    label="valorMensal"
+                    defaultText={beneficio.valor_mensal}
+                    saveProposal={(text) =>
+                      handleOnValorMensalChange({ target: { value: text } })
                     }
+                    sx={{ fontConfig: FontConfig.default }}
+                    regex={regexOnlyNumber}
+                    multiline={true}
+                    handleOnMicChange={handleOnMicChange}
                   />
                 </td>
                 <td className="text-center p-2">
@@ -2830,10 +2569,12 @@ const Beneficio = ({
             )}
             <td className="text-center p-2">
               {/* Caixa de texto para memória de cálculo */}
-              <ReactQuill
-                defaultValue={beneficio.memoriaCalculo}
-                onChange={handleOnMemoriaCalculoChange}
+              <QuillCustom
+                defaultText={beneficio.memoriaCalculo}
+                label="memoriaCalculo"
                 modules={modulesQuill}
+                saveProposal={(value) => handleOnMemoriaCalculoChange(value)}
+                handleOnMicChange={handleOnMicChange}
               />
             </td>
           </TableRow>
@@ -2858,9 +2599,6 @@ const Beneficio = ({
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
   setProposta = () => {},
-  texto,
-  setTexto,
-  lendo = false,
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2868,10 +2606,11 @@ const ParecerComissaoInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  /** Debounce o setState passado por parâmetro */
-  const debounceState = _.debounce((setState, value) => {
-    setState(value);
-  }, 100);
+  // Context para obter a função de leitura de texto
+  const { localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Modules usados para o React Quill
   const modulesQuill = {
@@ -2891,7 +2630,7 @@ const ParecerComissaoInsertText = ({
 
   // Handler para quando o texto do parecer da comissão é alterado
   const handleOnParecerComissaoChange = (value) => {
-    debounceState(setProposta, { ...proposta, parecerInformacao: value });
+    setProposta({ ...proposta, parecerInformacao: value });
   };
 
   // Handler para quando o parecer da comissão é selecionado
@@ -2908,29 +2647,13 @@ const ParecerComissaoInsertText = ({
     }
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
+  const handleOnMicChange = () => {
+    switch (localClique) {
+      case "valorMensal":
+        handleOnParecerComissaoChange(palavrasJuntas);
+        break;
+      default:
+        break;
     }
   };
 
@@ -2986,12 +2709,14 @@ const ParecerComissaoInsertText = ({
       </Box>
       <Box className="mt-4">
         {proposta.parecerComissao != "NONE" && (
-          <ReactQuill
-            defaultValue={
+          <QuillCustom
+            defaultText={
               proposta.parecerInformacao ? proposta.parecerInformacao : ""
             }
-            onChange={handleOnParecerComissaoChange}
+            label="parecerComsisao"
             modules={modulesQuill}
+            saveProposal={(value) => handleOnParecerComissaoChange(value)}
+            handleOnMicChange={handleOnMicChange}
           />
         )}
       </Box>
@@ -3003,9 +2728,6 @@ const ParecerComissaoInsertText = ({
 const ParecerDGInsertText = ({
   proposta = propostaExample,
   setProposta = () => {},
-  texto,
-  setTexto,
-  lendo = false,
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -3013,10 +2735,11 @@ const ParecerDGInsertText = ({
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  /** Debounce o setState passado por parâmetro */
-  const debounceState = _.debounce((setState, value) => {
-    setState(value);
-  }, 100);
+  // Context para obter a função de leitura de texto
+  const { localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+
+  // Context para ler o texto da tela
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   // Modules usados para o React Quill
   const modulesQuill = {
@@ -3036,7 +2759,7 @@ const ParecerDGInsertText = ({
 
   // Handler para quando o texto do parecer da comissão é alterado
   const handleOnParecerDGChange = (value) => {
-    debounceState(setProposta, { ...proposta, parecerInformacaoDG: value });
+    setProposta({ ...proposta, parecerInformacaoDG: value });
   };
 
   // Handler para o select do parecer da DG
@@ -3053,29 +2776,13 @@ const ParecerDGInsertText = ({
     }
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
+  const handleOnMicChange = () => {
+    switch (localClique) {
+      case "parecerDG":
+        handleOnParecerDGChange(palavrasJuntas);
+        break;
+      default:
+        break;
     }
   };
 
@@ -3133,12 +2840,14 @@ const ParecerDGInsertText = ({
       </Box>
       <Box className="mt-4">
         {proposta.parecerDG != "NONE" && (
-          <ReactQuill
-            defaultValue={
+          <QuillCustom
+            defaultText={
               proposta.parecerInformacaoDG ? proposta.parecerInformacaoDG : ""
             }
-            onChange={handleOnParecerDGChange}
+            label="parecerDG"
             modules={modulesQuill}
+            saveProposal={(value) => handleOnParecerDGChange(value)}
+            handleOnMicChange={handleOnMicChange}
           />
         )}
       </Box>

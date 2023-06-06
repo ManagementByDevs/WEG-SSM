@@ -1,23 +1,25 @@
-import { React, useContext, useEffect, useState } from "react";
+import { React, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Typography, Box, Tooltip } from "@mui/material";
+
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-import UsuarioService from "../../service/usuarioService";
-import CookieService from "../../service/cookieService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente utilizado para mostrar o caminho atual do usuário no sistema */
 const Caminho = (props) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  // Context para ler o texto da tela
+  const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Navigate utilizado para nevegar para uma outra página */
   const navigate = useNavigate();
@@ -51,32 +53,6 @@ const Caminho = (props) => {
     return texts.rotas[indexCaminho];
   };
 
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <Box
       className="flex items-center gap-x-1"
@@ -105,7 +81,7 @@ const Caminho = (props) => {
                   fontSize={FontConfig.default}
                   sx={{ fontWeight: 500 }}
                   onClick={() => {
-                    if (!props.lendo) {
+                    if (!lendoTexto) {
                       navigate("/" + item);
                     } else {
                       lerTexto(getPathName(item));
