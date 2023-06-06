@@ -58,7 +58,7 @@ const Chat = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, localClique, palavrasJuntas, setEscutar, setPalavrasJuntas } = useContext(SpeechRecognitionContext);
 
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();

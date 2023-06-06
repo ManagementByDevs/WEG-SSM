@@ -17,6 +17,7 @@ import Feedback from "../../components/Feedback/Feedback";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import ExportPdfService from "../../service/exportPdfService";
+import FontContext from "../../service/FontContext";
 
 /** Página que mostra os detalhes da proposta selecionada, com opção de download para pdf */
 const DetalhesPropostaPagina = ({ lendo = false }) => {
