@@ -16,6 +16,7 @@ import UsuarioService from "../../service/usuarioService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
+
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -31,6 +32,9 @@ const DemandaGerencia = (props) => {
   // Variável para obter o usuário logado
   const [user] = useState(UsuarioService.getUserCookies());
 
+  // useState para abrir o modal de histórico
+  const [modalHistorico, setModalHistorico] = useState(false);
+
   // Função para mudar a cor do status da demanda
   function getCorStatus() {
     if (props.dados.status === "BACKLOG_REVISAO") {
@@ -45,9 +49,6 @@ const DemandaGerencia = (props) => {
       return "#FFD600";
     }
   }
-
-  // useState para abrir o modal de histórico
-  const [modalHistorico, setModalHistorico] = useState(false);
 
   // Função para abrir o modal de histórico
   const abrirModalHistorico = () => {

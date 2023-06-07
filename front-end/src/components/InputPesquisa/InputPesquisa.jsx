@@ -50,6 +50,7 @@ const Input = styled("input")(({ theme }) => ({
 }));
 
 export default function UseAutocomplete(props) {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 

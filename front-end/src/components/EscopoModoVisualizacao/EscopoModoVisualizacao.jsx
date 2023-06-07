@@ -1,14 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -47,7 +39,8 @@ const EscopoModoVisualizacao = ({
         lendo={lendo}
       />
     );
-    // Se for table, aparecerá o componente de Table
+
+  // Se for table, aparecerá o componente de Table
   return (
     <EscopoTable
       listaEscopos={listaEscopos}
@@ -77,6 +70,7 @@ const EscopoTable = ({
   buscar,
   lendo,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -133,13 +127,13 @@ const EscopoTable = ({
     if (lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -147,7 +141,7 @@ const EscopoTable = ({
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -309,6 +303,7 @@ const EscopoGrid = ({
 
 // Componente para exibir nada encontrado
 const NadaEncontrado = (props) => {
+  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -320,13 +315,13 @@ const NadaEncontrado = (props) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -334,7 +329,7 @@ const NadaEncontrado = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };

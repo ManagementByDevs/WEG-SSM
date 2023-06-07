@@ -1,12 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import {
-  Menu,
-  MenuItem,
-  Tooltip,
-  IconButton,
-  Typography,
-} from "@mui/material/";
+import { Menu, MenuItem, Tooltip, IconButton, Typography, } from "@mui/material/";
 
 import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
@@ -23,9 +17,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal para selecionar o idioma do sistema
 const IdiomaModal = () => {
-  useEffect(() => {
-    arrangePreferences();
-  }, []);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -44,6 +35,11 @@ const IdiomaModal = () => {
 
   // Variável que é usada para saber se o menu está aberto ou não
   const open = Boolean(anchorEl);
+
+  // UseEffect para pegar as preferêncais do usuário
+  useEffect(() => {
+    arrangePreferences();
+  }, []);
 
   // Função para abrir o menu
   const handleClick = (event) => {
@@ -112,7 +108,7 @@ const IdiomaModal = () => {
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => {});
+        UsuarioService.updateUser(user.id, user).then((e) => { });
       }
     );
   };
@@ -122,6 +118,7 @@ const IdiomaModal = () => {
     saveNewPreference();
   }, [idioma]);
 
+  // Toda vez que o usuário logar, será pego as preferências dele
   useEffect(() => {
     if (!CookieService.getCookie("jwt")) return;
     UsuarioService.getPreferencias(CookieService.getCookie("jwt")?.sub).then(
@@ -133,7 +130,6 @@ const IdiomaModal = () => {
       }
     );
   }, []);
-  // ********************************************** Fim Preferências **********************************************
 
   return (
     // Div container do idioma

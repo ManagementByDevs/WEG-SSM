@@ -16,6 +16,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Header padrão usado no topo de todas as páginas do sistema */
 const Header = () => {
+  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

@@ -5,15 +5,20 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Feedback padrão para avisos do sistema sobre processos concluídos / problemas no sistema */
 const Feedback = (props) => {
-  // Variáveis de estilo para o componente (definir a posição)
+
+  // Variável para definir a posição vertical do feedback
   const vertical = "top";
+
+  // Variável para definir a posição horizontal do feedback
   const horizontal = "right";
 
   // Context para ler o texto da tela
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
+  /** Variável para definir o texto que será lido pela api */
   const [textoLeitura, setTextoLeitura] = useState("");
 
+  /** Função para retornar o tipo do feedback */
   const getStatus = () => {
     switch (props.status) {
       case "sucesso":
@@ -36,13 +41,12 @@ const Feedback = (props) => {
       autoHideDuration={5000}
       onClose={props.handleClose}
     >
+      {/* Gerado o feedabck */}
       <Alert
         onClose={props.handleClose}
         severity={getStatus()}
         sx={{ width: "100%" }}
-        onClick={() => {
-          lerTexto(props.mensagem);
-        }}
+        onClick={() => { lerTexto(props.mensagem) }}
       >
         {props.mensagem}
       </Alert>

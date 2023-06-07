@@ -1,15 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Typography,
-  Button,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, Button, } from "@mui/material";
 
 import "./DemandaModoVisualizacao.css";
 
@@ -28,6 +19,7 @@ const DemandaModoVisualizacao = ({
   myDemandas,
   lendo = false,
 }) => {
+
   // Verificacao para ver se retornou alignProperty, caso não tenha nada, mostra o componente "NadaEncontrado"
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
@@ -72,6 +64,7 @@ const DemandaTable = ({
   myDemandas,
   lendo = false,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -310,7 +303,7 @@ const DemandaTable = ({
                       </Typography>
                       {/* Botao do motivo da recusa caso foi cancelado ou esperando edição */}
                       {row.status == "CANCELLED" ||
-                      row.status == "BACKLOG_EDICAO" ? (
+                        row.status == "BACKLOG_EDICAO" ? (
                         <Button
                           className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
@@ -393,6 +386,7 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, lendo = false }) => {
 
 // Componente para exibir nada encontrado
 const NadaEncontrado = (props) => {
+  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 

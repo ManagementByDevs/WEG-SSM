@@ -11,6 +11,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -19,9 +20,6 @@ const FormularioDadosDemanda = (props) => {
 
   // Context para ler o texto da tela
   const { lerTexto } = useContext(SpeechSynthesisContext);
-
-  // Todas as funções de salvamento modificam diretamente as variáveis do componente "BarraProgressãoDemanda" (paginaDados)
-  // através do "props"
 
   /** Função para salvar o título da demanda */
   const salvarTitulo = (texto) => {
@@ -54,7 +52,6 @@ const FormularioDadosDemanda = (props) => {
           sx={{ marginBottom: "1rem", marginTop: "3rem" }}
         >
           {/* Input de título */}
-
           <InputComLabel
             texto={props.dados.titulo}
             saveInputValue={salvarTitulo}
@@ -75,9 +72,7 @@ const FormularioDadosDemanda = (props) => {
               <Typography
                 fontSize={FontConfig.default}
                 fontWeight={600}
-                onClick={() => {
-                  lerTexto(texts.formularioDadosDemanda.problema);
-                }}
+                onClick={() => { lerTexto(texts.formularioDadosDemanda.problema); }}
               >
                 {texts.formularioDadosDemanda.problema}
               </Typography>
@@ -96,10 +91,7 @@ const FormularioDadosDemanda = (props) => {
             </Box>
 
             <Box
-              sx={{
-                borderLeft: "solid 4px",
-                borderColor: "primary.main",
-              }}
+              sx={{ borderLeft: "solid 4px", borderColor: "primary.main" }}
             >
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProblema}
@@ -133,12 +125,8 @@ const FormularioDadosDemanda = (props) => {
                 *
               </Typography>
             </Box>
-
             <Box
-              sx={{
-                borderLeft: "solid 4px",
-                borderColor: "primary.main",
-              }}
+              sx={{ borderLeft: "solid 4px", borderColor: "primary.main" }}
             >
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProposta}
@@ -149,7 +137,6 @@ const FormularioDadosDemanda = (props) => {
               />
             </Box>
           </Box>
-
           <Box sx={{ width: "40%", marginTop: "3rem" }}>
             {/* Input de frequência */}
             <InputComLabel

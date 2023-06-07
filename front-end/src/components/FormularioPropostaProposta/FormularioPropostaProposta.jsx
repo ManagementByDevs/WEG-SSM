@@ -1,16 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import {
-  Box,
-  Typography,
-  Divider,
-  Paper,
-  IconButton,
-  Tooltip,
-  MenuItem,
-  TextField,
-  Autocomplete,
-  Checkbox,
-} from "@mui/material";
+import { Box, Typography, Divider, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox, } from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -39,6 +28,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 /** Fase de criação de proposta em que os dados da demanda poderão ser editados */
 const FormularioPropostaProposta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -290,7 +280,7 @@ const FormularioPropostaProposta = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-       
+
     }
   };
 
@@ -309,18 +299,18 @@ const FormularioPropostaProposta = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -328,7 +318,7 @@ const FormularioPropostaProposta = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
