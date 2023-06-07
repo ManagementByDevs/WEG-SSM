@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras";
-
 import { Box, IconButton, Tooltip } from "@mui/material";
+
+import VLibras from "@djpfs/react-vlibras";
 import ClipLoader from "react-spinners/ClipLoader";
+import Tour from "reactour";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
@@ -18,24 +19,36 @@ import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import EscopoModoVisualizacao from "../../components/EscopoModoVisualizacao/EscopoModoVisualizacao";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 import EscopoService from "../../service/escopoService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
-
-import Tour from "reactour";
-import Paginacao from "../../components/Paginacao/Paginacao";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Tela para mostrar os escopos de demandas/propostas não finalizadas */
-const Escopos = ({ lendo = false }) => {
-
+const Escopos = () => {
   // useContext para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lendoTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const {
+    startRecognition,
+    escutar,
+    localClique,
+    palavrasJuntas,
+    setEscutar,
+    setPalavrasJuntas,
+  } = useContext(SpeechRecognitionContext);
 
   /** Navigate utilizado para navegar entre as páginas */
   const navigate = useNavigate();
@@ -55,12 +68,6 @@ const Escopos = ({ lendo = false }) => {
   /** useState para aparecer o feedback de escopo deletado */
   const [feedbackDeletar, setFeedbackDeletar] = useState(false);
 
-  /** useState utilizado para ativar o feedbakc de navegador incompatível */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
-
-  /** useState utilizado para ativar o feedback de erro ao reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
-
   /** useState utilizado para setar o modo de visualização dos escopos ( Tabela ou grid ) */
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
@@ -77,7 +84,7 @@ const Escopos = ({ lendo = false }) => {
   const [tamanhoPagina, setTamanhoPagina] = useState(20);
 
   /** useState para armazenar o valor do input na barra de pesquisa */
-  let inputPesquisa = "";
+  const [inputPesquisa, setInputPesquisa] = useState("");
 
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
@@ -148,13 +155,13 @@ const Escopos = ({ lendo = false }) => {
       const escopoFormatado = {
         ...escopo,
         proposta: atob(escopo.proposta),
-        porcentagem: calculaPorcentagem(escopo)
-      }
+        porcentagem: calculaPorcentagem(escopo),
+      };
       listaNova.push(escopoFormatado);
     }
 
     return listaNova;
-  }
+  };
 
   /** Função integrada com a barra de pesquisa para buscar os escopos */
   const buscarEscopos = () => {
@@ -164,7 +171,7 @@ const Escopos = ({ lendo = false }) => {
     EscopoService.buscarPagina(params, "sort=id,asc&").then((response) => {
       setEscopos(formatarEscopos(response.content));
       setCarregamentoItens(false);
-    })
+    });
   };
 
   /** Função para calcular a porcentagem de preenchimento do escopo */
@@ -187,7 +194,7 @@ const Escopos = ({ lendo = false }) => {
 
   /** Função para salvar o valor do input de pesquisa no estado */
   const salvarPesquisa = (e) => {
-    inputPesquisa = e.target.value;
+    setInputPesquisa(e.target.value);
   };
 
   /** Função para abrir o escopo para continuar a edição */
@@ -216,90 +223,11 @@ const Escopos = ({ lendo = false }) => {
     }
   };
 
-  // ********************************************** Gravar audio ********************************************** //
-
-  /** Varíavel utilizada para lógica de gravação de audio */
-  const recognitionRef = useRef(null);
-
-  /** Variável utilizada para ativar o microfone para gravação de audio */
-  const [escutar, setEscutar] = useState(false);
-
-  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  /** Função para gravar audio nos inputs */
-  const ouvirAudio = () => {
-    /** Verifica se a API é suportada pelo navegador */
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {
-      };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-
-
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   /** useEffect utilizado para atualizar o input de pesquisa com o texto reconhecido */
   useEffect(() => {
-    inputPesquisa = palavrasJuntas;
+    console.log("passou aqui: ", palavrasJuntas);
+    setInputPesquisa(palavrasJuntas);
   }, [palavrasJuntas]);
-
-  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  /** Função para encerrar a gravação de voz */
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  /** Função para iniciar a gravação de voz */
-  const startRecognition = () => {
-    setEscutar(!escutar);
-  };
 
   /** Função para trocar o modo de visualização dos itens (bloco / lista) */
   const trocarModoVisualizacao = () => {
@@ -337,17 +265,18 @@ const Escopos = ({ lendo = false }) => {
   };
 
   return (
-    <FundoComHeader lendo={lendo}>
+    <FundoComHeader>
       <VLibras forceOnload />
       {/* Modal de confirmação de exclusão de escopo */}
       <ModalConfirmacao
         textoModal={"descartarRascunho"}
         onConfirmClick={onDeleteClickEscopo}
-        onCancelClick={() => { setOpenModalConfirmacao(false) }}
+        onCancelClick={() => {
+          setOpenModalConfirmacao(false);
+        }}
         textoBotao={"sim"}
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
-        lendo={lendo}
       />
       {/* Tour de ajuda */}
       <Tour
@@ -360,7 +289,7 @@ const Escopos = ({ lendo = false }) => {
       />
       <Ajuda onClick={() => setIsTourOpen(true)} />
       <Box className="p-2">
-        <Caminho lendo={lendo} />
+        <Caminho />
         {/* Div pegando width inteira para fazer o espaçamento das bordas */}
         <Box className="flex justify-center w-full">
           {/* Container conteudo */}
@@ -389,6 +318,7 @@ const Escopos = ({ lendo = false }) => {
                   }}
                   placeholder={texts.escopos.pesquisarPorTitulo}
                   onChange={(e) => salvarPesquisa(e)}
+                  value={inputPesquisa}
                   onKeyDown={(e) => {
                     eventoTeclado(e);
                   }}
@@ -474,31 +404,10 @@ const Escopos = ({ lendo = false }) => {
                   handleDelete={onTrashCanClick}
                   buscar={buscarEscopos}
                   isTourOpen={isTourOpen}
-                  lendo={lendo}
                 />
               )}
             </Box>
 
-            {/* Feedback Erro reconhecimento de voz */}
-            <Feedback
-              open={feedbackErroReconhecimentoVoz}
-              handleClose={() => {
-                setFeedbackErroReconhecimentoVoz(false);
-              }}
-              status={"erro"}
-              mensagem={texts.homeGerencia.feedback.feedback12}
-              lendo={lendo}
-            />
-            {/* Feedback Não navegador incompativel */}
-            <Feedback
-              open={feedbackErroNavegadorIncompativel}
-              handleClose={() => {
-                setFeedbackErroNavegadorIncompativel(false);
-              }}
-              status={"erro"}
-              mensagem={texts.homeGerencia.feedback.feedback13}
-              lendo={lendo}
-            />
             {/* Feedback de escopo deletado com sucesso */}
             <Feedback
               open={feedbackDeletar}
@@ -507,8 +416,6 @@ const Escopos = ({ lendo = false }) => {
               }}
               status={"sucesso"}
               mensagem={texts.escopos.escopoDeletadoComSucesso}
-              lendo={lendo}
-              s
             />
           </Box>
         </Box>
@@ -520,7 +427,6 @@ const Escopos = ({ lendo = false }) => {
             setTamanho={setTamanhoPagina}
             tamanhoPagina={tamanhoPagina}
             setPaginaAtual={setPaginaAtual}
-            lendo={lendo}
           />
         ) : null}
       </Box>

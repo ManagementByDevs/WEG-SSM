@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente para mostrar os dados do escopo
 const Escopo = (props) => {
@@ -14,6 +15,9 @@ const Escopo = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Variável utilizada para armazenar o valor em html do campo */
   const propostaEscopo = useRef(null);
@@ -28,32 +32,6 @@ const Escopo = (props) => {
   /** Função para formatar o html em texto */
   const getPropostaFomartted = (proposta) => {
     return proposta[0]?.toUpperCase() + proposta.substring(1).toLowerCase();
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (
@@ -73,8 +51,11 @@ const Escopo = (props) => {
           className="w-3/4 overflow-hidden text-ellipsis whitespace-nowrap"
           fontSize={FontConfig.veryBig}
           fontWeight="600"
-          onClick={() => {
-            lerTexto(props.escopo.titulo);
+          onClick={(e) => {
+            if (lendoTexto) {
+              e.stopPropagation();
+              lerTexto(props.escopo.titulo);
+            }
           }}
         >
           {props.escopo.titulo}
@@ -96,8 +77,11 @@ const Escopo = (props) => {
           </Box>
           <Typography
             fontSize={FontConfig.medium}
-            onClick={() => {
-              lerTexto(props.escopo.porcentagem);
+            onClick={(e) => {
+              if (lendoTexto) {
+                e.stopPropagation();
+                lerTexto(props.escopo.porcentagem);
+              }
             }}
           >
             {props.escopo.porcentagem}
@@ -112,8 +96,11 @@ const Escopo = (props) => {
             className="w-11/12 h-full overflow-hidden text-ellipsis whitespace-pre-wrap"
             fontSize={FontConfig.default}
             ref={propostaEscopo}
-            onClick={() => {
-              lerTexto(getPropostaFomartted(props.escopo.proposta));
+            onClick={(e) => {
+              if (lendoTexto) {
+                e.stopPropagation();
+                lerTexto(getPropostaFomartted(props.escopo.proposta));
+              }
             }}
           >
             {getPropostaFomartted(props.escopo.proposta)}

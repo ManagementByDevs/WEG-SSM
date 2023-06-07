@@ -11,19 +11,15 @@ import BarraProgressaoDemanda from "../../components/BarraProgressaoDemanda/Barr
 import FontContext from "../../service/FontContext";
 
 /** Tela de base que mostra a edição do escopo */
-const EditarEscopo = ({ lendo = false }) => {
-
-  /** Context para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
-
+const EditarEscopo = () => {
   return (
-    <FundoComHeader lendo={lendo}>
+    <FundoComHeader>
       <VLibras forceOnload />
       <Box className="p-2">
-        <Caminho lendo={lendo} />
+        <Caminho />
         <Box className="w-full flex justify-center">
           <Box className="w-5/6">
-            <BarraProgressaoDemanda steps={["Dados", "Benefícios", "Anexos"]} lendo={lendo} />
+            <BarraProgressaoDemanda steps={["Dados", "Benefícios", "Anexos"]} />
           </Box>
         </Box>
       </Box>

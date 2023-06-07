@@ -146,12 +146,9 @@ const App = () => {
                         />
                         <Route
                           path="/editar-escopo"
-                          element={<EditarEscopo lendo={lendoTexto} />}
+                          element={<EditarEscopo />}
                         />
-                        <Route
-                          path="/escopos"
-                          element={<Escopos lendo={lendoTexto} />}
-                        />
+                        <Route path="/escopos" element={<Escopos />} />
                         <Route
                           path="*"
                           element={<NotFound lendo={lendoTexto} />}

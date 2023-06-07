@@ -5,7 +5,16 @@ import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 import VLibras from "@djpfs/react-vlibras";
 
-import { Box, Avatar, Typography, Divider, Tooltip, IconButton, Menu, MenuItem, } from "@mui/material";
+import {
+  Box,
+  Avatar,
+  Typography,
+  Divider,
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import CommentsDisabledOutlinedIcon from "@mui/icons-material/CommentsDisabledOutlined";
@@ -42,7 +51,6 @@ import logoWeg from "../../assets/logo-weg.png";
 
 /** Chat para conversa entre usuários do sistema */
 const Chat = (props) => {
-
   /** Context para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
@@ -59,7 +67,9 @@ const Chat = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas, setEscutar, setPalavrasJuntas } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
@@ -80,7 +90,9 @@ const Chat = (props) => {
   const [pesquisaContato, setPesquisaContato] = useState("");
 
   /** UseState para armazenar os resultados da pesquisa */
-  const [resultadosContato, setResultadosContato] = useState([EntitiesObjectService.chat()]);
+  const [resultadosContato, setResultadosContato] = useState([
+    EntitiesObjectService.chat(),
+  ]);
 
   /** UseState para controlar o loading de mensagens */
   const [buscandoMensagens, setBuscandoMensagens] = useState(true);
@@ -93,12 +105,6 @@ const Chat = (props) => {
 
   /** UseState para feedback de que anexo é muito grande */
   const [feedbackAnexoGrande, setFeedbackAnexoGrande] = useState(false);
-
-  /** UseState para feedback de navegador incompatível */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
-
-  /** UseState para feedback de erro ao reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
@@ -116,7 +122,9 @@ const Chat = (props) => {
   const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
 
   /** Todas as mensagens do chat selecionado */
-  const [mensagens, setMensagens] = useState([EntitiesObjectService.mensagem()]);
+  const [mensagens, setMensagens] = useState([
+    EntitiesObjectService.mensagem(),
+  ]);
 
   /** Usuário logado */
   const [user, setUser] = useState(UsuarioService.getUserCookies());
@@ -126,9 +134,6 @@ const Chat = (props) => {
 
   /** Variável que é usada para saber se o menu está aberto ou não */
   const open = Boolean(anchorEl);
-
-  /** Variável para armazenar o texto que será lido pela API */
-  const [textoLeitura, setTextoLeitura] = useState("");
 
   /** Passos do tour */
   const stepsTour = [
@@ -318,31 +323,6 @@ const Chat = (props) => {
     }
   }, [mensagens]);
 
-  /** Função que irá "ouvir" o texto que será "lido" pela a API */
-  useEffect(() => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(textoLeitura);
-
-    const finalizarLeitura = () => {
-      if ("speechSynthesis" in window) {
-        synthesis.cancel();
-      }
-    };
-
-    if (props.lendo && textoLeitura !== "") {
-      if ("speechSynthesis" in window) {
-        synthesis.speak(utterance);
-        // setTextoLeitura("");
-      }
-    } else {
-      finalizarLeitura();
-    }
-
-    return () => {
-      finalizarLeitura();
-    };
-  }, [textoLeitura]);  
-
   /** useEffect utilizado para descobrir qual foi o local clicado */
   useEffect(() => {
     switch (localClique) {
@@ -522,7 +502,7 @@ const Chat = (props) => {
           );
           inputRef.current.value = "";
         })
-        .catch((error) => { });
+        .catch((error) => {});
     } else {
       setFeedbackAnexoGrande(true);
     }
@@ -687,7 +667,9 @@ const Chat = (props) => {
                   <Tooltip
                     className="hover:cursor-pointer"
                     title={texts.homeGerencia.gravarAudio}
-                    onClick={() => { startRecognition("titulo") }}
+                    onClick={() => {
+                      startRecognition("titulo");
+                    }}
                   >
                     {escutar && localClique == "titulo" ? (
                       <MicOutlinedIcon
@@ -763,7 +745,9 @@ const Chat = (props) => {
                     fontSize={FontConfig.title}
                     color={"text.secondary"}
                     sx={{ fontWeight: "600" }}
-                    onClick={() => { lerTexto(texts.chat.selecioneAlgumaConversa) }}
+                    onClick={() => {
+                      lerTexto(texts.chat.selecioneAlgumaConversa);
+                    }}
                   >
                     {texts.chat.selecioneAlgumaConversa}
                   </Typography>
@@ -781,7 +765,7 @@ const Chat = (props) => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                      // src={usuarios[indexUsuario].foto}
+                        // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -791,13 +775,17 @@ const Chat = (props) => {
                           className="ml-2"
                           fontSize={FontConfig.veryBig}
                           fontWeight="600"
-                          onClick={() => { lerTexto(texts.chat.usuarioTour.tour) }}
+                          onClick={() => {
+                            lerTexto(texts.chat.usuarioTour.tour);
+                          }}
                         >
                           {texts.chat.usuarioTour.tour}
                         </Typography>
                         <Typography
                           fontSize={FontConfig.small}
-                          onClick={() => { lerTexto(texts.chat.cargo) }}
+                          onClick={() => {
+                            lerTexto(texts.chat.cargo);
+                          }}
                         >
                           {texts.chat.cargo}
                         </Typography>
@@ -830,7 +818,9 @@ const Chat = (props) => {
                           {/* Itens do menu */}
                           <MenuItem
                             className="gap-2"
-                            onClick={() => { handleClose() }}
+                            onClick={() => {
+                              handleClose();
+                            }}
                           >
                             <OpenInNewOutlinedIcon />
                             <Typography
@@ -988,7 +978,7 @@ const Chat = (props) => {
                       <Avatar
                         className="ml-7"
                         sx={{ width: "3.5rem", height: "3.5rem" }}
-                      // src={usuarios[indexUsuario].foto}
+                        // src={usuarios[indexUsuario].foto}
                       />
                       <Box
                         className="flex flex-col ml-3"
@@ -1081,66 +1071,66 @@ const Chat = (props) => {
                               chat.id == idChat &&
                               chat.idProposta.solicitante.id != user.usuario.id
                           ) && (
-                              <>
-                                <div className="w-full flex justify-center">
-                                  <hr className="w-10/12 my-1.5" />
-                                </div>
+                            <>
+                              <div className="w-full flex justify-center">
+                                <hr className="w-10/12 my-1.5" />
+                              </div>
 
-                                {isConversaEncerrada() ? (
-                                  <MenuItem
-                                    className="gap-2"
+                              {isConversaEncerrada() ? (
+                                <MenuItem
+                                  className="gap-2"
+                                  onClick={() => {
+                                    handleClose();
+                                    abrirModalAbrirChat();
+                                  }}
+                                >
+                                  <CommentOutlinedIcon
+                                    sx={{
+                                      fontSize: "25px",
+                                      color: "tertiary.main",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                  <Typography
+                                    color={"text.primary"}
+                                    fontSize={FontConfig.medium}
+                                    sx={{ fontWeight: 500 }}
                                     onClick={() => {
-                                      handleClose();
-                                      abrirModalAbrirChat();
+                                      lerTexto(texts.chat.reabrirChat);
                                     }}
                                   >
-                                    <CommentOutlinedIcon
-                                      sx={{
-                                        fontSize: "25px",
-                                        color: "tertiary.main",
-                                        cursor: "pointer",
-                                      }}
-                                    />
-                                    <Typography
-                                      color={"text.primary"}
-                                      fontSize={FontConfig.medium}
-                                      sx={{ fontWeight: 500 }}
-                                      onClick={() => {
-                                        lerTexto(texts.chat.reabrirChat);
-                                      }}
-                                    >
-                                      {texts.chat.reabrirChat}
-                                    </Typography>
-                                  </MenuItem>
-                                ) : (
-                                  <MenuItem
-                                    className="gap-2"
+                                    {texts.chat.reabrirChat}
+                                  </Typography>
+                                </MenuItem>
+                              ) : (
+                                <MenuItem
+                                  className="gap-2"
+                                  onClick={() => {
+                                    handleClose();
+                                    abrirModalCancelarChat();
+                                  }}
+                                >
+                                  <CommentsDisabledOutlinedIcon
+                                    sx={{
+                                      fontSize: "25px",
+                                      color: "tertiary.main",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                  <Typography
+                                    color={"text.primary"}
+                                    fontSize={FontConfig.medium}
+                                    sx={{ fontWeight: 500 }}
                                     onClick={() => {
-                                      handleClose();
-                                      abrirModalCancelarChat();
+                                      lerTexto(texts.chat.encerrarChat);
                                     }}
                                   >
-                                    <CommentsDisabledOutlinedIcon
-                                      sx={{
-                                        fontSize: "25px",
-                                        color: "tertiary.main",
-                                        cursor: "pointer",
-                                      }}
-                                    />
-                                    <Typography
-                                      color={"text.primary"}
-                                      fontSize={FontConfig.medium}
-                                      sx={{ fontWeight: 500 }}
-                                      onClick={() => {
-                                        lerTexto(texts.chat.encerrarChat);
-                                      }}
-                                    >
-                                      {texts.chat.encerrarChat}
-                                    </Typography>
-                                  </MenuItem>
-                                )}
-                              </>
-                            )}
+                                    {texts.chat.encerrarChat}
+                                  </Typography>
+                                </MenuItem>
+                              )}
+                            </>
+                          )}
                         </Box>
                       </Menu>
                     </Box>

@@ -12,8 +12,6 @@ const Feedback = (props) => {
   // Context para ler o texto da tela
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
-  const [textoLeitura, setTextoLeitura] = useState("");
-
   const getStatus = () => {
     switch (props.status) {
       case "sucesso":

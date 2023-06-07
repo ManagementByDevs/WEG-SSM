@@ -19,6 +19,7 @@ import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import EscopoService from "../../service/escopoService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente para mudar o modo de visualização dos escopos (Grid, tabela ou nenhum escopo encontrado)
 const EscopoModoVisualizacao = ({
@@ -28,9 +29,7 @@ const EscopoModoVisualizacao = ({
   myEscopos,
   handleDelete,
   buscar,
-  lendo = false,
 }) => {
-
   // Se não encontrar nada, vai aparecer componente de nada encontrado
   if (listaEscopos && listaEscopos.length === 0) {
     return <NadaEncontrado />;
@@ -44,10 +43,9 @@ const EscopoModoVisualizacao = ({
         onEscopoClick={onEscopoClick}
         myEscopos={myEscopos}
         handleDelete={handleDelete}
-        lendo={lendo}
       />
     );
-    // Se for table, aparecerá o componente de Table
+  // Se for table, aparecerá o componente de Table
   return (
     <EscopoTable
       listaEscopos={listaEscopos}
@@ -75,13 +73,15 @@ const EscopoTable = ({
   ],
   onEscopoClick,
   buscar,
-  lendo,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // Variável para controlar a abertura do modal de confirmação de remoção do escopo
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
@@ -126,32 +126,6 @@ const EscopoTable = ({
     }
 
     return porcentagem + "%";
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (
@@ -212,8 +186,11 @@ const EscopoTable = ({
                   id="quarto"
                   className="truncate"
                   fontSize={FontConfig.medium}
-                  onClick={() => {
-                    lerTexto(calculaPorcentagem(row));
+                  onClick={(e) => {
+                    if (lendoTexto) {
+                      e.stopPropagation();
+                      lerTexto(calculaPorcentagem(row));
+                    }
                   }}
                 >
                   {calculaPorcentagem(row)}
@@ -223,8 +200,11 @@ const EscopoTable = ({
                 <Typography
                   className="truncate"
                   fontSize={FontConfig.medium}
-                  onClick={() => {
-                    lerTexto(row.titulo);
+                  onClick={(e) => {
+                    if (lendoTexto) {
+                      e.stopPropagation();
+                      lerTexto(row.titulo);
+                    }
                   }}
                 >
                   {row.titulo}
@@ -259,7 +239,6 @@ const EscopoTable = ({
         textoBotao={"sim"}
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
-        lendo={lendo}
       />
 
       {/* Feedback de escopo deletado com sucesso */}
@@ -270,19 +249,13 @@ const EscopoTable = ({
         }}
         status={"sucesso"}
         mensagem={texts.escopos.escopoDeletadoComSucesso}
-        lendo={lendo}
       />
     </Paper>
   );
 };
 
 // Componente para exibir as demanda em forma de grid
-const EscopoGrid = ({
-  listaEscopos,
-  onEscopoClick,
-  handleDelete,
-  lendo = false,
-}) => {
+const EscopoGrid = ({ listaEscopos, onEscopoClick, handleDelete }) => {
   return (
     <Box
       sx={{
@@ -300,7 +273,6 @@ const EscopoGrid = ({
             onEscopoClick(escopo);
           }}
           handleDelete={handleDelete}
-          lendo={lendo}
         />
       ))}
     </Box>
@@ -317,24 +289,24 @@ const NadaEncontrado = (props) => {
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
-    if (props.lendo) {
+    if (props.lendoTexto) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
-      if (props.lendo && escrita !== "") {
+
+      if (props.lendoTexto && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
         }
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
