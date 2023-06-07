@@ -64,6 +64,18 @@ const Escopos = ({ lendo = false }) => {
   /** useState utilizado para setar o modo de visualização dos escopos ( Tabela ou grid ) */
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
+  /** Variável usada para esconder a lista de escopos durante sua busca */
+  const [carregamentoItens, setCarregamentoItens] = useState(true);
+
+  /** Variável usada na paginação para determinar o número total de páginas */
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
+  /** Variável usada na paginação para determinar o número da página de escopos que o usuário está */
+  const [paginaAtual, setPaginaAtual] = useState(0);
+
+  /** Variável usada na paginação para determinar o número máximo de escopos numa página */
+  const [tamanhoPagina, setTamanhoPagina] = useState(20);
+
   /** useState para armazenar o valor do input na barra de pesquisa */
   let inputPesquisa = "";
 
@@ -105,19 +117,8 @@ const Escopos = ({ lendo = false }) => {
       },
     },
   ];
-  /** Variável usada para esconder a lista de escopos durante sua busca */
-  const [carregamentoItens, setCarregamentoItens] = useState(true);
 
-  /** Variável usada na paginação para determinar o número total de páginas */
-  const [totalPaginas, setTotalPaginas] = useState(1);
-
-  /** Variável usada na paginação para determinar o número da página de escopos que o usuário está */
-  const [paginaAtual, setPaginaAtual] = useState(0);
-
-  /** Variável usada na paginação para determinar o número máximo de escopos numa página */
-  const [tamanhoPagina, setTamanhoPagina] = useState(20);
-
-  // useEffect utilizado para buscar o usuário ao entrar na página
+  /** useEffect utilizado para buscar o usuário ao entrar na página */
   useEffect(() => {
     if (!usuario) {
       buscarUsuario();
@@ -155,7 +156,7 @@ const Escopos = ({ lendo = false }) => {
     return listaNova;
   }
 
-  // Função integrada com a barra de pesquisa para buscar os escopos
+  /** Função integrada com a barra de pesquisa para buscar os escopos */
   const buscarEscopos = () => {
     setCarregamentoItens(true);
 
@@ -279,6 +280,15 @@ const Escopos = ({ lendo = false }) => {
     inputPesquisa = palavrasJuntas;
   }, [palavrasJuntas]);
 
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
   /** Função para encerrar a gravação de voz */
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -290,15 +300,6 @@ const Escopos = ({ lendo = false }) => {
   const startRecognition = () => {
     setEscutar(!escutar);
   };
-
-  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
 
   /** Função para trocar o modo de visualização dos itens (bloco / lista) */
   const trocarModoVisualizacao = () => {

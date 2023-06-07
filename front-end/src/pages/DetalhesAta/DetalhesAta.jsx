@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import VLibras from "@djpfs/react-vlibras";
 
 import { keyframes } from "@emotion/react";
-import { Box, Typography, Button, Divider, Tooltip, IconButton, ButtonBase, } from "@mui/material";
+import { Box, Typography, Divider, Tooltip, IconButton, ButtonBase, } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";

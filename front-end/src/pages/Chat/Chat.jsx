@@ -46,6 +46,7 @@ const Chat = (props) => {
   /** Context para alterar o idioma */
   const { texts } = useContext(TextLanguageContext);
 
+  /** Variáveis utilizadas para a visibilidade e id do chat */
   const { visibilidade, setVisibilidade, setIdChat } = useContext(ChatContext);
 
   /** Context para alterar o tamanho da fonte */
@@ -340,7 +341,21 @@ const Chat = (props) => {
     return () => {
       finalizarLeitura();
     };
-  }, [textoLeitura]);
+  }, [textoLeitura]);  
+
+  /** useEffect utilizado para descobrir qual foi o local clicado */
+  useEffect(() => {
+    switch (localClique) {
+      case "titulo":
+        setPesquisaContato(palavrasJuntas);
+        break;
+      case "mensagem":
+        setMensagem({ ...mensagem, texto: palavrasJuntas });
+        break;
+      default:
+        break;
+    }
+  }, [palavrasJuntas]);
 
   /** Função para abrir o menu */
   const handleClick = (event) => {
@@ -568,58 +583,6 @@ const Chat = (props) => {
         usuario.id != idUserLogado && usuario.nome.toLowerCase().includes(nome)
     );
   };
-
-  // ********************************************** Gravar audio ********************************************** //
-
-  /** useEffect utilizado para armazenar as palavras juntas dependendo do local onde foi clicado */
-  useEffect(() => {
-    let listaChatsAux = listaChats.filter((chat) => {
-      // Pesquisa por código PPM
-      if (chat.idProposta.codigoPPM.toString().startsWith(pesquisaContato)) {
-        return true;
-      }
-
-      // Pesquisa pelo título da proposta
-      if (
-        chat.idProposta.titulo
-          .toLowerCase()
-          .includes(pesquisaContato.toLowerCase())
-      ) {
-        return true;
-      }
-
-      // Pesquisa pelo nome do contato
-      if (containsUser(chat.usuariosChat, user.usuario.id, pesquisaContato)) {
-        return true;
-      }
-    });
-    setResultadosContato([...listaChatsAux]);
-  }, [pesquisaContato, listaChats, idChat]);
-
-  useEffect(() => {
-    setBuscandoMensagens(false);
-    const boxElement = boxRef.current;
-    // Colocando o scroll para a última mensagem recebida
-    if (boxElement) {
-      boxElement.scrollTop = boxElement.scrollHeight;
-    }
-  }, [mensagens]);
-
-  // // ********************************************** Gravar audio **********************************************
-
-  useEffect(() => {
-    switch (localClique) {
-      case "titulo":
-        setPesquisaContato(palavrasJuntas);
-        break;
-      case "mensagem":
-        setMensagem({ ...mensagem, texto: palavrasJuntas });
-        break;
-      default:
-        break;
-    }
-  }, [palavrasJuntas]);
-
 
   return (
     <>

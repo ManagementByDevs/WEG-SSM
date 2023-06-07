@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { AvatarGroup, Box, Button, IconButton, Tab, Tooltip, } from "@mui/material";
+import { Box, Button, IconButton, Tab, Tooltip, } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -56,8 +56,7 @@ const HomeGerencia = (props) => {
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
 
   /** Variável para determinar se a tour de criar proposta está aberta */
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
-    useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
 
   /** Variável para determinar se a tour de propostas está aberta */
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
@@ -91,10 +90,10 @@ const HomeGerencia = (props) => {
     codigoPPM: null
   });
 
-  // Context para ver o tema do sistema
+  /** Context para ver o tema do sistema */
   const { mode } = useContext(ColorModeContext);
 
-  // Contexto para alterar o tamanho da fonte
+  /** Contexto para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
   /** Variável armazenando qual a aba atual que o usuário está */
@@ -154,9 +153,10 @@ const HomeGerencia = (props) => {
   /** Variável para definir se o modal filtro está aberto */
   const [modalFiltro, setModalFiltro] = useState(false);
 
-  // Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas
+  /** Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas */
   const [isFirstTime, setIsFirstTime] = useState(false);
 
+  /** Variável para verificar se o toru de minhas demandas foi aberto */
   const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] = useState(false);
 
   /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
@@ -184,18 +184,19 @@ const HomeGerencia = (props) => {
     preferencias: null,
   });
 
-  // Parâmetros para pesquisa das pautas (barra de pesquisa somente)
+  /** Parâmetros para pesquisa das pautas (barra de pesquisa somente) */
   const [paramsPautas, setParamsPautas] = useState({ titulo: null, numeroSequencial: null });
 
-  // Parâmetros para pesquisa das atas (barra de pesquisa somente)
+  /** Parâmetros para pesquisa das atas (barra de pesquisa somente) */
   const [paramsAtas, setParamsAtas] = useState({ titulo: null, numeroSequencial: null });
 
-  // UsaState que controla a visibilidade do modal de confirmação para exclusão de uma pauta
+  /** UseState que controla a visibilidade do modal de confirmação para exclusão de uma pauta */
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
 
+  /** UseState para armazenar a pauta selecionada */
   const [pautaSelecionada, setPautaSelecionada] = useState();
 
-  // Mostra o próximo modo de visualização
+  /** Mostra o próximo modo de visualização */
   const [nextModoVisualizacao, setNextModoVisualizacao] = useState("TABLE");
 
   /** Variável para esconder a lista de itens e mostrar um ícone de carregamento enquanto busca os itens no banco */
@@ -216,13 +217,13 @@ const HomeGerencia = (props) => {
   /** Variável para o feedback de proposta criada */
   const [feedbackPropostaCriada, setFeedbackPropostaCriada] = useState(false);
 
-  // Feedback ata publicada
+  /** Feedback ata publicada */
   const [feedbackAta, setOpenFeedbackAta] = useState(false);
 
-  // Feedback ata criada
+  /** Feedback ata criada */
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
-  // Feedback propostas atualizadas
+  /** Feedback propostas atualizadas */
   const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
 
   /** Feedback deletar pauta */
@@ -231,56 +232,219 @@ const HomeGerencia = (props) => {
   /** Feedback atualizar proposta */
   const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
 
+  /** Feedback de demanda criada */
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
 
+  /** Feedback de chat aberto */
   const [feedbackAbrirChat, setFeedbackAbrirChat] = useState(false);
 
   /** Feedback ativado quando uma proposta é adicionada a uma pauta */
   const [feedbackAdicionarPauta, setFeedbackAdicionarPauta] = useState(false);
 
-  // useState para fechar o chat minimizado
+  /** Feedback de navegador incompatível para reconhecimento de voz */
+  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+
+  /** Feedback de erro ao reconhecimento de voz */
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+
+  /** useState para fechar o chat minimizado */
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
 
-  // const [caraLogado, setCaraLogado] = useState(UsuarioService.getUserCookies())
+  /** Variável para verificação se é do tipo GERENTE */
+  const isGerente = !(usuario.tipoUsuario == "GERENTE");
 
-  // const { enviar, inscrever, stompClient } = useContext(WebSocketContext);
+  /** Tour de ajuda das "Minhas Demandas" */
+  const stepsMinhasDemandas = [
+    {
+      selector: "#primeiroMinhasDemandas",
+      content: texts.homeGerencia.toursDemandas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#terceiroDemandas",
+      content: texts.homeGerencia.toursDemandas.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#nonoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour9,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#quintoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour5,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#sextoMinhasDemandas",
+      content: texts.homeGerencia.toursMinhasDemandas.tour6,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#oitavoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour8,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
-  // const [mensagens, setMensagens] = useState([]);
+  /** Tour de ajuda das "Demandas" */
+  const stepsDemandas = [
+    {
+      selector: "#quartoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour4,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#primeiroDemandas",
+      content: texts.homeGerencia.toursDemandas.tour6,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#setimoDemandas",
+      content: texts.homeGerencia.toursDemandas.tour7,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
-  // const inscreverSocket = () => {
-  //   const acaoNovaMensagem = (response) => {
-  //     const mensagemRecebida = JSON.parse(response.body);
-  //     let mensagemNova = {
-  //       ...mensagemRecebida.body,
-  //       texto: mensagemRecebida.body.texto.replace(/%BREAK%/g, "\n"),
-  //     };
-  //     setMensagens((oldMensagens) => [...oldMensagens, mensagemNova]);
-  //   };
+  /** Tour de ajuda de "Criar Proposta" */
+  const stepsCriarPropostas = [
+    {
+      selector: "#primeiroCriarPropostas",
+      content: texts.homeGerencia.toursCriarPropostas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
-  //   chatService.getByRemetente(caraLogado.usuario.id).then((response) => {
-  //     const chats = response;
-  //     chats.map((chat) => {
-  //     if (chat.id) {
-  //       let inscricaoId = inscrever(
-  //         `/weg_ssm/mensagem/${chat.id}/chat`,
-  //         acaoNovaMensagem
-  //       );
-  //     }
-  //     });
-  //   });
-  // }
+  /** Tour de ajuda de "Propostas" */
+  const stepsPropostas = [
+    {
+      selector: "#primeiroPropostas",
+      content: texts.homeGerencia.toursPropostas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPropostas",
+      content: texts.homeGerencia.toursPropostas.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#setimoDemandas",
+      content: texts.homeGerencia.toursPropostas.tour3,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
-  // useEffect(() => {
-  //   inscreverSocket();
-  // }, [stompClient]);
+  /** Tour de ajuda de "Pautas" */
+  const stepsPautas = [
+    {
+      selector: "#primeiroPautas",
+      content: texts.homeGerencia.toursPautas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+    {
+      selector: "#segundoPautas",
+      content: texts.homeGerencia.toursPautas.tour2,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
 
-  // UseEffect para buscar o usuário assim que entrar na página
+  /** Tour de ajuda de "Atas" */
+  const stepsAtas = [
+    {
+      selector: "#primeiroAtas",
+      content: texts.homeGerencia.toursAtas.tour1,
+      style: {
+        backgroundColor: "#DCDCDC",
+        color: "#000000",
+      },
+    },
+  ];
+
+  /** UseEffect para buscar o usuário assim que entrar na página */
   useEffect(() => {
     verificarFeedbacks();
     buscarUsuario();
     buscarFiltros();
   }, []);
 
+  /** useEffect utilizado para feedback de atas ou propostas */
+  useEffect(() => {
+    if (location.state?.feedback) {
+      switch (location.state.feedback) {
+        case "ata-criada":
+          setFeedbackAtaCriada(true);
+          break;
+        case "propostas-atualizadas":
+          setFeedbackPropostasAtualizadas(true);
+          break;
+        default:
+          setOpenFeedbackAta(true);
+          break;
+      }
+    }
+  }, [location.state?.feedback]);
+
+  /** useEffect utilizado para abrir o modal de confirmação na pauta */
+  useEffect(() => {
+    if (pautaSelecionada) {
+      setOpenModalConfirmacao(true);
+    }
+  }, [pautaSelecionada]);
+
+  /** useEffect utilizado para os parametros do filtro */
   useEffect(() => {
     let paramsTemp = {
       solicitante: null,
@@ -326,7 +490,7 @@ const HomeGerencia = (props) => {
     });
   }, [filtrosAtuais]);
 
-  // UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada
+  /** UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada */
   useEffect(() => {
     valorPesquisa = inputPesquisa?.current?.value;
     formatarOrdenacao();
@@ -377,7 +541,7 @@ const HomeGerencia = (props) => {
     }
   }, [valorAba, isFirstTime]);
 
-  // UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário)
+  /** UseEffect para iniciar os parâmetros para busca da demanda (filtrando pelo usuário) */
   useEffect(() => {
     arrangePreferences();
     if (listaAnalistas.length == 0 && usuario.tipoUsuario == "ANALISTA") {
@@ -385,17 +549,17 @@ const HomeGerencia = (props) => {
     }
   }, [usuario]);
 
-  // UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados
+  /** UseEffect para buscar as demandas sempre que os parâmetros (filtros) forem modificados */
   useEffect(() => {
     buscarItens();
   }, [params, paginaAtual, tamanhoPagina, paramsPautas, paramsAtas, ordenacao]);
 
-  // UseEffect para chamar a função "formatarOrdenacao" quando o modal de ordenação for editado
+  /** UseEffect para chamar a função "formatarOrdenacao" quando o modal de ordenação for editado */
   useEffect(() => {
     formatarOrdenacao();
   }, [ordenacaoTitulo, ordenacaoScore, ordenacaoDate]);
 
-  // UseEffect para retirar o ícone de carregamento quando os itens forem buscados do banco de dados
+  /**  UseEffect para retirar o ícone de carregamento quando os itens forem buscados do banco de dados */
   useEffect(() => {
     setCarregamentoItens(false);
   }, [listaItens]);
@@ -548,6 +712,7 @@ const HomeGerencia = (props) => {
     return true;
   }
 
+  /** Função para a busca de itens das abas */
   const buscarItens = () => {
     setCarregamentoItens(true);
     switch (valorAba) {
@@ -614,7 +779,7 @@ const HomeGerencia = (props) => {
     }
   };
 
-  // Função para alterar a aba selecionada
+  /** Função para alterar a aba selecionada */
   const handleChange = (event, novoValor) => {
     setListaItens([]);
     saveNewPreference("abaPadrao", novoValor);
@@ -628,7 +793,7 @@ const HomeGerencia = (props) => {
     setNextModoVisualizacao(novoModo);
   };
 
-  // Função para ir na tela de detalhes da demanda, salvando a demanda no location state
+  /** Função para ir na tela de detalhes da demanda, salvando a demanda no location state */
   const verDemanda = (demanda) => {
     if (demanda.status == "ASSESSMENT" && usuario.tipoUsuario == "ANALISTA") {
       navigate("/criar-proposta", { state: demanda });
@@ -637,21 +802,19 @@ const HomeGerencia = (props) => {
     }
   };
 
-  // Função para ir na tela de detalhes da proposta pelo id
+  /** Função para ir na tela de detalhes da proposta pelo id */
   const verProposta = (proposta) => {
     navigate("/detalhes-proposta/" + proposta.id, { state: proposta });
   };
 
-  const isGerente = !(usuario.tipoUsuario == "GERENTE");
-
-  // Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter"
+  /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter" */
   const eventoTeclado = (e) => {
     if (e.key == "Enter") {
       pesquisaTitulo();
     }
   };
 
-  // Função para salvar o input de pesquisa quando houver alteração
+  /** Função para salvar o input de pesquisa quando houver alteração */
   const salvarPesquisa = (e) => {
     valorPesquisa = e;
     if (valorPesquisa != "") {
@@ -689,23 +852,7 @@ const HomeGerencia = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (location.state?.feedback) {
-      switch (location.state.feedback) {
-        case "ata-criada":
-          setFeedbackAtaCriada(true);
-          break;
-        case "propostas-atualizadas":
-          setFeedbackPropostasAtualizadas(true);
-          break;
-        default:
-          setOpenFeedbackAta(true);
-          break;
-      }
-    }
-  }, [location.state?.feedback]);
-
-  // Função para exportar para excel
+  /** Função para exportar para excel */
   const exportarExcel = () => {
     if (props.lendo) {
       lerTexto(texts.homeGerencia.exportar);
@@ -847,7 +994,7 @@ const HomeGerencia = (props) => {
     }
   };
 
-  // Função que deleta uma pauta
+  /** Função que deleta uma pauta */
   const deletePauta = () => {
     // Atualiza as propostas contidas na pauta para que não tenham mais os atributos de quando estavam na pauta
     for (let propostaAux of pautaSelecionada.propostas) {
@@ -873,18 +1020,13 @@ const HomeGerencia = (props) => {
     });
   };
 
-  // Função acionada quando o usuário cancela a deleção de uma pauta
+  /** Função acionada quando o usuário cancela a deleção de uma pauta */
   const handleOnCancelClickDeletePauta = () => {
     setPautaSelecionada(null);
   };
 
-  useEffect(() => {
-    if (pautaSelecionada) {
-      setOpenModalConfirmacao(true);
-    }
-  }, [pautaSelecionada]);
-
   // ********************************************** Preferências **********************************************
+
   /**
    * Função que arruma o modo de visualização das preferências do usuário para o qual ele escolheu por último
    */
@@ -941,23 +1083,19 @@ const HomeGerencia = (props) => {
       }
     );
   };
-  // ********************************************** Fim Preferências **********************************************
 
   // ********************************************** Funções de voz **********************************************
 
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
+  /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
 
+  /** Variável utilizada para ativar o microfone para gravação de audio */
   const [escutar, setEscutar] = useState(false);
 
+  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
   const [palavrasJuntas, setPalavrasJuntas] = useState("");
 
+  /** Função para gravar audio nos inputs */
   const ouvirAudio = () => {
     // Verifica se a API é suportada pelo navegador
     if ("webkitSpeechRecognition" in window) {
@@ -997,20 +1135,12 @@ const HomeGerencia = (props) => {
     }
   };
 
+  /** useEffect utilizado para salvar o valor da pesquisa como o valor do reconhecimento de voz */
   useEffect(() => {
     valorPesquisa = palavrasJuntas;
   }, [palavrasJuntas]);
 
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = () => {
-    setEscutar(!escutar);
-  };
-
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
   useEffect(() => {
     if (escutar) {
       ouvirAudio();
@@ -1019,168 +1149,19 @@ const HomeGerencia = (props) => {
     }
   }, [escutar]);
 
-  // ********************************************** Fim Funções de voz **********************************************
+  /** Função para encerrar a gravação de voz */
+  const stopRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+  };
 
+  /** Função para iniciar a gravação de voz */
+  const startRecognition = () => {
+    setEscutar(!escutar);
+  };
 
-  // ** Passos do Tour ** //
-
-  // Tour de ajuda
-  const stepsMinhasDemandas = [
-    {
-      selector: "#primeiroMinhasDemandas",
-      content: texts.homeGerencia.toursDemandas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#terceiroDemandas",
-      content: texts.homeGerencia.toursDemandas.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#nonoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour9,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#quintoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour5,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#sextoMinhasDemandas",
-      content: texts.homeGerencia.toursMinhasDemandas.tour6,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#oitavoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour8,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  //JSONs que contém as informações do tour
-  const stepsDemandas = [
-    {
-      selector: "#quartoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour4,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#primeiroDemandas",
-      content: texts.homeGerencia.toursDemandas.tour6,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#setimoDemandas",
-      content: texts.homeGerencia.toursDemandas.tour7,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  const stepsCriarPropostas = [
-    {
-      selector: "#primeiroCriarPropostas",
-      content: texts.homeGerencia.toursCriarPropostas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  const stepsPropostas = [
-    {
-      selector: "#primeiroPropostas",
-      content: texts.homeGerencia.toursPropostas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoPropostas",
-      content: texts.homeGerencia.toursPropostas.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#setimoDemandas",
-      content: texts.homeGerencia.toursPropostas.tour3,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  const stepsPautas = [
-    {
-      selector: "#primeiroPautas",
-      content: texts.homeGerencia.toursPautas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-    {
-      selector: "#segundoPautas",
-      content: texts.homeGerencia.toursPautas.tour2,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  const stepsAtas = [
-    {
-      selector: "#primeiroAtas",
-      content: texts.homeGerencia.toursAtas.tour1,
-      style: {
-        backgroundColor: "#DCDCDC",
-        color: "#000000",
-      },
-    },
-  ];
-
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
@@ -1272,6 +1253,7 @@ const HomeGerencia = (props) => {
         showCloseButton={false}
       />
 
+      {/* Modal de confirmação de exclusão de pauta */}
       <ModalConfirmacao
         open={openModalConfirmacao}
         setOpen={setOpenModalConfirmacao}
@@ -1341,7 +1323,6 @@ const HomeGerencia = (props) => {
           mensagem={texts.homeGerencia.feedback.feedback1}
           lendo={props.lendo}
         />
-
         {/* Feedback ata criada */}
         <Feedback
           open={feedbackAtaCriada}
@@ -1352,7 +1333,6 @@ const HomeGerencia = (props) => {
           mensagem={texts.homeGerencia.feedback.feedback8}
           lendo={props.lendo}
         />
-
         {/* Feedback propostas atualizadas */}
         <Feedback
           open={feedbackPropostasAtualizadas}
@@ -1363,7 +1343,6 @@ const HomeGerencia = (props) => {
           mensagem={texts.homeGerencia.feedback.feedback9}
           lendo={props.lendo}
         />
-
         {/* Feedback demanda criada  */}
         <Feedback
           open={feedbackDemandaCriada}
@@ -1374,7 +1353,7 @@ const HomeGerencia = (props) => {
           mensagem={texts.homeGerencia.feedback.feedback10}
           lendo={props.lendo}
         />
-
+        {/* Feedback de demanda aceita */}
         <Feedback
           open={feedbackDemandaAceita}
           handleClose={() => {
@@ -1384,7 +1363,7 @@ const HomeGerencia = (props) => {
           mensagem={texts.homeGerencia.feedback.feedback2}
           lendo={props.lendo}
         />
-
+        {/* Feedback de demanda recusada */}
         <Feedback
           open={feedbackDemandaRecusada}
           handleClose={() => {
@@ -1394,7 +1373,7 @@ const HomeGerencia = (props) => {
           mensagem={texts.homeGerencia.feedback.feedback3}
           lendo={props.lendo}
         />
-
+        {/* Feedback de demanda devolvida */}
         <Feedback
           open={feedbackDemandaDevolvida}
           handleClose={() => {
@@ -1404,7 +1383,7 @@ const HomeGerencia = (props) => {
           mensagem={texts.homeGerencia.feedback.feedback4}
           lendo={props.lendo}
         />
-
+        {/* Feedback de proposta criada */}
         <Feedback
           open={feedbackPropostaCriada}
           handleClose={() => {
@@ -1414,7 +1393,6 @@ const HomeGerencia = (props) => {
           mensagem={texts.homeGerencia.feedback.feedback5}
           lendo={props.lendo}
         />
-
         {/* Feedback pauta deletada */}
         <Feedback
           open={feedbackDeletarPauta}

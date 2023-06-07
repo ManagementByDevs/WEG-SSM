@@ -475,6 +475,15 @@ const ChatMinimizado = (props) => {
     }
   }, [palavrasJuntas]);
 
+  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
   /** Função para encerrar a gravação de voz */
   const stopRecognition = () => {
     if (recognitionRef.current) {
@@ -487,15 +496,6 @@ const ChatMinimizado = (props) => {
     setEscutar(!escutar);
     setLocalClicado(ondeClicou);
   };
-
-  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
 
   return (
     <Box
