@@ -1,19 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 
-import {
-  Button,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-  MenuItem,
-  Checkbox,
-  Autocomplete,
-  Box,
-  IconButton,
-} from "@mui/material";
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Typography, MenuItem, Checkbox, Autocomplete, Box, IconButton, } from "@mui/material";
 
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -34,6 +21,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 /** Modal de aceitar demanda na revisão inicial (analista), preenchendo informações adicionais */
 const ModalAceitarDemanda = (props) => {
+  
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -315,7 +303,7 @@ const ModalAceitarDemanda = (props) => {
                   onClick={() => {
                     setAnexos(anexos.filter((anexo, i) => i !== index));
                     AnexoService.deleteById(anexos[index].id).then(
-                      (response) => {}
+                      (response) => { }
                     );
                   }}
                 >

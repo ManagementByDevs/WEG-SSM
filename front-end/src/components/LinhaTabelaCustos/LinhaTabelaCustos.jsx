@@ -12,6 +12,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente para criar uma linha na tabela de custos
 const LinhaTabelaCustos = (props) => {
+
   // Context que contém os textos do sistema
   const { texts, setTexts } = useContext(TextLanguageContext);
 
@@ -115,7 +116,7 @@ const LinhaTabelaCustos = (props) => {
           break;
       }
 
-      recognition.onstart = () => {};
+      recognition.onstart = () => { };
 
       recognition.onresult = (event) => {
         const transcript =
@@ -187,6 +188,7 @@ const LinhaTabelaCustos = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  /** Função para verificar os caracteres digiados na tabela de custos */
   function verificarCaracteres(valorDigitado) {
     let temLetra = false;
     for (let i = 0; i < valorDigitado.length; i++) {

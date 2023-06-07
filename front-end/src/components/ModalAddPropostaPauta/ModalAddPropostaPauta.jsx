@@ -1,21 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Modal,
-  Fade,
-  Divider,
-  Typography,
-  Box,
-  Button,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Paper,
-  Select,
-  FormControl,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import { Modal, Fade, Divider, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Paper, Select, FormControl, MenuItem, TextField, } from "@mui/material";
 
 import { red } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
@@ -35,6 +20,7 @@ import ExportPdfService from "../../service/exportPdfService";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalAddPropostaPauta = (props) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -44,6 +30,7 @@ const ModalAddPropostaPauta = (props) => {
   // Contexet para verificar o tema atual
   const { mode } = useContext(TemaContext);
 
+  // Navigate utilizado para navegação entre as páginas
   const navigate = useNavigate();
 
   // variáveis de estilo para os itens do componente
@@ -138,16 +125,6 @@ const ModalAddPropostaPauta = (props) => {
 
   // Exemplo de um objeto proposta
   const propostaExample = EntitiesObjectService.proposta();
-
-  useEffect(() => {
-    PautaService.get().then((res) => {
-      setListaPautas(res);
-    });
-
-    ForumService.getAll().then((res) => {
-      setListaComissoes(res);
-    });
-  }, []);
 
   // props para abrir o modal através de outra tela
   let open = false;
@@ -376,18 +353,18 @@ const ModalAddPropostaPauta = (props) => {
     return isPropostaInPauta;
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
+  // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(escrita);
-  
+
       const finalizarLeitura = () => {
         if ("speechSynthesis" in window) {
           synthesis.cancel();
         }
       };
-  
+
       if (props.lendo && escrita !== "") {
         if ("speechSynthesis" in window) {
           synthesis.speak(utterance);
@@ -395,7 +372,7 @@ const ModalAddPropostaPauta = (props) => {
       } else {
         finalizarLeitura();
       }
-  
+
       return () => {
         finalizarLeitura();
       };
@@ -413,7 +390,7 @@ const ModalAddPropostaPauta = (props) => {
         status={"erro"}
         mensagem={texts.modalAddPropostaPauta.feedbacks.feedback1}
         lendo={props.lendo}
-         
+
       />
       {/* Feedback pauta atualizada */}
       <Feedback
@@ -424,7 +401,7 @@ const ModalAddPropostaPauta = (props) => {
         status={"sucesso"}
         mensagem={texts.modalAddPropostaPauta.feedbacks.feedback2}
         lendo={props.lendo}
-         
+
       />
       <Modal
         open={open}

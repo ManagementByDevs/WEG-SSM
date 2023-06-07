@@ -13,9 +13,11 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 
 /** Componnete para utilizar durante uma mensagem no chat */
 const Mensagem = ({ mensagem = EntitiesObjectService.mensagem() }) => {
+
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
+  /** Variável para armazenar as informações do usuário */
   const [user, setUser] = useState(UsuarioService.getUserCookies());
 
   /** Função para baixar um anexo */
