@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -27,7 +27,6 @@ import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import CookieService from "../../service/cookieService";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
-import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Tela para mostrar os escopos de demandas/propostas não finalizadas */
 const Escopos = () => {
@@ -37,18 +36,10 @@ const Escopos = () => {
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  /** Context para ler o texto da tela */
-  const { lendoTexto } = useContext(SpeechSynthesisContext);
-
   /** Context para obter a função de leitura de texto */
-  const {
-    startRecognition,
-    escutar,
-    localClique,
-    palavrasJuntas,
-    setEscutar,
-    setPalavrasJuntas,
-  } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** Navigate utilizado para navegar entre as páginas */
   const navigate = useNavigate();
