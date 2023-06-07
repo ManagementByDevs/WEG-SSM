@@ -12,6 +12,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 
 // Componente para criar uma linha da tabela de CCs
 const LinhaTabelaCCs = (props) => {
+
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -32,15 +33,6 @@ const LinhaTabelaCCs = (props) => {
       setCorFundoTextArea("#FFFF");
     }
   }, [mode]);
-
-  // // ********************************************** Gravar audio **********************************************
-
-  // const [
-  //   feedbackErroNavegadorIncompativel,
-  //   setFeedbackErroNavegadorIncompativel,
-  // ] = useState(false);
-  // const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-  //   useState(false);
 
   const recognitionRef = useRef(null);
 
@@ -131,6 +123,7 @@ const LinhaTabelaCCs = (props) => {
 
   // // ********************************************** Fim Gravar audio **********************************************
 
+  /** Função para verificar os caracteres digitados no cc  */
   function verificarCaracteres(valorDigitado) {
     let temLetra = false;
     for (let i = 0; i < valorDigitado.length; i++) {

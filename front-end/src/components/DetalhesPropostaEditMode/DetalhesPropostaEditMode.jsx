@@ -1,21 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import {
-  Autocomplete,
-  Box,
-  Checkbox,
-  Divider,
-  IconButton,
-  MenuItem,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Box, Checkbox, Divider, IconButton, MenuItem, Paper, Select, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
 
 import * as _ from "lodash";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -60,10 +44,11 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const DetalhesPropostaEditMode = ({
   propostaData = propostaExample,
-  setPropostaData = () => {},
-  setIsEditing = () => {},
+  setPropostaData = () => { },
+  setIsEditing = () => { },
   emAprovacao = false,
 }) => {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -98,8 +83,7 @@ const DetalhesPropostaEditMode = ({
   ]);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
-    useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
 
   // Modal de confirmação para quando o usuário clicar em cancelar ou salvar edição
   const [modalConfirmacao, setModalConfirmacao] = useState(false);
@@ -471,7 +455,7 @@ const DetalhesPropostaEditMode = ({
           "Proposta Editada",
           arquivo,
           CookieService.getUser().id
-        ).then(() => {});
+        ).then(() => { });
       });
     });
   };
@@ -907,7 +891,7 @@ const DetalhesPropostaEditMode = ({
         textoModal={textoModalConfirmacao}
         textoBotao={"sim"}
         onConfirmClick={handleOnConfirmClick}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       {/* Feedback de dados invalidos */}
       <Feedback
@@ -1065,8 +1049,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.solicitante.nome +
-                    " - " +
-                    proposta.solicitante.departamento.nome
+                  " - " +
+                  proposta.solicitante.departamento.nome
                 );
               }}
             >
@@ -1124,8 +1108,8 @@ const DetalhesPropostaEditMode = ({
               onClick={() => {
                 lerTexto(
                   proposta.gerente.nome +
-                    " - " +
-                    proposta.gerente.departamento.nome
+                  " - " +
+                  proposta.gerente.departamento.nome
                 );
               }}
             >
@@ -1763,8 +1747,8 @@ const TabelaCustos = ({
   dados = EntitiesObjectService.tabelaCustos(),
   handleOnTabelaCustosChange = (
     newTabela = EntitiesObjectService.tabelaCustos()
-  ) => {},
-  handleDeleteTabelaCusto = () => {},
+  ) => { },
+  handleDeleteTabelaCusto = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2074,7 +2058,7 @@ const TabelaCustos = ({
 
 const CC = ({
   cc = EntitiesObjectService.cc(),
-  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => {},
+  handleOnCCChange = (newCC = EntitiesObjectService.cc()) => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2149,7 +2133,7 @@ const CC = ({
 // Mostra os custos na proposta
 const CustosRow = ({
   custo = EntitiesObjectService.custo(),
-  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => {},
+  handleOnCustoChange = (newCusto = EntitiesObjectService.custo()) => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2191,9 +2175,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -2334,8 +2318,8 @@ const CustosRow = ({
 // Mostrar os benefícios da proposta
 const Beneficio = ({
   beneficio = EntitiesObjectService.beneficio(),
-  handleOnBeneficioChange = () => {},
-  handleDeleteBeneficio = () => {},
+  handleOnBeneficioChange = () => { },
+  handleDeleteBeneficio = () => { },
 }) => {
   // Context para obter as configurações de fonte do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2630,7 +2614,7 @@ const Beneficio = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações de fontes do sistema
   const { FontConfig } = useContext(FontContext);
@@ -2763,7 +2747,7 @@ const ParecerComissaoInsertText = ({
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
+  setProposta = () => { },
 }) => {
   // Context para obter as configurações das fontes do sistema
   const { FontConfig } = useContext(FontContext);

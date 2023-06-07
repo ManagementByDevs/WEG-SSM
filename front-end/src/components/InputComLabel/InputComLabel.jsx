@@ -10,6 +10,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Input padrão usado no sistema, com label acima */
 const InputComLabel = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -20,8 +21,6 @@ const InputComLabel = (props) => {
   const save = (e) => {
     props.saveInputValue(e.target.value);
   };
-
-  // // ********************************************** Gravar audio **********************************************
 
   const recognitionRef = useRef(null);
 
@@ -52,7 +51,7 @@ const InputComLabel = (props) => {
           break;
       }
 
-      recognition.onstart = () => {};
+      recognition.onstart = () => { };
 
       recognition.onresult = (event) => {
         const transcript =

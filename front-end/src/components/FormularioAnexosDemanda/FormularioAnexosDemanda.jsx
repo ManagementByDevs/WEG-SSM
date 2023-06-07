@@ -18,13 +18,12 @@ import AnexoService from "../../service/anexoService";
 
 /** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para ler o texto da tela */
   const { lerTexto } = useContext(SpeechSynthesisContext);
-
-  // props.dados => Lista de arquivos recebidos
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);

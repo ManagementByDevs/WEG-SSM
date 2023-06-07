@@ -8,10 +8,12 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import debounce from "lodash/debounce";
 
+// Variável para estilizar o componente
 const Label = styled("label")({
   display: "block",
 });
 
+// Variável para estilizar o componente
 const Listbox = styled("ul")(({ theme }) => ({
   width: "28rem",
   margin: 0,
@@ -37,6 +39,7 @@ const Listbox = styled("ul")(({ theme }) => ({
   },
 }));
 
+// Variável para estilizar o componente
 const Input = styled("input")(({ theme }) => ({
   width: "28rem",
   height: "2.2rem",
@@ -50,12 +53,14 @@ const Input = styled("input")(({ theme }) => ({
 }));
 
 export default function UseAutocomplete(props) {
+
   // Context para alterar o tamanho da fonte
   const { FontConfig, setFontConfig } = useContext(FontContext);
 
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  // Variável utilizada para lógica do autoComplete
   const {
     getRootProps,
     getInputLabelProps,
@@ -69,14 +74,17 @@ export default function UseAutocomplete(props) {
     getOptionLabel: (option) => option.titulo,
   });
 
+  // HandleChange utilizado para pegar o valor do input
   const handleChange = (event) => {
     props.setValorPesquisa(event.target.value);
     handleInputChangeDebounced(event.target.value); // chamando a função debounce
   };
 
+  // HandleInputChange utilizado para o debounce do input
   const handleInputChange = (valorInput) => {
   };
 
+  // Variável utilizada para o debounce do input
   const handleInputChangeDebounced = debounce(handleInputChange, 5000);
 
   return (

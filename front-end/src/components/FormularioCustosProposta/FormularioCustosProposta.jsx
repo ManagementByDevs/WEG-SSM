@@ -11,50 +11,17 @@ import CustosService from "../../service/custosService";
 
 // Etapa de criação de proposta para adicionar as tabelas de custos
 const FormularioCustosProposta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
-  /** Função usada para excluir uma tabela de custos */
-  const deletarTabelaCustos = (index) => {
-    CustosService.deleteTabela(props.custos[index].id).then((response) => {
-      let custosNovos = [...props.custos];
-      custosNovos.splice(index, 1);
-      props.setCustos(custosNovos);
-    });
-  };
-
-  /** Função para criar uma tabela de custos no banco de dados e adicionar na lista */
-  const criarTabelaCusto = () => {
-    if (props.lendo) {
-      lerTexto(texts.formularioCustosProposta.adicionarCustos);
-    } else {
-      CustosService.postTabela({
-        custos: [
-          {
-            tipoDespesa: "",
-            perfilDespesa: "",
-            periodoExecucao: "",
-            horas: "",
-            valorHora: "",
-          },
-        ],
-        ccs: [
-          {
-            codigo: "",
-            porcentagem: "",
-          },
-        ],
-      }).then((response) => {
-        props.setCustos([...props.custos, response]);
-      });
-    }
-  };
-
-  // UseStates para armazenar as horas e o valor total
+  // UseState para armazenar as horas totais dos custos
   const [horasTotais, setHorasTotais] = useState(0);
+
+  // UseState para armazenar o valor total dos custos
   const [valorTotal, setValorTotal] = useState(0);
 
   // UseEffect para calcular as horas totais
@@ -91,6 +58,42 @@ const FormularioCustosProposta = (props) => {
     }
     setValorTotal(aux.toFixed(2));
   }, [props.custos]);
+
+  /** Função usada para excluir uma tabela de custos */
+  const deletarTabelaCustos = (index) => {
+    CustosService.deleteTabela(props.custos[index].id).then((response) => {
+      let custosNovos = [...props.custos];
+      custosNovos.splice(index, 1);
+      props.setCustos(custosNovos);
+    });
+  };
+
+  /** Função para criar uma tabela de custos no banco de dados e adicionar na lista */
+  const criarTabelaCusto = () => {
+    if (props.lendo) {
+      lerTexto(texts.formularioCustosProposta.adicionarCustos);
+    } else {
+      CustosService.postTabela({
+        custos: [
+          {
+            tipoDespesa: "",
+            perfilDespesa: "",
+            periodoExecucao: "",
+            horas: "",
+            valorHora: "",
+          },
+        ],
+        ccs: [
+          {
+            codigo: "",
+            porcentagem: "",
+          },
+        ],
+      }).then((response) => {
+        props.setCustos([...props.custos, response]);
+      });
+    }
+  };
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {

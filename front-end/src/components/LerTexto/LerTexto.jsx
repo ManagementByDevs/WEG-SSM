@@ -11,14 +11,15 @@ const LerTexto = () => {
 
   // ********************************************** Funções de ler texto **********************************************
 
-  const [corButton, setCorButton] = useState(
-    "linear-gradient(to right, #0083B4, #00579D)"
-  );
+  /** Variável utilizada pra setar a cor do botao */
+  const [corButton, setCorButton] = useState("linear-gradient(to right, #0083B4, #00579D)");
 
+  /** Função para ler o texto selecionado */
   const lerTexto = () => {
     setLendoTexto(!lendoTexto);
   };
 
+  /** useEffect utilizado para setar a cor do botão */
   useEffect(() => {
     if (lendoTexto) {
       setCorButton("linear-gradient(to right, #00658a, #002f54)");

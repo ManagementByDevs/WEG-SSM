@@ -45,6 +45,7 @@ const EscopoModoVisualizacao = ({
         handleDelete={handleDelete}
       />
     );
+
   // Se for table, aparecerá o componente de Table
   return (
     <EscopoTable

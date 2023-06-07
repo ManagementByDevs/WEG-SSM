@@ -1,15 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
-import {
-  Box,
-  FormControl,
-  Select,
-  MenuItem,
-  Typography,
-  Divider,
-  IconButton,
-  Paper,
-  Tooltip,
-} from "@mui/material";
+import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip, } from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
 
@@ -27,6 +17,7 @@ import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import AnexoService from "../../service/anexoService";
 
 const FormularioGeralProposta = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -117,7 +108,7 @@ const FormularioGeralProposta = (props) => {
           break;
       }
 
-      recognition.onstart = () => {};
+      recognition.onstart = () => { };
 
       recognition.onresult = (event) => {
         const transcript =
@@ -163,6 +154,22 @@ const FormularioGeralProposta = (props) => {
     }
   }, [palavrasJuntas]);
 
+  useEffect(() => {
+    if (escutar) {
+      ouvirAudio();
+    } else {
+      stopRecognition();
+    }
+  }, [escutar]);
+
+  useEffect(() => {
+    if (
+      props.gerais.periodoExecucacaoInicio > props.gerais.periodoExecucacaoFim
+    ) {
+      props.setFeedbackErroDataInicioMaior(true);
+    }
+  }, [props.gerais.periodoExecucacaoInicio, props.gerais.periodoExecucacaoFim]);
+
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
@@ -173,16 +180,6 @@ const FormularioGeralProposta = (props) => {
     setEscutar(!escutar);
     setLocalClique(ondeClicou);
   };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
 
   // Função que irá setar o texto que será "lido" pela a API
   const lerTexto = (escrita) => {
@@ -210,6 +207,7 @@ const FormularioGeralProposta = (props) => {
     }
   };
 
+  /** Função para buscar a data de início de execução */
   const valorDataInicio = () => {
     if (props.gerais.periodoExecucacaoInicio == "1970-01-01") {
       return null;
@@ -218,6 +216,7 @@ const FormularioGeralProposta = (props) => {
     }
   };
 
+  /** Função para buscar a data de fim da execução */
   const valorDataFim = () => {
     if (props.gerais.periodoExecucacaoFim == "1970-01-01") {
       return null;
@@ -225,14 +224,6 @@ const FormularioGeralProposta = (props) => {
       return props.gerais.periodoExecucacaoFim;
     }
   };
-
-  useEffect(() => {
-    if (
-      props.gerais.periodoExecucacaoInicio > props.gerais.periodoExecucacaoFim
-    ) {
-      props.setFeedbackErroDataInicioMaior(true);
-    }
-  }, [props.gerais.periodoExecucacaoInicio, props.gerais.periodoExecucacaoFim]);
 
   return (
     <Box className="flex flex-col">
@@ -246,7 +237,9 @@ const FormularioGeralProposta = (props) => {
             gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))",
           }}
         >
+          {/* Box geral do formulário */}
           <Box>
+            {/* Período Execução */}
             <Box className="flex mb-2">
               <Typography
                 sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
@@ -328,6 +321,7 @@ const FormularioGeralProposta = (props) => {
             </Box>
           </Box>
           <Box>
+            {/* Payback */}
             <Box className="flex mb-2">
               <Typography
                 sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
@@ -430,6 +424,7 @@ const FormularioGeralProposta = (props) => {
             </Box>
           </Box>
           <Box>
+            {/* Código PPM */}
             <Box className="flex mb-2">
               <Typography
                 sx={{ fontSize: FontConfig.big, fontWeight: "600" }}
@@ -506,6 +501,8 @@ const FormularioGeralProposta = (props) => {
             </Box>
           </Box>
         </Box>
+
+        {/* Link Jira */}
         <Box className="flex flex-col mb-8" sx={{ marginLeft: "6.1rem" }}>
           <Box className="flex mb-2">
             <Typography
@@ -582,7 +579,10 @@ const FormularioGeralProposta = (props) => {
             </Box>
           </Box>
         </Box>
+
         <Divider />
+
+        {/* Responsável negócio */}
         <Box className="flex flex-col mb-8" sx={{ marginLeft: "6.1rem" }}>
           <Box className="flex mt-8 items-center">
             <Typography
@@ -675,6 +675,7 @@ const FormularioGeralProposta = (props) => {
                   />
                 </Tooltip>
               </Typography>
+              {/* Adicionar anexos */}
               <input
                 onChange={onFilesSelect}
                 ref={inputFile}

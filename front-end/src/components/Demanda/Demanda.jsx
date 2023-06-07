@@ -32,6 +32,13 @@ const Demanda = (props) => {
     }
   }, []);
 
+  /** useEffect utilizado para declarar o campo html na variável */
+  useEffect(() => {
+    if (descricaoDemanda.current) {
+      descricaoDemanda.current.innerHTML = props.demanda.proposta;
+    }
+  }, [props.demanda]);
+
   /** Função para receber a altura da div principal da demanda (é maior caso o solicitante seja o usuário logado) */
   const retornaAlturaDemanda = () => {
     if (
@@ -81,20 +88,12 @@ const Demanda = (props) => {
     }
   };
 
-  /** useEffect utilizado para declarar o campo html na variável */
-  useEffect(() => {
-    if (descricaoDemanda.current) {
-      descricaoDemanda.current.innerHTML = props.demanda.proposta;
-    }
-
-  }, [props.demanda]);
-
   /** Função para formatar o html em texto */
   const getPropostaFomartted = (proposta) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
+  /** Função que irá setar o texto que será "lido" pela a API */ 
   const lerTexto = (escrita) => {
     if (props.lendo) {
       const synthesis = window.speechSynthesis;
