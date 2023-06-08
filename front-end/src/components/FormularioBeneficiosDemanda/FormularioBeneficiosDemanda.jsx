@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import {Box,Button,Divider,IconButton,Tooltip,Typography,} from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 import "./FormularioBeneficiosDemanda.css";
@@ -9,15 +16,18 @@ import Beneficios from "../Beneficios/Beneficios";
 import BeneficioService from "../../service/beneficioService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Segunda etapa da criação de demanda, usando uma lista de benefícios dos props */
 const FormularioBeneficiosDemanda = (props) => {
-  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Lista de benefícios adicionados */
   const [beneficios, setBeneficios] = useState([]);
@@ -87,7 +97,13 @@ const FormularioBeneficiosDemanda = (props) => {
           className="flex justify-between items-center border-l-4 px-2"
           sx={{ borderColor: "primary.main" }}
         >
-          <Typography fontSize={FontConfig.big} fontWeight={500}>
+          <Typography
+            fontSize={FontConfig.big}
+            fontWeight={500}
+            onClick={() =>
+              lerTexto(texts.formularioBeneficiosDemanda.listaDeBeneficios)
+            }
+          >
             {texts.formularioBeneficiosDemanda.listaDeBeneficios}
           </Typography>
 
@@ -118,12 +134,6 @@ const FormularioBeneficiosDemanda = (props) => {
                     index={index}
                     removerBeneficio={removerBeneficio}
                     dados={beneficio}
-                    setFeedbackErroNavegadorIncompativel={
-                      props.setFeedbackErroNavegadorIncompativel
-                    }
-                    setFeedbackErroReconhecimentoVoz={
-                      props.setFeedbackErroReconhecimentoVoz
-                    }
                   />
                 );
               }

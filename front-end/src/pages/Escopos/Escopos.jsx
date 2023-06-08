@@ -216,7 +216,6 @@ const Escopos = () => {
 
   /** useEffect utilizado para atualizar o input de pesquisa com o texto reconhecido */
   useEffect(() => {
-    console.log("passou aqui: ", palavrasJuntas);
     setInputPesquisa(palavrasJuntas);
   }, [palavrasJuntas]);
 

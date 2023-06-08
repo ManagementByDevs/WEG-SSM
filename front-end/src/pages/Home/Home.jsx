@@ -17,7 +17,7 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
@@ -33,18 +33,24 @@ import FontContext from "../../service/FontContext";
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
 import CookieService from "../../service/cookieService";
-import EntitiesObjectService from "../../service/entitiesObjectService";
-import { WebSocketContext } from "../../service/WebSocketService";
-import chatService from "../../service/chatService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 /** Página principal do solicitante */
 const Home = (props) => {
-
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
   /** useContext para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** Variável para navegação entre páginas */
   const navigate = useNavigate();
@@ -66,12 +72,6 @@ const Home = (props) => {
 
   /** Abrir modal feedback de demanda criada */
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
-
-  /** Variável utilizada para abrir o feedback de navegador incompatível */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
-
-  /** Variável utilizada para abrir o feedback de erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   /** Objeto do usuário que está logado no sistema */
   const [usuario, setUsuario] = useState({
@@ -99,7 +99,14 @@ const Home = (props) => {
   const [stringOrdenacao, setStringOrdenacao] = useState("sort=id,asc&");
 
   /** Lista de valores booleanos usada no modal de filtro para determinar qual filtro está selecionado */
-  const [listaFiltros, setListaFiltros] = useState([false, false, false, false, false, false]);
+  const [listaFiltros, setListaFiltros] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   /** Valores dos checkboxes de Score no modal de ordenação */
   const [ordenacaoScore, setOrdenacaoScore] = useState([false, true]);
@@ -114,7 +121,7 @@ const Home = (props) => {
   const [valorAba, setValorAba] = useState("1");
 
   /** Valor do input de pesquisa por título da demanda */
-  let valorPesquisa = "";
+  const [valorPesquisa, setValorPesquisa] = useState("");
 
   /** Variável de referência ao input de pesquisa */
   const inputPesquisa = useRef(null);
@@ -132,16 +139,14 @@ const Home = (props) => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] =
+    useState(true);
 
   /** useState para abrir e fechar o tour */
   const [isTourOpen, setIsTourOpen] = useState(false);
 
   /** useState para abrir e fechar o tour da aba de departamento */
   const [isTourOpenDepartamento, setIsTourOpenDepartamento] = useState(false);
-
-  /** Gambiarra para que na primeira vez arrumando as preferências do usuário o sistema entenda que nas minhas demandas é para pesquisar as demandas */
-  const [isFirstTime, setIsFirstTime] = useState(false);
 
   /** Passos do tour da aba de minhas demandas */
   const stepsTour = [
@@ -436,7 +441,7 @@ const Home = (props) => {
 
   /** Função para salvar o valor do input de pesquisa quando houver alteração */
   const salvarPesquisa = (e) => {
-    valorPesquisa = e.target?.value;
+    setValorPesquisa(e.target?.value);
     if (valorPesquisa != "") {
       if (!inputPreenchido) {
         setInputPreenchido(true);
@@ -452,8 +457,11 @@ const Home = (props) => {
   const pesquisaTitulo = () => {
     setParams({
       ...params,
-      titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
-      id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null)
+      titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+      id:
+        parseInt(valorPesquisa) && valorAba < 4
+          ? parseInt(valorPesquisa)
+          : null,
     });
   };
 
@@ -492,7 +500,7 @@ const Home = (props) => {
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => { });
+        UsuarioService.updateUser(user.id, user).then((e) => {});
       }
     );
   };
@@ -507,118 +515,17 @@ const Home = (props) => {
     saveNewPreference("abaPadrao");
   }, [valorAba]);
 
-  // ********************************************** Gravar audio ********************************************** //
-
-  /** Varíavel utilizada para lógica de gravação de audio */
-  const recognitionRef = useRef(null);
-
-  /** Variável utilizada para ativar o microfone para gravação de audio */
-  const [escutar, setEscutar] = useState(false);
-
-  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  /** Função para gravar audio nos inputs */
-  const ouvirAudio = () => {
-    /** Verifica se a API é suportada pelo navegador */
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {
-      };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
+  // ********************************************** Fim Preferências ********************************************** //
 
   /** useEffect utilizado para atualizar o input de pesquisa com o texto reconhecido */
   useEffect(() => {
-    valorPesquisa = palavrasJuntas;
+    if (localClique == "demanda") {
+      setValorPesquisa(palavrasJuntas);
+    }
   }, [palavrasJuntas]);
 
-  /** Função para encerrar a gravação de voz */
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  /** Função para iniciar a gravação de voz */
-  const startRecognition = () => {
-    setEscutar(!escutar);
-  };
-
-  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
-    <FundoComHeader lendo={props.lendo}>
+    <FundoComHeader>
       {/* Tradução para libras */}
       <VLibras forceOnload />
       {/* Div container */}
@@ -645,26 +552,6 @@ const Home = (props) => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
-        {/* Feedback Erro reconhecimento de voz */}
-        <Feedback
-          open={feedbackErroReconhecimentoVoz}
-          handleClose={() => {
-            setFeedbackErroReconhecimentoVoz(false);
-          }}
-          status={"erro"}
-          mensagem={texts.homeGerencia.feedback.feedback12}
-          lendo={props.lendo}
-        />
-        {/* Feedback navegador incompativel */}
-        <Feedback
-          open={feedbackErroNavegadorIncompativel}
-          handleClose={() => {
-            setFeedbackErroNavegadorIncompativel(false);
-          }}
-          status={"erro"}
-          mensagem={texts.homeGerencia.feedback.feedback13}
-          lendo={props.lendo}
-        />
         {/* Feedback de demanda criada */}
         <Feedback
           open={feedbackDemandaCriada}
@@ -673,7 +560,6 @@ const Home = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.home.demandaCriadaComSucesso}
-          lendo={props.lendo}
         />
 
         {/* Div container para o conteúdo da home */}
@@ -764,7 +650,6 @@ const Home = (props) => {
                       setOrdenacaoScore={setOrdenacaoScore}
                       ordenacaoDate={ordenacaoDate}
                       setOrdenacaoDate={setOrdenacaoDate}
-                      lendo={props.lendo}
                     />
                   )}
                 </Box>
@@ -795,6 +680,7 @@ const Home = (props) => {
                         fontSize: FontConfig?.medium,
                       }}
                       ref={inputPesquisa}
+                      value={valorPesquisa}
                       contentEditable
                       placeholder={texts.home.pesquisarPorTituloOuNumero}
                       onKeyDown={(e) => {
@@ -809,13 +695,12 @@ const Home = (props) => {
 
                     {/* Container para os ícones */}
                     <Box className="flex gap-2">
-
                       {inputPreenchido ? (
                         <Tooltip
                           className="hover:cursor-pointer"
                           title={texts.homeGerencia.limparBusca}
                           onClick={() => {
-                            valorPesquisa = "";
+                            setValorPesquisa("");
                             inputPesquisa.current.value = "";
                             pesquisaTitulo();
                             setInputPreenchido(false);
@@ -836,7 +721,7 @@ const Home = (props) => {
                         className="hover:cursor-pointer"
                         title={texts.homeGerencia.gravarAudio}
                         onClick={() => {
-                          startRecognition();
+                          startRecognition("demanda");
                         }}
                       >
                         {escutar ? (
@@ -879,7 +764,7 @@ const Home = (props) => {
                           minWidth: "5rem",
                         }}
                         onClick={() => {
-                          if (!props.lendo) {
+                          if (!lendoTexto) {
                             setFiltroAberto(true);
                           } else {
                             lerTexto(texts.home.filtrar);
@@ -900,9 +785,6 @@ const Home = (props) => {
                       }}
                       listaFiltros={listaFiltros}
                       setListaFiltros={setListaFiltros}
-                      lendo={props.lendo}
-                      texto={props.texto}
-                      setTexto={props.setTexto}
                     />
                   )}
                 </Box>
@@ -921,7 +803,7 @@ const Home = (props) => {
                   variant="contained"
                   disableElevation
                   onClick={() => {
-                    if (!props.lendo) {
+                    if (!lendoTexto) {
                       navigate("/criar-demanda");
                     } else {
                       lerTexto(texts.home.criarDemanda);
@@ -959,7 +841,6 @@ const Home = (props) => {
                                 tour: true,
                               },
                             }}
-                            lendo={props.lendo}
                           />
                         ) : (
                           <DemandaModoVisualizacao
@@ -967,7 +848,6 @@ const Home = (props) => {
                             onDemandaClick={verDemanda}
                             myDemandas={true}
                             nextModoVisualizacao={nextModoVisualizacao}
-                            lendo={props.lendo}
                           />
                         )}
                       </Box>
@@ -988,19 +868,16 @@ const Home = (props) => {
                                 tour: true,
                               },
                             }}
-                            lendo={props.lendo}
                           />
-                        ) :
+                        ) : (
                           <DemandaModoVisualizacao
                             listaDemandas={listaDemandas}
                             onDemandaClick={verDemanda}
                             myDemandas={false}
                             nextModoVisualizacao={nextModoVisualizacao}
-                            lendo={props.lendo}
                           />
-                        }
+                        )}
                       </Box>
-
                     </TabPanel>
                   </>
                 )}
@@ -1016,7 +893,6 @@ const Home = (props) => {
             setTamanho={setTamanhoPagina}
             tamanhoPagina={tamanhoPagina}
             setPaginaAtual={setPaginaAtual}
-            lendo={props.lendo}
           />
         ) : null}
       </Box>

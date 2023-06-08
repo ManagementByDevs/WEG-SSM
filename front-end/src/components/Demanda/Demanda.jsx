@@ -7,17 +7,20 @@ import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import CookieService from "../../service/cookieService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** UseState determinando o estado do modal de motivo recusa */
   const [modalMotivoRecusa, setModalMotivoRecusa] = useState(false);
@@ -93,32 +96,6 @@ const Demanda = (props) => {
     return proposta[0].toUpperCase() + proposta.substring(1).toLowerCase();
   };
 
-  /** Função que irá setar o texto que será "lido" pela a API */ 
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <>
       {/* Modal de motivo recusa */}
@@ -127,7 +104,6 @@ const Demanda = (props) => {
           open={true}
           setOpen={setModalMotivoRecusa}
           motivoRecusa={props.demanda?.motivoRecusa}
-          lendo={props.lendo}
         />
       )}
       <Paper
@@ -151,7 +127,7 @@ const Demanda = (props) => {
             color="text.primary"
             title={props.demanda.titulo}
             onClick={(e) => {
-              if (props.lendo) {
+              if (lendoTexto) {
                 e.stopPropagation();
                 lerTexto(props.demanda.titulo);
               }
@@ -164,48 +140,48 @@ const Demanda = (props) => {
           {(props.demanda?.solicitante?.email ==
             CookieService.getCookie("jwt").sub ||
             props.demanda?.solicitante?.tour) && (
-              <Box>
+            <Box>
+              <Typography
+                fontSize={FontConfig.default}
+                fontWeight={600}
+                color="primary"
+                className="text-end"
+                onClick={(e) => {
+                  if (lendoTexto) {
+                    e.stopPropagation();
+                    lerTexto(props.demanda.id);
+                  }
+                }}
+              >
+                #{props.demanda.id}
+              </Typography>
+
+              <Box id="oitavo" className={`items-center text-justify flex`}>
                 <Typography
-                  fontSize={FontConfig.default}
-                  fontWeight={600}
-                  color="primary"
-                  className="text-end"
+                  fontSize={FontConfig?.default}
+                  sx={{ fontWeight: "600" }}
                   onClick={(e) => {
-                    if (props.lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
-                      lerTexto(props.demanda.id);
+                      lerTexto(formatarNomeStatus());
                     }
                   }}
                 >
-                  #{props.demanda.id}
+                  {formatarNomeStatus()}
                 </Typography>
-
-                <Box id="oitavo" className={`items-center text-justify flex`}>
-                  <Typography
-                    fontSize={FontConfig?.default}
-                    sx={{ fontWeight: "600" }}
-                    onClick={(e) => {
-                      if (props.lendo) {
-                        e.stopPropagation();
-                        lerTexto(formatarNomeStatus());
-                      }
-                    }}
-                  >
-                    {formatarNomeStatus()}
-                  </Typography>
-                  <Box
-                    sx={{
-                      backgroundColor: getStatusColor(),
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "10px",
-                      marginLeft: "10px",
-                    }}
-                    className={`items-center h-30 text-justify`}
-                  />
-                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: getStatusColor(),
+                    width: "12px",
+                    height: "12px",
+                    borderRadius: "10px",
+                    marginLeft: "10px",
+                  }}
+                  className={`items-center h-30 text-justify`}
+                />
               </Box>
-            )}
+            </Box>
+          )}
         </Box>
 
         {/* Proposta da demanda */}
@@ -221,7 +197,7 @@ const Demanda = (props) => {
             textOverflow: "ellipsis",
           }}
           onClick={(e) => {
-            if (props.lendo) {
+            if (lendoTexto) {
               e.stopPropagation();
               lerTexto(getPropostaFomartted(props.demanda.proposta));
             }
@@ -233,13 +209,13 @@ const Demanda = (props) => {
         <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {props.demanda?.solicitante?.email !=
-            CookieService.getCookie("jwt").sub ? (
+          CookieService.getCookie("jwt").sub ? (
             <Typography
               fontSize={FontConfig?.default}
               sx={{ fontWeight: "600", cursor: "default" }}
               color="text.primary"
               onClick={(e) => {
-                if (props.lendo) {
+                if (lendoTexto) {
                   e.stopPropagation();
                   lerTexto(props.demanda.solicitante?.nome);
                 }
@@ -248,14 +224,14 @@ const Demanda = (props) => {
               {props.demanda.solicitante?.nome}
             </Typography>
           ) : (props.demanda?.status == "CANCELLED" ||
-            props.demanda?.status == "BACKLOG_EDICAO") &&
+              props.demanda?.status == "BACKLOG_EDICAO") &&
             props.demanda?.solicitante?.email ==
-            CookieService.getCookie("jwt").sub ? (
+              CookieService.getCookie("jwt").sub ? (
             <Button
               id="setimo"
               onClick={(e) => {
                 e.stopPropagation();
-                if (!props.lendo) {
+                if (!lendoTexto) {
                   setModalMotivoRecusa(true);
                 } else {
                   lerTexto(texts.demanda.motivo);

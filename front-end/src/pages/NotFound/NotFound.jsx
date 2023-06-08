@@ -9,51 +9,28 @@ import Error from "../../assets/Error.png";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página de Not Found, caso o usuário entre em alguma url inexistente no sistema */
-const NotFound = (props) => {
-
+const NotFound = () => {
   /** useContext para alterar o idioma do sistema */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Navigate utilizado para navegar para outra página */
   let navigate = useNavigate();
 
   /** Função para retornar a home */
   const voltarPaginaPrincipal = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       navigate("/");
     } else {
       lerTexto(texts.notFound.voltar);
-    }
-  };
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 
@@ -68,20 +45,30 @@ const NotFound = (props) => {
           fontSize={FontConfig.title}
           color={"primary.main"}
           fontWeight={650}
-          onClick={() => { lerTexto(texts.notFound.paginaNaoEncontrada) }}
+          onClick={() => {
+            lerTexto(texts.notFound.paginaNaoEncontrada);
+          }}
         >
           {texts.notFound.paginaNaoEncontrada}
         </Typography>
 
-        <Typography fontSize={FontConfig.veryBig} fontWeight={500} onClick={() => {
-          lerTexto(texts.notFound.paginaNaoEncontrada);
-        }}>
+        <Typography
+          fontSize={FontConfig.veryBig}
+          fontWeight={500}
+          onClick={() => {
+            lerTexto(texts.notFound.paginaNaoEncontrada);
+          }}
+        >
           {texts.notFound.paginaNaoEncontrada}
         </Typography>
 
-        <Typography fontSize={FontConfig.veryBig} fontWeight={500} onClick={() => {
-          lerTexto(texts.notFound.porfavorVolteParaPaginaPrincipal);
-        }}>
+        <Typography
+          fontSize={FontConfig.veryBig}
+          fontWeight={500}
+          onClick={() => {
+            lerTexto(texts.notFound.porfavorVolteParaPaginaPrincipal);
+          }}
+        >
           {texts.notFound.porfavorVolteParaPaginaPrincipal}
         </Typography>
 

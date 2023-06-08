@@ -1,6 +1,15 @@
 import React, { useContext, useState } from "react";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Typography, Button, } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Typography,
+  Button,
+} from "@mui/material";
 
 import "./DemandaModoVisualizacao.css";
 
@@ -10,6 +19,7 @@ import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente para mudar o modo de visualização das demandas (Grid, tabela ou nenhuma demanda encontrada) - Usuário padrão
 const DemandaModoVisualizacao = ({
@@ -17,9 +27,7 @@ const DemandaModoVisualizacao = ({
   onDemandaClick,
   nextModoVisualizacao,
   myDemandas,
-  lendo = false,
 }) => {
-
   // Verificacao para ver se retornou alignProperty, caso não tenha nada, mostra o componente "NadaEncontrado"
   if (listaDemandas.length == 0) {
     return <NadaEncontrado />;
@@ -32,7 +40,6 @@ const DemandaModoVisualizacao = ({
         listaDemandas={listaDemandas}
         onDemandaClick={onDemandaClick}
         myDemandas={myDemandas}
-        lendo={lendo}
       />
     );
 
@@ -41,7 +48,6 @@ const DemandaModoVisualizacao = ({
       listaDemandas={listaDemandas}
       onDemandaClick={onDemandaClick}
       myDemandas={myDemandas}
-      lendo={lendo}
     />
   );
 };
@@ -62,11 +68,12 @@ const DemandaTable = ({
   ],
   onDemandaClick,
   myDemandas,
-  lendo = false,
 }) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // useState para abrir o modal de motivo recusa
   const [abrirModal, setOpenModal] = useState(false);
@@ -121,32 +128,6 @@ const DemandaTable = ({
     setOpenModal(true);
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <Paper sx={{ width: "100%" }} square>
       {/* Abrindo o modal de motivo recusa */}
@@ -155,7 +136,6 @@ const DemandaTable = ({
           open={true}
           setOpen={setOpenModal}
           motivoRecusa={demandaSelecionada?.motivoRecusa}
-          lendo={lendo}
         />
       )}
       {/* Cabeçário da tabela */}
@@ -170,7 +150,7 @@ const DemandaTable = ({
               <Typography
                 fontSize={FontConfig.big}
                 onClick={(e) => {
-                  if (lendo) {
+                  if (lendoTexto) {
                     e.preventDefault();
                     lerTexto(texts.demandaModoVisualizacao.codigo);
                   }
@@ -184,7 +164,7 @@ const DemandaTable = ({
               <Typography
                 fontSize={FontConfig.big}
                 onClick={(e) => {
-                  if (lendo) {
+                  if (lendoTexto) {
                     e.preventDefault();
                     lerTexto(texts.demandaModoVisualizacao.titulo);
                   }
@@ -199,7 +179,7 @@ const DemandaTable = ({
                 <Typography
                   fontSize={FontConfig.big}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(texts.demandaModoVisualizacao.statusString);
                     }
@@ -214,7 +194,7 @@ const DemandaTable = ({
               <Typography
                 fontSize={FontConfig.big}
                 onClick={(e) => {
-                  if (lendo) {
+                  if (lendoTexto) {
                     e.preventDefault();
                     lerTexto(texts.demandaModoVisualizacao.data);
                   }
@@ -236,7 +216,7 @@ const DemandaTable = ({
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
               onClick={() => {
-                if (!lendo) {
+                if (!lendoTexto) {
                   onDemandaClick(row);
                 }
               }}
@@ -247,7 +227,7 @@ const DemandaTable = ({
                   className="truncate"
                   fontSize={FontConfig.medium}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(row.id);
                     }
@@ -262,7 +242,7 @@ const DemandaTable = ({
                   className="truncate"
                   fontSize={FontConfig.medium}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(row.titulo);
                     }
@@ -293,7 +273,7 @@ const DemandaTable = ({
                         className="truncate"
                         fontSize={FontConfig.medium}
                         onClick={(e) => {
-                          if (lendo) {
+                          if (lendoTexto) {
                             e.preventDefault();
                             lerTexto(formatarNomeStatus(row.status));
                           }
@@ -303,12 +283,12 @@ const DemandaTable = ({
                       </Typography>
                       {/* Botao do motivo da recusa caso foi cancelado ou esperando edição */}
                       {row.status == "CANCELLED" ||
-                        row.status == "BACKLOG_EDICAO" ? (
+                      row.status == "BACKLOG_EDICAO" ? (
                         <Button
                           className="tabela-linha-demanda-motivo-recusa"
                           onClick={(e) => {
                             e.preventDefault();
-                            if (lendo) {
+                            if (lendoTexto) {
                               lerTexto(texts.demandaModoVisualizacao.motivo);
                             } else {
                               abrirModalMotivoRecusa(row);
@@ -337,7 +317,7 @@ const DemandaTable = ({
                   className="truncate"
                   fontSize={FontConfig.default}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(
                         DateService.getTodaysDateUSFormat(
@@ -360,7 +340,7 @@ const DemandaTable = ({
 };
 
 // Componente para exibir as demanda em forma de grid
-const DemandaGrid = ({ listaDemandas, onDemandaClick, lendo = false }) => {
+const DemandaGrid = ({ listaDemandas, onDemandaClick }) => {
   return (
     <Box
       sx={{
@@ -377,7 +357,6 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, lendo = false }) => {
           onClick={() => {
             onDemandaClick(e);
           }}
-          lendo={lendo}
         />
       ))}
     </Box>
@@ -386,38 +365,14 @@ const DemandaGrid = ({ listaDemandas, onDemandaClick, lendo = false }) => {
 
 // Componente para exibir nada encontrado
 const NadaEncontrado = (props) => {
-  
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   return (
     <Box

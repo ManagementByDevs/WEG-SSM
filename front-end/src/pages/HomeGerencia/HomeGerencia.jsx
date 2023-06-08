@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Box, Button, IconButton, Tab, Tooltip, } from "@mui/material";
+import { Box, Button, IconButton, Tab, Tooltip } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -13,7 +13,7 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 import Pauta from "../../components/Pauta/Pauta";
 import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
@@ -45,18 +45,28 @@ import ExportPdfService from "../../service/exportPdfService";
 
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = (props) => {
-
   /** Context que contém os textos do sistema */
   const { texts } = useContext(TextLanguageContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** Variável para determinar se a tour de demandas está aberta */
   const [isTourDemandasOpen, setIsTourDemandasOpen] = useState(false);
 
   /** Variável para determinar se a tour de criar proposta está aberta */
-  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] = useState(false);
+  const [isTourCriarPropostasOpen, setIsTourCriarPropostasOpen] =
+    useState(false);
 
   /** Variável para determinar se a tour de propostas está aberta */
   const [isTourPropostasOpen, setIsTourPropostasOpen] = useState(false);
@@ -87,11 +97,8 @@ const HomeGerencia = (props) => {
     tamanho: null,
     status: null,
     presenteEm: null,
-    codigoPPM: null
+    codigoPPM: null,
   });
-
-  /** Context para ver o tema do sistema */
-  const { mode } = useContext(ColorModeContext);
 
   /** Contexto para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
@@ -139,7 +146,7 @@ const HomeGerencia = (props) => {
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   /** Valor do input de pesquisa por título */
-  let valorPesquisa = "";
+  const [valorPesquisa, setValorPesquisa] = useState("");
 
   /** Variável de referência ao input de pesquisa */
   const inputPesquisa = useRef(null);
@@ -157,7 +164,8 @@ const HomeGerencia = (props) => {
   const [isFirstTime, setIsFirstTime] = useState(false);
 
   /** Variável para verificar se o toru de minhas demandas foi aberto */
-  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] = useState(false);
+  const [isTourMinhasDemandasOpen, setIsTourMinhasDemandasOpen] =
+    useState(false);
 
   /** Objeto contendo os filtros selecionados no sistema, usado no modal de filtro */
   const [filtrosAtuais, setFiltrosAtuais] = useState({
@@ -185,10 +193,16 @@ const HomeGerencia = (props) => {
   });
 
   /** Parâmetros para pesquisa das pautas (barra de pesquisa somente) */
-  const [paramsPautas, setParamsPautas] = useState({ titulo: null, numeroSequencial: null });
+  const [paramsPautas, setParamsPautas] = useState({
+    titulo: null,
+    numeroSequencial: null,
+  });
 
   /** Parâmetros para pesquisa das atas (barra de pesquisa somente) */
-  const [paramsAtas, setParamsAtas] = useState({ titulo: null, numeroSequencial: null });
+  const [paramsAtas, setParamsAtas] = useState({
+    titulo: null,
+    numeroSequencial: null,
+  });
 
   /** UseState que controla a visibilidade do modal de confirmação para exclusão de uma pauta */
   const [openModalConfirmacao, setOpenModalConfirmacao] = useState(false);
@@ -203,13 +217,15 @@ const HomeGerencia = (props) => {
   const [carregamentoItens, setCarregamentoItens] = useState(true);
 
   /** Variável para esconder a página e mostrar um ícone de carregamento enquanto busca as preferências do usuário */
-  const [carregamentoPreferencias, setCarregamentoPreferencias] = useState(true);
+  const [carregamentoPreferencias, setCarregamentoPreferencias] =
+    useState(true);
 
   /** Variável para o feedback de demanda aceita */
   const [feedbackDemandaAceita, setFeedbackDemandaAceita] = useState(false);
 
   /** Variável para o feedback de demanda devolvida */
-  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] = useState(false);
+  const [feedbackDemandaDevolvida, setFeedbackDemandaDevolvida] =
+    useState(false);
 
   /** Variável para o feedback de demanda recusada */
   const [feedbackDemandaRecusada, setFeedbackDemandaRecusada] = useState(false);
@@ -224,13 +240,15 @@ const HomeGerencia = (props) => {
   const [feedbackAtaCriada, setFeedbackAtaCriada] = useState(false);
 
   /** Feedback propostas atualizadas */
-  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] = useState(false);
+  const [feedbackPropostasAtualizadas, setFeedbackPropostasAtualizadas] =
+    useState(false);
 
   /** Feedback deletar pauta */
   const [feedbackDeletarPauta, setFeedbackDeletarPauta] = useState(false);
 
   /** Feedback atualizar proposta */
-  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] = useState(false);
+  const [feedbackPropostaAtualizada, setFeedbackPropostaAtualizada] =
+    useState(false);
 
   /** Feedback de demanda criada */
   const [feedbackDemandaCriada, setFeedbackDemandaCriada] = useState(false);
@@ -242,10 +260,14 @@ const HomeGerencia = (props) => {
   const [feedbackAdicionarPauta, setFeedbackAdicionarPauta] = useState(false);
 
   /** Feedback de navegador incompatível para reconhecimento de voz */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
 
   /** Feedback de erro ao reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
   /** useState para fechar o chat minimizado */
   const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
@@ -492,50 +514,115 @@ const HomeGerencia = (props) => {
 
   /** UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada */
   useEffect(() => {
-    valorPesquisa = inputPesquisa?.current?.value;
+    setValorPesquisa(inputPesquisa?.current?.value);
     formatarOrdenacao();
     switch (valorAba) {
       case "1":
         setParams({
-          ...params, gerente: null, status: null, solicitante: usuario, titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
-          id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
+          ...params,
+          gerente: null,
+          status: null,
+          solicitante: usuario,
+          titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+          id:
+            parseInt(valorPesquisa) && valorAba < 4
+              ? parseInt(valorPesquisa)
+              : null,
+          codigoPPM:
+            parseInt(valorPesquisa) && valorAba >= 4
+              ? parseInt(valorPesquisa)
+              : null,
         });
         setFiltroProposta(false);
         break;
       case "2":
         if (usuario.tipoUsuario == "GERENTE") {
           setParams({
-            ...params, gerente: usuario, solicitante: null, status: "BACKLOG_APROVACAO", titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
-            id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
+            ...params,
+            gerente: usuario,
+            solicitante: null,
+            status: "BACKLOG_APROVACAO",
+            titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+            id:
+              parseInt(valorPesquisa) && valorAba < 4
+                ? parseInt(valorPesquisa)
+                : null,
+            codigoPPM:
+              parseInt(valorPesquisa) && valorAba >= 4
+                ? parseInt(valorPesquisa)
+                : null,
           });
         } else {
           setParams({
-            ...params, gerente: null, solicitante: null, status: "BACKLOG_REVISAO", titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
-            id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
+            ...params,
+            gerente: null,
+            solicitante: null,
+            status: "BACKLOG_REVISAO",
+            titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+            id:
+              parseInt(valorPesquisa) && valorAba < 4
+                ? parseInt(valorPesquisa)
+                : null,
+            codigoPPM:
+              parseInt(valorPesquisa) && valorAba >= 4
+                ? parseInt(valorPesquisa)
+                : null,
           });
         }
         setFiltroProposta(false);
         break;
       case "3":
         setParams({
-          ...params, gerente: null, solicitante: null, status: "ASSESSMENT", titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
-          id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
+          ...params,
+          gerente: null,
+          solicitante: null,
+          status: "ASSESSMENT",
+          titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+          id:
+            parseInt(valorPesquisa) && valorAba < 4
+              ? parseInt(valorPesquisa)
+              : null,
+          codigoPPM:
+            parseInt(valorPesquisa) && valorAba >= 4
+              ? parseInt(valorPesquisa)
+              : null,
         });
         setFiltroProposta(false);
         break;
       case "4":
         setParams({
-          ...params, gerente: null, solicitante: null, status: null, titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
-          id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null), codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
+          ...params,
+          gerente: null,
+          solicitante: null,
+          status: null,
+          titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+          id:
+            parseInt(valorPesquisa) && valorAba < 4
+              ? parseInt(valorPesquisa)
+              : null,
+          codigoPPM:
+            parseInt(valorPesquisa) && valorAba >= 4
+              ? parseInt(valorPesquisa)
+              : null,
         });
         setFiltroProposta(true);
         break;
       case "5":
-        setParamsPautas({ numeroSequencial: (parseInt(valorPesquisa) ? parseInt(valorPesquisa) : null), titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null) });
+        setParamsPautas({
+          numeroSequencial: parseInt(valorPesquisa)
+            ? parseInt(valorPesquisa)
+            : null,
+          titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+        });
         setFiltroProposta(false);
         break;
       case "6":
-        setParamsAtas({ numeroSequencial: (parseInt(valorPesquisa) ? parseInt(valorPesquisa) : null), titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null) });
+        setParamsAtas({
+          numeroSequencial: parseInt(valorPesquisa)
+            ? parseInt(valorPesquisa)
+            : null,
+          titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+        });
         setFiltroProposta(false);
         break;
     }
@@ -651,7 +738,6 @@ const HomeGerencia = (props) => {
   const formatarItens = (listaDemandas) => {
     let listaNova = [];
     for (let demanda of listaDemandas) {
-
       if (verificarFiltragemDemanda(demanda)) {
         let listaNovaBeneficios = [];
         for (let beneficio of demanda.beneficios) {
@@ -679,7 +765,10 @@ const HomeGerencia = (props) => {
     if (params.analista != null && demanda.analista?.id != params.analista.id) {
       return false;
     }
-    if (params.departamento != null && demanda.departamento?.id != params.departamento.id) {
+    if (
+      params.departamento != null &&
+      demanda.departamento?.id != params.departamento.id
+    ) {
       return false;
     }
     if (params.forum != null && demanda.forum?.id != params.forum.id) {
@@ -697,7 +786,10 @@ const HomeGerencia = (props) => {
     if (params.presenteEm && demanda.presenteEm != params.presenteEm) {
       return false;
     }
-    if (params.solicitante != null && demanda.solicitante?.id != params.solicitante.id) {
+    if (
+      params.solicitante != null &&
+      demanda.solicitante?.id != params.solicitante.id
+    ) {
       return false;
     }
     if (params.status && demanda.status != params.status) {
@@ -710,7 +802,7 @@ const HomeGerencia = (props) => {
       return false;
     }
     return true;
-  }
+  };
 
   /** Função para a busca de itens das abas */
   const buscarItens = () => {
@@ -816,7 +908,7 @@ const HomeGerencia = (props) => {
 
   /** Função para salvar o input de pesquisa quando houver alteração */
   const salvarPesquisa = (e) => {
-    valorPesquisa = e;
+    setValorPesquisa(e);
     if (valorPesquisa != "") {
       if (!inputPreenchido) {
         setInputPreenchido(true);
@@ -833,21 +925,31 @@ const HomeGerencia = (props) => {
     if (valorAba < 5) {
       setParams({
         ...params,
-        titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null),
-        id: (parseInt(valorPesquisa) && valorAba < 4 ? parseInt(valorPesquisa) : null),
-        codigoPPM: (parseInt(valorPesquisa) && valorAba >= 4 ? parseInt(valorPesquisa) : null)
+        titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
+        id:
+          parseInt(valorPesquisa) && valorAba < 4
+            ? parseInt(valorPesquisa)
+            : null,
+        codigoPPM:
+          parseInt(valorPesquisa) && valorAba >= 4
+            ? parseInt(valorPesquisa)
+            : null,
       });
     } else if (valorAba == 5) {
       setParamsPautas({
         ...paramsPautas,
-        numeroSequencial: (parseInt(valorPesquisa) ? parseInt(valorPesquisa) : null),
-        titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null)
+        numeroSequencial: parseInt(valorPesquisa)
+          ? parseInt(valorPesquisa)
+          : null,
+        titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
       });
     } else {
       setParamsAtas({
         ...paramsAtas,
-        numeroSequencial: (parseInt(valorPesquisa) ? parseInt(valorPesquisa) : null),
-        titulo: (!parseInt(valorPesquisa) ? valorPesquisa : null)
+        numeroSequencial: parseInt(valorPesquisa)
+          ? parseInt(valorPesquisa)
+          : null,
+        titulo: !parseInt(valorPesquisa) ? valorPesquisa : null,
       });
     }
   };
@@ -1007,7 +1109,7 @@ const HomeGerencia = (props) => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
         });
       });
     }
@@ -1036,7 +1138,7 @@ const HomeGerencia = (props) => {
         let itemsVisualizationMode =
           preferencias?.itemsVisualizationMode?.toUpperCase();
 
-        // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao 
+        // ItemsVisualizationMode é o modo de visualização preferido do usuário, porém o nextModoVisualizao
         // é o próximo modo para o qual será trocado a visualização
         if (itemsVisualizationMode == nextModoVisualizacao) {
           setNextModoVisualizacao("GRID");
@@ -1084,108 +1186,12 @@ const HomeGerencia = (props) => {
     );
   };
 
-  // ********************************************** Funções de voz **********************************************
-
-  /** Varíavel utilizada para lógica de gravação de audio */
-  const recognitionRef = useRef(null);
-
-  /** Variável utilizada para ativar o microfone para gravação de audio */
-  const [escutar, setEscutar] = useState(false);
-
-  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  /** Função para gravar audio nos inputs */
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => { };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        setFeedbackErroReconhecimentoVoz(true);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      setFeedbackErroNavegadorIncompativel(true);
-    }
-  };
-
   /** useEffect utilizado para salvar o valor da pesquisa como o valor do reconhecimento de voz */
   useEffect(() => {
-    valorPesquisa = palavrasJuntas;
-  }, [palavrasJuntas]);
-
-  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
-  useEffect(() => {
     if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
+      setValorPesquisa(palavrasJuntas);
     }
-  }, [escutar]);
-
-  /** Função para encerrar a gravação de voz */
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  /** Função para iniciar a gravação de voz */
-  const startRecognition = () => {
-    setEscutar(!escutar);
-  };
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  }, [palavrasJuntas]);
 
   /** Função que retorna o texto adequado para a barra de pesquisa dependendo da aba em que o usuário estiver */
   const formatarTextoPesquisa = () => {
@@ -1196,7 +1202,7 @@ const HomeGerencia = (props) => {
     } else {
       return texts.homeGerencia.pesquisarPorNumeroSequencialOuProposta;
     }
-  }
+  };
 
   return (
     <FundoComHeader lendo={props.lendo}>
@@ -1593,6 +1599,7 @@ const HomeGerencia = (props) => {
                         fontSize: FontConfig.medium,
                       }}
                       ref={inputPesquisa}
+                      value={valorPesquisa}
                       placeholder={formatarTextoPesquisa()}
                       onKeyDown={(e) => {
                         eventoTeclado(e);
@@ -1603,13 +1610,12 @@ const HomeGerencia = (props) => {
                     />
                     {/* Container para os ícones */}
                     <Box className="flex gap-2 items-center">
-
                       {inputPreenchido ? (
                         <Tooltip
                           className="hover:cursor-pointer"
                           title={texts.homeGerencia.limparBusca}
                           onClick={() => {
-                            valorPesquisa = "";
+                            setValorPesquisa("");
                             inputPesquisa.current.value = "";
                             pesquisaTitulo();
                             setInputPreenchido(false);
@@ -1857,7 +1863,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}

@@ -15,14 +15,18 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal para do filtro do usuário padrão
 const ModalFiltro = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Função para mudar o valor da primeira checkbox do filtro */
   const mudarCheck1 = () => {
@@ -94,32 +98,6 @@ const ModalFiltro = (props) => {
       false,
       !props.listaFiltros[5],
     ]);
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (

@@ -149,30 +149,18 @@ const App = () => {
                           element={<EditarEscopo />}
                         />
                         <Route path="/escopos" element={<Escopos />} />
-                        <Route
-                          path="*"
-                          element={<NotFound lendo={lendoTexto} />}
-                        />
+                        <Route path="*" element={<NotFound />} />
                         {/* <Route path="/test" element={<Test />} /> */}
                       </Route>
-                      <Route
-                        path="/editar-escopo"
-                        element={<EditarEscopo lendo={lendoTexto} />}
-                      />
-                      <Route
-                        path="/escopos"
-                        element={<Escopos lendo={lendoTexto} />}
-                      />
-                      <Route
-                        path="*"
-                        element={<NotFound lendo={lendoTexto} />}
-                      />
+                      <Route path="/editar-escopo" element={<EditarEscopo />} />
+                      <Route path="/escopos" element={<Escopos />} />
+                      <Route path="*" element={<NotFound />} />
                       {/* <Route path="/test" element={<Test />} /> */}
                       <Route
                         path="/"
                         element={
                           <ProtectedRoute>
-                            <DetermineHomeUser lendo={lendoTexto} />
+                            <DetermineHomeUser />
                           </ProtectedRoute>
                         }
                       />
@@ -268,13 +256,13 @@ const ProtectedRoute = ({
   }
 };
 
-const DetermineHomeUser = (props) => {
+const DetermineHomeUser = () => {
   const userJpa = CookieService.getCookie("user");
 
   if (userJpa.authorities[0].authority == "SOLICITANTE") {
-    return <Home lendo={props.lendo} />;
+    return <Home />;
   } else {
-    return <HomeGerencia lendo={props.lendo} />;
+    return <HomeGerencia />;
   }
 };
 

@@ -15,14 +15,18 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal de ordenação do sistema
 const ModalOrdenacao = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Função para mudar o valor do checkbox de ordenação por score "Menor Score" */
   const mudarCheck1 = () => {
@@ -52,31 +56,6 @@ const ModalOrdenacao = (props) => {
   /** Função para mudar o valor do checkbox de ordenação por data "Mais Nova" */
   const mudarCheck6 = () => {
     props.setOrdenacaoDate([false, !props.ordenacaoDate[1]]);
-  };
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (
@@ -218,7 +197,9 @@ const ModalOrdenacao = (props) => {
                         fontSize: FontConfig.big,
                         fontWeight: "600",
                       }}
-                      onClick={() => lerTexto(texts.modalOrdenacao.numeroSequencial)}
+                      onClick={() =>
+                        lerTexto(texts.modalOrdenacao.numeroSequencial)
+                      }
                     >
                       {texts.modalOrdenacao.numeroSequencial}:
                     </Typography>

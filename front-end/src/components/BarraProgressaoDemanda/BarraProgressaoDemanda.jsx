@@ -55,16 +55,6 @@ const BarraProgressaoDemanda = () => {
   /** Variável utilizada para abrir o modal de feedback de dados faltantes */
   const [feedbackDadosFaltantes, setFeedbackDadosFaltantes] = useState(false);
 
-  /** Variável utilizada para abrir o modal de feedback de navegador incompativel */
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-
-  /** Variável utilizada para abrir o modal de feedback de erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
-
   /** Variáveis utilizadas para salvar um escopo de uma demanda */
   var idEscopo = null;
   const [ultimoEscopo, setUltimoEscopo] = useState(null);
@@ -386,24 +376,6 @@ const BarraProgressaoDemanda = () => {
 
   return (
     <>
-      {/* Feedback Erro reconhecimento de voz */}
-      <Feedback
-        open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback12}
-      />
-      {/* Feedback Não navegador incompativel */}
-      <Feedback
-        open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback13}
-      />
       {/* Feedback de dados faltantes */}
       <Feedback
         open={feedbackDadosFaltantes}
@@ -456,12 +428,6 @@ const BarraProgressaoDemanda = () => {
             <FormularioDadosDemanda
               dados={paginaDados}
               setDados={setPaginaDados}
-              setFeedbackErroReconhecimentoVoz={
-                setFeedbackErroReconhecimentoVoz
-              }
-              setFeedbackErroNavegadorIncompativel={
-                setFeedbackErroNavegadorIncompativel
-              }
             />
           )}
           {etapaAtiva == 1 && (
@@ -470,12 +436,6 @@ const BarraProgressaoDemanda = () => {
                 dados={paginaBeneficios}
                 setDados={setPaginaBeneficios}
                 salvarBeneficios={salvarBeneficios}
-                setFeedbackErroNavegadorIncompativel={
-                  setFeedbackErroNavegadorIncompativel
-                }
-                setFeedbackErroReconhecimentoVoz={
-                  setFeedbackErroReconhecimentoVoz
-                }
               />
             </Box>
           )}

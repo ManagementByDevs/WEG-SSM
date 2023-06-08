@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Box, Typography } from "@mui/material";
 
@@ -11,7 +11,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Primeira etapa da criação de demanda, com os dados principais em inputs de texto */
 const FormularioDadosDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -23,6 +22,7 @@ const FormularioDadosDemanda = (props) => {
 
   /** Função para salvar o título da demanda */
   const salvarTitulo = (texto) => {
+    console.log("passou aqui", texto);
     props.setDados({ ...props.dados, titulo: texto });
   };
 
@@ -59,12 +59,6 @@ const FormularioDadosDemanda = (props) => {
             label={texts.formularioDadosDemanda.titulo}
             placeholder={texts.formularioDadosDemanda.digiteTitulo}
             fontConfig={FontConfig.default}
-            setFeedbackErroReconhecimentoVoz={
-              props.setFeedbackErroReconhecimentoVoz
-            }
-            setFeedbackErroNavegadorIncompativel={
-              props.setFeedbackErroNavegadorIncompativel
-            }
           />
 
           <Box>
@@ -72,7 +66,9 @@ const FormularioDadosDemanda = (props) => {
               <Typography
                 fontSize={FontConfig.default}
                 fontWeight={600}
-                onClick={() => { lerTexto(texts.formularioDadosDemanda.problema); }}
+                onClick={() => {
+                  lerTexto(texts.formularioDadosDemanda.problema);
+                }}
               >
                 {texts.formularioDadosDemanda.problema}
               </Typography>
@@ -90,9 +86,7 @@ const FormularioDadosDemanda = (props) => {
               </Typography>
             </Box>
 
-            <Box
-              sx={{ borderLeft: "solid 4px", borderColor: "primary.main" }}
-            >
+            <Box sx={{ borderLeft: "solid 4px", borderColor: "primary.main" }}>
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProblema}
                 texto={props.dados.problema}
@@ -125,9 +119,7 @@ const FormularioDadosDemanda = (props) => {
                 *
               </Typography>
             </Box>
-            <Box
-              sx={{ borderLeft: "solid 4px", borderColor: "primary.main" }}
-            >
+            <Box sx={{ borderLeft: "solid 4px", borderColor: "primary.main" }}>
               <CaixaTextoQuill
                 placeholder={texts.formularioDadosDemanda.digiteProposta}
                 texto={props.dados.proposta}
@@ -146,12 +138,6 @@ const FormularioDadosDemanda = (props) => {
               label={texts.formularioDadosDemanda.frequenciaDeUso}
               placeholder={texts.formularioDadosDemanda.digiteFrequenciaDeUso}
               fontConfig={FontConfig.default}
-              setFeedbackErroReconhecimentoVoz={
-                props.setFeedbackErroReconhecimentoVoz
-              }
-              setFeedbackErroNavegadorIncompativel={
-                props.setFeedbackErroNavegadorIncompativel
-              }
             />
           </Box>
         </Box>

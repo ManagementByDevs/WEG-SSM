@@ -18,15 +18,14 @@ import AnexoService from "../../service/anexoService";
 
 /** Terceira e última etapa da criação de demanda, com espaço para adicionar anexos numa lista */
 const FormularioAnexosDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
-  /** Context para ler o texto da tela */
-  const { lerTexto } = useContext(SpeechSynthesisContext);
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Variável usada para referência da área de "soltar" arquivos */
   const areaArquivos = useRef(null);
@@ -144,8 +143,11 @@ const FormularioAnexosDemanda = (props) => {
             >
               <Typography
                 fontSize={FontConfig.medium}
-                onClick={() => {
-                  lerTexto(texts.formularioAnexosDemanda.pesquisarArquivos);
+                onClick={(e) => {
+                  if (lendoTexto) {
+                    e.stopPropagation();
+                    lerTexto(texts.formularioAnexosDemanda.pesquisarArquivos);
+                  }
                 }}
               >
                 {texts.formularioAnexosDemanda.pesquisarArquivos}
