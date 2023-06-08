@@ -1,6 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { Menu, MenuItem, Tooltip, IconButton, Typography, } from "@mui/material/";
+import {
+  Menu,
+  MenuItem,
+  Tooltip,
+  IconButton,
+  Typography,
+} from "@mui/material/";
 
 import Brasil from "../../assets/brasil.jpg";
 import China from "../../assets/china.png";
@@ -17,7 +23,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal para selecionar o idioma do sistema
 const IdiomaModal = () => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -84,10 +89,12 @@ const IdiomaModal = () => {
    * Salva as novas preferências do usuário no banco de dados
    */
   const saveNewPreference = () => {
-    if (!CookieService.getCookie("jwt")) return;
-
-    UsuarioService.getUsuarioByEmail(CookieService.getCookie("jwt")?.sub).then(
-      (user) => {
+    if (!CookieService.getCookie("jwt")) {
+      toggleLanguage();
+    } else {
+      UsuarioService.getUsuarioByEmail(
+        CookieService.getCookie("jwt")?.sub
+      ).then((user) => {
         toggleLanguage();
         let preferencias = JSON.parse(user.preferencias);
 
@@ -108,9 +115,9 @@ const IdiomaModal = () => {
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => { });
-      }
-    );
+        UsuarioService.updateUser(user.id, user).then((e) => {});
+      });
+    }
   };
 
   // Toda vez que o idioma for mudado, será salvado a nova preferência do usuário
@@ -120,15 +127,22 @@ const IdiomaModal = () => {
 
   // Toda vez que o usuário logar, será pego as preferências dele
   useEffect(() => {
-    if (!CookieService.getCookie("jwt")) return;
-    UsuarioService.getPreferencias(CookieService.getCookie("jwt")?.sub).then(
-      (preferencias) => {
-        if (preferencias.lang == "pt") setIdioma(Brasil);
-        else if (preferencias.lang == "ch") setIdioma(China);
-        else if (preferencias.lang == "en") setIdioma(EstadosUnidos);
-        else if (preferencias.lang == "es") setIdioma(Espanha);
+    if (!idioma) {
+      setIdioma(Brasil);
+    } else {
+      if (!CookieService.getCookie("jwt")) {
+        setIdioma(idioma);
+      } else {
+        UsuarioService.getPreferencias(
+          CookieService.getCookie("jwt")?.sub
+        ).then((preferencias) => {
+          if (preferencias.lang == "pt") setIdioma(Brasil);
+          else if (preferencias.lang == "ch") setIdioma(China);
+          else if (preferencias.lang == "en") setIdioma(EstadosUnidos);
+          else if (preferencias.lang == "es") setIdioma(Espanha);
+        });
       }
-    );
+    }
   }, []);
 
   return (
