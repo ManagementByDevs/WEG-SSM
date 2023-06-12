@@ -174,13 +174,7 @@ const ModalAddPropostaPauta = (props) => {
 
   // UseState para armazenar a lista de pautas
   const [listaPautas, setListaPautas] = useState([
-    {
-      id: 0,
-      numeroSequencial: 0,
-      dataReuniao: "",
-      comissao: "",
-      propostas: [propostaExample],
-    },
+
   ]);
 
   const [listaComissoes, setListaComissoes] = useState([]);
@@ -202,6 +196,16 @@ const ModalAddPropostaPauta = (props) => {
   // useEffect(() => {
 
   // }, [habilitadoAdd])
+
+  useEffect(() => {
+    PautaService.get().then((res) => {
+      setListaPautas(res);
+    });
+
+    ForumService.getAll().then((res) => {
+      setListaComissoes(res);
+    });
+  }, []);
 
   // função para adicionar uma nova pauta
   const addPauta = () => {

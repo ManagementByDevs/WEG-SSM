@@ -344,7 +344,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) {}
+      } catch (error) { }
 
       listaNova.push({
         id: beneficio.id,
@@ -437,7 +437,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -489,7 +489,7 @@ const BarraProgressaoProposta = (props) => {
         delete beneficioFinal.visible;
         beneficioService
           .put(beneficioFinal, beneficioFinal.memoriaCalculo)
-          .then((response) => {});
+          .then((response) => { });
       }
     }
   };
@@ -782,63 +782,60 @@ const BarraProgressaoProposta = (props) => {
                 setFeedbackFaltante(true);
               }
             });
-            const ppmVerificacao = await verificacaoPPM();
+            // const ppmVerificacao = await verificacaoPPM();
             const paybackVerificacao = verificacaoPaybak();
-            if (ppmVerificacao) {
-              if (feedbackFaltante != true && paybackVerificacao) {
-                propostaService
-                  .post(retornaObjetoProposta())
-                  .then((response) => {
-                    setCarregamentoProposta(true);
 
-                    DemandaService.atualizarStatus(
-                      dadosDemanda.id,
-                      "ASSESSMENT_APROVACAO"
-                    ).then(() => {
-                      EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
-                        () => {
-                          // Salvamento de histórico
-                          ExportPdfService.exportProposta(response.id).then(
-                            (file) => {
-                              let arquivo = new Blob([file], {
-                                type: "application/pdf",
-                              });
-                              propostaService
-                                .addHistorico(
-                                  response.id,
-                                  "Proposta Criada",
-                                  arquivo,
-                                  CookieService.getUser().id
-                                )
-                                .then((propostaResponse) => {
-                                  setCarregamentoProposta(false);
+            if (feedbackFaltante != true && paybackVerificacao) {
+              propostaService
+                .post(retornaObjetoProposta())
+                .then((response) => {
+                  setCarregamentoProposta(true);
 
-                                  // Envio de Notificação ao Solicitante
-                                  const notificacao =
-                                    NotificacaoService.createNotificationObject(
-                                      NotificacaoService.criadoProposta,
-                                      dadosDemanda,
-                                      CookieService.getUser().id
-                                    );
-                                  enviar(
-                                    `/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`,
-                                    JSON.stringify(notificacao)
+                  DemandaService.atualizarStatus(
+                    dadosDemanda.id,
+                    "ASSESSMENT_APROVACAO"
+                  ).then(() => {
+                    EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
+                      () => {
+                        // Salvamento de histórico
+                        ExportPdfService.exportProposta(response.id).then(
+                          (file) => {
+                            let arquivo = new Blob([file], {
+                              type: "application/pdf",
+                            });
+                            propostaService
+                              .addHistorico(
+                                response.id,
+                                "Proposta Criada",
+                                arquivo,
+                                CookieService.getUser().id
+                              )
+                              .then((propostaResponse) => {
+                                setCarregamentoProposta(false);
+
+                                // Envio de Notificação ao Solicitante
+                                const notificacao =
+                                  NotificacaoService.createNotificationObject(
+                                    NotificacaoService.criadoProposta,
+                                    dadosDemanda,
+                                    CookieService.getUser().id
                                   );
+                                enviar(
+                                  `/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`,
+                                  JSON.stringify(notificacao)
+                                );
 
-                                  localStorage.setItem("tipoFeedback", "5");
-                                  navigate("/");
-                                });
-                            }
-                          );
-                        }
-                      );
-                    });
+                                localStorage.setItem("tipoFeedback", "5");
+                                navigate("/");
+                              });
+                          }
+                        );
+                      }
+                    );
                   });
-              } else {
-                setFeedbackPayback(true);
-              }
+                });
             } else {
-              setFeedbackPPM(true);
+              setFeedbackPayback(true);
             }
           } else {
             setFeedbackFaltante(true);
