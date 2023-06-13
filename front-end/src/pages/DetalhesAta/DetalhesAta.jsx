@@ -413,7 +413,7 @@ const DetalhesAta = (props) => {
         />
       )}
 
-      <Box className="p-2">
+      <Box className="p-2 mb-16">
         {/* caminho da página */}
         <Box className="flex w-full relative">
           <Caminho lendo={props.lendo} />

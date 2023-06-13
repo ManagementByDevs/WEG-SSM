@@ -16,7 +16,6 @@ import UsuarioService from "../../service/usuarioService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -158,20 +157,20 @@ const DemandaGerencia = (props) => {
           "&:hover": {
             backgroundColor: "hover.main",
           },
+          minWidth: "570px",
           borderColor: "primary.main",
-          minWidth: "729px",
           cursor: "pointer",
         }}
       >
         {/* Container titulo, ppm e status */}
-        <Box className="flex w-full justify-between">
+        <Box className="flex justify-between">
           {/* Container titulo/ppm */}
-          <Box className="flex w-4/5 mt-1">
+          <Box className="flex mt-1">
             <Typography
               variant="h1"
               fontSize={FontConfig.veryBig}
               fontWeight="600"
-              className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
+              className="overflow-hidden text-ellipsis whitespace-nowrap"
               title={props.dados.titulo}
               onClick={(e) => {
                 if (props.lendo) {
@@ -204,7 +203,7 @@ const DemandaGerencia = (props) => {
           </Box>
 
           {/* Status do componente */}
-          <Box className="w-1/4 h-full">
+          <Box className="h-full">
             <Box className="flex items-end flex-col">
               <Box id="segundoCriarPropostas">
                 <Box id="oitavoDemandas" className="flex items-center gap-2">
@@ -271,10 +270,11 @@ const DemandaGerencia = (props) => {
         <Box className="relative">
           <Box className="h-16 items-end w-full flex justify-between">
             {/* Infos Solicitante e Departamento */}
-            <Box sx={{ width: "40%" }}>
+            <Box sx={{width: "50%"}}>
               {/* Solicitante */}
               <Box className="flex">
                 <Typography
+                  className="overflow-hidden truncate"
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   onClick={(e) => {
@@ -291,7 +291,11 @@ const DemandaGerencia = (props) => {
                   className="w-11/12 overflow-hidden text-ellipsis whitespace-nowrap"
                   fontSize={FontConfig.default}
                   fontWeight="600"
-                  sx={{ color: "text.secondary", marginLeft: "5px" }}
+                  sx={{
+                    color: "text.secondary",
+                    marginLeft: "5px",
+                    width: "50%",
+                  }}
                   onClick={(e) => {
                     if (props.lendo) {
                       e.stopPropagation();
@@ -306,6 +310,7 @@ const DemandaGerencia = (props) => {
               {/* Departamento */}
               <Box className="flex">
                 <Typography
+                  className="overflow-hidden truncate"
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   onClick={(e) => {
@@ -322,7 +327,11 @@ const DemandaGerencia = (props) => {
                   className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap"
                   fontSize={FontConfig.default}
                   fontWeight="600"
-                  sx={{ color: "text.secondary", marginLeft: "5px" }}
+                  sx={{
+                    color: "text.secondary",
+                    marginLeft: "5px",
+                    width: "20%",
+                  }}
                   onClick={(e) => {
                     if (props.lendo) {
                       e.stopPropagation();
@@ -340,13 +349,10 @@ const DemandaGerencia = (props) => {
               </Box>
             </Box>
             {/* Infos gerente responsável, analista responsavel e icons */}
-            <Box className="flex items-end justify-end w-full">
-              <Box
-                className="flex flex-col"
-                sx={{ width: "24rem", height: "100%" }}
-              >
+            <Box className="flex items-end justify-end" sx={{width: "80%"}}>
+              <Box className="flex flex-col" sx={{ width: "100%" ,height: "100%" }}>
                 {/* Container analista responsavel */}
-                <Box className="flex" sx={{ width: "80%" }}>
+                <Box className="flex">
                   <Typography
                     className="overflow-hidden truncate"
                     fontSize={FontConfig.default}
@@ -368,7 +374,7 @@ const DemandaGerencia = (props) => {
                     sx={{
                       color: "text.secondary",
                       marginLeft: "5px",
-                      width: "50%",
+                      width: "40%",
                     }}
                     onClick={(e) => {
                       if (props.lendo) {
@@ -386,7 +392,7 @@ const DemandaGerencia = (props) => {
                   </Typography>
                 </Box>
                 {/* container gerente responsavel */}
-                <Box className="flex" sx={{ width: "24rem" }}>
+                <Box className="flex">
                   <Typography
                     className="overflow-hidden truncate"
                     fontSize={FontConfig.default}
@@ -408,7 +414,6 @@ const DemandaGerencia = (props) => {
                     sx={{
                       color: "text.secondary",
                       marginLeft: "5px",
-                      width: "50%",
                     }}
                     onClick={(e) => {
                       if (props.lendo) {
@@ -428,7 +433,7 @@ const DemandaGerencia = (props) => {
               </Box>
               <Box>
                 {/* Icon de histórico  e chat*/}
-                <Box id="terceiroCriarPropostas" className="flex">
+                <Box id="terceiroCriarPropostas" className="flex relative">
                   {
                     // Se for uma proposta, mostra o icone de chat
                     tipo === "proposta" && (

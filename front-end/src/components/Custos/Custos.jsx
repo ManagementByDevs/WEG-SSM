@@ -51,10 +51,10 @@ const Custos = (props) => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].custos.length; i++) {
       const horasString = props.custos[props.index].custos[i].horas;
-      if(horasString) {
+      if (horasString) {
         if (typeof horasString !== "number") {
           const horasNumber = parseFloat(horasString.replace(",", "."));
-  
+
           if (!isNaN(horasNumber)) {
             aux += horasNumber;
           }
@@ -178,7 +178,7 @@ const Custos = (props) => {
 
   return (
     <Box className="flex w-full mt-5">
-      <Box className="flex items-top mr-2">
+      <Box className="flex mr-2 items-top">
         <Box className="h-full flex items-center">
           {/* Ícone para deletar uma tabela de custos */}
           <Tooltip title={texts.custos.excluirTabelaDeCustos}>
@@ -215,256 +215,262 @@ const Custos = (props) => {
               </Select>
             </FormControl>
           </Box>
-          {/* Criação da tabela e adicionando as informações nela */}
-          <Paper className="w-full mr-3 pb-1" sx={{ marginTop: "1%" }}>
-            <TableContainer component={Paper}>
-              <Table
-                sx={{ minWidth: "90%", alignItems: "center" }}
-                aria-label="customized table"
-              >
-                <TableHead sx={{ backgroundColor: "primary.main" }}>
-                  <TableRow>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "20%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                        onClick={() => {
-                          lerTexto(texts.custos.perfilDaDespesa);
-                        }}
+          <Box className="flex items-top mt-4">
+            {/* Criação da tabela e adicionando as informações nela */}
+            <Paper className="w-full mr-3 pb-1">
+              <TableContainer component={Paper}>
+                <Table
+                  sx={{ minWidth: "90%", alignItems: "center" }}
+                  aria-label="customized table"
+                >
+                  <TableHead sx={{ backgroundColor: "primary.main" }}>
+                    <TableRow>
+                      <th
+                        align="center"
+                        className="p-4 w-0"
+                        style={{ width: "20%" }}
                       >
-                        {texts.custos.perfilDaDespesa}
-                      </Typography>
-                    </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "15%", minWidth: "200px" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                        onClick={() => {
-                          lerTexto(texts.custos.periodoDeExecucao);
-                        }}
+                        <Typography
+                          fontSize={FontConfig.big}
+                          fontWeight="800"
+                          color="text.white"
+                          onClick={() => {
+                            lerTexto(texts.custos.perfilDaDespesa);
+                          }}
+                        >
+                          {texts.custos.perfilDaDespesa}
+                        </Typography>
+                      </th>
+                      <th
+                        align="center"
+                        className="p-4 w-0"
+                        style={{ width: "15%", minWidth: "200px" }}
                       >
-                        {texts.custos.periodoDeExecucao}
-                      </Typography>
-                    </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "15%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                        onClick={() => {
-                          lerTexto(texts.custos.horas);
-                        }}
+                        <Typography
+                          fontSize={FontConfig.big}
+                          fontWeight="800"
+                          color="text.white"
+                          onClick={() => {
+                            lerTexto(texts.custos.periodoDeExecucao);
+                          }}
+                        >
+                          {texts.custos.periodoDeExecucao}
+                        </Typography>
+                      </th>
+                      <th
+                        align="center"
+                        className="p-4 w-0"
+                        style={{ width: "15%" }}
                       >
-                        {texts.custos.horas}
-                      </Typography>
-                    </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "20%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                        onClick={() => {
-                          lerTexto(texts.custos.valorHora);
-                        }}
+                        <Typography
+                          fontSize={FontConfig.big}
+                          fontWeight="800"
+                          color="text.white"
+                          onClick={() => {
+                            lerTexto(texts.custos.horas);
+                          }}
+                        >
+                          {texts.custos.horas}
+                        </Typography>
+                      </th>
+                      <th
+                        align="center"
+                        className="p-4 w-0"
+                        style={{ width: "20%" }}
                       >
-                        {texts.custos.valorHora}
-                      </Typography>
-                    </th>
-                    <th
-                      align="center"
-                      className="p-4 w-0"
-                      style={{ width: "20%" }}
-                    >
-                      <Typography
-                        fontSize={FontConfig.big}
-                        fontWeight="800"
-                        color="text.white"
-                        onClick={() => {
-                          lerTexto(texts.custos.total);
-                        }}
+                        <Typography
+                          fontSize={FontConfig.big}
+                          fontWeight="800"
+                          color="text.white"
+                          onClick={() => {
+                            lerTexto(texts.custos.valorHora);
+                          }}
+                        >
+                          {texts.custos.valorHora}
+                        </Typography>
+                      </th>
+                      <th
+                        align="center"
+                        className="p-4 w-0"
+                        style={{ width: "20%" }}
                       >
-                        {texts.custos.total}
-                      </Typography>
-                    </th>
-                  </TableRow>
-                </TableHead>
+                        <Typography
+                          fontSize={FontConfig.big}
+                          fontWeight="800"
+                          color="text.white"
+                          onClick={() => {
+                            lerTexto(texts.custos.total);
+                          }}
+                        >
+                          {texts.custos.total}
+                        </Typography>
+                      </th>
+                    </TableRow>
+                  </TableHead>
 
-                {/* Criando uma nova linha a cada custo */}
-                <TableBody>
-                  {props.dados.custos?.map((despesa, index) => {
-                    return (
-                      <LinhaTabelaCustos
-                        key={index}
-                        dados={props.dados}
-                        index={index}
-                        deletarLinhaCustos={deletarLinhaCustos}
-                        indexCusto={props.index}
-                        setCustos={props.setCustos}
-                        custos={props.custos}
-                        setFeedbackErroNavegadorIncompativel={
-                          props.setFeedbackErroNavegadorIncompativel
-                        }
-                        setFeedbackErroReconhecimentoVoz={
-                          props.setFeedbackErroReconhecimentoVoz
-                        }
-                      />
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Box className="w-full flex justify-between items-center m-2">
-              <Box className="flex w-full">
-                <Typography
-                  fontSize={FontConfig.medium}
-                  sx={{ marginRight: "8px" }}
-                  onClick={() => {
-                    lerTexto(texts.custos.total);
-                  }}
-                >
-                  {texts.custos.total}:{" "}
-                </Typography>
-                <Typography
-                  fontSize={FontConfig.medium}
-                  sx={{ marginRight: "15px" }}
-                  onClick={() => {
-                    lerTexto(horasTotais, " ", texts.custos.h);
-                  }}
-                >
-                  {horasTotais}
-                  {texts.custos.h}
-                </Typography>
-                <Typography
-                  fontSize={FontConfig.medium}
-                  sx={{ marginRight: "15px" }}
-                >
-                  -
-                </Typography>
-                <Typography
-                  fontSize={FontConfig.medium}
-                  sx={{ marginRight: "8px" }}
-                  onClick={() => {
-                    lerTexto(texts.custos.moeda, " ", texts.custos.moeda);
-                  }}
-                >
-                  {texts.custos.moeda}
-                  {valorTotal}
-                </Typography>
-              </Box>
-
-              {/* Ícone para adicionar uma nova linha de custos */}
-              <Tooltip title={texts.custos.adicionarNovaLinha}>
-                <AddCircleOutlineOutlinedIcon
-                  fontSize="medium"
-                  className="mr-3 delay-120 hover:scale-110 duration-300"
-                  sx={{ color: "icon.main", cursor: "pointer" }}
-                  onClick={adicionarLinhaCustos}
-                />
-              </Tooltip>
-            </Box>
-          </Paper>
-        </Box>
-      </Box>
-      <Paper
-        className="h-full pb-1"
-        sx={{ width: "25%", minWidth: "263px", marginTop: "3.8%" }}
-      >
-        {/* Outra tabela para os CCs */}
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: "100%" }} aria-label="customized table">
-            <TableHead
-              sx={{ backgroundColor: "primary.main", height: "5.4rem" }}
-            >
-              <TableRow>
-                <th align="center" className="p-4 w-0" style={{ width: "10%" }}>
+                  {/* Criando uma nova linha a cada custo */}
+                  <TableBody>
+                    {props.dados.custos?.map((despesa, index) => {
+                      return (
+                        <LinhaTabelaCustos
+                          key={index}
+                          dados={props.dados}
+                          index={index}
+                          deletarLinhaCustos={deletarLinhaCustos}
+                          indexCusto={props.index}
+                          setCustos={props.setCustos}
+                          custos={props.custos}
+                          setFeedbackErroNavegadorIncompativel={
+                            props.setFeedbackErroNavegadorIncompativel
+                          }
+                          setFeedbackErroReconhecimentoVoz={
+                            props.setFeedbackErroReconhecimentoVoz
+                          }
+                        />
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Box className="w-full flex justify-between items-center m-2">
+                <Box className="flex w-full">
                   <Typography
-                    fontSize={FontConfig.big}
-                    fontWeight="800"
-                    color="text.white"
+                    fontSize={FontConfig.medium}
+                    sx={{ marginRight: "8px" }}
                     onClick={() => {
-                      lerTexto(texts.custos.ccs);
+                      lerTexto(texts.custos.total);
                     }}
                   >
-                    {texts.custos.ccs}
+                    {texts.custos.total}:{" "}
                   </Typography>
-                </th>
-              </TableRow>
-            </TableHead>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    sx={{ marginRight: "15px" }}
+                    onClick={() => {
+                      lerTexto(horasTotais, " ", texts.custos.h);
+                    }}
+                  >
+                    {horasTotais}
+                    {texts.custos.h}
+                  </Typography>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    sx={{ marginRight: "15px" }}
+                  >
+                    -
+                  </Typography>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    sx={{ marginRight: "8px" }}
+                    onClick={() => {
+                      lerTexto(texts.custos.moeda, " ", texts.custos.moeda);
+                    }}
+                  >
+                    {texts.custos.moeda}
+                    {valorTotal}
+                  </Typography>
+                </Box>
 
-            {/* Criando uma nova linha a cada cc */}
-            <TableBody>
-              {props.dados.ccs?.map((cc, index) => {
-                return (
-                  <LinhaTabelaCCs
-                    key={index}
-                    dados={props.dados}
-                    index={index}
-                    deletarLinhaCCs={deletarLinhaCC}
-                    indexCusto={props.index}
-                    setCustos={props.setCustos}
-                    custos={props.custos}
-                    setFeedbackErroNavegadorIncompativel={
-                      props.setFeedbackErroNavegadorIncompativel
-                    }
-                    setFeedbackErroReconhecimentoVoz={
-                      props.setFeedbackErroReconhecimentoVoz
-                    }
+                {/* Ícone para adicionar uma nova linha de custos */}
+                <Tooltip title={texts.custos.adicionarNovaLinha}>
+                  <AddCircleOutlineOutlinedIcon
+                    fontSize="medium"
+                    className="mr-3 delay-120 hover:scale-110 duration-300"
+                    sx={{ color: "icon.main", cursor: "pointer" }}
+                    onClick={adicionarLinhaCustos}
                   />
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box className="w-full flex justify-between items-center m-2">
-          <Box className="flex">
-            <Typography
-              fontSize={FontConfig.medium}
-              sx={{ marginRight: "8px" }}
-              onClick={() => {
-                lerTexto(texts.custos.total);
-              }}
+                </Tooltip>
+              </Box>
+            </Paper>
+            <Paper
+              className="h-full pb-1"
+              sx={{ width: "25%", minWidth: "263px" }}
             >
-              {texts.custos.total}:
-            </Typography>
-            <Typography
-              fontSize={FontConfig.medium}
-              onClick={() => {
-                lerTexto(porcentagemTotal);
-              }}
-            >
-              {porcentagemTotal}%{" "}
-            </Typography>
-          </Box>
+              {/* Outra tabela para os CCs */}
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: "100%" }} aria-label="customized table">
+                  <TableHead
+                    sx={{ backgroundColor: "primary.main", height: "5.4rem" }}
+                  >
+                    <TableRow>
+                      <th
+                        align="center"
+                        className="p-4 w-0"
+                        style={{ width: "10%" }}
+                      >
+                        <Typography
+                          fontSize={FontConfig.big}
+                          fontWeight="800"
+                          color="text.white"
+                          onClick={() => {
+                            lerTexto(texts.custos.ccs);
+                          }}
+                        >
+                          {texts.custos.ccs}
+                        </Typography>
+                      </th>
+                    </TableRow>
+                  </TableHead>
 
-          {/* Ícone para adicionar uma nova linha de CC */}
-          <Tooltip title={texts.custos.adicionarNovaLinha}>
-            <AddCircleOutlineOutlinedIcon
-              fontSize="medium"
-              className="mr-3 delay-120 hover:scale-110 duration-300"
-              sx={{ color: "icon.main", cursor: "pointer" }}
-              onClick={adicionarLinhaCC}
-            />
-          </Tooltip>
+                  {/* Criando uma nova linha a cada cc */}
+                  <TableBody>
+                    {props.dados.ccs?.map((cc, index) => {
+                      return (
+                        <LinhaTabelaCCs
+                          key={index}
+                          dados={props.dados}
+                          index={index}
+                          deletarLinhaCCs={deletarLinhaCC}
+                          indexCusto={props.index}
+                          setCustos={props.setCustos}
+                          custos={props.custos}
+                          setFeedbackErroNavegadorIncompativel={
+                            props.setFeedbackErroNavegadorIncompativel
+                          }
+                          setFeedbackErroReconhecimentoVoz={
+                            props.setFeedbackErroReconhecimentoVoz
+                          }
+                        />
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Box className="w-full flex justify-between items-center m-2">
+                <Box className="flex">
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    sx={{ marginRight: "8px" }}
+                    onClick={() => {
+                      lerTexto(texts.custos.total);
+                    }}
+                  >
+                    {texts.custos.total}:
+                  </Typography>
+                  <Typography
+                    fontSize={FontConfig.medium}
+                    onClick={() => {
+                      lerTexto(porcentagemTotal);
+                    }}
+                  >
+                    {porcentagemTotal}%{" "}
+                  </Typography>
+                </Box>
+
+                {/* Ícone para adicionar uma nova linha de CC */}
+                <Tooltip title={texts.custos.adicionarNovaLinha}>
+                  <AddCircleOutlineOutlinedIcon
+                    fontSize="medium"
+                    className="mr-3 delay-120 hover:scale-110 duration-300"
+                    sx={{ color: "icon.main", cursor: "pointer" }}
+                    onClick={adicionarLinhaCC}
+                  />
+                </Tooltip>
+              </Box>
+            </Paper>
+          </Box>
         </Box>
-      </Paper>
+      </Box>
     </Box>
   );
 };

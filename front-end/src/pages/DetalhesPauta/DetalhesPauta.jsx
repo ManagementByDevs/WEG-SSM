@@ -590,7 +590,7 @@ const DetalhesPauta = (props) => {
         onCancelClick={() => { }}
         lendo={props.lendo}
       />
-      <Box className="p-2" sx={{ minWidth: "60rem" }}>
+      <Box className="p-2 mb-16" sx={{ minWidth: "58rem" }}>
         <Box className="flex w-full relative">
           <Caminho lendo={props.lendo} />
           <Box

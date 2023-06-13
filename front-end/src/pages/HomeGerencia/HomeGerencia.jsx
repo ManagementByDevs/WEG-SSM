@@ -1868,15 +1868,7 @@ const HomeGerencia = (props) => {
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
                         />
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gap: "1rem",
-                            gridTemplateColumns:
-                              "repeat(auto-fit, minmax(720px, 1fr))",
-                          }}
-                          id="primeiroCriarPropostas"
-                        >
+                        <Box id="primeiroCriarPropostas">
                           {isTourCriarPropostasOpen ? (
                             <DemandaGerencia
                               key={1}
@@ -1917,15 +1909,7 @@ const HomeGerencia = (props) => {
                         </Box>
                       </TabPanel>
                       <TabPanel sx={{ padding: 0 }} value="4">
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gap: "1rem",
-                            gridTemplateColumns:
-                              "repeat(auto-fit, minmax(720px, 1fr))",
-                          }}
-                          id="primeiroPropostas"
-                        >
+                        <Box id="primeiroPropostas">
                           <Ajuda onClick={() => setIsTourPropostasOpen(true)} />
                           {isTourPropostasOpen ? (
                             <DemandaGerencia
@@ -1956,14 +1940,7 @@ const HomeGerencia = (props) => {
                               lendo={props.lendo}
                             />
                           ) : (
-                            <Box
-                              sx={{
-                                display: "grid",
-                                gap: "1rem",
-                                gridTemplateColumns:
-                                  "repeat(auto-fit, minmax(720px, 1fr))",
-                              }}
-                            >
+                            <Box>
                               <DemandaGerenciaModoVisualizacao
                                 listaDemandas={listaItens}
                                 onDemandaClick={verProposta}

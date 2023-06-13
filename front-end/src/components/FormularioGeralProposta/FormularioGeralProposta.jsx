@@ -1,5 +1,15 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
-import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip, } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  Typography,
+  Divider,
+  IconButton,
+  Paper,
+  Tooltip,
+} from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
 
@@ -17,7 +27,6 @@ import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import AnexoService from "../../service/anexoService";
 
 const FormularioGeralProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -108,7 +117,7 @@ const FormularioGeralProposta = (props) => {
           break;
       }
 
-      recognition.onstart = () => { };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
@@ -163,10 +172,16 @@ const FormularioGeralProposta = (props) => {
   }, [escutar]);
 
   useEffect(() => {
-    if (
-      props.gerais.periodoExecucacaoInicio > props.gerais.periodoExecucacaoFim
-    ) {
-      props.setFeedbackErroDataInicioMaior(true);
+    if (props.gerais.periodoExecucacaoFim != "") {
+      if (
+        props.gerais.periodoExecucacaoInicio > props.gerais.periodoExecucacaoFim
+      ) {
+        props.setFeedbackErroDataInicioMaior(true);
+        props.setGerais({
+          ...props.gerais,
+          periodoExecucacaoFim: "",
+        })
+      }
     }
   }, [props.gerais.periodoExecucacaoInicio, props.gerais.periodoExecucacaoFim]);
 
@@ -207,23 +222,6 @@ const FormularioGeralProposta = (props) => {
     }
   };
 
-  /** Função para buscar a data de início de execução */
-  const valorDataInicio = () => {
-    if (props.gerais.periodoExecucacaoInicio == "1970-01-01") {
-      return null;
-    } else {
-      return props.gerais.periodoExecucacaoInicio;
-    }
-  };
-
-  /** Função para buscar a data de fim da execução */
-  const valorDataFim = () => {
-    if (props.gerais.periodoExecucacaoFim == "1970-01-01") {
-      return null;
-    } else {
-      return props.gerais.periodoExecucacaoFim;
-    }
-  };
 
   return (
     <Box className="flex flex-col">
@@ -275,7 +273,7 @@ const FormularioGeralProposta = (props) => {
                   component="input"
                   type="date"
                   placeholder={texts.formularioGeralProposta.digiteCodigo}
-                  value={valorDataInicio()}
+                  value={props.gerais.periodoExecucacaoInicio}
                   onChange={(e) => {
                     props.setGerais({
                       ...props.gerais,
@@ -309,7 +307,7 @@ const FormularioGeralProposta = (props) => {
                   component="input"
                   type="date"
                   placeholder={texts.formularioGeralProposta.digiteCodigo}
-                  value={valorDataFim()}
+                  value={props.gerais.periodoExecucacaoFim}
                   onChange={(e) =>
                     props.setGerais({
                       ...props.gerais,

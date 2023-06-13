@@ -72,7 +72,7 @@ const DetalhesPropostaPagina = ({ lendo = false }) => {
         proposta={location.state}
         lendo={lendo}
       />
-      <Box className="relative p-2" sx={{ minWidth: "45rem" }}>
+      <Box className="relative p-2 mb-14" sx={{ minWidth: "45rem" }}>
         <Box className="flex w-full relative mb-10">
           <Caminho lendo={lendo} />
           <Box

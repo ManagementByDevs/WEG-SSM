@@ -111,8 +111,7 @@ const Demanda = (props) => {
         sx={{
           "&:hover": { backgroundColor: "hover.main" },
           borderColor: "primary.main",
-          minWidth: "550px",
-          maxWidth: "100%",
+          minWidth: "540px",
           minHeight: retornaAlturaDemanda(),
           cursor: "pointer",
         }}

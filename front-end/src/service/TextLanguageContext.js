@@ -701,7 +701,7 @@ const TextLanguageContext = createContext({
         feedback12: "Erro ao reconhcer a voz!",
         feedback13: "Navegador não é compatível!",
         feedback14: "Proposta Adicionada à Pauta",
-        feedback15: "Data do período de execussão inválida!",
+        feedback15: "Data do período de execução inválida!",
       },
       demandas: "Demandas",
       criarPropostas: "Criar Propostas",

@@ -280,7 +280,6 @@ const FormularioPropostaProposta = (props) => {
   const stopRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
-
     }
   };
 
@@ -339,7 +338,7 @@ const FormularioPropostaProposta = (props) => {
       />
       <Box
         className="flex flex-col justify-center relative items-center"
-        sx={{ minWidth: "60rem", marginTop: "4rem", marginBottom: "3rem" }}
+        sx={{ minWidth: "60rem", marginTop: "4rem", marginBottom: "3rem", marginBottom: "7rem" }}
       >
         {props.carregamento ? (
           <Box className="mt-6 w-full h-full flex justify-center items-center">

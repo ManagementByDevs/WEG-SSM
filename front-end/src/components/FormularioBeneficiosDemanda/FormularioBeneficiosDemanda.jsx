@@ -88,13 +88,13 @@ const FormularioBeneficiosDemanda = (props) => {
   }
 
   return (
-    <Box className="flex justify-center items-center" sx={{ height: "45rem" }}>
+    <Box className="flex justify-center items-center mb-20">
       <Box
         className="flex flex-col w-3/4"
         sx={{ height: "85%", minWidth: "44rem" }}
       >
         <Box
-          className="flex justify-between items-center border-l-4 px-2"
+          className="flex justify-between items-center border-l-4 px-2 mt-5"
           sx={{ borderColor: "primary.main" }}
         >
           <Typography
@@ -128,13 +128,15 @@ const FormularioBeneficiosDemanda = (props) => {
             beneficios?.map((beneficio, index) => {
               if (beneficio.visible) {
                 return (
-                  <Beneficios
-                    key={index}
-                    save={salvarDados}
-                    index={index}
-                    removerBeneficio={removerBeneficio}
-                    dados={beneficio}
-                  />
+                  <Box className="mb-5">
+                    <Beneficios
+                      key={index}
+                      save={salvarDados}
+                      index={index}
+                      removerBeneficio={removerBeneficio}
+                      dados={beneficio}
+                    />
+                  </Box>
                 );
               }
             })

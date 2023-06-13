@@ -383,12 +383,12 @@ const BarraProgressaoProposta = (props) => {
     });
 
     setGerais({
-      periodoExecucacaoInicio: new Date(escopo.inicioExecucao)
-        .toISOString()
-        .slice(0, 10),
-      periodoExecucacaoFim: new Date(escopo.fimExecucao)
-        .toISOString()
-        .slice(0, 10),
+      periodoExecucacaoInicio: escopo.inicioExecucao ? new Date(escopo.inicioExecucao)
+      .toISOString()
+      .slice(0, 10) : "",
+      periodoExecucacaoFim: escopo.inicioExecucacao ? new Date(escopo.fimExecucao)
+      .toISOString()
+      .slice(0, 10) : "",
       qtdPaybackSimples: escopo.paybackValor,
       unidadePaybackSimples: escopo.paybackTipo,
       ppm: escopo.codigoPPM,
@@ -432,8 +432,8 @@ const BarraProgressaoProposta = (props) => {
       delete escopoFinal.status;
       delete escopoFinal.emAta;
       delete escopoFinal.emPauta;
-
       escopoFinal.id = ultimoEscopo.id;
+      console.log("Escopo salvo: ", escopoFinal);
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
@@ -692,8 +692,8 @@ const BarraProgressaoProposta = (props) => {
       beneficios: retornarIdsObjetos(listaBeneficios),
       tabelaCustos: formatarCustos(),
       responsavelNegocio: formatarResponsaveisNegocio(),
-      inicioExecucao: gerais.periodoExecucacaoInicio,
-      fimExecucao: gerais.periodoExecucacaoFim,
+      inicioExecucao: gerais.periodoExecucacaoInicio ? gerais.periodoExecucacaoInicio : null,
+      fimExecucao: gerais.periodoExecucacaoFim ? gerais.periodoExecucacaoFim : null,
       paybackValor: gerais.qtdPaybackSimples,
       paybackTipo: gerais.unidadePaybackSimples,
       codigoPPM: gerais.ppm,
