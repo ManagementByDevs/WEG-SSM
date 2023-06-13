@@ -4033,8 +4033,6 @@ public class PropostaController {
                 valorBeneficiosPotenciais += beneficio.getValor_mensal();
             }
         }
-        System.out.println("Reais:" + valorBeneficiosReais);
-        System.out.println("Potenciais: " + valorBeneficiosPotenciais);
 
         Integer valorTamanhoDemanda;
         if(proposta.getTamanho() == null) {
@@ -4050,11 +4048,9 @@ public class PropostaController {
         } else {
             valorTamanhoDemanda = 5000;
         }
-        System.out.println("Tamanho: " + valorTamanhoDemanda);
 
         Long agingMilisegundos = Math.abs(new Date().getTime() - proposta.getData().getTime());
         Long agingFinal = TimeUnit.DAYS.convert(agingMilisegundos, TimeUnit.MILLISECONDS);
-        System.out.println("Aging: " + agingFinal);
 
         Usuario solicitante = usuarioService.findById(proposta.getSolicitante().getId()).get();
         Integer valorPrioridade;
@@ -4067,7 +4063,6 @@ public class PropostaController {
         } else {
             valorPrioridade = 16;
         }
-        System.out.println("Valor Prioridade: " + valorPrioridade);
 
         return (((2 * valorBeneficiosReais) + (1 * valorBeneficiosPotenciais) + agingFinal) / valorTamanhoDemanda) * valorPrioridade;
     }

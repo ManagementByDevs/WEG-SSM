@@ -69,7 +69,10 @@ const Login = (props) => {
         try {
           await AutenticacaoService.login(dados);
           navigate("/");
-        } catch (error) { }
+        } catch (error) { 
+          // Abrir o modal de feedback de dados inválidos
+          setDadosInvalidos(true);
+        }
       } else {
         // Abrir modal de feedback de dados não preenchidos
         setDadosFaltantes(true);

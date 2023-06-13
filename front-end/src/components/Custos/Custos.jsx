@@ -203,10 +203,10 @@ const Custos = (props) => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Tipo Despesa"
-                value={tipoDespesa}
+                value={tipoDespesa || ""}
                 onChange={handleChange}
               >
-                <MenuItem value={"Interna"}>
+                <MenuItem value={"Interna"}>  
                   <Typography fontSize={FontConfig.medium}>Interna</Typography>
                 </MenuItem>
                 <MenuItem value={"Externa"}>
