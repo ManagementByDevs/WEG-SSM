@@ -93,6 +93,7 @@ const FormularioDadosDemanda = (props) => {
                 onChange={(value) => {
                   salvarProblema(value);
                 }}
+                label="problema"
               />
             </Box>
           </Box>
@@ -126,6 +127,7 @@ const FormularioDadosDemanda = (props) => {
                 onChange={(value) => {
                   salvarProposta(value);
                 }}
+                label="proposta"
               />
             </Box>
           </Box>

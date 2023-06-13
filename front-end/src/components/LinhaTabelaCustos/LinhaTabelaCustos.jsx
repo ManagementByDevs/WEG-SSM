@@ -9,15 +9,20 @@ import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 import ColorModeContext from "../../service/TemaContext";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 // Componente para criar uma linha na tabela de custos
 const LinhaTabelaCustos = (props) => {
-
   // Context que contém os textos do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, palavrasJuntas, localClique } = useContext(
+    SpeechRecognitionContext
+  );
 
   // UseState para alterar a cor do textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -84,62 +89,9 @@ const LinhaTabelaCustos = (props) => {
     props.custos[props.indexCusto].custos[props.index].valorHora,
   ]);
 
-  // // ********************************************** Gravar audio **********************************************
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClicou, setLocalClicou] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => { };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        props.setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      props.setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     let aux = [...props.custos];
-    switch (localClicou) {
+    switch (localClique) {
       case "tipoDespesa":
         aux[props.indexCusto].custos[props.index].tipoDespesa = palavrasJuntas;
         props.setCustos(aux);
@@ -166,27 +118,6 @@ const LinhaTabelaCustos = (props) => {
         break;
     }
   }, [palavrasJuntas]);
-
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setEscutar(!escutar);
-    setLocalClicou(ondeClicou);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
 
   /** Função para verificar os caracteres digiados na tabela de custos */
   function verificarCaracteres(valorDigitado) {
@@ -240,7 +171,7 @@ const LinhaTabelaCustos = (props) => {
               startRecognition("perfilDespesa");
             }}
           >
-            {escutar && localClicou == "perfilDespesa" ? (
+            {escutar && localClique == "perfilDespesa" ? (
               <MicOutlinedIcon
                 sx={{
                   cursor: "pointer",
@@ -297,7 +228,7 @@ const LinhaTabelaCustos = (props) => {
               startRecognition("periodoExecucao");
             }}
           >
-            {escutar && localClicou == "periodoExecucao" ? (
+            {escutar && localClique == "periodoExecucao" ? (
               <MicOutlinedIcon
                 sx={{
                   cursor: "pointer",
@@ -353,7 +284,7 @@ const LinhaTabelaCustos = (props) => {
               startRecognition("horas");
             }}
           >
-            {escutar && localClicou == "horas" ? (
+            {escutar && localClique == "horas" ? (
               <MicOutlinedIcon
                 sx={{
                   cursor: "pointer",
@@ -409,7 +340,7 @@ const LinhaTabelaCustos = (props) => {
               startRecognition("valorHora");
             }}
           >
-            {escutar && localClicou == "valorHora" ? (
+            {escutar && localClique == "valorHora" ? (
               <MicOutlinedIcon
                 sx={{
                   cursor: "pointer",

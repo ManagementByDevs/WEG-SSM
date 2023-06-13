@@ -216,6 +216,7 @@ const Beneficios = (props) => {
                 onChange={(value) => {
                   salvarMemoriaCalculo(value);
                 }}
+                label="memoriaCalculo"
               />
             </Box>
           </Box>

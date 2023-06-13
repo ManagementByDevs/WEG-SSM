@@ -10,13 +10,13 @@ import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemand
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
 
 // Componente para exibir uma demanda ou proposta na tela de gerência, contendo mais opções de ação
 const DemandaGerencia = (props) => {
-
   /** Navigate utilizado para navegar para outras páginas */
   const navigate = useNavigate();
 
@@ -25,6 +25,9 @@ const DemandaGerencia = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // Variável pare receber o tipo ( proposta ou demanda )
   const tipo = props.tipo;
@@ -111,32 +114,6 @@ const DemandaGerencia = (props) => {
     }
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <>
       {/* Verifica se existe foi solicitado que abrisse o modal, caso seja solicitado, será exibido o modal de historico*/}
@@ -147,7 +124,6 @@ const DemandaGerencia = (props) => {
           historico={
             props.dados.historicoDemanda || props.dados.historicoProposta
           }
-          lendo={props.lendo}
         />
       )}
       {/* Container da demanda/proposta */}
@@ -174,7 +150,7 @@ const DemandaGerencia = (props) => {
               className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
               title={props.dados.titulo}
               onClick={(e) => {
-                if (props.lendo) {
+                if (lendoTexto) {
                   e.stopPropagation();
                   lerTexto(props.dados.titulo);
                 }
@@ -187,7 +163,7 @@ const DemandaGerencia = (props) => {
                   fontWeight="600"
                   sx={{ color: "primary.main" }}
                   onClick={(e) => {
-                    if (props.lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(
                         texts.demandaGerencia.ppm + ": " + props.dados.codigoPPM
@@ -213,7 +189,7 @@ const DemandaGerencia = (props) => {
                     fontSize={FontConfig.medium}
                     fontWeight="600"
                     onClick={(e) => {
-                      if (props.lendo) {
+                      if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(formatarStatus(props.dados.status));
                       }
@@ -234,7 +210,7 @@ const DemandaGerencia = (props) => {
               </Box>
 
               {/* Verificando se está em ata, em pauta ou em edição */}
-              {props.dados.presenteEm && props.dados.presenteEm != "Nada" && (
+              {props.dados.presenteEm && props.dados.presenteEm != "Solta" && (
                 <Box>
                   {/* Texto para dizer se está em ata ou em pauta */}
                   <Typography
@@ -247,7 +223,7 @@ const DemandaGerencia = (props) => {
                       padding: "2px 15px",
                     }}
                     onClick={(e) => {
-                      if (props.lendo) {
+                      if (lendoTexto) {
                         e.stopPropagation();
                         if (props.dados.presenteEm == "Pauta") {
                           lerTexto(texts.demandaGerencia.emPauta);
@@ -278,7 +254,7 @@ const DemandaGerencia = (props) => {
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   onClick={(e) => {
-                    if (props.lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(texts.demandaGerencia.solicitante);
                     }
@@ -293,7 +269,7 @@ const DemandaGerencia = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginLeft: "5px" }}
                   onClick={(e) => {
-                    if (props.lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(props.dados.solicitante?.nome);
                     }
@@ -309,7 +285,7 @@ const DemandaGerencia = (props) => {
                   fontSize={FontConfig.default}
                   fontWeight="600"
                   onClick={(e) => {
-                    if (props.lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(texts.demandaGerencia.departamento);
                     }
@@ -324,7 +300,7 @@ const DemandaGerencia = (props) => {
                   fontWeight="600"
                   sx={{ color: "text.secondary", marginLeft: "5px" }}
                   onClick={(e) => {
-                    if (props.lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
                       if (props.dados.departamento?.nome) {
                         lerTexto(props.dados.departamento?.nome);
@@ -352,7 +328,7 @@ const DemandaGerencia = (props) => {
                     fontSize={FontConfig.default}
                     fontWeight="600"
                     onClick={(e) => {
-                      if (props.lendo) {
+                      if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(texts.demandaGerencia.analistaResponsavel);
                       }
@@ -371,7 +347,7 @@ const DemandaGerencia = (props) => {
                       width: "50%",
                     }}
                     onClick={(e) => {
-                      if (props.lendo) {
+                      if (lendoTexto) {
                         e.stopPropagation();
                         if (props.dados.analista?.nome) {
                           lerTexto(props.dados.analista?.nome);
@@ -392,7 +368,7 @@ const DemandaGerencia = (props) => {
                     fontSize={FontConfig.default}
                     fontWeight="600"
                     onClick={(e) => {
-                      if (props.lendo) {
+                      if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(texts.demandaGerencia.gerenteResponsavel);
                       }
@@ -411,7 +387,7 @@ const DemandaGerencia = (props) => {
                       width: "50%",
                     }}
                     onClick={(e) => {
-                      if (props.lendo) {
+                      if (lendoTexto) {
                         e.stopPropagation();
                         if (props.dados.gerente?.nome) {
                           lerTexto(props.dados.gerente?.nome);

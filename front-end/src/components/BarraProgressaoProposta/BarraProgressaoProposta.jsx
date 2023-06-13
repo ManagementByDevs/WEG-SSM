@@ -25,6 +25,7 @@ import CookieService from "../../service/cookieService";
 import MoedasService from "../../service/moedasService";
 import NotificacaoService from "../../service/notificacaoService";
 import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente utilizado para criação da proposta, redirecionando para as etapas respectivas  */
 const BarraProgressaoProposta = (props) => {
@@ -39,6 +40,9 @@ const BarraProgressaoProposta = (props) => {
 
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Variáveis utilizadas para controlar a barra de progessão na criação da demanda */
   const [activeStep, setActiveStep] = useState(0);
@@ -130,16 +134,6 @@ const BarraProgressaoProposta = (props) => {
 
   /** Variável utilizada para abrir o feedback que precisa de uma porcentagem de 100% nos CCS */
   const [feedback100porcentoCcs, setFeedback100porcentoCcs] = useState(false);
-
-  /** Variável utilizada para abrir o feedback de navegador incompatível */
-  const [
-    feedbackErroNavegadorIncompativel,
-    setFeedbackErroNavegadorIncompativel,
-  ] = useState(false);
-
-  /** Variável utilizada para abrir o feedback de erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-    useState(false);
 
   /** Variável utilizada para abrir o feedback de data inicio maior que data fim */
   const [feedbackErroDataInicioMaior, setFeedbackErroDataInicioMaior] =
@@ -344,7 +338,7 @@ const BarraProgressaoProposta = (props) => {
       let memoriaCalculo = beneficio.memoriaCalculo;
       try {
         memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) { }
+      } catch (error) {}
 
       listaNova.push({
         id: beneficio.id,
@@ -437,7 +431,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -489,14 +483,14 @@ const BarraProgressaoProposta = (props) => {
         delete beneficioFinal.visible;
         beneficioService
           .put(beneficioFinal, beneficioFinal.memoriaCalculo)
-          .then((response) => { });
+          .then((response) => {});
       }
     }
   };
 
   /** Função para passar para próxima página */
   const proximaEtapa = () => {
-    if (props.lendo) {
+    if (lendoTexto) {
       lerTexto(texts.barraProgressaoProposta.botaoProximo);
     } else {
       let dadosFaltantes = false;
@@ -583,7 +577,7 @@ const BarraProgressaoProposta = (props) => {
 
   /** Função para voltar para página anterior */
   const voltarEtapa = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     } else {
       lerTexto(texts.barraProgressaoProposta.botaoVoltar);
@@ -700,7 +694,7 @@ const BarraProgressaoProposta = (props) => {
       linkJira: gerais.linkJira,
       historicoProposta: dadosDemanda.historicoDemanda,
       anexo: retornarIdsObjetos(dadosDemanda.anexo),
-      presenteEm: "Nada",
+      presenteEm: "Solta",
       escopo: btoa(formatarHtml(escopo)),
     };
 
@@ -758,7 +752,7 @@ const BarraProgressaoProposta = (props) => {
 
   /** Função para criar a proposta no banco de dados, também atualizando o status da demanda e excluindo o escopo da proposta */
   const criarProposta = async () => {
-    if (props.lendo) {
+    if (lendoTexto) {
       lerTexto(texts.barraProgressaoProposta.botaoCriar);
     } else {
       let feedbackFaltante = false;
@@ -852,32 +846,6 @@ const BarraProgressaoProposta = (props) => {
     }
   };
 
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <>
       {/* Carregamento dos dados para a criação da proposta */}
@@ -916,13 +884,6 @@ const BarraProgressaoProposta = (props) => {
               listaForuns={listaForuns}
               listaBU={listaBU}
               listaSecoesTI={listaSecoesTI}
-              setFeedbackErroNavegadorIncompativel={
-                setFeedbackErroNavegadorIncompativel
-              }
-              setFeedbackErroReconhecimentoVoz={
-                setFeedbackErroReconhecimentoVoz
-              }
-              lendo={props.lendo}
             />
           )}
 
@@ -935,17 +896,7 @@ const BarraProgressaoProposta = (props) => {
           )}
 
           {activeStep == 2 && (
-            <FormularioCustosProposta
-              custos={custos}
-              setCustos={setCustos}
-              setFeedbackErroNavegadorIncompativel={
-                setFeedbackErroNavegadorIncompativel
-              }
-              setFeedbackErroReconhecimentoVoz={
-                setFeedbackErroReconhecimentoVoz
-              }
-              lendo={props.lendo}
-            />
+            <FormularioCustosProposta custos={custos} setCustos={setCustos} />
           )}
 
           {activeStep == 3 && (
@@ -954,14 +905,7 @@ const BarraProgressaoProposta = (props) => {
               setGerais={setGerais}
               dados={dadosDemanda}
               setDados={setDadosDemanda}
-              setFeedbackErroNavegadorIncompativel={
-                setFeedbackErroNavegadorIncompativel
-              }
-              setFeedbackErroReconhecimentoVoz={
-                setFeedbackErroReconhecimentoVoz
-              }
               setFeedbackErroDataInicioMaior={setFeedbackErroDataInicioMaior}
-              lendo={props.lendo}
             />
           )}
           {/* Botão para voltar um passo na criação */}
@@ -1002,16 +946,6 @@ const BarraProgressaoProposta = (props) => {
         </>
       )}
 
-      {/* Feedback Erro reconhecimento de voz */}
-      <Feedback
-        open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback12}
-        lendo={props.lendo}
-      />
       {/* Feedback Data inicio Maior que data fim */}
       <Feedback
         open={feedbackErroDataInicioMaior}
@@ -1020,17 +954,6 @@ const BarraProgressaoProposta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.homeGerencia.feedback.feedback15}
-        lendo={props.lendo}
-      />
-      {/* Feedback Não navegador incompativel */}
-      <Feedback
-        open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback13}
-        lendo={props.lendo}
       />
       {/* Feedback de dados faltantes */}
       <Feedback
@@ -1042,7 +965,6 @@ const BarraProgressaoProposta = (props) => {
         mensagem={
           texts.barraProgressaoProposta.mensagemFeedbackCamposObrigatorios
         }
-        lendo={props.lendo}
       />
       {/* Feedback de que não fechou 100% de CCs */}
       <Feedback
@@ -1052,7 +974,6 @@ const BarraProgressaoProposta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackCcsFaltando}
-        lendo={props.lendo}
       />
       {/* Feedback de ppm inválido */}
       <Feedback
@@ -1062,7 +983,6 @@ const BarraProgressaoProposta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackPPM}
-        lendo={props.lendo}
       />
       {/* Feedback de payback inválido */}
       <Feedback
@@ -1072,7 +992,6 @@ const BarraProgressaoProposta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.barraProgressaoProposta.mensagemFeedbackPayback}
-        lendo={props.lendo}
       />
     </>
   );

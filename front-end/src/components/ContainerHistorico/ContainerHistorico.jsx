@@ -5,6 +5,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import DateService from "../../service/dateService";
 
@@ -12,12 +13,14 @@ import DateService from "../../service/dateService";
  * Objeto de histórico recebido pelo props (props.historico)
  */
 const ContainerHistorico = (props) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Função para transformar uma string em base64 para um ArrayBuffer, usada para baixar anexos */
   function converterBase64(base64) {
@@ -34,8 +37,8 @@ const ContainerHistorico = (props) => {
       arquivo instanceof File
         ? arquivo
         : new Blob([converterBase64(arquivo.dados)], {
-          type: "application/pdf",
-        });
+            type: "application/pdf",
+          });
     let nomeArquivo =
       arquivo instanceof File ? arquivo.name : `${arquivo.nome}`;
 
@@ -53,32 +56,6 @@ const ContainerHistorico = (props) => {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }
-    }
-  };
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 
@@ -115,13 +92,13 @@ const ContainerHistorico = (props) => {
     } else if (texto.includes("Status Editado")) {
       return texts.barraProgressaoProposta.statusEditado;
     } else if (texto.includes("Adicionada na Pauta")) {
-      return texts.barraProgressaoProposta.adicionadaPauta + " #" + numPPM;;
+      return texts.barraProgressaoProposta.adicionadaPauta + " #" + numPPM;
     } else if (texto.includes("Adicionada na Ata")) {
-      return texts.barraProgressaoProposta.adicionadaAta + " #" + numPPM;;
+      return texts.barraProgressaoProposta.adicionadaAta + " #" + numPPM;
     } else if (texto.includes("Pauta Excluída")) {
       return texts.pauta.pautaExcluida + " #" + numPPM;
     }
-  }
+  };
 
   return (
     <Box
@@ -141,7 +118,9 @@ const ContainerHistorico = (props) => {
         sx={{ width: "40%" }}
         fontWeight={650}
         fontSize={FontConfig.veryBig}
-        onClick={() => { lerTexto(props.historico?.autor.nome); }}
+        onClick={() => {
+          lerTexto(props.historico?.autor.nome);
+        }}
       >
         {props.historico?.autor.nome}
       </Typography>
@@ -158,10 +137,18 @@ const ContainerHistorico = (props) => {
         <Typography
           fontSize={FontConfig.small}
           onClick={() => {
-            lerTexto(DateService.getFullDateUSFormat(props.historico?.data, texts.linguagem));
+            lerTexto(
+              DateService.getFullDateUSFormat(
+                props.historico?.data,
+                texts.linguagem
+              )
+            );
           }}
         >
-          {DateService.getFullDateUSFormat(props.historico?.data, texts.linguagem)}
+          {DateService.getFullDateUSFormat(
+            props.historico?.data,
+            texts.linguagem
+          )}
         </Typography>
 
         {/* Texto da ação feita */}
