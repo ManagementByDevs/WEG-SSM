@@ -776,58 +776,65 @@ const BarraProgressaoProposta = (props) => {
                 setFeedbackFaltante(true);
               }
             });
-            // const ppmVerificacao = await verificacaoPPM();
+
+            const ppmVerificacao = await verificacaoPPM();
             const paybackVerificacao = verificacaoPaybak();
 
-            if (feedbackFaltante != true && paybackVerificacao) {
-              propostaService.post(retornaObjetoProposta()).then((response) => {
-                setCarregamentoProposta(true);
+            if (ppmVerificacao) {
+              if (feedbackFaltante != true && paybackVerificacao) {
+                propostaService
+                  .post(retornaObjetoProposta())
+                  .then((response) => {
+                    setCarregamentoProposta(true);
 
-                DemandaService.atualizarStatus(
-                  dadosDemanda.id,
-                  "ASSESSMENT_APROVACAO"
-                ).then(() => {
-                  EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
-                    () => {
-                      // Salvamento de histórico
-                      ExportPdfService.exportProposta(response.id).then(
-                        (file) => {
-                          let arquivo = new Blob([file], {
-                            type: "application/pdf",
-                          });
-                          propostaService
-                            .addHistorico(
-                              response.id,
-                              "Proposta Criada",
-                              arquivo,
-                              CookieService.getUser().id
-                            )
-                            .then((propostaResponse) => {
-                              setCarregamentoProposta(false);
-
-                              // Envio de Notificação ao Solicitante
-                              const notificacao =
-                                NotificacaoService.createNotificationObject(
-                                  NotificacaoService.criadoProposta,
-                                  dadosDemanda,
+                    DemandaService.atualizarStatus(
+                      dadosDemanda.id,
+                      "ASSESSMENT_APROVACAO"
+                    ).then(() => {
+                      EscopoPropostaService.excluirEscopo(ultimoEscopo.id).then(
+                        () => {
+                          // Salvamento de histórico
+                          ExportPdfService.exportProposta(response.id).then(
+                            (file) => {
+                              let arquivo = new Blob([file], {
+                                type: "application/pdf",
+                              });
+                              propostaService
+                                .addHistorico(
+                                  response.id,
+                                  "Proposta Criada",
+                                  arquivo,
                                   CookieService.getUser().id
-                                );
-                              enviar(
-                                `/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`,
-                                JSON.stringify(notificacao)
-                              );
+                                )
+                                .then((propostaResponse) => {
+                                  setCarregamentoProposta(false);
 
-                              localStorage.setItem("tipoFeedback", "5");
-                              navigate("/");
-                            });
+                                  // Envio de Notificação ao Solicitante
+                                  const notificacao =
+                                    NotificacaoService.createNotificationObject(
+                                      NotificacaoService.criadoProposta,
+                                      dadosDemanda,
+                                      CookieService.getUser().id
+                                    );
+                                  enviar(
+                                    `/app/weg_ssm/notificacao/${dadosDemanda.solicitante.id}`,
+                                    JSON.stringify(notificacao)
+                                  );
+
+                                  localStorage.setItem("tipoFeedback", "5");
+                                  navigate("/");
+                                });
+                            }
+                          );
                         }
                       );
-                    }
-                  );
-                });
-              });
+                    });
+                  });
+              } else {
+                setFeedbackPayback(true);
+              }
             } else {
-              setFeedbackPayback(true);
+              setFeedbackPPM(true);
             }
           } else {
             setFeedbackFaltante(true);
