@@ -148,7 +148,7 @@ const LinhaTabelaCustos = (props) => {
         >
           <TextareaAutosize
             style={{
-              width: "95%",
+              width: "100%",
               resize: "none",
               textAlign: "center",
               backgroundColor: "transparent",

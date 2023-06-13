@@ -427,7 +427,6 @@ const BarraProgressaoProposta = (props) => {
       delete escopoFinal.emAta;
       delete escopoFinal.emPauta;
       escopoFinal.id = ultimoEscopo.id;
-      console.log("Escopo salvo: ", escopoFinal);
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
