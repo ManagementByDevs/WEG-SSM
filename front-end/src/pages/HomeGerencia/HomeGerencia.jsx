@@ -1675,9 +1675,6 @@ const HomeGerencia = () => {
                       setListaAnalistas={setListaAnalistas}
                       filtroProposta={filtroProposta}
                       valorAba={valorAba}
-                      lendo={props.lendo}
-                      texto={props.texto}
-                      setTexto={props.setTexto}
                     />
                   )}
 
