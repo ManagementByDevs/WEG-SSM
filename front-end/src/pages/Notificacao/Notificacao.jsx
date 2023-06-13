@@ -1,7 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
-import { Box, Typography, Divider, Table, TableBody, TableHead, TableRow, Paper, Checkbox, IconButton, Tooltip, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Paper,
+  Checkbox,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import MarkEmailReadOutlinedIcon from "@mui/icons-material/MarkEmailReadOutlined";
@@ -27,7 +39,6 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Tela para mostrar as notificações do usuário no sistema */
 const Notificacao = (props) => {
-
   /** useContext para alterar o idioma do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -44,7 +55,8 @@ const Notificacao = (props) => {
   const [openModalConfirmDelete, setOpenModalConfirmDelete] = useState(false);
 
   /** Modal de confirmação de exclusão múltipla */
-  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] = useState(false);
+  const [openModalConfirmMultiDelete, setOpenModalConfirmMultiDelete] =
+    useState(false);
 
   /** UseState para saber qual notificação deletar ao usar o botão de delete individual */
   const [indexDelete, setIndexDelete] = useState(null);
@@ -157,7 +169,7 @@ const Notificacao = (props) => {
         checked: false,
         titulo: retornaTitulo(),
         numeroSequencial: data.numeroSequencial,
-        date: formatDate(data.data),
+        date: data.data,
         visualizado: data.visualizado,
         tipo_icone: data.tipoNotificacao,
         id: data.id,
@@ -360,7 +372,9 @@ const Notificacao = (props) => {
       {/* Feedbacks do sistema */}
       <Feedback
         open={feedback.visibilidade}
-        handleClose={() => { setFeedback({ ...feedback, visibilidade: false }); }}
+        handleClose={() => {
+          setFeedback({ ...feedback, visibilidade: false });
+        }}
         status={feedback.tipo}
         mensagem={feedback.mensagem}
       />
@@ -370,7 +384,7 @@ const Notificacao = (props) => {
         setOpen={setOpenModalConfirmDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onDeleteClick}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         textoBotao={"sim"}
       />
       <ModalConfirmacao
@@ -378,7 +392,7 @@ const Notificacao = (props) => {
         setOpen={setOpenModalConfirmMultiDelete}
         textoModal={"confirmarExclusao"}
         onConfirmClick={onMultiDeleteRowClick}
-        onCancelClick={() => { }}
+        onCancelClick={() => {}}
         textoBotao={"sim"}
       />
 
@@ -540,10 +554,10 @@ const Notificacao = (props) => {
                             className="notificacao-table-row-td"
                             fontSize={FontConfig.default}
                             onClick={() => {
-                              lerTexto(row.date);
+                              lerTexto(formatDate(row.date));
                             }}
                           >
-                            {row.date}
+                            {formatDate(row.date)}
                           </Typography>
                           <Typography className="notificacao-table-row-td-action">
                             {row.visualizado ? (
@@ -598,7 +612,9 @@ const Notificacao = (props) => {
             <Box className="flex justify-center items-center h-32">
               <Typography
                 fontSize={FontConfig.big}
-                onClick={() => { lerTexto(texts.notificacao.naoHaNotificacoes) }}
+                onClick={() => {
+                  lerTexto(texts.notificacao.naoHaNotificacoes);
+                }}
               >
                 {texts.notificacao.naoHaNotificacoes}
               </Typography>
