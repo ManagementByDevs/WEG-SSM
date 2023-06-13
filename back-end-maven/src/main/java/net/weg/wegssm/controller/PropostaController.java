@@ -89,7 +89,9 @@ public class PropostaController {
      * @param ppm Código PPM da proposta a ser buscada
      * @return ResponseEntity com a proposta buscada pelo código PPM
      */
-    public ResponseEntity<Page<Proposta>> findByPpm(Pageable pageable, Long ppm) {
+    @GetMapping("/ppm/{ppm}")
+    public ResponseEntity<Page<Proposta>> findByPpm(@PageableDefault(size = 20, sort = "score", direction = Sort.Direction.DESC) Pageable pageable,
+                                                    @PathVariable(value = "ppm") Long ppm) {
         return ResponseEntity.status(200).body(propostaService.findByPpm(ppm, pageable));
     }
 
@@ -4361,7 +4363,7 @@ public class PropostaController {
         }
 
         Proposta proposta = propostaOptional.get();
-        proposta.setPresenteEm("Nada");
+        proposta.setPresenteEm("Solta");
         proposta.setPublicada(null);
         proposta.setParecerComissao(null);
         proposta.setParecerDG(null);
@@ -4424,15 +4426,15 @@ public class PropostaController {
             }
             case REPROVADO -> {
                 proposta.setStatus(Status.CANCELLED);
-                proposta.setPresenteEm("Nada");
+                proposta.setPresenteEm("Solta");
             }
             case BUSINESS_CASE -> {
                 proposta.setStatus(Status.BUSINESS_CASE);
-                proposta.setPresenteEm("Nada");
+                proposta.setPresenteEm("Solta");
             }
             case MAIS_INFORMACOES -> {
                 proposta.setStatus(Status.ASSESSMENT_EDICAO);
-                proposta.setPresenteEm("Nada");
+                proposta.setPresenteEm("Solta");
             }
         }
 
@@ -4467,7 +4469,7 @@ public class PropostaController {
             }
             case REPROVADO -> {
                 proposta.setStatus(Status.CANCELLED);
-                proposta.setPresenteEm("Nada");
+                proposta.setPresenteEm("Solta");
             }
         }
 

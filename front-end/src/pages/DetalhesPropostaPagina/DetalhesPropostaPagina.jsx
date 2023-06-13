@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
 
-import VLibras from "@djpfs/react-vlibras";
-
 import { Box, IconButton, Button, Tooltip } from "@mui/material";
+
+import VLibras from "@djpfs/react-vlibras";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
@@ -15,12 +15,11 @@ import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta
 import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalAddPropostaPauta";
 import Feedback from "../../components/Feedback/Feedback";
 
-import TextLanguageContext from "../../service/TextLanguageContext";
 import ExportPdfService from "../../service/exportPdfService";
+import TextLanguageContext from "../../service/TextLanguageContext";
 
 /** Página que mostra os detalhes da proposta selecionada, com opção de download para pdf */
-const DetalhesPropostaPagina = ({ lendo = false }) => {
-
+const DetalhesPropostaPagina = () => {
   /** Location utilizado para pegar os dados da demanda */
   const location = useLocation();
 
@@ -55,7 +54,7 @@ const DetalhesPropostaPagina = ({ lendo = false }) => {
   };
 
   return (
-    <FundoComHeader lendo={lendo}>
+    <FundoComHeader>
       <VLibras forceOnload />
       {/* Feedback edição bem sucedida */}
       <Feedback
@@ -63,18 +62,16 @@ const DetalhesPropostaPagina = ({ lendo = false }) => {
         handleClose={() => setFeedbackEditSuccess(false)}
         status={"sucesso"}
         mensagem={texts.detalhesProposta.editadoComSucesso}
-        lendo={lendo}
       />
       {/* Modal para adicionar a proposta em pauta */}
       <ModalAddPropostaPauta
         open={openModalAddPropostaPauta}
         setOpen={setOpenModalAddPropostaPauta}
         proposta={location.state}
-        lendo={lendo}
       />
       <Box className="relative p-2 mb-14" sx={{ minWidth: "45rem" }}>
         <Box className="flex w-full relative mb-10">
-          <Caminho lendo={lendo} />
+          <Caminho />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -94,7 +91,6 @@ const DetalhesPropostaPagina = ({ lendo = false }) => {
         <DetalhesProposta
           propostaId={paramsPath.id}
           setFeedbackEditSuccess={setFeedbackEditSuccess}
-          lendo={lendo}
         />
       </Box>
       {location.state.status != "CANCELLED" &&

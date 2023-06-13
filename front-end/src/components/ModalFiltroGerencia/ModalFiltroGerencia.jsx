@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
+
 import {
   Modal,
   Typography,
@@ -10,9 +11,7 @@ import {
   FormControl,
   Autocomplete,
   TextField,
-  FormGroup,
   FormControlLabel,
-  Checkbox,
   RadioGroup,
   Radio,
 } from "@mui/material";
@@ -21,16 +20,20 @@ import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import UsuarioService from "../../service/usuarioService";
 
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Variável para armazenar o valor do radio button */
   const [selectedValue, setSelectedValue] = useState("");
@@ -53,8 +56,7 @@ const ModalFiltroGerencia = (props) => {
 
   /** Função para limpar os filtros ativos e fechar o modal */
   const limparFiltro = () => {
-
-    if(!props.lendo) {
+    if (!lendoTexto) {
       props.setFiltro({
         solicitante: null,
         forum: "",
@@ -63,6 +65,7 @@ const ModalFiltroGerencia = (props) => {
         departamento: "",
         analista: null,
         presenteEm: "",
+        status: ""
       });
       props.fecharModal();
     } else {
@@ -108,134 +111,42 @@ const ModalFiltroGerencia = (props) => {
 
   /** Função para atualizar os filtros quando um solicitante for selecionado */
   const selecionarSolicitante = (event, value) => {
-    props.setFiltro({
-      solicitante: value,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista,
-      presenteEm: props.filtro.presenteEm,
-    });
+    props.setFiltro({ ...props.filtro, solicitante: value });
   };
 
   /** Função para atualizar os filtros quando um forum for selecionado */
   const selecionarForum = (event) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: event.target.value,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista,
-      presenteEm: props.filtro.presenteEm,
-    });
+    props.setFiltro({ ...props.filtro, forum: event.target.value });
   };
 
   /** Função para atualizar os filtros quando um tamanho for selecionado */
   const selecionarTamanho = (event) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: event.target.value,
-      gerente: props.filtro.gerente,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista,
-      presenteEm: props.filtro.presenteEm,
-    });
+    props.setFiltro({ ...props.filtro, tamanho: event.target.value });
   };
 
   /** Função para atualizar os filtros quando um gerente for selecionado */
   const selecionarGerente = (event, value) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: value,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista,
-      presenteEm: props.filtro.presenteEm,
-    });
+    props.setFiltro({ ...props.filtro, gerente: value });
   };
 
   /** Função para atualizar os filtros quando um departamento for selecionado */
   const selecionarDepartamento = (event) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      departamento: event.target.value,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      analista: props.filtro.analista,
-      presenteEm: props.filtro.presenteEm,
-    });
+    props.setFiltro({ ...props.filtro, departamento: event.target.value });
   };
 
   /** Função para atualizar os filtros quando um analista for selecionado */
   const selecionarAnalista = (event, value) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      analista: value,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      presenteEm: props.filtro.presenteEm,
-    });
+    props.setFiltro({ ...props.filtro, analista: value });
   };
 
   /** Função para atualizar os filtros quando em pauta, em ata ou em edição for selecionado */
   const selecionarPresenteEm = (value) => {
-    props.setFiltro({
-      solicitante: props.filtro.solicitante,
-      forum: props.filtro.forum,
-      tamanho: props.filtro.tamanho,
-      gerente: props.filtro.gerente,
-      analista: props.filtro.analista,
-      departamento: props.filtro.departamento,
-      id: props.filtro.id,
-      codigoPPM: props.filtro.codigoPPM,
-      presenteEm: value,
-    });
+    props.setFiltro({ ...props.filtro, presenteEm: value });
   };
 
- 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
+  /** Função para atualizar os filtros quando um status for selecionado */
+  const selecionarStatus = (event) => {
+    props.setFiltro({ ...props.filtro, status: event.target.value });
   };
 
   return (
@@ -277,30 +188,81 @@ const ModalFiltroGerencia = (props) => {
           </Typography>
           <Box className="flex justify-center items-center w-full h-full">
             <Box className="flex flex-col justify-evenly items-center h-full w-1/2">
-              {/* Select de solicitante */}
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={props.listaSolicitantes}
-                noOptionsText={texts.modalFiltroGerencia.semResultados}
-                sx={{ width: 240 }}
-                value={props.filtro.solicitante}
-                onInputChange={(e) => {
-                  pesquisarSolicitantes(e);
-                }}
-                onChange={(e, value) => {
-                  selecionarSolicitante(e, value);
-                }}
-                getOptionLabel={(option) => {
-                  return option?.nome || "";
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={texts.modalFiltroGerencia.labelSolicitante}
+
+              {props?.valorAba != "1" ? (
+                <>
+                  {/* Select de Solicitante */}
+                  < Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={props.listaSolicitantes}
+                    noOptionsText={texts.modalFiltroGerencia.semResultados}
+                    sx={{ width: 240 }}
+                    value={props.filtro.solicitante}
+                    onInputChange={(e) => {
+                      pesquisarSolicitantes(e);
+                    }}
+                    onChange={(e, value) => {
+                      selecionarSolicitante(e, value);
+                    }}
+                    getOptionLabel={(option) => {
+                      return option?.nome || "";
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={texts.modalFiltroGerencia.labelSolicitante}
+                      />
+                    )}
                   />
-                )}
-              />
+                </>
+              ) : (
+                <>
+                  {/* Select de Status */}
+                  <FormControl sx={{ width: "15rem" }}>
+                    <InputLabel
+                      id="demo-simple-select-label"
+                      onClick={() => {
+                        lerTexto(texts.modalFiltroGerencia.status);
+                      }}
+                    >
+                      {texts.modalFiltroGerencia.status}
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.filtro.status}
+                      label={texts.modalFiltroGerencia.status}
+                      onChange={selecionarStatus}
+                    >
+                      <MenuItem selected value={""}>
+                        {texts.modalFiltroGerencia.selecionar}
+                      </MenuItem>
+                      <MenuItem value={"CANCELLED"}>
+                        {texts.modalFiltroGerencia.reprovada}
+                      </MenuItem>
+                      <MenuItem value={"BACKLOG_REVISAO"}>
+                        {texts.modalFiltroGerencia.aguardandoRevisao}
+                      </MenuItem>
+                      <MenuItem value={"BACKLOG_EDICAO"}>
+                        {texts.modalFiltroGerencia.aguardandoEdicao}
+                      </MenuItem>
+                      <MenuItem value={"BACKLOG_APROVACAO"}>
+                        {texts.modalFiltroGerencia.emAprovacao}
+                      </MenuItem>
+                      <MenuItem value={"ASSESSMENT"}>
+                        {texts.modalFiltroGerencia.aprovada}
+                      </MenuItem>
+                      <MenuItem value={"ASSESSMENT_APROVACAO"}>
+                        {texts.modalFiltroGerencia.emAndamento}
+                      </MenuItem>
+                      <MenuItem value={"DONE"}>
+                        {texts.modalFiltroGerencia.emDesenvolvimento}
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </>
+              )}
 
               {/* Select de fórum */}
               <FormControl sx={{ width: "15rem" }}>
@@ -393,10 +355,11 @@ const ModalFiltroGerencia = (props) => {
 
               {/* Select de departamento */}
               <FormControl sx={{ width: "15rem" }}>
-                <InputLabel id="demo-simple-select-label"
-                onClick={() => {
-                  lerTexto(texts.modalFiltroGerencia.departamento);
-                }}
+                <InputLabel
+                  id="demo-simple-select-label"
+                  onClick={() => {
+                    lerTexto(texts.modalFiltroGerencia.departamento);
+                  }}
                 >
                   {texts.modalFiltroGerencia.departamento}
                 </InputLabel>

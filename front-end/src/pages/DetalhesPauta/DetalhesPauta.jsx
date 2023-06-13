@@ -4,13 +4,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { keyframes } from "@emotion/react";
 import VLibras from "@djpfs/react-vlibras";
 
-import { Box, Typography, Button, Divider, Tooltip, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddHomeOutlinedIcon from '@mui/icons-material/AddHomeOutlined';
+import AddHomeOutlinedIcon from "@mui/icons-material/AddHomeOutlined";
 
 import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -31,15 +38,18 @@ import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
 import NotificacaoService from "../../service/notificacaoService";
 import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf */
 const DetalhesPauta = (props) => {
-
   /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Navigate utilizado para navegar para uma determianda página */
   const navigate = useNavigate();
@@ -51,7 +61,9 @@ const DetalhesPauta = (props) => {
   const [pauta, setPauta] = useState(EntitiesObjectService.pauta());
 
   /** Lista provisória de propostas para preencher a tela */
-  const [listaProposta, setListaProposta] = useState([EntitiesObjectService.proposta()]);
+  const [listaProposta, setListaProposta] = useState([
+    EntitiesObjectService.proposta(),
+  ]);
 
   /** Variável de verificação utilizada para mostrar o sumário ou uma proposta */
   const [proposta, setProposta] = useState(false);
@@ -93,16 +105,11 @@ const DetalhesPauta = (props) => {
   const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
 
   /** Feedback para quando o usuário deletar uma proposta da pauta */
-  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] = useState(false);
+  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
+    useState(false);
 
   /** Feedback para quando o usuário não preencher todos os campos obrigatórios */
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
-
-  /** Feedback para quando da erro de incompatibilidade com o navegador */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
-
-  /** Feedback para quando da erro no reconhecimento de voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
 
   /** useState utilizado para abrir e fechar o modal de adicionar a pauta */
   const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
@@ -144,7 +151,7 @@ const DetalhesPauta = (props) => {
 
   /** Função para passar para a próxima proposta */
   const proximo = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       if (indexProposta == listaProposta.length - 1) {
         setBotaoProximo(false);
       } else {
@@ -254,7 +261,7 @@ const DetalhesPauta = (props) => {
               "Removida da Pauta #" + newPauta.numeroSequencial,
               arquivo,
               CookieService.getUser().id
-            ).then(() => { });
+            ).then(() => {});
           });
         }
       );
@@ -368,8 +375,15 @@ const DetalhesPauta = (props) => {
     }
 
     const demandaNotificacao = JSON.parse(JSON.stringify(propostaAux.demanda));
-    const notificacao = NotificacaoService.createNotificationObject(tipoNotificacao, demandaNotificacao, CookieService.getUser().id);
-    enviar(`/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`, JSON.stringify(notificacao));
+    const notificacao = NotificacaoService.createNotificationObject(
+      tipoNotificacao,
+      demandaNotificacao,
+      CookieService.getUser().id
+    );
+    enviar(
+      `/app/weg_ssm/notificacao/${demandaNotificacao.solicitante.id}`,
+      JSON.stringify(notificacao)
+    );
   };
 
   /** Função para  */
@@ -391,11 +405,11 @@ const DetalhesPauta = (props) => {
                 "Proposta Reprovada",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 response.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "MAIS_INFORMACOES":
               PropostaService.addHistorico(
@@ -403,7 +417,7 @@ const DetalhesPauta = (props) => {
                 "Enviada para Edição",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "BUSINESS_CASE":
               PropostaService.addHistorico(
@@ -411,7 +425,7 @@ const DetalhesPauta = (props) => {
                 "Enviada para Business Case",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               break;
           }
         });
@@ -438,9 +452,9 @@ const DetalhesPauta = (props) => {
             "Proposta Reprovada",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
           DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(
-            () => { }
+            () => {}
           );
           break;
         case "MAIS_INFORMACOES":
@@ -449,7 +463,7 @@ const DetalhesPauta = (props) => {
             "Enviada para Edição",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
           break;
         case "BUSINESS_CASE":
           PropostaService.addHistorico(
@@ -457,7 +471,7 @@ const DetalhesPauta = (props) => {
             "Entrada em Business Case",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
           break;
         case "APROVADO":
           PropostaService.addHistorico(
@@ -465,7 +479,7 @@ const DetalhesPauta = (props) => {
             "Adicionada na Ata #" + idAta,
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
           break;
       }
     });
@@ -485,34 +499,8 @@ const DetalhesPauta = (props) => {
     }
   };
 
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
-    <FundoComHeader lendo={props.lendo}>
+    <FundoComHeader>
       {/* Tradução para libras */}
       <VLibras forceOnload />
 
@@ -521,34 +509,9 @@ const DetalhesPauta = (props) => {
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}
         criarAta={criarAta}
-        setFeedbackErroNavegadorIncompativel={
-          setFeedbackErroNavegadorIncompativel
-        }
-        setFeedbackErroReconhecimentoVoz={setFeedbackErroReconhecimentoVoz}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
         setFeedbackSemPropostas={setFeedbackSemPropostas}
-        lendo={props.lendo}
         listaPropostas={pauta.propostas}
-      />
-      {/* Feedback Erro reconhecimento de voz */}
-      <Feedback
-        open={feedbackErroReconhecimentoVoz}
-        handleClose={() => {
-          setFeedbackErroReconhecimentoVoz(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback12}
-        lendo={props.lendo}
-      />
-      {/* Feedback Não navegador incompativel */}
-      <Feedback
-        open={feedbackErroNavegadorIncompativel}
-        handleClose={() => {
-          setFeedbackErroNavegadorIncompativel(false);
-        }}
-        status={"erro"}
-        mensagem={texts.homeGerencia.feedback.feedback13}
-        lendo={props.lendo}
       />
       {/* Feedback campos faltantes */}
       <Feedback
@@ -558,7 +521,6 @@ const DetalhesPauta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.modalCriarAta.feedback}
-        lendo={props.lendo}
       />
       {/* Feedback proposta deletada da pauta */}
       <Feedback
@@ -568,7 +530,6 @@ const DetalhesPauta = (props) => {
         }}
         status={"sucesso"}
         mensagem={texts.detalhesPauta.feedbacks.feedback1}
-        lendo={props.lendo}
       />
       {/* Feedback pauta sem propostas */}
       <Feedback
@@ -578,7 +539,6 @@ const DetalhesPauta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.detalhesPauta.feedbacks.feedback3}
-        lendo={props.lendo}
       />
       {/* Modal de confirmação para tirar proposta de pauta */}
       <ModalConfirmacao
@@ -587,12 +547,11 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => { }}
-        lendo={props.lendo}
+        onCancelClick={() => {}}
       />
       <Box className="p-2 mb-16" sx={{ minWidth: "58rem" }}>
         <Box className="flex w-full relative">
-          <Caminho lendo={props.lendo} />
+          <Caminho />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -637,8 +596,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.numeroSequencial +
-                    ": " +
-                    pauta.numeroSequencial
+                      ": " +
+                      pauta.numeroSequencial
                   );
                 }}
               >
@@ -650,8 +609,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.comissao +
-                    ": " +
-                    pauta.comissao.nomeForum
+                      ": " +
+                      pauta.comissao.nomeForum
                   );
                 }}
               >
@@ -664,11 +623,11 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.reuniaoDoForum +
-                    ": " +
-                    DateService.getFullDateUSFormat(
-                      DateService.getDateByMySQLFormat(pauta?.dataReuniao),
-                      texts.linguagem
-                    )
+                      ": " +
+                      DateService.getFullDateUSFormat(
+                        DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                        texts.linguagem
+                      )
                   );
                 }}
               >
@@ -684,8 +643,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.analistaResponsavel +
-                    ": " +
-                    pauta.analistaResponsavel.nome
+                      ": " +
+                      pauta.analistaResponsavel.nome
                   );
                 }}
               >
@@ -732,7 +691,7 @@ const DetalhesPauta = (props) => {
                             "&:hover": { backgroundColor: "component.main" },
                           }}
                           onClick={() => {
-                            if (props.lendo) {
+                            if (lendoTexto) {
                               lerTexto(proposta.titulo);
                             } else {
                               onClickProposta(index);
@@ -808,7 +767,6 @@ const DetalhesPauta = (props) => {
                   parecerInformacao={dadosProposta.parecerInformacao || ""}
                   emAprovacao={true}
                   propostaId={dadosProposta.id}
-                  lendo={props.lendo}
                 />
               </Box>
             )}
@@ -836,7 +794,7 @@ const DetalhesPauta = (props) => {
                     }}
                     variant="contained"
                     onClick={() => {
-                      if (props.lendo) {
+                      if (lendoTexto) {
                         lerTexto(texts.detalhesPauta.voltar);
                       } else {
                         voltar();
@@ -905,8 +863,12 @@ const DetalhesPauta = (props) => {
                   color: "#FFFF",
                 }}
               >
-
-                <AddHomeOutlinedIcon sx={{ transform: 'rotate(180deg) scaleX(-1)', fontSize: "32px" }} />
+                <AddHomeOutlinedIcon
+                  sx={{
+                    transform: "rotate(180deg) scaleX(-1)",
+                    fontSize: "32px",
+                  }}
+                />
               </Box>
             </Tooltip>
           </Box>

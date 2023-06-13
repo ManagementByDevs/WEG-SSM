@@ -1,5 +1,16 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { Box, Typography, Divider, Paper, IconButton, Tooltip, MenuItem, TextField, Autocomplete, Checkbox, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Paper,
+  IconButton,
+  Tooltip,
+  MenuItem,
+  TextField,
+  Autocomplete,
+  Checkbox,
+} from "@mui/material";
 
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
@@ -21,6 +32,8 @@ import AnexoService from "../../service/anexoService";
 
 import ClipLoader from "react-spinners/ClipLoader";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 // Ícone selecionado e não selecionado, para o checkbox
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -28,12 +41,19 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 /** Fase de criação de proposta em que os dados da demanda poderão ser editados */
 const FormularioPropostaProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // UseState para mudar a cor do textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -211,118 +231,18 @@ const FormularioPropostaProposta = (props) => {
     }
   };
 
-  // // ********************************************** Gravar audio **********************************************
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClique, setLocalClique] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {
-      };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-
-        // setValorPesquisa(transcript);
-      };
-
-      recognition.onerror = (event) => {
-        props.setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      props.setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     switch (localClique) {
       case "titulo":
         props.setDadosDemanda({ ...props.dados, titulo: palavrasJuntas });
         break;
+      case "frequencia":
+        props.setDadosDemanda({ ...props.dados, frequencia: palavrasJuntas });
+        break;
       default:
         break;
     }
   }, [palavrasJuntas]);
-
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setEscutar(!escutar);
-    setLocalClique(ondeClicou);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <>
@@ -334,7 +254,6 @@ const FormularioPropostaProposta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.formularioPropostaProposta.feedbacks.feedback1}
-        lendo={props.lendo}
       />
       <Box
         className="flex flex-col justify-center relative items-center"
@@ -434,6 +353,7 @@ const FormularioPropostaProposta = (props) => {
                     onChange={(value) => {
                       alterarTexto(value, "problema");
                     }}
+                    label="problema"
                   />
                 </Box>
               </Box>
@@ -466,6 +386,7 @@ const FormularioPropostaProposta = (props) => {
                     onChange={(value) => {
                       alterarTexto(value, "proposta");
                     }}
+                    label="proposta"
                   />
                 </Box>
               </Box>
@@ -501,7 +422,6 @@ const FormularioPropostaProposta = (props) => {
                           beneficio={beneficio}
                           setBeneficio={alterarTextoBeneficio}
                           carregamento={props.carregamento}
-                          lendo={props.lendo}
                         />
                       );
                     }

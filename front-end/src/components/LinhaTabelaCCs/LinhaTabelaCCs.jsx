@@ -9,15 +9,20 @@ import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 import ColorModeContext from "../../service/TemaContext";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 // Componente para criar uma linha da tabela de CCs
 const LinhaTabelaCCs = (props) => {
-
   // Context que contém os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, palavrasJuntas, localClique } = useContext(
+    SpeechRecognitionContext
+  );
 
   // UseState para alterar a cor do fundo textArea
   const [corFundoTextArea, setCorFundoTextArea] = useState("#FFFF");
@@ -34,61 +39,9 @@ const LinhaTabelaCCs = (props) => {
     }
   }, [mode]);
 
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClicado, setLocalClicado] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {};
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        props.setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      props.setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     let aux = [...props.custos];
-    switch (localClicado) {
+    switch (localClique) {
       case "codigoCcs":
         aux[props.indexCusto].ccs[props.index].codigo = palavrasJuntas;
         props.setCustos(aux);
@@ -101,27 +54,6 @@ const LinhaTabelaCCs = (props) => {
         break;
     }
   }, [palavrasJuntas]);
-
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setEscutar(!escutar);
-    setLocalClicado(ondeClicou);
-  };
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  // // ********************************************** Fim Gravar audio **********************************************
 
   /** Função para verificar os caracteres digitados no cc  */
   function verificarCaracteres(valorDigitado) {
@@ -194,7 +126,7 @@ const LinhaTabelaCCs = (props) => {
                 startRecognition("codigoCcs");
               }}
             >
-              {escutar && localClicado == "codigoCcs" ? (
+              {escutar && localClique == "codigoCcs" ? (
                 <MicOutlinedIcon
                   sx={{
                     cursor: "pointer",
@@ -256,7 +188,7 @@ const LinhaTabelaCCs = (props) => {
                 startRecognition("porcentagemCcs");
               }}
             >
-              {escutar && localClicado == "porcentagemCcs" ? (
+              {escutar && localClique == "porcentagemCcs" ? (
                 <MicOutlinedIcon
                   sx={{
                     cursor: "pointer",

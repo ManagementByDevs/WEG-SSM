@@ -9,10 +9,10 @@ import InputComLabel from "../InputComLabel/InputComLabel";
 import ColorModeContext from "../../service/TemaContext";
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalCriarAta = (props) => {
-
   // Variável para alterar o tema
   const { mode } = useContext(ColorModeContext);
 
@@ -22,6 +22,9 @@ const ModalCriarAta = (props) => {
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+
   // props para abrir o modal através de outra tela
   let open = false;
   open = props.open;
@@ -29,7 +32,7 @@ const ModalCriarAta = (props) => {
 
   // useState para abrir e fechar o modal
   const handleClose = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       setOpen(false);
     } else {
       lerTexto(texts.modalCriarAta.botaoCancelar);
@@ -44,7 +47,7 @@ const ModalCriarAta = (props) => {
 
   // função utilizada para verificações de criação da ata
   const criarAta = () => {
-    if (props.lendo) {
+    if (lendoTexto) {
       lerTexto(texts.modalCriarAta.botaoCriar);
     } else {
       if (
@@ -54,37 +57,14 @@ const ModalCriarAta = (props) => {
         dataReuniao == null
       ) {
         props.setFeedbackCamposFaltantes(true);
-      } else if (props.listaPropostas == null || props.listaPropostas.lenght == 0) {
+      } else if (
+        props.listaPropostas == null ||
+        props.listaPropostas.lenght == 0
+      ) {
         props.setFeedbackSemPropostas(true);
       } else {
         props.criarAta(numeroSequencial, dataReuniao);
       }
-    }
-  };
-
-   // Função que irá setar o texto que será "lido" pela a API
-   const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 
@@ -97,7 +77,19 @@ const ModalCriarAta = (props) => {
         sx={{ minWidth: "40rem" }}
       >
         <Fade in={open}>
-          <Box className="flex flex-col justify-evenly absolute top-2/4 left-2/4" sx={{ transform: "translate(-50%, -50%)", width: 500, height: 380, bgcolor: "background.paper", borderRadius: "5px", borderTop: "10px solid #00579D", boxShadow: 24, p: 2 }}>
+          <Box
+            className="flex flex-col justify-evenly absolute top-2/4 left-2/4"
+            sx={{
+              transform: "translate(-50%, -50%)",
+              width: 500,
+              height: 380,
+              bgcolor: "background.paper",
+              borderRadius: "5px",
+              borderTop: "10px solid #00579D",
+              boxShadow: 24,
+              p: 2,
+            }}
+          >
             {/* Topo modal*/}
             <Box className="flex flex-col w-full items-center">
               <Box className="flex">
@@ -113,12 +105,21 @@ const ModalCriarAta = (props) => {
                 {/* Botao fechar modal */}
                 <CloseIcon
                   onClick={handleClose}
-                  sx={{ position: "absolute", left: "93%", top: "3%", cursor: "pointer" }}
+                  sx={{
+                    position: "absolute",
+                    left: "93%",
+                    top: "3%",
+                    cursor: "pointer",
+                  }}
                 />
               </Box>
               {/* Divisor */}
               <Divider
-                sx={{ width: "80%", marginTop: "1%", borderColor: "tertiary.main" }}
+                sx={{
+                  width: "80%",
+                  marginTop: "1%",
+                  borderColor: "tertiary.main",
+                }}
               />
             </Box>
             {/* Conteudo modal */}
@@ -133,13 +134,6 @@ const ModalCriarAta = (props) => {
                   placeholder={texts.modalCriarAta.digiteNumeroSequencial}
                   texto={numeroSequencial}
                   saveInputValue={setNumeroSequencial}
-                  setFeedbackErroNavegadorIncompativel={
-                    props.setFeedbackErroNavegadorIncompativel
-                  }
-                  setFeedbackErroReconhecimentoVoz={
-                    props.setFeedbackErroReconhecimentoVoz
-                  }
-                  lendo={props.lendo}
                 />
                 {/* input de data */}
                 <Box className="mt-5">
@@ -156,7 +150,11 @@ const ModalCriarAta = (props) => {
                     </Typography>
                     <Typography
                       fontSize={props.fontConfig}
-                      sx={{ fontWeight: "800", cursor: "default", margin: "0 .2% .2% .2%" }}
+                      sx={{
+                        fontWeight: "800",
+                        cursor: "default",
+                        margin: "0 .2% .2% .2%",
+                      }}
                       className="text-red-600"
                       gutterBottom
                     >
@@ -195,7 +193,12 @@ const ModalCriarAta = (props) => {
                 }}
               >
                 <Button
-                  sx={{ width: "7rem", border: "solid 1px", color: "tertiary.main", p: 1 }}
+                  sx={{
+                    width: "7rem",
+                    border: "solid 1px",
+                    color: "tertiary.main",
+                    p: 1,
+                  }}
                   disableElevation
                   onClick={handleClose}
                 >
@@ -204,7 +207,13 @@ const ModalCriarAta = (props) => {
                   </Typography>
                 </Button>
                 <Button
-                  sx={{ width: "7rem", backgroundColor: "primary.main", color: "white", border: "solid 1px #000", p: 1, }}
+                  sx={{
+                    width: "7rem",
+                    backgroundColor: "primary.main",
+                    color: "white",
+                    border: "solid 1px #000",
+                    p: 1,
+                  }}
                   disableElevation
                   variant="contained"
                   onClick={criarAta}

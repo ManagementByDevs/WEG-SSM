@@ -4,7 +4,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import VLibras from "@djpfs/react-vlibras";
 
 import { keyframes } from "@emotion/react";
-import { Box, Typography, Divider, Tooltip, IconButton, ButtonBase, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Tooltip,
+  IconButton,
+  ButtonBase,
+} from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -30,15 +37,18 @@ import DemandaService from "../../service/demandaService";
 import NotificacaoService from "../../service/notificacaoService";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 import { WebSocketContext } from "../../service/WebSocketService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf */
 const DetalhesAta = (props) => {
-
   /** Context para trocar a liguagem */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Navigate e location utilizados para verificar state passado por parametro para determinada verificação */
   const navigate = useNavigate();
@@ -80,7 +90,8 @@ const DetalhesAta = (props) => {
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   /** Modal de confirmação para a publicação de uma ata */
-  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] = useState(false);
+  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] =
+    useState(false);
 
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
@@ -144,7 +155,7 @@ const DetalhesAta = (props) => {
 
   /** Função para voltar para uma proposta */
   const voltar = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       if (indexProposta <= 0) {
         setProposta(false);
         setIndexProposta(-1);
@@ -161,7 +172,7 @@ const DetalhesAta = (props) => {
 
   /** Função para passar para a próxima proposta */
   const proximo = () => {
-    if (!props.lendo) {
+    if (!lendoTexto) {
       if (indexProposta == ata.propostas.length - 1) {
         setBotaoProximo(false);
       } else {
@@ -284,11 +295,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -296,9 +307,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => { }
+                () => {}
               );
               break;
           }
@@ -336,7 +347,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
+    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
 
     navigate("/", { state: { feedback: true } });
   };
@@ -350,35 +361,9 @@ const DetalhesAta = (props) => {
     return hora + ":" + minuto;
   };
 
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     // Começo com o header da página
-    <FundoComHeader lendo={props.lendo}>
+    <FundoComHeader>
       <VLibras forceOnload />
       {/* Feedback campos faltantes */}
       <Feedback
@@ -388,7 +373,6 @@ const DetalhesAta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.detalhesPauta.feedbacks.feedback2}
-        lendo={props.lendo}
       />
       {/* Feedback edição bem sucedida */}
       <Feedback
@@ -396,7 +380,6 @@ const DetalhesAta = (props) => {
         handleClose={() => setFeedbackEditSuccess(false)}
         status={"sucesso"}
         mensagem={texts.detalhesProposta.editadoComSucesso}
-        lendo={props.lendo}
       />
 
       {/* Modal de confirmação de publicar a ata */}
@@ -407,16 +390,13 @@ const DetalhesAta = (props) => {
           textoModal={"publicarAta"}
           textoBotao={"sim"}
           onConfirmClick={publicarAta}
-          lendo={props.lendo}
-          texto={props.texto}
-          setTexto={props.setTexto}
         />
       )}
 
       <Box className="p-2 mb-16">
         {/* caminho da página */}
         <Box className="flex w-full relative">
-          <Caminho lendo={props.lendo} />
+          <Caminho />
           <Box
             className=" absolute"
             sx={{ top: "10px", right: "20px", cursor: "pointer" }}
@@ -460,8 +440,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                    ": " +
-                    ata.numeroSequencial
+                      ": " +
+                      ata.numeroSequencial
                   );
                 }}
               >
@@ -473,11 +453,11 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
-                    ": " +
-                    DateService.getTodaysDateUSFormat(
-                      ata.dataReuniao,
-                      texts.linguagem
-                    )
+                      ": " +
+                      DateService.getTodaysDateUSFormat(
+                        ata.dataReuniao,
+                        texts.linguagem
+                      )
                   );
                 }}
               >
@@ -494,8 +474,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                    ": " +
-                    trazerHoraData(ata.dataReuniao)
+                      ": " +
+                      trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -509,8 +489,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                    ": " +
-                    ata.analistaResponsavel.nome
+                      ": " +
+                      ata.analistaResponsavel.nome
                   );
                 }}
               >
@@ -576,7 +556,7 @@ const DetalhesAta = (props) => {
                           "&:hover": { backgroundColor: "component.main" },
                         }}
                         onClick={() => {
-                          if (props.lendo) {
+                          if (lendoTexto) {
                             lerTexto(proposta.titulo);
                           } else {
                             onClickProposta(index);
@@ -627,7 +607,6 @@ const DetalhesAta = (props) => {
                 <DetalhesProposta
                   emAprovacao={true}
                   propostaId={dadosProposta.id}
-                  lendo={props.lendo}
                   texto={props.texto}
                   setFeedbackEditSuccess={setFeedbackEditSuccess}
                   parecerDG={dadosProposta.parecerDG || ""}
