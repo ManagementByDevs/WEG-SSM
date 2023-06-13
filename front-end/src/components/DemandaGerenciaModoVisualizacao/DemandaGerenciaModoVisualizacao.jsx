@@ -1,7 +1,16 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography, } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import "./DemandaGerenciaModoVisualizacao.css";
 
@@ -18,7 +27,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import ChatService from "../../service/chatService";
 import UsuarioService from "../../service/usuarioService";
-import { alignProperty } from "@mui/material/styles/cssUtils";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente para mudar o modo de visualização das demandas (Grid, tabela ou nenhuma demanda encontrada) - Gerência
 const DemandaGerenciaModoVisualizacao = ({
@@ -27,12 +36,10 @@ const DemandaGerenciaModoVisualizacao = ({
   nextModoVisualizacao,
   isProposta = false,
   setFeedbackAbrirChat,
-  lendo = false,
 }) => {
-
   // verificação para ver se retorna algo, caso não retorne nada, mostre o componente "NadaEncontrado"
   if (listaDemandas.length == 0) {
-    return <NadaEncontrado lendo={lendo} />;
+    return <NadaEncontrado />;
   }
 
   // verificação para ver se o próximo modo de visualização é "TABLE", caso seja, mostre o componente "DemandaGrid"
@@ -44,7 +51,6 @@ const DemandaGerenciaModoVisualizacao = ({
         onDemandaClick={onDemandaClick}
         isProposta={isProposta}
         setFeedbackAbrirChat={setFeedbackAbrirChat}
-        lendo={lendo}
       />
     );
 
@@ -54,7 +60,6 @@ const DemandaGerenciaModoVisualizacao = ({
       onDemandaClick={onDemandaClick}
       isProposta={isProposta}
       setFeedbackAbrirChat={setFeedbackAbrirChat}
-      lendo={lendo}
     />
   );
 };
@@ -87,15 +92,16 @@ const DemandaTable = ({
   ],
   onDemandaClick,
   isProposta = false,
-  lendo = false,
   setFeedbackAbrirChat,
 }) => {
-
   // Variável utilizada para navegação no sistema
   const navigate = useNavigate();
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // Controla o estado do modal de histórico da demanda
   const [modalHistorico, setModalHistorico] = useState(false);
@@ -142,32 +148,6 @@ const DemandaTable = ({
   // Abre o histórico da demanda
   const abrirModalHistorico = () => {
     setModalHistorico(true);
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   // Função para entrar em um chat se o usuario atual não seja o usuario solicitante da demanda/proposta
@@ -219,7 +199,6 @@ const DemandaTable = ({
           open={modalHistorico}
           setOpen={setModalHistorico}
           historico={historicoSelecionado}
-          lendo={lendo}
         />
       )}
       {/* Container geral do componente */}
@@ -239,7 +218,7 @@ const DemandaTable = ({
                 <Typography
                   fontSize={FontConfig.big}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       if (!isProposta) {
                         lerTexto(texts.demandaGerenciaModoVisualizacao.codigo);
@@ -259,7 +238,7 @@ const DemandaTable = ({
                 <Typography
                   fontSize={FontConfig.big}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(texts.demandaGerenciaModoVisualizacao.titulo);
                     }
@@ -273,7 +252,7 @@ const DemandaTable = ({
                 <Typography
                   fontSize={FontConfig.big}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(
                         texts.demandaGerenciaModoVisualizacao.solicitante
@@ -289,7 +268,7 @@ const DemandaTable = ({
                 <Typography
                   fontSize={FontConfig.big}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(
                         texts.demandaGerenciaModoVisualizacao.departamento
@@ -305,7 +284,7 @@ const DemandaTable = ({
                 <Typography
                   fontSize={FontConfig.big}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(
                         texts.demandaGerenciaModoVisualizacao.gerenteResponsavel
@@ -321,7 +300,7 @@ const DemandaTable = ({
                 <Typography
                   fontSize={FontConfig.big}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.preventDefault();
                       lerTexto(texts.demandaGerenciaModoVisualizacao.status);
                     }
@@ -349,7 +328,7 @@ const DemandaTable = ({
                   width: "100%",
                 }}
                 onClick={() => {
-                  if (!lendo) {
+                  if (!lendoTexto) {
                     onDemandaClick(row);
                   }
                 }}
@@ -363,7 +342,7 @@ const DemandaTable = ({
                     className="truncate"
                     fontSize={FontConfig.medium}
                     onClick={(e) => {
-                      if (lendo) {
+                      if (lendoTexto) {
                         e.preventDefault();
                         if (!isProposta) {
                           lerTexto(row.id);
@@ -385,7 +364,7 @@ const DemandaTable = ({
                     className="truncate"
                     fontSize={FontConfig.medium}
                     onClick={(e) => {
-                      if (lendo) {
+                      if (lendoTexto) {
                         e.preventDefault();
                         lerTexto(row.titulo);
                       }
@@ -403,7 +382,7 @@ const DemandaTable = ({
                     className="truncate"
                     fontSize={FontConfig.medium}
                     onClick={(e) => {
-                      if (lendo) {
+                      if (lendoTexto) {
                         e.preventDefault();
                         lerTexto(row.solicitante.nome);
                       }
@@ -425,7 +404,7 @@ const DemandaTable = ({
                     className="truncate"
                     fontSize={FontConfig.medium}
                     onClick={(e) => {
-                      if (lendo) {
+                      if (lendoTexto) {
                         e.preventDefault();
                         if (row.departamento) {
                           lerTexto(row.departamento.nome);
@@ -455,7 +434,7 @@ const DemandaTable = ({
                     className="truncate"
                     fontSize={FontConfig.medium}
                     onClick={(e) => {
-                      if (lendo) {
+                      if (lendoTexto) {
                         e.preventDefault();
                         if (row.gerente?.nome) {
                           lerTexto(row.gerente.nome);
@@ -492,7 +471,7 @@ const DemandaTable = ({
                         className="truncate"
                         fontSize={FontConfig.medium}
                         onClick={(e) => {
-                          if (lendo) {
+                          if (lendoTexto) {
                             e.preventDefault();
                             lerTexto(formatarNomeStatus(row.status));
                           }
@@ -574,7 +553,6 @@ const DemandaGrid = ({
   onDemandaClick,
   isProposta = false,
   setFeedbackAbrirChat,
-  lendo = false,
 }) => {
   return (
     <Box
@@ -595,7 +573,6 @@ const DemandaGrid = ({
             onClick={() => {
               onDemandaClick(demanda);
             }}
-            lendo={lendo}
           />
         );
       })}
@@ -604,39 +581,15 @@ const DemandaGrid = ({
 };
 
 // Componente para exibição de nada encontrado
-const NadaEncontrado = (props) => {
-  
+const NadaEncontrado = () => {
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   return (
     // Container de textos

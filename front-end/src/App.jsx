@@ -175,7 +175,7 @@ const App = () => {
                             ]}
                             redirectPath="/"
                           >
-                            <CriarProposta lendo={lendoTexto} />
+                            <CriarProposta />
                           </ProtectedRoute>
                         }
                       />
@@ -190,7 +190,7 @@ const App = () => {
                             ]}
                             redirectPath="/"
                           >
-                            <DetalhesPropostaPagina lendo={lendoTexto} />
+                            <DetalhesPropostaPagina />
                           </ProtectedRoute>
                         }
                       />
@@ -205,7 +205,7 @@ const App = () => {
                             ]}
                             redirectPath="/"
                           >
-                            <DetalhesAta lendo={lendoTexto} />
+                            <DetalhesAta />
                           </ProtectedRoute>
                         }
                       />
@@ -220,7 +220,7 @@ const App = () => {
                             ]}
                             redirectPath="/"
                           >
-                            <DetalhesPauta lendo={lendoTexto} />
+                            <DetalhesPauta />
                           </ProtectedRoute>
                         }
                       />

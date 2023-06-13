@@ -89,7 +89,9 @@ public class PropostaController {
      * @param ppm Código PPM da proposta a ser buscada
      * @return ResponseEntity com a proposta buscada pelo código PPM
      */
-    public ResponseEntity<Page<Proposta>> findByPpm(Pageable pageable, Long ppm) {
+    @GetMapping("/ppm/{ppm}")
+    public ResponseEntity<Page<Proposta>> findByPpm(@PageableDefault(size = 20, sort = "score", direction = Sort.Direction.DESC) Pageable pageable,
+                                                    @PathVariable(value = "ppm") Long ppm) {
         return ResponseEntity.status(200).body(propostaService.findByPpm(ppm, pageable));
     }
 

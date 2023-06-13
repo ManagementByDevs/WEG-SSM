@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
+
 import {
   Modal,
   Typography,
@@ -10,9 +11,7 @@ import {
   FormControl,
   Autocomplete,
   TextField,
-  FormGroup,
   FormControlLabel,
-  Checkbox,
   RadioGroup,
   Radio,
 } from "@mui/material";
@@ -21,16 +20,20 @@ import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import UsuarioService from "../../service/usuarioService";
 
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Variável para armazenar o valor do radio button */
   const [selectedValue, setSelectedValue] = useState("");
@@ -53,8 +56,7 @@ const ModalFiltroGerencia = (props) => {
 
   /** Função para limpar os filtros ativos e fechar o modal */
   const limparFiltro = () => {
-
-    if (!props.lendo) {
+    if (!lendoTexto) {
       props.setFiltro({
         solicitante: null,
         forum: "",
@@ -145,33 +147,6 @@ const ModalFiltroGerencia = (props) => {
   /** Função para atualizar os filtros quando um status for selecionado */
   const selecionarStatus = (event) => {
     props.setFiltro({ ...props.filtro, status: event.target.value });
-  };
-
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   return (
@@ -380,7 +355,8 @@ const ModalFiltroGerencia = (props) => {
 
               {/* Select de departamento */}
               <FormControl sx={{ width: "15rem" }}>
-                <InputLabel id="demo-simple-select-label"
+                <InputLabel
+                  id="demo-simple-select-label"
                   onClick={() => {
                     lerTexto(texts.modalFiltroGerencia.departamento);
                   }}

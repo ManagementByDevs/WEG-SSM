@@ -8,15 +8,18 @@ import Custos from "../Custos/Custos";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import CustosService from "../../service/custosService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Etapa de criação de proposta para adicionar as tabelas de custos
 const FormularioCustosProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // UseState para armazenar as horas totais dos custos
   const [horasTotais, setHorasTotais] = useState(0);
@@ -70,7 +73,7 @@ const FormularioCustosProposta = (props) => {
 
   /** Função para criar uma tabela de custos no banco de dados e adicionar na lista */
   const criarTabelaCusto = () => {
-    if (props.lendo) {
+    if (lendoTexto) {
       lerTexto(texts.formularioCustosProposta.adicionarCustos);
     } else {
       CustosService.postTabela({
@@ -92,32 +95,6 @@ const FormularioCustosProposta = (props) => {
       }).then((response) => {
         props.setCustos([...props.custos, response]);
       });
-    }
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 
@@ -181,15 +158,6 @@ const FormularioCustosProposta = (props) => {
               setCustos={props.setCustos}
               custos={props.custos}
               deletarCustos={deletarTabelaCustos}
-              setFeedbackErroNavegadorIncompativel={
-                props.setFeedbackErroNavegadorIncompativel
-              }
-              setFeedbackErroReconhecimentoVoz={
-                props.setFeedbackErroReconhecimentoVoz
-              }
-              lendo={props.lendo}
-              texto={props.texto}
-              setTexto={props.setTexto}
             />
           );
         })}

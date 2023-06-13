@@ -25,6 +25,7 @@ import LinhaTabelaCCs from "../LinhaTabelaCCs/LinhaTabelaCCs";
 import FontContext from "../../service/FontContext";
 import CustosService from "../../service/custosService";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente utilizado para representar a tabela de custos utilizada na proposta */
 const Custos = (props) => {
@@ -32,7 +33,10 @@ const Custos = (props) => {
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** UseState para armazenar as horas totais dos custos */
   const [horasTotais, setHorasTotais] = useState(0);
@@ -51,10 +55,10 @@ const Custos = (props) => {
     let aux = 0;
     for (let i = 0; i < props.custos[props.index].custos.length; i++) {
       const horasString = props.custos[props.index].custos[i].horas;
-      if(horasString) {
+      if (horasString) {
         if (typeof horasString !== "number") {
           const horasNumber = parseFloat(horasString.replace(",", "."));
-  
+
           if (!isNaN(horasNumber)) {
             aux += horasNumber;
           }
@@ -141,32 +145,6 @@ const Custos = (props) => {
       custosNovos[props.index].ccs.splice(indexCC, 1);
       props.setCustos(custosNovos);
     });
-  };
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
   };
 
   /** handleChance para selecionar o tipo de despesa do custo */
@@ -319,12 +297,6 @@ const Custos = (props) => {
                         indexCusto={props.index}
                         setCustos={props.setCustos}
                         custos={props.custos}
-                        setFeedbackErroNavegadorIncompativel={
-                          props.setFeedbackErroNavegadorIncompativel
-                        }
-                        setFeedbackErroReconhecimentoVoz={
-                          props.setFeedbackErroReconhecimentoVoz
-                        }
                       />
                     );
                   })}
@@ -421,12 +393,6 @@ const Custos = (props) => {
                     indexCusto={props.index}
                     setCustos={props.setCustos}
                     custos={props.custos}
-                    setFeedbackErroNavegadorIncompativel={
-                      props.setFeedbackErroNavegadorIncompativel
-                    }
-                    setFeedbackErroReconhecimentoVoz={
-                      props.setFeedbackErroReconhecimentoVoz
-                    }
                   />
                 );
               })}

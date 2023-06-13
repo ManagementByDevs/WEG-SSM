@@ -21,6 +21,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 const PautaAtaModoVisualizacao = ({
   listaPautas,
@@ -28,10 +29,9 @@ const PautaAtaModoVisualizacao = ({
   nextModoVisualizacao,
   isAta = false,
   setPautaSelecionada = () => {},
-  lendo = false,
 }) => {
   if (listaPautas.length == 0) {
-    return <NadaEncontrado lendo = {lendo}/>;
+    return <NadaEncontrado />;
   }
 
   if (nextModoVisualizacao == "TABLE")
@@ -41,7 +41,6 @@ const PautaAtaModoVisualizacao = ({
         onItemClick={onItemClick}
         isAta={isAta}
         setPautaSelecionada={setPautaSelecionada}
-        lendo={lendo}
       />
     );
   return (
@@ -50,7 +49,6 @@ const PautaAtaModoVisualizacao = ({
       onItemClick={onItemClick}
       isAta={isAta}
       setPautaSelecionada={setPautaSelecionada}
-      lendo = {lendo}
     />
   );
 };
@@ -69,13 +67,15 @@ const PautaTable = ({
   onItemClick,
   isAta,
   setPautaSelecionada = () => {},
-  lendo = false,
 }) => {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // Retorna data formatada para melhor leitura
   const getDataFormatada = (dataInicio) => {
@@ -100,32 +100,6 @@ const PautaTable = ({
     return ata.propostas[0]?.parecerDG != null;
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <Paper sx={{ width: "100%", minWidth: "74rem" }} square>
       <Table sx={{ width: "100%" }} className="table-fixed">
@@ -135,20 +109,20 @@ const PautaTable = ({
               <Typography
                 fontSize={FontConfig.big}
                 onClick={(e) => {
-                  if (lendo) {
+                  if (lendoTexto) {
                     e.stopPropagation();
                     lerTexto(texts.pautaAtaModoVisualizacao.numeroSequencial);
                   }
                 }}
               >
-                {texts.pautaAtaModoVisualizacao.numeroSequencial} 
+                {texts.pautaAtaModoVisualizacao.numeroSequencial}
               </Typography>
             </th>
             <th className="text-left text-white p-3">
               <Typography
                 fontSize={FontConfig.big}
                 onClick={(e) => {
-                  if (lendo) {
+                  if (lendoTexto) {
                     e.stopPropagation();
                     lerTexto(texts.pautaAtaModoVisualizacao.comissao);
                   }
@@ -161,7 +135,7 @@ const PautaTable = ({
               <Typography
                 fontSize={FontConfig.big}
                 onClick={(e) => {
-                  if (lendo) {
+                  if (lendoTexto) {
                     e.stopPropagation();
                     lerTexto(
                       texts.pautaAtaModoVisualizacao.analistaResponsavel
@@ -176,7 +150,7 @@ const PautaTable = ({
               <Typography
                 fontSize={FontConfig.big}
                 onClick={(e) => {
-                  if (lendo) {
+                  if (lendoTexto) {
                     e.stopPropagation();
                     lerTexto(texts.pautaAtaModoVisualizacao.data);
                   }
@@ -205,7 +179,7 @@ const PautaTable = ({
                   className="truncate"
                   fontSize={FontConfig.medium}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(row.numeroSequencial);
                     }
@@ -219,7 +193,7 @@ const PautaTable = ({
                   className="truncate"
                   fontSize={FontConfig.medium}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(row.comissao.nomeForum);
                     }
@@ -236,7 +210,7 @@ const PautaTable = ({
                   className="truncate"
                   fontSize={FontConfig.medium}
                   onClick={(e) => {
-                    if (lendo) {
+                    if (lendoTexto) {
                       e.stopPropagation();
                       lerTexto(row.analistaResponsavel?.nome);
                     }
@@ -254,7 +228,7 @@ const PautaTable = ({
                     className="tabela-linha-pauta-data truncate"
                     fontSize={FontConfig.medium}
                     onClick={(e) => {
-                      if (lendo) {
+                      if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(getDataFormatada(row.dataReuniao));
                       }
@@ -286,7 +260,7 @@ const PautaTable = ({
                     className="truncate"
                     fontSize={FontConfig.medium}
                     onClick={(e) => {
-                      if (lendo) {
+                      if (lendoTexto) {
                         e.stopPropagation();
                         lerTexto(getDataFormatada(row.dataReuniao));
                       }
@@ -331,7 +305,6 @@ const PautaGrid = ({
   onItemClick,
   isAta,
   setPautaSelecionada = () => {},
-  lendo = false,
 }) => {
   return (
     <Box
@@ -349,7 +322,6 @@ const PautaGrid = ({
             tipo={!isAta ? "pauta" : "ata"}
             onItemClick={onItemClick}
             setPautaSelecionada={setPautaSelecionada}
-            lendo={lendo}
           />
         );
       })}
@@ -357,37 +329,15 @@ const PautaGrid = ({
   );
 };
 
-const NadaEncontrado = (props) => {
+const NadaEncontrado = () => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
   // Context para obter os textos do sistema
   const { texts } = useContext(TextLanguageContext);
-   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   return (
     <Box
@@ -403,7 +353,7 @@ const NadaEncontrado = (props) => {
         fontSize={FontConfig.big}
         sx={{ color: "text.secondary", mb: 1 }}
         onClick={(e) => {
-          if (props.lendo) {
+          if (lendoTexto) {
             e.stopPropagation();
             lerTexto(texts.pautaAtaModoVisualizacao.nadaEncontrado);
           }
@@ -415,7 +365,7 @@ const NadaEncontrado = (props) => {
         fontSize={FontConfig.medium}
         sx={{ color: "text.secondary", mb: 1 }}
         onClick={(e) => {
-          if (props.lendo) {
+          if (lendoTexto) {
             e.stopPropagation();
             lerTexto(texts.pautaAtaModoVisualizacao.tenteNovamenteMaisTarde);
           }

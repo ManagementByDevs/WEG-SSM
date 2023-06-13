@@ -4,15 +4,28 @@ import "react-quill/dist/quill.snow.css";
 
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 /** Componente utilizado para formatação em campos de texto durante o sistema */
-function CaixaTextoQuill({ texto, placeholder = "", useScroll = false, setScroll = false, useScrollEdit = false, onChange, }) {
-
+function CaixaTextoQuill({
+  texto,
+  placeholder = "",
+  useScroll = false,
+  setScroll = false,
+  useScrollEdit = false,
+  onChange,
+  label = "react-quill",
+}) {
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, palavrasJuntas, localClique } = useContext(
+    SpeechRecognitionContext
+  );
 
   /** Variável para armazenar o valor inicial de um input */
   const quillRef = useRef();
@@ -37,100 +50,23 @@ function CaixaTextoQuill({ texto, placeholder = "", useScroll = false, setScroll
     placeholder = texts.detalhesProposta.maisInformacoes;
   }
 
-  // // ********************************************** Gravar audio **********************************************
-
-  /** Varíavel utilizada para lógica de gravação de audio */
-  const recognitionRef = useRef(null);
-
-  /** Variável utilizada para ativar o microfone para gravação de audio */
-  const [escutar, setEscutar] = useState(false);
-
-  /** Varíavel utilizada para concatenar palavras ao receber resultados da transcrição de voz */
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  /** Função para gravar audio nos inputs */
-  const ouvirAudio = () => {
-    /**Verifica se a API é suportada pelo navegador */
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => {
-      };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-
-      };
-
-      recognition.onerror = (event) => {
-        // props.setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      // props.setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   /** useEffect utilizado para setar o valor do input com o texto transcrito */
   useEffect(() => {
-    if (palavrasJuntas) {
+    if (localClique == label) {
       onChange(palavrasJuntas);
     }
   }, [palavrasJuntas]);
 
-  /** Função para parar a gravação de voz */
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  /** Função para iniciar a gravação de voz */
-  const startRecognition = () => {
-    setEscutar(!escutar);
-  };
-
-  /** useEffect utilizado para verificar se a gravação ainda está funcionando */
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
   return (
-    <Box className="relative w-full h-full" >
+    <Box className="relative w-full h-full">
       {/* Utilizado para configuração do input (opções de estilo, posições, valores...) */}
       <ReactQuill
         className="w-full"
         ref={quillRef}
         value={texto}
-        onChange={(value) => { onChange(value); }}
+        onChange={(value) => {
+          onChange(value);
+        }}
         modules={{
           toolbar: [
             [{ size: [] }],
@@ -151,31 +87,37 @@ function CaixaTextoQuill({ texto, placeholder = "", useScroll = false, setScroll
           useScroll
             ? { height: "5rem", overflowY: "scroll" }
             : setScroll
-              ? { height: "5rem", overflowY: "scroll" }
-              : {}
+            ? { height: "5rem", overflowY: "scroll" }
+            : {}
         }
       />
       {/* Ícone de gravar audio */}
       <Box className="absolute" sx={{ right: 6, bottom: 8 }}>
-        {escutar ? (
-          <MicOutlinedIcon
-            sx={{
-              cursor: "pointer",
-              color: "primary.main",
-              fontSize: "1.3rem",
-            }}
-            onClick={startRecognition}
-          />
-        ) : (
-          <MicNoneOutlinedIcon
-            sx={{
-              cursor: "pointer",
-              color: "text.secondary",
-              fontSize: "1.3rem",
-            }}
-            onClick={startRecognition}
-          />
-        )}
+        <Tooltip
+          className="hover:cursor-pointer"
+          title={texts.homeGerencia.gravarAudio}
+          onClick={() => {
+            startRecognition(label);
+          }}
+        >
+          {escutar && localClique == label ? (
+            <MicOutlinedIcon
+              sx={{
+                cursor: "pointer",
+                color: "primary.main",
+                fontSize: "1.3rem",
+              }}
+            />
+          ) : (
+            <MicNoneOutlinedIcon
+              sx={{
+                cursor: "pointer",
+                color: "text.secondary",
+                fontSize: "1.3rem",
+              }}
+            />
+          )}
+        </Tooltip>
       </Box>
     </Box>
   );
