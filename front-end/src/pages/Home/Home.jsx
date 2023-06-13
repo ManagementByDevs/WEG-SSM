@@ -106,6 +106,7 @@ const Home = (props) => {
     false,
     false,
     false,
+    false
   ]);
 
   /** Valores dos checkboxes de Score no modal de ordenação */
@@ -319,6 +320,8 @@ const Home = (props) => {
       atualizarFiltro("BACKLOG_APROVACAO");
     } else if (listaFiltros[5]) {
       atualizarFiltro("ASSESSMENT_APROVACAO");
+    } else if (listaFiltros[6]) {
+      atualizarFiltro("DONE");
     } else {
       atualizarFiltro(null);
     }
@@ -500,7 +503,7 @@ const Home = (props) => {
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => {});
+        UsuarioService.updateUser(user.id, user).then((e) => { });
       }
     );
   };

@@ -37,6 +37,7 @@ const ModalFiltro = (props) => {
       false,
       false,
       false,
+      false
     ]);
   };
 
@@ -49,6 +50,7 @@ const ModalFiltro = (props) => {
       false,
       false,
       false,
+      false
     ]);
   };
 
@@ -61,6 +63,7 @@ const ModalFiltro = (props) => {
       false,
       false,
       false,
+      false
     ]);
   };
 
@@ -73,6 +76,7 @@ const ModalFiltro = (props) => {
       !props.listaFiltros[3],
       false,
       false,
+      false
     ]);
   };
 
@@ -85,6 +89,7 @@ const ModalFiltro = (props) => {
       false,
       !props.listaFiltros[4],
       false,
+      false
     ]);
   };
 
@@ -97,6 +102,20 @@ const ModalFiltro = (props) => {
       false,
       false,
       !props.listaFiltros[5],
+      false
+    ]);
+  };
+
+  /** Função para mudar o valor da sétima checkbox do filtro */
+  const mudarCheck7 = () => {
+    props.setListaFiltros([
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      !props.listaFiltros[6]
     ]);
   };
 
@@ -123,7 +142,7 @@ const ModalFiltro = (props) => {
             left: "37%",
             transform: "translate(-50%, -50%)",
             width: 310,
-            height: 320,
+            height: 360,
             bgcolor: "background.paper",
             borderRadius: "5px",
             borderTop: "10px solid #00579D",
@@ -194,6 +213,12 @@ const ModalFiltro = (props) => {
                     onChange={mudarCheck6}
                     control={<Checkbox />}
                     label={texts.modalFiltro.labels.emAndamento}
+                  />
+                  <FormControlLabel
+                    checked={props.listaFiltros[6]}
+                    onChange={mudarCheck7}
+                    control={<Checkbox />}
+                    label={texts.modalFiltro.labels.emDesenvolvimento}
                   />
                 </Box>
               </FormGroup>

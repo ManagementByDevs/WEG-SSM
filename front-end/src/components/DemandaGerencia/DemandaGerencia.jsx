@@ -234,7 +234,7 @@ const DemandaGerencia = (props) => {
               </Box>
 
               {/* Verificando se está em ata, em pauta ou em edição */}
-              {props.dados.presenteEm && props.dados.presenteEm != "Nada" && (
+              {props.dados.presenteEm && props.dados.presenteEm != "Solta" && (
                 <Box>
                   {/* Texto para dizer se está em ata ou em pauta */}
                   <Typography

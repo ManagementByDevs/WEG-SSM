@@ -178,6 +178,7 @@ const HomeGerencia = (props) => {
     codigoPPM: null,
     analista: null,
     presenteEm: null,
+    status: ""
   });
 
   /** Objeto contendo o usuário logado no sistema */
@@ -476,6 +477,7 @@ const HomeGerencia = (props) => {
       departamento: null,
       analista: null,
       presenteEm: null,
+      status: null
     };
 
     if (filtrosAtuais.solicitante != "") {
@@ -499,6 +501,9 @@ const HomeGerencia = (props) => {
     if (filtrosAtuais.presenteEm != "") {
       paramsTemp.presenteEm = filtrosAtuais.presenteEm;
     }
+    if (filtrosAtuais.status != "") {
+      paramsTemp.status = filtrosAtuais.status;
+    }
 
     setParams({
       ...params,
@@ -509,6 +514,7 @@ const HomeGerencia = (props) => {
       tamanho: paramsTemp.tamanho,
       departamento: paramsTemp.departamento,
       presenteEm: paramsTemp.presenteEm,
+      status: paramsTemp.status
     });
   }, [filtrosAtuais]);
 
@@ -693,6 +699,13 @@ const HomeGerencia = (props) => {
   /** Função para formatar o texto de ordenação para envio como pageable à API */
   const formatarOrdenacao = () => {
     let textoNovo = "";
+    if (valorAba == "4") {
+      textoNovo += "sort=presenteEm,desc&sort=status,desc&";
+    }
+    if (valorAba == "6") {
+      textoNovo += "sort=publicadaDg,asc&"
+    }
+
     if (ordenacaoScore[1]) {
       textoNovo += "sort=score,desc&";
     }
@@ -1109,7 +1122,7 @@ const HomeGerencia = (props) => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
         });
       });
     }
@@ -1710,6 +1723,7 @@ const HomeGerencia = (props) => {
                       listaAnalistas={listaAnalistas}
                       setListaAnalistas={setListaAnalistas}
                       filtroProposta={filtroProposta}
+                      valorAba={valorAba}
                       lendo={props.lendo}
                       texto={props.texto}
                       setTexto={props.setTexto}
@@ -1863,7 +1877,7 @@ const HomeGerencia = (props) => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}

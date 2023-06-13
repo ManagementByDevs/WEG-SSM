@@ -4361,7 +4361,7 @@ public class PropostaController {
         }
 
         Proposta proposta = propostaOptional.get();
-        proposta.setPresenteEm("Nada");
+        proposta.setPresenteEm("Solta");
         proposta.setPublicada(null);
         proposta.setParecerComissao(null);
         proposta.setParecerDG(null);
@@ -4424,15 +4424,15 @@ public class PropostaController {
             }
             case REPROVADO -> {
                 proposta.setStatus(Status.CANCELLED);
-                proposta.setPresenteEm("Nada");
+                proposta.setPresenteEm("Solta");
             }
             case BUSINESS_CASE -> {
                 proposta.setStatus(Status.BUSINESS_CASE);
-                proposta.setPresenteEm("Nada");
+                proposta.setPresenteEm("Solta");
             }
             case MAIS_INFORMACOES -> {
                 proposta.setStatus(Status.ASSESSMENT_EDICAO);
-                proposta.setPresenteEm("Nada");
+                proposta.setPresenteEm("Solta");
             }
         }
 
@@ -4467,7 +4467,7 @@ public class PropostaController {
             }
             case REPROVADO -> {
                 proposta.setStatus(Status.CANCELLED);
-                proposta.setPresenteEm("Nada");
+                proposta.setPresenteEm("Solta");
             }
         }
 
