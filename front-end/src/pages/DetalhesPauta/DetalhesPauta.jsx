@@ -11,6 +11,7 @@ import {
   Divider,
   Tooltip,
   IconButton,
+  ButtonBase,
 } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
@@ -18,6 +19,9 @@ import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddHomeOutlinedIcon from "@mui/icons-material/AddHomeOutlined";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 
 import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
@@ -199,7 +203,7 @@ const DetalhesPauta = (props) => {
     navigate("/", { state: { feedback: "propostas-atualizadas" } });
   };
 
-  /** Funções utilizadas para animação para os notões de navegação */
+  /** Funções para animação dos botões de navegação */
   const girar = keyframes({
     from: { rotate: "90deg" },
     to: { rotate: "0deg" },
@@ -220,8 +224,8 @@ const DetalhesPauta = (props) => {
     "100%": { width: "8rem", opacity: "0" },
   });
 
-  /** Função para animação dos botões de navegação */
-  const animarBotoes = () => {
+   /** Função para animar os botões de acordo com o click */
+   const animarBotoes = () => {
     if (minimizar) {
       setGirarIcon(girar);
       setDisplay("flex");
@@ -779,7 +783,97 @@ const DetalhesPauta = (props) => {
           sx={{ width: "30rem", bottom: "20px", right: "20px" }}
         >
           <Box className="flex justify-center">
-            <Box className="flex justify-end">
+            <Box
+              className="flex fixed justify-end items-center"
+              sx={{ width: "22rem", bottom: "20px", right: "20px" }}
+            >
+              <Box className="flex justify-center gap-3">
+                <Box className="flex justify-end">
+                  <Box
+                    className={`${display} items-center mr-1 justify-end`}
+                    sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
+                  >
+                    <Box className="flex gap-2">
+                      <Tooltip title={texts.detalhesAta.voltar}>
+                        <IconButton
+                          color="primary"
+                          size="large"
+                          onClick={voltar}
+                        >
+                          <ArrowBackIosNewIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip>
+                        <IconButton
+                          color="primary"
+                          size="large"
+                          onClick={voltarSumario}
+                        >
+                          <OtherHousesIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title={texts.detalhesAta.proximo}>
+                        <IconButton
+                          color="primary"
+                          size="large"
+                          onClick={proximo}
+                        >
+                          <ArrowForwardIosIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
+                  <Tooltip title={texts.detalhesAta.navegacao}>
+                    <ButtonBase
+                      variant="contained"
+                      color="primary"
+                      className="!rounded-full !p-3 hover:!outline-none"
+                      sx={{
+                        backgroundColor: "primary.main",
+                        "&:hover": {
+                          boxShadow:
+                            "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+                          backgroundColor: "rgb(0, 60, 109)",
+                        },
+                      }}
+                      onClick={() => {
+                        animarBotoes();
+                        setMinimizar(!minimizar);
+                      }}
+                    >
+                      <DensitySmallIcon
+                        sx={{
+                          animation: `${girarIcon} 1.2s forwards`,
+                          color: "white",
+                        }}
+                      />
+                    </ButtonBase>
+                  </Tooltip>
+                </Box>
+                <Tooltip title={texts.detalhesPauta.criarAta}>
+                  <Box
+                    // onClick={feedbackAta}
+                    onClick={abrirModalCriarAta}
+                    className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
+                    sx={{
+                      backgroundColor: "primary.main",
+                      fontSize: FontConfig.default,
+                      marginLeft: "1rem",
+                      color: "#FFFF",
+                    }}
+                  >
+                    <AddHomeOutlinedIcon
+                      sx={{
+                        transform: "rotate(180deg) scaleX(-1)",
+                        fontSize: "32px",
+                      }}
+                    />
+                  </Box>
+                </Tooltip>
+              </Box>
+            </Box>
+
+            {/* <Box className="flex justify-end">
               <Box
                 className={`w-full ${display} items-center mr-1`}
                 sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
@@ -850,27 +944,7 @@ const DetalhesPauta = (props) => {
                   ></DensitySmallIcon>
                 </Box>
               </Tooltip>
-            </Box>
-            <Tooltip title={texts.detalhesPauta.criarAta}>
-              <Box
-                // onClick={feedbackAta}
-                onClick={abrirModalCriarAta}
-                className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
-                sx={{
-                  backgroundColor: "primary.main",
-                  fontSize: FontConfig.default,
-                  marginLeft: "1rem",
-                  color: "#FFFF",
-                }}
-              >
-                <AddHomeOutlinedIcon
-                  sx={{
-                    transform: "rotate(180deg) scaleX(-1)",
-                    fontSize: "32px",
-                  }}
-                />
-              </Box>
-            </Tooltip>
+            </Box> */}
           </Box>
         </Box>
       </Box>
