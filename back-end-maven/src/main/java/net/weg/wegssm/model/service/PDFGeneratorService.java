@@ -807,34 +807,37 @@ public class PDFGeneratorService {
 
             contadorProposta++;
 
-            Chunk chunkPPMData = new Chunk("PPM   " + String.valueOf(proposta.getCodigoPPM()) + "    ", fontInfoHeaderPauta);
-            Chunk chunkValorPPMData = new Chunk("DATA   " + String.valueOf(proposta.getData()) + "    ", fontInfoHeaderPauta);
-            Chunk chunkAtaPublicada = new Chunk();
-
-            if (proposta.getPublicada()) {
-                chunkAtaPublicada = new Chunk("PUBLICADA", fontInfoHeaderPauta);
-            } else {
-                chunkAtaPublicada = new Chunk("NÃO PUBLICADA", fontInfoHeaderPauta);
-            }
-
-            Paragraph paragraphHeaderProposta = new Paragraph();
-            paragraphHeaderProposta.add(chunkPPMData);
-            paragraphHeaderProposta.add(chunkValorPPMData);
-            paragraphHeaderProposta.add(chunkAtaPublicada);
-            paragraphHeaderProposta.setSpacingBefore(40);
+            Chunk chunkPPMData = new Chunk("PPM   " + String.valueOf(proposta.getCodigoPPM()) + "               ", fontInfoHeaderProposta);
+            Chunk chunkValorPPMData = new Chunk("DATA   " + String.valueOf(proposta.getData()), fontInfoHeaderProposta);
+            Paragraph paragraphPPMData = new Paragraph();
+            paragraphPPMData.add(chunkPPMData);
+            paragraphPPMData.add(chunkValorPPMData);
+            paragraphPPMData.setSpacingBefore(20);
 
             Paragraph paragraphTitulo = new Paragraph(proposta.getDemanda().getTitulo(), fontTitulo);
             paragraphTitulo.setSpacingBefore(10);
 
+            String stringSolicitante = proposta.getSolicitante().getNome();
+            try {
+                stringSolicitante += " - " + proposta.getSolicitante().getDepartamento().getNome();
+            } catch (Exception e) {
+            }
+
             Chunk chunkSolicitante = new Chunk("Solicitante: ", fontSubtitulo);
-            Chunk chunkValorSolicitante = new Chunk(String.valueOf(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome()), fontInformacoes);
+            Chunk chunkValorSolicitante = new Chunk(stringSolicitante, fontInformacoes);
             Paragraph paragraphSolicitante = new Paragraph();
             paragraphSolicitante.add(chunkSolicitante);
             paragraphSolicitante.add(chunkValorSolicitante);
             paragraphSolicitante.setSpacingBefore(20);
 
+            String stringGerente = proposta.getGerente().getNome();
+            try {
+                stringGerente += " - " + proposta.getGerente().getDepartamento().getNome();
+            } catch (Exception e) {
+            }
+
             Chunk chunkGerente = new Chunk("Gerente: ", fontSubtitulo);
-            Chunk chunkValorGerente = new Chunk(String.valueOf(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome()), fontInformacoes);
+            Chunk chunkValorGerente = new Chunk(stringGerente, fontInformacoes);
             Paragraph paragraphGerente = new Paragraph();
             paragraphGerente.add(chunkGerente);
             paragraphGerente.add(chunkValorGerente);
@@ -859,9 +862,9 @@ public class PDFGeneratorService {
             paragraphTamanho.add(chunkTamanho);
             paragraphTamanho.add(chunkValorTamanho);
 
-            PdfPTable tableTamanhoForum = new PdfPTable(2);
-            tableTamanhoForum.setWidthPercentage(100);
-            tableTamanhoForum.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+            PdfPTable tableForumTamanho = new PdfPTable(2);
+            tableForumTamanho.setWidthPercentage(100);
+            tableForumTamanho.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
             PdfPCell cell4 = new PdfPCell(paragraphForum);
             cell4.setBorder(Rectangle.NO_BORDER);
@@ -870,9 +873,9 @@ public class PDFGeneratorService {
             cell5.setBorder(Rectangle.NO_BORDER);
             cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-            tableTamanhoForum.addCell(cell4);
-            tableTamanhoForum.addCell(cell5);
-            tableTamanhoForum.setSpacingBefore(15);
+            tableForumTamanho.addCell(cell4);
+            tableForumTamanho.addCell(cell5);
+            tableForumTamanho.setSpacingBefore(15);
 
             Paragraph paragraphProposta = new Paragraph("Proposta: ", fontSubtitulo);
             paragraphProposta.setSpacingBefore(10);
@@ -895,13 +898,14 @@ public class PDFGeneratorService {
 
             // Adicionando os paragrafos no documento
 
-            document.add(paragraphContadorProposta);
-            document.add(paragraphHeaderProposta);
+            document.add(img);
+            document.add(paragraphData);
+            document.add(paragraphPPMData);
             document.add(paragraphTitulo);
             document.add(paragraphSolicitante);
             document.add(paragraphBuSolicitante);
             document.add(paragraphGerente);
-            document.add(tableTamanhoForum);
+            document.add(tableForumTamanho);
             document.add(paragraphProposta);
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta()));
             document.add(paragraphProblema);
@@ -914,6 +918,7 @@ public class PDFGeneratorService {
             if (escopoByte != null) {
                 XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo()));
             }
+
             document.add(paragraphFrequencia);
             document.add(paragraphTabelaCustos);
 
@@ -953,7 +958,7 @@ public class PDFGeneratorService {
                 tableCustos.addCell(cell);
 
                 for (Custo custos : tableCusto.getCustos()) {
-//                    tableCustos.addCell(custos.getTipoDespesa());
+                    tableCustos.addCell(tableCusto.getTipoDespesa());
                     tableCustos.addCell(custos.getPerfilDespesa());
                     tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                     tableCustos.addCell(String.valueOf(custos.getHoras()));
@@ -977,14 +982,18 @@ public class PDFGeneratorService {
                 cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
                 cell2.setVerticalAlignment(Element.ALIGN_CENTER);
 
+                // Fazer o cálculo
+
                 cell2.setPhrase(new Phrase("Valor Hora", font));
                 tableValorTotal.addCell(cell2);
                 cell2.setPhrase(new Phrase("Total", font));
                 tableValorTotal.addCell(cell2);
 
                 for (Custo custos : tableCusto.getCustos()) {
-                    tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
-                    tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                    if (custos.getValorHora() != null) {
+                        tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
+                        tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                    }
                 }
 
                 PdfPTable tableCC = new PdfPTable(2);
@@ -1076,7 +1085,7 @@ public class PDFGeneratorService {
 
             for (Bu bu : demanda.getBusBeneficiadas()) {
                 Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNomeBu() + " ", fontInformacoes);
-                paragraphProblema.add(chunkValorBuBeneficiadas);
+                paragraphBuBeneficiadas.add(chunkValorBuBeneficiadas);
             }
 
             Chunk chunkLink = new Chunk("Link Jira: ", fontSubtitulo);
@@ -1123,18 +1132,18 @@ public class PDFGeneratorService {
             // Adicionando os responsáveis pelo negócio
 
             for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
-                Paragraph paragraphInfoResponsavelNegocio = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontInformacoes);
-                paragraphInfoResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
-                paragraphInfoResponsavelNegocio.setSpacingBefore(10);
+                Paragraph paragraphResponsavelNegocio = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontInformacoes);
+                paragraphResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
+                paragraphResponsavelNegocio.setSpacingBefore(10);
 
-                document.add(paragraphInfoResponsavelNegocio);
+                document.add(paragraphResponsavelNegocio);
             }
 
-            Paragraph paragraphResponsavelNegocio = new Paragraph("Responsáveis pelo Negócio", fontSubtitulo);
-            paragraphResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
-            paragraphResponsavelNegocio.setSpacingBefore(10);
+            Paragraph paragraphRN = new Paragraph("Responsáveis pelo Negócio", fontSubtitulo);
+            paragraphRN.setAlignment(Element.ALIGN_CENTER);
+            paragraphRN.setSpacingBefore(10);
 
-            document.add(paragraphResponsavelNegocio);
+            document.add(paragraphRN);
 
             if (proposta.getParecerComissao() != null) {
                 Paragraph paragraphParecer = new Paragraph("Pareceres: ", fontSubtitulo);
@@ -1242,6 +1251,13 @@ public class PDFGeneratorService {
         paragraphNumeroSequencial.add(numeroSequencialValor);
         paragraphNumeroSequencial.setSpacingBefore(20);
 
+        Chunk dataAta = new Chunk("Data da Reunião: ", fontHeaderProposta);
+        Chunk dataAtaValor = new Chunk(String.valueOf(ata.getDataReuniao()), fontHeader);
+        Paragraph paragraphDataAta = new Paragraph();
+        paragraphDataAta.add(dataAta);
+        paragraphDataAta.add(dataAtaValor);
+        paragraphDataAta.setSpacingBefore(5);
+
         Chunk analistaResponsavel = new Chunk("Analista Responsável: ", fontHeaderProposta);
         Chunk analistaResponsavelValor = new Chunk(ata.getAnalistaResponsavel().getNome(), fontHeader);
         Paragraph paragraphAnalistaResponsavelHeader = new Paragraph();
@@ -1260,6 +1276,7 @@ public class PDFGeneratorService {
         document.add(paragraphData);
         document.add(paragraphAta);
         document.add(paragraphNumeroSequencial);
+        document.add(paragraphDataAta);
         document.add(paragraphAnalistaResponsavelHeader);
         document.add(paragraphComissaoHeader);
 
@@ -1277,34 +1294,37 @@ public class PDFGeneratorService {
 
             contadorProposta++;
 
-            Chunk chunkPPMData = new Chunk("PPM   " + String.valueOf(proposta.getCodigoPPM()) + "    ", fontHeaderPauta);
-            Chunk chunkValorPPMData = new Chunk("DATA   " + String.valueOf(proposta.getData()) + "    ", fontHeaderPauta);
-            Chunk chunkAtaPublicada = new Chunk();
-
-            if (proposta.getPublicada()) {
-                chunkAtaPublicada = new Chunk("PUBLICADA", fontHeaderPauta);
-            } else {
-                chunkAtaPublicada = new Chunk("NÃO PUBLICADA", fontHeaderPauta);
-            }
-
-            Paragraph paragraph = new Paragraph();
-            paragraph.add(chunkPPMData);
-            paragraph.add(chunkValorPPMData);
-            paragraph.add(chunkAtaPublicada);
-            paragraph.setSpacingBefore(40);
+            Chunk chunkPPMData = new Chunk("PPM   " + String.valueOf(proposta.getCodigoPPM()) + "               ", fontHeaderPauta);
+            Chunk chunkValorPPMData = new Chunk("DATA   " + String.valueOf(proposta.getData()), fontHeaderPauta);
+            Paragraph paragraphPPMData = new Paragraph();
+            paragraphPPMData.add(chunkPPMData);
+            paragraphPPMData.add(chunkValorPPMData);
+            paragraphPPMData.setSpacingBefore(20);
 
             Paragraph paragraphTitulo = new Paragraph(proposta.getDemanda().getTitulo(), fontTitulo);
             paragraphTitulo.setSpacingBefore(10);
 
+            String stringSolicitante = proposta.getSolicitante().getNome();
+            try {
+                stringSolicitante += " - " + proposta.getSolicitante().getDepartamento().getNome();
+            } catch (Exception e) {
+            }
+
             Chunk chunkSolicitante = new Chunk("Solicitante: ", fontSubtitulo);
-            Chunk chunkValorSolicitante = new Chunk(String.valueOf(proposta.getSolicitante().getNome() + " - " + proposta.getSolicitante().getDepartamento().getNome()), fontInformacoes);
+            Chunk chunkValorSolicitante = new Chunk(stringSolicitante, fontInformacoes);
             Paragraph paragraphSolicitante = new Paragraph();
             paragraphSolicitante.add(chunkSolicitante);
             paragraphSolicitante.add(chunkValorSolicitante);
             paragraphSolicitante.setSpacingBefore(20);
 
+            String stringGerente = proposta.getGerente().getNome();
+            try {
+                stringGerente += " - " + proposta.getGerente().getDepartamento().getNome();
+            } catch (Exception e) {
+            }
+
             Chunk chunkGerente = new Chunk("Gerente: ", fontSubtitulo);
-            Chunk chunkValorGerente = new Chunk(String.valueOf(proposta.getGerente().getNome() + " - " + proposta.getGerente().getDepartamento().getNome()), fontInformacoes);
+            Chunk chunkValorGerente = new Chunk(stringGerente, fontInformacoes);
             Paragraph paragraphGerente = new Paragraph();
             paragraphGerente.add(chunkGerente);
             paragraphGerente.add(chunkValorGerente);
@@ -1329,9 +1349,9 @@ public class PDFGeneratorService {
             paragraphTamanho.add(chunkTamanho);
             paragraphTamanho.add(chunkValorTamanho);
 
-            PdfPTable tableTamanhoForum = new PdfPTable(2);
-            tableTamanhoForum.setWidthPercentage(100);
-            tableTamanhoForum.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+            PdfPTable tableForumTamanho = new PdfPTable(2);
+            tableForumTamanho.setWidthPercentage(100);
+            tableForumTamanho.getDefaultCell().setBorder(Rectangle.NO_BORDER);
 
             PdfPCell cell4 = new PdfPCell(paragraphForum);
             cell4.setBorder(Rectangle.NO_BORDER);
@@ -1340,9 +1360,9 @@ public class PDFGeneratorService {
             cell5.setBorder(Rectangle.NO_BORDER);
             cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-            tableTamanhoForum.addCell(cell4);
-            tableTamanhoForum.addCell(cell5);
-            tableTamanhoForum.setSpacingBefore(15);
+            tableForumTamanho.addCell(cell4);
+            tableForumTamanho.addCell(cell5);
+            tableForumTamanho.setSpacingBefore(15);
 
             Paragraph paragraphProposta = new Paragraph("Proposta: ", fontSubtitulo);
             paragraphProposta.setSpacingBefore(10);
@@ -1365,13 +1385,15 @@ public class PDFGeneratorService {
 
             // Adicionando os paragrafos no documento
 
+            document.add(img);
             document.add(paragraphContadorProposta);
-            document.add(paragraph);
+            document.add(paragraphData);
+            document.add(paragraphPPMData);
             document.add(paragraphTitulo);
             document.add(paragraphSolicitante);
             document.add(paragraphBuSolicitante);
             document.add(paragraphGerente);
-            document.add(tableTamanhoForum);
+            document.add(tableForumTamanho);
             document.add(paragraphProposta);
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta()));
             document.add(paragraphProblema);
@@ -1424,7 +1446,7 @@ public class PDFGeneratorService {
                 tableCustos.addCell(cell);
 
                 for (Custo custos : tableCusto.getCustos()) {
-//                    tableCustos.addCell(custos.getTipoDespesa());
+                    tableCustos.addCell(tableCusto.getTipoDespesa());
                     tableCustos.addCell(custos.getPerfilDespesa());
                     tableCustos.addCell(String.valueOf(custos.getPeriodoExecucao()));
                     tableCustos.addCell(String.valueOf(custos.getHoras()));
@@ -1448,14 +1470,18 @@ public class PDFGeneratorService {
                 cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
                 cell2.setVerticalAlignment(Element.ALIGN_CENTER);
 
+                // Fazer o cálculo
+
                 cell2.setPhrase(new Phrase("Valor Hora", font));
                 tableValorTotal.addCell(cell2);
                 cell2.setPhrase(new Phrase("Total", font));
                 tableValorTotal.addCell(cell2);
 
                 for (Custo custos : tableCusto.getCustos()) {
-                    tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
-                    tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                    if (custos.getValorHora() != null) {
+                        tableValorTotal.addCell((String.valueOf(custos.getValorHora())));
+                        tableValorTotal.addCell(String.valueOf(custos.getValorHora() * custos.getHoras()));
+                    }
                 }
 
                 PdfPTable tableCC = new PdfPTable(2);
@@ -1547,7 +1573,7 @@ public class PDFGeneratorService {
 
             for (Bu bu : demanda.getBusBeneficiadas()) {
                 Chunk chunkValorBuBeneficiadas = new Chunk(bu.getNomeBu() + " ", fontInformacoes);
-                paragraphProblema.add(chunkValorBuBeneficiadas);
+                paragraphBuBeneficiadas.add(chunkValorBuBeneficiadas);
             }
 
             Chunk chunkLink = new Chunk("Link Jira: ", fontSubtitulo);
@@ -1594,18 +1620,20 @@ public class PDFGeneratorService {
             // Adicionando os responsáveis pelo negócio
 
             for (ResponsavelNegocio responsavel : proposta.getResponsavelNegocio()) {
-                Paragraph paragraphInfoResponsavelNegocio = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontInformacoes);
-                paragraphInfoResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
-                paragraphInfoResponsavelNegocio.setSpacingBefore(10);
+                Paragraph paragraphResponsavelNegocio = new Paragraph(responsavel.getNome() + " - " + responsavel.getArea(), fontInformacoes);
+                paragraphResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
+                paragraphResponsavelNegocio.setSpacingBefore(10);
 
-                document.add(paragraphInfoResponsavelNegocio);
+                document.add(paragraphResponsavelNegocio);
             }
 
-            Paragraph paragraphResponsavelNegocio = new Paragraph("Responsáveis pelo Negócio", fontSubtitulo);
-            paragraphResponsavelNegocio.setAlignment(Element.ALIGN_CENTER);
-            paragraphResponsavelNegocio.setSpacingBefore(10);
+            Paragraph paragraphRN = new Paragraph("Responsáveis pelo Negócio", fontSubtitulo);
+            paragraphRN.setAlignment(Element.ALIGN_CENTER);
+            paragraphRN.setSpacingBefore(10);
 
-            document.add(paragraphResponsavelNegocio);
+            document.add(paragraphRN);
+
+            // finaliza aqui
 
             Paragraph paragraphParecer = new Paragraph("Pareceres: ", fontSubtitulo);
             paragraphParecer.setAlignment(Paragraph.ANCHOR);
@@ -1620,6 +1648,12 @@ public class PDFGeneratorService {
 
             document.add(paragraphParecer);
             document.add(paragraphParecerComissao);
+
+            Paragraph descricaoParecerComissao = new Paragraph("Descrição: ", fontInformacoes);
+            descricaoParecerComissao.setSpacingBefore(10);
+
+            document.add(descricaoParecerComissao);
+
             XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacao().getBytes()));
 
             if (proposta.getParecerDG() != null) {
@@ -1631,6 +1665,11 @@ public class PDFGeneratorService {
                 paragraphParecerDG.setSpacingBefore(10);
 
                 document.add(paragraphParecerDG);
+
+                Paragraph descricaoParecerDG = new Paragraph("Descrição: ", fontInformacoes);
+                descricaoParecerDG.setSpacingBefore(10);
+                document.add(descricaoParecerDG);
+
                 XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacaoDG().getBytes()));
             }
 
