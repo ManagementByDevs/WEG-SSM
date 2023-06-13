@@ -377,12 +377,12 @@ const BarraProgressaoProposta = (props) => {
     });
 
     setGerais({
-      periodoExecucacaoInicio: escopo.inicioExecucao ? new Date(escopo.inicioExecucao)
-      .toISOString()
-      .slice(0, 10) : "",
-      periodoExecucacaoFim: escopo.inicioExecucacao ? new Date(escopo.fimExecucao)
-      .toISOString()
-      .slice(0, 10) : "",
+      periodoExecucacaoInicio: escopo.inicioExecucao
+        ? new Date(escopo.inicioExecucao).toISOString().slice(0, 10)
+        : "",
+      periodoExecucacaoFim: escopo.inicioExecucacao
+        ? new Date(escopo.fimExecucao).toISOString().slice(0, 10)
+        : "",
       qtdPaybackSimples: escopo.paybackValor,
       unidadePaybackSimples: escopo.paybackTipo,
       ppm: escopo.codigoPPM,
@@ -556,7 +556,7 @@ const BarraProgressaoProposta = (props) => {
                   dadosFaltantes = true;
                   setFeedbackFaltante(true);
                 }
-                porcentagemCcs += cc.porcentagem;
+                porcentagemCcs += cc.porcentagem * 1;
               });
             }
             if (dadosFaltantes == false && porcentagemCcs != 100) {
@@ -686,8 +686,12 @@ const BarraProgressaoProposta = (props) => {
       beneficios: retornarIdsObjetos(listaBeneficios),
       tabelaCustos: formatarCustos(),
       responsavelNegocio: formatarResponsaveisNegocio(),
-      inicioExecucao: gerais.periodoExecucacaoInicio ? gerais.periodoExecucacaoInicio : null,
-      fimExecucao: gerais.periodoExecucacaoFim ? gerais.periodoExecucacaoFim : null,
+      inicioExecucao: gerais.periodoExecucacaoInicio
+        ? gerais.periodoExecucacaoInicio
+        : null,
+      fimExecucao: gerais.periodoExecucacaoFim
+        ? gerais.periodoExecucacaoFim
+        : null,
       paybackValor: gerais.qtdPaybackSimples,
       paybackTipo: gerais.unidadePaybackSimples,
       codigoPPM: gerais.ppm,
