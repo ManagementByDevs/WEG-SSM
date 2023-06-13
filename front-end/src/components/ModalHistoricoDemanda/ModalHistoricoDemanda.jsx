@@ -9,42 +9,20 @@ import ContainerHistorico from "../ContainerHistorico/ContainerHistorico";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Modal de histórico acessado na DemandaGerencia, que mostra o histórico de edição de uma demanda
  * Recebe a lista de históricos através do props (props.historico)
  */
 const ModalHistoricoDemanda = (props) => {
   // Context para alterar a linguagem do sistema
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   // Context para alterar o tamanho da fonte
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   return (
     <Modal
@@ -98,13 +76,7 @@ const ModalHistoricoDemanda = (props) => {
           <Box className="flex flex-col items-center overflow-auto w-full h-4/5">
             {/* Lista de históricos sendo usada */}
             {props?.historico?.map((e) => (
-              <ContainerHistorico
-                key={e.id}
-                historico={e}
-                lendo={props.lendo}
-                texto={props.texto}
-                setTexto={props.setTexto}
-              />
+              <ContainerHistorico key={e.id} historico={e} />
             ))}
           </Box>
         </Box>

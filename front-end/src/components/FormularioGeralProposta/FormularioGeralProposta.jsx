@@ -1,5 +1,15 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
-import { Box, FormControl, Select, MenuItem, Typography, Divider, IconButton, Paper, Tooltip, } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  Typography,
+  Divider,
+  IconButton,
+  Paper,
+  Tooltip,
+} from "@mui/material";
 
 import ColorModeContext from "../../service/TemaContext";
 
@@ -12,12 +22,13 @@ import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 
 import ResponsavelNegocioService from "../../service/responsavelNegocioService";
 import AnexoService from "../../service/anexoService";
 
 const FormularioGeralProposta = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -26,6 +37,14 @@ const FormularioGeralProposta = (props) => {
 
   // Variável para alterar o tema
   const { mode } = useContext(ColorModeContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
+
+  /** Context para obter a função de leitura de texto */
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // Variável para o input de anexos
   const inputFile = useRef(null);
@@ -75,60 +94,6 @@ const FormularioGeralProposta = (props) => {
     });
   };
 
-  // // ********************************************** Gravar audio **********************************************
-
-  const recognitionRef = useRef(null);
-
-  const [escutar, setEscutar] = useState(false);
-
-  const [localClique, setLocalClique] = useState("");
-
-  const [palavrasJuntas, setPalavrasJuntas] = useState("");
-
-  const ouvirAudio = () => {
-    // Verifica se a API é suportada pelo navegador
-    if ("webkitSpeechRecognition" in window) {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.continuous = true;
-      switch (texts.linguagem) {
-        case "pt":
-          recognition.lang = "pt-BR";
-          break;
-        case "en":
-          recognition.lang = "en-US";
-          break;
-        case "es":
-          recognition.lang = "es-ES";
-          break;
-        case "ch":
-          recognition.lang = "cmn-Hans-CN";
-          break;
-        default:
-          recognition.lang = "pt-BR";
-          break;
-      }
-
-      recognition.onstart = () => { };
-
-      recognition.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript;
-        setPalavrasJuntas((palavrasJuntas) => palavrasJuntas + transcript);
-      };
-
-      recognition.onerror = (event) => {
-        props.setFeedbackErroReconhecimentoVoz(true);
-        setEscutar(false);
-      };
-
-      recognitionRef.current = recognition;
-      recognition.start();
-    } else {
-      props.setFeedbackErroNavegadorIncompativel(true);
-      setEscutar(false);
-    }
-  };
-
   useEffect(() => {
     switch (localClique) {
       case "qtdPaybackSimples":
@@ -153,59 +118,6 @@ const FormularioGeralProposta = (props) => {
         break;
     }
   }, [palavrasJuntas]);
-
-  useEffect(() => {
-    if (escutar) {
-      ouvirAudio();
-    } else {
-      stopRecognition();
-    }
-  }, [escutar]);
-
-  useEffect(() => {
-    if (
-      props.gerais.periodoExecucacaoInicio > props.gerais.periodoExecucacaoFim
-    ) {
-      props.setFeedbackErroDataInicioMaior(true);
-    }
-  }, [props.gerais.periodoExecucacaoInicio, props.gerais.periodoExecucacaoFim]);
-
-  const stopRecognition = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-    }
-  };
-
-  const startRecognition = (ondeClicou) => {
-    setEscutar(!escutar);
-    setLocalClique(ondeClicou);
-  };
-
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   /** Função para buscar a data de início de execução */
   const valorDataInicio = () => {
@@ -637,15 +549,6 @@ const FormularioGeralProposta = (props) => {
                 index={index}
                 deleteResponsavel={deleteResponsavel}
                 key={index}
-                setFeedbackErroReconhecimentoVoz={
-                  props.setFeedbackErroReconhecimentoVoz
-                }
-                setFeedbackErroNavegadorIncompativel={
-                  props.setFeedbackErroNavegadorIncompativel
-                }
-                lendo={props.lendo}
-                texto={props.texto}
-                setTexto={props.setTexto}
               />
             );
           })}

@@ -1,7 +1,15 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Box, Typography, Button, Divider, Paper, IconButton, Tooltip, } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Divider,
+  Paper,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import EditOffOutlinedIcon from "@mui/icons-material/EditOffOutlined";
@@ -33,7 +41,6 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
-
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -44,7 +51,9 @@ const DetalhesDemanda = (props) => {
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(SpeechRecognitionContext);
+  const { startRecognition, escutar, localClique, palavrasJuntas } = useContext(
+    SpeechRecognitionContext
+  );
 
   // Navigate utilizado para navegar para outras páginas
   const navigate = useNavigate();
@@ -107,7 +116,8 @@ const DetalhesDemanda = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
   // Feedback caso o usuário coloque um nome de anexo com mesmo nome de outro anexo
-  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] = useState(false);
+  const [feedbackComAnexoMesmoNome, setFeedbackComAnexoMesmoNome] =
+    useState(false);
 
   // Feedback caso o usuário tente salvar a demanda sem ter feito nenhuma alteração
   const [feedbackFacaAlteracao, setFeedbackFacaAlteracao] = useState(false);
@@ -252,9 +262,9 @@ const DetalhesDemanda = (props) => {
         id: beneficio.id,
         tipoBeneficio:
           beneficio.tipoBeneficio?.charAt(0) +
-          beneficio.tipoBeneficio
-            ?.substring(1, beneficio.tipoBeneficio?.length)
-            ?.toLowerCase() || texts.DetalhesDemanda.real,
+            beneficio.tipoBeneficio
+              ?.substring(1, beneficio.tipoBeneficio?.length)
+              ?.toLowerCase() || texts.DetalhesDemanda.real,
         valor_mensal: beneficio.valor_mensal,
         moeda: beneficio.moeda,
         memoriaCalculo: beneficio.memoriaCalculo,
@@ -323,7 +333,7 @@ const DetalhesDemanda = (props) => {
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { });
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -379,7 +389,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosExcluidos([]);
   };
@@ -387,7 +397,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => { });
+      BeneficioService.delete(beneficio.id).then(() => {});
     }
     setBeneficiosNovos([]);
   };
@@ -395,7 +405,7 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => { });
+      AnexoService.deleteById(anexo.id).then(() => {});
     }
     setNovosAnexos([]);
   };
@@ -419,7 +429,7 @@ const DetalhesDemanda = (props) => {
     if (listaBeneficiosFinal.length > 0) {
       for (let beneficio of listaBeneficiosFinal) {
         BeneficioService.put(beneficio, beneficio.memoriaCalculo).then(
-          (response) => { }
+          (response) => {}
         );
         contagem++;
 
@@ -441,12 +451,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-        props.dados.beneficios[index].moeda.toLowerCase() &&
+          props.dados.beneficios[index].moeda.toLowerCase() &&
         e.memoriaCalculo.toLowerCase() ==
-        props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
       );
     });
   };
@@ -784,8 +794,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            !editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -794,8 +804,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-            props.dados.status == "BACKLOG_EDICAO" &&
-            editar ? (
+          props.dados.status == "BACKLOG_EDICAO" &&
+          editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -808,7 +818,13 @@ const DetalhesDemanda = (props) => {
           <>
             <Box>
               {/* o id */}
-              <Typography fontSize={FontConfig.medium} fontWeight={600}>
+              <Typography
+                fontSize={FontConfig.medium}
+                fontWeight={600}
+                onClick={() => {
+                  lerTexto(props.dados.id);
+                }}
+              >
                 #{props.dados.id}
               </Typography>
               {/* o titulo */}
@@ -1206,6 +1222,7 @@ const DetalhesDemanda = (props) => {
                   alterarTexto(value, "problema");
                 }}
                 placeholder={texts.DetalhesDemanda.digiteProblema}
+                label="problema"
               />
             </Box>
             {/* Proposta da demanda */}
@@ -1227,6 +1244,7 @@ const DetalhesDemanda = (props) => {
                   alterarTexto(value, "proposta");
                 }}
                 placeholder={texts.DetalhesDemanda.digiteProposta}
+                label="proposta"
               />
             </Box>
             {/* Beneficios da demanda */}

@@ -6,6 +6,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import DateService from "../../service/dateService";
 
 const Pautas = (props) => {
@@ -14,6 +15,9 @@ const Pautas = (props) => {
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // Estado para saber se a ata já foi apreciada pela DG
   const [isApreciada, setIsApreciada] = useState(false);
@@ -59,31 +63,6 @@ const Pautas = (props) => {
       setIsApreciada(props.dados.propostas[0].parecerDG != null);
     }
   }, []);
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
 
   return (
     <Paper
@@ -106,7 +85,7 @@ const Pautas = (props) => {
           fontWeight="600"
           sx={{ color: "primary.main" }}
           onClick={(e) => {
-            if (props.lendo) {
+            if (lendoTexto) {
               e.stopPropagation();
               lerTexto(props.dados.numeroSequencial);
             }
@@ -120,7 +99,7 @@ const Pautas = (props) => {
             fontWeight="600"
             sx={{ color: "text.secondary" }}
             onClick={(e) => {
-              if (props.lendo) {
+              if (lendoTexto) {
                 e.stopPropagation();
                 lerTexto(getDataFormatada(props.dados.dataReuniao));
               }
@@ -168,7 +147,7 @@ const Pautas = (props) => {
           fontSize={FontConfig.medium}
           fontWeight="600"
           onClick={(e) => {
-            if (props.lendo) {
+            if (lendoTexto) {
               e.stopPropagation();
               lerTexto(texts.pauta.comissao);
             }
@@ -182,7 +161,7 @@ const Pautas = (props) => {
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px" }}
           onClick={(e) => {
-            if (props.lendo) {
+            if (lendoTexto) {
               e.stopPropagation();
               lerTexto(props.dados.comissao?.nomeForum);
             }
@@ -196,7 +175,7 @@ const Pautas = (props) => {
           fontSize={FontConfig.medium}
           fontWeight="600"
           onClick={(e) => {
-            if (props.lendo) {
+            if (lendoTexto) {
               e.stopPropagation();
               lerTexto(texts.pauta.analistaResponsavel);
             }
@@ -210,7 +189,7 @@ const Pautas = (props) => {
           fontWeight="600"
           sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
           onClick={(e) => {
-            if (props.lendo) {
+            if (lendoTexto) {
               e.stopPropagation();
               lerTexto(props.dados.analistaResponsavel?.nome);
             }

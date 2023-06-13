@@ -40,7 +40,7 @@ const BeneficiosDetalheDemanda = (props) => {
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Context para obter a função de leitura de texto */
-  const { startRecognition, escutar, palavrasJuntas } = useContext(
+  const { startRecognition, escutar, palavrasJuntas, localClique } = useContext(
     SpeechRecognitionContext
   );
 
@@ -104,20 +104,22 @@ const BeneficiosDetalheDemanda = (props) => {
     props.beneficio.memoriaCalculo
   );
 
-  // ********************************************** Gravar audio **********************************************
-
   /** useEffect utilizado para setar o valor do input de valor_mensal de um benefício com o input de voz */
   useEffect(() => {
-    // props.setBeneficio(
-    //   {
-    //     ...props.beneficio,
-    //     valor_mensal: palavrasJuntas,
-    //   },
-    //   props.index
-    // );
+    switch (localClique) {
+      case "valor_mensal":
+        props.setBeneficio(
+          {
+            ...props.beneficio,
+            valor_mensal: palavrasJuntas,
+          },
+          props.index
+        );
+        break;
+      default:
+        break;
+    }
   }, [palavrasJuntas]);
-
-  // ********************************************** Fim Gravar audio **********************************************
 
   return (
     <Box className="flex items-center">
@@ -286,10 +288,10 @@ const BeneficiosDetalheDemanda = (props) => {
                               className="hover:cursor-pointer"
                               title={texts.homeGerencia.gravarAudio}
                               onClick={() => {
-                                startRecognition();
+                                startRecognition("valor_mensal");
                               }}
                             >
-                              {escutar ? (
+                              {escutar && localClique == "valor_mensal" ? (
                                 <MicOutlinedIcon
                                   sx={{
                                     cursor: "pointer",
@@ -345,6 +347,7 @@ const BeneficiosDetalheDemanda = (props) => {
                         onChange={(value) => {
                           alterarTexto(value);
                         }}
+                        label="memoriaCalculo"
                       />
                     </Box>
                   </td>
