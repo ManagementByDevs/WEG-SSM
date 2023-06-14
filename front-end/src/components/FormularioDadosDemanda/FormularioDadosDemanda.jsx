@@ -22,7 +22,6 @@ const FormularioDadosDemanda = (props) => {
 
   /** Função para salvar o título da demanda */
   const salvarTitulo = (texto) => {
-    console.log("passou aqui", texto);
     props.setDados({ ...props.dados, titulo: texto });
   };
 
@@ -59,8 +58,8 @@ const FormularioDadosDemanda = (props) => {
             label={texts.formularioDadosDemanda.titulo}
             placeholder={texts.formularioDadosDemanda.digiteTitulo}
             fontConfig={FontConfig.default}
+            erro = {props.erro}
           />
-
           <Box>
             <Box className="flex" sx={{ marginTop: "3rem" }}>
               <Typography

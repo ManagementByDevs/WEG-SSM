@@ -173,22 +173,26 @@ const Custos = (props) => {
         <Box>
           {/* Dropdown tipo despesa */}
           <Box>
-            <FormControl sx={{ width: "15rem" }}>
-              <InputLabel id="demo-simple-select-helper-label">
-                Tipo Despesa
+            <FormControl variant="standard" sx={{minWidth: "9rem" }}>
+              <InputLabel id="demo-simple-select-standard-label">
+                {texts.custos.tipoDaDespesa}
               </InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Tipo Despesa"
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
                 value={tipoDespesa || ""}
                 onChange={handleChange}
+                label={texts.custos.tipoDaDespesa}
               >
                 <MenuItem value={"Interna"}>
-                  <Typography fontSize={FontConfig.medium}>Interna</Typography>
+                  <Typography fontSize={FontConfig.medium}>
+                    {texts.custos.interna}
+                  </Typography>
                 </MenuItem>
                 <MenuItem value={"Externa"}>
-                  <Typography fontSize={FontConfig.medium}>Externa</Typography>
+                  <Typography fontSize={FontConfig.medium}>
+                    {texts.custos.externa}
+                  </Typography>
                 </MenuItem>
               </Select>
             </FormControl>

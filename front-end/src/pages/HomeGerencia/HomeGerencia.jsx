@@ -259,9 +259,6 @@ const HomeGerencia = () => {
   /** Feedback ativado quando uma proposta é adicionada a uma pauta */
   const [feedbackAdicionarPauta, setFeedbackAdicionarPauta] = useState(false);
 
-  /** useState para fechar o chat minimizado */
-  const [fecharChatMinimizado, setFecharChatMinimizado] = useState(false);
-
   /** Variável para verificação se é do tipo GERENTE */
   const isGerente = !(usuario.tipoUsuario == "GERENTE");
 
@@ -509,7 +506,9 @@ const HomeGerencia = () => {
 
   /** UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada */
   useEffect(() => {
-    setValorPesquisa(inputPesquisa?.current?.value);
+    if(inputPesquisa?.current?.value) {
+      setValorPesquisa(inputPesquisa?.current?.value);
+    }
     formatarOrdenacao();
     switch (valorAba) {
       case "1":
