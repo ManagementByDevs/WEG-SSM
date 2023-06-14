@@ -237,11 +237,17 @@ const DetalhesAta = (props) => {
   const isAllFieldsFilled = () => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = ata.propostas.every((proposta) => {
-      return (
-        proposta.parecerDG != null &&
-        proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
-        proposta.parecerInformacaoDG != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
-      );
+      if (proposta.parecerDG == "APROVADO") {
+        return (
+          proposta.parecerDG != null
+        );
+      } else {
+        return (
+          proposta.parecerDG != null &&
+          proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
+          proposta.parecerInformacaoDG != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+        );
+      }
     });
 
     return isFilled;
