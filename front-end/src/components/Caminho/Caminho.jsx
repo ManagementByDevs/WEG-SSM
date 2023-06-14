@@ -18,7 +18,7 @@ const Caminho = (props) => {
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
-  // Context para ler o texto da tela
+  /** Context para ler o texto da tela */
   const { lendoTexto, lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Navigate utilizado para nevegar para uma outra página */
@@ -43,6 +43,7 @@ const Caminho = (props) => {
     "detalhes-proposta",
     "detalhes-ata",
     "detalhes-pauta",
+    "criar-pauta",
   ];
 
   /** Função responsável por retornar para o caminho desejado */

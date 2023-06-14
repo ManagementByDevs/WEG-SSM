@@ -177,7 +177,7 @@ const HomeGerencia = () => {
     codigoPPM: null,
     analista: null,
     presenteEm: null,
-    status: ""
+    status: "",
   });
 
   /** Objeto contendo o usuário logado no sistema */
@@ -466,7 +466,7 @@ const HomeGerencia = () => {
       departamento: null,
       analista: null,
       presenteEm: null,
-      status: null
+      status: null,
     };
 
     if (filtrosAtuais.solicitante != "") {
@@ -503,7 +503,7 @@ const HomeGerencia = () => {
       tamanho: paramsTemp.tamanho,
       departamento: paramsTemp.departamento,
       presenteEm: paramsTemp.presenteEm,
-      status: paramsTemp.status
+      status: paramsTemp.status,
     });
   }, [filtrosAtuais]);
 
@@ -692,7 +692,7 @@ const HomeGerencia = () => {
       textoNovo += "sort=presenteEm,desc&sort=status,desc&";
     }
     if (valorAba == "6") {
-      textoNovo += "sort=publicadaDg,asc&"
+      textoNovo += "sort=publicadaDg,asc&";
     }
 
     if (ordenacaoScore[1]) {
@@ -1111,7 +1111,7 @@ const HomeGerencia = () => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
         });
       });
     }
@@ -1698,30 +1698,49 @@ const HomeGerencia = () => {
                   )}
                 </Box>
 
-                {/* Botão de criar demanda */}
-                <Button
-                  id="quintoDemandas"
-                  className="gap-2"
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "text.white",
-                    fontSize: FontConfig.default,
-                    maxHeight: "2.5rem",
-                    minWidth: "10.5rem",
-                  }}
-                  variant="contained"
-                  disableElevation
-                  onClick={() => {
-                    if (!lendoTexto) {
-                      navigate("/criar-demanda");
-                    } else {
-                      lerTexto(texts.homeGerencia.criarDemanda);
-                    }
-                  }}
-                >
-                  {texts.homeGerencia.criarDemanda}
-                  <AddIcon />
-                </Button>
+                {valorAba * 1 <= 2 ? (
+                  // Botão de criar demanda
+                  <Button
+                    id="quintoDemandas"
+                    className="gap-2"
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "text.white",
+                      fontSize: FontConfig.default,
+                      maxHeight: "2.5rem",
+                      minWidth: "10.5rem",
+                    }}
+                    variant="contained"
+                    disableElevation
+                    onClick={() => {
+                      if (!lendoTexto) {
+                        navigate("/criar-demanda");
+                      } else {
+                        lerTexto(texts.homeGerencia.criarDemanda);
+                      }
+                    }}
+                  >
+                    {texts.homeGerencia.criarDemanda}
+                    <AddIcon />
+                  </Button>
+                ) : valorAba * 1 == 5 ? (
+                  // Botão de criar pauta
+                  <Button
+                    className="gap-2"
+                    variant="contained"
+                    disableElevation
+                    onClick={() => {
+                      if (!lendoTexto) {
+                        navigate("/criar-pauta");
+                      } else {
+                        lerTexto(texts.homeGerencia.criarPauta);
+                      }
+                    }}
+                  >
+                    {texts.homeGerencia.criarPauta}
+                    <AddIcon />
+                  </Button>
+                ) : null}
               </Box>
 
               {carregamentoItens ? (
@@ -1821,7 +1840,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}

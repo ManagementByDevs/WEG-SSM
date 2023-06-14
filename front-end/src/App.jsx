@@ -25,6 +25,7 @@ import EditarEscopo from "./pages/EditarEscopo/EditarEscopo";
 import NotFound from "./pages/NotFound/NotFound";
 import DetalhesPropostaPagina from "./pages/DetalhesPropostaPagina/DetalhesPropostaPagina";
 import LerTexto from "./components/LerTexto/LerTexto";
+import CriarPauta from "./pages/CriarPauta/CriarPauta";
 
 import ToggleColorMode from "./service/TemaProvedor";
 import TextLanguage from "./service/TextLanguage";
@@ -221,6 +222,21 @@ const App = () => {
                             redirectPath="/"
                           >
                             <DetalhesPauta />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path="criar-pauta"
+                        element={
+                          <ProtectedRoute
+                            tiposUsuarioAllowed={[
+                              "ANALISTA",
+                              "GERENTE",
+                              "GESTOR",
+                            ]}
+                            redirectPath="/"
+                          >
+                            <CriarPauta />
                           </ProtectedRoute>
                         }
                       />
