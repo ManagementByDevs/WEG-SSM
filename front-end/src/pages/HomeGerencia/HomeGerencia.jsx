@@ -46,6 +46,7 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import ExportPdfService from "../../service/exportPdfService";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import ModalFiltroAtas from "../../components/ModalFiltroAtas/ModalFiltroAtas";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {
@@ -176,7 +177,7 @@ const HomeGerencia = () => {
     id: null,
     codigoPPM: null,
     analista: null,
-    presenteEm: null,
+    presenteEm: "",
     status: ""
   });
 
@@ -202,6 +203,10 @@ const HomeGerencia = () => {
   const [paramsAtas, setParamsAtas] = useState({
     titulo: null,
     numeroSequencial: null,
+    apreciada: false,
+    naoApreciada: false,
+    publicada: false,
+    naoPublicada: false
   });
 
   /** UseState que controla a visibilidade do modal de confirmação para exclusão de uma pauta */
@@ -509,6 +514,7 @@ const HomeGerencia = () => {
 
   /** UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada */
   useEffect(() => {
+    setPaginaAtual(0);
     setValorPesquisa(inputPesquisa?.current?.value);
     formatarOrdenacao();
     switch (valorAba) {
@@ -613,6 +619,7 @@ const HomeGerencia = () => {
         break;
       case "6":
         setParamsAtas({
+          ...paramsAtas,
           numeroSequencial: parseInt(valorPesquisa)
             ? parseInt(valorPesquisa)
             : null,
@@ -1635,7 +1642,7 @@ const HomeGerencia = () => {
                   </Box>
 
                   {/* Botão de filtrar */}
-                  {valorAba < 5 && (
+                  {(valorAba < 5 || valorAba > 5) && (
                     <Button
                       id="terceiroDemandas"
                       className="flex gap-1"
@@ -1658,7 +1665,7 @@ const HomeGerencia = () => {
                       {texts.homeGerencia.filtrar} <FilterAltOutlinedIcon />
                     </Button>
                   )}
-                  {modalFiltro && (
+                  {modalFiltro && valorAba < 5 && (
                     <ModalFiltroGerencia
                       fecharModal={() => {
                         setModalFiltro(false);
@@ -1675,6 +1682,16 @@ const HomeGerencia = () => {
                       setListaAnalistas={setListaAnalistas}
                       filtroProposta={filtroProposta}
                       valorAba={valorAba}
+                    />
+                  )}
+
+                  {modalFiltro && valorAba > 5 && (
+                    <ModalFiltroAtas
+                      fecharModal={() => {
+                        setModalFiltro(false);
+                      }}
+                      filtro={paramsAtas}
+                      setFiltro={setParamsAtas}
                     />
                   )}
 
