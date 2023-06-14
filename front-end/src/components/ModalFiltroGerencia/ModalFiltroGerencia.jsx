@@ -1,20 +1,5 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
-
-import {
-  Modal,
-  Typography,
-  Box,
-  Button,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Autocomplete,
-  TextField,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-} from "@mui/material";
+import React, { useContext } from "react";
+import { Modal, Typography, Box, Button, InputLabel, Select, MenuItem, FormControl, Autocomplete, TextField } from "@mui/material";
 
 import Fade from "@mui/material/Fade";
 import CloseIcon from "@mui/icons-material/Close";
@@ -26,6 +11,7 @@ import UsuarioService from "../../service/usuarioService";
 
 /** Componente de filtro exclusivo para a página "HomeGerencia", com diferentes opções de filtragem que o filtro usado para o solicitante */
 const ModalFiltroGerencia = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -34,25 +20,6 @@ const ModalFiltroGerencia = (props) => {
 
   /** Context para ler o texto da tela */
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
-
-  /** Variável para armazenar o valor do radio button */
-  const [selectedValue, setSelectedValue] = useState("");
-
-  /** Variável para manter a seleção do radio button caso feche o modal */
-  const lastSelectedValueRef = useRef("");
-
-  /** useEffect para pegar o valor do radio button caso o modal seja fechado */
-  useEffect(() => {
-    setSelectedValue(props.filtro.presenteEm);
-  }, [selectedValue]);
-
-  /** Função para mudar o valor do radio button e chamar a função do filtro */
-  const handleChange = (event) => {
-    let value = event.target.value;
-    setSelectedValue(value);
-    lastSelectedValueRef.current = value;
-    selecionarPresenteEm(value);
-  };
 
   /** Função para limpar os filtros ativos e fechar o modal */
   const limparFiltro = () => {
@@ -149,6 +116,11 @@ const ModalFiltroGerencia = (props) => {
     props.setFiltro({ ...props.filtro, status: event.target.value });
   };
 
+  /** Função para atualizar os filtros quando a atribuição for selecionada */
+  const selecionarAtribuicao = (event) => {
+    props.setFiltro({ ...props.filtro, presenteEm: event.target.value });
+  }
+
   return (
     <Modal open={true} onClose={props.fecharModal} closeAfterTransition>
       <Fade in={true}>
@@ -216,7 +188,9 @@ const ModalFiltroGerencia = (props) => {
                     )}
                   />
                 </>
-              ) : (
+              ) : null}
+
+              {props?.valorAba == "1" || props?.valorAba == "4" ? (
                 <>
                   {/* Select de Status */}
                   <FormControl sx={{ width: "15rem" }}>
@@ -228,41 +202,76 @@ const ModalFiltroGerencia = (props) => {
                     >
                       {texts.modalFiltroGerencia.status}
                     </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={props.filtro.status}
-                      label={texts.modalFiltroGerencia.status}
-                      onChange={selecionarStatus}
-                    >
-                      <MenuItem selected value={""}>
-                        {texts.modalFiltroGerencia.selecionar}
-                      </MenuItem>
-                      <MenuItem value={"CANCELLED"}>
-                        {texts.modalFiltroGerencia.reprovada}
-                      </MenuItem>
-                      <MenuItem value={"BACKLOG_REVISAO"}>
-                        {texts.modalFiltroGerencia.aguardandoRevisao}
-                      </MenuItem>
-                      <MenuItem value={"BACKLOG_EDICAO"}>
-                        {texts.modalFiltroGerencia.aguardandoEdicao}
-                      </MenuItem>
-                      <MenuItem value={"BACKLOG_APROVACAO"}>
-                        {texts.modalFiltroGerencia.emAprovacao}
-                      </MenuItem>
-                      <MenuItem value={"ASSESSMENT"}>
-                        {texts.modalFiltroGerencia.aprovada}
-                      </MenuItem>
-                      <MenuItem value={"ASSESSMENT_APROVACAO"}>
-                        {texts.modalFiltroGerencia.emAndamento}
-                      </MenuItem>
-                      <MenuItem value={"DONE"}>
-                        {texts.modalFiltroGerencia.emDesenvolvimento}
-                      </MenuItem>
-                    </Select>
+                    {props?.valorAba == "1" ? (
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={props.filtro.status}
+                        label={texts.modalFiltroGerencia.status}
+                        onChange={selecionarStatus}
+                      >
+                        <MenuItem selected value={""}>
+                          {texts.modalFiltroGerencia.selecionar}
+                        </MenuItem>
+                        <MenuItem value={"CANCELLED"}>
+                          {texts.modalFiltroGerencia.reprovada}
+                        </MenuItem>
+                        <MenuItem value={"BACKLOG_REVISAO"}>
+                          {texts.modalFiltroGerencia.aguardandoRevisao}
+                        </MenuItem>
+                        <MenuItem value={"BACKLOG_EDICAO"}>
+                          {texts.modalFiltroGerencia.aguardandoEdicao}
+                        </MenuItem>
+                        <MenuItem value={"BACKLOG_APROVACAO"}>
+                          {texts.modalFiltroGerencia.emAprovacao}
+                        </MenuItem>
+                        <MenuItem value={"ASSESSMENT"}>
+                          {texts.modalFiltroGerencia.aprovada}
+                        </MenuItem>
+                        <MenuItem value={"ASSESSMENT_APROVACAO"}>
+                          {texts.modalFiltroGerencia.emAndamento}
+                        </MenuItem>
+                        <MenuItem value={"DONE"}>
+                          {texts.modalFiltroGerencia.emDesenvolvimento}
+                        </MenuItem>
+                      </Select>
+                    ) : (
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={props.filtro.status}
+                        label={texts.modalFiltroGerencia.status}
+                        onChange={selecionarStatus}
+                      >
+                        <MenuItem selected value={""}>
+                          {texts.modalFiltroGerencia.selecionar}
+                        </MenuItem>
+                        <MenuItem value={"CANCELLED"}>
+                          {texts.modalFiltroGerencia.cancelled}
+                        </MenuItem>
+                        <MenuItem value={"BUSINESS_CASE"}>
+                          {texts.modalFiltroGerencia.businessCase}
+                        </MenuItem>
+                        <MenuItem value={"DONE"}>
+                          {texts.modalFiltroGerencia.done}
+                        </MenuItem>
+                        <MenuItem value={"ASSESSMENT_APROVACAO"}>
+                          {texts.modalFiltroGerencia.assessment}
+                        </MenuItem>
+                        <MenuItem value={"ASSESSMENT_EDICAO"}>
+                          {texts.modalFiltroGerencia.assessmentEdicao}
+                        </MenuItem>
+                        <MenuItem value={"ASSESSMENT_COMISSAO"}>
+                          {texts.modalFiltroGerencia.assessmentComissao}
+                        </MenuItem>
+                        <MenuItem value={"ASSESSMENT_DG"}>
+                          {texts.modalFiltroGerencia.assessmentDg}
+                        </MenuItem>
+                      </Select>
+                    )}
                   </FormControl>
                 </>
-              )}
+              ) : null}
 
               {/* Select de fórum */}
               <FormControl sx={{ width: "15rem" }}>
@@ -407,36 +416,44 @@ const ModalFiltroGerencia = (props) => {
                   />
                 )}
               />
+
+              {props?.valorAba == "4" ? (
+                <>
+                  {/* Select "presenteEm" */}
+                  <FormControl sx={{ width: "15rem" }}>
+                    <InputLabel
+                      id="demo-simple-select-label"
+                      onClick={() => {
+                        lerTexto(texts.modalFiltroGerencia.atribuido);
+                      }}
+                    >
+                      {texts.modalFiltroGerencia.atribuido}
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.filtro.presenteEm}
+                      label={texts.modalFiltroGerencia.atribuido}
+                      onChange={selecionarAtribuicao}
+                    >
+                      <MenuItem selected value={""}>
+                        {texts.modalFiltroGerencia.selecionar}
+                      </MenuItem>
+                      <MenuItem value={"Ata"}>
+                        {texts.modalFiltroGerencia.ata}
+                      </MenuItem>
+                      <MenuItem value={"Pauta"}>
+                        {texts.modalFiltroGerencia.pauta}
+                      </MenuItem>
+                      <MenuItem value={"Solta"}>
+                        {texts.modalFiltroGerencia.semAtribuicao}
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </>
+              ) : null}
             </Box>
           </Box>
-
-          {/* CheckBox em ata, em pauta e em edição */}
-          {props.filtroProposta ? (
-            <Box className="flex flex-row w-3/4">
-              <RadioGroup
-                className="justify-between w-full"
-                row
-                value={selectedValue}
-                onChange={handleChange}
-              >
-                <FormControlLabel
-                  value="Ata"
-                  control={<Radio />}
-                  label="Em Ata"
-                />
-                <FormControlLabel
-                  value="Pauta"
-                  control={<Radio />}
-                  label="Em Pauta"
-                />
-                <FormControlLabel
-                  value="Nada"
-                  control={<Radio />}
-                  label="Em Edição"
-                />
-              </RadioGroup>
-            </Box>
-          ) : null}
 
           {/* Botão de limpar filtros */}
           <Button
