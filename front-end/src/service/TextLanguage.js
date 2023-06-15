@@ -795,6 +795,7 @@ const TextLanguage = (linguagem) => {
             feedback13: "Navegador não é compatível!",
             feedback14: "Proposta Adicionada à Pauta!",
             feedback15: "Data do período de execução inválida!",
+            feedback16: "Pauta criada com sucesso!",
           },
           demandas: "Demandas",
           criarPropostas: "Criar Propostas",
@@ -985,6 +986,12 @@ const TextLanguage = (linguagem) => {
         },
         CaixaTextoQuill: {
           gravarAudio: "Gravar áudio",
+        },
+        criarPauta: {
+          addNumeroSequencial: "Adicione um número sequencial!",
+          addDataReuniao: "Adicione uma data de reunião!",
+          addComissao: "Adicione uma comissão!",
+          addProposta: "Adicione pelo menos uma proposta!",
         },
         rotas: [
           "Login",
@@ -1761,6 +1768,7 @@ const TextLanguage = (linguagem) => {
             feedback13: "Browser not supported!",
             feedback14: "Proposal Added to the Agenda!",
             feedback15: "Invalid execution period date!",
+            feedback16: "Agenda created successfully!",
           },
           demandas: "Demands",
           criarPropostas: "Create Proposals",
@@ -1952,6 +1960,12 @@ const TextLanguage = (linguagem) => {
         },
         CaixaTextoQuill: {
           gravarAudio: "Record Audio",
+        },
+        criarPauta: {
+          addNumeroSequencial: "Add a sequential number!",
+          addDataReuniao: "Add a meeting date!",
+          addComissao: "Add a commission!",
+          addProposta: "Add at least one proposal!",
         },
         rotas: [
           "Login",
@@ -2699,6 +2713,7 @@ const TextLanguage = (linguagem) => {
             feedback13: "浏览器不支持！",
             feedback14: "添加到议程的提案",
             feedback15: "执行期间的日期无效！",
+            feedback16: "议程创建成功！",
           },
           demandas: "需求",
           criarPropostas: "创建提案",
@@ -2885,6 +2900,12 @@ const TextLanguage = (linguagem) => {
         },
         CaixaTextoQuill: {
           gravarAudio: "录制音频",
+        },
+        criarPauta: {
+          addNumeroSequencial: "添加序号！",
+          addDataReuniao: "添加会议日期！",
+          addComissao: "增加佣金！",
+          addProposta: "至少添加一项提案！",
         },
         rotas: [
           "登录",
@@ -3652,6 +3673,7 @@ const TextLanguage = (linguagem) => {
             feedback13: "¡Navegador no es compatible!",
             feedback14: "¡Propuesta añadida al orden del día!",
             feedback15: "¡Fecha de ejecución inválida!",
+            feedback16: "¡Agenda creada con éxito!",
           },
           demandas: "Demandas",
           criarPropostas: "Crear Propuestas",
@@ -3849,6 +3871,12 @@ const TextLanguage = (linguagem) => {
         },
         CaixaTextoQuill: {
           gravarAudio: "Grabar Audio",
+        },
+        criarPauta: {
+          addNumeroSequencial: "¡Agregue un número secuencial!",
+          addDataReuniao: "¡Agregue una fecha de reunión!",
+          addComissao: "¡Agregue una comisión!",
+          addProposta: "¡Agregue al menos una propuesta!",
         },
         rotas: [
           "Login",

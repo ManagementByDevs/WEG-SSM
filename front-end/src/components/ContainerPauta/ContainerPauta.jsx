@@ -7,15 +7,18 @@ import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import DateService from "../../service/dateService";
 import TemaContext from "../../service/TemaContext";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Componente para representar uma pauta no sistema, contendo suas informações e ações */
 const ContainerPauta = (props) => {
-
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
-  const { FontConfig, setFontConfig } = useContext(FontContext);
+  const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   /** Contexet para verificar o tema atual  */
   const { mode } = useContext(TemaContext);
@@ -45,34 +48,47 @@ const ContainerPauta = (props) => {
   const getFormattedDate = (dateInMySQL) => {
     let date = DateService.getDateByMySQLFormat(dateInMySQL);
 
-    console.log("Data: " , date, dateInMySQL);
-    console.log("Props" , props.pauta)
+    console.log("Data: ", date, dateInMySQL);
+    console.log("Props", props.pauta);
 
-   
-      switch (texts.linguagem) {
-        case "pt":
-          return (
-            date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
-          );
-        case "en":
-          return (
-            date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
-          );
-        case "es":
-          return (
-            date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
-          );
-        case "ch":
-          return (
-            date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()
-          );
-        default:
-          return (
-            date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
-          );
-      }
-    
-
+    switch (texts.linguagem) {
+      case "pt":
+        return (
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getFullYear()
+        );
+      case "en":
+        return (
+          date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
+        );
+      case "es":
+        return (
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getFullYear()
+        );
+      case "ch":
+        return (
+          date.getFullYear() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getDate()
+        );
+      default:
+        return (
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getFullYear()
+        );
+    }
   };
 
   /** Função para retornar a cor do background do componente de pauta corretamente */
@@ -81,32 +97,6 @@ const ContainerPauta = (props) => {
       return mode == "dark" ? "#22252C" : "#FFFFFF";
     } else {
       return mode == "dark" ? "#2E2E2E" : "#E4E4E4";
-    }
-  };
-
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
     }
   };
 

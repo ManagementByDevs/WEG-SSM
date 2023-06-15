@@ -288,31 +288,8 @@ const NadaEncontrado = (props) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendoTexto) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendoTexto && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
+  /** Context para ler o texto da tela */
+  const { lerTexto } = useContext(SpeechSynthesisContext);
 
   return (
     <Box

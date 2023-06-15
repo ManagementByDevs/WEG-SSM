@@ -264,6 +264,9 @@ const HomeGerencia = () => {
   /** Feedback ativado quando uma proposta é adicionada a uma pauta */
   const [feedbackAdicionarPauta, setFeedbackAdicionarPauta] = useState(false);
 
+  /** Feedback ativado quando uma pauta é criada */
+  const [feedbackPautaCriada, setFeedbackPautaCriada] = useState(false);
+
   /** Variável para verificação se é do tipo GERENTE */
   const isGerente = !(usuario.tipoUsuario == "GERENTE");
 
@@ -653,17 +656,22 @@ const HomeGerencia = () => {
 
   /** Função para ativar feedbacks vindos de outras páginas, chamada quando entrar na página */
   const verificarFeedbacks = () => {
-    if (localStorage.getItem("tipoFeedback") == "2") {
+    let tipoNotficacao = localStorage.getItem("tipoFeedback");
+
+    if (tipoNotficacao == "2") {
       setFeedbackDemandaAceita(true);
-    } else if (localStorage.getItem("tipoFeedback") == "3") {
+    } else if (tipoNotficacao == "3") {
       setFeedbackDemandaDevolvida(true);
-    } else if (localStorage.getItem("tipoFeedback") == "4") {
+    } else if (tipoNotficacao == "4") {
       setFeedbackDemandaRecusada(true);
-    } else if (localStorage.getItem("tipoFeedback") == "5") {
+    } else if (tipoNotficacao == "5") {
       setFeedbackPropostaCriada(true);
-    } else if (localStorage.getItem("tipoFeedback") == "6") {
+    } else if (tipoNotficacao == "6") {
       setFeedbackAdicionarPauta(true);
+    } else if (tipoNotficacao == "7") {
+      setFeedbackPautaCriada(true);
     }
+
     localStorage.removeItem("tipoFeedback");
   };
 
@@ -1283,6 +1291,15 @@ const HomeGerencia = () => {
         className="flex justify-center mt-8"
         sx={{ backgroundColor: "background.default", width: "100%" }}
       >
+        {/* Feedback proposta adicionada à pauta */}
+        <Feedback
+          open={feedbackPautaCriada}
+          handleClose={() => {
+            setFeedbackPautaCriada(false);
+          }}
+          status={"sucesso"}
+          mensagem={texts.homeGerencia.feedback.feedback16}
+        />
         {/* Feedback proposta adicionada à pauta */}
         <Feedback
           open={feedbackAdicionarPauta}

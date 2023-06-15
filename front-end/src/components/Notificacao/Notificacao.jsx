@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 
 import { Box, Typography } from "@mui/material";
 
@@ -13,13 +13,10 @@ import FontContext from "../../service/FontContext";
 import DateService from "../../service/dateService";
 import NotificacaoService from "../../service/notificacaoService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Componente para exibir as notificações do sistema
 const Notificacao = ({
-  index,
-  lendo,
-  texto,
-  setTexto,
   notificacao = EntitiesObjectService.notificacao(),
   onNotificacaoClick = () => {},
 }) => {
@@ -28,6 +25,9 @@ const Notificacao = ({
 
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // Calculo de datas
   let dataAtual = DateService.getTodaysDate();
@@ -94,32 +94,6 @@ const Notificacao = ({
     }
   };
 
-   // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-  
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-  
-      if (lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-  
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     // Container da notificação
     <Box
@@ -150,7 +124,7 @@ const Notificacao = ({
           color={"text.primary"}
           sx={{ fontWeight: 600 }}
           onClick={(e) => {
-            if (lendo) {
+            if (lendoTexto) {
               e.preventDefault();
               lerTexto(retornaTitulo());
             }
@@ -165,7 +139,7 @@ const Notificacao = ({
           color={"text.secondary"}
           sx={{ fontWeight: 600 }}
           onClick={(e) => {
-            if (lendo) {
+            if (lendoTexto) {
               e.preventDefault();
               if (diferencaDias < 7 && diferencaDias > 1) {
                 lerTexto(

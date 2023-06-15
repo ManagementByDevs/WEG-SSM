@@ -28,8 +28,7 @@ import { WebSocketContext } from "../../service/WebSocketService";
 import anexoService from "../../service/anexoService";
 
 /** Componente utilizado para representar a versão minimizada do chat */
-const ChatMinimizado = (props) => {
-
+const ChatMinimizado = () => {
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -61,7 +60,9 @@ const ChatMinimizado = (props) => {
   const [pesquisaContato, setPesquisaContato] = useState("");
 
   /** UseState para armazenar os resultados da pesquisa */
-  const [resultadosContato, setResultadosContato] = useState([EntitiesObjectService.chat()]);
+  const [resultadosContato, setResultadosContato] = useState([
+    EntitiesObjectService.chat(),
+  ]);
 
   /** UseState para controlar o loading de mensagens */
   const [buscandoMensagens, setBuscandoMensagens] = useState(true);
@@ -76,7 +77,9 @@ const ChatMinimizado = (props) => {
   const [mensagem, setMensagem] = useState(EntitiesObjectService.mensagem());
 
   /** Todas as mensagens do chat selecionado */
-  const [mensagens, setMensagens] = useState([EntitiesObjectService.mensagem()]);
+  const [mensagens, setMensagens] = useState([
+    EntitiesObjectService.mensagem(),
+  ]);
 
   /** Usuário logado */
   const [user, setUser] = useState(UsuarioService.getUserCookies());
@@ -155,7 +158,6 @@ const ChatMinimizado = (props) => {
     };
 
     const readMessage = (mensagem) => {
-
       if (mensagem.body == `visualizar-novas-mensagens/${user.usuario.id}`) {
         clearNewMessages();
         return;
@@ -304,8 +306,7 @@ const ChatMinimizado = (props) => {
           );
           inputRef.current.value = "";
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     } else {
       setFeedbackAnexoGrande(true);
     }
@@ -356,32 +357,6 @@ const ChatMinimizado = (props) => {
     );
   };
 
-  /** Função que irá setar o texto que será "lido" pela a API */
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   /** Função para minimizar o chat */
   const sumir = keyframes({
     from: { height: "24rem" },
@@ -397,10 +372,14 @@ const ChatMinimizado = (props) => {
   // // ********************************************** Gravar audio **********************************************
 
   /** Variável para abrir o feedbcak de navegador incompatível */
-  const [feedbackErroNavegadorIncompativel, setFeedbackErroNavegadorIncompativel] = useState(false);
+  const [
+    feedbackErroNavegadorIncompativel,
+    setFeedbackErroNavegadorIncompativel,
+  ] = useState(false);
 
   /** Variável para abrir o feedback de erro ao reconhecer voz */
-  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] = useState(false);
+  const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
+    useState(false);
 
   /** Varíavel utilizada para lógica de gravação de audio */
   const recognitionRef = useRef(null);
@@ -438,8 +417,7 @@ const ChatMinimizado = (props) => {
           break;
       }
 
-      recognition.onstart = () => {
-      };
+      recognition.onstart = () => {};
 
       recognition.onresult = (event) => {
         const transcript =
