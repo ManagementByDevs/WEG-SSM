@@ -630,6 +630,7 @@ const TextLanguage = (linguagem) => {
             "Não é possível enviar mensagens, pois o chat foi encerrado.",
           anexoMuitoPesado: "O anexo é muito pesado!",
           miniChatAberto: "Mini chat está aberto!",
+          chatNaoPodeSerReaberto: "O chat não pode ser reaberto!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Ata criada com sucesso!",
@@ -1601,6 +1602,7 @@ const TextLanguage = (linguagem) => {
             "It is not possible to send messages, because the chat has been closed.",
           anexoMuitoPesado: "The attachment is too heavy!",
           miniChatAberto: "Mini chat is open!",
+          chatNaoPodeSerReaberto: "The chat cannot be reopened!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Minutes created successfully!",
@@ -2553,6 +2555,7 @@ const TextLanguage = (linguagem) => {
           inputChatEncerrado: "无法发送消息，因为聊天已结束。",
           anexoMuitoPesado: "附件太重了！",
           miniChatAberto: "迷你聊天已打开！",
+          chatNaoPodeSerReaberto: "聊天无法重新打开！",
         },
         detalhesAta: {
           ataCriadaComSucesso: "会议记录创建成功！",
@@ -3488,6 +3491,7 @@ const TextLanguage = (linguagem) => {
             "No se pueden enviar mensajes porque el chat se ha cerrado.",
           anexoMuitoPesado: "¡El archivo adjunto es demasiado pesado!",
           miniChatAberto: "¡Mini chat abierto!",
+          chatNaoPodeSerReaberto: "¡El chat no puede ser reabierto!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Ata creada con éxito!",

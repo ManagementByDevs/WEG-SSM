@@ -99,6 +99,9 @@ const Chat = (props) => {
 
   /** UseState para feedback de chat encerrado */
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
+  
+  /** UseState para feedback de chat encerrado */
+  const [feedbackNaoPodeAbrir, setFeedbackNaoPodeAbrir] = useState(false);
 
   /** UseState para feedback de chat aberto */
   const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
@@ -449,26 +452,30 @@ const Chat = (props) => {
   const abrirChat = () => {
     fecharModalAbrirChat();
     ChatService.getByIdChat(idChat).then((e) => {
-      ChatService.put(
-        {
-          ...e,
-          conversaEncerrada: false,
-        },
-        idChat
-      ).then((e) => {
-        setFeedbackChatAberto(true);
-        for (let chat of listaChats) {
-          if (chat.id == idChat) {
-            let aux = [...listaChats];
-            aux.splice(listaChats.indexOf(chat), 1, {
-              ...chat,
-              conversaEncerrada: false,
-            });
-            setListaChats(aux);
-            return;
+      if(e.idProposta.status != "Cancelled") {
+        ChatService.put(
+          {
+            ...e,
+            conversaEncerrada: false,
+          },
+          idChat
+        ).then((e) => {
+          setFeedbackChatAberto(true);
+          for (let chat of listaChats) {
+            if (chat.id == idChat) {
+              let aux = [...listaChats];
+              aux.splice(listaChats.indexOf(chat), 1, {
+                ...chat,
+                conversaEncerrada: false,
+              });
+              setListaChats(aux);
+              return;
+            }
           }
-        }
-      });
+        });
+      } else {
+        setFeedbackNaoPodeAbrir(true);
+      }
     });
   };
 
@@ -659,6 +666,15 @@ const Chat = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
+        />
+        {/* Feedback que chat não pode ser aberto*/}
+        <Feedback
+          open={feedbackNaoPodeAbrir}
+          handleClose={() => {
+            setFeedbackNaoPodeAbrir(false);
+          }}
+          status={"erro"}
+          mensagem={texts.chat.chatNaoPodeSerReaberto}
         />
         {/* Feedback Anexo pesado */}
         <Feedback

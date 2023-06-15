@@ -576,6 +576,7 @@ const TextLanguageContext = createContext({
         "Não é possível enviar mensagens, pois o chat foi encerrado.",
       anexoMuitoPesado: "O anexo é muito pesado!",
       miniChatAberto: "Mini chat está aberto!",
+      chatNaoPodeSerReaberto: "O chat não pode ser reaberto!",
     },
     detalhesAta: {
       ataCriadaComSucesso: "Ata criada com sucesso!",
