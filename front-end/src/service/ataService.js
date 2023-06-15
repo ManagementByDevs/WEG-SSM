@@ -8,21 +8,42 @@ class AtaService {
   }
 
   async getPage(params, page) {
+
+    let newParams = {};
+    if (params.titulo) {
+      newParams.titulo = params.titulo;
+    }
+    if (params.numeroSequencial) {
+      newParams.numeroSequencial = params.numeroSequencial;
+    }
+    if (params.apreciada) {
+      newParams.publicadaDg = true;
+    }
+    if (params.naoApreciada) {
+      newParams.publicadaDg = false;
+    }
+    if (params.publicada) {
+      newParams.publicada = true;
+    }
+    if (params.naoPublicada) {
+      newParams.publicada = false;
+    }
+
     return (
       await axios.get(`${ataPath}/page?${page}`, {
-        params,
-        headers: { "Content-Type": "application/json" },
+        params: newParams,
+        headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true
       })
     ).data;
   }
 
   async post(pauta) {
-    return (await axios.post(`${ataPath}`, pauta, {withCredentials: true})).data;
+    return (await axios.post(`${ataPath}`, pauta, { withCredentials: true })).data;
   }
 
   async put(ata, idAta) {
-    return (await axios.put(`${ataPath}/${idAta}`, ata, {withCredentials: true})).data;
+    return (await axios.put(`${ataPath}/${idAta}`, ata, { withCredentials: true })).data;
   }
 }
 

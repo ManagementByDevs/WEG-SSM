@@ -112,4 +112,27 @@ public class AtaService {
         return ataRepository.findByPropostasContaining(proposta);
     }
 
+    public Page<Ata> findByNumeroSequencialAndPublicadaDg(String numeroSequencial, Boolean publicadaDg, Pageable pageable) {
+        return ataRepository.findByNumeroSequencialAndPublicadaDg(numeroSequencial, publicadaDg, pageable);
+    }
+
+    public Page<Ata> findByPublicadaDg(Boolean publicadaDg, Pageable pageable) {
+        return ataRepository.findByPublicadaDg(publicadaDg, pageable);
+    }
+
+    public Page<Ata> findByNumeroSequencialAndPublicadaDgAndPublicada(String numeroSequencial, Boolean publicadaDg, Boolean publicada, Pageable pageable) {
+        return ataRepository.findByNumeroSequencialAndPublicadaDgAndPublicada(numeroSequencial, publicadaDg, publicada, pageable);
+    }
+
+    public Page<Ata> findByNumeroSequencialAndPublicada(String numeroSequencial, Boolean publicada, Pageable pageable) {
+        return ataRepository.findByNumeroSequencialAndPublicada(numeroSequencial, publicada, pageable);
+    }
+
+    public Page<Ata> findByPublicadaDgAndPublicada(Boolean publicadaDg, Boolean publicada, Pageable pageable) {
+        return ataRepository.findByPublicadaDgAndPublicada(publicadaDg, publicada, pageable);
+    }
+
+    public Page<Ata> findByPublicada(Boolean publicada, Pageable pageable) {
+        return ataRepository.findByPublicada(publicada, pageable);
+    }
 }

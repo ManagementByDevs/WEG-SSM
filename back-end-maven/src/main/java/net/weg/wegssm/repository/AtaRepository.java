@@ -50,5 +50,17 @@ public interface AtaRepository extends JpaRepository<Ata, Long> {
      */
     @Query("SELECT a FROM Ata a LEFT JOIN FETCH a.propostas WHERE a.publicadaDg != publicada_dg")
     List<Ata> findByPublicadaDgNot(@Param("publicada_dg") Boolean publicadaDg);
+
+    Page<Ata> findByNumeroSequencialAndPublicadaDg(String numeroSequencial, Boolean publicadaDg, Pageable pageable);
+
+    Page<Ata> findByPublicadaDg(Boolean publicadaDg, Pageable pageable);
+
+    Page<Ata> findByNumeroSequencialAndPublicadaDgAndPublicada(String numeroSequencial, Boolean publicadaDg, Boolean publicada, Pageable pageable);
+
+    Page<Ata> findByNumeroSequencialAndPublicada(String numeroSequencial, Boolean publicada, Pageable pageable);
+
+    Page<Ata> findByPublicadaDgAndPublicada(Boolean publicadaDg, Boolean publicada, Pageable pageable);
+
+    Page<Ata> findByPublicada(Boolean publicada, Pageable pageable);
 }
 

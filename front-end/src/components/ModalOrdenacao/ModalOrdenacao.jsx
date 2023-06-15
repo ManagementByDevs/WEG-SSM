@@ -119,7 +119,7 @@ const ModalOrdenacao = (props) => {
               </FormGroup>
             </Grid>
           </Grid>
-          {props.valorAba < 5 ? (
+          {props.valorAba < 5 || !props.valorAba ? (
             <>
               {/* Checkboxes de título */}
               <Grid container spacing={0}>

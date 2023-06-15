@@ -285,7 +285,7 @@ const DetalhesPauta = (props) => {
       let url = URL.createObjectURL(blob);
       let link = document.createElement("a");
       link.href = url;
-      link.download = "pdf_pauta.pdf";
+      link.download = "Pauta - " + pauta.numeroSequencial + ".pdf";
       link.click();
     });
   };
