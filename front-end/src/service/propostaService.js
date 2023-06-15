@@ -23,6 +23,10 @@ class PropostaService {
   async getPage(params, page) {
 
     let newParams = {};
+
+    if (params.titulo != null) {
+      newParams.titulo = params.titulo;
+    }
     if (params.departamento != null) {
       newParams.departamento = JSON.stringify(params.departamento);
     }
@@ -38,13 +42,13 @@ class PropostaService {
     if (params.analista != null) {
       newParams.analista = JSON.stringify(params.analista);
     }
-    if(params.status != null) {
+    if (params.status != null) {
       newParams.status = params.status;
     }
-    if(params.tamanho != null) {
+    if (params.tamanho != null) {
       newParams.tamanho = params.tamanho;
     }
-    if(params.presenteEm != null) {
+    if (params.presenteEm != null) {
       newParams.presenteEm = params.presenteEm;
     }
 
