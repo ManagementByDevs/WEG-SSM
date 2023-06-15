@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
 
@@ -17,6 +17,7 @@ import Feedback from "../../components/Feedback/Feedback";
 
 import ExportPdfService from "../../service/exportPdfService";
 import TextLanguageContext from "../../service/TextLanguageContext";
+import PropostaService from "../../service/propostaService";
 
 /** Página que mostra os detalhes da proposta selecionada, com opção de download para pdf */
 const DetalhesPropostaPagina = () => {
@@ -36,6 +37,17 @@ const DetalhesPropostaPagina = () => {
   /** useState para feedback de edição feita com sucesso */
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
+  /** variável para armazenar o titulo da proposta  */
+  const [tituloProposta, setTituloProposta] = useState();
+
+  /** useEffect utilizado para buscar o nome da proposta para colocar no arquivo pdf */
+  useEffect(() => {
+    // Buscando os dados da proposta usando o propostaId
+    PropostaService.getById(paramsPath.id).then((proposal) => {
+      setTituloProposta(proposal.titulo);
+    });
+  }, []);
+  
   /** Função para abrir o modal de adicionar a pauta */
   const adicionarAPauta = () => {
     setOpenModalAddPropostaPauta(true);
@@ -48,7 +60,7 @@ const DetalhesPropostaPagina = () => {
       let url = URL.createObjectURL(blob);
       let link = document.createElement("a");
       link.href = url;
-      link.download = "pdf_proposta.pdf";
+      link.download = tituloProposta + ".pdf";
       link.click();
     });
   };

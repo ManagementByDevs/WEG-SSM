@@ -104,6 +104,8 @@ const TextLanguageContext = createContext({
       moeda: "R$",
       adicionarNovaLinha: "Adicionar nova linha",
       ccs: "CCs",
+      interna: "Interna",
+      externa: "Externa",
     },
     demanda: {
       status: {
@@ -363,7 +365,7 @@ const TextLanguageContext = createContext({
         aguardandoRevisao: "Aguardando Revisão",
         emAprovacao: "Em Aprovação",
         emAndamento: "Em Andamento",
-        emDesenvolvimento: "Em Desenvolvimento"
+        emDesenvolvimento: "Em Desenvolvimento",
       },
     },
     modalFiltroGerencia: {
@@ -390,9 +392,26 @@ const TextLanguageContext = createContext({
       emAprovacao: "Em Aprovação",
       emAndamento: "Em Andamento",
       emDesenvolvimento: "Em Desenvolvimento",
+      cancelled: "Cancelled",
+      businessCase: "Business Case",
+      done: "Done",
+      assessment: "Assessment",
+      assessmentEdicao: "Assessment - Edição",
+      assessmentComissao: "Assessment - Em Comissão",
+      assessmentDg: "Assessment - Em DG",
       departamento: "Departamento",
+      atribuido: "Atribuído à",
+      ata: "Ata",
+      pauta: "Pauta",
+      semAtribuicao: "Sem Atribuição",
       numero: "Número",
       limparFilros: "Limpar Filtros",
+    },
+    modalFiltroAtas: {
+      apreciada: "Apreciada",
+      naoApreciada: "Não Apreciada",
+      publicada: "Publicada",
+      naoPublicada: "Não Publicada"
     },
     modalHistoricoDemanda: {
       historico: "Histórico",
@@ -454,6 +473,8 @@ const TextLanguageContext = createContext({
       comissao: "Comissão",
       analistaResponsavel: "Analista Responsável",
       pautaExcluida: "Pauta excluída",
+      publicada: "Publicada",
+      naoPublicada: "Não Publicada",
     },
     pautaAtaModoVisualizacao: {
       as: "às",
@@ -722,7 +743,8 @@ const TextLanguageContext = createContext({
       pesquisarPorTitulo: "Pesquisar por título...",
       pesquisarPorTituloOuNumero: "Pesquisar por título ou nº sequencial...",
       pesquisarPorTituloOuPPM: "Pesquisar por título ou PPM...",
-      pesquisarPorNumeroSequencialOuProposta: "Pesquisar por nº sequencial ou proposta...",
+      pesquisarPorNumeroSequencialOuProposta:
+        "Pesquisar por nº sequencial ou proposta...",
       pesquisar: "Pesquisar",
       gravarAudio: "Gravar Audio",
       limparBusca: "Limpar Busca",
@@ -850,7 +872,7 @@ const TextLanguageContext = createContext({
       gravarAudio: "Gravar áudio",
     },
   },
-  setTexts: () => { },
+  setTexts: () => {},
 });
 
 export default TextLanguageContext;

@@ -58,21 +58,66 @@ public class AtaController {
     @GetMapping("/page")
     public ResponseEntity<Page<Ata>> findPage(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                               @RequestParam(required = false) String titulo,
-                                              @RequestParam(required = false) String numeroSequencial) {
+                                              @RequestParam(required = false) String numeroSequencial,
+                                              @RequestParam(required = false, value = "publicadaDg") Boolean publicadaDg,
+                                              @RequestParam(required = false, value = "publicada") Boolean publicada) {
         if (numeroSequencial != null && !numeroSequencial.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(ataService.findByNumeroSequencial(numeroSequencial, pageable));
+            if (publicadaDg != null) {
+                if (publicada != null) {
+                    return ResponseEntity.status(HttpStatus.OK).body(ataService.findByNumeroSequencialAndPublicadaDgAndPublicada(numeroSequencial, publicadaDg, publicada, pageable));
+                } else {
+                    return ResponseEntity.status(HttpStatus.OK).body(ataService.findByNumeroSequencialAndPublicadaDg(numeroSequencial, publicadaDg, pageable));
+                }
+            } else {
+                if (publicada != null) {
+                    return ResponseEntity.status(HttpStatus.OK).body(ataService.findByNumeroSequencialAndPublicada(numeroSequencial, publicada, pageable));
+                } else {
+                    return ResponseEntity.status(HttpStatus.OK).body(ataService.findByNumeroSequencial(numeroSequencial, pageable));
+                }
+            }
         } else if (titulo != null && !titulo.isEmpty()) {
             List<Proposta> propostas = propostaService.findByTituloContainingIgnoreCase(titulo);
             List<Ata> atas = new ArrayList<>();
             for (Proposta proposta : propostas) {
                 Ata ata = ataService.findByPropostasContaining(proposta);
-                if (!atas.contains(ata) && ata != null) {
-                    atas.add(ata);
+
+                if (publicadaDg != null) {
+                    if (publicada != null) {
+                        if (!atas.contains(ata) && ata != null && ata.getPublicadaDg().equals(publicadaDg) && ata.getPublicada().equals(publicada)) {
+                            atas.add(ata);
+                        }
+                    } else {
+                        if (!atas.contains(ata) && ata != null && ata.getPublicadaDg().equals(publicadaDg)) {
+                            atas.add(ata);
+                        }
+                    }
+                } else {
+                    if(publicada != null) {
+                        if (!atas.contains(ata) && ata != null && ata.getPublicada().equals(publicada)) {
+                            atas.add(ata);
+                        }
+                    } else {
+                        if (!atas.contains(ata) && ata != null) {
+                            atas.add(ata);
+                        }
+                    }
                 }
             }
             return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<Ata>(atas, pageable, atas.size()));
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body(ataService.findAll(pageable));
+            if (publicadaDg != null) {
+                if(publicada != null) {
+                    return ResponseEntity.status(HttpStatus.OK).body(ataService.findByPublicadaDgAndPublicada(publicadaDg, publicada, pageable));
+                } else {
+                    return ResponseEntity.status(HttpStatus.OK).body(ataService.findByPublicadaDg(publicadaDg, pageable));
+                }
+            } else {
+                if(publicada != null) {
+                    return ResponseEntity.status(HttpStatus.OK).body(ataService.findByPublicada(publicada, pageable));
+                } else {
+                    return ResponseEntity.status(HttpStatus.OK).body(ataService.findAll(pageable));
+                }
+            }
         }
     }
 
@@ -175,6 +220,7 @@ public class AtaController {
         Ata ata = new Ata();
         ata.setVisibilidade(true);
         BeanUtils.copyProperties(ataDto, ata);
+        ata.setPublicadaDg(false);
         ata.setScore(calcularScore(ata));
 
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));

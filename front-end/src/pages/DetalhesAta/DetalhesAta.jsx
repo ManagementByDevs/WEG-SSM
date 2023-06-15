@@ -228,7 +228,7 @@ const DetalhesAta = (props) => {
       let url = URL.createObjectURL(blob);
       let link = document.createElement("a");
       link.href = url;
-      link.download = "pdf_ata.pdf";
+      link.download = "Ata - " + ata.numeroSequencial + ".pdf";
       link.click();
     });
   };
@@ -237,11 +237,17 @@ const DetalhesAta = (props) => {
   const isAllFieldsFilled = () => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = ata.propostas.every((proposta) => {
-      return (
-        proposta.parecerDG != null &&
-        proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
-        proposta.parecerInformacaoDG != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
-      );
+      if (proposta.parecerDG == "APROVADO") {
+        return (
+          proposta.parecerDG != null
+        );
+      } else {
+        return (
+          proposta.parecerDG != null &&
+          proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
+          proposta.parecerInformacaoDG != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+        );
+      }
     });
 
     return isFilled;
@@ -295,11 +301,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -307,9 +313,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => {}
+                () => { }
               );
               break;
           }
@@ -347,7 +353,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
+    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
 
     navigate("/", { state: { feedback: true } });
   };
@@ -440,8 +446,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                      ": " +
-                      ata.numeroSequencial
+                    ": " +
+                    ata.numeroSequencial
                   );
                 }}
               >
@@ -453,11 +459,11 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
-                      ": " +
-                      DateService.getTodaysDateUSFormat(
-                        ata.dataReuniao,
-                        texts.linguagem
-                      )
+                    ": " +
+                    DateService.getTodaysDateUSFormat(
+                      ata.dataReuniao,
+                      texts.linguagem
+                    )
                   );
                 }}
               >
@@ -474,8 +480,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                      ": " +
-                      trazerHoraData(ata.dataReuniao)
+                    ": " +
+                    trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -489,8 +495,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                      ": " +
-                      ata.analistaResponsavel.nome
+                    ": " +
+                    ata.analistaResponsavel.nome
                   );
                 }}
               >

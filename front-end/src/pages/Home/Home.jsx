@@ -424,7 +424,8 @@ const Home = (props) => {
   /** Função para pesquisar novas demandas quando a aba for modificada */
   const atualizarAba = (event, newValue) => {
     setValorAba(newValue);
-
+    setPaginaAtual(0);
+    
     // Ao trocar a aba, a forma de pesquisar demandas irá mudar (usuário / departamento)
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });

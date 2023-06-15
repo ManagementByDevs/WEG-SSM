@@ -82,6 +82,8 @@ const BarraProgressaoDemanda = () => {
   /** Variável utilizada para mostrar o carregamento ao criar demanda */
   const [carregamentoDemanda, setCarregamentoDemanda] = useState(true);
 
+  const [erro, setErro] = useState(false);
+
   /** Variável para interromper o salvamento de escopos enquanto a demanda estiver sendo criada */
   let criandoDemanda = false;
 
@@ -314,6 +316,7 @@ const BarraProgressaoDemanda = () => {
           ) {
             setEtapaAtiva((prevActiveStep) => prevActiveStep + 1);
           } else {
+            setErro(true);
             setFeedbackDadosFaltantes(true);
           }
           break;
@@ -426,6 +429,7 @@ const BarraProgressaoDemanda = () => {
           {/* Componentes / páginas respectivas da criação da demanda */}
           {etapaAtiva == 0 && (
             <FormularioDadosDemanda
+              erro={erro}
               dados={paginaDados}
               setDados={setPaginaDados}
             />

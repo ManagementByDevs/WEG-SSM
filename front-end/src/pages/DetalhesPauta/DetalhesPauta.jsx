@@ -4,16 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { keyframes } from "@emotion/react";
 import VLibras from "@djpfs/react-vlibras";
 
-import {
-  Box,
-  Typography,
-  Button,
-  Divider,
-  Tooltip,
-  IconButton,
-  ButtonBase,
-} from "@mui/material";
+import { Box, Typography, Button, Divider, Tooltip, IconButton, ButtonBase, Input } from "@mui/material";
 
+import InputComLabel from "../../components/InputComLabel/InputComLabel";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
@@ -65,9 +58,7 @@ const DetalhesPauta = (props) => {
   const [pauta, setPauta] = useState(EntitiesObjectService.pauta());
 
   /** Lista provisória de propostas para preencher a tela */
-  const [listaProposta, setListaProposta] = useState([
-    EntitiesObjectService.proposta(),
-  ]);
+  const [listaProposta, setListaProposta] = useState([EntitiesObjectService.proposta(),]);
 
   /** Variável de verificação utilizada para mostrar o sumário ou uma proposta */
   const [proposta, setProposta] = useState(false);
@@ -117,6 +108,9 @@ const DetalhesPauta = (props) => {
 
   /** useState utilizado para abrir e fechar o modal de adicionar a pauta */
   const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
+
+  /** useState utilizado para armazenar o número sequencial da ata */
+  const [numeroSequencialAta, setNumeroSequencialAta] = useState("");
 
   /** useEffect utilizado para mostrar uma proposta */
   useEffect(() => {
@@ -224,8 +218,8 @@ const DetalhesPauta = (props) => {
     "100%": { width: "8rem", opacity: "0" },
   });
 
-   /** Função para animar os botões de acordo com o click */
-   const animarBotoes = () => {
+  /** Função para animar os botões de acordo com o click */
+  const animarBotoes = () => {
     if (minimizar) {
       setGirarIcon(girar);
       setDisplay("flex");
@@ -265,7 +259,7 @@ const DetalhesPauta = (props) => {
               "Removida da Pauta #" + newPauta.numeroSequencial,
               arquivo,
               CookieService.getUser().id
-            ).then(() => {});
+            ).then(() => { });
           });
         }
       );
@@ -285,7 +279,7 @@ const DetalhesPauta = (props) => {
       let url = URL.createObjectURL(blob);
       let link = document.createElement("a");
       link.href = url;
-      link.download = "pdf_pauta.pdf";
+      link.download = "Pauta - " + pauta.numeroSequencial + ".pdf";
       link.click();
     });
   };
@@ -294,11 +288,17 @@ const DetalhesPauta = (props) => {
   const isAllFieldsFilled = () => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = pauta.propostas.every((proposta) => {
-      return (
-        proposta.parecerComissao != null &&
-        proposta.parecerInformacao != null && // Essa variável sempre começa como null
-        proposta.parecerInformacao != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
-      );
+      if (proposta.parecerComissao == "APROVADO") {
+        return (
+          proposta.parecerComissao != null
+        );
+      } else {
+        return (
+          proposta.parecerComissao != null &&
+          proposta.parecerInformacao != null && // Essa variável sempre começa como null
+          proposta.parecerInformacao != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+        );
+      }
     });
 
     return isFilled;
@@ -367,9 +367,6 @@ const DetalhesPauta = (props) => {
       case "REPROVADO":
         tipoNotificacao = NotificacaoService.reprovadoComissao;
         break;
-      case "BUSINESS_CASE":
-        tipoNotificacao = NotificacaoService.businessComissao;
-        break;
       case "MAIS_INFORMACOES":
         tipoNotificacao = NotificacaoService.maisInformacoesComissao;
         break;
@@ -390,7 +387,6 @@ const DetalhesPauta = (props) => {
     );
   };
 
-  /** Função para  */
   const handlePautaWithNoApprovedProposals = () => {
     for (let proposta of pauta.propostas) {
       PropostaService.atualizacaoAta(
@@ -409,11 +405,11 @@ const DetalhesPauta = (props) => {
                 "Proposta Reprovada",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 response.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "MAIS_INFORMACOES":
               PropostaService.addHistorico(
@@ -421,15 +417,7 @@ const DetalhesPauta = (props) => {
                 "Enviada para Edição",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
-              break;
-            case "BUSINESS_CASE":
-              PropostaService.addHistorico(
-                response.id,
-                "Enviada para Business Case",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               break;
           }
         });
@@ -456,9 +444,9 @@ const DetalhesPauta = (props) => {
             "Proposta Reprovada",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(
-            () => {}
+            () => { }
           );
           break;
         case "MAIS_INFORMACOES":
@@ -467,15 +455,7 @@ const DetalhesPauta = (props) => {
             "Enviada para Edição",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
-          break;
-        case "BUSINESS_CASE":
-          PropostaService.addHistorico(
-            proposta.id,
-            "Entrada em Business Case",
-            arquivo,
-            CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           break;
         case "APROVADO":
           PropostaService.addHistorico(
@@ -483,7 +463,7 @@ const DetalhesPauta = (props) => {
             "Adicionada na Ata #" + idAta,
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
           break;
       }
     });
@@ -551,7 +531,7 @@ const DetalhesPauta = (props) => {
         textoModal={"tirarPropostaDePauta"}
         textoBotao={"sim"}
         onConfirmClick={deletePropostaFromPauta}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       <Box className="p-2 mb-16" sx={{ minWidth: "58rem" }}>
         <Box className="flex w-full relative">
@@ -600,8 +580,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.numeroSequencial +
-                      ": " +
-                      pauta.numeroSequencial
+                    ": " +
+                    pauta.numeroSequencial
                   );
                 }}
               >
@@ -613,8 +593,8 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.comissao +
-                      ": " +
-                      pauta.comissao.nomeForum
+                    ": " +
+                    pauta.comissao.nomeForum
                   );
                 }}
               >
@@ -627,11 +607,11 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.reuniaoDoForum +
-                      ": " +
-                      DateService.getFullDateUSFormat(
-                        DateService.getDateByMySQLFormat(pauta?.dataReuniao),
-                        texts.linguagem
-                      )
+                    ": " +
+                    DateService.getFullDateUSFormat(
+                      DateService.getDateByMySQLFormat(pauta?.dataReuniao),
+                      texts.linguagem
+                    )
                   );
                 }}
               >
@@ -647,14 +627,37 @@ const DetalhesPauta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesPauta.analistaResponsavel +
-                      ": " +
-                      pauta.analistaResponsavel.nome
+                    ": " +
+                    pauta.analistaResponsavel.nome
                   );
                 }}
               >
                 {texts.detalhesPauta.analistaResponsavel}:{" "}
                 {pauta.analistaResponsavel.nome}
               </Typography>
+
+              <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
+
+                <Typography
+                  sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
+                  onClick={() => {
+                    lerTexto(
+                      texts.detalhesPauta.analistaResponsavel +
+                      ": " +
+                      pauta.analistaResponsavel.nome
+                    );
+                  }}
+                >
+                  Número Sequencial da Ata:
+                </Typography>
+
+                <Input
+                  sx={{width: "5rem", marginLeft: "2%"}}
+                  texto={numeroSequencialAta}
+                  saveInputValue={setNumeroSequencialAta}
+                />
+
+              </Box>
 
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
@@ -774,6 +777,18 @@ const DetalhesPauta = (props) => {
                 />
               </Box>
             )}
+
+            {/* <Box sx={{ marginTop: "2%", marginBottom: "2%", width: "30%", height: "5%", display: "flex", flexDirection: "row" }}>
+              
+              <Input
+                label={"Número Sequencial da Ata: "}
+                placeholder={texts.modalCriarAta.digiteNumeroSequencial}
+                texto={numeroSequencialAta}
+                saveInputValue={setNumeroSequencialAta}
+              />
+              
+            </Box> */}
+
           </Box>
         </Box>
 

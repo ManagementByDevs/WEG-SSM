@@ -19,6 +19,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal para do filtro do usuário padrão
 const ModalFiltro = (props) => {
+  
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 

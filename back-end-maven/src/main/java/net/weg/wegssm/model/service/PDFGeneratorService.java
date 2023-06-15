@@ -158,8 +158,15 @@ public class PDFGeneratorService {
             tableBeneficios.addCell(cell);
 
             tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
-            tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
-            tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+
+            if (String.valueOf(beneficio.getTipoBeneficio()).equals("QUALITATIVO")) {
+                tableBeneficios.addCell(" - ");
+                tableBeneficios.addCell(" - ");
+            } else {
+                tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
+                tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+            }
+
             tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
             document.add(tableBeneficios);
@@ -602,8 +609,15 @@ public class PDFGeneratorService {
             tableBeneficios.addCell(cell);
 
             tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
-            tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
-            tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+
+            if (String.valueOf(beneficio.getTipoBeneficio()).equals("QUALITATIVO")) {
+                tableBeneficios.addCell(" - ");
+                tableBeneficios.addCell(" - ");
+            } else {
+                tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
+                tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+            }
+
             tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
             document.add(tableBeneficios);
@@ -725,6 +739,7 @@ public class PDFGeneratorService {
         Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA);
         fontTitulo.setSize(24);
         fontTitulo.setStyle(Font.BOLD);
+        fontTitulo.setColor(azulWeg);
 
         Font fontTituloProposta = FontFactory.getFont(FontFactory.HELVETICA);
         fontTituloProposta.setSize(24);
@@ -735,6 +750,7 @@ public class PDFGeneratorService {
         fontSubtitulo.setStyle(Font.BOLD);
 
         Font fontInformacoes = FontFactory.getFont(FontFactory.HELVETICA);
+        fontInformacoes.setStyle(Font.BOLD);
 
         Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA);
         fontHeader.setSize(13);
@@ -742,6 +758,11 @@ public class PDFGeneratorService {
         Font fontInfoHeaderProposta = FontFactory.getFont(FontFactory.HELVETICA);
         fontInfoHeaderProposta.setSize(13);
         fontInfoHeaderProposta.setStyle(Font.BOLD);
+
+        Font fontHeaderPauta = FontFactory.getFont(FontFactory.HELVETICA);
+        fontHeaderPauta.setSize(15);
+        fontHeaderPauta.setColor(azulWeg);
+        fontHeaderPauta.setStyle(Font.BOLD);
 
         Font fontInfoHeaderPauta = FontFactory.getFont(FontFactory.HELVETICA);
         fontInfoHeaderPauta.setSize(15);
@@ -807,11 +828,20 @@ public class PDFGeneratorService {
 
             contadorProposta++;
 
-            Chunk chunkPPMData = new Chunk("PPM   " + String.valueOf(proposta.getCodigoPPM()) + "               ", fontInfoHeaderProposta);
-            Chunk chunkValorPPMData = new Chunk("DATA   " + String.valueOf(proposta.getData()), fontInfoHeaderProposta);
+            Chunk chunkPPMData = new Chunk("PPM   " + String.valueOf(proposta.getCodigoPPM()) + "          ", fontHeaderPauta);
+            Chunk chunkValorPPMData = new Chunk("DATA   " + String.valueOf(proposta.getData()) + "          ", fontHeaderPauta);
+            Chunk chunkAtaPublicada = new Chunk();
             Paragraph paragraphPPMData = new Paragraph();
+
+            if (proposta.getPublicada()) {
+                chunkAtaPublicada = new Chunk("PUBLICADA", fontHeaderPauta);
+            } else {
+                chunkAtaPublicada = new Chunk("NÃO PUBLICADA", fontHeaderPauta);
+            }
+
             paragraphPPMData.add(chunkPPMData);
             paragraphPPMData.add(chunkValorPPMData);
+            paragraphPPMData.add(chunkAtaPublicada);
             paragraphPPMData.setSpacingBefore(20);
 
             Paragraph paragraphTitulo = new Paragraph(proposta.getDemanda().getTitulo(), fontTitulo);
@@ -897,8 +927,7 @@ public class PDFGeneratorService {
             paragraphFrequencia.setSpacingBefore(15);
 
             // Adicionando os paragrafos no documento
-
-            document.add(img);
+            document.add(paragraphContadorProposta);
             document.add(paragraphData);
             document.add(paragraphPPMData);
             document.add(paragraphTitulo);
@@ -1071,8 +1100,15 @@ public class PDFGeneratorService {
                 tableBeneficios.addCell(cell);
 
                 tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
-                tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
-                tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+
+                if (String.valueOf(beneficio.getTipoBeneficio()).equals("QUALITATIVO")) {
+                    tableBeneficios.addCell(" - ");
+                    tableBeneficios.addCell(" - ");
+                } else {
+                    tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
+                    tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+                }
+
                 tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
                 document.add(tableBeneficios);
@@ -1159,6 +1195,11 @@ public class PDFGeneratorService {
 
                 document.add(paragraphParecer);
                 document.add(paragraphParecerComissao);
+
+                Paragraph descricaoParecerComissao = new Paragraph("Descrição: ", fontInformacoes);
+                descricaoParecerComissao.setSpacingBefore(10);
+                document.add(descricaoParecerComissao);
+
                 XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getParecerInformacao().getBytes()));
             }
 
@@ -1224,6 +1265,7 @@ public class PDFGeneratorService {
         fontSubtitulo.setStyle(Font.BOLD);
 
         Font fontInformacoes = FontFactory.getFont(FontFactory.HELVETICA);
+        fontInformacoes.setStyle(Font.BOLD);
 
         Font fontHeader = FontFactory.getFont(FontFactory.HELVETICA);
         fontHeader.setSize(13);
@@ -1559,8 +1601,15 @@ public class PDFGeneratorService {
                 tableBeneficios.addCell(cell);
 
                 tableBeneficios.addCell(String.valueOf(beneficio.getTipoBeneficio()));
-                tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
-                tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+
+                if (String.valueOf(beneficio.getTipoBeneficio()).equals("QUALITATIVO")) {
+                    tableBeneficios.addCell(" - ");
+                    tableBeneficios.addCell(" - ");
+                } else {
+                    tableBeneficios.addCell(String.valueOf(beneficio.getValor_mensal()));
+                    tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
+                }
+
                 tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
                 document.add(tableBeneficios);

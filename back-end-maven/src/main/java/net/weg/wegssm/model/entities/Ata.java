@@ -69,4 +69,7 @@ public class Ata {
     @Column
     private Boolean publicadaDg;
 
+    @Column
+    private Boolean publicada;
+
 }

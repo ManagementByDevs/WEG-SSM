@@ -22,22 +22,6 @@ const Pautas = (props) => {
   // Estado para saber se a ata já foi apreciada pela DG
   const [isApreciada, setIsApreciada] = useState(false);
 
-  // Retorna as horas de início e fim formatadas para melhor leitura
-  const getHorasFormatado = (dataInicio, dataFim) => {
-    let dateInicio = new Date(DateService.getDateByMySQLFormat(dataInicio));
-    let dateFim = new Date(DateService.getDateByMySQLFormat(dataFim));
-
-    return `${dateInicio.getHours()}:${
-      dateInicio.getMinutes() < 10
-        ? "0" + dateInicio.getMinutes()
-        : dateInicio.getMinutes()
-    } às ${dateFim.getHours()}:${
-      dateFim.getMinutes() < 10
-        ? "0" + dateFim.getMinutes()
-        : dateFim.getMinutes()
-    }`;
-  };
-
   // Função para formatar a data para melhor leitura
   const getDataFormatada = (dataReuniao) => {
     return props.tipo == "pauta"
@@ -63,6 +47,15 @@ const Pautas = (props) => {
       setIsApreciada(props.dados.propostas[0].parecerDG != null);
     }
   }, []);
+
+  // Função que retorna o tamanho do componente que conterá o texto
+  const retornaTamanhoTexto = () => {
+    if(true == "Publicada") {
+      return "5rem"
+    } else {
+      return "7rem"
+    }
+  }
 
   return (
     <Paper
@@ -142,61 +135,95 @@ const Pautas = (props) => {
           )}
         </Box>
       </Box>
-      <Box className="flex items-center mt-3">
-        <Typography
-          fontSize={FontConfig.medium}
-          fontWeight="600"
-          onClick={(e) => {
-            if (lendoTexto) {
-              e.stopPropagation();
-              lerTexto(texts.pauta.comissao);
-            }
-          }}
-        >
-          {texts.pauta.comissao}:
-        </Typography>
-        <Typography
-          className="overflow-hidden text-ellipsis whitespace-nowrap"
-          fontSize={FontConfig.default}
-          fontWeight="600"
-          sx={{ color: "text.secondary", marginLeft: "5px" }}
-          onClick={(e) => {
-            if (lendoTexto) {
-              e.stopPropagation();
-              lerTexto(props.dados.comissao?.nomeForum);
-            }
-          }}
-        >
-          {props.dados.comissao?.siglaForum} - {props.dados.comissao?.nomeForum}
-        </Typography>
-      </Box>
-      <Box className="flex items-center">
-        <Typography
-          fontSize={FontConfig.medium}
-          fontWeight="600"
-          onClick={(e) => {
-            if (lendoTexto) {
-              e.stopPropagation();
-              lerTexto(texts.pauta.analistaResponsavel);
-            }
-          }}
-        >
-          {texts.pauta.analistaResponsavel}:
-        </Typography>
-        <Typography
-          className="overflow-hidden text-ellipsis whitespace-nowrap"
-          fontSize={FontConfig.default}
-          fontWeight="600"
-          sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
-          onClick={(e) => {
-            if (lendoTexto) {
-              e.stopPropagation();
-              lerTexto(props.dados.analistaResponsavel?.nome);
-            }
-          }}
-        >
-          {props.dados.analistaResponsavel?.nome}
-        </Typography>
+      <Box className="w-full flex">
+        <Box>
+          <Box className="flex items-center mt-3">
+            <Typography
+              fontSize={FontConfig.medium}
+              fontWeight="600"
+              onClick={(e) => {
+                if (lendoTexto) {
+                  e.stopPropagation();
+                  lerTexto(texts.pauta.comissao);
+                }
+              }}
+            >
+              {texts.pauta.comissao}:
+            </Typography>
+            <Typography
+              className="overflow-hidden text-ellipsis whitespace-nowrap"
+              fontSize={FontConfig.default}
+              fontWeight="600"
+              sx={{ color: "text.secondary", marginLeft: "5px" }}
+              onClick={(e) => {
+                if (lendoTexto) {
+                  e.stopPropagation();
+                  lerTexto(props.dados.comissao?.nomeForum);
+                }
+              }}
+            >
+              {props.dados.comissao?.siglaForum} -{" "}
+              {props.dados.comissao?.nomeForum}
+            </Typography>
+          </Box>
+          <Box className="flex items-center">
+            <Typography
+              fontSize={FontConfig.medium}
+              fontWeight="600"
+              onClick={(e) => {
+                if (lendoTexto) {
+                  e.stopPropagation();
+                  lerTexto(texts.pauta.analistaResponsavel);
+                }
+              }}
+            >
+              {texts.pauta.analistaResponsavel}:
+            </Typography>
+            <Typography
+              className="overflow-hidden text-ellipsis whitespace-nowrap"
+              fontSize={FontConfig.default}
+              fontWeight="600"
+              sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
+              onClick={(e) => {
+                if (lendoTexto) {
+                  e.stopPropagation();
+                  lerTexto(props.dados.analistaResponsavel?.nome);
+                }
+              }}
+            >
+              {props.dados.analistaResponsavel?.nome}
+            </Typography>
+          </Box>
+        </Box>
+        <Box className="w-full flex justify-end">
+          <Box className="text-center" sx={{ width: retornaTamanhoTexto }}>
+            {/* Texto para dizer se está em ata ou em pauta */}
+            <Typography
+              fontSize={FontConfig.small}
+              fontWeight="600"
+              sx={{
+                color: "text.primary",
+                backgroundColor: "divider.claro",
+                borderRadius: "5px",
+                padding: "2px 5px",
+              }}
+              onClick={(e) => {
+                if (lendoTexto) {
+                  e.stopPropagation();
+                  if (true == "Publicada") {
+                    lerTexto(texts.pauta.publicada);
+                  } else {
+                    lerTexto(texts.pauta.naoPublicada);
+                  }
+                }
+              }}
+            >
+              {true === "Publicada"
+                ? texts.pauta.publicada
+                : texts.pauta.naoPublicada}
+            </Typography>
+          </Box>
+        </Box>
       </Box>
     </Paper>
   );
