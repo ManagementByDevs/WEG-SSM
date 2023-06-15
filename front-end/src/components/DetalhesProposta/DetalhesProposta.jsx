@@ -1,19 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import {
-  Box,
-  Divider,
-  IconButton,
-  Menu,
-  MenuItem,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableHead, TableRow, TextField, Tooltip, Typography, } from "@mui/material";
 
 import LogoWEG from "../../assets/logo-weg.png";
 
@@ -52,8 +38,8 @@ const DetalhesProposta = ({
   parecerInformacao = "",
   parecerDG = "",
   parecerInformacaoDG = "",
-  setDadosProposta = () => {},
-  setFeedbackEditSuccess = () => {},
+  setDadosProposta = () => { },
+  setFeedbackEditSuccess = () => { },
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -286,11 +272,11 @@ const DetalhesProposta = ({
               onClick={() =>
                 lerTexto(
                   texts.detalhesProposta.data +
-                    " " +
-                    DateService.getTodaysDateUSFormat(
-                      DateService.getDateByMySQLFormat(proposta.data),
-                      texts.linguagem
-                    )
+                  " " +
+                  DateService.getTodaysDateUSFormat(
+                    DateService.getDateByMySQLFormat(proposta.data),
+                    texts.linguagem
+                  )
                 )
               }
             >
@@ -370,8 +356,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.solicitante?.nome +
-                      " - " +
-                      proposta.solicitante?.departamento?.nome
+                    " - " +
+                    proposta.solicitante?.departamento?.nome
                   )
                 }
               >
@@ -394,8 +380,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.buSolicitante?.siglaBu +
-                      " - " +
-                      proposta.buSolicitante?.nomeBu
+                    " - " +
+                    proposta.buSolicitante?.nomeBu
                   )
                 }
               >
@@ -418,8 +404,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.gerente?.nome +
-                      " - " +
-                      proposta.gerente?.departamento?.nome
+                    " - " +
+                    proposta.gerente?.departamento?.nome
                   )
                 }
               >
@@ -445,8 +431,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.forum?.siglaForum +
-                        " - " +
-                        proposta.forum?.nomeForum
+                      " - " +
+                      proposta.forum?.nomeForum
                     )
                   }
                 >
@@ -486,8 +472,8 @@ const DetalhesProposta = ({
                 onClick={() =>
                   lerTexto(
                     proposta.secaoTI.siglaSecao +
-                      " - " +
-                      proposta.secaoTI.nomeSecao
+                    " - " +
+                    proposta.secaoTI.nomeSecao
                   )
                 }
               >
@@ -710,13 +696,13 @@ const DetalhesProposta = ({
                       DateService.getDateByMySQLFormat(proposta.inicioExecucao),
                       texts.linguagem
                     ) +
-                      " " +
-                      texts.detalhesProposta.ate +
-                      " " +
-                      DateService.getTodaysDateUSFormat(
-                        DateService.getDateByMySQLFormat(proposta.fimExecucao),
-                        texts.linguagem
-                      )
+                    " " +
+                    texts.detalhesProposta.ate +
+                    " " +
+                    DateService.getTodaysDateUSFormat(
+                      DateService.getDateByMySQLFormat(proposta.fimExecucao),
+                      texts.linguagem
+                    )
                   )
                 }
               >
@@ -747,8 +733,8 @@ const DetalhesProposta = ({
                   onClick={() =>
                     lerTexto(
                       proposta.paybackValor +
-                        " " +
-                        proposta.paybackTipo.toLowerCase()
+                      " " +
+                      proposta.paybackTipo.toLowerCase()
                     )
                   }
                 >
@@ -1077,9 +1063,9 @@ const CustosRow = ({
 
     return valor
       ? valor.toLocaleString(local, {
-          style: "currency",
-          currency: tipoMoeda,
-        })
+        style: "currency",
+        currency: tipoMoeda,
+      })
       : 0.0;
   };
 
@@ -1248,7 +1234,7 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
                 onClick={() =>
                   lerTexto(
                     beneficio.tipoBeneficio[0].toUpperCase() +
-                      beneficio.tipoBeneficio.substring(1).toLowerCase()
+                    beneficio.tipoBeneficio.substring(1).toLowerCase()
                   )
                 }
               >
@@ -1299,8 +1285,8 @@ const Beneficio = ({ beneficio = EntitiesObjectService.beneficio() }) => {
 // Chamar o parecer da comissão
 const ParecerComissao = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
   emAprovacao = false,
@@ -1321,8 +1307,8 @@ const ParecerComissao = ({
 // Chamar o parecer da DG
 const ParecerDG = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
   emAprovacao = false,
@@ -1343,8 +1329,8 @@ const ParecerDG = ({
 // Escrever o parecer da comissão
 const ParecerComissaoInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerComissao = "",
   parecerInformacao = "",
 }) => {
@@ -1372,11 +1358,11 @@ const ParecerComissaoInsertText = ({
             fontSize={FontConfig.medium}
             onClick={() =>
               lerTexto(
-                texts.detalhesProposta.comissao + " " + proposta.forum.nomeForum
+                texts.detalhesProposta.comissao + ": " + proposta.forum.nomeForum
               )
             }
           >
-            {texts.detalhesProposta.comissao} {proposta.forum.nomeForum}:&nbsp;
+            {texts.detalhesProposta.comissao} : {proposta.forum.nomeForum}:&nbsp;
           </Typography>
         </Box>
         {/* Parecer da comissão */}
@@ -1409,11 +1395,6 @@ const ParecerComissaoInsertText = ({
               {texts.detalhesProposta.devolvido}
             </Typography>
           </MenuItem>
-          <MenuItem key={"Business Case"} value={"BUSINESS_CASE"}>
-            <Typography fontSize={FontConfig.medium}>
-              {texts.detalhesProposta.businessCase}
-            </Typography>
-          </MenuItem>
         </TextField>
       </Box>
       <Box className="mt-4">
@@ -1444,10 +1425,9 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
   // useEffect para atualizar o texto do parecer da comissão
   useEffect(() => {
     if (parecerComissaoInformacoesBox.current) {
-      parecerComissaoInformacoesBox.current.innerHTML =
-        proposta.parecerInformacao
-          ? proposta.parecerInformacao
-          : texts.detalhesProposta.semInformacoesAdicionais;
+      parecerComissaoInformacoesBox.current.innerHTML = proposta.parecerInformacao == null || proposta.parecerInformacao == "null"
+        ? texts.detalhesProposta.semInformacoesAdicionais
+        : proposta.parecerInformacao;
     }
   }, []);
 
@@ -1464,8 +1444,6 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
         return texts.detalhesProposta.reprovado;
       case "MAIS_INFORMACOES":
         return texts.detalhesProposta.devolvido;
-      case "BUSINESS_CASE":
-        return texts.detalhesProposta.businessCase;
     }
   };
 
@@ -1478,11 +1456,11 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
             fontSize={FontConfig.medium}
             onClick={() =>
               lerTexto(
-                texts.detalhesProposta.comissao + " " + proposta.forum.nomeForum
+                texts.detalhesProposta.comissao + ": " + proposta.forum.nomeForum
               )
             }
           >
-            {texts.detalhesProposta.comissao} {proposta.forum.nomeForum}:&nbsp;
+            {texts.detalhesProposta.comissao} : {proposta.forum.nomeForum}:&nbsp;
           </Typography>
           {/* Parecer da comissao */}
           <Typography
@@ -1512,8 +1490,8 @@ const ParecerComissaoOnlyRead = ({ proposta = propostaExample }) => {
 // Escrever o parecer da DG
 const ParecerDGInsertText = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  setDadosProposta = () => {},
+  setProposta = () => { },
+  setDadosProposta = () => { },
   parecerDG = "",
   parecerInformacaoDG = "",
 }) => {
@@ -1585,9 +1563,9 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
   // UseEffect utilizado para armazenar o valor do parecer da dg
   useEffect(() => {
     if (parecerDGInformacoesBox.current) {
-      parecerDGInformacoesBox.current.innerHTML = proposta.parecerInformacaoDG
-        ? proposta.parecerInformacaoDG
-        : texts.detalhesProposta.semInformacoesAdicionais;
+      parecerDGInformacoesBox.current.innerHTML = proposta.parecerInformacaoDG == null || proposta.parecerInformacaoDG == "null"
+        ? texts.detalhesProposta.semInformacoesAdicionais
+        : proposta.parecerInformacaoDG;
     }
   }, []);
 
@@ -1633,8 +1611,8 @@ const ParecerDGOnlyRead = ({ proposta = propostaExample }) => {
 // Status da Proposta
 const StatusProposta = ({
   proposta = propostaExample,
-  setProposta = () => {},
-  getCorStatus = () => {},
+  setProposta = () => { },
+  getCorStatus = () => { },
 }) => {
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
@@ -1777,7 +1755,7 @@ const StatusProposta = ({
           "Status Editado para " + getStatusFormatted(newStatus),
           arquivo,
           CookieService.getUser().id
-        ).then(() => {});
+        ).then(() => { });
       });
     });
   };
@@ -1834,7 +1812,7 @@ const StatusProposta = ({
         textoModal={"alterarStatusProposta"}
         textoBotao={"sim"}
         onConfirmClick={editarStatus}
-        onCancelClick={() => {}}
+        onCancelClick={() => { }}
       />
       {/* Menu para a alteração de status */}
       <Menu

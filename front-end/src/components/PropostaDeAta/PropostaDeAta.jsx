@@ -360,12 +360,7 @@ const PropostaDeAta = (props) => {
                 >
                   <MenuItem value="">{texts.propostaDeAta.aprovado}</MenuItem>
                   <MenuItem value={1}>{texts.propostaDeAta.reprovado}</MenuItem>
-                  <MenuItem value={2}>
-                    {texts.propostaDeAta.maisInformacoes}
-                  </MenuItem>
-                  <MenuItem value={3}>
-                    {texts.propostaDeAta.businessCase}
-                  </MenuItem>
+                  <MenuItem value={2}>{texts.propostaDeAta.maisInformacoes}</MenuItem>
                 </Select>
               </FormControl>
             ) : (
