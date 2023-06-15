@@ -76,6 +76,9 @@ const DetalhesPauta = (props) => {
   /** Estado para mostrar o modal de confirmação */
   const [modal, setModal] = useState(false);
 
+  /** UseState para definir se o modal de confirmação para a criação de ata está aberto */
+  const [modalCriarAta, setModalCriarAta] = useState(false);
+
   /** Estado para mostrar o sumário ou não, usado também para atualizar a página com as novas propostas */
   const [isSummaryVisible, setIsSummaryVisible] = useState(true);
 
@@ -304,14 +307,6 @@ const DetalhesPauta = (props) => {
     return isFilled;
   };
 
-  /** Função para abrir o modal de criação de ata */
-  const criarAtaFeedback = () => {
-    if (!isAllFieldsFilled()) {
-      setFeedbackCamposFaltantes(true);
-      return;
-    }
-  };
-
   /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
   const retornarIdsObjetos = (listaObjetos) => {
     let listaNova = [];
@@ -322,38 +317,51 @@ const DetalhesPauta = (props) => {
     return listaNova;
   };
 
-  /** Função que cria uma ata */
-  const criarAta = (numeroSequencial, dataReuniao) => {
-    // Criação do obj ata
-    let ata = {
-      ...pauta,
-      numeroSequencial: numeroSequencial,
-      dataReuniao: dataReuniao,
-    };
+  /** Função que inicia a criação das duas atas */
+  const criarAtas = () => {
 
-    // Se o parecere da comissão não for aprovado, a proposta não é adicionada na ata
-    ata.propostas = ata.propostas.filter((proposta) => {
-      return proposta.parecerComissao == "APROVADO";
+    let propostasAprovadas = pauta.propostas.filter((proposta) => {
+      return (proposta.parecerComissao == "APROVADO" || proposta.parecerComissao == "REPROVADO");
     });
 
-    // Caso não haja propostas aprovadas, não cria a ata
-    if (ata.propostas.length == 0) {
-      handlePautaWithNoApprovedProposals();
-      return;
+    let propostasReprovadas = pauta.propostas.filter((proposta) => {
+      return (proposta.parecerComissao != "APROVADO" && proposta.parecerComissao != "REPROVADO");
+    });
+
+    let ataPublicada = { ...pauta, numeroSequencial: numeroSequencialAta, publicadaDg: false, publicada: true }
+    let ataNaoPublicada = { ...pauta, numeroSequencial: numeroSequencialAta, publicadaDg: true, publicada: false }
+
+    ataPublicada.propostas = propostasAprovadas.filter((proposta) => {
+      return proposta.publicada;
+    });
+
+    ataNaoPublicada.propostas = propostasAprovadas.filter((proposta) => {
+      return !proposta.publicada;
+    });
+
+    atualizarPropostas(propostasReprovadas, null);
+
+    if (ataPublicada.propostas.length > 0) {
+      criarAta(ataPublicada);
+    }
+    if (ataNaoPublicada.propostas.length > 0) {
+      criarAta(ataNaoPublicada);
     }
 
-    // Cria a ata caso tenha propostas aprovadas
-    if (ata.propostas.length > 0) {
-      ata.propostas = retornarIdsObjetos(ata.propostas);
-
-      AtaService.post(ata).then((response) => {
-        updatePropostas(pauta.propostas, response.numeroSequencial);
-        PautaService.delete(pauta.id).then((response) => {
-          feedbackAta();
-        });
-      });
-    }
+    PautaService.delete(pauta.id).then((response) => {
+      feedbackAta();
+    });
   };
+
+  /** Função para criar somente uma ata, recebendo seu objeto como parâmetro */
+  const criarAta = (ata) => {
+    let propostasAta = [...ata.propostas];
+    ata.propostas = retornarIdsObjetos(ata.propostas);
+
+    AtaService.post(ata).then((response) => {
+      atualizarPropostas(propostasAta, response.numeroSequencial);
+    })
+  }
 
   /** Cria a notificacao da demanda */
   const sendNotification = (propostaAux) => {
@@ -386,98 +394,30 @@ const DetalhesPauta = (props) => {
     );
   };
 
-  const handlePautaWithNoApprovedProposals = () => {
-    for (let proposta of pauta.propostas) {
-      PropostaService.atualizacaoAta(
-        proposta.id,
-        proposta.parecerComissao,
-        proposta.parecerInformacao
-      ).then((response) => {
+  /** Função para atualizar o status das propostas e adicionar históricos na criação de uma ata */
+  const atualizarPropostas = (propostas, numeroSequencialAta) => {
+    for (let proposta of propostas) {
+      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then((response) => {
+
         //Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {
           let arquivo = new Blob([file], { type: "application/pdf" });
 
           switch (response.parecerComissao) {
+            case "APROVADO":
+              PropostaService.addHistorico(response.id, "Adicionada na Ata #" + numeroSequencialAta, arquivo, CookieService.getUser().id).then(() => { });
+              break;
             case "REPROVADO":
-              PropostaService.addHistorico(
-                response.id,
-                "Proposta Reprovada",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => { });
-              DemandaService.atualizarStatus(
-                response.demanda.id,
-                "CANCELLED"
-              ).then(() => { });
+              PropostaService.addHistorico(response.id, "Proposta Reprovada", arquivo, CookieService.getUser().id).then(() => { });
+              DemandaService.atualizarStatus(response.demanda.id, "CANCELLED").then(() => { });
               break;
             case "MAIS_INFORMACOES":
-              PropostaService.addHistorico(
-                response.id,
-                "Enviada para Edição",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => { });
+              PropostaService.addHistorico(response.id, "Enviada para Edição", arquivo, CookieService.getUser().id).then(() => { });
               break;
           }
         });
 
         sendNotification(JSON.parse(JSON.stringify(proposta)));
-      });
-    }
-
-    PautaService.delete(pauta.id).then((response) => {
-      feedbackPropostasAtualizadas(); // Caso não tenha propostas aprovadas, atualiza as propostas
-    });
-  };
-
-  /** Função para salvar o histórico da proposta após criação da ata, seguindo um texto diferente dependendo do parecer da comissão */
-  const salvarHistoricoAprovacao = (proposta, idAta) => {
-    //Salvamento do histórico e atualização da demanda
-    ExportPdfService.exportProposta(proposta.id).then((file) => {
-      let arquivo = new Blob([file], { type: "application/pdf" });
-
-      switch (proposta.parecerComissao) {
-        case "REPROVADO":
-          PropostaService.addHistorico(
-            proposta.id,
-            "Proposta Reprovada",
-            arquivo,
-            CookieService.getUser().id
-          ).then(() => { });
-          DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(
-            () => { }
-          );
-          break;
-        case "MAIS_INFORMACOES":
-          PropostaService.addHistorico(
-            proposta.id,
-            "Enviada para Edição",
-            arquivo,
-            CookieService.getUser().id
-          ).then(() => { });
-          break;
-        case "APROVADO":
-          PropostaService.addHistorico(
-            proposta.id,
-            "Adicionada na Ata #" + idAta,
-            arquivo,
-            CookieService.getUser().id
-          ).then(() => { });
-          break;
-      }
-    });
-  };
-
-  /** Atualiza a lista de propostas passada por parâmetro */
-  const updatePropostas = (listaPropostasToUpdate = [], idAta) => {
-    for (let proposta of listaPropostasToUpdate) {
-      PropostaService.atualizacaoAta(
-        proposta.id,
-        proposta.parecerComissao,
-        proposta.parecerInformacao
-      ).then((response) => {
-        sendNotification(JSON.parse(JSON.stringify(proposta)));
-        salvarHistoricoAprovacao(response, idAta);
       });
     }
   };
@@ -495,7 +435,7 @@ const DetalhesPauta = (props) => {
       {/* <ModalCriarAta
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}
-        criarAta={criarAta}
+        criarAta={criarAtas}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
         setFeedbackSemPropostas={setFeedbackSemPropostas}
         listaPropostas={pauta.propostas}
@@ -537,6 +477,17 @@ const DetalhesPauta = (props) => {
         onConfirmClick={deletePropostaFromPauta}
         onCancelClick={() => { }}
       />
+
+      {/* Modal de confirmação para criar uma ata */}
+      <ModalConfirmacao
+        open={modalCriarAta}
+        setOpen={setModalCriarAta}
+        textoModal={"criarAta"}
+        textoBotao={"sim"}
+        onConfirmClick={criarAtas}
+        onCancelClick={() => { }}
+      />
+
       <Box className="p-2 mb-16" sx={{ minWidth: "58rem" }}>
         <Box className="flex w-full relative">
           <Caminho />
@@ -645,7 +596,6 @@ const DetalhesPauta = (props) => {
                 <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
                   Número Sequencial da Ata:
                 </Typography>
-
                 <Typography
                   fontSize={props.fontConfig}
                   sx={{ fontWeight: "800", cursor: "default" }}
@@ -858,7 +808,13 @@ const DetalhesPauta = (props) => {
                 </Box>
                 <Tooltip title={texts.detalhesPauta.criarAta}>
                   <Box
-                    onClick={criarAtaFeedback}
+                    onClick={() => {
+                      if (!isAllFieldsFilled()) {
+                        setFeedbackCamposFaltantes(true);
+                      } else {
+                        setModalCriarAta(true)
+                      }
+                    }}
                     className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                     sx={{
                       backgroundColor: "primary.main",

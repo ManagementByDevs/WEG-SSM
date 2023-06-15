@@ -51,6 +51,8 @@ const ModalConfirmacao = (props) => {
         return texts.modalConfirmacao.mensagensModal.confirmEditar;
       case "publicarAta":
         return texts.modalConfirmacao.mensagensModal.publicarAta;
+      case "criarAta":
+        return texts.modalConfirmacao.mensagensModal.criarAta;
     }
   };
 

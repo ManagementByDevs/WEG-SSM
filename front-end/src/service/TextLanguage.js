@@ -346,6 +346,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "Deseja realmente editar? Essa ação não pode ser revertida!",
             publicarAta: "Deseja publicar a ata?",
+            criarAta: "Deseja criar a ata?"
           },
           mensagensBotao: {
             sim: "Sim",
@@ -1347,6 +1348,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "Do you really want to edit it? This action can't be reversed!",
             publicarAta: "Do you want to publish the minutes?",
+            criarAta: "Do you want to create the minutes?"
           },
           mensagensBotao: {
             sim: "Yes",
@@ -2306,6 +2308,7 @@ const TextLanguage = (linguagem) => {
               "此操作可能会删除一些提案数据！ 您真的要更改其状态吗？",
             confirmEditar: "您真的要编辑它吗？ 此操作不可逆转！",
             publicarAta: "你想公布会议记录吗？",
+            criarAta: "你想创建会议记录吗？"
           },
           mensagensBotao: {
             sim: "是",
@@ -3249,6 +3252,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "¿De verdad quieres editarlo? ¡Esta acción no se puede revertir!",
             publicarAta: "¿Quieres publicar el acta?",
+            criarAta: "¿Quieres crear los minutos?"
           },
           mensagensBotao: {
             sim: "Sí",
