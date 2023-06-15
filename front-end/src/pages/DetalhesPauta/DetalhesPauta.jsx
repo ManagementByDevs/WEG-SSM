@@ -4,9 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { keyframes } from "@emotion/react";
 import VLibras from "@djpfs/react-vlibras";
 
-import { Box, Typography, Button, Divider, Tooltip, IconButton, ButtonBase, Input } from "@mui/material";
+import { Box, Typography, Divider, Tooltip, IconButton, ButtonBase, Input } from "@mui/material";
 
-import InputComLabel from "../../components/InputComLabel/InputComLabel";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
@@ -14,13 +13,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddHomeOutlinedIcon from "@mui/icons-material/AddHomeOutlined";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 
 import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
-import ModalCriarAta from "../../components/ModalCriarAta/ModalCriarAta";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -39,6 +36,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf */
 const DetalhesPauta = (props) => {
+
   /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -78,6 +76,9 @@ const DetalhesPauta = (props) => {
   /** Estado para mostrar o modal de confirmação */
   const [modal, setModal] = useState(false);
 
+  /** UseState para definir se o modal de confirmação para a criação de ata está aberto */
+  const [modalCriarAta, setModalCriarAta] = useState(false);
+
   /** Estado para mostrar o sumário ou não, usado também para atualizar a página com as novas propostas */
   const [isSummaryVisible, setIsSummaryVisible] = useState(true);
 
@@ -100,17 +101,13 @@ const DetalhesPauta = (props) => {
   const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
 
   /** Feedback para quando o usuário deletar uma proposta da pauta */
-  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
-    useState(false);
+  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] = useState(false);
 
   /** Feedback para quando o usuário não preencher todos os campos obrigatórios */
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
-  /** useState utilizado para abrir e fechar o modal de adicionar a pauta */
-  const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
-
   /** useState utilizado para armazenar o número sequencial da ata */
-  const [numeroSequencialAta, setNumeroSequencialAta] = useState("");
+  const [numeroSequencialAta, setNumeroSequencialAta] = useState();
 
   /** useEffect utilizado para mostrar uma proposta */
   useEffect(() => {
@@ -286,31 +283,28 @@ const DetalhesPauta = (props) => {
 
   /** Verifica se todos os campos necessários para criação de uma ata foram preenchidos */
   const isAllFieldsFilled = () => {
-    // Verifica se os pareceres das propostas foram preenchidos
+    // Verifica se os pareceres das propostas foram preenchidos assim como o número sequencial da ata
     let isFilled = pauta.propostas.every((proposta) => {
       if (proposta.parecerComissao == "APROVADO") {
         return (
-          proposta.parecerComissao != null
+          proposta.parecerComissao != null &&
+          numeroSequencialAta != null &&
+          numeroSequencialAta != undefined &&
+          numeroSequencialAta != ""
         );
       } else {
         return (
           proposta.parecerComissao != null &&
           proposta.parecerInformacao != null && // Essa variável sempre começa como null
-          proposta.parecerInformacao != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+          proposta.parecerInformacao != "<p><br></p>" && // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+          numeroSequencialAta != null &&
+          numeroSequencialAta != undefined &&
+          numeroSequencialAta != ""
         );
       }
     });
 
     return isFilled;
-  };
-
-  /** Função para abrir o modal de criação de ata */
-  const abrirModalCriarAta = () => {
-    if (!isAllFieldsFilled()) {
-      setFeedbackCamposFaltantes(true);
-      return;
-    }
-    setOpenModalCriarAta(true);
   };
 
   /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
@@ -323,38 +317,51 @@ const DetalhesPauta = (props) => {
     return listaNova;
   };
 
-  /** Função que cria uma ata */
-  const criarAta = (numeroSequencial, dataReuniao) => {
-    // Criação do obj ata
-    let ata = {
-      ...pauta,
-      numeroSequencial: numeroSequencial,
-      dataReuniao: dataReuniao,
-    };
+  /** Função que inicia a criação das duas atas */
+  const criarAtas = () => {
 
-    // Se o parecere da comissão não for aprovado, a proposta não é adicionada na ata
-    ata.propostas = ata.propostas.filter((proposta) => {
-      return proposta.parecerComissao == "APROVADO";
+    let propostasAprovadas = pauta.propostas.filter((proposta) => {
+      return (proposta.parecerComissao == "APROVADO" || proposta.parecerComissao == "REPROVADO");
     });
 
-    // Caso não haja propostas aprovadas, não cria a ata
-    if (ata.propostas.length == 0) {
-      handlePautaWithNoApprovedProposals();
-      return;
+    let propostasReprovadas = pauta.propostas.filter((proposta) => {
+      return (proposta.parecerComissao != "APROVADO" && proposta.parecerComissao != "REPROVADO");
+    });
+
+    let ataPublicada = { ...pauta, numeroSequencial: numeroSequencialAta, publicadaDg: false, publicada: true }
+    let ataNaoPublicada = { ...pauta, numeroSequencial: numeroSequencialAta, publicadaDg: true, publicada: false }
+
+    ataPublicada.propostas = propostasAprovadas.filter((proposta) => {
+      return proposta.publicada;
+    });
+
+    ataNaoPublicada.propostas = propostasAprovadas.filter((proposta) => {
+      return !proposta.publicada;
+    });
+
+    atualizarPropostas(propostasReprovadas, null);
+
+    if (ataPublicada.propostas.length > 0) {
+      criarAta(ataPublicada);
+    }
+    if (ataNaoPublicada.propostas.length > 0) {
+      criarAta(ataNaoPublicada);
     }
 
-    // Cria a ata caso tenha propostas aprovadas
-    if (ata.propostas.length > 0) {
-      ata.propostas = retornarIdsObjetos(ata.propostas);
-
-      AtaService.post(ata).then((response) => {
-        updatePropostas(pauta.propostas, response.numeroSequencial);
-        PautaService.delete(pauta.id).then((response) => {
-          feedbackAta();
-        });
-      });
-    }
+    PautaService.delete(pauta.id).then((response) => {
+      feedbackAta();
+    });
   };
+
+  /** Função para criar somente uma ata, recebendo seu objeto como parâmetro */
+  const criarAta = (ata) => {
+    let propostasAta = [...ata.propostas];
+    ata.propostas = retornarIdsObjetos(ata.propostas);
+
+    AtaService.post(ata).then((response) => {
+      atualizarPropostas(propostasAta, response.numeroSequencial);
+    })
+  }
 
   /** Cria a notificacao da demanda */
   const sendNotification = (propostaAux) => {
@@ -387,37 +394,25 @@ const DetalhesPauta = (props) => {
     );
   };
 
-  const handlePautaWithNoApprovedProposals = () => {
-    for (let proposta of pauta.propostas) {
-      PropostaService.atualizacaoAta(
-        proposta.id,
-        proposta.parecerComissao,
-        proposta.parecerInformacao
-      ).then((response) => {
+  /** Função para atualizar o status das propostas e adicionar históricos na criação de uma ata */
+  const atualizarPropostas = (propostas, numeroSequencialAta) => {
+    for (let proposta of propostas) {
+      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then((response) => {
+
         //Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {
           let arquivo = new Blob([file], { type: "application/pdf" });
 
           switch (response.parecerComissao) {
+            case "APROVADO":
+              PropostaService.addHistorico(response.id, "Adicionada na Ata #" + numeroSequencialAta, arquivo, CookieService.getUser().id).then(() => { });
+              break;
             case "REPROVADO":
-              PropostaService.addHistorico(
-                response.id,
-                "Proposta Reprovada",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => { });
-              DemandaService.atualizarStatus(
-                response.demanda.id,
-                "CANCELLED"
-              ).then(() => { });
+              PropostaService.addHistorico(response.id, "Proposta Reprovada", arquivo, CookieService.getUser().id).then(() => { });
+              DemandaService.atualizarStatus(response.demanda.id, "CANCELLED").then(() => { });
               break;
             case "MAIS_INFORMACOES":
-              PropostaService.addHistorico(
-                response.id,
-                "Enviada para Edição",
-                arquivo,
-                CookieService.getUser().id
-              ).then(() => { });
+              PropostaService.addHistorico(response.id, "Enviada para Edição", arquivo, CookieService.getUser().id).then(() => { });
               break;
           }
         });
@@ -425,78 +420,27 @@ const DetalhesPauta = (props) => {
         sendNotification(JSON.parse(JSON.stringify(proposta)));
       });
     }
-
-    PautaService.delete(pauta.id).then((response) => {
-      feedbackPropostasAtualizadas(); // Caso não tenha propostas aprovadas, atualiza as propostas
-    });
   };
 
-  /** Função para salvar o histórico da proposta após criação da ata, seguindo um texto diferente dependendo do parecer da comissão */
-  const salvarHistoricoAprovacao = (proposta, idAta) => {
-    //Salvamento do histórico e atualização da demanda
-    ExportPdfService.exportProposta(proposta.id).then((file) => {
-      let arquivo = new Blob([file], { type: "application/pdf" });
-
-      switch (proposta.parecerComissao) {
-        case "REPROVADO":
-          PropostaService.addHistorico(
-            proposta.id,
-            "Proposta Reprovada",
-            arquivo,
-            CookieService.getUser().id
-          ).then(() => { });
-          DemandaService.atualizarStatus(proposta.demanda.id, "CANCELLED").then(
-            () => { }
-          );
-          break;
-        case "MAIS_INFORMACOES":
-          PropostaService.addHistorico(
-            proposta.id,
-            "Enviada para Edição",
-            arquivo,
-            CookieService.getUser().id
-          ).then(() => { });
-          break;
-        case "APROVADO":
-          PropostaService.addHistorico(
-            proposta.id,
-            "Adicionada na Ata #" + idAta,
-            arquivo,
-            CookieService.getUser().id
-          ).then(() => { });
-          break;
-      }
-    });
-  };
-
-  /** Atualiza a lista de propostas passada por parâmetro */
-  const updatePropostas = (listaPropostasToUpdate = [], idAta) => {
-    for (let proposta of listaPropostasToUpdate) {
-      PropostaService.atualizacaoAta(
-        proposta.id,
-        proposta.parecerComissao,
-        proposta.parecerInformacao
-      ).then((response) => {
-        sendNotification(JSON.parse(JSON.stringify(proposta)));
-        salvarHistoricoAprovacao(response, idAta);
-      });
-    }
-  };
+  const salvarNumeroSequencial = (event) => {
+    setNumeroSequencialAta(event.target.value);
+  }
 
   return (
     <FundoComHeader>
       {/* Tradução para libras */}
       <VLibras forceOnload />
 
-      {/* Modal de criar ata */}
-      <ModalCriarAta
+      {/* Modal para criar ata */}
+      {/* <ModalCriarAta
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}
-        criarAta={criarAta}
+        criarAta={criarAtas}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
         setFeedbackSemPropostas={setFeedbackSemPropostas}
         listaPropostas={pauta.propostas}
-      />
+      /> */}
+
       {/* Feedback campos faltantes */}
       <Feedback
         open={feedbackCamposFaltantes}
@@ -533,6 +477,17 @@ const DetalhesPauta = (props) => {
         onConfirmClick={deletePropostaFromPauta}
         onCancelClick={() => { }}
       />
+
+      {/* Modal de confirmação para criar uma ata */}
+      <ModalConfirmacao
+        open={modalCriarAta}
+        setOpen={setModalCriarAta}
+        textoModal={"criarAta"}
+        textoBotao={"sim"}
+        onConfirmClick={criarAtas}
+        onCancelClick={() => { }}
+      />
+
       <Box className="p-2 mb-16" sx={{ minWidth: "58rem" }}>
         <Box className="flex w-full relative">
           <Caminho />
@@ -636,27 +591,24 @@ const DetalhesPauta = (props) => {
                 {pauta.analistaResponsavel.nome}
               </Typography>
 
+              {/* Input para informar o número sequencial da ata */}
               <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
-
-                <Typography
-                  sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
-                  onClick={() => {
-                    lerTexto(
-                      texts.detalhesPauta.analistaResponsavel +
-                      ": " +
-                      pauta.analistaResponsavel.nome
-                    );
-                  }}
-                >
+                <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
                   Número Sequencial da Ata:
+                </Typography>
+                <Typography
+                  fontSize={props.fontConfig}
+                  sx={{ fontWeight: "800", cursor: "default" }}
+                  className="text-red-600"
+                  gutterBottom
+                >
+                  *
                 </Typography>
 
                 <Input
-                  sx={{width: "5rem", marginLeft: "2%"}}
-                  texto={numeroSequencialAta}
-                  saveInputValue={setNumeroSequencialAta}
+                  sx={{ width: "5rem", marginLeft: "2%" }}
+                  onChange={salvarNumeroSequencial}
                 />
-
               </Box>
 
               <Divider sx={{ marginTop: "1%" }} />
@@ -778,17 +730,6 @@ const DetalhesPauta = (props) => {
               </Box>
             )}
 
-            {/* <Box sx={{ marginTop: "2%", marginBottom: "2%", width: "30%", height: "5%", display: "flex", flexDirection: "row" }}>
-              
-              <Input
-                label={"Número Sequencial da Ata: "}
-                placeholder={texts.modalCriarAta.digiteNumeroSequencial}
-                texto={numeroSequencialAta}
-                saveInputValue={setNumeroSequencialAta}
-              />
-              
-            </Box> */}
-
           </Box>
         </Box>
 
@@ -867,8 +808,13 @@ const DetalhesPauta = (props) => {
                 </Box>
                 <Tooltip title={texts.detalhesPauta.criarAta}>
                   <Box
-                    // onClick={feedbackAta}
-                    onClick={abrirModalCriarAta}
+                    onClick={() => {
+                      if (!isAllFieldsFilled()) {
+                        setFeedbackCamposFaltantes(true);
+                      } else {
+                        setModalCriarAta(true)
+                      }
+                    }}
                     className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                     sx={{
                       backgroundColor: "primary.main",
@@ -887,79 +833,6 @@ const DetalhesPauta = (props) => {
                 </Tooltip>
               </Box>
             </Box>
-
-            {/* <Box className="flex justify-end">
-              <Box
-                className={`w-full ${display} items-center mr-1`}
-                sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
-              >
-                <Box className="flex justify-around w-full">
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                      maxHeight: "2.5rem",
-                    }}
-                    variant="contained"
-                    onClick={() => {
-                      if (lendoTexto) {
-                        lerTexto(texts.detalhesPauta.voltar);
-                      } else {
-                        voltar();
-                      }
-                    }}
-                  >
-                    {texts.detalhesPauta.voltar}
-                  </Button>
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                      maxHeight: "2.5rem",
-                    }}
-                    variant="contained"
-                    onClick={voltarSumario}
-                  >
-                    <OtherHousesIcon />
-                  </Button>
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                      maxHeight: "2.5rem",
-                    }}
-                    variant="contained"
-                    onClick={proximo}
-                  >
-                    <Typography>{texts.detalhesPauta.proximo}</Typography>
-                  </Button>
-                </Box>
-              </Box>
-              <Tooltip title={texts.detalhesPauta.navegacao}>
-                <Box
-                  className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "text.white",
-                    fontSize: FontConfig.default,
-                  }}
-                  onClick={() => {
-                    animarBotoes();
-                    setMinimizar(!minimizar);
-                  }}
-                >
-                  <DensitySmallIcon
-                    sx={{
-                      rotate: "90deg",
-                      animation: `${girarIcon} 1.2s forwards`,
-                    }}
-                  ></DensitySmallIcon>
-                </Box>
-              </Tooltip>
-            </Box> */}
           </Box>
         </Box>
       </Box>

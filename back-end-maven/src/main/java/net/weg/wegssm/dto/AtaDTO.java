@@ -20,4 +20,5 @@ public class AtaDTO {
     private List<Proposta> propostas;
     private Usuario analistaResponsavel;
     private Boolean publicadaDg;
+    private Boolean publicada;
 }

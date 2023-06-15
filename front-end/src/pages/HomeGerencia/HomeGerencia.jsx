@@ -146,7 +146,8 @@ const HomeGerencia = () => {
   const [ordenacaoDate, setOrdenacaoDate] = useState([false, false]);
 
   /** Valor do input de pesquisa por título */
-  const [valorPesquisa, setValorPesquisa] = useState("");
+  // const [valorPesquisa, setValorPesquisa] = useState("");
+  let valorPesquisa = "";
 
   /** Variável de referência ao input de pesquisa */
   const inputPesquisa = useRef(null);
@@ -512,7 +513,8 @@ const HomeGerencia = () => {
   /** UseEffect para mudar os parâmetros de pesquisa quando a aba for mudada */
   useEffect(() => {
     if (inputPesquisa?.current?.value) {
-      setValorPesquisa(inputPesquisa?.current?.value);
+      // setValorPesquisa(inputPesquisa?.current?.value);
+      valorPesquisa = inputPesquisa?.current?.value;
     }
     formatarOrdenacao();
     switch (valorAba) {
@@ -693,19 +695,6 @@ const HomeGerencia = () => {
   /** Função para formatar o texto de ordenação para envio como pageable à API */
   const formatarOrdenacao = () => {
     let textoNovo = "";
-    if (valorAba == "4") {
-      textoNovo += "sort=presenteEm,desc&sort=status,desc&";
-    }
-    if (valorAba == "6") {
-      textoNovo += "sort=publicadaDg,asc&";
-    }
-
-    if (ordenacaoScore[1]) {
-      textoNovo += "sort=score,desc&";
-    }
-    if (ordenacaoScore[0]) {
-      textoNovo += "sort=score,asc&";
-    }
     if (ordenacaoTitulo[1]) {
       if (valorAba < 5) {
         textoNovo += "sort=titulo,asc&";
@@ -734,6 +723,19 @@ const HomeGerencia = () => {
         textoNovo += "sort=dataReuniao,desc&";
       }
     }
+    if (valorAba == "4") {
+      textoNovo += "sort=presenteEm,desc&sort=status,desc&";
+    }
+    if (valorAba == "6") {
+      textoNovo += "sort=publicadaDg,asc&";
+    }
+
+    if (ordenacaoScore[1]) {
+      textoNovo += "sort=score,desc&";
+    }
+    if (ordenacaoScore[0]) {
+      textoNovo += "sort=score,asc&";
+    }
     if (textoNovo == "") {
       textoNovo = "sort=id,asc&";
     }
@@ -745,7 +747,9 @@ const HomeGerencia = () => {
   const formatarItens = (listaDemandas) => {
     let listaNova = [];
     for (let demanda of listaDemandas) {
-      if (verificarFiltragemDemanda(demanda)) {
+
+      // Tirar o comentário dessa função quando o filtro estiver funcionando
+      // if (verificarFiltragemDemanda(demanda)) {
         let listaNovaBeneficios = [];
         for (let beneficio of demanda.beneficios) {
           listaNovaBeneficios.push({
@@ -760,7 +764,7 @@ const HomeGerencia = () => {
           proposta: atob(demanda.proposta),
           beneficios: listaNovaBeneficios,
         });
-      }
+      // }
     }
     setListaItens(listaNova);
   };
@@ -915,7 +919,8 @@ const HomeGerencia = () => {
 
   /** Função para salvar o input de pesquisa quando houver alteração */
   const salvarPesquisa = (e) => {
-    setValorPesquisa(e);
+    // setValorPesquisa(e);
+    valorPesquisa = e;
     if (valorPesquisa != "") {
       if (!inputPreenchido) {
         setInputPreenchido(true);
@@ -1196,7 +1201,8 @@ const HomeGerencia = () => {
   /** useEffect utilizado para salvar o valor da pesquisa como o valor do reconhecimento de voz */
   useEffect(() => {
     if (escutar) {
-      setValorPesquisa(palavrasJuntas);
+      // setValorPesquisa(palavrasJuntas);
+      valorPesquisa = palavrasJuntas;
     }
   }, [palavrasJuntas]);
 
@@ -1568,7 +1574,6 @@ const HomeGerencia = () => {
                         fontSize: FontConfig.medium,
                       }}
                       ref={inputPesquisa}
-                      value={valorPesquisa}
                       placeholder={formatarTextoPesquisa()}
                       onKeyDown={(e) => {
                         eventoTeclado(e);
@@ -1584,7 +1589,8 @@ const HomeGerencia = () => {
                           className="hover:cursor-pointer"
                           title={texts.homeGerencia.limparBusca}
                           onClick={() => {
-                            setValorPesquisa("");
+                            // setValorPesquisa("");
+                            valorPesquisa = "";
                             inputPesquisa.current.value = "";
                             pesquisaTitulo();
                             setInputPreenchido(false);
