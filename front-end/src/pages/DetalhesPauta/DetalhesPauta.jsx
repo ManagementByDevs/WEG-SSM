@@ -4,9 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { keyframes } from "@emotion/react";
 import VLibras from "@djpfs/react-vlibras";
 
-import { Box, Typography, Button, Divider, Tooltip, IconButton, ButtonBase, Input } from "@mui/material";
+import { Box, Typography, Divider, Tooltip, IconButton, ButtonBase, Input } from "@mui/material";
 
-import InputComLabel from "../../components/InputComLabel/InputComLabel";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
 import DensitySmallIcon from "@mui/icons-material/DensitySmall";
@@ -14,13 +13,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddHomeOutlinedIcon from "@mui/icons-material/AddHomeOutlined";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 
 import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
-import ModalCriarAta from "../../components/ModalCriarAta/ModalCriarAta";
 import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -39,6 +36,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página para mostrar os detalhes da pauta selecionada, com opção de download para pdf */
 const DetalhesPauta = (props) => {
+
   /** Context para alterar a linguagem do sistema */
   const { texts } = useContext(TextLanguageContext);
 
@@ -100,17 +98,13 @@ const DetalhesPauta = (props) => {
   const [feedbackSemPropostas, setFeedbackSemPropostas] = useState(false);
 
   /** Feedback para quando o usuário deletar uma proposta da pauta */
-  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] =
-    useState(false);
+  const [feedbackPropostaDeletada, setFeedbackPropostaDeletada] = useState(false);
 
   /** Feedback para quando o usuário não preencher todos os campos obrigatórios */
   const [feedbackCamposFaltantes, setFeedbackCamposFaltantes] = useState(false);
 
-  /** useState utilizado para abrir e fechar o modal de adicionar a pauta */
-  const [openModalCriarAta, setOpenModalCriarAta] = useState(false);
-
   /** useState utilizado para armazenar o número sequencial da ata */
-  const [numeroSequencialAta, setNumeroSequencialAta] = useState("");
+  const [numeroSequencialAta, setNumeroSequencialAta] = useState();
 
   /** useEffect utilizado para mostrar uma proposta */
   useEffect(() => {
@@ -286,17 +280,23 @@ const DetalhesPauta = (props) => {
 
   /** Verifica se todos os campos necessários para criação de uma ata foram preenchidos */
   const isAllFieldsFilled = () => {
-    // Verifica se os pareceres das propostas foram preenchidos
+    // Verifica se os pareceres das propostas foram preenchidos assim como o número sequencial da ata
     let isFilled = pauta.propostas.every((proposta) => {
       if (proposta.parecerComissao == "APROVADO") {
         return (
-          proposta.parecerComissao != null
+          proposta.parecerComissao != null &&
+          numeroSequencialAta != null &&
+          numeroSequencialAta != undefined &&
+          numeroSequencialAta != ""
         );
       } else {
         return (
           proposta.parecerComissao != null &&
           proposta.parecerInformacao != null && // Essa variável sempre começa como null
-          proposta.parecerInformacao != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+          proposta.parecerInformacao != "<p><br></p>" && // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+          numeroSequencialAta != null &&
+          numeroSequencialAta != undefined &&
+          numeroSequencialAta != ""
         );
       }
     });
@@ -305,12 +305,11 @@ const DetalhesPauta = (props) => {
   };
 
   /** Função para abrir o modal de criação de ata */
-  const abrirModalCriarAta = () => {
+  const criarAtaFeedback = () => {
     if (!isAllFieldsFilled()) {
       setFeedbackCamposFaltantes(true);
       return;
     }
-    setOpenModalCriarAta(true);
   };
 
   /** Função para formatar uma lista de objetos, retornando somente o id de cada objeto presente, com a lista sendo recebida como parâmetro */
@@ -483,20 +482,25 @@ const DetalhesPauta = (props) => {
     }
   };
 
+  const salvarNumeroSequencial = (event) => {
+    setNumeroSequencialAta(event.target.value);
+  }
+
   return (
     <FundoComHeader>
       {/* Tradução para libras */}
       <VLibras forceOnload />
 
-      {/* Modal de criar ata */}
-      <ModalCriarAta
+      {/* Modal para criar ata */}
+      {/* <ModalCriarAta
         open={openModalCriarAta}
         setOpen={setOpenModalCriarAta}
         criarAta={criarAta}
         setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
         setFeedbackSemPropostas={setFeedbackSemPropostas}
         listaPropostas={pauta.propostas}
-      />
+      /> */}
+
       {/* Feedback campos faltantes */}
       <Feedback
         open={feedbackCamposFaltantes}
@@ -636,27 +640,25 @@ const DetalhesPauta = (props) => {
                 {pauta.analistaResponsavel.nome}
               </Typography>
 
+              {/* Input para informar o número sequencial da ata */}
               <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
-
-                <Typography
-                  sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}
-                  onClick={() => {
-                    lerTexto(
-                      texts.detalhesPauta.analistaResponsavel +
-                      ": " +
-                      pauta.analistaResponsavel.nome
-                    );
-                  }}
-                >
+                <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
                   Número Sequencial da Ata:
                 </Typography>
 
-                <Input
-                  sx={{width: "5rem", marginLeft: "2%"}}
-                  texto={numeroSequencialAta}
-                  saveInputValue={setNumeroSequencialAta}
-                />
+                <Typography
+                  fontSize={props.fontConfig}
+                  sx={{ fontWeight: "800", cursor: "default" }}
+                  className="text-red-600"
+                  gutterBottom
+                >
+                  *
+                </Typography>
 
+                <Input
+                  sx={{ width: "5rem", marginLeft: "2%" }}
+                  onChange={salvarNumeroSequencial}
+                />
               </Box>
 
               <Divider sx={{ marginTop: "1%" }} />
@@ -778,17 +780,6 @@ const DetalhesPauta = (props) => {
               </Box>
             )}
 
-            {/* <Box sx={{ marginTop: "2%", marginBottom: "2%", width: "30%", height: "5%", display: "flex", flexDirection: "row" }}>
-              
-              <Input
-                label={"Número Sequencial da Ata: "}
-                placeholder={texts.modalCriarAta.digiteNumeroSequencial}
-                texto={numeroSequencialAta}
-                saveInputValue={setNumeroSequencialAta}
-              />
-              
-            </Box> */}
-
           </Box>
         </Box>
 
@@ -867,8 +858,7 @@ const DetalhesPauta = (props) => {
                 </Box>
                 <Tooltip title={texts.detalhesPauta.criarAta}>
                   <Box
-                    // onClick={feedbackAta}
-                    onClick={abrirModalCriarAta}
+                    onClick={criarAtaFeedback}
                     className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
                     sx={{
                       backgroundColor: "primary.main",
@@ -887,79 +877,6 @@ const DetalhesPauta = (props) => {
                 </Tooltip>
               </Box>
             </Box>
-
-            {/* <Box className="flex justify-end">
-              <Box
-                className={`w-full ${display} items-center mr-1`}
-                sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
-              >
-                <Box className="flex justify-around w-full">
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                      maxHeight: "2.5rem",
-                    }}
-                    variant="contained"
-                    onClick={() => {
-                      if (lendoTexto) {
-                        lerTexto(texts.detalhesPauta.voltar);
-                      } else {
-                        voltar();
-                      }
-                    }}
-                  >
-                    {texts.detalhesPauta.voltar}
-                  </Button>
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                      maxHeight: "2.5rem",
-                    }}
-                    variant="contained"
-                    onClick={voltarSumario}
-                  >
-                    <OtherHousesIcon />
-                  </Button>
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "text.white",
-                      fontSize: FontConfig.default,
-                      maxHeight: "2.5rem",
-                    }}
-                    variant="contained"
-                    onClick={proximo}
-                  >
-                    <Typography>{texts.detalhesPauta.proximo}</Typography>
-                  </Button>
-                </Box>
-              </Box>
-              <Tooltip title={texts.detalhesPauta.navegacao}>
-                <Box
-                  className="flex justify-center items-center w-12 h-12 rounded-full cursor-pointer delay-120 hover:scale-110 duration-300"
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "text.white",
-                    fontSize: FontConfig.default,
-                  }}
-                  onClick={() => {
-                    animarBotoes();
-                    setMinimizar(!minimizar);
-                  }}
-                >
-                  <DensitySmallIcon
-                    sx={{
-                      rotate: "90deg",
-                      animation: `${girarIcon} 1.2s forwards`,
-                    }}
-                  ></DensitySmallIcon>
-                </Box>
-              </Tooltip>
-            </Box> */}
           </Box>
         </Box>
       </Box>
