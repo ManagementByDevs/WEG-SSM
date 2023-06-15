@@ -28,7 +28,7 @@ const NotificacaoModal = () => {
   const navigate = useNavigate();
 
   /** Context para alterar a linguagem do sistema */
-  const { texts, setTexts } = useContext(TextLanguageContext);
+  const { texts } = useContext(TextLanguageContext);
 
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);

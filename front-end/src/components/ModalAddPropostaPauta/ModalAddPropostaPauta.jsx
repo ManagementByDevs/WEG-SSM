@@ -1,6 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Fade, Divider, Typography, Box, Button, Checkbox, FormGroup, FormControlLabel, Paper, Select, FormControl, MenuItem, TextField, } from "@mui/material";
+import {
+  Modal,
+  Fade,
+  Divider,
+  Typography,
+  Box,
+  Button,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  Paper,
+  Select,
+  FormControl,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 
 import { red } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
@@ -17,10 +32,10 @@ import ForumService from "../../service/forumService";
 import EntitiesObjectService from "../../service/entitiesObjectService";
 import CookieService from "../../service/cookieService";
 import ExportPdfService from "../../service/exportPdfService";
+import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal de adicionar uma proposta em uma pauta
 const ModalAddPropostaPauta = (props) => {
-
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
 
@@ -29,6 +44,9 @@ const ModalAddPropostaPauta = (props) => {
 
   // Contexet para verificar o tema atual
   const { mode } = useContext(TemaContext);
+
+  /** Context para ler o texto da tela */
+  const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
 
   // Navigate utilizado para navegação entre as páginas
   const navigate = useNavigate();
@@ -173,9 +191,7 @@ const ModalAddPropostaPauta = (props) => {
   const [numSequencial, setNumSequencial] = useState("");
 
   // UseState para armazenar a lista de pautas
-  const [listaPautas, setListaPautas] = useState([
-
-  ]);
+  const [listaPautas, setListaPautas] = useState([]);
 
   const [listaComissoes, setListaComissoes] = useState([]);
 
@@ -257,72 +273,77 @@ const ModalAddPropostaPauta = (props) => {
 
   // Função para adicionar a proposta na pauta selecionada
   const addPropostaInPauta = () => {
-    if (props.lendo) {
+    if (lendoTexto) {
       lerTexto(texts.modalAddPropostaPauta.adicionar);
-    } else {
-      let pauta;
-      if (novaPautaSelecionada) {
-        if (!isAllFieldsFilled()) {
-          setFeedbackPreenchaTodosCampos(true);
-          return;
-        }
+      return;
+    }
 
-        pauta = PautaService.createPautaObjectWithPropostas(
-          numSequencial,
-          inputDataReuniao,
-          comissao,
-          getIdAnalistaResponsavel(),
-          [{ id: props.proposta.id }]
-        );
-
-        PautaService.post(pauta).then((res) => {
-          PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then(
-            (response) => {
-
-              // Salvamento de histórico
-              ExportPdfService.exportProposta(response.id).then((file) => {
-                let arquivo = new Blob([file], { type: "application/pdf" });
-                PropostaService.addHistorico(response.id, "Adicionada na Pauta #" + res.numeroSequencial, arquivo, CookieService.getUser().id).then(() => { });
-              });
-            }
-          );
-        });
-      } else {
-        if (!check.includes(true)) {
-          setFeedbackPreenchaTodosCampos(true);
-          return;
-        }
-
-        pauta = listaPautas[indexPautaSelecionada];
-        pauta.propostas = retornarIdsObjetos([
-          ...pauta.propostas,
-          { id: props.proposta.id },
-        ]);
-
-        PautaService.put(pauta).then((res) => {
-          PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then(
-            (response) => {
-              setFeedbackPautaAtualizada(true);
-
-              // Salvamento de histórico
-              ExportPdfService.exportProposta(response.id).then((file) => {
-                let arquivo = new Blob([file], { type: "application/pdf" });
-                PropostaService.addHistorico(
-                  response.id,
-                  "Adicionada na Pauta #" + res.numeroSequencial,
-                  arquivo,
-                  CookieService.getUser().id
-                ).then(() => { });
-              });
-            }
-          );
-        });
+    let pauta;
+    if (novaPautaSelecionada) {
+      if (!isAllFieldsFilled()) {
+        setFeedbackPreenchaTodosCampos(true);
+        return;
       }
 
-      localStorage.setItem("tipoFeedback", "6");
-      handleClose();
-      navigate("/");
+      pauta = PautaService.createPautaObjectWithPropostas(
+        numSequencial,
+        inputDataReuniao,
+        comissao,
+        getIdAnalistaResponsavel(),
+        [{ id: props.proposta.id }]
+      );
+
+      PautaService.post(pauta).then((res) => {
+        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then(
+          (response) => {
+            // Salvamento de histórico
+            ExportPdfService.exportProposta(response.id).then((file) => {
+              let arquivo = new Blob([file], { type: "application/pdf" });
+              PropostaService.addHistorico(
+                response.id,
+                "Adicionada na Pauta #" + res.numeroSequencial,
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
+            });
+          }
+        );
+      });
+    } else {
+      if (!check.includes(true)) {
+        setFeedbackPreenchaTodosCampos(true);
+        return;
+      }
+
+      pauta = listaPautas[indexPautaSelecionada];
+      pauta.propostas = retornarIdsObjetos([
+        ...pauta.propostas,
+        { id: props.proposta.id },
+      ]);
+
+      PautaService.put(pauta).then((res) => {
+        PropostaService.atualizacaoPauta(props.proposta.id, check[0]).then(
+          (response) => {
+            setFeedbackPautaAtualizada(true);
+
+            // Salvamento de histórico
+            ExportPdfService.exportProposta(response.id).then((file) => {
+              let arquivo = new Blob([file], { type: "application/pdf" });
+              PropostaService.addHistorico(
+                response.id,
+                "Adicionada na Pauta #" + res.numeroSequencial,
+                arquivo,
+                CookieService.getUser().id
+              ).then(() => {});
+            });
+          }
+        );
+      });
     }
+
+    localStorage.setItem("tipoFeedback", "6");
+    handleClose();
+    navigate("/");
   };
 
   // Verifica se todos os campos necessários para a criação de uma pauta estão preenchidos
@@ -357,32 +378,6 @@ const ModalAddPropostaPauta = (props) => {
     return isPropostaInPauta;
   };
 
-  // Função que irá setar o texto que será "lido" pela a API
-  const lerTexto = (escrita) => {
-    if (props.lendo) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(escrita);
-
-      const finalizarLeitura = () => {
-        if ("speechSynthesis" in window) {
-          synthesis.cancel();
-        }
-      };
-
-      if (props.lendo && escrita !== "") {
-        if ("speechSynthesis" in window) {
-          synthesis.speak(utterance);
-        }
-      } else {
-        finalizarLeitura();
-      }
-
-      return () => {
-        finalizarLeitura();
-      };
-    }
-  };
-
   return (
     <>
       {/* Feedback proposta atualizada */}
@@ -393,8 +388,6 @@ const ModalAddPropostaPauta = (props) => {
         }}
         status={"erro"}
         mensagem={texts.modalAddPropostaPauta.feedbacks.feedback1}
-        lendo={props.lendo}
-
       />
       {/* Feedback pauta atualizada */}
       <Feedback
@@ -404,8 +397,6 @@ const ModalAddPropostaPauta = (props) => {
         }}
         status={"sucesso"}
         mensagem={texts.modalAddPropostaPauta.feedbacks.feedback2}
-        lendo={props.lendo}
-
       />
       <Modal
         open={open}
@@ -472,9 +463,6 @@ const ModalAddPropostaPauta = (props) => {
                       setIndexPautaSelecionada={setIndexPautaSelecionada}
                       index={index}
                       indexPautaSelecionada={indexPautaSelecionada}
-                      lendo={props.lendo}
-                      texto={props.texto}
-                      setTexto={props.setTexto}
                     />
                   );
                 })

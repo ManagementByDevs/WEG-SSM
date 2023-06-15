@@ -18,6 +18,22 @@ import java.util.Optional;
 public interface PropostaRepository extends JpaRepository<Proposta, Long> {
 
     /**
+     * Método para encontrar uma proposta pelo id
+     *
+     * @param id
+     * @return
+     */
+    Optional<Proposta> findByDemandaId(Long id);
+
+    /**
+     * Método para verificar se existe uma proposta com o id de uma demanda
+     *
+     * @param id
+     * @return
+     */
+    Boolean existsByDemandaId(Long id);
+
+    /**
      * Método para encontrar uma proposta pelo código PPM
      *
      * @param ppm

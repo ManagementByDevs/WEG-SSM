@@ -116,7 +116,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "Em Andamento",
             emDesenvolvimento: "Em Desenvolvimento",
           },
-          motivo: "Motivo",
+          motivo: "Motivo da recusa",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -630,6 +630,7 @@ const TextLanguage = (linguagem) => {
             "Não é possível enviar mensagens, pois o chat foi encerrado.",
           anexoMuitoPesado: "O anexo é muito pesado!",
           miniChatAberto: "Mini chat está aberto!",
+          chatNaoPodeSerReaberto: "O chat não pode ser reaberto!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Ata criada com sucesso!",
@@ -796,6 +797,7 @@ const TextLanguage = (linguagem) => {
             feedback13: "Navegador não é compatível!",
             feedback14: "Proposta Adicionada à Pauta!",
             feedback15: "Data do período de execução inválida!",
+            feedback16: "Pauta criada com sucesso!",
           },
           demandas: "Demandas",
           criarPropostas: "Criar Propostas",
@@ -987,6 +989,12 @@ const TextLanguage = (linguagem) => {
         CaixaTextoQuill: {
           gravarAudio: "Gravar áudio",
         },
+        criarPauta: {
+          addNumeroSequencial: "Adicione um número sequencial!",
+          addDataReuniao: "Adicione uma data de reunião!",
+          addComissao: "Adicione uma comissão!",
+          addProposta: "Adicione pelo menos uma proposta!",
+        },
         rotas: [
           "Login",
           "Criar demanda",
@@ -1119,7 +1127,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "In Progress",
             emDesenvolvimento: "In Development",
           },
-          motivo: "Motive",
+          motivo: "Motive for refusal",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -1601,6 +1609,7 @@ const TextLanguage = (linguagem) => {
             "It is not possible to send messages, because the chat has been closed.",
           anexoMuitoPesado: "The attachment is too heavy!",
           miniChatAberto: "Mini chat is open!",
+          chatNaoPodeSerReaberto: "The chat cannot be reopened!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Minutes created successfully!",
@@ -1763,6 +1772,7 @@ const TextLanguage = (linguagem) => {
             feedback13: "Browser not supported!",
             feedback14: "Proposal Added to the Agenda!",
             feedback15: "Invalid execution period date!",
+            feedback16: "Agenda created successfully!",
           },
           demandas: "Demands",
           criarPropostas: "Create Proposals",
@@ -1955,6 +1965,12 @@ const TextLanguage = (linguagem) => {
         CaixaTextoQuill: {
           gravarAudio: "Record Audio",
         },
+        criarPauta: {
+          addNumeroSequencial: "Add a sequential number!",
+          addDataReuniao: "Add a meeting date!",
+          addComissao: "Add a commission!",
+          addProposta: "Add at least one proposal!",
+        },
         rotas: [
           "Login",
           "Create demand",
@@ -2084,7 +2100,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "进行中",
             emDesenvolvimento: "正在开发中",
           },
-          motivo: "原因",
+          motivo: "原因 拒绝",
         },
         demandaGerencia: {
           backlog: "待办事项",
@@ -2553,6 +2569,7 @@ const TextLanguage = (linguagem) => {
           inputChatEncerrado: "无法发送消息，因为聊天已结束。",
           anexoMuitoPesado: "附件太重了！",
           miniChatAberto: "迷你聊天已打开！",
+          chatNaoPodeSerReaberto: "聊天无法重新打开！",
         },
         detalhesAta: {
           ataCriadaComSucesso: "会议记录创建成功！",
@@ -2702,6 +2719,7 @@ const TextLanguage = (linguagem) => {
             feedback13: "浏览器不支持！",
             feedback14: "添加到议程的提案",
             feedback15: "执行期间的日期无效！",
+            feedback16: "议程创建成功！",
           },
           demandas: "需求",
           criarPropostas: "创建提案",
@@ -2889,6 +2907,12 @@ const TextLanguage = (linguagem) => {
         CaixaTextoQuill: {
           gravarAudio: "录制音频",
         },
+        criarPauta: {
+          addNumeroSequencial: "添加序号！",
+          addDataReuniao: "添加会议日期！",
+          addComissao: "增加佣金！",
+          addProposta: "至少添加一项提案！",
+        },
         rotas: [
           "登录",
           "创造需求",
@@ -3021,7 +3045,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "En Curso",
             emDesenvolvimento: "En Desarollo",
           },
-          motivo: "Motivo",
+          motivo: "Motivo de rechazo",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -3488,6 +3512,7 @@ const TextLanguage = (linguagem) => {
             "No se pueden enviar mensajes porque el chat se ha cerrado.",
           anexoMuitoPesado: "¡El archivo adjunto es demasiado pesado!",
           miniChatAberto: "¡Mini chat abierto!",
+          chatNaoPodeSerReaberto: "¡El chat no puede ser reabierto!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Ata creada con éxito!",
@@ -3656,6 +3681,7 @@ const TextLanguage = (linguagem) => {
             feedback13: "¡Navegador no es compatible!",
             feedback14: "¡Propuesta añadida al orden del día!",
             feedback15: "¡Fecha de ejecución inválida!",
+            feedback16: "¡Agenda creada con éxito!",
           },
           demandas: "Demandas",
           criarPropostas: "Crear Propuestas",
@@ -3853,6 +3879,12 @@ const TextLanguage = (linguagem) => {
         },
         CaixaTextoQuill: {
           gravarAudio: "Grabar Audio",
+        },
+        criarPauta: {
+          addNumeroSequencial: "¡Agregue un número secuencial!",
+          addDataReuniao: "¡Agregue una fecha de reunión!",
+          addComissao: "¡Agregue una comisión!",
+          addProposta: "¡Agregue al menos una propuesta!",
         },
         rotas: [
           "Login",

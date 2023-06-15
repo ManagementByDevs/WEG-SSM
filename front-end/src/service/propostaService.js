@@ -14,6 +14,12 @@ class PropostaService {
       .data;
   }
 
+  async getByDemanda(id) {
+    return (
+      await axios.get(proposta + `/demanda/${id}`, { withCredentials: true })
+    ).data;
+  }
+
   async getByPPM(ppm) {
     return (
       await axios.get(proposta + `/ppm/${ppm}`, { withCredentials: true })
@@ -21,7 +27,6 @@ class PropostaService {
   }
 
   async getPage(params, page) {
-
     let newParams = {};
 
     if (params.titulo != null) {

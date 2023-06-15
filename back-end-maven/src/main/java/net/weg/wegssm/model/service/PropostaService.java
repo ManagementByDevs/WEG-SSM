@@ -51,6 +51,16 @@ public class PropostaService {
     }
 
     /**
+     * Função para buscar uma proposta por demanda
+     *
+     * @param id
+     * @return
+     */
+    public Optional<Proposta> findByDemandaId(Long id) {
+        return propostaRepository.findByDemandaId(id);
+    }
+
+    /**
      * Função para buscar uma proposta por código ppm
      *
      * @param ppm
@@ -69,6 +79,16 @@ public class PropostaService {
      */
     public Boolean existsById(Long id) {
         return propostaRepository.existsById(id);
+    }
+
+    /**
+     * Função para verificar se existe uma proposta com aquela demanda
+     *
+     * @param id
+     * @return
+     */
+    public boolean existsByDemandaId(Long id) {
+        return propostaRepository.existsByDemandaId(id);
     }
 
     /**
