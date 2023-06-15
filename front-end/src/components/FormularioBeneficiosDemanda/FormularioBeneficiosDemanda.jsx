@@ -128,7 +128,7 @@ const FormularioBeneficiosDemanda = (props) => {
             beneficios?.map((beneficio, index) => {
               if (beneficio.visible) {
                 return (
-                  <Box className="mb-5">
+                  <Box className="mb-5" key={index}>
                     <Beneficios
                       key={index}
                       save={salvarDados}

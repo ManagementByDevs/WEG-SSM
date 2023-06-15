@@ -116,7 +116,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "Em Andamento",
             emDesenvolvimento: "Em Desenvolvimento",
           },
-          motivo: "Motivo",
+          motivo: "Motivo da recusa",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -1118,7 +1118,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "In Progress",
             emDesenvolvimento: "In Development",
           },
-          motivo: "Motive",
+          motivo: "Motive for refusal",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -2082,7 +2082,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "进行中",
             emDesenvolvimento: "正在开发中",
           },
-          motivo: "原因",
+          motivo: "原因 拒绝",
         },
         demandaGerencia: {
           backlog: "待办事项",
@@ -3018,7 +3018,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "En Curso",
             emDesenvolvimento: "En Desarollo",
           },
-          motivo: "Motivo",
+          motivo: "Motivo de rechazo",
         },
         demandaGerencia: {
           backlog: "Backlog",

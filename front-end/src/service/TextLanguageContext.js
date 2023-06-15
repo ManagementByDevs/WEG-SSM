@@ -117,7 +117,7 @@ const TextLanguageContext = createContext({
         emAndamento: "Em Andamento",
         emDesenvolvimento: "Em Desenvolvimento",
       },
-      motivo: "Motivo",
+      motivo: "Motivo da recusa",
     },
     demandaGerencia: {
       backlog: "Backlog",

@@ -84,6 +84,20 @@ public class PropostaController {
     }
 
     /**
+     * Função para buscar uma proposta pelo ID de uma demanda, passado como variável
+     * @param id ID da demanda
+     * @return ResponseEntity com a proposta encontrada
+     */
+    @GetMapping("/demanda/{id}")
+    public ResponseEntity<Object> findByDemandaId(@PathVariable(value = "id") Long id) {
+        if (!propostaService.existsByDemandaId(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi encontrada nenhuma proposta com esta demanda.");
+        }
+
+        return ResponseEntity.status(200).body(propostaService.findByDemandaId(id));
+    }
+
+    /**
      * Função para buscar uma proposta pelo seu código PPM
      *
      * @param ppm Código PPM da proposta a ser buscada
