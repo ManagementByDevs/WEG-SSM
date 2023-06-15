@@ -220,7 +220,6 @@ public class AtaController {
         Ata ata = new Ata();
         ata.setVisibilidade(true);
         BeanUtils.copyProperties(ataDto, ata);
-        ata.setPublicadaDg(false);
         ata.setScore(calcularScore(ata));
 
         return ResponseEntity.status(HttpStatus.OK).body(ataService.save(ata));

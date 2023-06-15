@@ -99,6 +99,9 @@ const Chat = (props) => {
 
   /** UseState para feedback de chat encerrado */
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
+  
+  /** UseState para feedback de chat encerrado */
+  const [feedbackNaoPodeAbrir, setFeedbackNaoPodeAbrir] = useState(false);
 
   /** UseState para feedback de chat aberto */
   const [feedbackChatAberto, setFeedbackChatAberto] = useState(false);
@@ -449,26 +452,30 @@ const Chat = (props) => {
   const abrirChat = () => {
     fecharModalAbrirChat();
     ChatService.getByIdChat(idChat).then((e) => {
-      ChatService.put(
-        {
-          ...e,
-          conversaEncerrada: false,
-        },
-        idChat
-      ).then((e) => {
-        setFeedbackChatAberto(true);
-        for (let chat of listaChats) {
-          if (chat.id == idChat) {
-            let aux = [...listaChats];
-            aux.splice(listaChats.indexOf(chat), 1, {
-              ...chat,
-              conversaEncerrada: false,
-            });
-            setListaChats(aux);
-            return;
+      if(e.idProposta.status != "Cancelled") {
+        ChatService.put(
+          {
+            ...e,
+            conversaEncerrada: false,
+          },
+          idChat
+        ).then((e) => {
+          setFeedbackChatAberto(true);
+          for (let chat of listaChats) {
+            if (chat.id == idChat) {
+              let aux = [...listaChats];
+              aux.splice(listaChats.indexOf(chat), 1, {
+                ...chat,
+                conversaEncerrada: false,
+              });
+              setListaChats(aux);
+              return;
+            }
           }
-        }
-      });
+        });
+      } else {
+        setFeedbackNaoPodeAbrir(true);
+      }
     });
   };
 
@@ -477,6 +484,32 @@ const Chat = (props) => {
     for (let chatInput of listaChats) {
       if (chatInput.id == idChat) {
         if (chatInput.conversaEncerrada) {
+          return true;
+        } else if (
+          chatInput.idProposta.status == "Cancelled" &&
+          !chatInput.conversaEncerrada
+        ) {
+          ChatService.getByIdChat(idChat).then((e) => {
+            ChatService.put(
+              {
+                ...e,
+                conversaEncerrada: true,
+              },
+              idChat
+            ).then((e) => {
+              setFeedbackChatEncerrado(true);
+              listaChats.map((chat) => {
+                if (chat.id == idChat) {
+                  let aux = [...listaChats];
+                  aux.splice(listaChats.indexOf(chat), 1, {
+                    ...chat,
+                    conversaEncerrada: true,
+                  });
+                  setListaChats(aux);
+                }
+              });
+            });
+          });
           return true;
         }
       }
@@ -513,20 +546,44 @@ const Chat = (props) => {
   /** Busca os chats do usuário */
   const buscarChats = () => {
     ChatService.getByRemetente(user.usuario.id).then((chatResponse) => {
-      setListaChats([...chatResponse]);
+      if (chatResponse) {
+        for (let chatEspecifico of chatResponse) {
+          if (
+            chatEspecifico.idProposta.status == "Cancelled" &&
+            !chatEspecifico.conversaEncerrada
+          ) {
+            console.log("Tem conversa encerrada");
+            ChatService.getByIdChat(chatEspecifico.id).then((e) => {
+              ChatService.put(
+                {
+                  ...e,
+                  conversaEncerrada: true,
+                },
+                chatEspecifico.id
+              ).then((e) => {
+                listaChats.map((chat) => {
+                  if (chat.id == chatEspecifico.id) {
+                    let aux = [...chatResponse];
+                    aux.splice(chatResponse.indexOf(chat), 1, {
+                      ...chat,
+                      conversaEncerrada: true,
+                    });
+                    setListaChats(aux);
+                  }
+                });
+              });
+            });
+          } else {
+            setListaChats([...chatResponse]);
+          }
+        }
+      }
     });
   };
 
   /** Busca as mensagens do usuário */
   const carregar = () => {
-    if (idChat && !idChat) {
-      MensagemService.getMensagensChat(idChat).then((response) => {
-        setMensagens(response);
-
-        enviar(`/app/weg_ssm/enter/chat/${idChat}`, user.usuario.id);
-      });
-      setDefaultMensagem();
-    } else {
+    if (idChat) {
       MensagemService.getMensagensChat(idChat).then((response) => {
         setMensagens(response);
 
@@ -609,6 +666,15 @@ const Chat = (props) => {
           }}
           status={"sucesso"}
           mensagem={texts.chat.chatEncerrado}
+        />
+        {/* Feedback que chat não pode ser aberto*/}
+        <Feedback
+          open={feedbackNaoPodeAbrir}
+          handleClose={() => {
+            setFeedbackNaoPodeAbrir(false);
+          }}
+          status={"erro"}
+          mensagem={texts.chat.chatNaoPodeSerReaberto}
         />
         {/* Feedback Anexo pesado */}
         <Feedback

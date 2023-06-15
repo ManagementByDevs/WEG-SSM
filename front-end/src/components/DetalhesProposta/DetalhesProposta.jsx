@@ -854,14 +854,16 @@ const DetalhesProposta = ({
                 />
 
                 {/* Parecer da Diretoria */}
-                <ParecerDG
-                  proposta={proposta}
-                  setProposta={setProposta}
-                  setDadosProposta={setDadosProposta}
-                  parecerDG={parecerDG}
-                  parecerInformacaoDG={parecerInformacaoDG}
-                  emAprovacao={emAprovacao}
-                />
+                {!(proposta.publicada == false) ? (
+                  <ParecerDG
+                    proposta={proposta}
+                    setProposta={setProposta}
+                    setDadosProposta={setDadosProposta}
+                    parecerDG={parecerDG}
+                    parecerInformacaoDG={parecerInformacaoDG}
+                    emAprovacao={emAprovacao}
+                  />
+                ) : null}
               </Box>
             </Box>
           </Box>

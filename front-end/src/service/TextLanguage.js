@@ -116,7 +116,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "Em Andamento",
             emDesenvolvimento: "Em Desenvolvimento",
           },
-          motivo: "Motivo",
+          motivo: "Motivo da recusa",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -346,6 +346,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "Deseja realmente editar? Essa ação não pode ser revertida!",
             publicarAta: "Deseja publicar a ata?",
+            criarAta: "Deseja criar a ata?"
           },
           mensagensBotao: {
             sim: "Sim",
@@ -629,6 +630,7 @@ const TextLanguage = (linguagem) => {
             "Não é possível enviar mensagens, pois o chat foi encerrado.",
           anexoMuitoPesado: "O anexo é muito pesado!",
           miniChatAberto: "Mini chat está aberto!",
+          chatNaoPodeSerReaberto: "O chat não pode ser reaberto!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Ata criada com sucesso!",
@@ -1125,7 +1127,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "In Progress",
             emDesenvolvimento: "In Development",
           },
-          motivo: "Motive",
+          motivo: "Motive for refusal",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -1354,6 +1356,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "Do you really want to edit it? This action can't be reversed!",
             publicarAta: "Do you want to publish the minutes?",
+            criarAta: "Do you want to create the minutes?"
           },
           mensagensBotao: {
             sim: "Yes",
@@ -1606,6 +1609,7 @@ const TextLanguage = (linguagem) => {
             "It is not possible to send messages, because the chat has been closed.",
           anexoMuitoPesado: "The attachment is too heavy!",
           miniChatAberto: "Mini chat is open!",
+          chatNaoPodeSerReaberto: "The chat cannot be reopened!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Minutes created successfully!",
@@ -2096,7 +2100,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "进行中",
             emDesenvolvimento: "正在开发中",
           },
-          motivo: "原因",
+          motivo: "原因 拒绝",
         },
         demandaGerencia: {
           backlog: "待办事项",
@@ -2320,6 +2324,7 @@ const TextLanguage = (linguagem) => {
               "此操作可能会删除一些提案数据！ 您真的要更改其状态吗？",
             confirmEditar: "您真的要编辑它吗？ 此操作不可逆转！",
             publicarAta: "你想公布会议记录吗？",
+            criarAta: "你想创建会议记录吗？"
           },
           mensagensBotao: {
             sim: "是",
@@ -2564,6 +2569,7 @@ const TextLanguage = (linguagem) => {
           inputChatEncerrado: "无法发送消息，因为聊天已结束。",
           anexoMuitoPesado: "附件太重了！",
           miniChatAberto: "迷你聊天已打开！",
+          chatNaoPodeSerReaberto: "聊天无法重新打开！",
         },
         detalhesAta: {
           ataCriadaComSucesso: "会议记录创建成功！",
@@ -3039,7 +3045,7 @@ const TextLanguage = (linguagem) => {
             emAndamento: "En Curso",
             emDesenvolvimento: "En Desarollo",
           },
-          motivo: "Motivo",
+          motivo: "Motivo de rechazo",
         },
         demandaGerencia: {
           backlog: "Backlog",
@@ -3270,6 +3276,7 @@ const TextLanguage = (linguagem) => {
             confirmEditar:
               "¿De verdad quieres editarlo? ¡Esta acción no se puede revertir!",
             publicarAta: "¿Quieres publicar el acta?",
+            criarAta: "¿Quieres crear los minutos?"
           },
           mensagensBotao: {
             sim: "Sí",
@@ -3505,6 +3512,7 @@ const TextLanguage = (linguagem) => {
             "No se pueden enviar mensajes porque el chat se ha cerrado.",
           anexoMuitoPesado: "¡El archivo adjunto es demasiado pesado!",
           miniChatAberto: "¡Mini chat abierto!",
+          chatNaoPodeSerReaberto: "¡El chat no puede ser reabierto!",
         },
         detalhesAta: {
           ataCriadaComSucesso: "Ata creada con éxito!",

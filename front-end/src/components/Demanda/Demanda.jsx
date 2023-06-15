@@ -1,18 +1,29 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Box, Typography, Button, Paper } from "@mui/material";
+import { Box, Typography, IconButton, Paper, Tooltip } from "@mui/material";
 
 import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
-import CookieService from "../../service/cookieService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+
+import ChatService from "../../service/chatService";
+import UsuarioService from "../../service/usuarioService";
+import CookieService from "../../service/cookieService";
+
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import propostaService from "../../service/propostaService";
 
 /** Componente de demanda em formato de bloco, usado na listagem de demandas para os usuários.
  * Também possui a função de redirecionar a outra página com detalhes da demanda.
  */
 const Demanda = (props) => {
+  /** Navigate utilizado para navegar para outras páginas */
+  const navigate = useNavigate();
+
   /** Contexto para trocar a linguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -21,6 +32,9 @@ const Demanda = (props) => {
 
   /** Context para ler o texto da tela */
   const { lerTexto, lendoTexto } = useContext(SpeechSynthesisContext);
+
+  // Variável para obter o usuário logado
+  const [user] = useState(UsuarioService.getUserCookies());
 
   /** UseState determinando o estado do modal de motivo recusa */
   const [modalMotivoRecusa, setModalMotivoRecusa] = useState(false);
@@ -51,6 +65,45 @@ const Demanda = (props) => {
     } else {
       return "10rem";
     }
+  };
+
+  // Função para abrir o chat caso o solicitante da demanda/proposta não seja o usuario
+  const entrarChat = (e) => {
+    e.stopPropagation();
+    let chat;
+    propostaService.getByDemanda(props.demanda.id).then((response) => {
+    ChatService.getByPropostaAndUser(response.id, user.usuario.id).then(
+      (response) => {
+        chat = response;
+        if (chat.length > 0) {
+          if (chat[0].conversaEncerrada == true) {
+            ChatService.put(
+              {
+                ...chat[0],
+                conversaEncerrada: false,
+              },
+              chat[0].id
+            ).then((response) => {
+              chat = response;
+            });
+          }
+          navigate(`/chat/${chat[0].id}`);
+        } else {
+          let newChat = {
+            idProposta: { id: props.dados.id },
+            usuariosChat: [
+              { id: user.usuario.id },
+              { id: props.dados.solicitante.id },
+            ],
+          };
+          ChatService.post(newChat).then((response) => {
+            chat = response;
+            navigate(`/chat/${chat.id}`);
+          });
+        }
+      }
+    );
+    });
   };
 
   /** Função para receber a cor do status da demanda de acordo com o status */
@@ -115,9 +168,12 @@ const Demanda = (props) => {
           minHeight: retornaAlturaDemanda(),
           cursor: "pointer",
         }}
-        className={`items-center h-30 text-justify border-t-4 pt-2 pb-3 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
+        className={`items-center h-30 text-justify border-t-4 pt-2 pb-1 px-6 drop-shadow-lg transition duration-200 hover:transition hover:duration-200`}
       >
-        <Box className={`flex justify-between`} sx={{ marginBottom: "1%" }}>
+        <Box
+          className={`flex justify-between`}
+          sx={{ marginBottom: "1%", height: "20%" }}
+        >
           {/* Título da demanda */}
           <Typography
             className="overflow-hidden text-ellipsis whitespace-nowrap"
@@ -182,30 +238,34 @@ const Demanda = (props) => {
             </Box>
           )}
         </Box>
-
-        {/* Proposta da demanda */}
-        <Typography
-          gutterBottom
-          fontSize={FontConfig?.default}
-          color="text.secondary"
-          ref={descricaoDemanda}
-          sx={{
-            maxHeight: "5rem",
-            maxWidth: "70%",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-          onClick={(e) => {
-            if (lendoTexto) {
-              e.stopPropagation();
-              lerTexto(getPropostaFomartted(props.demanda.proposta));
-            }
-          }}
+        <Box sx={{ height: "40%" }}>
+          {/* Proposta da demanda */}
+          <Typography
+            gutterBottom
+            fontSize={FontConfig?.default}
+            color="text.secondary"
+            ref={descricaoDemanda}
+            sx={{
+              maxHeight: "5rem",
+              maxWidth: "70%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+            onClick={(e) => {
+              if (lendoTexto) {
+                e.stopPropagation();
+                lerTexto(getPropostaFomartted(props.demanda.proposta));
+              }
+            }}
+          >
+            {/* Chamando a função de formatação html, passando como parâmetro o texto em html */}
+            {getPropostaFomartted(props.demanda.proposta)}
+          </Typography>
+        </Box>
+        <Box
+          className="flex justify-end items-center"
+          sx={{ marginTop: ".5%", height: "20%" }}
         >
-          {/* Chamando a função de formatação html, passando como parâmetro o texto em html */}
-          {getPropostaFomartted(props.demanda.proposta)}
-        </Typography>
-        <Box className={`flex justify-end`} sx={{ marginTop: ".5%" }}>
           {/* Lógica para mostrar o nome do solicitante que criou a demanda caso o usuário logado não seja ele */}
           {props.demanda?.solicitante?.email !=
           CookieService.getCookie("jwt").sub ? (
@@ -226,20 +286,47 @@ const Demanda = (props) => {
               props.demanda?.status == "BACKLOG_EDICAO") &&
             props.demanda?.solicitante?.email ==
               CookieService.getCookie("jwt").sub ? (
-            <Button
-              id="setimo"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!lendoTexto) {
-                  setModalMotivoRecusa(true);
-                } else {
-                  lerTexto(texts.demanda.motivo);
-                }
-              }}
-              variant="contained"
-            >
-              {texts.demanda.motivo}
-            </Button>
+            <Tooltip title={texts.demanda.motivo}>
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!lendoTexto) {
+                    setModalMotivoRecusa(true);
+                  } else {
+                    lerTexto(texts.demanda.motivo);
+                  }
+                }}
+              >
+                <InfoOutlinedIcon
+                  id="setimo"
+                  className="delay-120 hover:scale-110 duration-300"
+                  sx={{
+                    color: "icon.main",
+                    cursor: "pointer",
+                    fontSize: "30px",
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
+          ) : null}
+
+          {props.demanda?.solicitante?.email ==
+          CookieService.getCookie("jwt").sub ? (
+            props.demanda.forum != null ? (
+              <Tooltip title={texts.demandaGerencia.chat}>
+                <IconButton onClick={entrarChat}>
+                  <ChatOutlinedIcon
+                    id="segundoPropostas"
+                    className="delay-120 hover:scale-110 duration-300"
+                    sx={{
+                      color: "icon.main",
+                      cursor: "pointer",
+                      fontSize: "30px",
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+            ) : null
           ) : null}
         </Box>
       </Paper>

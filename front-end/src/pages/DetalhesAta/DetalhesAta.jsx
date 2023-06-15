@@ -77,9 +77,6 @@ const DetalhesAta = (props) => {
   /** Variável para armazenar o objeto da ata */
   const [ata, setAta] = useState(EntitiesObjectService.ata());
 
-  /** Variável para ativar os botões de visualização */
-  const [actionButtons, setActionButtons] = useState(true);
-
   /** feedback para ata criada com sucesso */
   const [feedbackAta, setFeedbackAta] = useState(false);
 
@@ -133,9 +130,6 @@ const DetalhesAta = (props) => {
     if (location.state?.ata) {
       let aux = location.state.ata;
       setAta(aux);
-      if (aux.propostas[0].parecerDG != null) {
-        setActionButtons(false);
-      }
     }
   }, []);
 
@@ -624,74 +618,74 @@ const DetalhesAta = (props) => {
           </Box>
 
           {/* Botões de navegação entre as propostas da ata */}
-          {actionButtons && (
-            <Box
-              className="flex fixed justify-end items-center"
-              sx={{ width: "22rem", bottom: "20px", right: "20px" }}
-            >
-              <Box className="flex justify-center gap-3">
-                <Box className="flex justify-end">
-                  <Box
-                    className={`${display} items-center mr-1 justify-end`}
-                    sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
-                  >
-                    <Box className="flex gap-2">
-                      <Tooltip title={texts.detalhesAta.voltar}>
-                        <IconButton
-                          color="primary"
-                          size="large"
-                          onClick={voltar}
-                        >
-                          <ArrowBackIosNewIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip>
-                        <IconButton
-                          color="primary"
-                          size="large"
-                          onClick={voltarSumario}
-                        >
-                          <OtherHousesIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={texts.detalhesAta.proximo}>
-                        <IconButton
-                          color="primary"
-                          size="large"
-                          onClick={proximo}
-                        >
-                          <ArrowForwardIosIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
+          <Box
+            className="flex fixed justify-end items-center"
+            sx={{ width: "22rem", bottom: "20px", right: "20px" }}
+          >
+            <Box className="flex justify-center gap-3">
+              <Box className="flex justify-end">
+                <Box
+                  className={`${display} items-center mr-1 justify-end`}
+                  sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
+                >
+                  <Box className="flex gap-2">
+                    <Tooltip title={texts.detalhesAta.voltar}>
+                      <IconButton
+                        color="primary"
+                        size="large"
+                        onClick={voltar}
+                      >
+                        <ArrowBackIosNewIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip>
+                      <IconButton
+                        color="primary"
+                        size="large"
+                        onClick={voltarSumario}
+                      >
+                        <OtherHousesIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={texts.detalhesAta.proximo}>
+                      <IconButton
+                        color="primary"
+                        size="large"
+                        onClick={proximo}
+                      >
+                        <ArrowForwardIosIcon />
+                      </IconButton>
+                    </Tooltip>
                   </Box>
-                  <Tooltip title={texts.detalhesAta.navegacao}>
-                    <ButtonBase
-                      variant="contained"
-                      color="primary"
-                      className="!rounded-full !p-3 hover:!outline-none"
-                      sx={{
-                        backgroundColor: "primary.main",
-                        "&:hover": {
-                          boxShadow:
-                            "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
-                          backgroundColor: "rgb(0, 60, 109)",
-                        },
-                      }}
-                      onClick={() => {
-                        animarBotoes();
-                        setMinimizar(!minimizar);
-                      }}
-                    >
-                      <DensitySmallIcon
-                        sx={{
-                          animation: `${girarIcon} 1.2s forwards`,
-                          color: "white",
-                        }}
-                      />
-                    </ButtonBase>
-                  </Tooltip>
                 </Box>
+                <Tooltip title={texts.detalhesAta.navegacao}>
+                  <ButtonBase
+                    variant="contained"
+                    color="primary"
+                    className="!rounded-full !p-3 hover:!outline-none"
+                    sx={{
+                      backgroundColor: "primary.main",
+                      "&:hover": {
+                        boxShadow:
+                          "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
+                        backgroundColor: "rgb(0, 60, 109)",
+                      },
+                    }}
+                    onClick={() => {
+                      animarBotoes();
+                      setMinimizar(!minimizar);
+                    }}
+                  >
+                    <DensitySmallIcon
+                      sx={{
+                        animation: `${girarIcon} 1.2s forwards`,
+                        color: "white",
+                      }}
+                    />
+                  </ButtonBase>
+                </Tooltip>
+              </Box>
+              {!ata.publicadaDg ? (
                 <Tooltip title={texts.detalhesAta.publicarAta}>
                   <ButtonBase
                     variant="contained"
@@ -710,9 +704,9 @@ const DetalhesAta = (props) => {
                     <DoneOutlinedIcon sx={{ color: "white " }} />
                   </ButtonBase>
                 </Tooltip>
-              </Box>
+              ) : null}
             </Box>
-          )}
+          </Box>
         </Box>
       </Box>
     </FundoComHeader>

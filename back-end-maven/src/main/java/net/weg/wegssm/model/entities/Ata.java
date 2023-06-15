@@ -30,7 +30,7 @@ public class Ata {
     /**
      * Número sequencial da ata
      */
-    @Column(nullable = false, length = 14, unique = true)
+    @Column(nullable = false, length = 14)
     private String numeroSequencial;
 
     /**
