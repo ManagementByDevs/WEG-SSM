@@ -71,8 +71,9 @@ const Demanda = (props) => {
   const entrarChat = (e) => {
     e.stopPropagation();
     let chat;
-    propostaService.getByDemanda(props.demanda.id).then((response) => {
-    ChatService.getByPropostaAndUser(response.id, user.usuario.id).then(
+    propostaService.getByDemanda(props.demanda.id).then((proposta) => {
+      console.log(proposta);
+    ChatService.getByPropostaAndUser(proposta.id, user.usuario.id).then(
       (response) => {
         chat = response;
         if (chat.length > 0) {
@@ -90,10 +91,10 @@ const Demanda = (props) => {
           navigate(`/chat/${chat[0].id}`);
         } else {
           let newChat = {
-            idProposta: { id: props.dados.id },
+            idProposta: { id: proposta.id },
             usuariosChat: [
               { id: user.usuario.id },
-              { id: props.dados.solicitante.id },
+              { id: proposta.analista.id },
             ],
           };
           ChatService.post(newChat).then((response) => {

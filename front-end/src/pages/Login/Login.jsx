@@ -90,7 +90,7 @@ const Login = (props) => {
   return (
     <FundoComHeader lendo={lendoTexto}>
       <Paper
-        sx={{ height: "100%", minHeight: "48rem" }}
+        sx={{ height: "100%"}}
         className="flex justify-center items-center"
       >
         {/* Div Principal com as opções do login */}
@@ -98,7 +98,7 @@ const Login = (props) => {
           sx={{
             backgroundColor: "background.default",
             width: "28%",
-            height: "63%",
+            height: "80%",
             minWidth: "26rem",
           }}
         >
