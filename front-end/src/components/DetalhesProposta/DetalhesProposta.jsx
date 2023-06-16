@@ -344,7 +344,7 @@ const DetalhesProposta = ({
           <Box className="relative">
             {proposta.status != "CANCELLED" &&
               proposta.status != "DONE" &&
-              proposta.presenteEm != "Pauta" && (
+              proposta.presenteEm != "Ata" && (
                 <Tooltip title={texts.detalhesProposta.editar}>
                   <Box className="absolute -right-8 -top-2">
                     <IconButton
@@ -1672,7 +1672,9 @@ const StatusProposta = ({
 
   // Abre o modal para alterar o status da proposta
   const handleOpenModalStatus = () => {
-    setModalStatus(true);
+    if (proposta.status != "CANCELLED") {
+      setModalStatus(true);
+    }
   };
 
   // Fecha o modal para alterar o status da proposta
