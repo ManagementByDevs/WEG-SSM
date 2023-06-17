@@ -77,17 +77,6 @@ const Demanda = (props) => {
       (response) => {
         chat = response;
         if (chat.length > 0) {
-          if (chat[0].conversaEncerrada == true) {
-            ChatService.put(
-              {
-                ...chat[0],
-                conversaEncerrada: false,
-              },
-              chat[0].id
-            ).then((response) => {
-              chat = response;
-            });
-          }
           navigate(`/chat/${chat[0].id}`);
         } else {
           let newChat = {
