@@ -122,7 +122,7 @@ const Home = (props) => {
   const [valorAba, setValorAba] = useState("1");
 
   /** Valor do input de pesquisa por título da demanda */
-  const [valorPesquisa, setValorPesquisa] = useState("");
+  let valorPesquisa = "";
 
   /** Variável de referência ao input de pesquisa */
   const inputPesquisa = useRef(null);
@@ -445,7 +445,7 @@ const Home = (props) => {
 
   /** Função para salvar o valor do input de pesquisa quando houver alteração */
   const salvarPesquisa = (e) => {
-    setValorPesquisa(e.target?.value);
+    valorPesquisa = e.target?.value;
     if (valorPesquisa != "") {
       if (!inputPreenchido) {
         setInputPreenchido(true);
@@ -524,7 +524,7 @@ const Home = (props) => {
   /** useEffect utilizado para atualizar o input de pesquisa com o texto reconhecido */
   useEffect(() => {
     if (localClique == "demanda") {
-      setValorPesquisa(palavrasJuntas);
+      valorPesquisa = palavrasJuntas;
     }
   }, [palavrasJuntas]);
 
@@ -684,11 +684,11 @@ const Home = (props) => {
                         fontSize: FontConfig?.medium,
                       }}
                       ref={inputPesquisa}
-                      value={valorPesquisa}
                       contentEditable
                       placeholder={texts.home.pesquisarPorTituloOuNumero}
                       onKeyDown={(e) => {
                         if (e.key == "Enter") {
+                          valorPesquisa = inputPesquisa.current.value;
                           pesquisaTitulo();
                         }
                       }}
@@ -704,7 +704,7 @@ const Home = (props) => {
                           className="hover:cursor-pointer"
                           title={texts.homeGerencia.limparBusca}
                           onClick={() => {
-                            setValorPesquisa("");
+                            valorPesquisa = "";
                             inputPesquisa.current.value = "";
                             pesquisaTitulo();
                             setInputPreenchido(false);
@@ -750,7 +750,10 @@ const Home = (props) => {
                       {/* Ícone de pesquisa */}
                       <Tooltip title={texts.home.pesquisar}>
                         <SearchOutlinedIcon
-                          onClick={pesquisaTitulo}
+                          onClick = {() => {
+                            valorPesquisa = inputPesquisa.current.value;
+                            pesquisaTitulo();
+                          }}
                           className="hover:cursor-pointer"
                           sx={{ color: "text.secondary" }}
                         />
