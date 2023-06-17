@@ -921,6 +921,7 @@ const HomeGerencia = () => {
   /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter" */
   const eventoTeclado = (e) => {
     if (e.key == "Enter") {
+      valorPesquisa = inputPesquisa.current.value;
       pesquisaTitulo();
     }
   };
@@ -1654,6 +1655,7 @@ const HomeGerencia = () => {
                         className="hover:cursor-pointer"
                         title={texts.homeGerencia.pesquisar}
                         onClick={() => {
+                          valorPesquisa = inputPesquisa.current.value;
                           pesquisaTitulo();
                         }}
                       >
