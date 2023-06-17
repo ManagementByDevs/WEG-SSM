@@ -54,6 +54,7 @@ const DetalhesProposta = ({
   parecerInformacaoDG = "",
   setDadosProposta = () => {},
   setFeedbackEditSuccess = () => {},
+  onlyView = false,
 }) => {
   // Context para alterar o tamanho da fonte
   const { FontConfig } = useContext(FontContext);
@@ -259,11 +260,13 @@ const DetalhesProposta = ({
         sx={{ width: "55rem", borderTopColor: "primary.main" }}
       >
         {/* Componente da bandeirinha do status da proposta */}
-        <StatusProposta
-          proposta={proposta}
-          setProposta={editProposta}
-          getCorStatus={getCorStatus}
-        />
+        {!onlyView && (
+          <StatusProposta
+            proposta={proposta}
+            setProposta={editProposta}
+            getCorStatus={getCorStatus}
+          />
+        )}
         {/* Box header */}
         <Box className="w-full flex justify-between">
           <Box className="flex gap-4">
@@ -342,7 +345,8 @@ const DetalhesProposta = ({
 
           {/* Box Informações gerais */}
           <Box className="relative">
-            {proposta.status != "CANCELLED" &&
+            {!onlyView &&
+              proposta.status != "CANCELLED" &&
               proposta.status != "DONE" &&
               proposta.presenteEm != "Ata" && (
                 <Tooltip title={texts.detalhesProposta.editar}>

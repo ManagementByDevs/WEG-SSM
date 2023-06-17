@@ -9,18 +9,19 @@ import {
   Input,
   Select,
   MenuItem,
-  IconButton,
   Button,
+  Dialog,
+  DialogContent,
+  TextField,
 } from "@mui/material";
 
-import RemoveIcon from "@mui/icons-material/Remove";
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import { ClipLoader } from "react-spinners";
 
 import Feedback from "../Feedback/Feedback";
 
 import AsteriscoObrigatorio from "./SubComponents/AsteriscoObrigatorio";
 import InputCustom from "./SubComponents/InputCustom";
-import PropostaItemList from "./SubComponents/PropostaItemList";
+import PropostaList from "./SubComponents/PropostaList";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -33,6 +34,8 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 import CookieService from "../../service/cookieService";
 import PautaService from "../../service/pautaService";
 import ExportPdfService from "../../service/exportPdfService";
+import DetalhesProposta from "../DetalhesProposta/DetalhesProposta";
+import { useDeferredValue } from "react";
 
 const CriarPautaContent = () => {
   /** Context para alterar o tamanho da fonte */
@@ -94,6 +97,11 @@ const CriarPautaContent = () => {
     EntitiesObjectService.proposta(),
   ]);
 
+  /** Variável para controlar o input de pesquisa */
+  const [search, setSearch] = useState("");
+
+  const deferredSearch = useDeferredValue(search);
+
   /** Lista de comissões disponíveis */
   const [listaComissoes, setListaComissoes] = useState([
     EntitiesObjectService.forum,
@@ -110,12 +118,16 @@ const CriarPautaContent = () => {
   /** Texto que vai aparecer no feedback de erro na criação da pauta */
   const [feedbackTexto, setFeedbackTexto] = useState("");
 
+  /** Controla o estado do loading component */
+  const [isLoading, setIsLoading] = useState(true);
+
   /** Procura as propostas que podem ser colocadas na pauta do banco */
   const getPropostas = () => {
     PropostaService.getPage(
       params,
       ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
     ).then((data) => {
+      setIsLoading(false);
       setListaPropostasData(data.content);
     });
   };
@@ -134,24 +146,6 @@ const CriarPautaContent = () => {
     if (list[0].id == 0) return true;
 
     return false;
-  };
-
-  /** Remove quaisquer itens com o mesmo ID da lista passada por parâmetro */
-  const removeItemFromList = (item, setList) => {
-    setList((list) => list.filter((listItem) => listItem.id !== item.id));
-  };
-
-  /** Troca o status publicada da proposta passada por parâmetro */
-  const togglePropostaPublished = (
-    proposta = EntitiesObjectService.proposta()
-  ) => {
-    if (proposta.id == 0) return;
-
-    const listAux = [...listaPropostas];
-    const propostaIndex = listAux.findIndex((item) => item.id == proposta.id);
-    listAux[propostaIndex].publicada = !listAux[propostaIndex].publicada;
-
-    setListaPropostas(listAux);
   };
 
   /** Verifica se a pauta é válida para criação */
@@ -193,10 +187,8 @@ const CriarPautaContent = () => {
     e.preventDefault();
   };
 
-  /** Pega a proposta que o usuário está arrastando para o elemento HTML */
-  const onPropostaDrop = (e) => {
-    e.preventDefault();
-    const propostaAux = JSON.parse(e.dataTransfer.getData("Text"));
+  /** Adiciona a proposta na lista de propostas a serem apreciadas */
+  const addProposta = (propostaAux = EntitiesObjectService.proposta()) => {
     let listAux = [];
 
     if (isEmpty(listaPropostas)) {
@@ -209,6 +201,14 @@ const CriarPautaContent = () => {
 
     handleListPropostasData(listAux, listaPropostasData);
     setListaPropostas(listAux);
+  };
+
+  /** Pega a proposta que o usuário está arrastando para o elemento HTML */
+  const onPropostaDrop = (e) => {
+    e.preventDefault();
+    const propostaAux = JSON.parse(e.dataTransfer.getData("Text"));
+
+    addProposta(propostaAux);
   };
 
   /** Handler par quando for captado algum som do microfone */
@@ -244,6 +244,11 @@ const CriarPautaContent = () => {
     );
 
     setListaPropostasData(novaListaPropostasData);
+  };
+
+  /** Handler para atualizar state de pesquisa */
+  const handleOnSearchChange = (e) => {
+    setSearch(e.target.value);
   };
 
   /** Handler para quando for clicado para criar uma pauta */
@@ -290,9 +295,9 @@ const CriarPautaContent = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Número seq:", numeroSequencial);
-    console.log("Data:", dataReuniao == "");
-    console.log("Forum:", comissao);
+    // console.log("Número seq:", numeroSequencial);
+    // console.log("Data:", dataReuniao == "");
+    // console.log("Forum:", comissao);
   }, [numeroSequencial, dataReuniao, comissao]);
 
   useEffect(() => {
@@ -301,6 +306,7 @@ const CriarPautaContent = () => {
 
   useEffect(() => {
     // console.log("Lista de propostas:", listaPropostas);
+
     PropostaService.getPage(
       params,
       ordenacao + "size=" + tamanhoPagina + "&page=" + 0
@@ -318,6 +324,7 @@ const CriarPautaContent = () => {
         status={"erro"}
         mensagem={feedbackTexto}
       />
+
       <Box className="w-full flex justify-between">
         <Typography
           fontSize={FontConfig.smallTitle}
@@ -334,10 +341,10 @@ const CriarPautaContent = () => {
       </Box>
       <Divider />
 
-      <Box className="w-full gap-4 flex mt-4">
+      <Box className="w-full gap-4 flex mt-4 mb-4">
         {/* Formulário pauta */}
         <Box className="w-1/2">
-          <Box className="w-full flex justify-between">
+          <Box className="w-full gap-2 flex justify-between">
             {/* Numero sequencial */}
             <Box className="w-2/3">
               <Typography
@@ -358,7 +365,7 @@ const CriarPautaContent = () => {
             </Box>
             {/* Data da reunião  */}
             <Box className="w-1/3 flex justify-end">
-              <Box>
+              <Box className="w-full">
                 <Typography
                   fontSize={FontConfig.default}
                   fontWeight={500}
@@ -368,9 +375,9 @@ const CriarPautaContent = () => {
                   <AsteriscoObrigatorio />
                 </Typography>
                 <Input
-                  fullWidth
                   value={dataReuniao}
                   onChange={handleOnDataChange}
+                  fullWidth
                   type="datetime-local"
                   sx={{ colorScheme: mode }}
                 />
@@ -423,35 +430,12 @@ const CriarPautaContent = () => {
             </Typography>
             <Box className="border h-96 rounded">
               {!isEmpty(listaPropostas) ? (
-                listaPropostas.map((proposta, index) => {
-                  return (
-                    <PropostaItemList key={index} proposta={proposta}>
-                      <Box className="flex items-center gap-4">
-                        <Box className="flex items-center gap-1">
-                          <Typography fontSize={FontConfig.medium}>
-                            {proposta.publicada ? "Publicada" : "Não Publicada"}
-                          </Typography>
-                          <IconButton
-                            size="small"
-                            color="primary"
-                            onClick={() => togglePropostaPublished(proposta)}
-                          >
-                            <SwapHorizIcon />
-                          </IconButton>
-                        </Box>
-                        <IconButton
-                          size="small"
-                          color="primary"
-                          onClick={() => {
-                            removeItemFromList(proposta, setListaPropostas);
-                          }}
-                        >
-                          <RemoveIcon />
-                        </IconButton>
-                      </Box>
-                    </PropostaItemList>
-                  );
-                })
+                <PropostaList
+                  listaPropostas={listaPropostas}
+                  setListaPropostas={setListaPropostas}
+                  searchText={deferredSearch}
+                  inDiscussion
+                />
               ) : (
                 <Box className="w-full h-full flex justify-center items-center">
                   <Typography
@@ -470,17 +454,30 @@ const CriarPautaContent = () => {
         </Box>
         {/* Lista de propostas */}
         <Box className="w-1/2 border rounded p-2">
-          {!isEmpty(listaPropostasData) ? (
-            listaPropostasData.map((proposta, index) => {
-              return (
-                <PropostaItemList
-                  key={index}
-                  onDragStart={handleOnPropostaDragStart}
+          {isLoading ? (
+            <Box className="w-full mt-4 flex justify-center">
+              <ClipLoader color="#00579D" size={80} />
+            </Box>
+          ) : !isEmpty(listaPropostasData) ? (
+            <Box className="flex flex-col gap-2">
+              <TextField
+                value={search}
+                onChange={handleOnSearchChange}
+                label="Pesquisar por nome ou PPM"
+                fullWidth
+                variant="standard"
+              />
+              <Box>
+                <PropostaList
                   draggable
-                  proposta={{ ...proposta, publicada: false }} // Seta como false pq vem como null
+                  onDragStart={handleOnPropostaDragStart}
+                  listaPropostas={listaPropostasData}
+                  setListaPropostas={setListaPropostasData}
+                  addProposta={addProposta}
+                  searchText={deferredSearch}
                 />
-              );
-            })
+              </Box>
+            </Box>
           ) : (
             <Box className="w-full h-full flex justify-center items-center">
               <Typography
