@@ -123,7 +123,7 @@ const Pautas = (props) => {
           ) : (
             <Tooltip
               title={
-                isApreciada ? texts.pauta.jaApreciada : texts.pauta.naoApreciada
+                isApreciada || !props.dados.publicada ? texts.pauta.jaApreciada : texts.pauta.naoApreciada
               }
             >
               <Box
