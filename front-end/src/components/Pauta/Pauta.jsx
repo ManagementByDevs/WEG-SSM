@@ -187,7 +187,7 @@ const Pautas = (props) => {
               className="overflow-hidden text-ellipsis whitespace-nowrap"
               fontSize={FontConfig.default}
               fontWeight="600"
-              sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
+              sx={{ color: "text.secondary", marginLeft: "5px"}}
               onClick={(e) => {
                 if (lendoTexto) {
                   e.stopPropagation();
