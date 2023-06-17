@@ -756,8 +756,7 @@ const HomeGerencia = () => {
     let listaNova = [];
     for (let demanda of listaDemandas) {
 
-      // Tirar o comentário dessa função quando o filtro estiver funcionando
-      // if (verificarFiltragemDemanda(demanda)) {
+      if (verificarFiltragemDemanda(demanda)) {
         let listaNovaBeneficios = [];
         for (let beneficio of demanda.beneficios) {
           listaNovaBeneficios.push({
@@ -772,7 +771,7 @@ const HomeGerencia = () => {
           proposta: atob(demanda.proposta),
           beneficios: listaNovaBeneficios,
         });
-      // }
+      }
     }
     setListaItens(listaNova);
   };
@@ -921,6 +920,7 @@ const HomeGerencia = () => {
   /** Função para "ouvir" um evento de teclado no input de pesquisa e fazer a pesquisa caso seja a tecla "Enter" */
   const eventoTeclado = (e) => {
     if (e.key == "Enter") {
+      valorPesquisa = inputPesquisa.current.value;
       pesquisaTitulo();
     }
   };
@@ -1654,6 +1654,7 @@ const HomeGerencia = () => {
                         className="hover:cursor-pointer"
                         title={texts.homeGerencia.pesquisar}
                         onClick={() => {
+                          valorPesquisa = inputPesquisa.current.value;
                           pesquisaTitulo();
                         }}
                       >

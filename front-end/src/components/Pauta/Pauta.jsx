@@ -37,7 +37,7 @@ const Pautas = (props) => {
 
   // Função que retorna a cor do status da ata
   const getStatusColor = () => {
-    if (isApreciada) return "success.main";
+    if (isApreciada || !props.dados.publicada) return "success.main";
     return "#C4C4C4";
   };
 
@@ -50,12 +50,12 @@ const Pautas = (props) => {
 
   // Função que retorna o tamanho do componente que conterá o texto
   const retornaTamanhoTexto = () => {
-    if(true == "Publicada") {
-      return "5rem"
+    if (props.dados.publicada) {
+      return "5rem";
     } else {
-      return "7rem"
+      return "7rem";
     }
-  }
+  };
 
   return (
     <Paper
@@ -68,7 +68,6 @@ const Pautas = (props) => {
           backgroundColor: "hover.main",
         },
         borderColor: "primary.main",
-        minWidth: "500px",
         cursor: "pointer",
       }}
     >
@@ -124,7 +123,7 @@ const Pautas = (props) => {
           ) : (
             <Tooltip
               title={
-                isApreciada ? texts.pauta.jaApreciada : texts.pauta.naoApreciada
+                isApreciada || !props.dados.publicada ? texts.pauta.jaApreciada : texts.pauta.naoApreciada
               }
             >
               <Box
@@ -136,8 +135,10 @@ const Pautas = (props) => {
         </Box>
       </Box>
       <Box className="w-full flex">
-        <Box>
-          <Box className="flex items-center mt-3">
+        <Box sx={{width: "80%"}}>
+          <Box
+            className="flex items-center mt-3"
+          >
             <Typography
               fontSize={FontConfig.medium}
               fontWeight="600"
@@ -154,7 +155,10 @@ const Pautas = (props) => {
               className="overflow-hidden text-ellipsis whitespace-nowrap"
               fontSize={FontConfig.default}
               fontWeight="600"
-              sx={{ color: "text.secondary", marginLeft: "5px" }}
+              sx={{
+                color: "text.secondary",
+                marginLeft: "5px",
+              }}
               onClick={(e) => {
                 if (lendoTexto) {
                   e.stopPropagation();
@@ -183,7 +187,7 @@ const Pautas = (props) => {
               className="overflow-hidden text-ellipsis whitespace-nowrap"
               fontSize={FontConfig.default}
               fontWeight="600"
-              sx={{ color: "text.secondary", marginLeft: "5px", width: "60%" }}
+              sx={{ color: "text.secondary", marginLeft: "5px"}}
               onClick={(e) => {
                 if (lendoTexto) {
                   e.stopPropagation();
@@ -195,35 +199,37 @@ const Pautas = (props) => {
             </Typography>
           </Box>
         </Box>
-        <Box className="w-full flex justify-end">
-          <Box className="text-center" sx={{ width: retornaTamanhoTexto }}>
-            {/* Texto para dizer se está em ata ou em pauta */}
-            <Typography
-              fontSize={FontConfig.small}
-              fontWeight="600"
-              sx={{
-                color: "text.primary",
-                backgroundColor: "divider.claro",
-                borderRadius: "5px",
-                padding: "2px 5px",
-              }}
-              onClick={(e) => {
-                if (lendoTexto) {
-                  e.stopPropagation();
-                  if (true == "Publicada") {
-                    lerTexto(texts.pauta.publicada);
-                  } else {
-                    lerTexto(texts.pauta.naoPublicada);
+        {props.tipo == "ata" ? (
+          <Box className="w-full flex justify-end">
+            <Box className="text-center" sx={{ width: retornaTamanhoTexto }}>
+              {/* Texto para dizer se está em ata ou em pauta */}
+              <Typography
+                fontSize={FontConfig.small}
+                fontWeight="600"
+                sx={{
+                  color: "text.primary",
+                  backgroundColor: "divider.claro",
+                  borderRadius: "5px",
+                  padding: "2px 5px",
+                }}
+                onClick={(e) => {
+                  if (lendoTexto) {
+                    e.stopPropagation();
+                    if (props.dados.publicada) {
+                      lerTexto(texts.pauta.publicada);
+                    } else {
+                      lerTexto(texts.pauta.naoPublicada);
+                    }
                   }
-                }
-              }}
-            >
-              {true === "Publicada"
-                ? texts.pauta.publicada
-                : texts.pauta.naoPublicada}
-            </Typography>
+                }}
+              >
+                {props.dados.publicada
+                  ? texts.pauta.publicada
+                  : texts.pauta.naoPublicada}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        ) : null}
       </Box>
     </Paper>
   );

@@ -99,7 +99,7 @@ const Chat = (props) => {
 
   /** UseState para feedback de chat encerrado */
   const [feedbackChatEncerrado, setFeedbackChatEncerrado] = useState(false);
-  
+
   /** UseState para feedback de chat encerrado */
   const [feedbackNaoPodeAbrir, setFeedbackNaoPodeAbrir] = useState(false);
 
@@ -452,7 +452,7 @@ const Chat = (props) => {
   const abrirChat = () => {
     fecharModalAbrirChat();
     ChatService.getByIdChat(idChat).then((e) => {
-      if(e.idProposta.status != "Cancelled") {
+      if (e.idProposta.status != "Cancelled") {
         ChatService.put(
           {
             ...e,
@@ -484,10 +484,11 @@ const Chat = (props) => {
     for (let chatInput of listaChats) {
       if (chatInput.id == idChat) {
         if (chatInput.conversaEncerrada) {
+          console.log("entrou");
           return true;
         } else if (
-          chatInput.idProposta.status == "Cancelled" &&
-          !chatInput.conversaEncerrada
+          chatInput.idProposta.status == "CANCELLED" ||
+          chatInput.idProposta.status == "Cancelled"
         ) {
           ChatService.getByIdChat(idChat).then((e) => {
             ChatService.put(
@@ -497,7 +498,6 @@ const Chat = (props) => {
               },
               idChat
             ).then((e) => {
-              setFeedbackChatEncerrado(true);
               listaChats.map((chat) => {
                 if (chat.id == idChat) {
                   let aux = [...listaChats];
@@ -694,12 +694,15 @@ const Chat = (props) => {
           status={"sucesso"}
           mensagem={texts.chat.chatReaberto}
         />
-        <Box className="p-2">
+        <Box className="p-2" sx={{ height: "94%" }}>
           <Caminho />
-          <Box className="w-full flex justify-center items-center">
+          <Box
+            className="w-full h-full flex justify-center items-center"
+            sx={{ height: "100%" }}
+          >
             <Box
               className="flex justify-evenly items-center rounded border mt-4"
-              sx={{ width: "100rem", height: "50rem" }}
+              sx={{ width: "100rem", height: "100%" }}
             >
               <Box
                 className="flex items-center rounded border flex-col gap-3 overflow-y-auto overflow-x-hidden"
@@ -1135,7 +1138,10 @@ const Chat = (props) => {
                           {listaChats.some(
                             (chat) =>
                               chat.id == idChat &&
-                              chat.idProposta.solicitante.id != user.usuario.id
+                              (chat.idProposta.solicitante.id !=
+                                user.usuario.id &&
+                                (chat.idProposta.status != "CANCELLED" &&
+                                  chat.idProposta.status != "Cancelled"))
                           ) && (
                             <>
                               <div className="w-full flex justify-center">

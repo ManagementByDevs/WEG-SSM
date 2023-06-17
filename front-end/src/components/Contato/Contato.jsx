@@ -47,11 +47,11 @@ const Contato = ({
         <Box
           id="segundo"
           onClick={onClick}
-          className="flex justify-evenly items-center rounded-lg border "
+          className="flex justify-evenly items-center rounded-lg border p-1"
           sx={{
             width: "90%",
             minWidth: "195px",
-            minHeight: "8%",
+            minHeight: "10%",
             cursor: "pointer",
             backgroundColor: corSelecionado,
             "&:hover": {
