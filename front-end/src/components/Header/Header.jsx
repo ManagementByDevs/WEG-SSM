@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { Paper, Tooltip } from "@mui/material/";
+import { Paper, Tooltip, Typography } from "@mui/material/";
 
-import LogoBranca from "../../assets/LogoBranca.png";
+import LogoBranca from "../../assets/aidem.png";
 import Grid from "../../assets/GridSemFundo.png";
 
 import IdiomaModal from "../Idioma-Modal/IdiomaModal";
@@ -49,12 +49,16 @@ const Header = () => {
         {/* Title */}
         <Tooltip title={texts.Header.paginaInicial}>
           {/* Parte esquerda do header */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center relative">
             {/* Grid da WEG */}
             <img className="h-10" src={Grid} />
 
             {/* Logo da WEG SSM */}
-            <img className="h-10" src={LogoBranca} />
+            <img className="h-14" src={LogoBranca} />
+
+            <Typography fontSize="28px" fontWeight={650} className="text-white absolute left-36 bottom-0.5" fontFamily={"monospace"}>
+              IDEM
+            </Typography>
           </div>
         </Tooltip>
       </Link>
