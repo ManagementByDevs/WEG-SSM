@@ -3,6 +3,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras";
 
+import { styled } from "@mui/material/styles";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+
 import { keyframes } from "@emotion/react";
 import {
   Box,
@@ -71,9 +75,6 @@ const DetalhesAta = (props) => {
   /** Variável utilizada para passar para a próxima proposta */
   const [botaoProximo, setBotaoProximo] = useState(true);
 
-  /** Variável utilizada para minimizar os botões da página */
-  const [minimizar, setMinimizar] = useState(false);
-
   /** Variável para armazenar o objeto da ata */
   const [ata, setAta] = useState(EntitiesObjectService.ata());
 
@@ -92,15 +93,6 @@ const DetalhesAta = (props) => {
 
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
-
-  /** useStates utilizados para animar os botões de navegação na ata */
-  const [girarIcon, setGirarIcon] = useState(true);
-
-  /** useState para aparecer/desapareceber o botão de navegação da ata */
-  const [aparecerSumir, setAparecerSumir] = useState(true);
-
-  /** useState utilizado para setar o display de visualização */
-  const [display, setDisplay] = useState("flex");
 
   /** useEffect usado para feedback de ata criada */
   useEffect(() => {
@@ -179,41 +171,11 @@ const DetalhesAta = (props) => {
     }
   };
 
-  /** Funções para animação dos botões de navegação */
-  const girar = keyframes({
-    from: { rotate: "90deg" },
-    to: { rotate: "0deg" },
-  });
-
-  const girar2 = keyframes({
-    from: { rotate: "0deg" },
-    to: { rotate: "90deg" },
-  });
-
-  const aparecer = keyframes({
-    "0%": { width: "10rem", opacity: "0" },
-    "100%": { width: "15.5rem", opacity: "1" },
-  });
-
-  const sumir = keyframes({
-    "0%": { width: "15.5rem", opacity: "1" },
-    "100%": { width: "8rem", opacity: "0" },
-  });
-
-  /** Função para animar os botões de acordo com o click */
-  const animarBotoes = () => {
-    if (minimizar) {
-      setGirarIcon(girar);
-      setDisplay("flex");
-      setAparecerSumir(aparecer);
-    } else {
-      setGirarIcon(girar2);
-      setTimeout(() => {
-        setDisplay("hidden");
-      }, 1000);
-      setAparecerSumir(sumir);
-    }
-  };
+  const actions = [
+    { icon: <ArrowForwardIosIcon />, name: "Próximo", onClick: proximo },
+    { icon: <OtherHousesIcon />, name: "Início", onClick: voltarSumario },
+    { icon: <ArrowBackIosNewIcon />, name: "Voltar", onClick: voltar },
+  ];
 
   /** Função para baixar o arquivo pdf da respectiva ata */
   const baixarPDF = () => {
@@ -232,9 +194,7 @@ const DetalhesAta = (props) => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = ata.propostas.every((proposta) => {
       if (proposta.parecerDG == "APROVADO") {
-        return (
-          proposta.parecerDG != null
-        );
+        return proposta.parecerDG != null;
       } else {
         return (
           proposta.parecerDG != null &&
@@ -295,11 +255,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => { });
+              ).then(() => {});
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -307,9 +267,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => { });
+              ).then(() => {});
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => { }
+                () => {}
               );
               break;
           }
@@ -347,7 +307,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
+    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
 
     navigate("/", { state: { feedback: true } });
   };
@@ -440,8 +400,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                    ": " +
-                    ata.numeroSequencial
+                      ": " +
+                      ata.numeroSequencial
                   );
                 }}
               >
@@ -453,11 +413,11 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
-                    ": " +
-                    DateService.getTodaysDateUSFormat(
-                      ata.dataReuniao,
-                      texts.linguagem
-                    )
+                      ": " +
+                      DateService.getTodaysDateUSFormat(
+                        ata.dataReuniao,
+                        texts.linguagem
+                      )
                   );
                 }}
               >
@@ -474,8 +434,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                    ": " +
-                    trazerHoraData(ata.dataReuniao)
+                      ": " +
+                      trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -489,8 +449,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                    ": " +
-                    ata.analistaResponsavel.nome
+                      ": " +
+                      ata.analistaResponsavel.nome
                   );
                 }}
               >
@@ -620,77 +580,31 @@ const DetalhesAta = (props) => {
           {/* Botões de navegação entre as propostas da ata */}
           <Box
             className="flex fixed justify-end items-center"
-            sx={{ width: "22rem", bottom: "20px", right: "20px" }}
+            sx={{ width: "22rem", bottom: "20px", right: "20px", gap: "1rem" }}
           >
-            <Box className="flex justify-center gap-3">
-              <Box className="flex justify-end">
-                <Box
-                  className={`${display} items-center mr-1 justify-end`}
-                  sx={{ animation: `${aparecerSumir} 1.2s forwards` }}
-                >
-                  <Box className="flex gap-2">
-                    <Tooltip title={texts.detalhesAta.voltar}>
-                      <IconButton
-                        color="primary"
-                        size="large"
-                        onClick={voltar}
-                      >
-                        <ArrowBackIosNewIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip>
-                      <IconButton
-                        color="primary"
-                        size="large"
-                        onClick={voltarSumario}
-                      >
-                        <OtherHousesIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title={texts.detalhesAta.proximo}>
-                      <IconButton
-                        color="primary"
-                        size="large"
-                        onClick={proximo}
-                      >
-                        <ArrowForwardIosIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </Box>
-                <Tooltip title={texts.detalhesAta.navegacao}>
-                  <ButtonBase
-                    variant="contained"
-                    color="primary"
-                    className="!rounded-full !p-3 hover:!outline-none"
-                    sx={{
-                      backgroundColor: "primary.main",
-                      "&:hover": {
-                        boxShadow:
-                          "0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)",
-                        backgroundColor: "rgb(0, 60, 109)",
-                      },
-                    }}
-                    onClick={() => {
-                      animarBotoes();
-                      setMinimizar(!minimizar);
-                    }}
-                  >
-                    <DensitySmallIcon
-                      sx={{
-                        animation: `${girarIcon} 1.2s forwards`,
-                        color: "white",
-                      }}
-                    />
-                  </ButtonBase>
-                </Tooltip>
-              </Box>
+            <Box>
+              <SpeedDial
+                ariaLabel="SpeedDial playground example"
+                icon={<DensitySmallIcon />}
+                direction="left"
+              >
+                {actions.map((action) => (
+                  <SpeedDialAction
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                    onClick={action.onClick}
+                  />
+                ))}
+              </SpeedDial>
+            </Box>
+            <Box className="">
               {!ata.publicadaDg ? (
                 <Tooltip title={texts.detalhesAta.publicarAta}>
                   <ButtonBase
                     variant="contained"
                     color="primary"
-                    className="!rounded-full !p-3 hover:!outline-none"
+                    className="!rounded-full !p-4 hover:!outline-none"
                     sx={{
                       backgroundColor: "primary.main",
                       "&:hover": {

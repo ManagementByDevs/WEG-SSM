@@ -98,7 +98,8 @@ const Login = (props) => {
           sx={{
             backgroundColor: "background.default",
             width: "28%",
-            height: "80%",
+            height: "60%",
+            minHeight: "32rem",
             minWidth: "26rem",
           }}
         >

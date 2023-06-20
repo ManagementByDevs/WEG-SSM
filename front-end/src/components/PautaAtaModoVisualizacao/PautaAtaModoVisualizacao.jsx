@@ -15,6 +15,8 @@ import "./PautaAtaModoVisualizacao.css";
 
 import Pautas from "../Pauta/Pauta";
 
+import PublicIcon from "@mui/icons-material/Public";
+import PublicOffIcon from "@mui/icons-material/PublicOff";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
@@ -92,12 +94,13 @@ const PautaTable = ({
 
   // Função que retorna a cor do status da ata
   const getStatusColor = (ata = EntitiesObjectService.ata()) => {
-    if (ata.propostas[0]?.parecerDG != null || !ata.publicada) return "success.main";
+    if (ata.propostas[0]?.parecerDG != null || !ata.publicada)
+      return "success.main";
     return "#C4C4C4";
   };
 
   const isApreciada = (ata = EntitiesObjectService.ata()) => {
-    if(ata.publicada) {
+    if (ata.publicada) {
       return ata.propostas[0]?.parecerDG != null;
     } else {
       return true;
@@ -256,35 +259,57 @@ const PautaTable = ({
                   </Tooltip>
                 </td>
               ) : (
-                <td
-                  className="flex justify-center items-center text-right p-3"
-                  title={getDataFormatada(row.dataReuniao)}
-                >
-                  <Typography
-                    className="truncate"
-                    fontSize={FontConfig.medium}
-                    onClick={(e) => {
-                      if (lendoTexto) {
-                        e.stopPropagation();
-                        lerTexto(getDataFormatada(row.dataReuniao));
-                      }
-                    }}
+                <td title={getDataFormatada(row.dataReuniao)}>
+                  <Box
+                    className="flex justify-center items-center text-right p-3"
+                    sx={{ width: "100%" }}
                   >
-                    {getDataFormatada(row.dataReuniao)}
-                  </Typography>
+                    <Box sx={{ width: "60%" }}>
+                      <Typography
+                        className="truncate"
+                        fontSize={FontConfig.medium}
+                        onClick={(e) => {
+                          if (lendoTexto) {
+                            e.stopPropagation();
+                            lerTexto(getDataFormatada(row.dataReuniao));
+                          }
+                        }}
+                      >
+                        {getDataFormatada(row.dataReuniao)}
+                      </Typography>
+                    </Box>
 
-                  <Tooltip
-                    title={
-                      isApreciada(row)
-                        ? texts.pauta.jaApreciada
-                        : texts.pauta.naoApreciada
-                    }
-                  >
+                    <Tooltip
+                      title={
+                        isApreciada(row)
+                          ? texts.pauta.jaApreciada
+                          : texts.pauta.naoApreciada
+                      }
+                    >
+                      <Box
+                        className="w-6 h-4 ml-3 rounded"
+                        sx={{ backgroundColor: getStatusColor(row) }}
+                      />
+                    </Tooltip>
                     <Box
-                      className="w-6 h-4 ml-3 rounded"
-                      sx={{ backgroundColor: getStatusColor(row) }}
-                    />
-                  </Tooltip>
+                      className="flex justify-end items-center"
+                      sx={{ width: "3rem" }}
+                    >
+                      <Tooltip
+                        title={
+                          row.publicada
+                            ? texts.pauta.publicada
+                            : texts.pauta.naoPublicada
+                        }
+                      >
+                        {row.publicada ? (
+                          <PublicIcon sx={{ color: "primary.main" }} />
+                        ) : (
+                          <PublicOffIcon sx={{ color: "primary.main" }} />
+                        )}
+                      </Tooltip>
+                    </Box>
+                  </Box>
                 </td>
               )}
             </TableRow>
