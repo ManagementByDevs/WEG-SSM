@@ -100,11 +100,7 @@ const PautaTable = ({
   };
 
   const isApreciada = (ata = EntitiesObjectService.ata()) => {
-    if (ata.publicada) {
-      return ata.propostas[0]?.parecerDG != null;
-    } else {
-      return true;
-    }
+    return ata.parecerDG;
   };
 
   return (

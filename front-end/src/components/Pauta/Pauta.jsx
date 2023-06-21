@@ -26,26 +26,24 @@ const Pautas = (props) => {
   const getDataFormatada = (dataReuniao) => {
     return props.tipo == "pauta"
       ? DateService.getTodaysDateUSFormat(
-          DateService.getDateByMySQLFormat(dataReuniao),
-          texts.linguagem
-        )
+        DateService.getDateByMySQLFormat(dataReuniao),
+        texts.linguagem
+      )
       : DateService.getFullDateUSFormat(
-          DateService.getDateByMySQLFormat(dataReuniao),
-          texts.linguagem
-        );
+        DateService.getDateByMySQLFormat(dataReuniao),
+        texts.linguagem
+      );
   };
 
   // Função que retorna a cor do status da ata
   const getStatusColor = () => {
-    if (isApreciada || !props.dados.publicada) return "success.main";
+    if (isApreciada) return "success.main";
     return "#C4C4C4";
   };
 
   useEffect(() => {
     // Faz a verificação se a ata já foi apreciada pela DG
-    if (props.dados.propostas?.length > 0) {
-      setIsApreciada(props.dados.propostas[0].parecerDG != null);
-    }
+    setIsApreciada(props.dados.publicadaDg);
   }, []);
 
   // Função que retorna o tamanho do componente que conterá o texto
@@ -135,7 +133,7 @@ const Pautas = (props) => {
         </Box>
       </Box>
       <Box className="w-full flex">
-        <Box sx={{width: "80%"}}>
+        <Box sx={{ width: "80%" }}>
           <Box
             className="flex items-center mt-3"
           >
@@ -187,7 +185,7 @@ const Pautas = (props) => {
               className="overflow-hidden text-ellipsis whitespace-nowrap"
               fontSize={FontConfig.default}
               fontWeight="600"
-              sx={{ color: "text.secondary", marginLeft: "5px"}}
+              sx={{ color: "text.secondary", marginLeft: "5px" }}
               onClick={(e) => {
                 if (lendoTexto) {
                   e.stopPropagation();
