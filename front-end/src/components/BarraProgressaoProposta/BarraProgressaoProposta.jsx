@@ -327,27 +327,8 @@ const BarraProgressaoProposta = (props) => {
   /** Função para formatar os benefícios recebidos no banco para a lista da página de edição na edição de um escopo existente */
   const receberBeneficios = (beneficios) => {
     let listaNova = [];
-
     for (let beneficio of beneficios) {
-      const tipoBeneficioNovo =
-        beneficio.tipoBeneficio?.charAt(0) +
-        beneficio.tipoBeneficio
-          ?.substring(1, beneficio.tipoBeneficio.length)
-          .toLowerCase();
-
-      let memoriaCalculo = beneficio.memoriaCalculo;
-      try {
-        memoriaCalculo = atob(beneficio.memoriaCalculo);
-      } catch (error) {}
-
-      listaNova.push({
-        id: beneficio.id,
-        tipoBeneficio: tipoBeneficioNovo,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: memoriaCalculo,
-        visible: true,
-      });
+      listaNova.push({ ...beneficio, visible: true });
     }
 
     setListaBeneficios(listaNova);
@@ -356,24 +337,9 @@ const BarraProgressaoProposta = (props) => {
   /** Função para buscar um escopo que já foi salvo */
   const carregarEscopoSalvo = (escopo) => {
     setDadosDemanda({
+      ...escopo,
       id: escopo.demanda.id,
-      titulo: escopo.titulo,
-      status: null,
-      problema: atob(escopo.problema),
-      proposta: atob(escopo.proposta),
-      frequencia: escopo.frequencia,
-      anexo: escopo.anexo,
-      solicitante: escopo.solicitante,
-      analista: escopo.analista,
-      gerente: escopo.gerente,
-      buSolicitante: escopo.buSolicitante,
-      busBeneficiadas: escopo.busBeneficiadas,
-      data: escopo.data,
-      departamento: escopo.departamento,
-      forum: escopo.forum,
-      secaoTI: escopo.secaoTI,
-      tamanho: escopo.tamanho,
-      historicoDemanda: escopo.historicoDemanda,
+      status: null
     });
 
     setGerais({
@@ -392,7 +358,7 @@ const BarraProgressaoProposta = (props) => {
 
     receberBeneficios(escopo.beneficios);
     setCustos(escopo.tabelaCustos);
-    setEscopo(carregarTextoEscopo(escopo));
+    setEscopo(escopo.escopo);
 
     setCarregamento(false);
   };
@@ -430,7 +396,7 @@ const BarraProgressaoProposta = (props) => {
       EscopoPropostaService.salvarDados(escopoFinal).then((response) => {
         setUltimoEscopo(response);
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para criar as chaves estrangeiras necessárias para o escopo no banco de dados */
@@ -481,8 +447,8 @@ const BarraProgressaoProposta = (props) => {
         let beneficioFinal = { ...beneficio };
         delete beneficioFinal.visible;
         beneficioService
-          .put(beneficioFinal, beneficioFinal.memoriaCalculo)
-          .then((response) => {});
+          .put(beneficioFinal)
+          .then((response) => { });
       }
     }
   };
@@ -670,8 +636,8 @@ const BarraProgressaoProposta = (props) => {
       demanda: { id: dadosDemanda.id },
       titulo: dadosDemanda.titulo,
       status: "ASSESSMENT_APROVACAO",
-      problema: btoa(formatarHtml(dadosDemanda.problema)),
-      proposta: btoa(formatarHtml(dadosDemanda.proposta)),
+      problema: formatarHtml(dadosDemanda.problema),
+      proposta: formatarHtml(dadosDemanda.proposta),
       frequencia: dadosDemanda.frequencia,
       solicitante: dadosDemanda.solicitante,
       analista: dadosDemanda.analista,
@@ -698,7 +664,7 @@ const BarraProgressaoProposta = (props) => {
       historicoProposta: dadosDemanda.historicoDemanda,
       anexo: retornarIdsObjetos(dadosDemanda.anexo),
       presenteEm: "Solta",
-      escopo: btoa(formatarHtml(escopo)),
+      escopo: formatarHtml(escopo),
     };
 
     return objeto;

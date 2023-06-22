@@ -18,6 +18,7 @@ import TextLanguageContext from "../../service/TextLanguageContext";
 import UsuarioService from "../../service/usuarioService";
 import ExportPdfService from "../../service/exportPdfService";
 import CookieService from "../../service/cookieService";
+import DemandaService from "../../service/demandaService";
 
 /** Página de detalhes de uma demanda, com a base para as informações (componente DetalhesDemanda) e opção de baixar */
 const DetalhesDemandaPagina = () => {
@@ -70,7 +71,7 @@ const DetalhesDemandaPagina = () => {
 
   /** UseEffect utilizado para buscar o usuário do sistema e pegar os dados do state */
   useEffect(() => {
-    setDados(location.state);
+    buscarDemanda(location.state);
     buscarUsuario();
   }, []);
 
@@ -99,6 +100,13 @@ const DetalhesDemandaPagina = () => {
       ]);
     }
   }, [dados]);
+
+  /** Função para buscar a demanda da página pelo seu ID, recebido no location.state */
+  const buscarDemanda = (id) => {
+    DemandaService.getById(id, null).then((response) => {
+      setDados(response.content[0])
+    })
+  }
 
   /** Função utilizada para buscar o usuário que está logado no sistema */
   const buscarUsuario = () => {

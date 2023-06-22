@@ -72,13 +72,6 @@ const BeneficiosDetalheDemanda = (props) => {
     }
   });
 
-  /** useEffect para mostrar o texto que poderá ser editado */
-  useEffect(() => {
-    if (!props.carregamento) {
-      setMemoriaEdicao(props.beneficio.memoriaCalculo);
-    }
-  }, [props.carregamento]);
-
   /** Função responsável por estilizar as linhas da tabela de benefícios */
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
@@ -93,11 +86,6 @@ const BeneficiosDetalheDemanda = (props) => {
   const alterarTexto = (e) => {
     props.setBeneficio({ ...props.beneficio, memoriaCalculo: e }, props.index);
   };
-
-  /** Variável utilizada durante uma possível edição de texto na memória cálculo */
-  const [memoriaEdicao, setMemoriaEdicao] = useState(
-    props.beneficio.memoriaCalculo
-  );
 
   const formatarTipoBeneficio = (tipoBeneficio) => {
     const novoTipo = tipoBeneficio?.charAt(0) +

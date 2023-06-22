@@ -418,7 +418,7 @@ const Home = (props) => {
 
   /** Função para ir para a tela de detalhes de uma demanda selecionada */
   const verDemanda = (demanda) => {
-    navigate("/detalhes-demanda", { state: demanda });
+    navigate("/detalhes-demanda", { state: demanda.id });
   };
 
   /** Função para salvar o valor do input de pesquisa quando houver alteração */

@@ -10,10 +10,10 @@ class DemandaService {
     async getById(id, params) {
 
         let newParams = {};
-        if (params.usuario != null) {
+        if (params?.usuario != null) {
             newParams.usuario = JSON.stringify(params.usuario);
         }
-        if (params.status != null) {
+        if (params?.status != null) {
             newParams.status = params.status;
         }
         return (await axios.get(demanda + "/" + id, { params: newParams, withCredentials: true })).data;

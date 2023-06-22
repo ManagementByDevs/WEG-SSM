@@ -883,7 +883,7 @@ const HomeGerencia = () => {
     if (demanda.status == "ASSESSMENT" && usuario.tipoUsuario == "ANALISTA") {
       navigate("/criar-proposta", { state: demanda });
     } else {
-      navigate("/detalhes-demanda", { state: demanda });
+      navigate("/detalhes-demanda", { state: demanda.id });
     }
   };
 
