@@ -67,21 +67,19 @@ public class EscopoProposta {
     /**
      * Problema do escopo da proposta, em bytes pois está em HTML
      */
-    @Column
-    @Lob
-    private byte[] problema;
+    @Column(length = 999999999)
+    private String problema;
 
     /**
      * Proposta do escopo da proposta, em bytes pois está em HTML
      */
-    @Column
-    @Lob
-    private byte[] proposta;
+    @Column(length = 999999999)
+    private String proposta;
 
     /**
      * Frequência do escopo da proposta
      */
-    @Column(length = 100)
+    @Column(length = 200)
     private String frequencia;
 
     /**
@@ -103,11 +101,10 @@ public class EscopoProposta {
     private Date ultimaModificacao;
 
     /**
-     * Escopo do escopo da proposta, em bytes pois está em HTML
+     * Escopo do escopo da proposta
      */
-    @Lob
-    @Column
-    private byte[] escopo;
+    @Column(length = 999999999)
+    private String escopo;
 
     /**
      * Foreign keys
@@ -210,7 +207,7 @@ public class EscopoProposta {
     /**
      * Função para adicionar anexos em um escopo
      *
-     * @Param files Lista de arquivos a serem adicionados
+     * @param files Lista de arquivos a serem adicionados
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();
@@ -219,21 +216,6 @@ public class EscopoProposta {
                 listaAnexos.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
             }
             this.anexo = listaAnexos;
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    /**
-     * Função para adicionar novos anexos a uma lista de anexos já existente
-     *
-     * @param files Lista de anexos novos a serem transformados
-     */
-    public void addAnexos(List<MultipartFile> files) {
-        try {
-            for (MultipartFile file : files) {
-                this.anexo.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
-            }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

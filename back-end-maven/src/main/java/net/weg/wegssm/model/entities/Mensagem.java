@@ -1,13 +1,9 @@
 package net.weg.wegssm.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "mensagem")
@@ -39,7 +35,7 @@ public class Mensagem {
     /**
      * Texto da mensagem
      */
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 500)
     private String texto;
 
     /**
@@ -64,7 +60,6 @@ public class Mensagem {
      */
     @ManyToOne
     @JoinColumn(name = "id_chat", nullable = false)
-//    @JsonIgnore
     private Chat idChat;
 
     /**

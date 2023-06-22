@@ -9,18 +9,12 @@ class BeneficioService {
     }
 
     /** Função para atualizar um benefício */
-    async put(beneficio, memoriaCalculo) {
-        let form = new FormData();
+    async put(beneficio) {
         let newBeneficio = { ...beneficio }
-
         delete newBeneficio.id;
-        delete newBeneficio.memoriaCalculo;
         newBeneficio.tipoBeneficio = newBeneficio.tipoBeneficio.toUpperCase();
 
-        form.append("beneficio", JSON.stringify(newBeneficio));
-        form.append("memoriaCalculo", memoriaCalculo);
-
-        return (await axios.put(`/beneficio/${beneficio.id}`, form, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })).data;
+        return (await axios.put(`/beneficio/${beneficio.id}`, newBeneficio, { headers: { "Content-Type": "application/json" }, withCredentials: true })).data;
     }
 
     /** Função para excluir um benefício pelo seu ID */

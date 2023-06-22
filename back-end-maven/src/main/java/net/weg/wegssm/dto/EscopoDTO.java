@@ -4,6 +4,7 @@ import lombok.Data;
 import net.weg.wegssm.model.entities.Anexo;
 import net.weg.wegssm.model.entities.Usuario;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -13,11 +14,14 @@ import java.util.List;
 public class EscopoDTO {
 
     private String titulo;
-    private byte[] problema;
-    private byte[] proposta;
+    private String problema;
+    private String proposta;
     private String frequencia;
     private Long porcentagem;
+
+    @NotNull
     private Usuario usuario;
+
     private List<Anexo> anexo;
 
 }

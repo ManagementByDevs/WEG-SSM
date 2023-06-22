@@ -41,6 +41,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 // Componente para mostrar os detalhes de uma demanda e suas respectivas funções
 const DetalhesDemanda = (props) => {
+
   // Contexto para trocar a linguagem
   const { texts } = useContext(TextLanguageContext);
 
@@ -90,9 +91,6 @@ const DetalhesDemanda = (props) => {
 
   /** Variável para armazenar os anexos da demanda */
   const [anexosDemanda, setAnexosDemanda] = useState(props.dados.anexo);
-
-  // Verificar se a demanda está em modo de edição
-  const [demandaEmEdicao, setDemandaEmEdicao] = useState(false);
 
   // UseState do modal de aceitar demanda
   const [openModalAceitarDemanda, setOpenModalAceitarDemanda] = useState(false);
@@ -162,57 +160,13 @@ const DetalhesDemanda = (props) => {
 
   // UseEffect para atualizar os dados da demanda quando o componente for montado
   useEffect(() => {
-    setTituloDemanda(props.dados.titulo);
-    setProblema(props.dados.problema);
-    setProposta(props.dados.proposta);
-    setFrequencia(props.dados.frequencia);
-    setBeneficios(formatarBeneficios(props.dados.beneficios));
-    setAnexosDemanda(props.dados.anexo);
+    atribuirDadosPadroes();
   }, []);
 
   // UseEffect para setar a variável "editar" para false quando o usuário sair da página de edição da demanda
   useEffect(() => {
     if (!props.edicao) setEditar(false);
   }, [props.edicao]);
-
-  // UseEffect ativado quando os benefícios da demanda são atualizados no banco, salvando os outros dados da demanda
-  useEffect(() => {
-    if (demandaEmEdicao) {
-      const demandaAtualizada = {
-        id: props.dados.id,
-        titulo: tituloDemanda,
-        problema: btoa(formatarHtml(problema)),
-        proposta: btoa(formatarHtml(proposta)),
-        frequencia: frequencia,
-        beneficios: retornarIdsObjetos(beneficios),
-        data: props.dados.data,
-        status: "BACKLOG_REVISAO",
-        solicitante: props.dados.solicitante,
-        gerente: props.dados.gerente,
-        anexo: retornarIdsObjetos(anexosDemanda),
-        departamento: props.dados?.departamento,
-        analista: props.dados?.analista,
-        historicoDemanda: props.dados?.historicoDemanda,
-      };
-
-      DemandaService.put(demandaAtualizada).then((response) => {
-        setEditar(false);
-        excluirBeneficiosRemovidos();
-        setDemandaEmEdicao(false);
-        props.updateDemandaProps(response);
-
-        salvarHistorico("Demanda Editada");
-        setFeedbackDemandaEditada(true);
-      });
-
-      if (anexosRemovidos.length > 0) {
-        for (let anexoRemovido of anexosRemovidos) {
-          AnexoService.deleteById(anexoRemovido.id);
-        }
-      }
-      setAnexosRemovidos([]);
-    }
-  }, [demandaEmEdicao]);
 
   /** useEffect utilizado para gravação de áudio */
   useEffect(() => {
@@ -228,7 +182,9 @@ const DetalhesDemanda = (props) => {
     }
   }, [palavrasJuntas]);
 
-  // Função para editar a demanda
+  /** Função para abrir o modal de confirmação de edição de demanda, caso esteja em modo de edição, ou
+   * abrir o modo de edição, caso esteja em modo de visualização 
+   */
   function editarDemanda() {
     if (editar) {
       setOpenModal(true);
@@ -240,56 +196,33 @@ const DetalhesDemanda = (props) => {
     }
   }
 
-  // Função de cancelamento da edição da demanda, retornando os dados ao salvamento anterior
-  function resetarTextoInput() {
-    excluirBeneficiosAdicionados();
-    excluirAnexosAdicionados();
-    setBeneficios(formatarBeneficios(props.dados.beneficios));
-    setBeneficiosExcluidos([]);
-    setVisualizarTexto(true);
+  /** Função para atribuir aos campos de texto da página seus dados recebidos pelos props, além de
+   * resetar as variáveis de edição, sendo usada tanto para inicialização do componente quanto para
+   * cancelamento de edição
+   */
+  const atribuirDadosPadroes = () => {
     setEditar(false);
+    setBeneficios(receberBeneficios(props.dados.beneficios));
     setTituloDemanda(props.dados.titulo);
     setProblema(props.dados.problema);
     setProposta(props.dados.proposta);
     setFrequencia(props.dados.frequencia);
     setAnexosDemanda(props.dados.anexo);
+
+    excluirBeneficiosAdicionados();
+    excluirAnexosAdicionados();
+    setBeneficiosExcluidos([]);
+    setVisualizarTexto(true);
   }
 
-  // Função para formatar os benefícios recebidos do banco para a lista de benefícios na página
-  const formatarBeneficios = (listaBeneficios) => {
-    const aux = listaBeneficios.map((beneficio) => {
-      return {
-        id: beneficio.id,
-        tipoBeneficio:
-          beneficio.tipoBeneficio?.charAt(0) +
-            beneficio.tipoBeneficio
-              ?.substring(1, beneficio.tipoBeneficio?.length)
-              ?.toLowerCase() || texts.DetalhesDemanda.real,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true,
-      };
-    });
-    return aux;
-  };
-
-  // Função para formatar os benefícios do front-end para enviá-los ao salvamento da demanda
-  const formatarBeneficiosRequisicao = (listaBeneficios) => {
+  /** Função para receber os benefícios do banco de dados, adicionando o atributo "visible" neles */
+  const receberBeneficios = (listaBeneficios) => {
     let listaNova = [];
     for (let beneficio of listaBeneficios) {
-      if (beneficio.visible) {
-        listaNova.push({
-          id: beneficio.id,
-          memoriaCalculo: beneficio.memoriaCalculo,
-          moeda: beneficio.moeda,
-          valor_mensal: beneficio.valor_mensal,
-          tipoBeneficio: beneficio.tipoBeneficio.toUpperCase(),
-        });
-      }
+      listaNova.push({ ...beneficio, visible: true });
     }
     return listaNova;
-  };
+  }
 
   // Função para alterar o texto de algum dos campos da demanda
   const alterarTexto = (e, input) => {
@@ -333,7 +266,7 @@ const DetalhesDemanda = (props) => {
   const removerAnexo = (index) => {
     if (estaPresente(anexosDemanda[index].id, novosAnexos)) {
       removeAnexosNovos(anexosDemanda[index]);
-      AnexoService.deleteById(anexosDemanda[index].id).then((response) => {});
+      AnexoService.deleteById(anexosDemanda[index].id).then((response) => { });
     } else {
       setAnexosRemovidos([...anexosRemovidos, anexosDemanda[index]]);
     }
@@ -358,16 +291,7 @@ const DetalhesDemanda = (props) => {
 
   // Função para atualizar o benefício quando ele recebe alguma alteração
   const alterarTextoBeneficio = (beneficio, index) => {
-    let aux = beneficios.map((beneficio) => {
-      return {
-        id: beneficio.id,
-        tipoBeneficio: beneficio.tipoBeneficio,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: beneficio.memoriaCalculo,
-        visible: true,
-      };
-    });
+    let aux = [...beneficios];
     aux[index] = beneficio;
     setBeneficios(aux);
   };
@@ -389,7 +313,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir os benefícios que foram criados no banco, porém excluídos da demanda
   const excluirBeneficiosRemovidos = () => {
     for (let beneficio of beneficiosExcluidos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosExcluidos([]);
   };
@@ -397,7 +321,7 @@ const DetalhesDemanda = (props) => {
   // Função para excluir todos os benefícios adicionados em uma edição caso ela seja cancelada
   const excluirBeneficiosAdicionados = () => {
     for (let beneficio of beneficiosNovos) {
-      BeneficioService.delete(beneficio.id).then(() => {});
+      BeneficioService.delete(beneficio.id).then(() => { });
     }
     setBeneficiosNovos([]);
   };
@@ -405,7 +329,7 @@ const DetalhesDemanda = (props) => {
   /** Função para excluir todos os anexos adicionados numa edição se essa mesma edição for cancelada */
   const excluirAnexosAdicionados = () => {
     for (let anexo of novosAnexos) {
-      AnexoService.deleteById(anexo.id).then(() => {});
+      AnexoService.deleteById(anexo.id).then(() => { });
     }
     setNovosAnexos([]);
   };
@@ -417,30 +341,40 @@ const DetalhesDemanda = (props) => {
   };
 
   // Função inicial da edição da demanda, atualizando os benefícios dela
-  const salvarEdicao = () => {
+  const salvarEdicaoDemanda = () => {
     if (!podeSalvar()) {
       setFeedbackFacaAlteracao(true);
       return;
     }
 
-    let listaBeneficiosFinal = formatarBeneficiosRequisicao(beneficios);
-    let contagem = 0;
+    atualizarBeneficios(beneficios);
 
-    if (listaBeneficiosFinal.length > 0) {
-      for (let beneficio of listaBeneficiosFinal) {
-        BeneficioService.put(beneficio, beneficio.memoriaCalculo).then(
-          (response) => {}
-        );
-        contagem++;
+    const demandaAtualizada = { ...retornarObjetoDemanda(), status: "BACKLOG_REVISAO" };
+    DemandaService.put(demandaAtualizada).then((response) => {
+      setEditar(false);
+      excluirBeneficiosRemovidos();
+      props.updateDemandaProps(response);
 
-        if (contagem == listaBeneficiosFinal.length) {
-          setDemandaEmEdicao(true);
-        }
+      salvarHistorico("Demanda Editada");
+      setFeedbackDemandaEditada(true);
+    })
+
+    if (anexosRemovidos.length > 0) {
+      for (let anexoRemovido of anexosRemovidos) {
+        AnexoService.deleteById(anexoRemovido.id);
       }
-    } else {
-      setDemandaEmEdicao(true);
     }
+    setAnexosRemovidos([]);
   };
+
+  /** Função para atualizar uma lista de benefícios na edição de uma demanda */
+  const atualizarBeneficios = (listaBeneficios) => {
+    for (const beneficio of listaBeneficios) {
+      if (beneficio.visible) {
+        BeneficioService.put(beneficio).then((response) => { });
+      }
+    }
+  }
 
   // Função que verifica se o usuário adicionou algum benefício
   const checkIfBeneficiosChanged = () => {
@@ -451,12 +385,12 @@ const DetalhesDemanda = (props) => {
     return !beneficios.every((e, index) => {
       return (
         e.tipoBeneficio.toLowerCase() ==
-          props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
+        props.dados.beneficios[index].tipoBeneficio.toLowerCase() &&
         e.valor_mensal == props.dados.beneficios[index].valor_mensal &&
         e.moeda.toLowerCase() ==
-          props.dados.beneficios[index].moeda.toLowerCase() &&
-        e.memoriaCalculo.toLowerCase() ==
-          props.dados.beneficios[index].memoriaCalculo.toLowerCase()
+        props.dados.beneficios[index].moeda.toLowerCase() &&
+        e.memoriaCalculo?.toLowerCase() ==
+        props.dados.beneficios[index].memoriaCalculo?.toLowerCase()
       );
     });
   };
@@ -540,14 +474,11 @@ const DetalhesDemanda = (props) => {
   // Função acionada quando o usuário clica em "Aceitar" no modal de confirmação
   const confirmAceitarDemanda = (dados) => {
     const demandaAtualizada = {
-      ...props.dados,
-      problema: btoa(props.dados.problema),
-      proposta: btoa(props.dados.proposta),
+      ...retornarObjetoDemanda(),
       anexo: [
         ...retornarIdsObjetos(dados.anexos),
         ...retornarIdsObjetos(props.dados.anexo),
       ],
-      beneficios: retornarIdsObjetos(props.dados.beneficios),
       status: "BACKLOG_APROVACAO",
       tamanho: dados.tamanho,
       secaoTI: dados.secaoTI,
@@ -582,14 +513,16 @@ const DetalhesDemanda = (props) => {
     return listaNova;
   };
 
-  /** Função para formatar uma demanda para envio para edição da mesma */
-  const formatarDemanda = () => {
+  /** Função para retornar um objeto da demanda formatada para edição */
+  const retornarObjetoDemanda = () => {
     let demanda = {
       ...props.dados,
-      problema: btoa(props.dados.problema),
-      proposta: btoa(props.dados.proposta),
-      beneficios: retornarIdsObjetos(props.dados.beneficios),
-      anexo: retornarIdsObjetos(props.dados.anexo),
+      titulo: tituloDemanda,
+      problema: formatarHtml(problema),
+      proposta: formatarHtml(proposta),
+      frequencia: frequencia,
+      beneficios: retornarIdsObjetos(beneficios),
+      anexo: retornarIdsObjetos(anexosDemanda),
     };
     return demanda;
   };
@@ -624,7 +557,7 @@ const DetalhesDemanda = (props) => {
       modoModalRecusa === "devolucao" ? "BACKLOG_EDICAO" : "CANCELLED";
 
     DemandaService.put({
-      ...formatarDemanda(),
+      ...retornarObjetoDemanda(),
       motivoRecusa: motivoRecusaDemanda,
       status: status,
     }).then(() => {
@@ -767,7 +700,7 @@ const DetalhesDemanda = (props) => {
       <ModalConfirmacao
         open={openModal}
         setOpen={setOpenModal}
-        onConfirmClick={resetarTextoInput}
+        onConfirmClick={atribuirDadosPadroes}
         onCancelClick={setEditar}
         textoModal="cancelarEdicao"
         textoBotao="sim"
@@ -794,8 +727,8 @@ const DetalhesDemanda = (props) => {
           onClick={editarDemanda}
         >
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          !editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            !editar ? (
             <ModeEditOutlineOutlinedIcon
               id="terceiro"
               fontSize="large"
@@ -804,8 +737,8 @@ const DetalhesDemanda = (props) => {
             />
           ) : null}
           {props.usuario?.id == props.dados.solicitante?.id &&
-          props.dados.status == "BACKLOG_EDICAO" &&
-          editar ? (
+            props.dados.status == "BACKLOG_EDICAO" &&
+            editar ? (
             <EditOffOutlinedIcon
               fontSize="large"
               className="delay-120 hover:scale-110 duration-300"
@@ -1552,7 +1485,7 @@ const DetalhesDemanda = (props) => {
             variant="contained"
             onClick={() => {
               if (!lendoTexto) {
-                salvarEdicao();
+                salvarEdicaoDemanda();
               } else {
                 lerTexto(texts.DetalhesDemanda.botaoSalvar);
               }

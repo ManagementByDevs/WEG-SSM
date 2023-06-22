@@ -92,7 +92,7 @@ public class Proposta {
     /**
      * Informações do parecer da comissão sobre a proposta
      */
-    @Column(length = 2000)
+    @Column(length = 999999999)
     private String parecerInformacao;
 
     /**
@@ -104,7 +104,7 @@ public class Proposta {
     /**
      * Informações do parecer da DG sobre a proposta
      */
-    @Column(length = 2000)
+    @Column(length = 999999999)
     private String parecerInformacaoDG;
 
     /**
@@ -122,21 +122,19 @@ public class Proposta {
     /**
      * Problema da proposta, em byte pois é HTML
      */
-    @Column(nullable = false)
-    @Lob
-    private byte[] problema;
+    @Column(nullable = false, length = 999999999)
+    private String problema;
 
     /**
      * Proposta da proposta, em byte pois é HTML
      */
-    @Column(nullable = false)
-    @Lob
-    private byte[] proposta;
+    @Column(nullable = false, length = 999999999)
+    private String proposta;
 
     /**
      * Frequência da proposta
      */
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 200)
     private String frequencia;
 
     /**
@@ -154,9 +152,8 @@ public class Proposta {
     /**
      * Escopo da proposta, em byte pois é HTML
      */
-    @Lob
-    @Column
-    private byte[] escopo;
+    @Column(length = 999999999)
+    private String escopo;
 
     /**
      * Foreign keys
@@ -269,27 +266,10 @@ public class Proposta {
     /**
      * Função para adicionar anexos em uma proposta
      *
-     * @Param files Lista de arquivos
+     * @param files Lista de arquivos
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();
-        try {
-            for (MultipartFile file : files) {
-                listaAnexos.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
-            }
-            this.anexo = listaAnexos;
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    /**
-     * Função para adicionar mais anexos na lista de anexos de uma proposta
-     *
-     * @param files
-     * @param listaAnexos
-     */
-    public void addAnexos(List<MultipartFile> files, List<Anexo> listaAnexos) {
         try {
             for (MultipartFile file : files) {
                 listaAnexos.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));

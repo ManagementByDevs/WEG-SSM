@@ -117,9 +117,9 @@ public class PDFGeneratorService {
         document.add(paragraphData);
         document.add(paragraphTitulo);
         document.add(paragraphProblema);
-        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(demanda.getProblema()));
+//        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(demanda.getProblema()));
         document.add(paragraphProposta);
-        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(demanda.getProposta()));
+//        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(demanda.getProposta()));
         document.add(paragraphBeneficios);
 
         // Criando tabela para os benefícios
@@ -167,7 +167,7 @@ public class PDFGeneratorService {
                 tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
             }
 
-            tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
+//            tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
             document.add(tableBeneficios);
         }
@@ -444,17 +444,17 @@ public class PDFGeneratorService {
         document.add(paragraphGerente);
         document.add(tableForumTamanho);
         document.add(paragraphProposta);
-        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta()));
+//        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta()));
         document.add(paragraphProblema);
-        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema()));
+//        XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema()));
 
         document.add(paragraphEscopo);
 
-        byte[] escopoByte = proposta.getEscopo();
+//        byte[] escopoByte = proposta.getEscopo();
 
-        if (escopoByte != null) {
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo()));
-        }
+//        if (escopoByte != null) {
+//            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo()));
+//        }
 
         document.add(paragraphFrequencia);
         document.add(paragraphTabelaCustos);
@@ -618,7 +618,7 @@ public class PDFGeneratorService {
                 tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
             }
 
-            tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
+//            tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
             document.add(tableBeneficios);
         }
@@ -936,17 +936,17 @@ public class PDFGeneratorService {
             document.add(paragraphGerente);
             document.add(tableForumTamanho);
             document.add(paragraphProposta);
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta()));
+//            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta()));
             document.add(paragraphProblema);
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema()));
+//            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema()));
 
             document.add(paragraphEscopo);
 
-            byte[] escopoByte = proposta.getEscopo();
+//            byte[] escopoByte = proposta.getEscopo();
 
-            if (escopoByte != null) {
-                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo()));
-            }
+//            if (escopoByte != null) {
+//                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo()));
+//            }
 
             document.add(paragraphFrequencia);
             document.add(paragraphTabelaCustos);
@@ -1109,7 +1109,7 @@ public class PDFGeneratorService {
                     tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
                 }
 
-                tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
+//                tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
                 document.add(tableBeneficios);
             }
@@ -1437,17 +1437,17 @@ public class PDFGeneratorService {
             document.add(paragraphGerente);
             document.add(tableForumTamanho);
             document.add(paragraphProposta);
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta()));
+//            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProposta()));
             document.add(paragraphProblema);
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema()));
+//            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getDemanda().getProblema()));
 
             document.add(paragraphEscopo);
 
-            byte[] escopoByte = proposta.getEscopo();
-
-            if (escopoByte != null) {
-                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo()));
-            }
+//            byte[] escopoByte = proposta.getEscopo();
+//
+//            if (escopoByte != null) {
+//                XMLWorkerHelper.getInstance().parseXHtml(writer, document, new ByteArrayInputStream(proposta.getEscopo()));
+//            }
 
             document.add(paragraphFrequencia);
             document.add(paragraphTabelaCustos);
@@ -1610,7 +1610,7 @@ public class PDFGeneratorService {
                     tableBeneficios.addCell(String.valueOf(beneficio.getMoeda()));
                 }
 
-                tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
+//                tableBeneficios.addCell(Jsoup.parse(new String(beneficio.getMemoriaCalculo(), StandardCharsets.UTF_8)).text());
 
                 document.add(tableBeneficios);
             }

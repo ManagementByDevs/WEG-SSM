@@ -32,21 +32,19 @@ public class Escopo {
     /**
      * Problema do escopo da demanda, em bytes pois está em HTML
      */
-    @Column
-    @Lob
-    private byte[] problema;
+    @Column(length = 999999999)
+    private String problema;
 
     /**
      * Proposta do escopo da demanda, em bytes pois está em HTML
      */
-    @Column
-    @Lob
-    private byte[] proposta;
+    @Column(length = 999999999)
+    private String proposta;
 
     /**
      * Frequência do escopo da demanda
      */
-    @Column(length = 100)
+    @Column(length = 200)
     private String frequencia;
 
     /**
@@ -83,7 +81,7 @@ public class Escopo {
     /**
      * Função para adicionar anexos em um escopo da demanda
      *
-     * @Param files Lista de arquivos a serem adicionados
+     * @param files Lista de arquivos a serem adicionados
      */
     public void setAnexos(List<MultipartFile> files) {
         List<Anexo> listaAnexos = new ArrayList<>();

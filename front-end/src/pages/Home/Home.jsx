@@ -38,6 +38,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Página principal do solicitante */
 const Home = (props) => {
+
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
@@ -388,32 +389,9 @@ const Home = (props) => {
         stringOrdenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
       ).then((e) => {
         setTotalPaginas(e.totalPages);
-        formatarDemandas(e.content);
+        setListaDemandas(e.content);
       });
     }
-  };
-
-  /** Função para formatar os campos necessários das demandas para HTML */
-  const formatarDemandas = (listaDemandas) => {
-    let listaNova = [];
-
-    for (let demanda of listaDemandas) {
-      let listaNovaBeneficios = [];
-      for (let beneficio of demanda.beneficios) {
-        listaNovaBeneficios.push({
-          ...beneficio,
-          memoriaCalculo: atob(beneficio.memoriaCalculo),
-        });
-      }
-
-      listaNova.push({
-        ...demanda,
-        problema: atob(demanda.problema),
-        proposta: atob(demanda.proposta),
-        beneficios: listaNovaBeneficios,
-      });
-    }
-    setListaDemandas(listaNova);
   };
 
   /** Função para atualizar o filtro de status quando modificado no modal de filtros */

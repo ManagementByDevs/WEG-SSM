@@ -171,15 +171,9 @@ const BarraProgressaoDemanda = () => {
    */
   const carregarEscopoExistente = (id) => {
     EscopoService.buscarPorId(id).then((response) => {
-      setPaginaDados({
-        titulo: response.titulo,
-        problema: atob(response.problema),
-        proposta: atob(response.proposta),
-        frequencia: response.frequencia,
-      });
+      setPaginaDados({ titulo: response.titulo, problema: response.problema, proposta: response.proposta, frequencia: response.frequencia });
       receberBeneficios(response.beneficios);
       setPaginaArquivos(response.anexo);
-
       setUltimoEscopo({ ...response });
     });
   };
@@ -197,14 +191,7 @@ const BarraProgressaoDemanda = () => {
             .toLowerCase();
       }
 
-      listaNova.push({
-        id: beneficio.id,
-        tipoBeneficio: tipoBeneficioNovo,
-        valor_mensal: beneficio.valor_mensal,
-        moeda: beneficio.moeda,
-        memoriaCalculo: atob(beneficio.memoriaCalculo),
-        visible: true,
-      });
+      listaNova.push({ ...beneficio, tipoBeneficio: tipoBeneficioNovo, visible: true });
     }
     setPaginaBeneficios(listaNova);
   };
@@ -222,8 +209,8 @@ const BarraProgressaoDemanda = () => {
   const retornaObjetoDemanda = () => {
     const objetoDemanda = {
       titulo: paginaDados.titulo,
-      problema: btoa(formatarHtml(paginaDados.problema)),
-      proposta: btoa(formatarHtml(paginaDados.proposta)),
+      problema: formatarHtml(paginaDados.problema),
+      proposta: formatarHtml(paginaDados.proposta),
       frequencia: paginaDados.frequencia,
       beneficios: retornarIdsObjetos(paginaBeneficios),
       anexo: retornarIdsObjetos(paginaArquivos),
@@ -260,18 +247,19 @@ const BarraProgressaoDemanda = () => {
           //Confirmação de salvamento (se sobrar tempo)
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /** Função para excluir o escopo determinado quando a demanda a partir dele for criada */
   const excluirEscopo = () => {
-    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => {});
+    EscopoService.excluirEscopo(ultimoEscopo.id).then((response) => { });
   };
 
   /** Função para criar a demanda com os dados recebidos após a confirmação do modal */
   const criarDemanda = () => {
     setCarregamentoDemanda(true);
     criandoDemanda = true;
+
     let demandaFinal = retornaObjetoDemanda();
     demandaFinal.status = "BACKLOG_REVISAO";
 
@@ -364,9 +352,7 @@ const BarraProgressaoDemanda = () => {
       if (beneficio.visible) {
         let beneficioFinal = { ...beneficio };
         delete beneficioFinal.visible;
-        beneficioService
-          .put(beneficioFinal, beneficioFinal.memoriaCalculo)
-          .then((response) => {});
+        beneficioService.put(beneficioFinal).then((response) => { });
       }
     }
   };

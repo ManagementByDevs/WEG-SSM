@@ -3,7 +3,6 @@ package net.weg.wegssm.dto;
 import lombok.Data;
 import net.weg.wegssm.model.entities.*;
 
-import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +12,7 @@ import java.util.List;
  */
 @Data
 public class PropostaJaCriadaDTO {
+
     private Long id;
     private Date inicioExecucao;
     private Date fimExecucao;
@@ -29,12 +29,12 @@ public class PropostaJaCriadaDTO {
     private String parecerInformacaoDG;
     private Boolean visibilidade;
     private String titulo;
-    private byte[] problema;
-    private byte[] proposta;
+    private String problema;
+    private String proposta;
     private String frequencia;
     private String tamanho;
     private SecaoTI secaoTI;
-    private byte[] escopo;
+    private String escopo;
     private List<Beneficio> beneficios = new ArrayList<>();
     private Bu buSolicitante;
     private List<Bu> busBeneficiadas;

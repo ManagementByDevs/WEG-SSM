@@ -38,9 +38,9 @@ public class Beneficio {
     private String moeda;
 
     /**
-     * Memória de cálculo do benefício, utilizada em bytes pois utiliza HTML
+     * Memória de cálculo do benefício
      */
-    @Column
-    private byte[] memoriaCalculo;
+    @Column(length = 999999999)
+    private String memoriaCalculo;
 
 }

@@ -111,16 +111,8 @@ const DetalhesDemandaPagina = () => {
 
   /** Função utilizada para alterar dados da demanda */
   const updateDemandaProps = (demanda) => {
-    setDados({
-      ...demanda,
-      problema: atob(demanda.problema).toString("utf-8"),
-      proposta: atob(demanda.proposta).toString("utf-8"),
-    });
-    location.state = {
-      ...demanda,
-      problema: atob(demanda.problema).toString("utf-8"),
-      proposta: atob(demanda.proposta).toString("utf-8"),
-    };
+    setDados({ ...demanda });
+    location.state = { ...demanda };
   };
 
   /** Função para baixar a demanda em formato pdf */

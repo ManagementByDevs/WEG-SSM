@@ -41,23 +41,21 @@ public class BeneficioController {
      * Método PUT para atualizar um benefício já existente, recebendo ele atualizado no body
      *
      * @param id
-     * @param beneficioJson
-     * @param memoriaCalculo
+     * @param beneficioDTO
      * @return
      */
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
-                                         @RequestParam(value = "beneficio") String beneficioJson,
-                                         @RequestParam(value = "memoriaCalculo") byte[] memoriaCalculo) {
+                                         @RequestBody @Valid BeneficioDTO beneficioDTO) {
 
-        BeneficioUtil beneficioUtil = new BeneficioUtil();
-        Beneficio beneficio = beneficioUtil.convertJsonToModel(beneficioJson);
-        beneficio.setId(id);
-        beneficio.setMemoriaCalculo(memoriaCalculo);
-
-        if (!beneficioService.existsById(beneficio.getId())) {
+        if (!beneficioService.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Benefício não encontrado!");
         }
+
+        Beneficio beneficio = new Beneficio();
+        BeanUtils.copyProperties(beneficioDTO, beneficio);
+        beneficio.setId(id);
+
         return ResponseEntity.status(HttpStatus.OK).body(beneficioService.save(beneficio));
     }
 

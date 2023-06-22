@@ -751,31 +751,6 @@ const HomeGerencia = () => {
     setOrdenacao(textoNovo);
   };
 
-  /** Função para formatar os campos necessários das demandas e propostas para HTML */
-  const formatarItens = (listaDemandas) => {
-    let listaNova = [];
-    for (let demanda of listaDemandas) {
-
-      if (verificarFiltragemDemanda(demanda)) {
-        let listaNovaBeneficios = [];
-        for (let beneficio of demanda.beneficios) {
-          listaNovaBeneficios.push({
-            ...beneficio,
-            memoriaCalculo: atob(beneficio.memoriaCalculo),
-          });
-        }
-
-        listaNova.push({
-          ...demanda,
-          problema: atob(demanda.problema),
-          proposta: atob(demanda.proposta),
-          beneficios: listaNovaBeneficios,
-        });
-      }
-    }
-    setListaItens(listaNova);
-  };
-
   /** Função booleana que compara os parâmetros de filtragem com os dados da demanda,
    * para evitar com que as demandas tenham tido problema em sua filtragem
    */
@@ -832,7 +807,7 @@ const HomeGerencia = () => {
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
-            formatarItens(response.content);
+            setListaItens(response.content);
             setTotalPaginas(response.totalPages);
           });
         }
@@ -843,7 +818,7 @@ const HomeGerencia = () => {
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
-            formatarItens(response.content);
+            setListaItens(response.content);
             setTotalPaginas(response.totalPages);
           });
         }
@@ -854,7 +829,7 @@ const HomeGerencia = () => {
             params,
             ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
           ).then((response) => {
-            formatarItens(response.content);
+            setListaItens(response.content);
             setTotalPaginas(response.totalPages);
           });
         }
@@ -864,7 +839,7 @@ const HomeGerencia = () => {
           params,
           ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
         ).then((response) => {
-          formatarItens(response.content);
+          setListaItens(response.content);
           setTotalPaginas(response.totalPages);
         });
         break;
@@ -873,7 +848,7 @@ const HomeGerencia = () => {
           paramsPautas,
           ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
         ).then((response) => {
-          setListaItens([...response.content]);
+          setListaItens(response.content);
           setTotalPaginas(response.totalPages);
         });
         break;
@@ -882,7 +857,7 @@ const HomeGerencia = () => {
           paramsAtas,
           ordenacao + "size=" + tamanhoPagina + "&page=" + paginaAtual
         ).then((response) => {
-          setListaItens([...response.content]);
+          setListaItens(response.content);
           setTotalPaginas(response.totalPages);
         });
         break;

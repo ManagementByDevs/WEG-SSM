@@ -13,5 +13,6 @@ public class BeneficioDTO {
     private TipoBeneficio tipoBeneficio;
     private Double valor_mensal;
     private String moeda;
+    private String memoriaCalculo;
 
 }

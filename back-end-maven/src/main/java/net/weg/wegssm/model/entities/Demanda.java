@@ -31,23 +31,21 @@ public class Demanda {
     private String titulo;
 
     /**
-     * Problema da demanda, em bytes pois está em HTML
+     * Problema da demanda
      */
-    @Column(nullable = false)
-    @Lob
-    private byte[] problema;
+    @Column(nullable = false, length = 999999999)
+    private String problema;
 
     /**
-     * Proposta da demanda, em bytes pois está em HTML
+     * Proposta da demanda
      */
-    @Column(nullable = false)
-    @Lob
-    private byte[] proposta;
+    @Column(nullable = false, length = 999999999)
+    private String proposta;
 
     /**
      * Frequência da demanda
      */
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 200)
     private String frequencia;
 
     /**
@@ -179,32 +177,6 @@ public class Demanda {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    /**
-     * Função para adicionar novos anexos a uma lista de anexos já existente
-     *
-     * @param files       Lista de anexos novos a serem transformados
-     * @param listaAnexos Lista de anexos já existente
-     */
-    public void addAnexos(List<MultipartFile> files, List<Anexo> listaAnexos) {
-        try {
-            for (MultipartFile file : files) {
-                listaAnexos.add(new Anexo(null, file.getOriginalFilename(), file.getContentType(), file.getBytes()));
-            }
-            this.anexo = listaAnexos;
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    /**
-     * Função para setar os anexos da demanda diretamente através de uma lista de Anexos
-     *
-     * @param files Lista de anexos
-     */
-    public void setAnexosWithoutMultiparFile(List<Anexo> files) {
-        this.anexo = files;
     }
 
 }

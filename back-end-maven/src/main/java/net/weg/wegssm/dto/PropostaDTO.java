@@ -3,7 +3,6 @@ package net.weg.wegssm.dto;
 import lombok.Data;
 import net.weg.wegssm.model.entities.*;
 
-import javax.persistence.Column;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -40,10 +39,10 @@ public class PropostaDTO {
     private Demanda demanda;
 
     @NotNull
-    private byte[] problema;
+    private String problema;
 
     @NotNull
-    private byte[] proposta;
+    private String proposta;
 
     @NotNull
     private String frequencia;
@@ -84,5 +83,5 @@ public class PropostaDTO {
 
     private List<Anexo> anexo;
 
-    private byte[] escopo;
+    private String escopo;
 }

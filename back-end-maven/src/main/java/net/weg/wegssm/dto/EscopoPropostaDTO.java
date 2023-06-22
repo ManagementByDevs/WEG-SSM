@@ -21,12 +21,12 @@ public class EscopoPropostaDTO {
     private Integer codigoPPM;
     private String linkJira;
     private String titulo;
-    private byte[] problema;
-    private byte[] proposta;
+    private String problema;
+    private String proposta;
     private String frequencia;
     private String tamanho;
     private Date ultimaModificacao;
-    private byte[] escopo;
+    private String escopo;
     private SecaoTI secaoTI;
     private List<Beneficio> beneficios = new ArrayList<>();
     private Bu buSolicitante;

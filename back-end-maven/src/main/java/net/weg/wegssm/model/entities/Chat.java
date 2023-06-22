@@ -1,6 +1,5 @@
 package net.weg.wegssm.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

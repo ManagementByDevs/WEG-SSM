@@ -89,11 +89,6 @@ const BeneficiosDetalheDemanda = (props) => {
     },
   }));
 
-  /** Função para formatar o texto html */
-  const getMemoriaCalculoFormatted = (memoria) => {
-    return memoria[0].toUpperCase() + memoria.substring(1).toLowerCase();
-  };
-
   /** Função utilizada para editar um texto do campo de memória de cálculo */
   const alterarTexto = (e) => {
     props.setBeneficio({ ...props.beneficio, memoriaCalculo: e }, props.index);
@@ -103,6 +98,14 @@ const BeneficiosDetalheDemanda = (props) => {
   const [memoriaEdicao, setMemoriaEdicao] = useState(
     props.beneficio.memoriaCalculo
   );
+
+  const formatarTipoBeneficio = (tipoBeneficio) => {
+    const novoTipo = tipoBeneficio?.charAt(0) +
+      tipoBeneficio
+        ?.substring(1, tipoBeneficio?.length)
+        ?.toLowerCase() || texts.DetalhesDemanda.real;
+    return novoTipo;
+  }
 
   /** useEffect utilizado para setar o valor do input de valor_mensal de um benefício com o input de voz */
   useEffect(() => {
@@ -242,13 +245,13 @@ const BeneficiosDetalheDemanda = (props) => {
                           }
                         }}
                       >
-                        <MenuItem value={"Real"}>
+                        <MenuItem value={"REAL"}>
                           {texts.BeneficiosDetalheDemanda.real}
                         </MenuItem>
-                        <MenuItem value={"Potencial"}>
+                        <MenuItem value={"POTENCIAL"}>
                           {texts.BeneficiosDetalheDemanda.potencial}
                         </MenuItem>
-                        <MenuItem value={"Qualitativo"}>
+                        <MenuItem value={"QUALITATIVO"}>
                           {texts.BeneficiosDetalheDemanda.qualitativo}
                         </MenuItem>
                       </Select>
@@ -368,7 +371,7 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontWeight="800"
                     color="text.white"
                     onClick={() => {
-                      lerTexto(texts.BeneficiosDetalheDemanda.tipo);
+                      lerTexto(texts.BeneficiosDetalheDemanda.tipo)
                     }}
                   >
                     {texts.BeneficiosDetalheDemanda.tipo}
@@ -420,10 +423,10 @@ const BeneficiosDetalheDemanda = (props) => {
                     fontSize={FontConfig.medium}
                     color="text.primary"
                     onClick={() => {
-                      lerTexto(props.beneficio.tipoBeneficio);
+                      lerTexto(formatarTipoBeneficio(props.beneficio.tipoBeneficio));
                     }}
                   >
-                    {props.beneficio.tipoBeneficio}
+                    {formatarTipoBeneficio(props.beneficio.tipoBeneficio)}
                   </Typography>
                 </td>
                 <td align="center">
@@ -463,14 +466,10 @@ const BeneficiosDetalheDemanda = (props) => {
                     sx={{ width: "100%" }}
                     ref={memoriaCalculo}
                     onClick={() => {
-                      lerTexto(
-                        getMemoriaCalculoFormatted(
-                          props.beneficio.memoriaCalculo
-                        )
-                      );
+                      lerTexto(props.beneficio.memoriaCalculo);
                     }}
                   >
-                    {getMemoriaCalculoFormatted(props.beneficio.memoriaCalculo)}
+                    {props.beneficio.memoriaCalculo}
                   </Typography>
                 </td>
               </StyledTableRow>
