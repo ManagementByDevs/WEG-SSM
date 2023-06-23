@@ -29,7 +29,7 @@ export default function TemporaryDrawer() {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
@@ -64,18 +64,16 @@ export default function TemporaryDrawer() {
 
   return (
     <div>
-      {['left', 'right', 'top', 'bottom'].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+        <React.Fragment key="right">
+          <Button onClick={toggleDrawer("right", true)}>{"right"}</Button>
           <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
+            anchor={"right"}
+            open={state["right"]}
+            onClose={toggleDrawer("right", false)}
           >
-            {list(anchor)}
+            {list("right")}
           </Drawer>
         </React.Fragment>
-      ))}
     </div>
   );
 }
