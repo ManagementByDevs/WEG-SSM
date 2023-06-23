@@ -235,6 +235,12 @@ const DetalhesAta = (props) => {
     );
   };
 
+  /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, "<br/>");
+    return texto;
+  };
+
   /** Atualiza a lista de propostas passada por parâmetro */
   const updatePropostas = (
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
@@ -243,7 +249,7 @@ const DetalhesAta = (props) => {
       PropostaService.atualizacaoDg(
         proposta.id,
         proposta.parecerDG,
-        proposta.parecerInformacaoDG
+        formatarHtml(proposta.parecerInformacaoDG)
       ).then((response) => {
         // Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {
@@ -255,11 +261,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -267,9 +273,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => {}
+                () => { }
               );
               break;
           }
@@ -307,7 +313,7 @@ const DetalhesAta = (props) => {
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
+    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
 
     navigate("/", { state: { feedback: true } });
   };
@@ -400,8 +406,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                      ": " +
-                      ata.numeroSequencial
+                    ": " +
+                    ata.numeroSequencial
                   );
                 }}
               >
@@ -413,11 +419,11 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
-                      ": " +
-                      DateService.getTodaysDateUSFormat(
-                        ata.dataReuniao,
-                        texts.linguagem
-                      )
+                    ": " +
+                    DateService.getTodaysDateUSFormat(
+                      ata.dataReuniao,
+                      texts.linguagem
+                    )
                   );
                 }}
               >
@@ -434,8 +440,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                      ": " +
-                      trazerHoraData(ata.dataReuniao)
+                    ": " +
+                    trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -449,8 +455,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                      ": " +
-                      ata.analistaResponsavel.nome
+                    ": " +
+                    ata.analistaResponsavel.nome
                   );
                 }}
               >
@@ -596,7 +602,7 @@ const DetalhesAta = (props) => {
                     onClick={action.onClick}
                   />
                 ))}
-              </SpeedDial> 
+              </SpeedDial>
             </Box>
             <Box className="">
               {!ata.publicadaDg ? (
