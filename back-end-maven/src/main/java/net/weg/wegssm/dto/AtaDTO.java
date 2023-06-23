@@ -21,4 +21,5 @@ public class AtaDTO {
     private Usuario analistaResponsavel;
     private Boolean publicadaDg;
     private Boolean publicada;
+    private String numeroSequencialDG;
 }

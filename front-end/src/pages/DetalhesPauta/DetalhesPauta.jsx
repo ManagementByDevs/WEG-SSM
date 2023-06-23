@@ -422,6 +422,7 @@ const DetalhesPauta = (props) => {
     }
   };
 
+  /** Função para salvar o numero sequencial da ata digitado no input */
   const salvarNumeroSequencial = (event) => {
     setNumeroSequencialAta(event.target.value);
   }

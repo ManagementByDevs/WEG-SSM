@@ -235,6 +235,7 @@ public class AtaController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id, @RequestBody AtaDTO ataDTO) {
         Optional<Ata> ataOptional = ataService.findById(id);
+        System.out.println("Numero sequencial ata dg: " + ataDTO.getNumeroSequencialDG());
 
         if (ataOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível encontrar uma ata com este id.");
