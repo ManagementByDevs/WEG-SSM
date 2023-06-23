@@ -236,6 +236,12 @@ const DetalhesAta = (props) => {
     );
   };
 
+  /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, "<br/>");
+    return texto;
+  };
+
   /** Atualiza a lista de propostas passada por parâmetro */
   const updatePropostas = (
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
@@ -244,7 +250,7 @@ const DetalhesAta = (props) => {
       PropostaService.atualizacaoDg(
         proposta.id,
         proposta.parecerDG,
-        proposta.parecerInformacaoDG
+        formatarHtml(proposta.parecerInformacaoDG)
       ).then((response) => {
         // Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {

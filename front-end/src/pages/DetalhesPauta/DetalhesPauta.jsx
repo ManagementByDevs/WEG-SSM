@@ -317,6 +317,12 @@ const DetalhesPauta = (props) => {
     return listaNova;
   };
 
+  /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, "<br/>");
+    return texto;
+  };
+
   /** Função que inicia a criação das duas atas */
   const criarAtas = () => {
 
@@ -397,7 +403,7 @@ const DetalhesPauta = (props) => {
   /** Função para atualizar o status das propostas e adicionar históricos na criação de uma ata */
   const atualizarPropostas = (propostas, numeroSequencialAta) => {
     for (let proposta of propostas) {
-      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, proposta.parecerInformacao).then((response) => {
+      PropostaService.atualizacaoAta(proposta.id, proposta.parecerComissao, formatarHtml(proposta.parecerInformacao)).then((response) => {
 
         //Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {
