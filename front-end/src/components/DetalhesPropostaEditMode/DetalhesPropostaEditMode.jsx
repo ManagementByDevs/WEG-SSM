@@ -197,17 +197,6 @@ const DetalhesPropostaEditMode = ({
     return texto;
   };
 
-  /** Formata alguns dados da proposta para outro tipo de dado */
-  const arrangeData = (propostaObj = EntitiesObjectService.proposta()) => {
-    propostaObj.escopo = btoa(formatarHtml(propostaObj.escopo));
-    propostaObj.problema = btoa(formatarHtml(propostaObj.problema));
-    propostaObj.proposta = btoa(formatarHtml(propostaObj.proposta));
-
-    for (let beneficio of propostaObj.beneficios) {
-      beneficio.memoriaCalculo = btoa(formatarHtml(beneficio.memoriaCalculo));
-    }
-  };
-
   /** Valida se os CCs são válidos */
   const areCCsValid = (
     tabelasCustos = [EntitiesObjectService.tabelaCustos()]
@@ -395,8 +384,6 @@ const DetalhesPropostaEditMode = ({
     let propostaAux = EntitiesObjectService.proposta();
     propostaAux = JSON.parse(JSON.stringify(proposta));
 
-    arrangeData(propostaAux);
-
     let novasTabelasCusto = JSON.parse(
       JSON.stringify(propostaAux.tabelaCustos)
     ).filter((tabelaCusto) => {
@@ -460,6 +447,7 @@ const DetalhesPropostaEditMode = ({
       novosAnexos,
       listaIdsAnexos
     ).then((response) => {
+      console.log(response);
       setPropostaData(response);
       setIsEditing(false);
 

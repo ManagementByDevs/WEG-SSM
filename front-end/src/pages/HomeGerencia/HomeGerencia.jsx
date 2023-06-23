@@ -499,6 +499,12 @@ const HomeGerencia = () => {
     if (filtrosAtuais.status != "") {
       paramsTemp.status = filtrosAtuais.status;
     }
+    if (params.status && !paramsTemp.status) {
+      paramsTemp.status = params.status;
+    }
+    if (params.solicitante && !paramsTemp.solicitante) {
+      paramsTemp.solicitante = params.solicitante;
+    }
 
     setParams({
       ...params,
@@ -1104,7 +1110,7 @@ const HomeGerencia = () => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => {});
+          ).then(() => { });
         });
       });
     }
@@ -1854,7 +1860,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => {}}
+                        onClick={() => { }}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}

@@ -230,33 +230,35 @@ const BarraProgressaoProposta = (props) => {
   const retornarTotalBeneficios = () => {
     let valorBeneficio = 0;
 
-    for (const object in listaBeneficios) {
-      if (listaBeneficios[object].tipoBeneficio == "Real") {
-        if (listaBeneficios[object].moeda == "Dolar") {
-          valorBeneficio +=
-            parseFloat(listaBeneficios[object].valor_mensal) *
-            valorDolar.USDBRL.bid;
-        } else if (listaBeneficios[object].moeda == "Euro") {
-          valorBeneficio +=
-            parseFloat(listaBeneficios[object].valor_mensal) *
-            valorEuro.EURBRL.bid;
-        } else {
-          valorBeneficio += parseFloat(listaBeneficios[object].valor_mensal);
-        }
-      } else if (listaBeneficios[object].tipoBeneficio == "Potencial") {
-        if (listaBeneficios[object].moeda == "Dolar") {
-          valorBeneficio +=
-            (parseFloat(listaBeneficios[object].valor_mensal) *
-              valorDolar.USDBRL.bid) /
-            2;
-        } else if (listaBeneficios[object].moeda == "Euro") {
-          valorBeneficio +=
-            (parseFloat(listaBeneficios[object].valor_mensal) *
-              valorEuro.EURBRL.bid) /
-            2;
-        } else {
-          valorBeneficio +=
-            parseFloat(listaBeneficios[object].valor_mensal) / 2;
+    for (const beneficio of listaBeneficios) {
+      if (beneficio.visible) {
+        if (beneficio.tipoBeneficio == "REAL") {
+          if (beneficio.moeda == "Dolar") {
+            valorBeneficio +=
+              parseFloat(beneficio.valor_mensal) *
+              valorDolar.USDBRL.bid;
+          } else if (beneficio.moeda == "Euro") {
+            valorBeneficio +=
+              parseFloat(beneficio.valor_mensal) *
+              valorEuro.EURBRL.bid;
+          } else {
+            valorBeneficio += parseFloat(beneficio.valor_mensal);
+          }
+        } else if (beneficio.tipoBeneficio == "POTENCIAL") {
+          if (beneficio.moeda == "Dolar") {
+            valorBeneficio +=
+              (parseFloat(beneficio.valor_mensal) *
+                valorDolar.USDBRL.bid) /
+              2;
+          } else if (beneficio.moeda == "Euro") {
+            valorBeneficio +=
+              (parseFloat(beneficio.valor_mensal) *
+                valorEuro.EURBRL.bid) /
+              2;
+          } else {
+            valorBeneficio +=
+              parseFloat(beneficio.valor_mensal) / 2;
+          }
         }
       }
     }
@@ -270,7 +272,7 @@ const BarraProgressaoProposta = (props) => {
 
     for (const tabelaCustos of custos) {
       for (const custo of tabelaCustos.custos) {
-        valorTotal += custo.total;
+        valorTotal += parseInt(custo.total);
       }
     }
 

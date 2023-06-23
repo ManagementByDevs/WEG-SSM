@@ -135,24 +135,8 @@ const DetalhesProposta = ({
     return bytes.map((byte, i) => binaryString.charCodeAt(i));
   };
 
-  /** Função para transformar um base64 em uma string */
-  const convertByteArrayToString = (byteArray = []) => {
-    return window.atob(byteArray).toString("utf-8");
-  };
-
   /** Função passada para o componente detalhes proposta edit mode */
   const setPropostaNewData = (proposta = EntitiesObjectService.proposta()) => {
-    proposta.proposta = convertByteArrayToString(proposta.proposta);
-    proposta.problema = convertByteArrayToString(proposta.problema);
-    proposta.escopo = convertByteArrayToString(proposta.escopo);
-
-    if (proposta.beneficios.length > 0)
-      for (let beneficio of proposta.beneficios) {
-        beneficio.memoriaCalculo = convertByteArrayToString(
-          beneficio.memoriaCalculo
-        );
-      }
-
     setFeedbackEditSuccess(true);
     setProposta(JSON.parse(JSON.stringify(proposta)));
   };
@@ -160,19 +144,6 @@ const DetalhesProposta = ({
   /** Função acionada quando o usúario clica no ícone de editar */
   const handleOnEditClick = () => {
     setIsEditing(!isEditing);
-  };
-
-  /** Formata o objeto proposta pego do banco de dados */
-  const formatData = (proposal = EntitiesObjectService.proposta()) => {
-    proposal.problema = convertByteArrayToString(proposal.problema);
-    proposal.proposta = convertByteArrayToString(proposal.proposta);
-    proposal.escopo = convertByteArrayToString(proposal.escopo);
-
-    for (let beneficio of proposal.beneficios) {
-      beneficio.memoriaCalculo = convertByteArrayToString(
-        beneficio.memoriaCalculo
-      );
-    }
   };
 
   /** Função da edição de status da proposta  */
@@ -211,7 +182,6 @@ const DetalhesProposta = ({
     // Buscando os dados da proposta usando o propostaId
     PropostaService.getById(propostaId).then((proposal) => {
       // Arrumando alguns textos
-      formatData(proposal);
       setProposta(proposal);
       setIsLoading(false);
     });
