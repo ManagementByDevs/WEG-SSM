@@ -596,7 +596,7 @@ const DetalhesAta = (props) => {
                     onClick={action.onClick}
                   />
                 ))}
-              </SpeedDial>
+              </SpeedDial> 
             </Box>
             <Box className="">
               {!ata.publicadaDg ? (
