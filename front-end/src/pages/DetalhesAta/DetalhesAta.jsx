@@ -3,19 +3,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import VLibras from "@djpfs/react-vlibras";
 
-import { styled } from "@mui/material/styles";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 
-import { keyframes } from "@emotion/react";
-import {
-  Box,
-  Typography,
-  Divider,
-  Tooltip,
-  IconButton,
-  ButtonBase,
-} from "@mui/material";
+import { Box, Typography, Divider, Tooltip, ButtonBase, Input } from "@mui/material";
 
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import OtherHousesIcon from "@mui/icons-material/OtherHouses";
@@ -45,6 +36,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Página para mostrar os detalhes da ata selecionada, com opçao de download para pdf */
 const DetalhesAta = (props) => {
+
   /** Context para trocar a liguagem */
   const { texts } = useContext(TextLanguageContext);
 
@@ -78,6 +70,9 @@ const DetalhesAta = (props) => {
   /** Variável para armazenar o objeto da ata */
   const [ata, setAta] = useState(EntitiesObjectService.ata());
 
+  /** Variávle para armazenar o número sequencial da ata da dg */
+  const [numeroSequencialAtaDG, setNumeroSequencialAtaDG] = useState("");
+
   /** feedback para ata criada com sucesso */
   const [feedbackAta, setFeedbackAta] = useState(false);
 
@@ -88,8 +83,7 @@ const DetalhesAta = (props) => {
   const [feedbackEditSuccess, setFeedbackEditSuccess] = useState(false);
 
   /** Modal de confirmação para a publicação de uma ata */
-  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] =
-    useState(false);
+  const [modalConfirmacaoPublicacao, setModalConfirmacaoPublicacao] = useState(false);
 
   /**  Context do WebSocket */
   const { enviar } = useContext(WebSocketContext);
@@ -194,12 +188,19 @@ const DetalhesAta = (props) => {
     // Verifica se os pareceres das propostas foram preenchidos
     let isFilled = ata.propostas.every((proposta) => {
       if (proposta.parecerDG == "APROVADO") {
-        return proposta.parecerDG != null;
+        return (
+          proposta.parecerDG != null &&
+          numeroSequencialAtaDG != null &&
+          numeroSequencialAtaDG != undefined &&
+          numeroSequencialAtaDG != "")
       } else {
         return (
           proposta.parecerDG != null &&
           proposta.parecerInformacaoDG != null && // Essa variável sempre começa como null
-          proposta.parecerInformacaoDG != "<p><br></p>" // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+          proposta.parecerInformacaoDG != "<p><br></p>" && // Necessário para o editor de texto, pois ele insere esse código quando o campo está vazio
+          numeroSequencialAtaDG != null &&
+          numeroSequencialAtaDG != undefined &&
+          numeroSequencialAtaDG != ""
         );
       }
     });
@@ -235,6 +236,12 @@ const DetalhesAta = (props) => {
     );
   };
 
+  /** Função para formatar o HTML em casos como a falta de fechamentos em tags "<br>" */
+  const formatarHtml = (texto) => {
+    texto = texto.replace(/<br>/g, "<br/>");
+    return texto;
+  };
+
   /** Atualiza a lista de propostas passada por parâmetro */
   const updatePropostas = (
     listaPropostasToUpdate = [EntitiesObjectService.proposta()]
@@ -243,7 +250,7 @@ const DetalhesAta = (props) => {
       PropostaService.atualizacaoDg(
         proposta.id,
         proposta.parecerDG,
-        proposta.parecerInformacaoDG
+        formatarHtml(proposta.parecerInformacaoDG)
       ).then((response) => {
         // Salvamento de histórico e atualização da demanda
         ExportPdfService.exportProposta(response.id).then((file) => {
@@ -255,11 +262,11 @@ const DetalhesAta = (props) => {
                 "Reprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(
                 proposta.demanda.id,
                 "CANCELLED"
-              ).then(() => {});
+              ).then(() => { });
               break;
             case "APROVADO":
               PropostaService.addHistorico(
@@ -267,9 +274,9 @@ const DetalhesAta = (props) => {
                 "Aprovada pela DG",
                 arquivo,
                 CookieService.getUser().id
-              ).then(() => {});
+              ).then(() => { });
               DemandaService.atualizarStatus(proposta.demanda.id, "DONE").then(
-                () => {}
+                () => { }
               );
               break;
           }
@@ -302,12 +309,12 @@ const DetalhesAta = (props) => {
   /** Função de criar ata e enviar feedback */
   const publicarAta = () => {
     // Criação do objeto da ata publicada
-    let ataPublished = { ...ata };
+    let ataPublished = { ...ata, numeroSequencialDG: numeroSequencialAtaDG };
     ataPublished.publicadaDg = true;
 
     updatePropostas(ataPublished.propostas);
     ataPublished.propostas = retornarIdsObjetos(ataPublished.propostas);
-    AtaService.put(ataPublished, ataPublished.id).then((response) => {});
+    AtaService.put(ataPublished, ataPublished.id).then((response) => { });
 
     navigate("/", { state: { feedback: true } });
   };
@@ -320,6 +327,15 @@ const DetalhesAta = (props) => {
 
     return hora + ":" + minuto;
   };
+
+  /** Função para salvar o número sequencial da ata da dg digitado no input */
+  const salvarNumeroSequencialAtaDG = (event) => {
+    setNumeroSequencialAtaDG(event.target.value);
+  }
+
+  useEffect(() => {
+    console.log("numero sequencial ata dg: " + ata.numeroSequencialDG);
+  }, [ata.parecerDG])
 
   return (
     // Começo com o header da página
@@ -400,8 +416,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.numeroSequencial +
-                      ": " +
-                      ata.numeroSequencial
+                    ": " +
+                    ata.numeroSequencial
                   );
                 }}
               >
@@ -413,11 +429,11 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.dataReuniao +
-                      ": " +
-                      DateService.getTodaysDateUSFormat(
-                        ata.dataReuniao,
-                        texts.linguagem
-                      )
+                    ": " +
+                    DateService.getTodaysDateUSFormat(
+                      ata.dataReuniao,
+                      texts.linguagem
+                    )
                   );
                 }}
               >
@@ -434,8 +450,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.horaReuniao +
-                      ": " +
-                      trazerHoraData(ata.dataReuniao)
+                    ": " +
+                    trazerHoraData(ata.dataReuniao)
                   );
                 }}
               >
@@ -449,8 +465,8 @@ const DetalhesAta = (props) => {
                 onClick={() => {
                   lerTexto(
                     texts.detalhesAta.analistaResponsavel +
-                      ": " +
-                      ata.analistaResponsavel.nome
+                    ": " +
+                    ata.analistaResponsavel.nome
                   );
                 }}
               >
@@ -471,6 +487,39 @@ const DetalhesAta = (props) => {
                 {texts.detalhesAta.comissao}: {ata.comissao.siglaForum} -{" "}
                 {ata.comissao.nomeForum}
               </Typography>
+
+              {!ata.publicadaDg ? (
+                <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
+                  <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
+                    Número Sequencial da Ata da DG:
+                  </Typography>
+                  <Typography
+                    fontSize={props.fontConfig}
+                    sx={{ fontWeight: "800", cursor: "default" }}
+                    className="text-red-600"
+                    gutterBottom
+                  >
+                    *
+                  </Typography>
+
+                  <Input
+                    sx={{ width: "5rem", marginLeft: "2%" }}
+                    onChange={salvarNumeroSequencialAtaDG}
+                  />
+                </Box>
+              ) : (
+                <Box sx={{ marginBottom: "1%", width: "80%", height: "5%", display: "flex", flexDirection: "row" }}>
+                  <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%" }}>
+                    Número Sequencial da Ata da DG:
+                  </Typography>
+                 
+                  <Typography>
+                    {ata.numeroSequencialDG}
+                  </Typography>
+                </Box>
+              )
+              }
+
               <Divider sx={{ marginTop: "1%" }} />
             </Box>
 
@@ -596,7 +645,7 @@ const DetalhesAta = (props) => {
                     onClick={action.onClick}
                   />
                 ))}
-              </SpeedDial> 
+              </SpeedDial>
             </Box>
             <Box className="">
               {!ata.publicadaDg ? (

@@ -34,6 +34,12 @@ public class Ata {
     private String numeroSequencial;
 
     /**
+     * Número sequencial da ata da DG
+     */
+    @Column
+    private String numeroSequencialDG;
+
+    /**
      * Visibilidade da ata, utilizada para guardá-la antes de removê-la do banco de dados
      */
     @Column
@@ -63,12 +69,21 @@ public class Ata {
     @JoinColumn(name = "analista_id")
     private Usuario analistaResponsavel;
 
+    /**
+     * Score da ata
+     */
     @Column
     private Double score;
 
+    /**
+     * Ata publicada ou não publicada - DG
+     */
     @Column
     private Boolean publicadaDg;
 
+    /**
+     * Ata publicada ou não publicada
+     */
     @Column
     private Boolean publicada;
 

@@ -1,15 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Paper, Table, TableBody, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 
 import "./PautaAtaModoVisualizacao.css";
 
@@ -30,7 +21,7 @@ const PautaAtaModoVisualizacao = ({
   onItemClick,
   nextModoVisualizacao,
   isAta = false,
-  setPautaSelecionada = () => {},
+  setPautaSelecionada = () => { },
 }) => {
   if (listaPautas.length == 0) {
     return <NadaEncontrado />;
@@ -68,7 +59,7 @@ const PautaTable = ({
   ],
   onItemClick,
   isAta,
-  setPautaSelecionada = () => {},
+  setPautaSelecionada = () => { },
 }) => {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
@@ -83,13 +74,11 @@ const PautaTable = ({
   const getDataFormatada = (dataInicio) => {
     let dateInicio = new Date(DateService.getDateByMySQLFormat(dataInicio));
 
-    return `${DateService.getTodaysDateUSFormat(dataInicio, texts.linguagem)} ${
-      texts.pautaAtaModoVisualizacao.as
-    } ${dateInicio.getHours()}:${
-      dateInicio.getMinutes() < 10
+    return `${DateService.getTodaysDateUSFormat(dataInicio, texts.linguagem)} ${texts.pautaAtaModoVisualizacao.as
+      } ${dateInicio.getHours()}:${dateInicio.getMinutes() < 10
         ? "0" + dateInicio.getMinutes()
         : dateInicio.getMinutes()
-    }`;
+      }`;
   };
 
   // Função que retorna a cor do status da ata
@@ -329,7 +318,7 @@ const PautaGrid = ({
   ],
   onItemClick,
   isAta,
-  setPautaSelecionada = () => {},
+  setPautaSelecionada = () => { },
 }) => {
   return (
     <Box
