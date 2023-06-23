@@ -1,121 +1,81 @@
-// // ********************************************** Gravar audio **********************************************
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
 
-// import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
-// import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
+export default function TemporaryDrawer() {
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
 
-// const [
-//   feedbackErroNavegadorIncompativel,
-//   setFeedbackErroNavegadorIncompativel,
-// ] = useState(false);
-// const [feedbackErroReconhecimentoVoz, setFeedbackErroReconhecimentoVoz] =
-//   useState(false);
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
 
-// const recognitionRef = useRef(null);
+    setState({ ...state, [anchor]: open });
+  };
 
-// const [escutar, setEscutar] = useState(false);
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
-// const ouvirAudio = () => {
-//   // Verifica se a API é suportada pelo navegador
-//   if ("webkitSpeechRecognition" in window) {
-//     const recognition = new window.webkitSpeechRecognition();
-//     recognition.continuous = true;
-//     switch (texts.linguagem) {
-//       case "pt":
-//         recognition.lang = "pt-BR";
-//         break;
-//       case "en":
-//         recognition.lang = "en-US";
-//         break;
-//       case "es":
-//         recognition.lang = "es-ES";
-//         break;
-//       case "ch":
-//         recognition.lang = "cmn-Hans-CN";
-//         break;
-//       default:
-//         recognition.lang = "pt-BR";
-//         break;
-//     }
-
-//     recognition.onstart = () => {
-//          );
-//     };
-
-//     recognition.onresult = (event) => {
-//       const transcript =
-//         event.results[event.results.length - 1][0].transcript;
-//       setValorPesquisa(transcript);
-//     };
-
-//     recognition.onerror = (event) => {
-//       setFeedbackErroReconhecimentoVoz(true);
-//       setEscutar(false);
-//     };
-
-//     recognitionRef.current = recognition;
-//     recognition.start();
-//   } else {
-//     setFeedbackErroNavegadorIncompativel(true);
-//     setEscutar(false);
-//   }
-// };
-
-// const stopRecognition = () => {
-//   if (recognitionRef.current) {
-//     recognitionRef.current.stop();
-//      
-//   }
-// };
-
-// const startRecognition = () => {
-//   setEscutar(!escutar);
-// };
-
-// useEffect(() => {
-//   if (escutar) {
-//     ouvirAudio();
-//   } else {
-//     stopRecognition();
-//   }
-// }, [escutar]);
-
-// {
-//   /* Feedback Erro reconhecimento de voz */
-// }
-// <Feedback
-//   open={feedbackErroReconhecimentoVoz}
-//   handleClose={() => {
-//     setFeedbackErroReconhecimentoVoz(false);
-//   }}
-//   status={"erro"}
-//   mensagem={texts.homeGerencia.feedback.feedback12}
-// />
-// {
-//   /* Feedback Não navegador incompativel */
-// }
-// <Feedback
-//   open={feedbackErroNavegadorIncompativel}
-//   handleClose={() => {
-//     setFeedbackErroNavegadorIncompativel(false);
-//   }}
-//   status={"erro"}
-//   mensagem={texts.homeGerencia.feedback.feedback13}
-// />
-
-// <Tooltip
-//   className="hover:cursor-pointer"
-//   title={texts.homeGerencia.gravarAudio}
-//   onClick={() => {
-//     startRecognition();
-//   }}
-// >
-//   {escutar ? (
-//     <MicOutlinedIcon sx={{ color: "primary.main", fontSize: "1.3rem" }} />
-//   ) : (
-//     <MicNoneOutlinedIcon
-//       sx={{ cursor: "pointer", color: "text.secondary", fontSize: "1.3rem" }}
-//     />
-//   )}
-// </Tooltip>
-
-// // ********************************************** Fim Gravar audio **********************************************
+  return (
+    <div>
+      {['left', 'right', 'top', 'bottom'].map((anchor) => (
+        <React.Fragment key={anchor}>
+          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+          <Drawer
+            anchor={anchor}
+            open={state[anchor]}
+            onClose={toggleDrawer(anchor, false)}
+          >
+            {list(anchor)}
+          </Drawer>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
