@@ -513,7 +513,7 @@ const DetalhesAta = (props) => {
                     Número Sequencial da Ata da DG:
                   </Typography>
                  
-                  <Typography>
+                  <Typography sx={{ fontWeight: "600", cursor: "default", marginTop: "1%", marginLeft: "1%" }}>
                     {ata.numeroSequencialDG}
                   </Typography>
                 </Box>
