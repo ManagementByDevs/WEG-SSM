@@ -1217,6 +1217,7 @@ const Chat = (props) => {
                     <Box
                       ref={boxRef}
                       className="flex flex-col"
+                      
                       sx={{
                         width: "100%",
                         height: "85%",

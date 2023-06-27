@@ -6,7 +6,7 @@ import VLibras from "@djpfs/react-vlibras";
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 
-import { Button, Tab, Box, Tooltip, IconButton } from "@mui/material";
+import { Button, Tab, Box, Tooltip, IconButton, Drawer } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -38,7 +38,6 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Página principal do solicitante */
 const Home = (props) => {
-
   /** Context para alterar o tamanho da fonte */
   const { FontConfig } = useContext(FontContext);
 
@@ -107,7 +106,7 @@ const Home = (props) => {
     false,
     false,
     false,
-    false
+    false,
   ]);
 
   /** Valores dos checkboxes de Score no modal de ordenação */
@@ -403,7 +402,7 @@ const Home = (props) => {
   const atualizarAba = (event, newValue) => {
     setValorAba(newValue);
     setPaginaAtual(0);
-    
+
     // Ao trocar a aba, a forma de pesquisar demandas irá mudar (usuário / departamento)
     if (newValue == 1) {
       setParams({ ...params, departamento: null, solicitante: usuario });
@@ -482,7 +481,7 @@ const Home = (props) => {
 
         user.preferencias = JSON.stringify(preferencias);
 
-        UsuarioService.updateUser(user.id, user).then((e) => { });
+        UsuarioService.updateUser(user.id, user).then((e) => {});
       }
     );
   };
@@ -505,6 +504,21 @@ const Home = (props) => {
       valorPesquisa = palavrasJuntas;
     }
   }, [palavrasJuntas]);
+
+  const [state, setState] = useState({
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
 
   return (
     <FundoComHeader>
@@ -586,19 +600,34 @@ const Home = (props) => {
 
                 <Box className="absolute right-0 top-2" id="sexto">
                   {/* Ícone de ordenação */}
-                  <Tooltip title={texts.home.ordenacao}>
-                    <IconButton
-                      onClick={() => {
-                        setOpenOrdenacao(true);
-                      }}
+
+                  {/* Modal de ordenação */}
+                  <React.Fragment key="right">
+                    <Tooltip title={texts.home.ordenacao}>
+                      <IconButton onClick={toggleDrawer("right", true)}>
+                        <SwapVertIcon
+                          id="segundoDemandas"
+                          className="cursor-pointer"
+                          color="primary"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Drawer
+                      anchor={"right"}
+                      open={state["right"]}
+                      onClose={toggleDrawer("right", false)}
                     >
-                      <SwapVertIcon
-                        id="segundo"
-                        className="cursor-pointer"
-                        color="primary"
+                      <ModalOrdenacao
+                        ordenacaoTitulo={ordenacaoTitulo}
+                        setOrdenacaoTitulo={setOrdenacaoTitulo}
+                        ordenacaoScore={ordenacaoScore}
+                        setOrdenacaoScore={setOrdenacaoScore}
+                        ordenacaoDate={ordenacaoDate}
+                        setOrdenacaoDate={setOrdenacaoDate}
+                        valorAba={valorAba}
                       />
-                    </IconButton>
-                  </Tooltip>
+                    </Drawer>
+                  </React.Fragment>
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.home.visualizacaoEmTabela}>
                       <IconButton
@@ -619,20 +648,6 @@ const Home = (props) => {
                         <ViewModuleIcon color="primary" />
                       </IconButton>
                     </Tooltip>
-                  )}
-                  {/* Modal de ordenação */}
-                  {abrirOrdenacao && (
-                    <ModalOrdenacao
-                      fecharModal={() => {
-                        setOpenOrdenacao(false);
-                      }}
-                      ordenacaoTitulo={ordenacaoTitulo}
-                      setOrdenacaoTitulo={setOrdenacaoTitulo}
-                      ordenacaoScore={ordenacaoScore}
-                      setOrdenacaoScore={setOrdenacaoScore}
-                      ordenacaoDate={ordenacaoDate}
-                      setOrdenacaoDate={setOrdenacaoDate}
-                    />
                   )}
                 </Box>
               </Box>
@@ -728,7 +743,7 @@ const Home = (props) => {
                       {/* Ícone de pesquisa */}
                       <Tooltip title={texts.home.pesquisar}>
                         <SearchOutlinedIcon
-                          onClick = {() => {
+                          onClick={() => {
                             valorPesquisa = inputPesquisa.current.value;
                             pesquisaTitulo();
                           }}

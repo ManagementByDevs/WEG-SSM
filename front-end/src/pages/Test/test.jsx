@@ -1,25 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
-  Drawer,
-  Button,
-  ListItem,
-  ListSubheader,
-  ListItemIcon,
-  ListItemText,
-  ListItemButton,
-  Collapse,
   List,
-  Divider,
   Box,
   Typography,
 } from "@mui/material";
-
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import SendIcon from "@mui/icons-material/Send";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
@@ -27,7 +11,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 import ItemTest from "./itemTest";
 
-export default function TemporaryDrawer() {
+export default function TemporaryDrawer(props) {
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -37,71 +21,85 @@ export default function TemporaryDrawer() {
   /** Context para ler o texto da tela */
   const { lerTexto } = useContext(SpeechSynthesisContext);
 
-  const [open, setOpen] = React.useState(true);
-
-  const [state, setState] = useState({
-    right: false,
-  });
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
   const opcoesFiltrar = [
     {
-      id: 1 ,tipo: "Score",
+      id: 1,
+      tipo: texts.modalOrdenacao.titulo,
     },
     {
-      id: 2, tipo: "Data",
+      id: 2,
+      tipo: texts.modalOrdenacao.numeroSequencial,
     },
     {
-      id: 3, tipo: "Nome",
+      id: 3,
+      tipo: texts.modalOrdenacao.score,
+    },
+    {
+      id: 4,
+      tipo: texts.modalOrdenacao.dataReuniao
+    },
+    {
+      id: 5,
+      tipo: texts.modalOrdenacao.dataDeCriacao
     },
   ];
 
-  const list = (anchor) => (
+  return (
     <List
-      sx={{ width: "12rem", height: "80%", bgcolor: "background.paper" }}
+      sx={{
+        width: "18rem",
+        height: "80%",
+        bgcolor: "background.paper",
+        padding: "0",
+      }}
       component="nav"
       aria-labelledby="nested-list-subheader"
     >
-      <Box className="w-full flex items-center justify-center">
+      <Box
+        className="w-full flex items-center justify-center"
+        sx={{ backgroundColor: "primary.main", height: "4.5rem" }}
+      >
         <Typography
           fontSize={FontConfig.smallTitle}
-          sx={{ color: "primary.main", fontWeight: 600 }}
+          sx={{ color: "text.white", fontWeight: 600 }}
         >
-          Ordenar
+          {texts.modalOrdenacao.ordenar}
         </Typography>
       </Box>
       <Box className="h-full">
         {opcoesFiltrar.map((opcao, index) => (
           <>
-            <ItemTest opcao={opcao} key={index} />
+            {props.valorAba != 5 && props.valorAba != 6 && opcao.id != 4 ? (
+              <ItemTest
+                opcao={opcao}
+                key={index}
+                ordenacaoTitulo={props.ordenacaoTitulo}
+                setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                ordenacaoScore={props.ordenacaoScore}
+                setOrdenacaoScore={props.setOrdenacaoScore}
+                ordenacaoDate={props.ordenacaoDate}
+                setOrdenacaoDate={props.setOrdenacaoDate}
+                valorAba={props.valorAba}
+              />
+            ) : (
+              (props.valorAba == 5 || props.valorAba == 6) &&
+              opcao.id != 1 && (
+                <ItemTest
+                  opcao={opcao}
+                  key={index}
+                  ordenacaoTitulo={props.ordenacaoTitulo}
+                  setOrdenacaoTitulo={props.setOrdenacaoTitulo}
+                  ordenacaoScore={props.ordenacaoScore}
+                  setOrdenacaoScore={props.setOrdenacaoScore}
+                  ordenacaoDate={props.ordenacaoDate}
+                  setOrdenacaoDate={props.setOrdenacaoDate}
+                  valorAba={props.valorAba}
+                />
+              )
+            )}
           </>
         ))}
       </Box>
     </List>
-  );
-
-  return (
-    <div>
-      <React.Fragment key="right">
-        <Button onClick={toggleDrawer("right", true)}>{"right"}</Button>
-        <Drawer
-          anchor={"right"}
-          open={state["right"]}
-          onClose={toggleDrawer("right", false)}
-        >
-          {list("right")}
-        </Drawer>
-      </React.Fragment>
-    </div>
   );
 }

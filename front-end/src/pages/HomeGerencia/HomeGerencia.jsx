@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { Box, Button, IconButton, Tab, Tooltip } from "@mui/material";
+import { Box, Button, IconButton, Tab, Tooltip, Drawer } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import Tour from "reactour";
@@ -1110,7 +1110,7 @@ const HomeGerencia = () => {
             "Pauta #" + pautaSelecionada.numeroSequencial + " Excluída",
             arquivo,
             CookieService.getUser().id
-          ).then(() => { });
+          ).then(() => {});
         });
       });
     }
@@ -1204,6 +1204,21 @@ const HomeGerencia = () => {
     } else {
       return texts.homeGerencia.pesquisarPorNumeroSequencialOuProposta;
     }
+  };
+
+  const [state, setState] = useState({
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
   };
 
   return (
@@ -1497,19 +1512,34 @@ const HomeGerencia = () => {
                 </TabList>
                 <Box className="absolute right-0 top-2">
                   {/* Ícone de ordenação */}
-                  <Tooltip title={texts.homeGerencia.ordenacao}>
-                    <IconButton
-                      onClick={() => {
-                        setOpenOrdenacao(true);
-                      }}
+
+                  <React.Fragment key="right">
+                    <Tooltip title={texts.homeGerencia.ordenacao}>
+                      <IconButton onClick={toggleDrawer("right", true)}>
+                        <SwapVertIcon
+                          id="segundoDemandas"
+                          className="cursor-pointer"
+                          color="primary"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Drawer
+                      anchor={"right"}
+                      open={state["right"]}
+                      onClose={toggleDrawer("right", false)}
                     >
-                      <SwapVertIcon
-                        id="segundoDemandas"
-                        className="cursor-pointer"
-                        color="primary"
+                      <ModalOrdenacao
+                        ordenacaoTitulo={ordenacaoTitulo}
+                        setOrdenacaoTitulo={setOrdenacaoTitulo}
+                        ordenacaoScore={ordenacaoScore}
+                        setOrdenacaoScore={setOrdenacaoScore}
+                        ordenacaoDate={ordenacaoDate}
+                        setOrdenacaoDate={setOrdenacaoDate}
+                        valorAba={valorAba}
                       />
-                    </IconButton>
-                  </Tooltip>
+                    </Drawer>
+                  </React.Fragment>
+
                   {nextModoVisualizacao == "TABLE" ? (
                     <Tooltip title={texts.homeGerencia.visualizacaoEmTabela}>
                       <IconButton
@@ -1530,20 +1560,6 @@ const HomeGerencia = () => {
                         <ViewModuleIcon color="primary" />
                       </IconButton>
                     </Tooltip>
-                  )}
-                  {/* Modal de ordenação */}
-                  {abrirOrdenacao && (
-                    <ModalOrdenacao
-                      tipoComponente="demanda"
-                      ordenacaoTitulo={ordenacaoTitulo}
-                      setOrdenacaoTitulo={setOrdenacaoTitulo}
-                      ordenacaoScore={ordenacaoScore}
-                      setOrdenacaoScore={setOrdenacaoScore}
-                      ordenacaoDate={ordenacaoDate}
-                      setOrdenacaoDate={setOrdenacaoDate}
-                      fecharModal={() => setOpenOrdenacao(false)}
-                      valorAba={valorAba}
-                    />
                   )}
                 </Box>
               </Box>
@@ -1860,7 +1876,7 @@ const HomeGerencia = () => {
                       <TabPanel
                         sx={{ padding: 0 }}
                         value="3"
-                        onClick={() => { }}
+                        onClick={() => {}}
                       >
                         <Ajuda
                           onClick={() => setIsTourCriarPropostasOpen(true)}
