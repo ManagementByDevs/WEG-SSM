@@ -1,13 +1,10 @@
-
-import React, { useContext, } from "react";
-
-import { Typography, Box } from "@mui/material";
-
+import React, { useContext } from "react";
 import { List, Box, Typography } from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+
 import ItemOrdenacao from "../ItemOrdenacao/itemOrdenacao";
 
 export default function TemporaryDrawer(props) {
@@ -104,4 +101,4 @@ export default function TemporaryDrawer(props) {
       </Box>
     </List>
   );
-};
+}
