@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Box, Button, IconButton, Tab, Tooltip, Drawer } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
-
 import Tour from "reactour";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -1562,20 +1561,6 @@ const HomeGerencia = () => {
                       </IconButton>
                     </Tooltip>
                   )}
-                  {/* Modal de ordenação */}
-                  {/* {abrirOrdenacao && (
-                    <ModalOrdenacao
-                      tipoComponente="demanda"
-                      ordenacaoTitulo={ordenacaoTitulo}
-                      setOrdenacaoTitulo={setOrdenacaoTitulo}
-                      ordenacaoScore={ordenacaoScore}
-                      setOrdenacaoScore={setOrdenacaoScore}
-                      ordenacaoDate={ordenacaoDate}
-                      setOrdenacaoDate={setOrdenacaoDate}
-                      fecharModal={() => setOpenOrdenacao(false)}
-                      valorAba={valorAba}
-                    />
-                  )} */}
                 </Box>
               </Box>
 

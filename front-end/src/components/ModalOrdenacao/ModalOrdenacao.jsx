@@ -1,15 +1,11 @@
 import React, { useContext } from "react";
-import {
-  List,
-  Box,
-  Typography,
-} from "@mui/material";
+import { List, Box, Typography } from "@mui/material";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
-import ItemTest from "../../pages/Test/itemTest"
+import ItemOrdenacao from "../ItemOrdenacao/itemOrdenacao";
 
 export default function TemporaryDrawer(props) {
   // Context para alterar a linguagem do sistema
@@ -36,11 +32,11 @@ export default function TemporaryDrawer(props) {
     },
     {
       id: 4,
-      tipo: texts.modalOrdenacao.dataReuniao
+      tipo: texts.modalOrdenacao.dataReuniao,
     },
     {
       id: 5,
-      tipo: texts.modalOrdenacao.dataDeCriacao
+      tipo: texts.modalOrdenacao.dataDeCriacao,
     },
   ];
 
@@ -62,6 +58,9 @@ export default function TemporaryDrawer(props) {
         <Typography
           fontSize={FontConfig.smallTitle}
           sx={{ color: "text.white", fontWeight: 600 }}
+          onClick={() => {
+            lerTexto(texts.modalOrdenacao.ordenar);
+          }}
         >
           {texts.modalOrdenacao.ordenar}
         </Typography>
@@ -70,7 +69,7 @@ export default function TemporaryDrawer(props) {
         {opcoesFiltrar.map((opcao, index) => (
           <>
             {props.valorAba != 5 && props.valorAba != 6 && opcao.id != 4 ? (
-              <ItemTest
+              <ItemOrdenacao
                 opcao={opcao}
                 key={index}
                 ordenacaoTitulo={props.ordenacaoTitulo}
@@ -84,7 +83,7 @@ export default function TemporaryDrawer(props) {
             ) : (
               (props.valorAba == 5 || props.valorAba == 6) &&
               opcao.id != 1 && (
-                <ItemTest
+                <ItemOrdenacao
                   opcao={opcao}
                   key={index}
                   ordenacaoTitulo={props.ordenacaoTitulo}
