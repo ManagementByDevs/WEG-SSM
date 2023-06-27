@@ -21,8 +21,8 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Feedback from "../../components/Feedback/Feedback";
-import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
-import ModalFiltro from "../../components/ModalFiltro/ModalFiltro";
+import ModalOrdenacao from "../../components/Modais/Modal-ordenacao/ModalOrdenacao";
+import ModalFiltro from "../../components/Modais/Modal-filtro/ModalFiltro";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/DemandaModoVisualizacao";
 import Ajuda from "../../components/Ajuda/Ajuda";

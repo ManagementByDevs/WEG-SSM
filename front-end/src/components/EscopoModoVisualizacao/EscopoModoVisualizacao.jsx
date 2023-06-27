@@ -14,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import Feedback from "../../components/Feedback/Feedback";
 import Escopo from "../Escopo/Escopo";
-import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../Modais/Modal-confirmacao/ModalConfirmacao";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";

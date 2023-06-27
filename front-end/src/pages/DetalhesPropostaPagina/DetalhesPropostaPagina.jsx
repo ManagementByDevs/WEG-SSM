@@ -12,7 +12,7 @@ import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
-import ModalAddPropostaPauta from "../../components/ModalAddPropostaPauta/ModalAddPropostaPauta";
+import ModalAddPropostaPauta from "../../components/Modais/Modal-addPropostaPauta/ModalAddPropostaPauta";
 import Feedback from "../../components/Feedback/Feedback";
 
 import ExportPdfService from "../../service/exportPdfService";

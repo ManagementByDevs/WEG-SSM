@@ -21,7 +21,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOffIcon from "@mui/icons-material/EditOff";
 
-import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../Modais/Modal-confirmacao/ModalConfirmacao";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 import DetalhesPropostaEditMode from "../DetalhesPropostaEditMode/DetalhesPropostaEditMode";
 
