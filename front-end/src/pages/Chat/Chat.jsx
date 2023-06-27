@@ -30,7 +30,7 @@ import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import Contato from "../../components/Contato/Contato";
 import Mensagem from "../../components/Mensagem/Mensagem";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalConfirmacao";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import Feedback from "../../components/Feedback/Feedback";
 

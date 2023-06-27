@@ -15,7 +15,7 @@ import {
 import "./DemandaGerenciaModoVisualizacao.css";
 
 import DemandaGerencia from "../DemandaGerencia/DemandaGerencia";
-import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemanda";
+import ModalHistoricoDemanda from "../Modais/Modal-historicoDemanda/ModalHistoricoDemanda";
 
 import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
 import BeenhereOutlinedIcon from "@mui/icons-material/BeenhereOutlined";

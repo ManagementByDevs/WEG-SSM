@@ -18,8 +18,9 @@ import Demanda from "../Demanda/Demanda";
 import DateService from "../../service/dateService";
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";
-import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+
+import ModalMotivoRecusa from "../Modais/Modal-motivoRecusa/ModalMotivoRecusa";
 
 // Componente para mudar o modo de visualização das demandas (Grid, tabela ou nenhuma demanda encontrada) - Usuário padrão
 const DemandaModoVisualizacao = ({

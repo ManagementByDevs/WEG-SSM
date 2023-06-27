@@ -30,7 +30,7 @@ import DateService from "../../service/dateService";
 import CookieService from "../../service/cookieService";
 import DemandaService from "../../service/demandaService";
 import NotificacaoService from "../../service/notificacaoService";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalConfirmacao";
 import { WebSocketContext } from "../../service/WebSocketService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 

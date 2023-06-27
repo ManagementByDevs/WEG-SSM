@@ -6,9 +6,9 @@ import { Paper, Tooltip } from "@mui/material/";
 import LogoBranca from "../../assets/LogoBranca.png";
 import Grid from "../../assets/GridSemFundo.png";
 
-import IdiomaModal from "../Idioma-Modal/IdiomaModal";
-import UserModal from "../User-Modal/UserModal";
-import NotificacaoModal from "../Notificacao-Modal/NotificacaoModal";
+import IdiomaModal from "../Modais/Modal-idioma/ModalIdioma";
+import UserModal from "../Modais/Modal-user/UserModal";
+import NotificacaoModal from "../Modais/Modal-notificacao/NotificacaoModal";
 import ChatMinimizado from "../ChatMinimizado/ChatMinimizado";
 
 import ChatContext from "../../service/ChatContext";

@@ -20,9 +20,9 @@ import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 
 import BeneficiosDetalheDemanda from "../../components/BeneficiosDetalheDemanda/BeneficiosDetalheDemanda";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
-import ModalAceitarDemanda from "../../components/ModalAceitarDemanda/ModalAceitarDemanda";
-import ModalRecusarDemanda from "../ModalRecusarDemanda/ModalRecusarDemanda";
+import ModalConfirmacao from "../Modais/Modal-confirmacao/ModalConfirmacao";
+import ModalAceitarDemanda from "../Modais/Modal-aceitarDemanda/ModalAceitarDemanda";
+import ModalRecusarDemanda from "../Modais/Modal-recusarDemanda/ModalRecusarDemanda";
 import Feedback from "../Feedback/Feedback";
 import CaixaTextoQuill from "../CaixaTextoQuill/CaixaTextoQuill";
 

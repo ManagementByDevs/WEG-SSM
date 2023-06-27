@@ -24,7 +24,7 @@ import "./notificacaoStyle.css";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalConfirmacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import NotificacaoDetermineIcon from "../../components/NotificacaoDetermineIcon/NotificacaoDetermineIcon";
 import Feedback from "../../components/Feedback/Feedback";

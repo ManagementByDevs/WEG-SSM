@@ -6,7 +6,7 @@ import { Box, Paper, Tooltip, Typography, IconButton } from "@mui/material";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 
-import ModalHistoricoDemanda from "../ModalHistoricoDemanda/ModalHistoricoDemanda";
+import ModalHistoricoDemanda from "../Modais/Modal-historicoDemanda/ModalHistoricoDemanda";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";

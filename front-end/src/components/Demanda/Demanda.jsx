@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Box, Typography, IconButton, Paper, Tooltip } from "@mui/material";
 
-import ModalMotivoRecusa from "../ModalMotivoRecusa/ModalMotivoRecusa";
+import ModalMotivoRecusa from "../Modais/Modal-motivoRecusa/ModalMotivoRecusa";
 
 import FontContext from "../../service/FontContext";
 import TextLanguageContext from "../../service/TextLanguageContext";

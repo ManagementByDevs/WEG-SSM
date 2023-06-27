@@ -18,7 +18,7 @@ import Feedback from "../../components/Feedback/Feedback";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
 import DetalhesProposta from "../../components/DetalhesProposta/DetalhesProposta";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalConfirmacao";
 
 import TextLanguageContext from "../../service/TextLanguageContext";
 import FontContext from "../../service/FontContext";

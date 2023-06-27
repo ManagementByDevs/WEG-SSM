@@ -7,7 +7,7 @@ import { Box } from "@mui/material";
 
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import Caminho from "../../components/Caminho/Caminho";
-import BarraProgressaoProposta from "../../components/BarraProgressaoProposta/BarraProgressaoProposta";
+import BarraProgressaoProposta from "../../components/CriacaoProposta/BarraProgressaoProposta/BarraProgressaoProposta";
 
 /** Tela para criação de uma proposta ( chama o componente para criação ) */
 const CriarProposta = () => {

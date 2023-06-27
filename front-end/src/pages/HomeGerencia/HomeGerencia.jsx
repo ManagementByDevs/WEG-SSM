@@ -19,8 +19,8 @@ import MicOutlinedIcon from "@mui/icons-material/MicOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 
 import Pauta from "../../components/Pauta/Pauta";
-import ModalFiltroGerencia from "../../components/ModalFiltroGerencia/ModalFiltroGerencia";
-import ModalOrdenacao from "../../components/ModalOrdenacao/ModalOrdenacao";
+import ModalFiltroGerencia from "../../components/Modais/Modal-filtroGerencia/ModalFiltroGerencia";
+import ModalOrdenacao from "../../components/Modais/Modal-ordenacao/ModalOrdenacao";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
@@ -29,7 +29,7 @@ import DemandaModoVisualizacao from "../../components/DemandaModoVisualizacao/De
 import PautaAtaModoVisualizacao from "../../components/PautaAtaModoVisualizacao/PautaAtaModoVisualizacao";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
 import DemandaGerencia from "../../components/DemandaGerencia/DemandaGerencia";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalConfirmacao";
 
 import UsuarioService from "../../service/usuarioService";
 import DemandaService from "../../service/demandaService";
@@ -46,7 +46,7 @@ import EntitiesObjectService from "../../service/entitiesObjectService";
 import ExportPdfService from "../../service/exportPdfService";
 import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService";
 import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
-import ModalFiltroAtas from "../../components/ModalFiltroAtas/ModalFiltroAtas";
+import ModalFiltroAtas from "../../components/Modais/Modal-filtroAtas/ModalFiltroAtas";
 
 /** Tela de home para a gerência ( Analista, Gerente e Gestor de TI), possui mais telas e funções do que a home */
 const HomeGerencia = () => {

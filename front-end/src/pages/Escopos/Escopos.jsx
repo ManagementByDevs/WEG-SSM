@@ -15,7 +15,7 @@ import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 import Caminho from "../../components/Caminho/Caminho";
 import FundoComHeader from "../../components/FundoComHeader/FundoComHeader";
-import ModalConfirmacao from "../../components/ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../../components/Modais/Modal-confirmacao/ModalConfirmacao";
 import Feedback from "../../components/Feedback/Feedback";
 import Ajuda from "../../components/Ajuda/Ajuda";
 import EscopoModoVisualizacao from "../../components/EscopoModoVisualizacao/EscopoModoVisualizacao";

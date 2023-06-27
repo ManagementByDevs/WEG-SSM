@@ -35,7 +35,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 import Feedback from "../Feedback/Feedback";
-import ModalConfirmacao from "../ModalConfirmacao/ModalConfirmacao";
+import ModalConfirmacao from "../Modais/Modal-confirmacao/ModalConfirmacao";
 import QuillCustom from "./Inputs/QuillCustom";
 
 import FontContext from "../../service/FontContext";
