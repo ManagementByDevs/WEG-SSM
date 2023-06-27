@@ -20,8 +20,8 @@ import TodayOutlinedIcon from "@mui/icons-material/TodayOutlined";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 
-import TextLanguageContext from "../../service/TextLanguageContext";
-import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
+import TextLanguageContext from "../../../../service/TextLanguageContext";
+import SpeechSynthesisContext from "../../../../service/SpeechSynthesisContext";
 
 export default function ItemTest(props) {
   // Context para alterar a linguagem do sistema

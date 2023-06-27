@@ -5,7 +5,7 @@ import TextLanguageContext from "../../../service/TextLanguageContext";
 import FontContext from "../../../service/FontContext";
 import SpeechSynthesisContext from "../../../service/SpeechSynthesisContext";
 
-import ItemOrdenacao from "../../ItemOrdenacao/itemOrdenacao";
+import ItemOrdenacao from "./ItemOrdenacao/itemOrdenacao";
 
 export default function TemporaryDrawer(props) {
   // Context para alterar a linguagem do sistema
@@ -44,7 +44,6 @@ export default function TemporaryDrawer(props) {
     <List
       sx={{
         width: "18rem",
-        height: "80%",
         bgcolor: "background.paper",
         padding: "0",
       }}
