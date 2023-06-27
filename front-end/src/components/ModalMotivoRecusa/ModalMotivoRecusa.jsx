@@ -10,6 +10,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Modal para ver o motivo da recusa de demanda para o solicitante */
 const ModalMotivoRecusa = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -22,9 +23,7 @@ const ModalMotivoRecusa = (props) => {
   return (
     <Modal
       open={props.open}
-      onClose={() => {
-        props.setOpen(false);
-      }}
+      onClose={() => { props.setOpen(false); }}
       closeAfterTransition
     >
       <Fade in={props.open}>
@@ -43,9 +42,7 @@ const ModalMotivoRecusa = (props) => {
         >
           {/* Ícone de fechar o modal */}
           <CloseIcon
-            onClick={() => {
-              props.setOpen(false);
-            }}
+            onClick={() => { props.setOpen(false); }}
             sx={{
               position: "absolute",
               left: "93%",
@@ -73,9 +70,7 @@ const ModalMotivoRecusa = (props) => {
             {/* Motivo da recusa */}
             <Typography
               fontSize={FontConfig.normal}
-              onClick={() => {
-                lerTexto(props.motivoRecusa);
-              }}
+              onClick={() => { lerTexto(props.motivoRecusa); }}
             >
               {props.motivoRecusa}
             </Typography>

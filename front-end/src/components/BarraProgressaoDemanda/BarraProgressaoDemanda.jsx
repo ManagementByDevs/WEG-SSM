@@ -205,6 +205,17 @@ const BarraProgressaoDemanda = () => {
     return listaNova;
   };
 
+  /** Função para retornar o id do beneficio caso seu visible seja true */
+  const retornarBeneficiosVisible = (listaBeneficios) => {
+    let listaBeneficiosVisible = [];
+    for (let objeto of listaBeneficios) {
+      if (objeto.visible) {
+        listaBeneficiosVisible.push(objeto);
+      }
+    }
+    return listaBeneficiosVisible;
+  }
+
   /** Função para retornar um objeto de demanda para salvamento dela ou de um escopo */
   const retornaObjetoDemanda = () => {
     const objetoDemanda = {
@@ -212,7 +223,7 @@ const BarraProgressaoDemanda = () => {
       problema: formatarHtml(paginaDados.problema),
       proposta: formatarHtml(paginaDados.proposta),
       frequencia: paginaDados.frequencia,
-      beneficios: retornarIdsObjetos(paginaBeneficios),
+      beneficios: retornarIdsObjetos(retornarBeneficiosVisible(paginaBeneficios)),
       anexo: retornarIdsObjetos(paginaArquivos),
       solicitante: { id: usuario.id },
     };

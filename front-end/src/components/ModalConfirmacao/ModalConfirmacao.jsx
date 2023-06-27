@@ -11,6 +11,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 /** Modal padrão usado para confirmação de ações (ex: criação de demanda, aprovação de demanda) */
 const ModalConfirmacao = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -73,9 +74,7 @@ const ModalConfirmacao = (props) => {
   return (
     <Modal
       open={props.open}
-      onClose={() => {
-        props.setOpen(false);
-      }}
+      onClose={() => { props.setOpen(false);}}
       closeAfterTransition
     >
       <Fade in={props.open}>

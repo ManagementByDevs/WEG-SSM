@@ -1,4 +1,4 @@
-import { Checkbox, Fade, FormControlLabel, FormGroup, Grid, Modal, Typography } from "@mui/material";
+import { Checkbox, Fade, FormControlLabel, Modal, } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext } from "react";
 
@@ -20,6 +20,7 @@ const ModalFiltroAtas = (props) => {
     /** Context para ler o texto da tela */
     const { lerTexto } = useContext(SpeechSynthesisContext);
 
+    /** Função para mudar o checked caso seja apreciada  */
     const mudarCheck1 = () => {
         if (props.filtro.apreciada) {
             props.setFiltro({ ...props.filtro, apreciada: false, naoApreciada: false });
@@ -28,6 +29,7 @@ const ModalFiltroAtas = (props) => {
         }
     }
 
+    /** Função para mudar o checked caso não seja apreciada */
     const mudarCheck2 = () => {
         if (props.filtro.naoApreciada) {
             props.setFiltro({ ...props.filtro, naoApreciada: false, apreciada: false });
@@ -36,6 +38,7 @@ const ModalFiltroAtas = (props) => {
         }
     }
 
+    /** Função para mudar o checked caso esteja publicada */
     const mudarCheck3 = () => {
         if (props.filtro.publicada) {
             props.setFiltro({ ...props.filtro, publicada: false, naoPublicada: false });
@@ -44,6 +47,7 @@ const ModalFiltroAtas = (props) => {
         }
     }
 
+    /** Função para mudar o checked caso não esteja publicada */
     const mudarCheck4 = () => {
         if (props.filtro.naoPublicada) {
             props.setFiltro({ ...props.filtro, naoPublicada: false, publicada: false });

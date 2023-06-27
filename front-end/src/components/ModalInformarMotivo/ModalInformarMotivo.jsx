@@ -1,13 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 
-import {
-  Modal,
-  Typography,
-  Box,
-  Fade,
-  TextareaAutosize,
-  Button,
-} from "@mui/material";
+import { Modal, Typography, Box, Fade, TextareaAutosize, Button, } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
@@ -19,6 +12,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal para informar o motivo da recusa ou devolvimento da demanda
 const ModalInformarMotivo = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -31,9 +25,7 @@ const ModalInformarMotivo = (props) => {
   return (
     <Modal
       open={props.open}
-      onClose={() => {
-        props.setOpen(false);
-      }}
+      onClose={() => { props.setOpen(false); }}
       closeAfterTransition
     >
       <Fade in={props.open}>
@@ -56,9 +48,7 @@ const ModalInformarMotivo = (props) => {
           bgcolor={"background.paper"}
         >
           <CloseIcon
-            onClick={() => {
-              props.setOpen(false);
-            }}
+            onClick={() => { props.setOpen(false); }}
             sx={{
               position: "absolute",
               left: "93%",

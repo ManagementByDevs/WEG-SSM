@@ -20,6 +20,7 @@ const Notificacao = ({
   notificacao = EntitiesObjectService.notificacao(),
   onNotificacaoClick = () => {},
 }) => {
+  
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 

@@ -3470,16 +3470,18 @@ public class DemandaController {
         Double valorBeneficiosReais = 0.0;
         Double valorBeneficiosPotenciais = 0.0;
 
-        for (Beneficio beneficio : demanda.getBeneficios()) {
-            beneficio = beneficioService.findById(beneficio.getId()).get();
+        if(demanda.getBeneficios().size() > 0) {
+            for (Beneficio beneficio : demanda.getBeneficios()) {
+                beneficio = beneficioService.findById(beneficio.getId()).get();
 
-            if(beneficio.getTipoBeneficio() != null) {
-                if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
-                    valorBeneficiosReais += beneficio.getValor_mensal();
-                }
+                if(beneficio.getTipoBeneficio() != null) {
+                    if (beneficio.getTipoBeneficio().equals(TipoBeneficio.REAL)) {
+                        valorBeneficiosReais += beneficio.getValor_mensal();
+                    }
 
-                if (beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
-                    valorBeneficiosPotenciais += beneficio.getValor_mensal();
+                    if (beneficio.getTipoBeneficio().equals(TipoBeneficio.POTENCIAL)) {
+                        valorBeneficiosPotenciais += beneficio.getValor_mensal();
+                    }
                 }
             }
         }

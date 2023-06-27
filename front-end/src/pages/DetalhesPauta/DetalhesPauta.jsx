@@ -438,16 +438,6 @@ const DetalhesPauta = (props) => {
       {/* Tradução para libras */}
       <VLibras forceOnload />
 
-      {/* Modal para criar ata */}
-      {/* <ModalCriarAta
-        open={openModalCriarAta}
-        setOpen={setOpenModalCriarAta}
-        criarAta={criarAtas}
-        setFeedbackCamposFaltantes={setFeedbackCamposFaltantes}
-        setFeedbackSemPropostas={setFeedbackSemPropostas}
-        listaPropostas={pauta.propostas}
-      /> */}
-
       {/* Feedback campos faltantes */}
       <Feedback
         open={feedbackCamposFaltantes}

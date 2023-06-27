@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, } from "react";
 
 import { Modal, Typography, Box, Divider } from "@mui/material";
 
@@ -15,6 +15,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
  * Recebe a lista de históricos através do props (props.historico)
  */
 const ModalHistoricoDemanda = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -27,9 +28,7 @@ const ModalHistoricoDemanda = (props) => {
   return (
     <Modal
       open={props.open}
-      onClose={() => {
-        props.setOpen(false);
-      }}
+      onClose={() => { props.setOpen(false); }}
       closeAfterTransition
     >
       <Fade in={props.open}>
@@ -50,9 +49,7 @@ const ModalHistoricoDemanda = (props) => {
         >
           {/* Ícone de fechar modal */}
           <CloseIcon
-            onClick={() => {
-              props.setOpen(false);
-            }}
+            onClick={() => { props.setOpen(false); }}
             sx={{
               position: "absolute",
               left: "90%",

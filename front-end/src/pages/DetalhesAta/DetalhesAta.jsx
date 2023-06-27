@@ -330,12 +330,9 @@ const DetalhesAta = (props) => {
 
   /** Função para salvar o número sequencial da ata da dg digitado no input */
   const salvarNumeroSequencialAtaDG = (event) => {
+    console.log(event.target.value)
     setNumeroSequencialAtaDG(event.target.value);
   }
-
-  useEffect(() => {
-    console.log("numero sequencial ata dg: " + ata.numeroSequencialDG);
-  }, [ata.parecerDG])
 
   return (
     // Começo com o header da página

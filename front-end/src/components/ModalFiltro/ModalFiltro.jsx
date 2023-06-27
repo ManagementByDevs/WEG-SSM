@@ -1,15 +1,6 @@
-import { React, useContext, useEffect, useState } from "react";
+import { React, useContext } from "react";
 
-import {
-  Modal,
-  Typography,
-  Box,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Grid,
-  Fade,
-} from "@mui/material";
+import { Modal, Typography, Box, Checkbox, FormGroup, FormControlLabel, Grid, Fade, } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -19,7 +10,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal para do filtro do usuário padrão
 const ModalFiltro = (props) => {
-  
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -31,93 +22,37 @@ const ModalFiltro = (props) => {
 
   /** Função para mudar o valor da primeira checkbox do filtro */
   const mudarCheck1 = () => {
-    props.setListaFiltros([
-      !props.listaFiltros[0],
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ]);
+    props.setListaFiltros([!props.listaFiltros[0], false, false, false, false, false, false]);
   };
 
   /** Função para mudar o valor da segunda checkbox do filtro */
   const mudarCheck2 = () => {
-    props.setListaFiltros([
-      false,
-      !props.listaFiltros[1],
-      false,
-      false,
-      false,
-      false,
-      false
-    ]);
+    props.setListaFiltros([false, !props.listaFiltros[1], false, false, false, false, false]);
   };
 
   /** Função para mudar o valor da terceira checkbox do filtro */
   const mudarCheck3 = () => {
-    props.setListaFiltros([
-      false,
-      false,
-      !props.listaFiltros[2],
-      false,
-      false,
-      false,
-      false
-    ]);
+    props.setListaFiltros([false, false, !props.listaFiltros[2], false, false, false, false]);
   };
 
   /** Função para mudar o valor da quarta checkbox do filtro */
   const mudarCheck4 = () => {
-    props.setListaFiltros([
-      false,
-      false,
-      false,
-      !props.listaFiltros[3],
-      false,
-      false,
-      false
-    ]);
+    props.setListaFiltros([false, false, false, !props.listaFiltros[3], false, false, false]);
   };
 
   /** Função para mudar o valor da quinta checkbox do filtro */
   const mudarCheck5 = () => {
-    props.setListaFiltros([
-      false,
-      false,
-      false,
-      false,
-      !props.listaFiltros[4],
-      false,
-      false
-    ]);
+    props.setListaFiltros([false, false, false, false, !props.listaFiltros[4], false, false]);
   };
 
   /** Função para mudar o valor da sexta checkbox do filtro */
   const mudarCheck6 = () => {
-    props.setListaFiltros([
-      false,
-      false,
-      false,
-      false,
-      false,
-      !props.listaFiltros[5],
-      false
-    ]);
+    props.setListaFiltros([false, false, false, false, false, !props.listaFiltros[5], false]);
   };
 
   /** Função para mudar o valor da sétima checkbox do filtro */
   const mudarCheck7 = () => {
-    props.setListaFiltros([
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      !props.listaFiltros[6]
-    ]);
+    props.setListaFiltros([false, false, false, false, false, false, !props.listaFiltros[6]]);
   };
 
   return (

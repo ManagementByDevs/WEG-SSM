@@ -1,15 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, } from "react";
 
-import {
-  Modal,
-  Typography,
-  Box,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Grid,
-  Fade,
-} from "@mui/material";
+import {Modal,Typography,Box,Checkbox,FormGroup,FormControlLabel,Grid,Fade,} from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -19,6 +10,7 @@ import SpeechSynthesisContext from "../../service/SpeechSynthesisContext";
 
 // Modal de ordenação do sistema
 const ModalOrdenacao = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 

@@ -1,14 +1,6 @@
 import React, { useContext, useEffect } from "react";
 
-import {
-  Modal,
-  Typography,
-  Box,
-  Fade,
-  Button,
-  Tooltip,
-  TextField,
-} from "@mui/material";
+import { Modal, Typography, Box, Fade, Button, Tooltip, TextField, } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
@@ -21,6 +13,7 @@ import { SpeechRecognitionContext } from "../../service/SpeechRecognitionService
 
 /** Modal de recusar demanda na etapa de aprovação inicial (analista e gerente) */
 const ModalRecusarDemanda = (props) => {
+
   // Context para alterar a linguagem do sistema
   const { texts } = useContext(TextLanguageContext);
 
@@ -42,6 +35,7 @@ const ModalRecusarDemanda = (props) => {
 
   // // ********************************************** Gravar audio **********************************************
 
+  /** useEffect utilizado par gravação de áudio */
   useEffect(() => {
     if (palavrasJuntas) props.setMotivo(palavrasJuntas);
   }, [palavrasJuntas]);
@@ -51,9 +45,7 @@ const ModalRecusarDemanda = (props) => {
   return (
     <Modal
       open={props.open}
-      onClose={() => {
-        props.setOpen(false);
-      }}
+      onClose={() => { props.setOpen(false); }}
       closeAfterTransition
     >
       <Fade in={props.open}>
